@@ -1,0 +1,93 @@
+name: WP Deploy Advanced
+
+on:
+  push:
+    branches: [staging, main, infra/wp-advanced]
+    paths: ['templates/**','pages.json','.github/workflows/deploy-advanced.yml']
+
+jobs:
+  staging:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate
+        run: |
+          npx html-validate "templates/**/*.html" || true
+          jq . pages.json > /dev/null
+      - name: Rsync templates (STG)
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: templates/
+          remote_path: ${{ secrets.WP_PATH_STG }}/templates/
+          remote_host: ${{ secrets.WP_HOST_STG }}
+          remote_user: ${{ secrets.WP_USER_STG }}
+          remote_key: ${{ secrets.WP_SSH_KEY_STG }}
+      - name: Rsync pages.json (STG)
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr
+          path: pages.json
+          remote_path: ${{ secrets.WP_PATH_STG }}/pages.json
+          remote_host: ${{ secrets.WP_HOST_STG }}
+          remote_user: ${{ secrets.WP_USER_STG }}
+          remote_key: ${{ secrets.WP_SSH_KEY_STG }}
+      - name: WP sync (STG)
+        run: curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN_STG }}" "https://${{ secrets.WP_DOMAIN_STG }}/?upgradefor_sync=1"
+      - name: Purge CF (STG)
+        if: ${{ secrets.CF_ZONE_ID_STG != '' && secrets.CF_API_TOKEN_STG != '' }}
+        run: |
+          curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID_STG }}/purge_cache" \
+               -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN_STG }}" \
+               -H "Content-Type: application/json" --data '{"purge_everything":true}'
+      - name: Lighthouse (STG)
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://${{ secrets.WP_DOMAIN_STG }}/ai-avatar
+            https://${{ secrets.WP_DOMAIN_STG }}/landing-beta-brand-v8
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+      - name: Update sitemap (STG)
+        run: |
+          curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN_STG }}" "https://${{ secrets.WP_DOMAIN_STG }}/?upgradefor_sitemap=1"
+          curl -s "https://www.google.com/ping?sitemap=https://${{ secrets.WP_DOMAIN_STG }}/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://${{ secrets.WP_DOMAIN_STG }}/sitemap.xml" || true
+
+  production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rsync templates (PROD)
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: templates/
+          remote_path: ${{ secrets.WP_PATH }}/templates/
+          remote_host: ${{ secrets.WP_HOST }}
+          remote_user: ${{ secrets.WP_USER }}
+          remote_key: ${{ secrets.WP_SSH_KEY }}
+      - name: Rsync pages.json (PROD)
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr
+          path: pages.json
+          remote_path: ${{ secrets.WP_PATH }}/pages.json
+          remote_host: ${{ secrets.WP_HOST }}
+          remote_user: ${{ secrets.WP_USER }}
+          remote_key: ${{ secrets.WP_SSH_KEY }}
+      - name: WP sync (PROD)
+        run: curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN }}" "https://${{ secrets.WP_DOMAIN }}/?upgradefor_sync=1"
+      - name: Purge CF (PROD)
+        if: ${{ secrets.CF_ZONE_ID != '' && secrets.CF_API_TOKEN != '' }}
+        run: |
+          curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+               -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+               -H "Content-Type: application/json" --data '{"purge_everything":true}'
+      - name: Update sitemap (PROD)
+        run: |
+          curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN }}" "https://${{ secrets.WP_DOMAIN }}/?upgradefor_sitemap=1"
+          curl -s "https://www.google.com/ping?sitemap=https://${{ secrets.WP_DOMAIN }}/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://${{ secrets.WP_DOMAIN }}/sitemap.xml" || true
