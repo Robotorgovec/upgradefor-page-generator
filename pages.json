@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "remont-teploobmennikov",
+    "title": "Ремонт теплообменников",
+    "template": "landing-v1.html",
+    "parent": "",
+    "seo": {
+      "title": "Ремонт теплообменников — Upgrade Innovations",
+      "description": "Диагностика, обслуживание, пластины, прокладки. Alfa Laval, Tranter, SWEP."
+    }
+  },
+  {
+    "slug": "remont-alfa-laval",
+    "title": "Ремонт Alfa Laval",
+    "template": "landing-v1.html",
+    "parent": "remont-teploobmennikov",
+    "seo": {
+      "title": "Ремонт Alfa Laval — Upgrade Innovations",
+      "description": "Ремонт и сервис пластинчатых теплообменников Alfa Laval."
+    }
+  }
+]
