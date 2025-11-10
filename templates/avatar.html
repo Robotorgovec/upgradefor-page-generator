@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Avatar</title>
+  <style>
+    .avatar {
+      width: 300px;
+      height: 400px;
+      background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+      background-size: 1000% 1000%;
+          -webkit-mask-image: url("../ai-avatar.png");
+      mask-image: url("../ai-avatar.png");
+      mask-repeat: no-repeat;
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="avatar"></div>
+</body>
+</html>
