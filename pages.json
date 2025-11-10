@@ -1,22 +1,32 @@
 [
   {
-    "slug": "remont-teploobmennikov",
-    "title": "Ремонт теплообменников",
-    "template": "landing-v1.html",
-    "parent": "",
+    "slug": "ai-avatar",
+    "title": "AI Avatar",
+    "template": "avatar.html",
     "seo": {
-      "title": "Ремонт теплообменников — Upgrade Innovations",
-      "description": "Диагностика, обслуживание, пластины, прокладки. Alfa Laval, Tranter, SWEP."
+      "title": "AI Avatar — Upgrade Innovations",
+      "description": "Гендер-нейтральный аватар с переливающимся радужным градиентом.",
+      "canonical": "https://upgradefor.com/ai-avatar",
+      "hreflang": {
+        "en": "https://upgradefor.com/en/ai-avatar",
+        "tr": "https://upgradefor.com/tr/ai-avatar"
+      },
+      "schema": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "AI Avatar",
+        "description": "Интерактивная демонстрация Upgrade Innovations."
+      }
     }
   },
   {
-    "slug": "remont-alfa-laval",
-    "title": "Ремонт Alfa Laval",
-    "template": "landing-v1.html",
-    "parent": "remont-teploobmennikov",
+    "slug": "landing-beta-brand-v8",
+    "title": "Landing Beta Brand v8",
+    "template": "upgradefor-landing-beta-brand-v8.html",
     "seo": {
-      "title": "Ремонт Alfa Laval — Upgrade Innovations",
-      "description": "Ремонт и сервис пластинчатых теплообменников Alfa Laval."
+      "title": "Landing v8 — Upgrade Innovations",
+      "description": "Посадочная страница по принципу коммерческой Википедии.",
+      "canonical": "https://upgradefor.com/landing-beta-brand-v8"
     }
   }
 ]
