@@ -36,11 +36,14 @@ jobs:
       - name: WP sync (STG)
         run: curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN_STG }}" "https://${{ secrets.WP_DOMAIN_STG }}/?upgradefor_sync=1"
       - name: Purge CF (STG)
-        if: ${{ secrets.CF_ZONE_ID_STG != '' && secrets.CF_API_TOKEN_STG != '' }}
         run: |
-          curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID_STG }}/purge_cache" \
-               -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN_STG }}" \
-               -H "Content-Type: application/json" --data '{"purge_everything":true}'
+          if [ -n "${{ secrets.CF_ZONE_ID_STG }}" ] && [ -n "${{ secrets.CF_API_TOKEN_STG }}" ]; then
+            curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID_STG }}/purge_cache" \
+                 -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN_STG }}" \
+                 -H "Content-Type: application/json" --data '{"purge_everything":true}'
+          else
+            echo "Skipping Cloudflare purge for STG: secrets missing"
+          fi
       - name: Lighthouse (STG)
         uses: treosh/lighthouse-ci-action@v10
         with:
@@ -81,11 +84,14 @@ jobs:
       - name: WP sync (PROD)
         run: curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN }}" "https://${{ secrets.WP_DOMAIN }}/?upgradefor_sync=1"
       - name: Purge CF (PROD)
-        if: ${{ secrets.CF_ZONE_ID != '' && secrets.CF_API_TOKEN != '' }}
         run: |
-          curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
-               -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
-               -H "Content-Type: application/json" --data '{"purge_everything":true}'
+          if [ -n "${{ secrets.CF_ZONE_ID }}" ] && [ -n "${{ secrets.CF_API_TOKEN }}" ]; then
+            curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+                 -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+                 -H "Content-Type: application/json" --data '{"purge_everything":true}'
+          else
+            echo "Skipping Cloudflare purge for PROD: secrets missing"
+          fi
       - name: Update sitemap (PROD)
         run: |
           curl -sS -X POST -H "X-Deploy-Token: ${{ secrets.WP_SYNC_TOKEN }}" "https://${{ secrets.WP_DOMAIN }}/?upgradefor_sitemap=1"
