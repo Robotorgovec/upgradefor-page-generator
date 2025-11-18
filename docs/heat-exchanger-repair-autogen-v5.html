@@ -185,12 +185,68 @@
     ]
   }
   </script>
+  <!-- Стили для бокового меню и кнопки-бургера -->
+  <style id="side-menu-styles">
+    .menu-toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:space-between;
+      width:28px;
+      height:20px;
+      border:none;
+      padding:0;
+      background:transparent;
+      cursor:pointer;
+    }
+    .menu-toggle span{
+      display:block;
+      height:3px;
+      background:var(--brand);
+      border-radius:2px;
+    }
+    @media (max-width:900px){
+      header nav{display:none;}
+      .menu-toggle{display:flex;}
+    }
+    .left-menu{
+      position:fixed;
+      top:0;
+      left:-240px;
+      width:240px;
+      height:100%;
+      background:var(--bg);
+      border-right:1px solid var(--line);
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      transition:transform .25s ease-out;
+      z-index:1000;
+    }
+    .left-menu nav{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .left-menu a{
+      color:var(--txt);
+      font-weight:600;
+      text-decoration:none;
+    }
+    .left-menu a:hover{
+      color:var(--brand-2);
+    }
+    body.menu-open .left-menu{
+      transform:translateX(240px);
+    }
+  </style>
 </head>
 <body>
   <header>
     <div class="container nav">
       <div class="logo">
-        <div class="logo-mark" aria-hidden="true"></div>
+        <img src="https://upgradefor.com/assets/logo.png" alt="Upgrade Innovations logo" style="height:32px;width:auto;">
         <span>Upgrade Innovations</span>
       </div>
       <nav aria-label="Главное меню">
@@ -199,8 +255,21 @@
         <a href="#request" class="badge">Заявка</a>
         <a href="#wiki" class="badge">Вики‑раздел</a>
       </nav>
+      <button class="menu-toggle" aria-label="Показать меню">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <!-- Левое меню: отображается по нажатию на бургер -->
+  <aside class="left-menu" aria-label="Боковое меню">
+    <nav>
+      <a href="#toc">Содержание</a>
+      <a href="#prices">Прайс</a>
+      <a href="#request">Заявка</a>
+      <a href="#wiki">Вики‑раздел</a>
+    </nav>
+  </aside>
 
   <main>
     <section class="hero">
@@ -925,6 +994,25 @@
     }
   })();
 </script>
+
+  <!-- Скрипт для переключения бокового меню -->
+  <script>
+    (function(){
+      var toggle = document.querySelector('.menu-toggle');
+      var body = document.body;
+      if(toggle){
+        toggle.addEventListener('click', function(){
+          body.classList.toggle('menu-open');
+        });
+      }
+      var links = document.querySelectorAll('.left-menu a');
+      links.forEach(function(link){
+        link.addEventListener('click', function(){
+          body.classList.remove('menu-open');
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>

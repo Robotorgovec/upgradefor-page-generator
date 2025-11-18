@@ -238,6 +238,65 @@ body{ font-family: var(--font-sans); }
   @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
 </style>
 
+  <!-- Дополнительные стили для бокового меню и кнопки-бургера -->
+  <style id="side-menu-styles">
+    /* Бургер (иконка) */
+    .menu-toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:space-between;
+      width:28px;
+      height:20px;
+      border:none;
+      padding:0;
+      background:transparent;
+      cursor:pointer;
+    }
+    .menu-toggle span{
+      display:block;
+      height:3px;
+      background:var(--brand-blue);
+      border-radius:2px;
+    }
+    /* Скрываем горизонтальное меню на мобильных, показываем бургер */
+    @media (max-width:900px){
+      header .menu{display:none;}
+      .menu-toggle{display:flex;}
+    }
+    /* Боковое меню */
+    .left-menu{
+      position:fixed;
+      top:0;
+      left:-260px;
+      width:260px;
+      height:100%;
+      background:var(--surface);
+      border-right:1px solid var(--line);
+      box-shadow:var(--shadow);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      transition:transform .25s ease-out;
+      z-index:1000;
+    }
+    .left-menu nav{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .left-menu a{
+      color:var(--text);
+      font-weight:600;
+    }
+    .left-menu a:hover{
+      color:var(--brand-blue);
+    }
+    body.menu-open .left-menu{
+      transform:translateX(260px);
+    }
+  </style>
+
 </head>
 <body>
   <a class="skip" href="#main">К содержанию</a>
@@ -245,14 +304,12 @@ body{ font-family: var(--font-sans); }
   <header>
     <div class="wrap nav">
       <div class="brand" aria-label="UPGRADE INNOVATIONS">
-        <!-- Логотип в духе текущего: чёрный + голубой -->
-        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ec5ff"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
-          <circle cx="24" cy="24" r="20" stroke="url(#g)" stroke-width="3" fill="none"/>
-          <path d="M24 11v26M11 24h26" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/>
-        </svg>
+        <!-- Используем официальный логотип вместо абстрактного SVG -->
+        <img src="https://upgradefor.com/assets/logo.png" alt="UPGRADE Innovations logo" style="height:32px;width:auto;">
         <span>UPGRADE&nbsp;INNOVATIONS</span>
       </div>
+
+      <!-- Бургер будет добавлен после навигации -->
 
       <nav class="menu" aria-label="Основная навигация">
         <a href="#status">Статус</a>
@@ -264,11 +321,29 @@ body{ font-family: var(--font-sans); }
         <a href="#faq">FAQ</a>
         <a href="#contacts">Контакты</a>
       </nav>
+      <!-- Кнопка-бургер для отображения левого меню на мобильных -->
+      <button class="menu-toggle" aria-label="Показать меню">
+        <span></span><span></span><span></span>
+      </button>
       <div class="grow"></div>
       <a class="btn btn--ghost" href="#feedback" rel="nofollow">Обратная связь</a>
       <a class="btn" href="#join" rel="nofollow" style="background:linear-gradient(#14d5ff,var(--primary));border-color:#9be7ff">Стать ранним участником</a>
     </div>
   </header>
+
+  <!-- Левое меню: отображается по нажатию на бургер; по умолчанию скрыто -->
+  <aside class="left-menu" aria-label="Боковое меню">
+    <nav>
+      <a href="#status">Статус</a>
+      <a href="#goals">Цели</a>
+      <a href="#ai">ИИ</a>
+      <a href="#tech">Технологии</a>
+      <a href="#catalog">Каталог</a>
+      <a href="#roadmap">Роадмап</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </aside>
 
   <!-- Бета‑баннер -->
   <div class="phase" role="status" aria-live="polite">
@@ -565,6 +640,25 @@ body{ font-family: var(--font-sans); }
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Скрипт для переключения бокового меню -->
+  <script>
+    (function(){
+      var toggle = document.querySelector('.menu-toggle');
+      var body = document.body;
+      if(toggle){
+        toggle.addEventListener('click', function(){
+          body.classList.toggle('menu-open');
+        });
+      }
+      var sideLinks = document.querySelectorAll('.left-menu a');
+      sideLinks.forEach(function(link){
+        link.addEventListener('click', function(){
+          body.classList.remove('menu-open');
+        });
+      });
+    })();
   </script>
 </body>
 </html>
