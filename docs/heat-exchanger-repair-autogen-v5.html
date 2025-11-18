@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ремонт теплообменников — коммерческая вики-страница</title>
+  <meta name="description" content="Коммерческая вики по ремонту пластинчатых и кожухотрубных теплообменников: виды, поломки, технологии, кейсы, бренды, прайс и заявка.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff;
+      --txt:#0f172a;
+      --muted:#475569;
+      --brand:#0ea5e9;
+      --brand-2:#0284c7;
+      --line:#e2e8f0;
+      --ok:#16a34a;
+      --warn:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+    a{color:var(--brand);text-decoration:none}
+    a:not(.btn):hover{text-decoration:underline}
+    img{max-width:100%;height:auto;display:block}
+    .container{max-width:1160px;margin:0 auto;padding:0 16px}
+    .grid{display:grid;gap:24px}
+    .btn{display:inline-block;background:var(--brand);color:#fff;padding:12px 18px;border-radius:12px;
+      font-weight:600;border:1px solid transparent;transition:.2s;text-decoration:none}
+    .btn:hover,.btn:focus{background:var(--brand-2);text-decoration:none}
+    .btn-outline{background:#fff;color:var(--brand);border-color:var(--brand);text-decoration:none}
+    header{border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700}
+    .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    .hero{padding:56px 0 16px}
+    .hero .grid{grid-template-columns:1.2fr .8fr;align-items:center}
+    .hero h1{font-size:38px;line-height:1.15;margin:0 0 12px}
+    .muted{color:var(--muted)}
+    .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
+    .section{padding:40px 0;border-top:1px solid var(--line)}
+    .cards{grid-template-columns:repeat(3,1fr)}
+    .card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+    .card h3{margin:8px 0 8px;font-size:18px}
+    .list{list-style:none;padding:0;margin:0}
+    .list li{display:flex;gap:10px;margin:8px 0}
+    .tick{width:18px;height:18px;margin-top:3px;border-radius:50%;background:var(--ok)}
+    .warn{color:var(--warn)}
+    .table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .table th,.table td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .table tr:last-child td{border-bottom:none}
+    .badge{font-size:12px;background:#ecfeff;color:#0c4a6e;border:1px solid #a5f3fc;padding:4px 8px;border-radius:999px}
+    .form-wrap{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-grid .full{grid-column:1 / -1}
+    label{font-weight:600;font-size:13px}
+    input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;outline:none;background:#fff;transition:border-color .15s}
+    input:focus,select:focus,textarea:focus{border-color:var(--brand)}
+    .note{font-size:12px;color:var(--muted)}
+    footer{padding:28px 0;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+    /* TOC */
+    .toc{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fcfdff}
+    .toc h3{margin:0 0 8px;font-size:16px}
+    .toc ul{list-style:none;padding:0;margin:0}
+    .toc li{margin:6px 0}
+    /* Tags */
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);background:#fff}
+    /* Case cards */
+    .case{border:1px solid var(--line);border-radius:16px;padding:16px}
+    .case h4{margin:0 0 6px}
+    .case small{color:var(--muted)}
+    /* Vendors carousel */
+    .vendors-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .vendors-carousel{position:relative}
+    .vendors-track{display:grid;grid-auto-flow:column;grid-auto-columns:320px;gap:16px;overflow-x:auto;padding:6px 4px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+    .vendor-card{scroll-snap-align:start;border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:10px}
+    .vendor-head{display:flex;gap:10px;align-items:center}
+    .vendor-logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0f2fe);display:flex;align-items:center;justify-content:center;font-weight:700;color:#075985}
+    .vendor-name{font-weight:700}
+    .vendor-meta{font-size:12px;color:var(--muted)}
+    .vendor-cta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}
+    .vendors-empty{display:none}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer}
+    .carousel-btn:focus{outline:2px solid var(--brand)}
+    .carousel-btn.prev{left:-6px}
+    .carousel-btn.next{right:-6px}
+    /* skeleton placeholders */
+    .skeleton{position:relative;overflow:hidden}
+    .skeleton .skeleton-line{height:12px;background:#e5e7eb;border-radius:8px;margin:8px 0}
+    .skeleton .w60{width:60%}.skeleton .w40{width:40%}.skeleton .w80{width:80%}
+    .skeleton::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,0,0,0.05),transparent);animation:shimmer 1.2s infinite}
+    @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    /* Responsive */
+    @media (max-width:992px){
+      .hero .grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .cards{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .hero h1{font-size:30px}
+      .carousel-btn{display:none}
+      .vendors-track{grid-auto-columns:85%}
+    }
+  
+    /* Benefits chips */
+    .benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .benefit{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+    .benefit .icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+      background:radial-gradient(circle at 30% 30%, #e0f2fe, #bae6fd);font-weight:700;color:#0c4a6e}
+    .benefit h4{margin:0;font-size:16px}
+    .benefit p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    @media (max-width:992px){.benefits{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.benefits{grid-template-columns:1fr}}
+
+    /* Vendors standalone section */
+    .vendors-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+    .vendors-controls{display:flex;align-items:center;gap:8px}
+    .vendors-track{display:grid;grid-auto-flow:column;grid-auto-columns:300px;gap:16px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+    .vendor-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff;scroll-snap-align:start;display:flex;flex-direction:column;gap:10px}
+    .vendor-head{display:flex;gap:10px;align-items:center}
+    .vendor-logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#0c4a6e;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);font-weight:700}
+    .vendor-name{font-weight:700}
+    .vendor-meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+    .vendor-badges{display:flex;flex-wrap:wrap;gap:8px}
+    .vendor-badges .tag{font-size:11px}
+    .vendors-note{font-size:12px;color:var(--muted)}
+    .vendor-card.ghost{background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 8px,#f1f5f9 8px,#f1f5f9 16px)}
+
+  
+    /* Circle precision & alignment */
+    .vp-icon{
+      width:48px; height:auto; aspect-ratio:1/1; border-radius:50%;
+      display:grid; place-items:center; font-weight:700;
+    }
+    .tick{
+      width:18px; height:auto; aspect-ratio:1/1; border-radius:50%;
+      background:var(--ok); flex:0 0 18px;
+    }
+    .avatar{
+      width:40px; height:auto; aspect-ratio:1/1; border-radius:50%;
+      display:grid; place-items:center; background:#e2e8f0; color:#0f172a; font-weight:700;
+      flex:0 0 40px;
+    }
+
+  </style>
+
+  <!-- Structured data -->
+  
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Структура вики-раздела",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Определение и область применения", "url": "#definition" },
+    { "@type": "ListItem", "position": 2, "name": "Состав и терминология", "url": "#components" },
+    { "@type": "ListItem", "position": 3, "name": "Классификация видов ремонта", "url": "#repair-taxonomy" },
+    { "@type": "ListItem", "position": 4, "name": "Контроль качества и метрики", "url": "#qc" },
+    { "@type": "ListItem", "position": 5, "name": "Типы теплообменников", "url": "#types" },
+    { "@type": "ListItem", "position": 6, "name": "Виды ремонта", "url": "#repairs" },
+    { "@type": "ListItem", "position": 7, "name": "Неисправности", "url": "#faults" },
+    { "@type": "ListItem", "position": 8, "name": "Технология работ", "url": "#process" },
+    { "@type": "ListItem", "position": 9, "name": "Бренды и модели", "url": "#brands" },
+    { "@type": "ListItem", "position": 10, "name": "Кейсы", "url": "#cases" },
+    { "@type": "ListItem", "position": 11, "name": "Потенциальные вендоры", "url": "#vendors" },
+    { "@type": "ListItem", "position": 12, "name": "Документы", "url": "#docs" },
+    { "@type": "ListItem", "position": 13, "name": "География", "url": "#geo" },
+    { "@type": "ListItem", "position": 14, "name": "Связанные услуги", "url": "#related" }
+  ]
+}
+</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Услуги", "item": "https://upgradefor.com/services" },
+      { "@type": "ListItem", "position": 2, "name": "Ремонт теплообменников", "item": "https://upgradefor.com/services/remont-teploobmennikov" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true"></div>
+        <span>Upgrade Innovations</span>
+      </div>
+      <nav aria-label="Главное меню">
+        <a href="#toc" class="badge">Содержание</a>
+        <a href="#prices" class="badge">Прайс</a>
+        <a href="#request" class="badge">Заявка</a>
+        <a href="#wiki" class="badge">Вики‑раздел</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container grid">
+        <div>
+          <div class="chip">Сервис • Ремонт теплообменников</div>
+          <h1>Ремонт пластинчатых и кожухотрубных теплообменников</h1>
+          <p class="muted">Диагностика, чистка, регаскинг, восстановление пластин и ретюбинг. Вики‑структура для быстрых ответов и коммерческая часть с CTA.</p>
+          <div style="display:flex;gap:12px;margin-top:14px">
+            <a href="#request" class="btn">Оставить заявку</a>
+            <a href="#wiki" class="btn btn-outline">Открыть вики‑раздел</a>
+          </div>
+          <p class="note" style="margin-top:10px">Индексация отключена для предпросмотра • meta robots noindex</p>
+        </div>
+        <div aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1581093588401-16ec5e7b6cd9?q=80&w=1600&auto=format&fit=crop" alt="Промышленное оборудование и теплообменники">
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits chips (separate from TOC) -->
+    <section id="benefits" class="section">
+      <div class="container benefits">
+        <div class="benefit">
+          <div class="icon" aria-hidden="true">B2B</div>
+          <div><h4>B2B сервис</h4><p>Договор, закрывающие, SLA и KPI.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="icon" aria-hidden="true">IND</div>
+          <div><h4>Промышленность</h4><p>Процессы и химия под среду.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="icon" aria-hidden="true">24h</div>
+          <div><h4>Срочный ремонт</h4><p>От 24–48 часов при наличии ЗИП.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="icon" aria-hidden="true">IMG</div>
+          <div><h4>Отчёт с фото</h4><p>Дефектация, прессовка, акт.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick facts cards -->
+    <section class="section">
+      <div class="container">
+        <div class="grid cards">
+          <article class="card">
+            <h3>Что делаем</h3>
+            <ul class="list">
+              <li><span class="tick"></span><span>CIP/разборная чистка</span></li>
+              <li><span class="tick"></span><span>Замена прокладок</span></li>
+              <li><span class="tick"></span><span>Восстановление пластин</span></li>
+              <li><span class="tick"></span><span>Ретюбинг кожухотрубных</span></li>
+              <li><span class="tick"></span><span>Гидроиспытания с актом</span></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Оборудование</h3>
+            <ul class="list">
+              <li><span class="tick"></span><span>Пластинчатые (GPHE, BPHE, полусварные)</span></li>
+              <li><span class="tick"></span><span>Кожухотрубные (U‑tube, straight, floating head)</span></li>
+              <li><span class="tick"></span><span>Паяные и полусварные</span></li>
+              <li><span class="tick"></span><span>Любые бренды</span></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Сроки и гарантия</h3>
+            <p>Стандарт: 3–7 дней. Срочно: от 24 часов.</p>
+            <p>Гарантия 12 месяцев на работы.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOC -->
+    <section id="toc" class="section">
+      <div class="container grid" style="grid-template-columns:1fr 1fr">
+        <div class="toc">
+          <h3>Содержание вики‑раздела</h3>
+          <ul>
+            <li><a href="#definition">Определение и область применения</a></li>
+            <li><a href="#components">Состав и терминология</a></li>
+            <li><a href="#repair-taxonomy">Классификация видов ремонта</a></li>
+            <li><a href="#qc">Контроль качества и метрики</a></li>
+            <li><a href="#types">Типы теплообменников</a></li>
+            <li><a href="#repairs">Виды ремонта</a></li>
+            <li><a href="#faults">Типовые неисправности</a></li>
+            <li><a href="#process">Технология работ</a></li>
+            <li><a href="#brands">Бренды и модели</a></li>
+            <li><a href="#cases">Кейсы</a></li>
+            <li><a href="#vendors">Потенциальные вендоры</a></li>
+            <li><a href="#docs">Документы</a></li>
+            <li><a href="#geo">География</a></li>
+            <li><a href="#related">Связанные услуги</a></li>
+</ul>
+        </div>
+        <div class="form-wrap">
+          <h3 style="margin:0 0 8px">Быстрый запрос</h3>
+          <p class="muted" style="margin:0 0 14px">Пришлите параметры. Ответим в течение рабочего дня.</p>
+          <a class="btn" href="#request">Оформить заявку</a>
+          <p class="note" style="margin-top:10px">В заявке спросим фото шильдика, среду и температуру.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prices -->
+    <section id="prices" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">Базовые цены</h2>
+        <p class="muted" style="margin:0 0 16px">Итог зависит от модели, загрязнения и логистики.</p>
+        <div class="grid" style="grid-template-columns:1.2fr .8fr">
+          <div class="form-wrap">
+            <table class="table" aria-label="Таблица прайса">
+              <thead><tr><th>Работа</th><th>Ед.</th><th>От, ₽</th></tr></thead>
+              <tbody>
+                <tr><td>Диагностика и дефектация</td><td>шт</td><td>8 000</td></tr>
+                <tr><td>Чистка пластин (CIP/разбор)</td><td>пластина</td><td>350</td></tr>
+                <tr><td>Замена прокладок</td><td>пластина</td><td>250</td></tr>
+                <tr><td>Восстановление пластины</td><td>шт</td><td>1 900</td></tr>
+                <tr><td>Гидроиспытания с актом</td><td>комплект</td><td>12 000</td></tr>
+                <tr><td>Ретюбинг кожухотрубного</td><td>трубка</td><td>1 200</td></tr>
+              </tbody>
+            </table>
+            <p class="note" style="margin-top:8px">Для точной сметы пришлите фото шильдика и состав среды.</p>
+          </div>
+          <aside class="form-wrap">
+            <h3 style="margin:0 0 8px">Почему выгодно</h3>
+            <ul class="list">
+              <li><span class="tick"></span><span>Чек‑листы и контроль качества</span></li>
+              <li><span class="tick"></span><span>Оригинальные и аналоговые прокладки</span></li>
+              <li><span class="tick"></span><span>Опыт промышленных и пищевых сред</span></li>
+              <li><span class="tick"></span><span>Выезд, логистика, фото‑отчёт</span></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vendors standalone -->
+    <section id="vendors" class="section">
+      <div class="container">
+        <div class="vendors-head">
+          <h2 style="margin:0">Потенциальные исполнители (вендоры)</h2>
+          <div class="vendors-controls" aria-label="Навигация по списку">
+            <button class="btn btn-outline" id="vendorsPrev" type="button" aria-label="Назад">←</button>
+            <button class="btn" id="vendorsNext" type="button" aria-label="Вперёд">→</button>
+          </div>
+        </div>
+        <p class="vendors-note">Блок всегда на месте. Если по направлению нет компаний, показываются свободные слоты и карточка «AI‑исполнитель» для первичного диалога.</p>
+        <div class="vendors-track" id="vendorsTrack" role="region" aria-label="Список вендоров" tabindex="0">
+
+          <!-- AI virtual card -->
+          <article class="vendor-card" data-cat="ai,general,rush">
+            <div class="vendor-head">
+              <div class="vendor-logo" aria-hidden="true">AI</div>
+              <div>
+                <div class="vendor-name">AI‑исполнитель • Консультант</div>
+                <div class="vendor-meta"><span>Ответ сразу</span><span>Диалог и первичный расчёт</span></div>
+              </div>
+            </div>
+            <div class="vendor-badges">
+              <span class="tag">CIP/разбор</span><span class="tag">Диагностика</span><span class="tag">SLA</span>
+            </div>
+            <p class="muted">Быстрые ответы, сбор данных, подсказки по смете. Передача заявки менеджеру.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn" href="#request">Начать чат</a>
+              <a class="btn btn-outline" href="#vendor-apply">Ваш аккаунт здесь</a>
+            </div>
+          </article>
+
+          <!-- Human vendor examples -->
+          <article class="vendor-card" data-cat="gphe,general">
+            <div class="vendor-head">
+              <div class="vendor-logo" aria-hidden="true">TS</div>
+              <div>
+                <div class="vendor-name">ООО «Термосервис»</div>
+                <div class="vendor-meta"><span>★ 4.8</span><span>27 отзывов</span></div>
+              </div>
+            </div>
+            <div class="vendor-badges">
+              <span class="tag">Пластинчатые</span><span class="tag">Регаскинг</span><span class="tag">CIP</span>
+            </div>
+            <p class="muted">Ставка от 450 ₽/пластина. Москва и область.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-outline" href="#request">Откликнуться</a>
+              <a class="btn btn-outline" href="#cases">Кейсы</a>
+            </div>
+          </article>
+
+          <article class="vendor-card" data-cat="shell,rush">
+            <div class="vendor-head">
+              <div class="vendor-logo" aria-hidden="true">TT</div>
+              <div>
+                <div class="vendor-name">ИП «ТехТрубы»</div>
+                <div class="vendor-meta"><span>★ 4.6</span><span>12 отзывов</span></div>
+              </div>
+            </div>
+            <div class="vendor-badges">
+              <span class="tag">Кожухотрубные</span><span class="tag">Ретюбинг</span><span class="tag">Гидроиспытания</span>
+            </div>
+            <p class="muted">Срок от 3 дней. Европа и РФ.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-outline" href="#request">Откликнуться</a>
+              <a class="btn btn-outline" href="#cases">Кейсы</a>
+            </div>
+          </article>
+
+          <!-- Ghost placeholders -->
+          <article class="vendor-card ghost" data-cat="general">
+            <div class="vendor-head">
+              <div class="vendor-logo" aria-hidden="true">AD</div>
+              <div>
+                <div class="vendor-name">Свободный слот</div>
+                <div class="vendor-meta"><span>Ваша компания здесь</span></div>
+              </div>
+            </div>
+            <p class="muted">Разместите оффер и получайте лиды.</p>
+            <a class="btn" href="#vendor-apply">Стать вендором</a>
+          </article>
+
+          <article class="vendor-card ghost" data-cat="rush,general">
+            <div class="vendor-head">
+              <div class="vendor-logo" aria-hidden="true">AD</div>
+              <div>
+                <div class="vendor-name">Слот срочного направления</div>
+                <div class="vendor-meta"><span>24–48 часов</span></div>
+              </div>
+            </div>
+            <p class="muted">Покройте срочные заявки по региону.</p>
+            <a class="btn" href="#vendor-apply">Стать вендором</a>
+          </article>
+
+        </div>
+
+        <div id="vendor-apply" class="form-wrap" style="margin-top:14px">
+          <h3 style="margin:0 0 8px">Заявка на партнёрство</h3>
+          <form onsubmit="event.preventDefault(); alert('Заявка партнёра отправлена.');">
+            <div class="form-grid">
+              <div><label for="p-name">Компания</label><input id="p-name" required placeholder="ООО «Пример»"></div>
+              <div><label for="p-phone">Контакт</label><input id="p-phone" required placeholder="+7 900 000-00-00"></div>
+              <div><label for="p-email">Email</label><input id="p-email" type="email" required placeholder="sales@company.com"></div>
+              <div><label for="p-cat">Направление</label>
+                <select id="p-cat"><option>Пластинчатые</option><option>Кожухотрубные</option><option>Срочные</option></select>
+              </div>
+              <div class="full"><label for="p-note">Краткое предложение</label><textarea id="p-note" rows="3" placeholder="Регион, SLA, ставки"></textarea></div>
+              <div class="full"><button class="btn" type="submit">Отправить заявку</button></div>
+            </div>
+            <p class="note">Предпросмотр. Данные не отправляются.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Request -->
+    <section id="request" class="section">
+      <div class="container">
+        <div class="grid" style="grid-template-columns:1fr .9fr;align-items:start">
+          <form class="form-wrap" onsubmit="event.preventDefault(); alert('Заявка отправлена. Мы свяжемся в течение рабочего дня.');">
+            <h2 style="margin:0 0 8px">Заявка на ремонт</h2>
+            <div class="form-grid">
+              <div><label for="name">Имя</label><input id="name" required placeholder="Иван"></div>
+              <div><label for="phone">Телефон</label><input id="phone" type="tel" required placeholder="+7 900 000-00-00"></div>
+              <div><label for="email">Email</label><input id="email" type="email" placeholder="mail@company.com"></div>
+              <div><label for="city">Город</label><input id="city" placeholder="Москва"></div>
+              <div class="full"><label for="model">Модель/бренд</label><input id="model" placeholder="Alfa Laval M10"></div>
+              <div class="full"><label for="desc">Описание</label><textarea id="desc" rows="4" placeholder="Протечки, требуется замена прокладок..."></textarea></div>
+              <div class="full"><label for="when">Сроки</label>
+                <select id="when"><option value="std">Обычно (3–7 дней)</option><option value="rush">Срочно (24–48 часов)</option></select></div>
+              <div class="full"><button class="btn" type="submit">Отправить заявку</button></div>
+            </div>
+            <p class="note">Данные не публикуются. Отправка имитирована для предпросмотра.</p>
+          </form>
+
+          <div class="form-wrap">
+            <h3 style="margin:0 0 10px">Как мы работаем</h3>
+            <ol class="list">
+              <li><span class="tick"></span><span>Получаем фото шильдика и ТД</span></li>
+              <li><span class="tick"></span><span>Смета и сроки</span></li>
+              <li><span class="tick"></span><span>Разбор, чистка, регаскинг</span></li>
+              <li><span class="tick"></span><span>Сборка, прессовка</span></li>
+              <li><span class="tick"></span><span>Гидроиспытания, отчёт</span></li>
+            </ol>
+            <div style="margin-top:14px">
+              <div class="chip">Гарантия 12 месяцев</div>
+              <div class="chip" style="margin-left:8px">Фото‑отчёт</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vendors block (new) -->
+    <section id="vendors" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">Потенциальные исполнители (вендоры)</h2>
+        <p class="muted" style="margin:0 0 14px">
+          Блок показывает предложения вендоров по направлениям. Если по направлению пока нет заявок, выводятся заглушки «ваше предложение здесь».
+          Список свайпается и листается стрелками.
+        </p>
+
+        <div class="form-wrap vendors-controls" style="margin-bottom:12px">
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <label for="vend-cat" class="muted" style="font-weight:600">Направление</label>
+            <select id="vend-cat">
+              <option value="all">Все</option>
+              <option value="gphe">Пластинчатые</option>
+              <option value="shell">Кожухотрубные</option>
+              <option value="rush">Срочные 24–48 ч</option>
+            </select>
+            <span class="note">Фильтр только для предпросмотра.</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="carousel-btn prev" id="prevV" aria-label="Назад">‹</button>
+            <button class="carousel-btn next" id="nextV" aria-label="Вперёд">›</button>
+            <a class="btn btn-outline" href="#vendor-apply">Стать вендором</a>
+          </div>
+        </div>
+
+        <div class="vendors-carousel">
+          <div class="vendors-track" id="vendorsTrack" tabindex="0" role="region" aria-label="Список вендоров">
+            <!-- Real examples -->
+            <div class="vendor-card" data-cat="gphe">
+              <div class="vendor-head">
+                <div class="vendor-logo" aria-hidden="true">HP</div>
+                <div>
+                  <div class="vendor-name">HeatPro Service</div>
+                  <div class="vendor-meta">Рейтинг 4.9 • 126 отзывов • Пластинчатые</div>
+                </div>
+              </div>
+              <ul class="list">
+                <li><span class="tick"></span><span>Регаскинг 100–400 пластин</span></li>
+                <li><span class="tick"></span><span>CIP/разборная чистка, химия одобрена</span></li>
+                <li><span class="tick"></span><span>Акт гидроиспытаний</span></li>
+              </ul>
+              <div class="vendor-cta">
+                <span class="badge">Ставка от 450 ₽/пластина</span>
+                <a class="btn btn-outline" href="#vendor-apply">Откликнуться</a>
+              </div>
+            </div>
+
+            <div class="vendor-card" data-cat="shell,rush">
+              <div class="vendor-head">
+                <div class="vendor-logo" aria-hidden="true">TU</div>
+                <div>
+                  <div class="vendor-name">TubeMasters</div>
+                  <div class="vendor-meta">Рейтинг 4.7 • 89 отзывов • Кожухотрубные, срочно</div>
+                </div>
+              </div>
+              <ul class="list">
+                <li><span class="tick"></span><span>Ретюбинг 50–500 труб</span></li>
+                <li><span class="tick"></span><span>Наплавка, ремонт трубных решёток</span></li>
+                <li><span class="tick"></span><span>24–48 ч при наличии труб</span></li>
+              </ul>
+              <div class="vendor-cta">
+                <span class="badge">Ставка от 1 100 ₽/трубка</span>
+                <a class="btn btn-outline" href="#vendor-apply">Откликнуться</a>
+              </div>
+            </div>
+
+            <div class="vendor-card" data-cat="gphe">
+              <div class="vendor-head">
+                <div class="vendor-logo" aria-hidden="true">GP</div>
+                <div>
+                  <div class="vendor-name">GasketPlus</div>
+                  <div class="vendor-meta">Рейтинг 4.8 • 64 отзыва • Прокладки</div>
+                </div>
+              </div>
+              <ul class="list">
+                <li><span class="tick"></span><span>Оригинальные и аналоги прокладок</span></li>
+                <li><span class="tick"></span><span>Склад ходовых позиций</span></li>
+                <li><span class="tick"></span><span>Комплектация и доставка</span></li>
+              </ul>
+              <div class="vendor-cta">
+                <span class="badge">Скидка на комплект</span>
+                <a class="btn btn-outline" href="#vendor-apply">Откликнуться</a>
+              </div>
+            </div>
+
+            <!-- Placeholder skeletons for empty directions -->
+            <div class="vendor-card skeleton" data-cat="none">
+              <div class="vendor-head">
+                <div class="vendor-logo" aria-hidden="true">?</div>
+                <div>
+                  <div class="skeleton-line w60"></div>
+                  <div class="skeleton-line w40"></div>
+                </div>
+              </div>
+              <div class="skeleton-line w80"></div>
+              <div class="skeleton-line w80"></div>
+              <div class="skeleton-line w60"></div>
+              <div class="vendor-cta">
+                <span class="badge">Здесь может быть ваше предложение</span>
+                <a class="btn btn-outline" href="#vendor-apply">Стать вендором</a>
+              </div>
+            </div>
+
+            <div class="vendor-card skeleton" data-cat="none">
+              <div class="vendor-head">
+                <div class="vendor-logo" aria-hidden="true">?</div>
+                <div>
+                  <div class="skeleton-line w60"></div>
+                  <div class="skeleton-line w40"></div>
+                </div>
+              </div>
+              <div class="skeleton-line w80"></div>
+              <div class="skeleton-line w80"></div>
+              <div class="skeleton-line w60"></div>
+              <div class="vendor-cta">
+                <span class="badge">Реклама партнёра</span>
+                <a class="btn btn-outline" href="#vendor-apply">Стать вендором</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="vendorsEmpty" class="form-wrap vendors-empty" aria-live="polite" style="margin-top:12px">
+          <strong>Пока нет предложений в выбранном направлении.</strong>
+          <p class="muted" style="margin:6px 0 0">Ваша компания может разместить оффер. <a href="#vendor-apply">Отправить предложение</a>.</p>
+        </div>
+
+        <div id="vendor-apply" class="form-wrap" style="margin-top:12px">
+          <h3 style="margin:0 0 8px">Стать вендором</h3>
+          <form onsubmit="event.preventDefault(); alert('Заявка вендора отправлена.');">
+            <div class="form-grid">
+              <div><label>Компания</label><input required placeholder="ООО «Пример»"></div>
+              <div><label>Контакт</label><input required placeholder="Иван Петров"></div>
+              <div><label>Email</label><input type="email" required placeholder="vendor@mail.com"></div>
+              <div>
+                <label>Направление</label>
+                <select>
+                  <option>Пластинчатые</option>
+                  <option>Кожухотрубные</option>
+                  <option>Срочные 24–48 ч</option>
+                </select>
+              </div>
+              <div class="full"><label>Краткое предложение</label><textarea rows="3" placeholder="Опишите компетенции и ставки..."></textarea></div>
+              <div class="full"><button class="btn" type="submit">Отправить</button></div>
+            </div>
+            <p class="note">Предпросмотр. Данные не публикуются.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wiki section -->
+    <section id="wiki" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 12px">Вики‑раздел: краткая декомпозиция</h2>
+        <p class="muted">Логика разделов построена под индексируемые меню и масштабируемые автогенеративные подстраницы.</p>
+
+        
+        <article id="definition" class="card" style="margin-top:12px">
+          <h3>Определение и область применения</h3>
+          <p class="muted">
+            Ремонт теплообменников — это комплекс операций по восстановлению герметичности, теплопередачи и гидравлических параметров
+            оборудования для обмена теплом между жидкостями или газами. Цель — вернуть проектные показатели КПД, ΔT и потерь давления.
+          </p>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div>
+              <h4 style="margin:8px 0">Пластинчатый теплообменник</h4>
+              <p class="muted">Пакет гофрированных пластин с прокладками между неподвижной и подвижной плитами. Отличается компактностью и удобством обслуживания.</p>
+            </div>
+            <div>
+              <h4 style="margin:8px 0">Кожухотрубный теплообменник</h4>
+              <p class="muted">Пучок труб внутри кожуха. Устойчив к высоким температурам/давлениям. Используется в химии, энергетике, переработке.</p>
+            </div>
+          </div>
+        </article>
+
+        <article id="components" class="card" style="margin-top:12px">
+          <h3>Состав и терминология</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div>
+              <h4 style="margin:8px 0">Пластинчатые</h4>
+              <ul class="list">
+                <li><span class="tick"></span><span>Пластины, прокладки, пазы/замки</span></li>
+                <li><span class="tick"></span><span>Неподвижная/подвижная плита, направляющие балки</span></li>
+                <li><span class="tick"></span><span>Шпильки/гайки, траверсы</span></li>
+                <li><span class="tick"></span><span>Патрубки, опорная рама</span></li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="margin:8px 0">Кожухотрубные</h4>
+              <ul class="list">
+                <li><span class="tick"></span><span>Кожух, трубный пучок, трубы</span></li>
+                <li><span class="tick"></span><span>Трубные решётки, перегородки (бафлы)</span></li>
+                <li><span class="tick"></span><span>Крышки/камеры, компенсаторы</span></li>
+                <li><span class="tick"></span><span>Опоры, штуцера</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article id="repair-taxonomy" class="card" style="margin-top:12px">
+          <h3>Классификация видов ремонта</h3>
+          <ul class="list">
+            <li><span class="tick"></span><span><strong>ТО/сервис</strong>: CIP/разборная мойка, профилактика, осмотр.</span></li>
+            <li><span class="tick"></span><span><strong>Текущий ремонт</strong>: замена прокладок, шпилек, мелкий ремонт.</span></li>
+            <li><span class="tick"></span><span><strong>Капитальный</strong>: восстановление пластин, ретюбинг, сварочные работы.</span></li>
+            <li><span class="tick"></span><span><strong>Модернизация</strong>: смена материалов, полусварные кассеты, переподбор площади.</span></li>
+          </ul>
+        </article>
+
+        <article id="qc" class="card" style="margin-top:12px">
+          <h3>Контроль качества и метрики</h3>
+          <table class="table">
+            <thead><tr><th>Метрика</th><th>Что контролируем</th><th>Результат/документ</th></tr></thead>
+            <tbody>
+              <tr><td>Герметичность</td><td>Отсутствие протечек/перетоков</td><td>Акт гидроиспытаний</td></tr>
+              <tr><td>Теплообмен</td><td>ΔT, расчётный КПД</td><td>Отчёт с расчётами</td></tr>
+              <tr><td>Гидравлика</td><td>Потери давления (ΔP)</td><td>Паспортные значения/факт</td></tr>
+              <tr><td>Визуальный контроль</td><td>Состояние пластин/труб, узлов</td><td>Фото‑отчёт «до/после»</td></tr>
+            </tbody>
+          </table>
+        </article>
+<article id="types" class="card" style="margin-top:12px">
+          <h3>Типы теплообменников</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div>
+              <h4 style="margin:8px 0">Пластинчатые (GPHE/BPHE/полусварные)</h4>
+              <p class="muted">Состоят из пакета пластин, разделённых прокладками. Компактны, легко обслуживаются. Полусварные применяются для агрессивных сред.</p>
+              <ul class="list"><li><span class="tick"></span><span>GPHE — разборные на прокладках</span></li>
+                <li><span class="tick"></span><span>BPHE — паяные медью/никелем</span></li>
+                <li><span class="tick"></span><span>Полусварные — для аммиака и пр.</span></li></ul>
+            </div>
+            <div>
+              <h4 style="margin:8px 0">Кожухотрубные</h4>
+              <p class="muted">Пучок труб в кожухе. Устойчивы к высоким температурам и давлениям. Конфигурации: U‑образные, прямотрубные, с плавающей головкой.</p>
+              <ul class="list"><li><span class="tick"></span><span>U‑tube / straight‑tube</span></li>
+                <li><span class="tick"></span><span>Floating head / fixed</span></li>
+                <li><span class="tick"></span><span>Ретюбинг, замена трубных решёток</span></li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article id="repairs" class="card" style="margin-top:12px">
+          <h3>Виды ремонта</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div>
+              <h4 style="margin:8px 0">Пластинчатые</h4>
+              <ul class="list">
+                <li><span class="tick"></span><span>CIP‑мойка, разборная чистка</span></li>
+                <li><span class="tick"></span><span>Замена прокладок (регаскинг)</span></li>
+                <li><span class="tick"></span><span>Правка/восстановление пластин</span></li>
+                <li><span class="tick"></span><span>Замена шпилек, направляющих</span></li>
+                <li><span class="tick"></span><span>Гидроиспытания и акт</span></li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="margin:8px 0">Кожухотрубные</h4>
+              <ul class="list">
+                <li><span class="tick"></span><span>Механическая и химическая чистка</span></li>
+                <li><span class="tick"></span><span>Ретюбинг (замена труб)</span></li>
+                <li><span class="tick"></span><span>Ремонт трубных решёток/перегородок</span></li>
+                <li><span class="tick"></span><span>Наплавка, устранение течей</span></li>
+                <li><span class="tick"></span><span>Гидроиспытания и акт</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article id="faults" class="card" style="margin-top:12px">
+          <h3>Типовые неисправности и признаки</h3>
+          <table class="table">
+            <thead><tr><th>Симптом</th><th>Вероятная причина</th><th>Решение</th></tr></thead>
+            <tbody>
+              <tr><td>Протечки по контуру</td><td>Износ/пересохшие прокладки; недостаточная затяжка</td><td>Регаскинг; корректная затяжка по диагонали</td></tr>
+              <tr><td>Переток сред</td><td>Трещины/дефекты пластин; неправильная сборка</td><td>Дефектация; замена/восстановление пластин</td></tr>
+              <tr><td>Падение эффективности</td><td>Нарастания, загрязнение каналов</td><td>CIP/разборная чистка с подбором химии</td></tr>
+              <tr><td>Прожоги труб</td><td>Коррозия, эрозия, кавитация</td><td>Ретюбинг; замена материала; корректировка режимов</td></tr>
+              <tr><td>Вибрации/шум</td><td>Неправильные опоры, турбулентность</td><td>Анкеровка, перепроектирование перегородок</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article id="process" class="card" style="margin-top:12px">
+          <h3>Технология работ (контур HowTo)</h3>
+          <ol>
+            <li>Сбор входных данных: шильдик, среда, ΔT, давление.</li>
+            <li>Выбор метода чистки: CIP или разборная.</li>
+            <li>Дефектация: красящие/осветительные тесты, замер кривизны.</li>
+            <li>Регаскинг: очистка посадок, выдержка, маркировка.</li>
+            <li>Сборка и прессовка: контроль момента и шага.</li>
+            <li>Гидроиспытания: давление, герметичность, протокол.</li>
+          </ol>
+        </article>
+
+        <article id="brands" class="card" style="margin-top:12px">
+          <h3>Бренды и модели</h3>
+          <div class="tags">
+            <span class="tag">Alfa Laval (M6, M10, M15...)</span>
+            <span class="tag">GEA (NT, VT серии)</span>
+            <span class="tag">Funke (FP)</span>
+            <span class="tag">API Schmidt‑Bretten</span>
+            <span class="tag">SWEP (B серия)</span>
+            <span class="tag">Tranter</span>
+          </div>
+          <p class="note" style="margin-top:8px">Список расширяется под матрицу генерации подстраниц.</p>
+        </article>
+
+        <article id="cases" class="card" style="margin-top:12px">
+          <h3>Кейсы</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr">
+            <div class="case">
+              <h4>Пищевое производство • GPHE M10</h4>
+              <small>24 часа, регаскинг 180 пластин, CIP, акт</small>
+              <p class="muted">Вернули КПД +18 %. Снижение перетоков до нуля.</p>
+            </div>
+            <div class="case">
+              <h4>Химия • Кожухотрубный U‑tube</h4>
+              <small>Ретюбинг 320 труб, гидроиспытания</small>
+              <p class="muted">Срок — 5 дней. Перезапуск линии без простоев.</p>
+            </div>
+          </div>
+        </article>
+
+        <article id="docs" class="card" style="margin-top:12px">
+          <h3>Документы и результаты</h3>
+          <ul class="list">
+            <li><span class="tick"></span><span>Протокол дефектации</span></li>
+            <li><span class="tick"></span><span>Акт гидроиспытаний</span></li>
+            <li><span class="tick"></span><span>Фото‑отчёт «до/после»</span></li>
+            <li><span class="tick"></span><span>Рекомендации по режимам</span></li>
+          </ul>
+        </article>
+
+        <article id="geo" class="card" style="margin-top:12px">
+          <h3>География и логистика</h3>
+          <p class="muted">Выезд по региону и Европе. Забор/доставка, работа на площадке или в цеху.</p>
+          <div class="tags">
+            <span class="tag">Москва</span><span class="tag">СПб</span><span class="tag">Казань</span><span class="tag">Минск</span><span class="tag">Алматы</span><span class="tag">Стамбул</span><span class="tag">Вильнюс</span>
+          </div>
+        </article>
+
+        <article id="related" class="card" style="margin-top:12px">
+          <h3>Связанные услуги</h3>
+          <ul>
+            <li><a href="#repairs">Замена прокладок</a></li>
+            <li><a href="#repairs">Чистка пластин</a></li>
+            <li><a href="#repairs">Ретюбинг кожухотрубных</a></li>
+            <li><a href="#request">Диагностика на площадке</a></li>
+          </ul>
+        </article>
+
+        <div class="form-wrap" style="margin-top:12px">
+          <h3 style="margin:0 0 8px">Матрица автогенерации подстраниц</h3>
+          <p class="muted" style="margin:0 0 8px">Шаблоны для коммерческой вики. Примеры слагов:</p>
+          <ul>
+            <li>/remont-teploobmennikov/plastinchatye/ — базовая подстраница</li>
+            <li>/remont-teploobmennikov/plastinchatye/zamena-prokladok/</li>
+            <li>/remont-teploobmennikov/kozhuhotrubnye/retubing/</li>
+            <li>/remont-teploobmennikov/faq/peretoki-i-uti/</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">FAQ</h2>
+        <details class="form-wrap">
+          <summary><strong>Какие бренды обслуживаете?</strong></summary>
+          <div class="muted">Alfa Laval, GEA, Funke, API Schmidt‑Bretten, SWEP и др.</div>
+        </details>
+        <details class="form-wrap" style="margin-top:10px">
+          <summary><strong>Можно ли сделать срочно?</strong></summary>
+          <div class="muted">Да. Ускоренный режим 24–48 часов при наличии комплектующих.</div>
+        </details>
+        <details class="form-wrap" style="margin-top:10px">
+          <summary><strong>Вывозите оборудование?</strong></summary>
+          <div class="muted">Доступен выездной ремонт и доставка в цех. Помогаем с логистикой.</div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © Upgrade Innovations. Предпросмотр автогенеративной коммерческой вики‑страницы.
+    </div>
+  </footer>
+
+  <script>
+    // Vendors filter and controls
+    (function(){
+      var select = document.getElementById('vend-cat');
+      var track = document.getElementById('vendorsTrack');
+      var empty = document.getElementById('vendorsEmpty');
+      function filter(){
+        var val = select ? select.value : 'all';
+        var cards = track.querySelectorAll('.vendor-card');
+        var visibleCount = 0;
+        cards.forEach(function(card){
+          var cats = (card.getAttribute('data-cat')||'').split(',');
+          var ok = val === 'all' || cats.indexOf(val) > -1;
+          card.style.display = ok ? '' : 'none';
+          if(ok && !card.classList.contains('skeleton') && card.getAttribute('data-cat') !== 'none'){ visibleCount++; }
+        });
+        if(empty){ empty.style.display = visibleCount ? 'none' : 'block'; }
+      }
+      if(select){ select.addEventListener('change', filter); }
+      filter();
+
+      var prev = document.getElementById('prevV');
+      var next = document.getElementById('nextV');
+      var step = 340;
+      if(prev){ prev.addEventListener('click', function(){ track.scrollBy({left:-step, behavior:'smooth'}); }); }
+      if(next){ next.addEventListener('click', function(){ track.scrollBy({left: step, behavior:'smooth'}); }); }
+    })();
+  </script>
+
+<script>
+  (function(){
+    var track = document.getElementById('vendorsTrack');
+    var prev = document.getElementById('vendorsPrev');
+    var next = document.getElementById('vendorsNext');
+    if(track && prev && next){
+      var step = 320;
+      prev.addEventListener('click', function(){ track.scrollBy({left:-step, behavior:'smooth'}); });
+      next.addEventListener('click', function(){ track.scrollBy({left: step, behavior:'smooth'}); });
+    }
+  })();
+</script>
+
+</body>
+</html>
