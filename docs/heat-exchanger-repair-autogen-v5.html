@@ -306,15 +306,16 @@
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
        /* Make the cross perfectly centered within the 36px square */
        /* Use 20px line length and center it by positioning at 8px from top and left */
-       top:8px;
-       left:8px;
-       width:20px;
+       /* For a 36px square with 2px border, use 18px cross with 9px offset for perfect centering */
+       top:9px;
+       left:9px;
+       width:18px;
        transform:rotate(45deg);
     }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-       top:8px;
-       left:8px;
-       width:20px;
+       top:9px;
+       left:9px;
+       width:18px;
        transform:rotate(-45deg);
     }
 
