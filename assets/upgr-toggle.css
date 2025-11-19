@@ -1,0 +1,154 @@
+:root{
+  --upgr-brand: #0ec5ff;
+  --upgr-ink: #0f172a;
+  --upgr-toggle-size: 54px;
+  --upgr-toggle-radius: 12px;
+  --upgr-toggle-border: 3px;
+  --upgr-stroke: 3px;
+  --upgr-h-gap: 4px;
+  --upgr-v-gap: 6px;
+  --upgr-v-width: 3px;
+  --upgr-v-height: 76%;
+  --upgr-nudge-y: -1px;
+}
+
+/* Button container */
+.upgr-menu-toggle{
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 1000;
+  width: var(--upgr-toggle-size);
+  height: var(--upgr-toggle-size);
+  display: grid;
+  place-items: center;
+  border-radius: var(--upgr-toggle-radius);
+  border: var(--upgr-toggle-border) solid var(--upgr-brand);
+  background: #fff;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(15,23,42,.06);
+}
+.upgr-menu-toggle:focus-visible{
+  outline: 3px solid color-mix(in srgb, var(--upgr-brand) 50%, transparent);
+  outline-offset: 2px;
+}
+
+/* icons */
+.upgr-icon-burger, .upgr-icon-close{
+  position: relative;
+  width: 68%;
+  height: 68%;
+  display: grid;
+  place-items: center;
+}
+.upgr-icon-close{
+  display: none;
+}
+
+/* Horizontal lines and vertical divider */
+.upgr-icon-burger .hlines{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--upgr-h-gap);
+  transform: translateY(var(--upgr-nudge-y));
+}
+.upgr-icon-burger .hlines i{
+  display: block;
+  height: var(--upgr-stroke);
+  width: 14px;
+  background: var(--upgr-ink);
+  border-radius: 2px;
+}
+.upgr-icon-burger .divider{
+  width: var(--upgr-v-width);
+  height: var(--upgr-v-height);
+  background: var(--upgr-brand);
+  border-radius: 2px;
+  margin-left: var(--upgr-v-gap);
+}
+.upgr-icon-burger{
+  display: inline-flex;
+  align-items: center;
+}
+.upgr-icon-burger .hlines + .divider{
+  display: inline-block;
+}
+
+/* Cross icon lines */
+.upgr-icon-close::before,
+.upgr-icon-close::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: var(--upgr-stroke);
+  background: var(--upgr-ink);
+  border-radius: 2px;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.upgr-icon-close::after{
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Toggle state */
+.upgr-menu-toggle[aria-expanded="true"] .upgr-icon-burger{
+  display: none;
+}
+.upgr-menu-toggle[aria-expanded="true"] .upgr-icon-close{
+  display: block;
+}
+
+/* mobile adjustment */
+@media (max-width: 480px){
+  .upgr-menu-toggle{
+    left: 12px;
+    top: 12px;
+  }
+}
+
+/* Off-canvas side menu and backdrop */
+#upgrSide{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 320px;
+  max-width: 80%;
+  background: #fff;
+  border-right: 1px solid rgba(0,0,0,.05);
+  box-shadow: 2px 0 10px rgba(0,0,0,.1);
+  transform: translateX(-100%);
+  transition: transform .3s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+body.upgr-menu-open #upgrSide{
+  transform: translateX(0);
+}
+.upgr-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  z-index: 998;
+}
+body.upgr-menu-open .upgr-backdrop{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hide the menu when closed for accessibility */
+#upgrSide[aria-hidden="true"]{
+  display: none;
+}
