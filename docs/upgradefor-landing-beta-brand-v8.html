@@ -289,17 +289,17 @@ body{ font-family: var(--font-sans); }
         transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s ease, top .3s ease;
      }
      .menu-toggle .bar.bar1{
-         /* Top bar position with equal spacing for three bars */
-         top:10px;
-      }
-     .menu-toggle .bar.bar2{
-         /* Middle bar */
-         top:18px;
-      }
-     .menu-toggle .bar.bar3{
-         /* Bottom bar */
-         top:26px;
-      }
+          /* Top bar: use symmetric spacing (8px between bars, 9px padding top/bottom) */
+          top:9px;
+       }
+      .menu-toggle .bar.bar2{
+          /* Middle bar */
+          top:17px;
+       }
+      .menu-toggle .bar.bar3{
+          /* Bottom bar */
+          top:25px;
+       }
     /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
