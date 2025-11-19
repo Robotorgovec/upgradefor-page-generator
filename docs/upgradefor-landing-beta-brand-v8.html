@@ -267,6 +267,8 @@ body{ font-family: var(--font-sans); }
       border-radius:2px;
       margin:3px 0;
       transition:transform .3s ease, opacity .3s ease;
+      /* Поворачиваем линии относительно центра, чтобы крестик не выходил за пределы */
+      transform-origin:center;
     }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
@@ -309,13 +311,13 @@ body{ font-family: var(--font-sans); }
     }
     /* Когда меню открыто (по умолчанию) превращаем линии в крестик */
     body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
-      transform:translateY(6px) rotate(45deg);
+      transform:rotate(45deg);
     }
     body:not(.menu-collapsed) .menu-toggle span:nth-child(2){
       opacity:0;
     }
     body:not(.menu-collapsed) .menu-toggle span:nth-child(3){
-      transform:translateY(-6px) rotate(-45deg);
+      transform:rotate(-45deg);
     }
 
     /* Сдвигаем контент вправо, когда меню открыто */
@@ -410,18 +412,8 @@ body{ font-family: var(--font-sans); }
              3) «UPGRADE — публикуйте, объединяйтесь, запускайте пилоты» -->
       </div>
       <div class="hero-art" aria-hidden="true">
-        <svg class="hero-figure" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема сотрудничества и обмена знаниями">
-          <defs><linearGradient id="s1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ec5ff"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
-          <rect x="0" y="0" width="800" height="520" fill="url(#s1)" opacity=".06"/>
-          <g stroke="url(#s1)" stroke-width="2" fill="none" opacity=".8">
-            <circle cx="120" cy="90" r="38"/><circle cx="250" cy="210" r="38"/><circle cx="430" cy="110" r="38"/><circle cx="620" cy="230" r="38"/>
-            <path d="M120 90 C 180 140, 200 160, 250 210"/><path d="M250 210 C 330 170, 370 150, 430 110"/>
-            <path d="M430 110 C 520 160, 560 190, 620 230"/><path d="M120 90 C 160 220, 240 300, 620 230"/>
-          </g>
-          <g fill="#0aa0cc" opacity=".18">
-            <circle cx="160" cy="320" r="8"/><circle cx="210" cy="360" r="6"/><circle cx="560" cy="330" r="10"/>
-          </g>
-        </svg>
+        <!-- Заменили абстрактную иллюстрацию на персонажа из загруженной картинки -->
+        <img class="hero-figure" src="hero-character.png" alt="Персонаж">
       </div>
     </section>
 

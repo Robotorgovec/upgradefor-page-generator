@@ -213,6 +213,8 @@
       border-radius:2px;
       margin:3px 0;
       transition:transform .3s ease, opacity .3s ease;
+      /* линии будут вращаться вокруг центра кнопки, чтобы не выходить за её пределы */
+      transform-origin:center;
     }
     @media (max-width:900px){
       header nav{display:none;}
@@ -254,13 +256,13 @@
     }
     /* Крестик отображается, когда меню открыто */
     body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
-      transform:translateY(6px) rotate(45deg);
+      transform:rotate(45deg);
     }
     body:not(.menu-collapsed) .menu-toggle span:nth-child(2){
       opacity:0;
     }
     body:not(.menu-collapsed) .menu-toggle span:nth-child(3){
-      transform:translateY(-6px) rotate(-45deg);
+      transform:rotate(-45deg);
     }
 
     /* Сдвигаем контент вправо при открытой панели */
