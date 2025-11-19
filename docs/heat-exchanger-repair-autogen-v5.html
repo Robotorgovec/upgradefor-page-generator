@@ -188,14 +188,17 @@
   <!-- Стили для бокового меню и кнопки-бургера -->
   <style id="side-menu-styles">
     .menu-toggle{
+      /* кнопка-бургер: увеличенный размер, светлый фон и лёгкая рамка */
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      width:28px;
-      height:20px;
-      border:none;
-      padding:0;
-      background:transparent;
+      justify-content:center;
+      align-items:center;
+      width:40px;
+      height:40px;
+      padding:6px;
+      border:1px solid var(--line, #e5eaf0);
+      border-radius:6px;
+      background:var(--surface, #ffffff);
       cursor:pointer;
       position:fixed;
       top:16px;
@@ -204,9 +207,12 @@
     }
     .menu-toggle span{
       display:block;
-      height:3px;
-      background:var(--brand);
+      width:20px;
+      height:2px;
+      background:var(--brand, #2563eb);
       border-radius:2px;
+      margin:3px 0;
+      transition:transform .3s ease, opacity .3s ease;
     }
     @media (max-width:900px){
       header nav{display:none;}
@@ -231,6 +237,8 @@
       display:flex;
       flex-direction:column;
       gap:12px;
+      /* отступ сверху, чтобы контент меню начинался чуть ниже кнопки */
+      margin-top:24px;
     }
     .left-menu a{
       color:var(--txt);
@@ -244,14 +252,15 @@
     body.menu-collapsed .left-menu{
       transform:translateX(-240px);
     }
-    body.menu-collapsed .menu-toggle span:nth-child(1){
-      transform:translateY(8px) rotate(45deg);
+    /* Крестик отображается, когда меню открыто */
+    body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
+      transform:translateY(6px) rotate(45deg);
     }
-    body.menu-collapsed .menu-toggle span:nth-child(2){
+    body:not(.menu-collapsed) .menu-toggle span:nth-child(2){
       opacity:0;
     }
-    body.menu-collapsed .menu-toggle span:nth-child(3){
-      transform:translateY(-8px) rotate(-45deg);
+    body:not(.menu-collapsed) .menu-toggle span:nth-child(3){
+      transform:translateY(-6px) rotate(-45deg);
     }
 
     /* Сдвигаем контент вправо при открытой панели */
@@ -269,7 +278,7 @@
     }
   </style>
 </head>
-<body>
+<body class="menu-collapsed">
   <header>
     <div class="container nav">
       <div class="logo">
