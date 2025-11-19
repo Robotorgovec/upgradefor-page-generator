@@ -307,18 +307,26 @@ body{ font-family: var(--font-sans); }
        Position the bars using percentage values and translate to centre them
        exactly within the 36×36 px square, then rotate. This removes the need
        for manual offsets and ensures perfect symmetry. */
-    body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-          width:20px;
-          left:50%;
-          top:50%;
-          transform:translate(-50%, -50%) rotate(45deg);
-       }
-    body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-          width:20px;
-          left:50%;
-          top:50%;
-          transform:translate(-50%, -50%) rotate(-45deg);
-       }
+    /* Hide the burger bars and show the SVG cross when menu is expanded */
+    body:not(.menu-collapsed) .menu-toggle .bar{
+      display:none;
+    }
+    body:not(.menu-collapsed) .menu-toggle .cross-icon{
+      display:block;
+    }
+
+    /* Base styles for the cross icon: centre it and hide by default */
+    .menu-toggle .cross-icon{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:20px;
+      height:20px;
+      color:var(--brand-ink);
+      display:none;
+      pointer-events:none;
+    }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
       header .menu{display:none;}
@@ -438,9 +446,15 @@ body{ font-family: var(--font-sans); }
   <!-- Левое меню: отображается по нажатию на бургер; по умолчанию скрыто -->
   <aside class="left-menu" aria-label="Боковое меню">
     <!-- Переключатель меню размещён внутри боковой панели, как на сайте upgrade4.com -->
-    <button class="menu-toggle" aria-label="Переключить меню">
-        <div class="bar bar1"></div><div class="bar bar2"></div>
-    </button>
+      <button class="menu-toggle" aria-label="Переключить меню">
+          <!-- Two bars for the burger icon -->
+          <div class="bar bar1"></div><div class="bar bar2"></div>
+          <!-- Cross icon drawn as an SVG for perfect centering -->
+          <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+      </button>
     <nav>
        <a href="#status"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Статус</span></a>
        <a href="#goals"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="label">Цели</span></a>

@@ -299,25 +299,29 @@
      body.menu-collapsed .left-menu nav a .label{
        display:none;
      }
-    /* При открытом меню скрываем разделитель и превращаем полоски в крест */
-    body:not(.menu-collapsed) .menu-toggle::before{
-      opacity:0;
-    }
-    /* When the menu is expanded, turn the burger bars into a centered cross.
-       Position the bars at the centre of the button using percentages and translate
-       so the rotated lines remain perfectly centered. */
-    body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-         width:20px;
-         left:50%;
-         top:50%;
-         transform:translate(-50%, -50%) rotate(45deg);
-      }
-    body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-         width:20px;
-         left:50%;
-         top:50%;
-         transform:translate(-50%, -50%) rotate(-45deg);
-      }
+     /* When the menu is opened, hide burger bars and show the SVG cross */
+     body:not(.menu-collapsed) .menu-toggle::before{
+       opacity:0;
+     }
+     body:not(.menu-collapsed) .menu-toggle .bar{
+       display:none;
+     }
+     body:not(.menu-collapsed) .menu-toggle .cross-icon{
+       display:block;
+     }
+
+     /* Base styles for the cross icon: center it and hide by default */
+     .menu-toggle .cross-icon{
+       position:absolute;
+       left:50%;
+       top:50%;
+       transform:translate(-50%,-50%);
+       width:20px;
+       height:20px;
+       color:var(--brand);
+       display:none;
+       pointer-events:none;
+     }
 
      /* Сдвигаем контент вправо при открытой панели, учитываем узкую ширину при свёрнутом меню */
      body:not(.menu-collapsed) header,
@@ -355,7 +359,13 @@
    <aside class="left-menu" aria-label="Боковое меню">
       <!-- Переключатель меню внутри панели -->
       <button class="menu-toggle" aria-label="Переключить меню">
+        <!-- Two bars for the burger icon -->
         <div class="bar bar1"></div><div class="bar bar2"></div>
+        <!-- Cross icon drawn as an SVG for perfect centering -->
+        <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
       </button>
       <nav>
        <a href="#toc"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span><span class="label">Содержание</span></a>
