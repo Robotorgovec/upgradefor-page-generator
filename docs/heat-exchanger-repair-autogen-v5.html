@@ -213,8 +213,8 @@
       position:absolute;
       /* extend the divider to fill the full height of the button */
       /* добавляем равные отступы сверху и снизу, чтобы разделитель не упирался в края */
-      top:6px;
-      bottom:6px;
+      top:4px;
+      bottom:4px;
       /* Position the divider at the centre and use a full-width bar */
       left:18px;
       width:2px;
@@ -227,14 +227,14 @@
       position:absolute;
       left:8px;
        /* slightly longer burger lines for a balanced look */
-       width:12px;
+       width:10px;
       height:2px;
       background:var(--brand);
       border-radius:1px;
       transition:transform .3s ease, width .3s ease, left .3s ease, top .3s ease;
     }
-    .menu-toggle .bar.bar1{ top:12px; }
-    .menu-toggle .bar.bar2{ top:22px; }
+    .menu-toggle .bar.bar1{ top:11px; }
+    .menu-toggle .bar.bar2{ top:23px; }
     @media (max-width:900px){
       header nav{display:none;}
     }
@@ -305,15 +305,16 @@
     }
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
        /* увеличиваем размер и смещаем линии для более симметричного крестика */
-       top:18px;
-       left:8px;
-       width:20px;
+       /* увеличиваем размер и смещаем линии для более симметричного крестика */
+       top:17px;
+       left:9px;
+       width:18px;
       transform:rotate(45deg);
     }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-       top:18px;
-       left:8px;
-       width:20px;
+       top:17px;
+       left:9px;
+       width:18px;
       transform:rotate(-45deg);
     }
 
