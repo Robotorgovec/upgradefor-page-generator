@@ -256,49 +256,55 @@ body{ font-family: var(--font-sans); }
        align-items:center;
        justify-content:center;
        cursor:pointer;
-       overflow:visible;
+       /* hide overflow so cross lines stay within the button */
+       overflow:hidden;
      }
     /* вертикальная линия, делящая кнопку на две половины */
     .menu-toggle::before{
        content:"";
        position:absolute;
-       left:50%;
-       top:4px;
-       bottom:4px;
+       /* position the divider flush with the top and bottom of the button */
+       left:20px;
+       top:0;
+       bottom:0;
        width:2px;
        background:var(--line);
-       border-radius:1px;
+       border-radius:0;
        transition:opacity .3s ease;
      }
     /* полоски (бургер) располагаются в левой половине кнопки */
     .menu-toggle .bar{
        position:absolute;
        left:8px;
-       width:12px;
+       /* make the burger lines slightly shorter for a cleaner look */
+       width:10px;
        height:2px;
        background:var(--brand-ink, #374151);
        border-radius:2px;
        transition:transform .3s ease, opacity .3s ease, width .3s ease;
      }
     .menu-toggle .bar.bar1{
-       top:11px;
+       /* position the top bar a bit higher for better symmetry */
+       top:10px;
      }
     .menu-toggle .bar.bar2{
-       top:19px;
+       /* position the bottom bar a bit lower for better symmetry */
+       top:20px;
      }
     /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-       width:16px;
-       left:12px;
+       /* make the cross lines wider and center them */
+       width:20px;
+       left:10px;
        top:15px;
        transform:rotate(45deg);
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-       width:16px;
-       left:12px;
+       width:20px;
+       left:10px;
        top:15px;
        transform:rotate(-45deg);
      }
