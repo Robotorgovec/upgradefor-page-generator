@@ -303,21 +303,20 @@
     body:not(.menu-collapsed) .menu-toggle::before{
       opacity:0;
     }
+    /* When the menu is expanded, turn the burger bars into a centered cross. */
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-       /* Make the cross perfectly centered within the 36px square */
-       /* Use 20px line length and center it by positioning at 8px from top and left */
-       /* For a 36px square with 2px border, use 18px cross with 9px offset for perfect centering */
-       top:9px;
-       left:9px;
-       width:18px;
-       transform:rotate(45deg);
-    }
+        /* Reduce the cross line length slightly and reposition so the bounding box of the rotated line stays centered within the button. */
+        top:7px;
+        left:7px;
+        width:16px;
+        transform:rotate(45deg);
+     }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-       top:9px;
-       left:9px;
-       width:18px;
-       transform:rotate(-45deg);
-    }
+        top:7px;
+        left:7px;
+        width:16px;
+        transform:rotate(-45deg);
+     }
 
      /* Сдвигаем контент вправо при открытой панели, учитываем узкую ширину при свёрнутом меню */
      body:not(.menu-collapsed) header,

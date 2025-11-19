@@ -302,21 +302,20 @@ body{ font-family: var(--font-sans); }
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
      }
+    /* When the menu is expanded, turn the burger bars into a centered cross. */
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-        /* Cross lines: make the cross perfectly centered within the 36px square */
-        /* Set the length to 20px and position at 8px from top and left ( (36-20)/2 = 8 ) */
-        /* Recalculate based on inner square: 36px button minus 2px border on each side gives 32px interior. A 18px cross leaves 7px padding on each side, plus 2px border = 9px offset. */
-        width:18px;
-        left:9px;
-        top:9px;
-        transform:rotate(45deg);
-     }
+         /* Reduce the cross line length slightly and reposition so the bounding box of the rotated line stays centered within the button. */
+         width:16px;
+         left:7px;
+         top:7px;
+         transform:rotate(45deg);
+      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-        width:18px;
-        left:9px;
-        top:9px;
-        transform:rotate(-45deg);
-     }
+         width:16px;
+         left:7px;
+         top:7px;
+         transform:rotate(-45deg);
+      }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
       header .menu{display:none;}
