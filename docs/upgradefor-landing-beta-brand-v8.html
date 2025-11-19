@@ -303,18 +303,17 @@ body{ font-family: var(--font-sans); }
        opacity:0;
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-        /* Cross lines: slightly narrower and centered within the button */
-        /* увеличиваем ширину и немного смещаем, чтобы крест был симметричным */
-        /* делаем крестик чуть длиннее и центрируем внутри кнопки */
-        width:18px;
-        left:9px;
-        top:17px;
+        /* Cross lines: make the cross perfectly centered within the 36px square */
+        /* Set the length to 20px and position at 8px from top and left ( (36-20)/2 = 8 ) */
+        width:20px;
+        left:8px;
+        top:8px;
         transform:rotate(45deg);
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-        width:18px;
-        left:9px;
-        top:17px;
+        width:20px;
+        left:8px;
+        top:8px;
         transform:rotate(-45deg);
      }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
