@@ -188,7 +188,7 @@
   <!-- Стили для бокового меню и кнопки-бургера -->
   <style id="side-menu-styles">
     .menu-toggle{
-      display:none;
+      display:flex;
       flex-direction:column;
       justify-content:space-between;
       width:28px;
@@ -197,6 +197,10 @@
       padding:0;
       background:transparent;
       cursor:pointer;
+      position:fixed;
+      top:16px;
+      left:16px;
+      z-index:1100;
     }
     .menu-toggle span{
       display:block;
@@ -206,17 +210,16 @@
     }
     @media (max-width:900px){
       header nav{display:none;}
-      .menu-toggle{display:flex;}
     }
     .left-menu{
       position:fixed;
       top:0;
-      left:-240px;
+      left:0;
       width:240px;
       height:100%;
-      background:var(--bg);
-      border-right:1px solid var(--line);
-      box-shadow:0 10px 24px rgba(0,0,0,.08);
+      background:var(--surface, #ffffff);
+      border-right:1px solid var(--line, #e5eaf0);
+      box-shadow:0 10px 24px rgba(0,0,0,.05);
       padding:20px;
       display:flex;
       flex-direction:column;
@@ -237,8 +240,32 @@
     .left-menu a:hover{
       color:var(--brand-2);
     }
-    body.menu-open .left-menu{
-      transform:translateX(240px);
+    /* Сворачиваем боковую панель */
+    body.menu-collapsed .left-menu{
+      transform:translateX(-240px);
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(1){
+      transform:translateY(8px) rotate(45deg);
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(2){
+      opacity:0;
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(3){
+      transform:translateY(-8px) rotate(-45deg);
+    }
+
+    /* Сдвигаем контент вправо при открытой панели */
+    body:not(.menu-collapsed) header,
+    body:not(.menu-collapsed) main,
+    body:not(.menu-collapsed) footer{
+      margin-left:240px;
+      transition:margin-left .25s ease-out;
+    }
+    body.menu-collapsed header,
+    body.menu-collapsed main,
+    body.menu-collapsed footer{
+      margin-left:0;
+      transition:margin-left .25s ease-out;
     }
   </style>
 </head>
@@ -995,20 +1022,20 @@
   })();
 </script>
 
-  <!-- Скрипт для переключения бокового меню -->
+  <!-- Скрипт для переключения бокового меню (сворачивает/разворачивает) -->
   <script>
     (function(){
       var toggle = document.querySelector('.menu-toggle');
       var body = document.body;
       if(toggle){
         toggle.addEventListener('click', function(){
-          body.classList.toggle('menu-open');
+          body.classList.toggle('menu-collapsed');
         });
       }
       var links = document.querySelectorAll('.left-menu a');
       links.forEach(function(link){
         link.addEventListener('click', function(){
-          body.classList.remove('menu-open');
+          body.classList.add('menu-collapsed');
         });
       });
     })();

@@ -242,7 +242,7 @@ body{ font-family: var(--font-sans); }
   <style id="side-menu-styles">
     /* Бургер (иконка) */
     .menu-toggle{
-      display:none;
+      display:flex;
       flex-direction:column;
       justify-content:space-between;
       width:28px;
@@ -251,6 +251,10 @@ body{ font-family: var(--font-sans); }
       padding:0;
       background:transparent;
       cursor:pointer;
+      position:fixed;
+      top:16px;
+      left:16px;
+      z-index:1100;
     }
     .menu-toggle span{
       display:block;
@@ -258,16 +262,15 @@ body{ font-family: var(--font-sans); }
       background:var(--brand-blue);
       border-radius:2px;
     }
-    /* Скрываем горизонтальное меню на мобильных, показываем бургер */
+    /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
       header .menu{display:none;}
-      .menu-toggle{display:flex;}
     }
     /* Боковое меню */
     .left-menu{
       position:fixed;
       top:0;
-      left:-260px;
+      left:0;
       width:260px;
       height:100%;
       background:var(--surface);
@@ -292,8 +295,34 @@ body{ font-family: var(--font-sans); }
     .left-menu a:hover{
       color:var(--brand-blue);
     }
-    body.menu-open .left-menu{
-      transform:translateX(260px);
+    /* При свёрнутом меню сдвигаем панель влево и превращаем бургeр в крестик */
+    body.menu-collapsed .left-menu{
+      transform:translateX(-260px);
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(1){
+      transform:translateY(8px) rotate(45deg);
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(2){
+      opacity:0;
+    }
+    body.menu-collapsed .menu-toggle span:nth-child(3){
+      transform:translateY(-8px) rotate(-45deg);
+    }
+
+    /* Сдвигаем контент вправо, когда меню открыто */
+    body:not(.menu-collapsed) header,
+    body:not(.menu-collapsed) .phase,
+    body:not(.menu-collapsed) main,
+    body:not(.menu-collapsed) footer{
+      margin-left:260px;
+      transition:margin-left .25s ease-out;
+    }
+    body.menu-collapsed header,
+    body.menu-collapsed .phase,
+    body.menu-collapsed main,
+    body.menu-collapsed footer{
+      margin-left:0;
+      transition:margin-left .25s ease-out;
     }
   </style>
 
@@ -642,20 +671,20 @@ body{ font-family: var(--font-sans); }
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
-  <!-- Скрипт для переключения бокового меню -->
+  <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) -->
   <script>
     (function(){
       var toggle = document.querySelector('.menu-toggle');
       var body = document.body;
       if(toggle){
         toggle.addEventListener('click', function(){
-          body.classList.toggle('menu-open');
+          body.classList.toggle('menu-collapsed');
         });
       }
       var sideLinks = document.querySelectorAll('.left-menu a');
       sideLinks.forEach(function(link){
         link.addEventListener('click', function(){
-          body.classList.remove('menu-open');
+          body.classList.add('menu-collapsed');
         });
       });
     })();
