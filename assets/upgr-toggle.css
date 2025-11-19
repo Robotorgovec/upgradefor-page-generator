@@ -1,13 +1,13 @@
 :root{
   --upgr-brand: #0ec5ff;
   --upgr-ink: #0f172a;
-  --upgr-toggle-size: 54px;
-  --upgr-toggle-radius: 12px;
-  --upgr-toggle-border: 3px;
-  --upgr-stroke: 3px;
-  --upgr-h-gap: 4px;
-  --upgr-v-gap: 6px;
-  --upgr-v-width: 3px;
+  --upgr-toggle-size: 38px;
+  --upgr-toggle-radius: 8px;
+  --upgr-toggle-border:2px;
+  --upgr-stroke:2px;
+  --upgr-h-gap: 3px
+  --upgr-v-gap: 4px;
+  --upgr-v-width:2px;
   --upgr-v-height: 76%;
   --upgr-nudge-y: -1px;
 }
