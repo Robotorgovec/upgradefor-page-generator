@@ -244,12 +244,14 @@ body{ font-family: var(--font-sans); }
     .menu-toggle{
        /* фиксированная кнопка в левом верхнем углу, остаётся на месте при открытии/закрытии */
        position:fixed;
-       top:16px;
-       left:16px;
+       /* чуть меньше отступ сверху/слева, чтобы кнопка не касалась правого края узкой панели */
+       top:12px;
+       left:12px;
        z-index:1100;
-       width:40px;
-       height:32px;
-       border:2px solid var(--line);
+       /* Make the burger button a neat square and use brand colour for the border */
+       width:36px;
+       height:36px;
+        border:2px solid var(--brand-blue);
        border-radius:8px;
        background:var(--surface);
        display:flex;
@@ -264,11 +266,13 @@ body{ font-family: var(--font-sans); }
        content:"";
        position:absolute;
        /* position the divider flush with the top and bottom of the button */
-       left:20px;
-       top:0;
-       bottom:0;
-       width:2px;
-       background:var(--line);
+        /* Position the divider exactly in the middle and use the brand colour */
+        left:18px;
+        /* добавляем небольшие отступы сверху и снизу для равномерности */
+        top:6px;
+        bottom:6px;
+        width:2px;
+        background:var(--brand-blue);
        border-radius:0;
        transition:opacity .3s ease;
      }
@@ -276,37 +280,39 @@ body{ font-family: var(--font-sans); }
     .menu-toggle .bar{
        position:absolute;
        left:8px;
-       /* make the burger lines slightly shorter for a cleaner look */
-       width:10px;
-       height:2px;
-       background:var(--brand-ink, #374151);
-       border-radius:2px;
-       transition:transform .3s ease, opacity .3s ease, width .3s ease;
+        /* Shorter lines and brand‑ink colour for the burger */
+        width:12px;
+        height:2px;
+        background:var(--brand-ink);
+        border-radius:2px;
+        transition:transform .3s ease, opacity .3s ease, width .3s ease;
      }
     .menu-toggle .bar.bar1{
-       /* position the top bar a bit higher for better symmetry */
-       top:10px;
+        /* Place the top bar to leave equal vertical spacing */
+        /* выравниваем полоски по центру кнопки */
+        top:12px;
      }
     .menu-toggle .bar.bar2{
-       /* position the bottom bar a bit lower for better symmetry */
-       top:20px;
+        /* Place the bottom bar to leave equal vertical spacing */
+        top:22px;
      }
     /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-       /* make the cross lines wider and center them */
-       width:20px;
-       left:10px;
-       top:15px;
-       transform:rotate(45deg);
+        /* Cross lines: slightly narrower and centered within the button */
+        /* увеличиваем ширину и немного смещаем, чтобы крест был симметричным */
+        width:20px;
+        left:8px;
+        top:18px;
+        transform:rotate(45deg);
      }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-       width:20px;
-       left:10px;
-       top:15px;
-       transform:rotate(-45deg);
+        width:20px;
+        left:8px;
+        top:18px;
+        transform:rotate(-45deg);
      }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
