@@ -208,20 +208,19 @@
       overflow:hidden;
     }
     /* вертикальная линия, разделяющая кнопку на две части */
-    .menu-toggle::before{
-      content:"";
-      position:absolute;
-      /* extend the divider to fill the full height of the button */
-      /* добавляем равные отступы сверху и снизу, чтобы разделитель не упирался в края */
-      top:4px;
-      bottom:4px;
-      /* Position the divider at the centre and use a full-width bar */
-      left:18px;
-      width:2px;
-      border:none;
-      background:var(--brand);
-      transition:opacity .3s ease;
-    }
+     .menu-toggle::before{
+       content:"";
+       position:absolute;
+       /* move the divider slightly to the right to leave a small gap between the burger lines and the blue line */
+       left:20px;
+       /* add small offsets top and bottom so the divider doesn't touch the edges */
+       top:4px;
+       bottom:4px;
+       width:2px;
+       border:none;
+       background:var(--brand);
+       transition:opacity .3s ease;
+     }
     /* полоски-бургера */
     .menu-toggle .bar{
       position:absolute;
@@ -233,8 +232,9 @@
       border-radius:1px;
       transition:transform .3s ease, width .3s ease, left .3s ease, top .3s ease;
     }
-    .menu-toggle .bar.bar1{ top:11px; }
-    .menu-toggle .bar.bar2{ top:23px; }
+     .menu-toggle .bar.bar1{ top:10px; }
+     .menu-toggle .bar.bar2{ top:18px; }
+     .menu-toggle .bar.bar3{ top:26px; }
     @media (max-width:900px){
       header nav{display:none;}
     }
@@ -359,8 +359,8 @@
    <aside class="left-menu" aria-label="Боковое меню">
       <!-- Переключатель меню внутри панели -->
       <button class="menu-toggle" aria-label="Переключить меню">
-        <!-- Two bars for the burger icon -->
-        <div class="bar bar1"></div><div class="bar bar2"></div>
+        <!-- Three bars for the burger icon (top, middle, bottom) -->
+        <div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div>
         <!-- Cross icon drawn as an SVG for perfect centering -->
         <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

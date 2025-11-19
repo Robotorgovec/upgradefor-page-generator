@@ -263,21 +263,20 @@ body{ font-family: var(--font-sans); }
        overflow:hidden;
      }
     /* вертикальная линия, делящая кнопку на две половины */
-    .menu-toggle::before{
-       content:"";
-       position:absolute;
-       /* position the divider flush with the top and bottom of the button */
-        /* Position the divider exactly in the middle and use the brand colour */
-        left:18px;
-        /* добавляем небольшие отступы сверху и снизу для равномерности */
+     .menu-toggle::before{
+        content:"";
+        position:absolute;
+        /* move the divider slightly to the right to leave a small gap between the black bars and the blue line */
+        left:20px;
+        /* add small offsets top and bottom so the divider doesn't touch the edges */
         top:4px;
         bottom:4px;
         width:2px;
-        /* разделитель также фирменного голубого цвета */
+        /* use the brand cyan colour for the divider */
         background:var(--brand-cyan);
-       border-radius:0;
-       transition:opacity .3s ease;
-     }
+        border-radius:0;
+        transition:opacity .3s ease;
+      }
     /* полоски (бургер) располагаются в левой половине кнопки */
     .menu-toggle .bar{
        position:absolute;
@@ -289,15 +288,18 @@ body{ font-family: var(--font-sans); }
         border-radius:2px;
         transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s ease, top .3s ease;
      }
-    .menu-toggle .bar.bar1{
-        /* Place the top bar to leave equal vertical spacing */
-        /* выравниваем полоски по центру кнопки */
-        top:11px;
-     }
-    .menu-toggle .bar.bar2{
-        /* Place the bottom bar to leave equal vertical spacing */
-        top:23px;
-     }
+     .menu-toggle .bar.bar1{
+         /* Top bar position with equal spacing for three bars */
+         top:10px;
+      }
+     .menu-toggle .bar.bar2{
+         /* Middle bar */
+         top:18px;
+      }
+     .menu-toggle .bar.bar3{
+         /* Bottom bar */
+         top:26px;
+      }
     /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
@@ -447,8 +449,8 @@ body{ font-family: var(--font-sans); }
   <aside class="left-menu" aria-label="Боковое меню">
     <!-- Переключатель меню размещён внутри боковой панели, как на сайте upgrade4.com -->
       <button class="menu-toggle" aria-label="Переключить меню">
-          <!-- Two bars for the burger icon -->
-          <div class="bar bar1"></div><div class="bar bar2"></div>
+          <!-- Three bars for the burger icon -->
+          <div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div>
           <!-- Cross icon drawn as an SVG for perfect centering -->
           <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
