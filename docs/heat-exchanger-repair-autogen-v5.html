@@ -188,35 +188,46 @@
   <!-- Стили для бокового меню и кнопки-бургера -->
   <style id="side-menu-styles">
     .menu-toggle{
-      /* кнопка-бургер: увеличенный размер, светлый фон и лёгкая рамка */
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      width:40px;
-      height:40px;
-      padding:6px;
-      border:1px solid var(--line, #e5eaf0);
-      border-radius:6px;
-      background:var(--surface, #ffffff);
-      cursor:pointer;
+      /* фиксированная кнопка сворачивания/разворачивания в левом верхнем углу */
       position:fixed;
       top:16px;
       left:16px;
       z-index:1100;
-       overflow:hidden; /* ensure cross lines stay within button bounds */
+      width:40px;
+      height:32px;
+      padding:0;
+      border:2px solid var(--brand);
+      border-radius:8px;
+      background:var(--surface);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
     }
-    .menu-toggle span{
-      display:block;
-      width:20px;
+    /* вертикальная линия, разделяющая кнопку на две части */
+    .menu-toggle::before{
+      content:"";
+      position:absolute;
+      top:4px;
+      bottom:4px;
+      left:20px;
+      width:0;
+      border-left:2px solid var(--brand);
+      transition:opacity .3s ease;
+    }
+    /* полоски-бургера */
+    .menu-toggle .bar{
+      position:absolute;
+      left:8px;
+      width:12px;
       height:2px;
-      background:var(--brand, #2563eb);
-      border-radius:2px;
-      margin:3px 0;
-      transition:transform .3s ease, opacity .3s ease;
-      /* линии будут вращаться вокруг центра кнопки, чтобы не выходить за её пределы */
-      transform-origin:center;
+      background:var(--brand);
+      border-radius:1px;
+      transition:transform .3s ease, width .3s ease, left .3s ease, top .3s ease;
     }
+    .menu-toggle .bar.bar1{ top:11px; }
+    .menu-toggle .bar.bar2{ top:19px; }
     @media (max-width:900px){
       header nav{display:none;}
     }
@@ -237,12 +248,12 @@
        transition:width .25s ease-out;
        z-index:1000;
      }
-     .left-menu nav{
+      .left-menu nav{
        display:flex;
        flex-direction:column;
        gap:8px;
-       /* отступ сверху, чтобы контент меню начинался чуть ниже кнопки */
-       margin-top:32px;
+        /* отступ сверху, чтобы контент меню начинался ниже кнопки-бургера */
+        margin-top:48px;
      }
      .left-menu nav a{
        display:flex;
@@ -281,14 +292,20 @@
      body.menu-collapsed .left-menu nav a .label{
        display:none;
      }
-    /* Крестик отображается, когда меню открыто */
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
-      transform:rotate(45deg);
-    }
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(2){
+    /* При открытом меню скрываем разделитель и превращаем полоски в крест */
+    body:not(.menu-collapsed) .menu-toggle::before{
       opacity:0;
     }
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(3){
+    body:not(.menu-collapsed) .menu-toggle .bar.bar1{
+      top:15px;
+      left:12px;
+      width:16px;
+      transform:rotate(45deg);
+    }
+    body:not(.menu-collapsed) .menu-toggle .bar.bar2{
+      top:15px;
+      left:12px;
+      width:16px;
       transform:rotate(-45deg);
     }
 
@@ -320,15 +337,17 @@
         <a href="#request" class="badge">Заявка</a>
         <a href="#wiki" class="badge">Вики‑раздел</a>
       </nav>
-      <button class="menu-toggle" aria-label="Показать меню">
-        <span></span><span></span><span></span>
-      </button>
+       <!-- Кнопка-бургер перенесена внутрь бокового меню; здесь не нужна -->
     </div>
   </header>
 
-  <!-- Левое меню: отображается по нажатию на бургер -->
-  <aside class="left-menu" aria-label="Боковое меню">
-     <nav>
+   <!-- Левое меню: отображается по нажатию на бургер -->
+   <aside class="left-menu" aria-label="Боковое меню">
+      <!-- Переключатель меню внутри панели -->
+      <button class="menu-toggle" aria-label="Переключить меню">
+        <div class="bar bar1"></div><div class="bar bar2"></div>
+      </button>
+      <nav>
        <a href="#toc"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span><span class="label">Содержание</span></a>
        <a href="#prices"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l6 6v9a2 2 0 0 1-2 2H6l-4-4V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="9" r="1.5" fill="currentColor"/></svg></span><span class="label">Прайс</span></a>
        <a href="#request"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 2h6v2h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h4V2z" stroke="currentColor" stroke-width="2"/><path d="M9 10h6M9 14h6M9 18h4" stroke="currentColor" stroke-width="2"/></svg></span><span class="label">Заявка</span></a>

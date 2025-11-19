@@ -242,35 +242,66 @@ body{ font-family: var(--font-sans); }
   <style id="side-menu-styles">
     /* Бургер (иконка) */
     .menu-toggle{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      /* немного крупнее и удобнее для нажатия */
-      width:40px;
-      height:40px;
-      padding:6px;
-      border:1px solid var(--line);
-      border-radius:6px;
-      background:var(--surface);
-      cursor:pointer;
-      position:fixed;
-      top:16px;
-      left:16px;
-      z-index:1100;
-      overflow:hidden; /* ensure cross lines stay inside button */
-    }
-    .menu-toggle span{
-      display:block;
-      width:20px;
-      height:2px;
-      background:var(--brand-ink, #374151);
-      border-radius:2px;
-      margin:3px 0;
-      transition:transform .3s ease, opacity .3s ease;
-      /* Поворачиваем линии относительно центра, чтобы крестик не выходил за пределы */
-      transform-origin:center;
-    }
+       /* фиксированная кнопка в левом верхнем углу, остаётся на месте при открытии/закрытии */
+       position:fixed;
+       top:16px;
+       left:16px;
+       z-index:1100;
+       width:40px;
+       height:32px;
+       border:2px solid var(--line);
+       border-radius:8px;
+       background:var(--surface);
+       display:flex;
+       align-items:center;
+       justify-content:center;
+       cursor:pointer;
+       overflow:visible;
+     }
+    /* вертикальная линия, делящая кнопку на две половины */
+    .menu-toggle::before{
+       content:"";
+       position:absolute;
+       left:50%;
+       top:4px;
+       bottom:4px;
+       width:2px;
+       background:var(--line);
+       border-radius:1px;
+       transition:opacity .3s ease;
+     }
+    /* полоски (бургер) располагаются в левой половине кнопки */
+    .menu-toggle .bar{
+       position:absolute;
+       left:8px;
+       width:12px;
+       height:2px;
+       background:var(--brand-ink, #374151);
+       border-radius:2px;
+       transition:transform .3s ease, opacity .3s ease, width .3s ease;
+     }
+    .menu-toggle .bar.bar1{
+       top:11px;
+     }
+    .menu-toggle .bar.bar2{
+       top:19px;
+     }
+    /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
+    body:not(.menu-collapsed) .menu-toggle::before{
+       opacity:0;
+     }
+    body:not(.menu-collapsed) .menu-toggle .bar.bar1{
+       width:16px;
+       left:12px;
+       top:15px;
+       transform:rotate(45deg);
+     }
+    body:not(.menu-collapsed) .menu-toggle .bar.bar2{
+       width:16px;
+       left:12px;
+       top:15px;
+       transform:rotate(-45deg);
+     }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
       header .menu{display:none;}
@@ -294,12 +325,13 @@ body{ font-family: var(--font-sans); }
       z-index:1000;
     }
     .left-menu nav{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      /* отступ сверху, чтобы навигационные ссылки не прилипали к верхнему краю */
-      margin-top:32px;
-    }
+       display:flex;
+       flex-direction:column;
+       gap:8px;
+       /* отступ сверху, чтобы навигационные ссылки не прилипали к верхнему краю.
+          добавляем дополнительное пространство под переключатель меню */
+       margin-top:48px;
+     }
     .left-menu nav a{
       display:flex;
       align-items:center;
@@ -336,16 +368,7 @@ body{ font-family: var(--font-sans); }
     body.menu-collapsed .left-menu nav a .label{
       display:none;
     }
-    /* Когда меню открыто (по умолчанию) превращаем линии в крестик */
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
-      transform:rotate(45deg);
-    }
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(2){
-      opacity:0;
-    }
-    body:not(.menu-collapsed) .menu-toggle span:nth-child(3){
-      transform:rotate(-45deg);
-    }
+    /* убираем старые правила превращения линий в крестик, так как используется новая реализация кнопки */
 
     /* Сдвигаем контент влево/вправо в зависимости от ширины меню */
     body:not(.menu-collapsed) header,
@@ -388,10 +411,7 @@ body{ font-family: var(--font-sans); }
         <a href="#faq">FAQ</a>
         <a href="#contacts">Контакты</a>
       </nav>
-      <!-- Кнопка-бургер для отображения левого меню на мобильных -->
-      <button class="menu-toggle" aria-label="Показать меню">
-        <span></span><span></span><span></span>
-      </button>
+      <!-- Кнопка-бургер больше не находится в хедере. Перенесена внутрь бокового меню ниже. -->
       <div class="grow"></div>
       <a class="btn btn--ghost" href="#feedback" rel="nofollow">Обратная связь</a>
       <a class="btn" href="#join" rel="nofollow" style="background:linear-gradient(#14d5ff,var(--primary));border-color:#9be7ff">Стать ранним участником</a>
@@ -400,6 +420,10 @@ body{ font-family: var(--font-sans); }
 
   <!-- Левое меню: отображается по нажатию на бургер; по умолчанию скрыто -->
   <aside class="left-menu" aria-label="Боковое меню">
+    <!-- Переключатель меню размещён внутри боковой панели, как на сайте upgrade4.com -->
+    <button class="menu-toggle" aria-label="Переключить меню">
+        <div class="bar bar1"></div><div class="bar bar2"></div>
+    </button>
     <nav>
        <a href="#status"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Статус</span></a>
        <a href="#goals"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="label">Цели</span></a>
