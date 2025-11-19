@@ -204,6 +204,7 @@
       top:16px;
       left:16px;
       z-index:1100;
+       overflow:hidden; /* ensure cross lines stay within button bounds */
     }
     .menu-toggle span{
       display:block;
@@ -219,41 +220,67 @@
     @media (max-width:900px){
       header nav{display:none;}
     }
-    .left-menu{
-      position:fixed;
-      top:0;
-      left:0;
-      width:240px;
-      height:100%;
-      background:var(--surface, #ffffff);
-      border-right:1px solid var(--line, #e5eaf0);
-      box-shadow:0 10px 24px rgba(0,0,0,.05);
-      padding:20px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      transition:transform .25s ease-out;
-      z-index:1000;
-    }
-    .left-menu nav{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      /* отступ сверху, чтобы контент меню начинался чуть ниже кнопки */
-      margin-top:24px;
-    }
-    .left-menu a{
-      color:var(--txt);
-      font-weight:600;
-      text-decoration:none;
-    }
-    .left-menu a:hover{
-      color:var(--brand-2);
-    }
-    /* Сворачиваем боковую панель */
-    body.menu-collapsed .left-menu{
-      transform:translateX(-240px);
-    }
+     .left-menu{
+       position:fixed;
+       top:0;
+       left:0;
+       width:240px;
+       height:100%;
+       background:var(--surface, #ffffff);
+       border-right:1px solid var(--line, #e5eaf0);
+       box-shadow:0 10px 24px rgba(0,0,0,.05);
+       padding:20px;
+       display:flex;
+       flex-direction:column;
+       gap:12px;
+       /* use width for collapsing rather than translateX */
+       transition:width .25s ease-out;
+       z-index:1000;
+     }
+     .left-menu nav{
+       display:flex;
+       flex-direction:column;
+       gap:8px;
+       /* отступ сверху, чтобы контент меню начинался чуть ниже кнопки */
+       margin-top:32px;
+     }
+     .left-menu nav a{
+       display:flex;
+       align-items:center;
+       gap:12px;
+       padding:8px 12px;
+       border-radius:8px;
+       color:var(--txt);
+       font-weight:600;
+       text-decoration:none;
+       transition:background .15s ease,color .15s ease;
+     }
+     .left-menu nav a:hover{
+       color:var(--brand-2);
+       background:color-mix(in srgb, var(--brand) 10%, transparent);
+     }
+     .left-menu nav a .icon{
+       width:20px;
+       height:20px;
+       display:inline-flex;
+       align-items:center;
+       justify-content:center;
+       flex-shrink:0;
+     }
+     .left-menu nav a .label{
+       flex:1;
+       white-space:nowrap;
+     }
+     /* Сворачиваем боковую панель до узкой ширины */
+     body.menu-collapsed .left-menu{
+       width:56px;
+     }
+     body.menu-collapsed .left-menu nav a{
+       justify-content:center;
+     }
+     body.menu-collapsed .left-menu nav a .label{
+       display:none;
+     }
     /* Крестик отображается, когда меню открыто */
     body:not(.menu-collapsed) .menu-toggle span:nth-child(1){
       transform:rotate(45deg);
@@ -265,19 +292,19 @@
       transform:rotate(-45deg);
     }
 
-    /* Сдвигаем контент вправо при открытой панели */
-    body:not(.menu-collapsed) header,
-    body:not(.menu-collapsed) main,
-    body:not(.menu-collapsed) footer{
-      margin-left:240px;
-      transition:margin-left .25s ease-out;
-    }
-    body.menu-collapsed header,
-    body.menu-collapsed main,
-    body.menu-collapsed footer{
-      margin-left:0;
-      transition:margin-left .25s ease-out;
-    }
+     /* Сдвигаем контент вправо при открытой панели, учитываем узкую ширину при свёрнутом меню */
+     body:not(.menu-collapsed) header,
+     body:not(.menu-collapsed) main,
+     body:not(.menu-collapsed) footer{
+       margin-left:240px;
+       transition:margin-left .25s ease-out;
+     }
+     body.menu-collapsed header,
+     body.menu-collapsed main,
+     body.menu-collapsed footer{
+       margin-left:56px;
+       transition:margin-left .25s ease-out;
+     }
   </style>
 </head>
 <body class="menu-collapsed">
@@ -301,12 +328,12 @@
 
   <!-- Левое меню: отображается по нажатию на бургер -->
   <aside class="left-menu" aria-label="Боковое меню">
-    <nav>
-      <a href="#toc">Содержание</a>
-      <a href="#prices">Прайс</a>
-      <a href="#request">Заявка</a>
-      <a href="#wiki">Вики‑раздел</a>
-    </nav>
+     <nav>
+       <a href="#toc"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg></span><span class="label">Содержание</span></a>
+       <a href="#prices"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l6 6v9a2 2 0 0 1-2 2H6l-4-4V5a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="9" r="1.5" fill="currentColor"/></svg></span><span class="label">Прайс</span></a>
+       <a href="#request"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 2h6v2h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h4V2z" stroke="currentColor" stroke-width="2"/><path d="M9 10h6M9 14h6M9 18h4" stroke="currentColor" stroke-width="2"/></svg></span><span class="label">Заявка</span></a>
+       <a href="#wiki"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4V4z" stroke="currentColor" stroke-width="2"/><path d="M14 4h6v16h-6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/></svg></span><span class="label">Вики‑раздел</span></a>
+     </nav>
   </aside>
 
   <main>
