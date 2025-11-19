@@ -303,19 +303,22 @@ body{ font-family: var(--font-sans); }
        opacity:0;
      }
     /* When the menu is expanded, turn the burger bars into a centered cross. */
+    /* When the menu is expanded, turn the burger bars into a centered cross.
+       Position the bars using percentage values and translate to centre them
+       exactly within the 36×36 px square, then rotate. This removes the need
+       for manual offsets and ensures perfect symmetry. */
     body:not(.menu-collapsed) .menu-toggle .bar.bar1{
-         /* Reduce the cross line length slightly and reposition so the bounding box of the rotated line stays centered within the button. */
-         width:16px;
-         left:7px;
-         top:7px;
-         transform:rotate(45deg);
-      }
+          width:20px;
+          left:50%;
+          top:50%;
+          transform:translate(-50%, -50%) rotate(45deg);
+       }
     body:not(.menu-collapsed) .menu-toggle .bar.bar2{
-         width:16px;
-         left:7px;
-         top:7px;
-         transform:rotate(-45deg);
-      }
+          width:20px;
+          left:50%;
+          top:50%;
+          transform:translate(-50%, -50%) rotate(-45deg);
+       }
     /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
     @media (max-width:900px){
       header .menu{display:none;}
