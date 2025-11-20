@@ -1,0 +1,63 @@
+/* bb-toggle.css — плавающая кнопка сворачивания/разворачивания бокового меню */
+
+.bb-toggle-panel {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: 40px;
+  height: 40px;
+  background: #0ec5ff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+.bb-toggle-panel .bb-icon-l {
+  position: relative;
+  width: 60%;
+  height: 60%;
+}
+
+/* две белые полоски, которые превращаются в крестик при открытом меню */
+.bb-toggle-panel .bb-icon-l::before,
+.bb-toggle-panel .bb-icon-l::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+  left: 0;
+  transform-origin: center;
+  transition: transform .2s ease;
+}
+
+.bb-toggle-panel .bb-icon-l::before { top: 30%; }
+.bb-toggle-panel .bb-icon-l::after  { top: 60%; }
+
+body.upgr-menu-open .bb-toggle-panel .bb-icon-l::before {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+
+body.upgr-menu-open .bb-toggle-panel .bb-icon-l::after {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+/* текст для screen reader, визуально скрываем */
+.screen-reader-text {
+  position: absolute;
+  left: -9999px;
+}
+
+/* фон‑подложка под выезжающим меню */
+.upgr-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9000;
+}
+
+body.upgr-menu-open .upgr-backdrop { display: block; }
