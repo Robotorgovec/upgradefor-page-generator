@@ -1,8 +1,11 @@
-name: Deploy UpgradeFor Pages
+name: Deploy UpgradeFor Templates
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "templates/**"
+      - ".github/workflows/github-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,10 +19,10 @@ concurrency:
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,10 +30,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload static site (FROM /templates)
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: ./docs
+          path: ./templates
 
       - name: Deploy to GitHub Pages
         id: deployment
