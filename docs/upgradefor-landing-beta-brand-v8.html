@@ -61,13 +61,34 @@
     .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:.5rem .75rem;border-radius:8px;z-index:1000}
     :focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
-    /* Header — логотип/хедер не трогаем, только слегка полируем */
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);border-bottom:1px solid var(--line);backdrop-filter:saturate(160%) blur(10px)}
-    .nav{display:flex;align-items:center;gap:18px;padding:12px 0}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.85);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(160%) blur(10px);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
     .brand svg{width:28px;height:28px}
-    .menu{display:flex;gap:16px;align-items:center}
     .grow{flex:1}
+
+    .auth-buttons{
+      display:flex;
+      align-items:center;
+      gap:var(--space-1);
+    }
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -242,16 +263,12 @@ body{ font-family: var(--font-sans); }
   <style id="side-menu-styles">
     /* Бургер (иконка) */
     .menu-toggle{
-       /* фиксированная кнопка в левом верхнем углу, остаётся на месте при открытии/закрытии */
        position:fixed;
-       /* чуть меньше отступ сверху/слева, чтобы кнопка не касалась правого края узкой панели */
        top:12px;
        left:12px;
        z-index:1100;
-       /* Make the burger button a neat square and use brand colour for the border */
-       width:26px
-       height:26px
-       /* используем фирменный голубой цвет для рамки */
+       width:26px;
+       height:26px;
        border:2px solid var(--brand-cyan);
        border-radius:8px;
        background:var(--surface);
@@ -259,57 +276,36 @@ body{ font-family: var(--font-sans); }
        align-items:center;
        justify-content:center;
        cursor:pointer;
-       /* hide overflow so cross lines stay within the button */
        overflow:hidden;
      }
-    /* вертикальная линия, делящая кнопку на две половины */
      .menu-toggle::before{
         content:"";
         position:absolute;
-        /* move the divider slightly to the right to leave a small gap between the black bars and the blue line */
         left:20px;
-        /* add small offsets top and bottom so the divider doesn't touch the edges */
         top:4px;
         bottom:4px;
         width:2px;
-        /* use the brand cyan colour for the divider */
         background:var(--brand-cyan);
         border-radius:0;
         transition:opacity .3s ease;
       }
-    /* полоски (бургер) располагаются в левой половине кнопки */
+
     .menu-toggle .bar{
        position:absolute;
        left:8px;
-        /* Shorter lines and brand‑ink colour for the burger */
-        width:10px;
-        height:2px;
-        background:var(--brand-ink);
-        border-radius:2px;
-        transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s ease, top .3s ease;
+       width:10px;
+       height:2px;
+       background:var(--brand-ink);
+       border-radius:2px;
+       transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s ease, top .3s ease;
      }
-     .menu-toggle .bar.bar1{
-          /* Top bar: use symmetric spacing (8px between bars, 9px padding top/bottom) */
-          top:9px;
-       }
-      .menu-toggle .bar.bar2{
-          /* Middle bar */
-          top:17px;
-       }
-      .menu-toggle .bar.bar3{
-          /* Bottom bar */
-          top:25px;
-       }
-    /* при развёрнутом меню полоски превращаются в крестик, разделительная полоса исчезает */
+     .menu-toggle .bar.bar1{ top:9px; }
+     .menu-toggle .bar.bar2{ top:17px; }
+     .menu-toggle .bar.bar3{ top:25px; }
+
     body:not(.menu-collapsed) .menu-toggle::before{
        opacity:0;
      }
-    /* When the menu is expanded, turn the burger bars into a centered cross. */
-    /* When the menu is expanded, turn the burger bars into a centered cross.
-       Position the bars using percentage values and translate to centre them
-       exactly within the 36×36 px square, then rotate. This removes the need
-       for manual offsets and ensures perfect symmetry. */
-    /* Hide the burger bars and show the SVG cross when menu is expanded */
     body:not(.menu-collapsed) .menu-toggle .bar{
       display:none;
     }
@@ -317,7 +313,6 @@ body{ font-family: var(--font-sans); }
       display:block;
     }
 
-    /* Base styles for the cross icon: centre it and hide by default */
     .menu-toggle .cross-icon{
       position:absolute;
       left:50%;
@@ -329,11 +324,11 @@ body{ font-family: var(--font-sans); }
       display:none;
       pointer-events:none;
     }
-    /* Боковое меню отображается всегда. Горизонтальное меню можно скрыть при узкой ширине. */
+
     @media (max-width:900px){
       header .menu{display:none;}
     }
-    /* Боковое меню */
+
     .left-menu{
       position:fixed;
       top:0;
@@ -347,7 +342,6 @@ body{ font-family: var(--font-sans); }
       display:flex;
       flex-direction:column;
       gap:12px;
-      /* Use width instead of translateX for collapsible behaviour */
       transition:width .25s ease-out;
       z-index:1000;
     }
@@ -355,8 +349,6 @@ body{ font-family: var(--font-sans); }
        display:flex;
        flex-direction:column;
        gap:8px;
-       /* отступ сверху, чтобы навигационные ссылки не прилипали к верхнему краю.
-          добавляем дополнительное пространство под переключатель меню */
        margin-top:48px;
      }
     .left-menu nav a{
@@ -385,7 +377,7 @@ body{ font-family: var(--font-sans); }
       flex:1;
       white-space:nowrap;
     }
-    /* При свёрнутом меню уменьшаем ширину и скрываем подписи */
+
     body.menu-collapsed .left-menu{
       width:56px;
     }
@@ -395,9 +387,7 @@ body{ font-family: var(--font-sans); }
     body.menu-collapsed .left-menu nav a .label{
       display:none;
     }
-    /* убираем старые правила превращения линий в крестик, так как используется новая реализация кнопки */
 
-    /* Сдвигаем контент влево/вправо в зависимости от ширины меню */
     body:not(.menu-collapsed) header,
     body:not(.menu-collapsed) .phase,
     body:not(.menu-collapsed) main,
@@ -421,37 +411,23 @@ body{ font-family: var(--font-sans); }
   <header>
     <div class="wrap nav">
       <div class="brand" aria-label="UPGRADE INNOVATIONS">
-        <!-- Используем официальный логотип вместо абстрактного SVG -->
         <img src="https://upgradefor.com/assets/logo.png" alt="UPGRADE Innovations logo" style="height:32px;width:auto;">
         <span>UPGRADE&nbsp;INNOVATIONS</span>
       </div>
 
-      <!-- Бургер будет добавлен после навигации -->
-
-      <nav class="menu" aria-label="Основная навигация">
-        <a href="#status">Статус</a>
-        <a href="#goals">Цели</a>
-        <a href="#ai">ИИ</a>
-        <a href="#tech">Технологии</a>
-        <a href="#catalog">Каталог</a>
-        <a href="#roadmap">Роадмап</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
-      <!-- Кнопка-бургер больше не находится в хедере. Перенесена внутрь бокового меню ниже. -->
       <div class="grow"></div>
-      <a class="btn btn--ghost" href="#feedback" rel="nofollow">Обратная связь</a>
-      <a class="btn" href="#join" rel="nofollow" style="background:linear-gradient(#14d5ff,var(--primary));border-color:#9be7ff">Стать ранним участником</a>
+
+      <div class="auth-buttons">
+        <a class="btn btn--ghost" href="#feedback" rel="nofollow">Sign in</a>
+        <a class="btn" href="#join" rel="nofollow">Sign up</a>
+      </div>
     </div>
   </header>
 
-  <!-- Левое меню: отображается по нажатию на бургер; по умолчанию скрыто -->
+  <!-- Левое меню: отображается по нажатию на бургер; по умолчанию свернуто -->
   <aside class="left-menu" aria-label="Боковое меню">
-    <!-- Переключатель меню размещён внутри боковой панели, как на сайте upgrade4.com -->
       <button class="menu-toggle" aria-label="Переключить меню">
-          <!-- Three bars for the burger icon -->
           <div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div>
-          <!-- Cross icon drawn as an SVG for perfect centering -->
           <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -490,13 +466,8 @@ body{ font-family: var(--font-sans); }
           <a class="btn btn--ghost" href="#catalog">Каталог</a>
           <a class="btn btn--ghost" href="#faq">Как это работает?</a>
         </div>
-        <!-- Варианты заголовка (на выбор команды):
-             1) «UPGRADE — место, где технологии встречаются с применением»
-             2) «UPGRADE помогает технологиям запускаться в реальном мире»
-             3) «UPGRADE — публикуйте, объединяйтесь, запускайте пилоты» -->
       </div>
       <div class="hero-art" aria-hidden="true">
-        <!-- Заменили абстрактную иллюстрацию на персонажа из загруженной картинки -->
         <img class="hero-figure" src="hero-character.png" alt="Персонаж">
       </div>
     </section>
@@ -646,7 +617,7 @@ body{ font-family: var(--font-sans); }
       </div>
     </section>
 
-    <!-- Contacts (Moldova, without phone) -->
+    <!-- Contacts -->
     <section class="wrap" id="contacts" aria-labelledby="contacts-title">
       <h2 class="section-title" id="contacts-title">Контакты</h2>
       <div class="grid">
