@@ -1,0 +1,43 @@
+name: UPGR – Generate Page
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_path:
+        description: 'Путь к создаваемому файлу'
+        required: true
+        default: 'pages/page.html'
+      content:
+        description: 'Контент страницы (HTML, Markdown, JSON — что угодно)'
+        required: true
+        default: '<h1>Hello, UPGR!</h1>'
+      commit_message:
+        description: 'Сообщение коммита'
+        required: true
+        default: 'UPGR: auto-generate page'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write content to file
+        run: |
+          FILE="${{ github.event.inputs.file_path }}"
+          mkdir -p "$(dirname "$FILE")"
+          printf "%s" "${{ github.event.inputs.content }}" > "$FILE"
+
+      - name: Commit & push
+        env:
+          TOKEN: ${{ secrets.UPGR_PAGES_PAT }}
+        run: |
+          git config user.name "UPGR Bot"
+          git config user.email "bot@upgradefor.com"
+
+          git add .
+          git commit -m "${{ github.event.inputs.commit_message }}" || echo "No changes"
+
+          git push "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
