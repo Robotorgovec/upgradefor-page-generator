@@ -16,8 +16,8 @@
 
       /* ===== Brand tokens (под ваш лого: чёрный + голубой) ===== */
       --brand-ink:#0f172a;           /* тёмный текст/заголовки */
-      --brand-cyan:#0ec5ff;          /* основной акцент — голубой из айдентики */
-      --brand-cyan-600:#0aa0cc;      /* затемнённый для hover/фокуса */
+      --brand-cyan:#12aff0;          /* основной акцент — голубой из айдентики */
+      --brand-cyan-600:#0e8bc0;      /* затемнённый для hover/фокуса */
       --brand-blue:#2563eb;          /* вспомогательный синий (связь с лого) */
 
       /* ===== UI tokens ===== */
@@ -92,14 +92,14 @@
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid rgba(0,0,0,.05);
-      background:var(--primary); color:var(--primary-ink);
+      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
+      background:#12aff0; color:#ffffff;
       font-weight:700; letter-spacing:.1px; min-height:44px; /* доступность */
-      box-shadow:var(--shadow); transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+      box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(2,133,200,.18); background:linear-gradient(#18ccff,#0ebef5)}
-    .btn--ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none}
-    .btn--ghost:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+    .btn:hover{transform:translateY(-1px); background:#0e8bc0}
+    .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
+    .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
 
     /* Бета‑баннер */
     .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -180,8 +180,8 @@
   /* Font system: switch to Inter/Manrope later by editing --font-sans */
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   /* Brand tokens (ensure both cyan and blue variants exist) */
-  --brand-cyan: #0ec5ff;
-  --brand-cyan-600: #0aa0cc;
+  --brand-cyan: #12aff0;
+  --brand-cyan-600: #0e8bc0;
   --brand-blue: #2563eb;
   --brand-blue-600: #1d4ed8;
   /* Button elevations */
@@ -202,84 +202,102 @@ body{ font-family: var(--font-sans); }
   min-height: var(--btn-min-h);
   padding: var(--btn-pad-y) var(--btn-pad-x);
   border-radius: var(--r-btn, 12px);
-  border:1px solid rgba(0,0,0,.04);
-  background: linear-gradient(180deg, var(--brand-cyan-600), #0aa8d1);
-  color: #06222e; /* темный текст для контраста */
+  border:1px solid #000;
+  background: var(--brand-cyan);
+  color: #ffffff;
   font-weight: 700; letter-spacing:.1px;
-  box-shadow: var(--btn-elev);
+  box-shadow: none;
   transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
   text-decoration: none !important; cursor: pointer;
 }
 .btn:hover{
   transform: translateY(-1px);
-  box-shadow: var(--btn-elev-hover);
-  background: linear-gradient(180deg, #12cdf7, var(--brand-cyan-600));
+  box-shadow: none;
+  background: var(--brand-cyan-600);
 }
 .btn:active{
   transform: translateY(0);
-  box-shadow: var(--btn-elev-active);
-  filter: saturate(1.04);
+  box-shadow: none;
+  filter: none;
 }
 /* State layer for subtle sheen */
 .btn::after{
   content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
-  background: radial-gradient(120% 140% at 70% -20%, rgba(255,255,255,.24), transparent 52%);
-  opacity:0; transition: opacity .2s ease;
+  background: none;
+  opacity:0; transition: none;
 }
-.btn:hover::after{ opacity:.9 }
+.btn:hover::after{ opacity:0 }
 /* Focus-visible ring */
 .btn:focus-visible{
   outline: none;
-  box-shadow: var(--btn-elev-hover), 0 0 0 2px #fff, 0 0 0 5px rgba(20,213,255,.5);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(0,0,0,.3);
 }
 /* Ghost button */
 .btn.btn--ghost{
-  color: var(--brand-blue-600);
-  background: transparent; border-color: color-mix(in srgb, var(--brand-blue-600) 42%, transparent);
+  color: #000;
+  background: transparent; border-color: #000;
   box-shadow: none;
 }
 .btn.btn--ghost:hover{
-  background: color-mix(in srgb, var(--brand-blue) 16%, transparent);
-  border-color: var(--brand-blue-600);
-  color: var(--brand-blue-600);
+  background: rgba(0,0,0,0.06);
+  border-color: #000;
+  color: #000;
 }
 /* Disabled */
 .btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .btn{ transition: none !important }
-  .btn:hover,.btn:active{ transform: none }
-  }
-  
-}
-  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .btn{ transition: none !important }
+    .btn:hover,.btn:active{ transform: none }
+    }
+
+</style>
 <style id="custom-btn-colors">
   /* Кнопка SIGN UP — правильный голубой */
-  .btn {
+  .btn,
+  .btn:visited {
     background: #12aff0 !important;     /* цвет как в логотипе */
+    background-color: #12aff0 !important;
+    background-image: none !important;
     color: #ffffff !important;
     border-color: #000000 !important;
     box-shadow: none !important;
+    filter: none !important;
   }
 
-  .btn:hover {
+  .btn::after { display: none !important; }
+
+  .btn:hover,
+  .btn:focus,
+  .btn:focus-visible,
+  .btn:active {
     background: #0e8bc0 !important;     /* затемнение для hover */
+    background-color: #0e8bc0 !important;
+    background-image: none !important;
     color: #ffffff !important;
     border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   /* Кнопка SIGN IN — чёрная окантовка */
-  .btn.btn--ghost {
+  .btn.btn--ghost,
+  .btn.btn--ghost:visited {
     background: transparent !important;
     color: #000000 !important;
     border-color: #000000 !important;
     box-shadow: none !important;
   }
 
-  .btn.btn--ghost:hover {
+  .btn.btn--ghost:hover,
+  .btn.btn--ghost:focus,
+  .btn.btn--ghost:focus-visible,
+  .btn.btn--ghost:active {
     background: rgba(0,0,0,0.06) !important;
     color: #000000 !important;
     border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 </style>
 
@@ -778,3 +796,319 @@ body{ font-family: var(--font-sans); }
   </script>
 </body>
 </html>
+docs/upgradefor-landing-beta-brand-v8.html
++57
+-39
+
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UPGRADE INNOVATIONS — открытая бета</title>
+  <meta name="description" content="UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.">
+  <link rel="canonical" href="https://upgradefor.com/">
+  <link rel="alternate" hreflang="ru-RU" href="https://upgradefor.com/ru/">
+  <link rel="alternate" hreflang="en-US" href="https://upgradefor.com/en/">
+  <link rel="alternate" hreflang="x-default" href="https://upgradefor.com/">
+
+  <style>
+    :root{
+      color-scheme: light;
+
+      /* ===== Brand tokens (под ваш лого: чёрный + голубой) ===== */
+      --brand-ink:#0f172a;           /* тёмный текст/заголовки */
+      --brand-cyan:#0ec5ff;          /* основной акцент — голубой из айдентики */
+      --brand-cyan-600:#0aa0cc;      /* затемнённый для hover/фокуса */
+      --brand-cyan:#12aff0;          /* основной акцент — голубой из айдентики */
+      --brand-cyan-600:#0e8bc0;      /* затемнённый для hover/фокуса */
+      --brand-blue:#2563eb;          /* вспомогательный синий (связь с лого) */
+
+      /* ===== UI tokens ===== */
+      --bg:#f7fafc;
+      --surface:#ffffff;
+      --soft:#f1f5f9;
+      --text:var(--brand-ink);
+      --muted:#475569;
+      --line:#e5eaf0;
+
+      --primary:var(--brand-cyan);   /* цвет кнопок/акцентов */
+      --primary-ink:#06222e;         /* ТЕКСТ на кнопках (важно для контраста) */
+      --primary-50:#e6f7ff;          /* мягкий фон/баннер */
+      --primary-600:var(--brand-cyan-600);
+
+      /* Сетка и отступы (8‑pt) */
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+      --space-5:40px; --space-6:48px; --space-8:64px;
+      --section-y: var(--space-8);
+
+      /* Радиусы через токены — управляют «характером» интерфейса */
+      --r-card:16px;                 /* карточки — дружелюбно */
+      --r-btn:12px;                  /* кнопки — «полу‑капсула» (инновационно, но без «желе») */
+      --r-chip:999px;                /* бейджи/тэги — капсулы */
+
+@@ -70,58 +70,58 @@
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .brand svg{width:28px;height:28px}
+    .grow{flex:1}
+
+    .auth-buttons{
+      display:flex;
+      align-items:center;
+      gap:var(--space-1);
+    }
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid rgba(0,0,0,.05);
+      background:var(--primary); color:var(--primary-ink);
+      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
+      background:#12aff0; color:#ffffff;
+      font-weight:700; letter-spacing:.1px; min-height:44px; /* доступность */
+      box-shadow:var(--shadow); transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+      box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(2,133,200,.18); background:linear-gradient(#18ccff,#0ebef5)}
+    .btn--ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none}
+    .btn--ghost:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+    .btn:hover{transform:translateY(-1px); background:#0e8bc0}
+    .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
+    .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
+
+    /* Бета‑баннер */
+    .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .phase .content{display:flex;gap:12px;align-items:center;padding:10px 0}
+    .tag{font-size:.8rem;font-weight:800;color:#0b3cbd;background:#e0e7ff;border:1px solid #c7d2fe;border-radius:6px;padding:.25rem .5rem}
+    .phase .text{color:#1e293b}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
+    .lead{color:var(--muted);max-width:64ch}
+    .hero-art{
+      background:radial-gradient(1000px 500px at 80% -40%, rgba(14,197,255,.18), transparent 60%),
+                 radial-gradient(700px 420px at 0% 20%, rgba(37,99,235,.12), transparent 60%);
+      border-radius:20px;border:1px solid var(--line);
+      box-shadow:var(--shadow); padding:18px; overflow:hidden;
+    }
+    .hero-figure{width:100%;height:auto;display:block}
+
+    /* Sections */
+    section{padding:var(--section-y) 0}
+    .section-title{font-size:clamp(22px,3vw,32px);margin:0 0 var(--space-3)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+@@ -158,150 +158,168 @@
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"UPGRADE INNOVATIONS",
+    "url":"https://upgradefor.com/",
+    "logo":"https://robotorgovec.github.io/upgradefor-page-generator/assets/upgrade-innovations-logo-main.svg",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "MD",
+      "addressLocality": "Chișinău",
+      "streetAddress": "Указать юридический адрес",
+      "postalCode": "MD‑20xxx"
+    },
+    "contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"info@upgradefor.com","areaServed":["EU","Worldwide"],"availableLanguage":["ru","en","ro"]}]
+  }
+  </script>
+
+<!-- v7 UI overrides: refined buttons + font token -->
+<style id="v7-overrides">
+:root{
+  /* Font system: switch to Inter/Manrope later by editing --font-sans */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Brand tokens (ensure both cyan and blue variants exist) */
+  --brand-cyan: #0ec5ff;
+  --brand-cyan-600: #0aa0cc;
+  --brand-cyan: #12aff0;
+  --brand-cyan-600: #0e8bc0;
+  --brand-blue: #2563eb;
+  --brand-blue-600: #1d4ed8;
+  /* Button elevations */
+  --btn-elev: 0 6px 14px rgba(2,132,199,.16);
+  --btn-elev-hover: 0 12px 24px rgba(2,132,199,.22);
+  --btn-elev-active: 0 4px 10px rgba(2,132,199,.18);
+  /* Button sizing */
+  --btn-min-h: 44px;
+  --btn-pad-x: 1rem;
+  --btn-pad-y: 0.625rem; /* аккуратная высота */
+}
+/* Apply font token */
+body{ font-family: var(--font-sans); }
+/* Base button (filled) */
+.btn{
+  position:relative; isolation:isolate;
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  min-height: var(--btn-min-h);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--r-btn, 12px);
+  border:1px solid rgba(0,0,0,.04);
+  background: linear-gradient(180deg, var(--brand-cyan-600), #0aa8d1);
+  color: #06222e; /* темный текст для контраста */
+  border:1px solid #000;
+  background: var(--brand-cyan);
+  color: #ffffff;
+  font-weight: 700; letter-spacing:.1px;
+  box-shadow: var(--btn-elev);
+  box-shadow: none;
+  transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
+  text-decoration: none !important; cursor: pointer;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--btn-elev-hover);
+  background: linear-gradient(180deg, #12cdf7, var(--brand-cyan-600));
+  box-shadow: none;
+  background: var(--brand-cyan-600);
+}
+.btn:active{
+  transform: translateY(0);
+  box-shadow: var(--btn-elev-active);
+  filter: saturate(1.04);
+  box-shadow: none;
+  filter: none;
+}
+/* State layer for subtle sheen */
+.btn::after{
+  content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
+  background: radial-gradient(120% 140% at 70% -20%, rgba(255,255,255,.24), transparent 52%);
+  opacity:0; transition: opacity .2s ease;
+  background: none;
+  opacity:0; transition: none;
+}
+.btn:hover::after{ opacity:.9 }
+.btn:hover::after{ opacity:0 }
+/* Focus-visible ring */
+.btn:focus-visible{
+  outline: none;
+  box-shadow: var(--btn-elev-hover), 0 0 0 2px #fff, 0 0 0 5px rgba(20,213,255,.5);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(0,0,0,.3);
+}
+/* Ghost button */
+.btn.btn--ghost{
+  color: var(--brand-blue-600);
+  background: transparent; border-color: color-mix(in srgb, var(--brand-blue-600) 42%, transparent);
+  color: #000;
+  background: transparent; border-color: #000;
+  box-shadow: none;
+}
+.btn.btn--ghost:hover{
+  background: color-mix(in srgb, var(--brand-blue) 16%, transparent);
+  border-color: var(--brand-blue-600);
+  color: var(--brand-blue-600);
+  background: rgba(0,0,0,0.06);
+  border-color: #000;
+  color: #000;
+}
+/* Disabled */
+.btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition: none !important }
+  .btn:hover,.btn:active{ transform: none }
+  }
+  
+}
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .btn{ transition: none !important }
+    .btn:hover,.btn:active{ transform: none }
+    }
+
+</style>
+<style id="custom-btn-colors">
+  /* Кнопка SIGN UP — правильный голубой */
+  .btn {
+  .btn,
+  .btn:visited {
+    background: #12aff0 !important;     /* цвет как в логотипе */
+    background-color: #12aff0 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  .btn:hover {
+  .btn::after { display: none !important; }
+
+  .btn:hover,
+  .btn:focus,
+  .btn:focus-visible,
+  .btn:active {
+    background: #0e8bc0 !important;     /* затемнение для hover */
+    background-color: #0e8bc0 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* Кнопка SIGN IN — чёрная окантовка */
+  .btn.btn--ghost {
+  .btn.btn--ghost,
+  .btn.btn--ghost:visited {
+    background: transparent !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .btn.btn--ghost:hover {
+  .btn.btn--ghost:hover,
+  .btn.btn--ghost:focus,
+  .btn.btn--ghost:focus-visible,
+  .btn.btn--ghost:active {
+    background: rgba(0,0,0,0.06) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+</style>
+
+<style id="v8-cards6">
+  .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+  @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
+</style>
+
+  <!-- Дополнительные стили для бокового меню и кнопки-бургера -->
+  <style id="side-menu-styles">
+    /* Бургер (иконка) */
+    .menu-toggle{
+       position:fixed;
+       top:12px;
+       left:12px;
+       z-index:1100;
+       width:26px;
+       height:26px;
+       border:2px solid var(--brand-cyan);
+       border-radius:8px;
+       background:var(--surface);
+       display:flex;
+       align-items:center;
+       justify-content:center;
+       cursor:pointer;
