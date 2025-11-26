@@ -249,7 +249,25 @@ body{ font-family: var(--font-sans); }
 @media (prefers-reduced-motion: reduce){
   .btn{ transition: none !important }
   .btn:hover,.btn:active{ transform: none }
-  .btn::after{ display: none }
+  .btn
+    /* Custom button color modifications */
+  .btn {
+    background: linear-gradient(180deg, var(--brand-blue), var(--brand-blue-600));
+    color: #ffffff;
+  }
+  .btn:hover {
+    background: linear-gradient(180deg, var(--brand-blue-600), var(--brand-blue));
+  }
+  .btn.btn--ghost {
+    color: #000000;
+    border-color: color-mix(in srgb, #000000 42%, transparent);
+  }
+  .btn.btn--ghost:hover {
+    background: color-mix(in srgb, #000000 16%, transparent);
+    border-color: #000000;
+    color: #000000;
+  }
+::after{ display: none }
 }
 </style>
 
