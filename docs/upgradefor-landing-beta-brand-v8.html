@@ -253,32 +253,34 @@ body{ font-family: var(--font-sans); }
   
 }
   
-</style>
+<style id="custom-btn-colors">
+  /* Кнопка SIGN UP — правильный голубой */
+  .btn {
+    background: #12aff0 !important;     /* цвет как в логотипе */
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+  }
 
+  .btn:hover {
+    background: #0e8bc0 !important;     /* затемнение для hover */
+    color: #ffffff !important;
+    border-color: #000000 !important;
+  }
 
-  <style id="custom-btn-colors">
-.btn {
-  background: linear-gradient(180deg, var(--brand-blue), var(--brand-blue-600)
-                                 background:  #29abe3 !important;
-  color: #ffffff;
-  border-color: #000000;
-}
-.btn:hover {
-  background: linear-gradient(180deg, var(--brand-blue-600), var(--brand-blue))
-      background: #2189b6 !important;
-}
-.btn.btn--ghost {
-  
-  color: #000000;
-  border-color: #000000;
-  background: transparent;
-  box-shadow: none;
-}
-.btn.btn--ghost:hover {
-  background: color-mix(in srgb, #000000 16%, transparent);
-  border-color: #000000;
-  color: #000000;
-}
+  /* Кнопка SIGN IN — чёрная окантовка */
+  .btn.btn--ghost {
+    background: transparent !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .btn.btn--ghost:hover {
+    background: rgba(0,0,0,0.06) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+  }
 </style>
 
 <style id="v8-cards6">
