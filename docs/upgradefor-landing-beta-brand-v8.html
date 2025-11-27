@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>UPGRADE INNOVATIONS — открытая бета</title>
   <meta name="description" content="UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.">
+  <meta name="build-version" content="landing-v8-2025-11-26">
   <link rel="canonical" href="https://upgradefor.com/">
   <link rel="alternate" hreflang="ru-RU" href="https://upgradefor.com/ru/">
   <link rel="alternate" hreflang="en-US" href="https://upgradefor.com/en/">
@@ -16,8 +17,8 @@
 
       /* ===== Brand tokens (под ваш лого: чёрный + голубой) ===== */
       --brand-ink:#0f172a;           /* тёмный текст/заголовки */
-      --brand-cyan:#0ec5ff;          /* основной акцент — голубой из айдентики */
-      --brand-cyan-600:#0aa0cc;      /* затемнённый для hover/фокуса */
+      --brand-cyan:#12aff0;          /* основной акцент — голубой из айдентики */
+      --brand-cyan-600:#0e8bc0;      /* затемнённый для hover/фокуса */
       --brand-blue:#2563eb;          /* вспомогательный синий (связь с лого) */
 
       /* ===== UI tokens ===== */
@@ -92,14 +93,14 @@
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid rgba(0,0,0,.05);
-      background:var(--primary); color:var(--primary-ink);
+      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
+      background:#12aff0; color:#ffffff;
       font-weight:700; letter-spacing:.1px; min-height:44px; /* доступность */
-      box-shadow:var(--shadow); transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+      box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(2,133,200,.18); background:linear-gradient(#18ccff,#0ebef5)}
-    .btn--ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none}
-    .btn--ghost:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+    .btn:hover{transform:translateY(-1px); background:#0e8bc0}
+    .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
+    .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
 
     /* Бета‑баннер */
     .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -180,8 +181,8 @@
   /* Font system: switch to Inter/Manrope later by editing --font-sans */
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   /* Brand tokens (ensure both cyan and blue variants exist) */
-  --brand-cyan: #0ec5ff;
-  --brand-cyan-600: #0aa0cc;
+  --brand-cyan: #12aff0;
+  --brand-cyan-600: #0e8bc0;
   --brand-blue: #2563eb;
   --brand-blue-600: #1d4ed8;
   /* Button elevations */
@@ -202,84 +203,102 @@ body{ font-family: var(--font-sans); }
   min-height: var(--btn-min-h);
   padding: var(--btn-pad-y) var(--btn-pad-x);
   border-radius: var(--r-btn, 12px);
-  border:1px solid rgba(0,0,0,.04);
-  background: linear-gradient(180deg, var(--brand-cyan-600), #0aa8d1);
-  color: #06222e; /* темный текст для контраста */
+  border:1px solid #000;
+  background: var(--brand-cyan);
+  color: #ffffff;
   font-weight: 700; letter-spacing:.1px;
-  box-shadow: var(--btn-elev);
+  box-shadow: none;
   transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
   text-decoration: none !important; cursor: pointer;
 }
 .btn:hover{
   transform: translateY(-1px);
-  box-shadow: var(--btn-elev-hover);
-  background: linear-gradient(180deg, #12cdf7, var(--brand-cyan-600));
+  box-shadow: none;
+  background: var(--brand-cyan-600);
 }
 .btn:active{
   transform: translateY(0);
-  box-shadow: var(--btn-elev-active);
-  filter: saturate(1.04);
+  box-shadow: none;
+  filter: none;
 }
 /* State layer for subtle sheen */
 .btn::after{
   content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
-  background: radial-gradient(120% 140% at 70% -20%, rgba(255,255,255,.24), transparent 52%);
-  opacity:0; transition: opacity .2s ease;
+  background: none;
+  opacity:0; transition: none;
 }
-.btn:hover::after{ opacity:.9 }
+.btn:hover::after{ opacity:0 }
 /* Focus-visible ring */
 .btn:focus-visible{
   outline: none;
-  box-shadow: var(--btn-elev-hover), 0 0 0 2px #fff, 0 0 0 5px rgba(20,213,255,.5);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(0,0,0,.3);
 }
 /* Ghost button */
 .btn.btn--ghost{
-  color: var(--brand-blue-600);
-  background: transparent; border-color: color-mix(in srgb, var(--brand-blue-600) 42%, transparent);
+  color: #000;
+  background: transparent; border-color: #000;
   box-shadow: none;
 }
 .btn.btn--ghost:hover{
-  background: color-mix(in srgb, var(--brand-blue) 16%, transparent);
-  border-color: var(--brand-blue-600);
-  color: var(--brand-blue-600);
+  background: rgba(0,0,0,0.06);
+  border-color: #000;
+  color: #000;
 }
 /* Disabled */
 .btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .btn{ transition: none !important }
-  .btn:hover,.btn:active{ transform: none }
-  }
-  
-}
-  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .btn{ transition: none !important }
+    .btn:hover,.btn:active{ transform: none }
+    }
+
+</style>
 <style id="custom-btn-colors">
   /* Кнопка SIGN UP — правильный голубой */
-  .btn {
+  .btn,
+  .btn:visited {
     background: #12aff0 !important;     /* цвет как в логотипе */
+    background-color: #12aff0 !important;
+    background-image: none !important;
     color: #ffffff !important;
     border-color: #000000 !important;
     box-shadow: none !important;
+    filter: none !important;
   }
 
-  .btn:hover {
+  .btn::after { display: none !important; }
+
+  .btn:hover,
+  .btn:focus,
+  .btn:focus-visible,
+  .btn:active {
     background: #0e8bc0 !important;     /* затемнение для hover */
+    background-color: #0e8bc0 !important;
+    background-image: none !important;
     color: #ffffff !important;
     border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   /* Кнопка SIGN IN — чёрная окантовка */
-  .btn.btn--ghost {
+  .btn.btn--ghost,
+  .btn.btn--ghost:visited {
     background: transparent !important;
     color: #000000 !important;
     border-color: #000000 !important;
     box-shadow: none !important;
   }
 
-  .btn.btn--ghost:hover {
+  .btn.btn--ghost:hover,
+  .btn.btn--ghost:focus,
+  .btn.btn--ghost:focus-visible,
+  .btn.btn--ghost:active {
     background: rgba(0,0,0,0.06) !important;
     color: #000000 !important;
     border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 </style>
 
@@ -290,69 +309,48 @@ body{ font-family: var(--font-sans); }
 
   <!-- Дополнительные стили для бокового меню и кнопки-бургера -->
   <style id="side-menu-styles">
-    /* Бургер (иконка) */
+    /* Кнопка открытия меню */
     .menu-toggle{
        position:fixed;
-       top:12px;
-       left:12px;
+       top:14px;
+       left:14px;
        z-index:1100;
-       width:26px;
-       height:26px;
-       border:2px solid var(--brand-cyan);
-       border-radius:8px;
-       background:var(--surface);
-       display:flex;
+       display:inline-flex;
        align-items:center;
        justify-content:center;
+       width:48px;
+       height:48px;
+       padding:0;
+       border-radius:14px;
+       border:1px solid var(--line);
+       background:rgba(255,255,255,0.95);
+       box-shadow:0 12px 30px rgba(15,23,42,.14);
        cursor:pointer;
-       overflow:hidden;
+       transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
      }
-     .menu-toggle::before{
-        content:"";
-        position:absolute;
-        left:20px;
-        top:4px;
-        bottom:4px;
-        width:2px;
-        background:var(--brand-cyan);
-        border-radius:0;
-        transition:opacity .3s ease;
-      }
+     .menu-toggle:hover{
+       transform:translateY(-1px);
+       box-shadow:0 16px 36px rgba(15,23,42,.18);
+       border-color:var(--brand-cyan);
+       background:#fff;
+     }
+     .menu-toggle:active{ transform:translateY(0); box-shadow:0 10px 24px rgba(15,23,42,.14); }
+     .menu-toggle:focus-visible{ outline:3px solid var(--brand-cyan); outline-offset:3px; }
 
-    .menu-toggle .bar{
-       position:absolute;
-       left:8px;
-       width:10px;
-       height:2px;
-       background:var(--brand-ink);
+     .menu-toggle__icon{ position:relative; width:22px; height:16px; display:block; }
+     .menu-toggle__icon .line{
+       position:absolute; left:0; width:100%; height:2px;
+       background:var(--text);
        border-radius:2px;
-       transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s.ease, top .3s ease;
+       transition:transform .25s ease, opacity .2s ease, top .25s ease;
      }
-     .menu-toggle .bar.bar1{ top:9px; }
-     .menu-toggle .bar.bar2{ top:17px; }
-     .menu-toggle .bar.bar3{ top:25px; }
+     .menu-toggle__icon .line1{ top:0; }
+     .menu-toggle__icon .line2{ top:7px; }
+     .menu-toggle__icon .line3{ top:14px; }
 
-    body:not(.menu-collapsed) .menu-toggle::before{
-       opacity:0;
-     }
-    body:not(.menu-collapsed) .menu-toggle .bar{
-      display:none;
-    }
-    body:not(.menu-collapsed) .menu-toggle .cross-icon{
-      display:block;
-    }
-
-    .menu-toggle .cross-icon{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
-      width:20px;
-      height:20px;
-      color:var(--brand-ink);
-      display:none;
-      pointer-events:none;
-    }
+     body:not(.menu-collapsed) .menu-toggle__icon .line1{ top:7px; transform:rotate(45deg); }
+     body:not(.menu-collapsed) .menu-toggle__icon .line2{ opacity:0; }
+     body:not(.menu-collapsed) .menu-toggle__icon .line3{ top:7px; transform:rotate(-45deg); }
 
     @media (max-width:900px){
       header .menu{display:none;}
@@ -371,14 +369,14 @@ body{ font-family: var(--font-sans); }
       display:flex;
       flex-direction:column;
       gap:12px;
-      transition:width .25s ease-out;
+      transition:transform .25s ease-out, box-shadow .25s ease-out;
       z-index:1000;
     }
     .left-menu nav{
        display:flex;
        flex-direction:column;
        gap:8px;
-       margin-top:48px;
+       margin-top:56px;
      }
     .left-menu nav a{
       display:flex;
@@ -408,34 +406,26 @@ body{ font-family: var(--font-sans); }
     }
 
     body.menu-collapsed .left-menu{
-      width:56px;
+      transform:translateX(-115%);
+      box-shadow:none;
+      pointer-events:none;
     }
-    body.menu-collapsed .left-menu nav a{
-      justify-content:center;
-    }
-    body.menu-collapsed .left-menu nav a .label{
-      display:none;
-    }
-
-    body:not(.menu-collapsed) header,
-    body:not(.menu-collapsed) .phase,
-    body:not(.menu-collapsed) main,
-    body:not(.menu-collapsed) footer{
-      margin-left:260px;
-      transition:margin-left .25s ease-out;
-    }
-    body.menu-collapsed header,
-    body.menu-collapsed .phase,
-    body.menu-collapsed main,
-    body.menu-collapsed footer{
-      margin-left:56px;
-      transition:margin-left .25s.ease-out;
-    }
+    body.menu-collapsed .left-menu nav{ opacity:0; }
+    body:not(.menu-collapsed) .left-menu{ pointer-events:auto; }
+    body:not(.menu-collapsed) .left-menu nav{ opacity:1; transition:opacity .2s ease-in; }
   </style>
 
 </head>
 <body class="menu-collapsed">
   <a class="skip" href="#main">К содержанию</a>
+
+  <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+    <span class="menu-toggle__icon" aria-hidden="true">
+      <span class="line line1"></span>
+      <span class="line line2"></span>
+      <span class="line line3"></span>
+    </span>
+  </button>
 
   <header>
     <div class="wrap nav">
@@ -457,13 +447,6 @@ body{ font-family: var(--font-sans); }
 
   <!-- Левое меню: отображается по нажатию на бургер; по умолчанию свернуто -->
   <aside class="left-menu" aria-label="Боковое меню">
-      <button class="menu-toggle" aria-label="Переключить меню">
-          <div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div>
-          <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-      </button>
     <nav>
        <a href="#status"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Статус</span></a>
        <a href="#goals"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" р="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="label">Цели</span></a>
@@ -758,23 +741,32 @@ body{ font-family: var(--font-sans); }
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
-  <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) -->
-  <script>
-    (function(){
-      var toggle = document.querySelector('.menu-toggle');
-      var body = document.body;
-      if(toggle){
-        toggle.addEventListener('click', function(){
-          body.classList.toggle('menu-collapsed');
+    <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) -->
+    <script>
+      (function(){
+        var toggle = document.querySelector('.menu-toggle');
+        var body = document.body;
+        var setMenuState = function(collapsed){
+          body.classList.toggle('menu-collapsed', collapsed);
+          if(toggle){
+            toggle.setAttribute('aria-expanded', (!collapsed).toString());
+            toggle.setAttribute('aria-label', collapsed ? 'Открыть меню' : 'Скрыть меню');
+          }
+        };
+        if(toggle){
+          toggle.addEventListener('click', function(){
+            var willCollapse = body.classList.contains('menu-collapsed');
+            setMenuState(!willCollapse);
+          });
+        }
+        var sideLinks = document.querySelectorAll('.left-menu a');
+        sideLinks.forEach(function(link){
+          link.addEventListener('click', function(){
+            setMenuState(true);
+          });
         });
-      }
-      var sideLinks = document.querySelectorAll('.left-menu a');
-      sideLinks.forEach(function(link){
-        link.addEventListener('click', function(){
-          body.classList.add('menu-collapsed');
-        });
-      });
-    })();
-  </script>
+        setMenuState(true);
+      })();
+    </script>
 </body>
 </html>
