@@ -28,5 +28,16 @@
       "description": "Посадочная страница по принципу коммерческой Википедии.",
       "canonical": "https://upgradefor.com/landing-beta-brand-v8"
     }
+    ,
+  {
+    "slug": "upgr-novoe-menyu",
+    "title": "UPGR Новое меню",
+    "template": "upgradefor-landing-beta-brand-v8.html",
+    "seo": {
+      "title": "Новое меню — UPGRADE Innovations",
+      "description": "Страница нового меню UPGRADE Innovations",
+      "canonical": "https://upgradefor.com/upgr-novoe-menyu"
+    }
+  }
   }
 ]
