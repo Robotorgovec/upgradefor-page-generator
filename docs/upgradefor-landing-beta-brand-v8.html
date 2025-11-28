@@ -409,6 +409,8 @@ body{ font-family: var(--font-sans); }
       left:0;
       width:260px;
       height:100%;
+        overflow-y: auto;
+  overflow-x: hidden;
       background:var(--surface);
       border-right:1px solid var(--line);
       box-shadow:var(--shadow);
@@ -421,7 +423,7 @@ body{ font-family: var(--font-sans); }
       z-index:1000;
     }
     .left-menu nav{
-       display:flex;
+        isplay:flex;
        flex-direction:column;
        gap:8px;
        margin-top:48px;
@@ -448,6 +450,10 @@ body{ font-family: var(--font-sans); }
       align-items:center;
       justify-content:center;
       flex-shrink:0;
+   body:not(.menu-collapsed) {
+  overflow: hidden;
+}
+
     }
     .left-menu nav a .label{
       flex:1;
