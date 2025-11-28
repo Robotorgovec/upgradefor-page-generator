@@ -3,30 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ensure no caching so users always receive the latest build -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>UPGRADE INNOVATIONS — открытая бета</title>
   <meta name="description" content="UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>UPGRADE INNOVATIONS — открытая бета</title>
-    <meta name="description" content="UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.">
-    <meta name="build-version" content="landing-v8-2025-12-04">
+  <!-- Build version metadata -->
+  <meta name="build-version" content="landing-v8-2025-12-04">
   <link rel="canonical" href="https://upgradefor.com/">
   <link rel="alternate" hreflang="ru-RU" href="https://upgradefor.com/ru/">
   <link rel="alternate" hreflang="en-US" href="https://upgradefor.com/en/">
   <link rel="alternate" hreflang="x-default" href="https://upgradefor.com/">
 
+  <!-- Inline styles copied from the provided resolved.html.  These define colours, layout, and components.  -->
   <style>
     :root{
       color-scheme: light;
 
       /* ===== Brand tokens (под ваш лого: чёрный + голубой) ===== */
       --brand-ink:#0f172a;           /* тёмный текст/заголовки */
-      --brand-cyan:#0ec5ff;          /* основной акцент — голубой из айдентики */
-      --brand-cyan-600:#0aa0cc;      /* затемнённый для hover/фокуса */
       --brand-cyan:#12aff0;          /* основной акцент — голубой из айдентики */
       --brand-cyan-600:#0e8bc0;      /* затемнённый для hover/фокуса */
       --brand-blue:#2563eb;          /* вспомогательный синий (связь с лого) */
@@ -54,7 +50,30 @@
       --r-btn:12px;                  /* кнопки — «полу‑капсула» (инновационно, но без «желе») */
       --r-chip:999px;                /* бейджи/тэги — капсулы */
 
+      --shadow:0 10px 24px rgba(15,23,42,.06);
+      --w:clamp(300px,92vw,1160px);
+      --gap:clamp(14px,2vw,24px);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font:16px/1.6 var(--font-sans),-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
+      text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--brand-blue);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--w);margin:0 auto;padding:0 var(--gap)}
+    .skip{position:absolute;left:-9999px;top:auto}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:.5rem .75rem;border-radius:8px;z-index:1000}
+    :focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.85);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(160%) blur(10px);
     }
     .nav{
       display:flex;
@@ -69,7 +88,6 @@
       font-weight:700;
       letter-spacing:.2px;
     }
-    .brand svg{width:28px;height:28px}
     .grow{flex:1}
 
     .auth-buttons{
@@ -80,17 +98,11 @@
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid rgba(0,0,0,.05);
-      background:var(--primary); color:var(--primary-ink);
       padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
       background:#12aff0; color:#ffffff;
       font-weight:700; letter-spacing:.1px; min-height:44px; /* доступность */
-      box-shadow:var(--shadow); transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
       box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(2,133,200,.18); background:linear-gradient(#18ccff,#0ebef5)}
-    .btn--ghost{background:transparent;border:1px solid var(--line);color:var(--text);box-shadow:none}
-    .btn--ghost:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
     .btn:hover{transform:translateY(-1px); background:#0e8bc0}
     .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
     .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
@@ -119,206 +131,70 @@
     .section-title{font-size:clamp(22px,3vw,32px);margin:0 0 var(--space-3)}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+    @media (max-width:900px){.cards-3{grid-template-columns:1fr}}
+    .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+    @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:var(--space-3);box-shadow:var(--shadow)}
+    .card h3{margin:.1em 0 .35em;font-size:clamp(18px,2.2vw,22px)}
+    .card p{color:var(--muted)}
 
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"UPGRADE INNOVATIONS",
-    "url":"https://upgradefor.com/",
-    "logo":"https://robotorgovec.github.io/upgradefor-page-generator/assets/upgrade-innovations-logo-main.svg",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "MD",
-      "addressLocality": "Chișinău",
-      "streetAddress": "Указать юридический адрес",
-      "postalCode": "MD‑20xxx"
-    },
-    "contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"info@upgradefor.com","areaServed":["EU","Worldwide"],"availableLanguage":["ru","en","ro"]}]
-  }
-  </script>
+    /* Status table */
+    .status-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center}
+    @media (max-width:900px){.status-grid{grid-template-columns:1fr 1fr;row-gap:10px} .status-grid .h{grid-column:1 / -1}}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:.25rem .5rem;border-radius:var(--r-chip);border:1px solid var(--line);font-size:.85rem}
+    .b-done{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+    .b-soon{background:#fff7ed;color:#7c2d12;border-color:#fed7aa}
+    .b-todo{background:#f8fafc;color:#0f172a;border-color:#e2e8f0}
 
-<!-- v7 UI overrides: refined buttons + font token -->
-<style id="v7-overrides">
-:root{
-  /* Font system: switch to Inter/Manrope later by editing --font-sans */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  /* Brand tokens (ensure both cyan and blue variants exist) */
-  --brand-cyan: #0ec5ff;
-  --brand-cyan-600: #0aa0cc;
-  --brand-cyan: #12aff0;
-  --brand-cyan-600: #0e8bc0;
-  --brand-blue: #2563eb;
-  --brand-blue-600: #1d4ed8;
-  /* Button elevations */
-  --btn-elev: 0 6px 14px rgba(2,132,199,.16);
-  --btn-elev-hover: 0 12px 24px rgba(2,132,199,.22);
-  --btn-elev-active: 0 4px 10px rgba(2,132,199,.18);
-  /* Button sizing */
-  --btn-min-h: 44px;
-  --btn-pad-x: 1rem;
-  --btn-pad-y: 0.625rem; /* аккуратная высота */
-}
-/* Apply font token */
-body{ font-family: var(--font-sans); }
-/* Base button (filled) */
-.btn{
-  position:relative; isolation:isolate;
-  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-  min-height: var(--btn-min-h);
-  padding: var(--btn-pad-y) var(--btn-pad-x);
-  border-radius: var(--r-btn, 12px);
-  border:1px solid rgba(0,0,0,.04);
-  background: linear-gradient(180deg, var(--brand-cyan-600), #0aa8d1);
-  color: #06222e; /* темный текст для контраста */
-  border:1px solid #000;
-  background: var(--brand-cyan);
-  color: #ffffff;
-  font-weight: 700; letter-spacing:.1px;
-  box-shadow: var(--btn-elev);
-  box-shadow: none;
-  transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
-  text-decoration: none !important; cursor: pointer;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  box-shadow: var(--btn-elev-hover);
-  background: linear-gradient(180deg, #12cdf7, var(--brand-cyan-600));
-  box-shadow: none;
-  background: var(--brand-cyan-600);
-}
-.btn:active{
-  transform: translateY(0);
-  box-shadow: var(--btn-elev-active);
-  filter: saturate(1.04);
-  box-shadow: none;
-  filter: none;
-}
-/* State layer for subtle sheen */
-.btn::after{
-  content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
-  background: radial-gradient(120% 140% at 70% -20%, rgba(255,255,255,.24), transparent 52%);
-  opacity:0; transition: opacity .2s ease;
-  background: none;
-  opacity:0; transition: none;
-}
-.btn:hover::after{ opacity:.9 }
-.btn:hover::after{ opacity:0 }
-/* Focus-visible ring */
-.btn:focus-visible{
-  outline: none;
-  box-shadow: var(--btn-elev-hover), 0 0 0 2px #fff, 0 0 0 5px rgba(20,213,255,.5);
-  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(0,0,0,.3);
-}
-/* Ghost button */
-.btn.btn--ghost{
-  color: var(--brand-blue-600);
-  background: transparent; border-color: color-mix(in srgb, var(--brand-blue-600) 42%, transparent);
-  color: #000;
-  background: transparent; border-color: #000;
-  box-shadow: none;
-}
-.btn.btn--ghost:hover{
-  background: color-mix(in srgb, var(--brand-blue) 16%, transparent);
-  border-color: var(--brand-blue-600);
-  color: var(--brand-blue-600);
-  background: rgba(0,0,0,0.06);
-  border-color: #000;
-  color: #000;
-}
-/* Disabled */
-.btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .btn{ transition: none !important }
-  .btn:hover,.btn:active{ transform: none }
-  }
-  
-}
-  
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce){
-    .btn{ transition: none !important }
-    .btn:hover,.btn:active{ transform: none }
+    footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted)}
+
+    /* Dark scheme */
+    @media (prefers-color-scheme: dark){
+      :root{color-scheme: dark;
+        --bg:#0b1220; --surface:#0f172a; --soft:#0b1323; --text:#e6edf6; --muted:#9cb3c8; --line:#12213a;
+        --shadow:0 10px 24px rgba(0,0,0,.35);
+      }
+      .btn{color:var(--primary-ink)}
+      header{background:rgba(15,23,42,.75)}
+      .phase .text{color:#e6edf6}
     }
 
-</style>
-<style id="custom-btn-colors">
-  /* Кнопка SIGN UP — правильный голубой */
-  .btn {
-  .btn,
-  .btn:visited {
-    background: #12aff0 !important;     /* цвет как в логотипе */
-    background-color: #12aff0 !important;
-    background-image: none !important;
-    color: #ffffff !important;
-    border-color: #000000 !important;
-    box-shadow: none !important;
-    filter: none !important;
-  }
+    /* v7 overrides for button sizing etc. */
+    :root{
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --btn-elev: 0 6px 14px rgba(2,132,199,.16);
+      --btn-elev-hover: 0 12px 24px rgba(2,132,199,.22);
+      --btn-elev-active: 0 4px 10px rgba(2,132,199,.18);
+      --btn-min-h: 44px;
+      --btn-pad-x: 1rem;
+      --btn-pad-y: 0.625rem;
+    }
+    /* Ghost button override */
+    .btn.btn--ghost,
+    .btn.btn--ghost:visited {
+      background: transparent !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+      box-shadow: none !important;
+    }
+    .btn.btn--ghost:hover,
+    .btn.btn--ghost:focus,
+    .btn.btn--ghost:focus-visible,
+    .btn.btn--ghost:active {
+      background: rgba(0,0,0,0.06) !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
 
-  .btn:hover {
-  .btn::after { display: none !important; }
-
-  .btn:hover,
-  .btn:focus,
-  .btn:focus-visible,
-  .btn:active {
-    background: #0e8bc0 !important;     /* затемнение для hover */
-    background-color: #0e8bc0 !important;
-    background-image: none !important;
-    color: #ffffff !important;
-    border-color: #000000 !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
-  /* Кнопка SIGN IN — чёрная окантовка */
-  .btn.btn--ghost {
-  .btn.btn--ghost,
-  .btn.btn--ghost:visited {
-    background: transparent !important;
-    color: #000000 !important;
-    border-color: #000000 !important;
-    box-shadow: none !important;
-  }
-
-  .btn.btn--ghost:hover {
-  .btn.btn--ghost:hover,
-  .btn.btn--ghost:focus,
-  .btn.btn--ghost:focus-visible,
-  .btn.btn--ghost:active {
-    background: rgba(0,0,0,0.06) !important;
-    color: #000000 !important;
-    border-color: #000000 !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-</style>
-
-<style id="v8-cards6">
-  .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-  @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
-</style>
-
-  <!-- Дополнительные стили для бокового меню и кнопки-бургера -->
-  <style id="side-menu-styles">
-    /* Бургер (иконка) */
-    /* Кнопка открытия меню */
+    /* Side menu and burger button styles */
     .menu-toggle{
        position:fixed;
-       top:12px;
-       left:12px;
        top:14px;
        left:14px;
        z-index:1100;
-       width:26px;
-       height:26px;
-       border:2px solid var(--brand-cyan);
-       border-radius:8px;
-       background:var(--surface);
-       display:flex;
        display:inline-flex;
        align-items:center;
        justify-content:center;
@@ -330,43 +206,17 @@ body{ font-family: var(--font-sans); }
        background:rgba(255,255,255,0.95);
        box-shadow:0 12px 30px rgba(15,23,42,.14);
        cursor:pointer;
-       overflow:hidden;
        transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
      }
-     .menu-toggle::before{
-        content:"";
-        position:absolute;
-        left:20px;
-        top:4px;
-        bottom:4px;
-        width:2px;
-        background:var(--brand-cyan);
-        border-radius:0;
-        transition:opacity .3s ease;
-      }
-
-    .menu-toggle .bar{
-       position:absolute;
-       left:8px;
-       width:10px;
-       height:2px;
-       background:var(--brand-ink);
-       border-radius:2px;
-       transition:transform .3s ease, opacity .3s ease, width .3s ease, left .3s.ease, top .3s ease;
      .menu-toggle:hover{
        transform:translateY(-1px);
        box-shadow:0 16px 36px rgba(15,23,42,.18);
        border-color:var(--brand-cyan);
        background:#fff;
      }
-     .menu-toggle .bar.bar1{ top:9px; }
-     .menu-toggle .bar.bar2{ top:17px; }
-     .menu-toggle .bar.bar3{ top:25px; }
      .menu-toggle:active{ transform:translateY(0); box-shadow:0 10px 24px rgba(15,23,42,.14); }
      .menu-toggle:focus-visible{ outline:3px solid var(--brand-cyan); outline-offset:3px; }
 
-    body:not(.menu-collapsed) .menu-toggle::before{
-       opacity:0;
      .menu-toggle__icon{ position:relative; width:22px; height:16px; display:block; }
      .menu-toggle__icon .line{
        position:absolute; left:0; width:100%; height:2px;
@@ -374,34 +224,13 @@ body{ font-family: var(--font-sans); }
        border-radius:2px;
        transition:transform .25s ease, opacity .2s ease, top .25s ease;
      }
-    body:not(.menu-collapsed) .menu-toggle .bar{
-      display:none;
-    }
-    body:not(.menu-collapsed) .menu-toggle .cross-icon{
-      display:block;
-    }
      .menu-toggle__icon .line1{ top:0; }
      .menu-toggle__icon .line2{ top:7px; }
      .menu-toggle__icon .line3{ top:14px; }
 
-    .menu-toggle .cross-icon{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
-      width:20px;
-      height:20px;
-      color:var(--brand-ink);
-      display:none;
-      pointer-events:none;
-    }
      body:not(.menu-collapsed) .menu-toggle__icon .line1{ top:7px; transform:rotate(45deg); }
      body:not(.menu-collapsed) .menu-toggle__icon .line2{ opacity:0; }
      body:not(.menu-collapsed) .menu-toggle__icon .line3{ top:7px; transform:rotate(-45deg); }
-
-    @media (max-width:900px){
-      header .menu{display:none;}
-    }
 
     .left-menu{
       position:fixed;
@@ -409,8 +238,6 @@ body{ font-family: var(--font-sans); }
       left:0;
       width:260px;
       height:100%;
-        overflow-y: auto;
-  overflow-x: hidden;
       background:var(--surface);
       border-right:1px solid var(--line);
       box-shadow:var(--shadow);
@@ -418,15 +245,13 @@ body{ font-family: var(--font-sans); }
       display:flex;
       flex-direction:column;
       gap:12px;
-      transition:width .25s ease-out;
       transition:transform .25s ease-out, box-shadow .25s ease-out;
       z-index:1000;
     }
     .left-menu nav{
-        isplay:flex;
+       display:flex;
        flex-direction:column;
        gap:8px;
-       margin-top:48px;
        margin-top:56px;
      }
     .left-menu nav a{
@@ -450,10 +275,6 @@ body{ font-family: var(--font-sans); }
       align-items:center;
       justify-content:center;
       flex-shrink:0;
-   body:not(.menu-collapsed) {
-  overflow: hidden;
-}
-
     }
     .left-menu nav a .label{
       flex:1;
@@ -461,28 +282,6 @@ body{ font-family: var(--font-sans); }
     }
 
     body.menu-collapsed .left-menu{
-      width:56px;
-    }
-    body.menu-collapsed .left-menu nav a{
-      justify-content:center;
-    }
-    body.menu-collapsed .left-menu nav a .label{
-      display:none;
-    }
-
-    body:not(.menu-collapsed) header,
-    body:not(.menu-collapsed) .phase,
-    body:not(.menu-collapsed) main,
-    body:not(.menu-collapsed) footer{
-      margin-left:260px;
-      transition:margin-left .25s ease-out;
-    }
-    body.menu-collapsed header,
-    body.menu-collapsed .phase,
-    body.menu-collapsed main,
-    body.menu-collapsed footer{
-      margin-left:56px;
-      transition:margin-left .25s.ease-out;
       transform:translateX(-115%);
       box-shadow:none;
       pointer-events:none;
@@ -491,7 +290,6 @@ body{ font-family: var(--font-sans); }
     body:not(.menu-collapsed) .left-menu{ pointer-events:auto; }
     body:not(.menu-collapsed) .left-menu nav{ opacity:1; transition:opacity .2s ease-in; }
   </style>
-
 </head>
 <body class="menu-collapsed">
   <a class="skip" href="#main">К содержанию</a>
@@ -507,14 +305,10 @@ body{ font-family: var(--font-sans); }
   <header>
     <div class="wrap nav">
       <div class="brand" aria-label="UPGRADE INNOVATIONS">
-    <img src="assets/upgrade-innovations-logo-main.svg" alt="UPGRADE Innovations logo" style="height:40px;width:auto;">
-
-        
-             
+        <!-- Removed external logo image; use text instead -->
+        <span style="font-size:24px;font-weight:700;">UPGRADE INNOVATIONS</span>
       </div>
-
       <div class="grow"></div>
-
       <div class="auth-buttons">
         <a class="btn btn--ghost" href="#feedback" rel="nofollow">Sign in</a>
         <a class="btn" href="#join" rel="nofollow">Sign up</a>
@@ -522,18 +316,12 @@ body{ font-family: var(--font-sans); }
     </div>
   </header>
 
-  <!-- Левое меню: отображается по нажатию на бургер; по умолчанию свернуто -->
+  <!-- Side menu; clicking burger toggles show/hide.  Links collapse the menu on mobile. -->
   <aside class="left-menu" aria-label="Боковое меню">
-      <button class="menu-toggle" aria-label="Переключить меню">
-          <div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div>
-          <svg class="cross-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6 L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-      </button>
     <nav>
+      <!-- Use SVG icons for a polished look.  -->
        <a href="#status"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Статус</span></a>
-       <a href="#goals"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" р="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="label">Цели</span></a>
+       <a href="#goals"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span><span class="label">Цели</span></a>
        <a href="#ai"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 10H5M7 14H5M17 10h2M17 14h2M10 7V5M14 7V5M10 17v2M14 17v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="label">ИИ</span></a>
        <a href="#tech"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" stroke="currentColor" stroke-width="2"/><path d="M9 4v16M4 9h16" stroke="currentColor" stroke-width="2"/></svg></span><span class="label">Технологии</span></a>
        <a href="#catalog"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/></svg></span><span class="label">Каталог</span></a>
@@ -543,7 +331,7 @@ body{ font-family: var(--font-sans); }
      </nav>
   </aside>
 
-  <!-- Бета‑баннер -->
+  <!-- Beta banner -->
   <div class="phase" role="status" aria-live="polite">
     <div class="wrap content">
       <span class="tag" aria-label="Этап разработки">BETA</span>
@@ -552,11 +340,254 @@ body{ font-family: var(--font-sans); }
   </div>
 
   <main id="main">
-    <!-- Hero -->
+    <!-- Hero section -->
     <section class="wrap hero">
       <div>
         <h1>UPGRADE — платформа, где технологии находят применение</h1>
+        <p class="lead">
+          Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
+        </p>
+        <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
+          <a class="btn" href="#join">Присоединиться</a>
+          <a class="btn btn--ghost" href="#catalog">Каталог</a>
+          <a class="btn btn--ghost" href="#faq">Как это работает?</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <!-- Removed hero image because it is not present in the repository.  If available, replace with an <img> tag. -->
+      </div>
+    </section>
 
+    <!-- Status section -->
+    <section class="wrap" id="status" aria-labelledby="status-title">
+      <h2 class="section-title" id="status-title">Состояние разделов</h2>
+      <div class="card">
+        <div class="status-grid">
+          <div class="h"><strong>Раздел</strong></div><div class="h"><strong>Статус</strong></div><div class="h"><strong>Комментарий</strong></div>
+
+          <div>Каталог решений</div><div><span class="badge b-soon">В процессе</span></div><div>Наполнение карточек и фильтров</div>
+          <div>Публикации от пользователей</div><div><span class="badge b-soon">В процессе</span></div><div>Онбординг и модерация</div>
+          <div>Кейсы/проекты</div><div><span class="badge b-todo">Запланировано</span></div><div>Первые публикации — после пилотов</div>
+          <div>Пилоты и партнёры</div><div><span class="badge b-todo">Запланировано</span></div><div>Форма заявки на пилот</div>
+          <div>Сообщество</div><div><span class="badge b-todo">Запланировано</span></div><div>Профили и сообщения</div>
+          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек‑листы по качеству публикаций</div>
+        </div>
+        <p class="lead" style="margin-top:var(--space-3)">
+          Публичная статус‑страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Goals -->
+    <section class="wrap" id="goals" aria-labelledby="goals-title">
+      <h2 class="section-title" id="goals-title">Наши цели</h2>
+      <div class="cards-3">
+        <article class="card"><h3>Апгрейд через применение</h3><p>Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.</p></article>
+        <article class="card"><h3>Прозрачность ожиданий</h3><p>Статус, план и изменения — на одной странице. Пользователи понимают этап и следующий шаг.</p></article>
+        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, human‑in‑the‑loop, приватность и корректное цитирование.</p></article>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section class="wrap" id="ai" aria-labelledby="ai-title">
+      <h2 class="section-title" id="ai-title">Искусственный интеллект на платформе</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Что запускаем</h3>
+          <ul>
+            <li><strong>Семантический поиск</strong> по продуктам и исследованиям.</li>
+            <li><strong>Ассистент публикации</strong>: подсказки качества, авто‑саммари, перевод.</li>
+            <li><strong>Матчинг пилотов</strong>: сопоставление задач и решений.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Принципы</h3>
+          <ul>
+            <li><strong>Понятность</strong>: видно, где ИИ помогает и как.</li>
+            <li><strong>Human‑in‑the‑loop</strong>: финальное слово — за людьми.</li>
+            <li><strong>Конфиденциальность</strong> и уважение авторских прав.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology directions -->
+    <section class="wrap" id="tech" aria-labelledby="tech-title">
+      <h2 class="section-title" id="tech-title">Направления технологий</h2>
+      <div class="cards-6">
+        <article class="card"><h3>AI/ML</h3><p>Модели, пайплайны, MLOps, доверие и безопасность ИИ.</p></article>
+        <article class="card"><h3>Робототехника</h3><p>Манипуляторы, мобильные платформы, ROS‑экосистема.</p></article>
+        <article class="card"><h3>Новые материалы</h3><p>Композиты, покрытия, упрочнение, аддитив.</p></article>
+        <article class="card"><h3>Энергоэффективность</h3><p>Smart‑grid, энергоаудит, оптимизация потребления.</p></article>
+        <article class="card"><h3>Био/медтех</h3><p>Диагностика, лабораторные наборы, биосенсоры.</p></article>
+        <article class="card"><h3>EdTech</h3><p>Учебные стенды, симуляторы, методические комплексы.</p></article>
+      </div>
+      <p class="lead" style="margin-top:var(--space-3)">Карточки появятся по мере наполнения — можно подать заявку на публикацию уже сейчас.</p>
+    </section>
+
+    <!-- Catalog teaser -->
+    <section class="wrap" id="catalog" aria-labelledby="catalog-title">
+      <h2 class="section-title" id="catalog-title">Каталог и публикации</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Решения от UPGRADE&nbsp;INNOVATIONS</h3>
+          <p>Собственные продукты и учебные комплексы с методическими материалами. Поддержка внедрения и обучение.</p>
+          <p><a href="#">Открыть каталог компании →</a></p>
+        </article>
+        <article class="card">
+          <h3>Публикации от пользователей</h3>
+          <p>Раздел в процессе наполнения. Подать публикацию можно за <strong>3–5 минут</strong>: короткая форма, авто‑подсказки качества и модерация.</p>
+          <p><a href="#">Как опубликовать →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="wrap" id="roadmap" aria-labelledby="roadmap-title">
+      <h2 class="section-title" id="roadmap-title">Роадмап (публичный план)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Сейчас</h3>
+          <ul>
+            <li>Публичная бета и сбор обратной связи</li>
+            <li>Онбординг публикаций (форма, чек‑лист)</li>
+            <li>Наполнение каталога (MVP‑карточки)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Далее</h3>
+          <ul>
+            <li>Кейсы и пилоты (шаблоны метрик)</li>
+            <li>Расширенный поиск и фильтры</li>
+            <li>Профили участников и сообщения</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Дальше</h3>
+          <ul>
+            <li>Партнёрские программы</li>
+            <li>Витрины отраслей и подборки</li>
+            <li>Публичный API/интеграции</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section class="wrap" id="changelog" aria-labelledby="changelog-title">
+      <h2 class="section-title" id="changelog-title">Журнал изменений</h2>
+      <div class="card">
+        <ul>
+          <li><strong>2025‑11‑09 · v0.4.0</strong> — голубая бренд‑палитра в кнопках, уменьшён радиус до 12px, обновлён хиро‑заголовок.</li>
+          <li><strong>2025‑11‑09 · v0.3.0</strong> — добавлены «Технологии», уточнены тексты, введён единый радиус кнопок, улучшены empty‑states.</li>
+          <li><strong>2025‑11‑09 · v0.2.0</strong> — добавлены «Цели» и «ИИ», статус‑блок расширен, сетка приведена к 8‑pt.</li>
+          <li><strong>2025‑11‑09 · v0.1.0</strong> — публичная бета, новая главная (светлая), статус‑блоки, роадмап и FAQ.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Join / Feedback -->
+    <section class="wrap" id="join" aria-labelledby="join-title">
+      <h2 class="section-title" id="join-title">Присоединиться к раннему доступу</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Стать участником</h3>
+          <p>Получите ранний доступ и влияйте на приоритеты. В обмен — конструктивный фидбек и готовность тестировать фичи.</p>
+          <p><a class="btn" href="#feedback">Оставить заявку</a></p>
+        </div>
+        <div class="card" id="feedback">
+          <h3>Обратная связь</h3>
+          <p>Пока самый быстрый канал — email. Форма с файлом/скриншотом появится в ближайших релизах.</p>
+          <p><a class="btn btn--ghost" href="mailto:info@upgradefor.com?subject=%5BUPGRADE%20BETA%5D%20Отзыв%20или%20идея">info@upgradefor.com</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacts -->
+    <section class="wrap" id="contacts" aria-labelledby="contacts-title">
+      <h2 class="section-title" id="contacts-title">Контакты</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Юридический адрес (Республика Молдова)</h3>
+          <address>
+            <p>UPGRADE INNOVATIONS SRL</p>
+            <p>Указать юридический адрес</p>
+            <p>Chișinău, MD‑20xxx, Moldova</p>
+          </address>
+          <p style="color:var(--muted)">Телефон на главной странице не публикуем, чтобы не перегружать линию — используйте email.</p>
+        </div>
+        <div class="card">
+          <h3>Почта</h3>
+          <p><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></p>
+          <p>Международная платформа — поддерживаем RU / EN / RO.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Premium Marketplace: Vitrines + Trust -->
+    <section class="wrap" id="vitrines" aria-labelledby="vitrines-title">
+      <h2 class="section-title" id="vitrines-title">Витрины направлений</h2>
+      <p class="lead">Платформа мультивендорная, но витрины разделяют контент по назначению — так навигация остаётся понятной, а уровень качества — ровным.</p>
+      <div class="cards-6">
+        <article class="card">
+          <h3>Недвижимость (премиум)</h3>
+          <p>Объекты с верификацией продавца и документов. Премодерация фото, планировок и правового статуса.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Образование</h3>
+          <p>Учебные стенды, лаборатории, методические комплексы, EdTech‑решения.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Ремонт и услуги</h3>
+          <p>Сервисные центры, промышленный ремонт, аудит, инжиниринг.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Оборудование и материалы</h3>
+          <p>Индустриальные модули, композиты, аддитив, энергетика.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Сообщество</h3>
+          <p>Ленты проектов и событий — без смешения с торговыми карточками.</p>
+          <p><a class="btn btn--ghost" href="#">Перейти →</a></p>
+        </article>
+        <article class="card">
+          <h3>R&amp;D и пилоты</h3>
+          <p>НИОКР, прототипы, пилотные внедрения и партнёрства.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="trust" aria-labelledby="trust-title">
+      <h2 class="section-title" id="trust-title">Надёжность и серьёзность платформы</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Верификация и премодерация</h3>
+          <ul>
+            <li><strong>KYC/документы продавца</strong> для премиальных разделов (например, недвижимость).</li>
+            <li><strong>Стандарты листингов</strong>: фото, планировки, метрики, юридические атрибуты.</li>
+            <li><strong>Раздельные витрины</strong>, чтобы не смешивать рыночные и социальные посты.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Безопасная сделка</h3>
+          <ul>
+            <li><strong>Эскроу/депонирование</strong> (на этапе внедрения) для сделок повышенной стоимости.</li>
+            <li><strong>Проверка объекта</strong>: чек‑лист и запрос пакета документов.</li>
+            <li><strong>Публичный статус</strong> и <strong>changelog</strong> — видимость работ и релизов.</li>
+          </ul>
+        </article>
+      </div>
+      <p class="lead" style="margin-top:var(--space-3)">Мы выстраиваем доверие через ясный язык, проверяемые факты и понятные процессы — от подачи до сделки.</p>
+    </section>
+
+    <section class="wrap" id="quality" aria-labelledby="quality-title">
+      <h2 class="section-title" id="quality-title">Правила качества публикаций</h2>
+      <div class="cards-3">
         <article class="card">
           <h3>Чёткие категории и фильтры</h3>
           <p>Каждая карточка должна быть в правильной витрине и с корректными фильтрами — это влияет на поиск и доверие.</p>
@@ -571,9 +602,7 @@ body{ font-family: var(--font-sans); }
         </article>
       </div>
     </section>
-
   </main>
-
   <footer>
     <div class="wrap">© <span id="y"></span> UPGRADE INNOVATIONS — все права защищены.</div>
   </footer>
@@ -581,50 +610,32 @@ body{ font-family: var(--font-sans); }
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
-
-  <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) -->
+  <!-- Script for toggling side menu and closing it on link click -->
   <script>
     (function(){
       var toggle = document.querySelector('.menu-toggle');
       var body = document.body;
+      var setMenuState = function(collapsed){
+        body.classList.toggle('menu-collapsed', collapsed);
+        if(toggle){
+          toggle.setAttribute('aria-expanded', (!collapsed).toString());
+          toggle.setAttribute('aria-label', collapsed ? 'Открыть меню' : 'Скрыть меню');
+        }
+      };
       if(toggle){
         toggle.addEventListener('click', function(){
-          body.classList.toggle('menu-collapsed');
+          var willCollapse = body.classList.contains('menu-collapsed');
+          setMenuState(!willCollapse);
         });
       }
       var sideLinks = document.querySelectorAll('.left-menu a');
       sideLinks.forEach(function(link){
         link.addEventListener('click', function(){
-          body.classList.add('menu-collapsed');
-    <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) -->
-    <script>
-      (function(){
-        var toggle = document.querySelector('.menu-toggle');
-        var body = document.body;
-        var setMenuState = function(collapsed){
-          body.classList.toggle('menu-collapsed', collapsed);
-          if(toggle){
-            toggle.setAttribute('aria-expanded', (!collapsed).toString());
-            toggle.setAttribute('aria-label', collapsed ? 'Открыть меню' : 'Скрыть меню');
-          }
-        };
-        if(toggle){
-          toggle.addEventListener('click', function(){
-            var willCollapse = body.classList.contains('menu-collapsed');
-            setMenuState(!willCollapse);
-          });
-        }
-        var sideLinks = document.querySelectorAll('.left-menu a');
-        sideLinks.forEach(function(link){
-          link.addEventListener('click', function(){
-            setMenuState(true);
-          });
+          setMenuState(true);
         });
       });
+      setMenuState(true);
     })();
   </script>
-        setMenuState(true);
-      })();
-    </script>
 </body>
 </html>
