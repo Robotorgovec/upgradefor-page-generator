@@ -75,7 +75,12 @@
 
     /* Header */
     header{
-      position:sticky;top:0;z-index:50;
+      /* Fixed position so the header stays in place when scrolling */
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:50;
       background:rgba(255,255,255,.85);
       border-bottom:1px solid var(--line);
       backdrop-filter:saturate(160%) blur(10px);
@@ -506,7 +511,8 @@ body{ font-family: var(--font-sans); }
       justify-content: center;
       cursor: pointer;
       padding: 0;
-      margin-right: 8px;
+      /* Increase right margin to avoid overlapping with logo */
+      margin-right: 16px;
     }
     .burger-icon {
       width: 18px;
@@ -904,7 +910,7 @@ body{ font-family: var(--font-sans); }
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <img class="hero-figure" src="hero-character.png" alt="Персонаж">
+        <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
       </div>
     </section>
 
