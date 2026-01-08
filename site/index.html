@@ -85,6 +85,20 @@
       border-bottom:1px solid var(--line);
       backdrop-filter:saturate(160%) blur(10px);
     }
+
+    /* Make the header container flush with the left edge of the viewport */
+    header .wrap{
+      /* remove automatic centering from the generic .wrap */
+      margin-left:0;
+      margin-right:0;
+      /* add a small left padding equal to the base spacing unit */
+      padding-left:var(--space-1);
+    }
+
+    /* Reduce left padding on the nav within the header so the burger sits near the edge */
+    header .nav{
+      padding-left:0;
+    }
     .nav{
       display:flex;
       align-items:center;
