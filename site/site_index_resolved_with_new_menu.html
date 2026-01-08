@@ -1,230 +1,1199 @@
-К содержанию
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ensure no caching so users always receive the latest build -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>UPGRADE INNOVATIONS — открытая бета</title>
+  <meta name="description" content="UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.">
+  <!-- Updated build version to reflect the most recent deployment -->
+  <meta name="build-version" content="landing-v8-2025-12-04">
+  <link rel="canonical" href="https://upgradefor.com/">
+  <link rel="alternate" hreflang="ru-RU" href="https://upgradefor.com/ru/">
+  <link rel="alternate" hreflang="en-US" href="https://upgradefor.com/en/">
+  <link rel="alternate" hreflang="x-default" href="https://upgradefor.com/">
 
-UPGRADE Innovations logo
-Sign in
-Sign up
-space_dashboard
-dynamic_feed
-auto_graph
-subscriptions
-neurology
-mark_unread_chat_alt
-forum
-phone_in_talk
-person
-emoji_events
-token
-shopping_bag
-category
-architecture
-build
-settings_suggest
-analytics
-handyman
-heat_pump
-plumbing
-maps_home_work
-hub
-apartment
-sports_esports
-account_balance_wallet
-savings
-receipt_long
-view_kanban
-event
-task_alt
-stacked_bar_chart
-business_center
-apartment
-diversity_3
-monitor_heart
-local_shipping
-menu_book
-school
-work_outline
-theater_comedy
-sports_esports
-brush
-BETA
-Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.
-UPGRADE — платформа, где технологии находят применение
-Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
+  <!-- Material Symbols Outlined – иконки для левого меню -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
+  />
 
-Присоединиться
-Каталог
-Как это работает?
-Персонаж
-Состояние разделов
-Раздел
-Статус
-Комментарий
-Каталог решений
-В процессе
-Наполнение карточек и фильтров
-Публикации от пользователей
-В процессе
-Онбординг и модерация
-Кейсы/проекты
-Запланировано
-Первые публикации — после пилотов
-Пилоты и партнёры
-Запланировано
-Форма заявки на пилот
-Сообщество
-Запланировано
-Профили и сообщения
-Документация/гайд
-Готово
-Чек‑листы по качеству публикаций
-Публичная статус‑страница инфраструктуры: status.upgradefor.com.
+  <style>
+    :root{
+      color-scheme: light;
 
-Наши цели
-Апгрейд через применение
-Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.
+      /* ===== Brand tokens (под ваш лого: чёрный + голубой) ===== */
+      --brand-ink:#0f172a;           /* тёмный текст/заголовки */
+      --brand-cyan:#12aff0;          /* основной акцент — голубой из айдентики */
+      --brand-cyan-600:#0e8bc0;      /* затемнённый для hover/фокуса */
+      --brand-blue:#2563eb;          /* вспомогательный синий (связь с лого) */
 
-Прозрачность ожиданий
-Статус, план и изменения — на одной странице. Пользователи понимают этап и следующий шаг.
+      /* ===== UI tokens ===== */
+      --bg:#f7fafc;
+      --surface:#ffffff;
+      --soft:#f1f5f9;
+      --text:var(--brand-ink);
+      --muted:#475569;
+      --line:#e5eaf0;
 
-Ответственный ИИ
-Принципы: понятность, human‑in‑the-loop, приватность и корректное цитирование.
+      --primary:var(--brand-cyan);   /* цвет кнопок/акцентов */
+      --primary-ink:#06222e;         /* ТЕКСТ на кнопках (важно для контраста) */
+      --primary-50:#e6f7ff;          /* мягкий фон/баннер */
+      --primary-600:var(--brand-cyan-600);
 
-Искусственный интеллект на платформе
-Что запускаем
-Семантический поиск по продуктам и исследованиям.
-Ассистент публикации: подсказки качества, авто‑саммари, перевод.
-Матчинг пилотов: сопоставление задач и решений.
-Принципы
-Понятность: видно, где ИИ помогает и как.
-Human‑in‑the-loop: финальное слово — за людьми.
-Конфиденциальность и уважение авторских прав.
-Направления технологий
-AI/ML
-Модели, пайплайны, MLOps, доверие и безопасность ИИ.
+      /* Сетка и отступы (8‑pt) */
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+      --space-5:40px; --space-6:48px; --space-8:64px;
+      --section-y: var(--space-8);
 
-Робототехника
-Манипуляторы, мобильные платформы, ROS‑экосистема.
+      /* Радиусы через токены — управляют «характером» интерфейса */
+      --r-card:16px;                 /* карточки — дружелюбно */
+      --r-btn:12px;                  /* кнопки — «полу‑капсула» (инновационно, но без «желе») */
+      --r-chip:999px;                /* бейджи/тэги — капсулы */
 
-Новые материалы
-Композиты, покрытия, упрочнение, аддитив.
+      --shadow:0 10px 24px rgba(15,23,42,.06);
+      --w:clamp(300px,92vw,1160px);
+      --gap:clamp(14px,2vw,24px);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font:16px/1.6 var(--font-sans),-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
+      text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--brand-blue);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--w);margin:0 auto;padding:0 var(--gap)}
+    .skip{position:absolute;left:-9999px;top:auto}
+    .skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:.5rem .75rem;border-radius:8px;z-index:1000}
+    :focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
-Энергоэффективность
-Smart‑grid, энергоаудит, оптимизация потребления.
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.85);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(160%) blur(10px);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .brand svg{width:28px;height:28px}
+    .grow{flex:1}
 
-Био/медтех
-Диагностика, лабораторные наборы, биосенсоры.
+    .auth-buttons{
+      display:flex;
+      align-items:center;
+      gap:var(--space-1);
+    }
+    .header-icons{
+      display:none;
+      align-items:center;
+      gap:8px;
+    }
+    .icon-btn{
+      border:none;
+      background:transparent;
+      padding:0 4px;
+      margin:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .icon-btn .material-symbols-outlined{
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24;
+      font-size:22px;
+    }
 
-EdTech
-Учебные стенды, симуляторы, методические комплексы.
 
-Карточки появятся по мере наполнения — можно подать заявку на публикацию уже сейчас.
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
+      background:#12aff0; color:#ffffff;
+      font-weight:700; letter-spacing:.1px; min-height:44px; /* доступность */
+      box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); background:#0e8bc0}
+    .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
+    .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
 
-Каталог и публикации
-Решения от UPGRADE INNOVATIONS
-Собственные продукты и учебные комплексы с методическими материалами. Поддержка внедрения и обучение.
+    /* Бета‑баннер */
+    .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .phase .content{display:flex;gap:12px;align-items:center;padding:10px 0}
+    .tag{font-size:.8rem;font-weight:800;color:#0b3cbd;background:#e0e7ff;border:1px solid #c7d2fe;border-radius:6px;padding:.25rem .5rem}
+    .phase .text{color:#1e293b}
 
-Открыть каталог компании →
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
+    .lead{color:var(--muted);max-width:64ch}
+    .hero-art{
+      background:radial-gradient(1000px 500px at 80% -40%, rgba(14,197,255,.18), transparent 60%),
+                 radial-gradient(700px 420px at 0% 20%, rgba(37,99,235,.12), transparent 60%);
+      border-radius:20px;border:1px solid var(--line);
+      box-shadow:var(--shadow); padding:18px; overflow:hidden;
+    }
+    .hero-figure{width:100%;height:auto;display:block}
 
-Публикации от пользователей
-Раздел в процессе наполнения. Подать публикацию можно за 3–5 минут: короткая форма, авто‑подсказки качества и модерация.
+    /* Sections */
+    section{padding:var(--section-y) 0}
+    .section-title{font-size:clamp(22px,3vw,32px);margin:0 0 var(--space-3)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+    @media (max-width:900px){.cards-3{grid-template-columns:1fr}}
+    .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+    @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:var(--space-3);box-shadow:var(--shadow)}
+    .card h3{margin:.1em 0 .35em;font-size:clamp(18px,2.2vw,22px)}
+    .card p{color:var(--muted)}
 
-Как опубликовать →
+    /* Status table */
+    .status-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center}
+    @media (max-width:900px){.status-grid{grid-template-columns:1fr 1fr;row-gap:10px} .status-grid .h{grid-column:1 / -1}}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:.25rem .5rem;border-radius:var(--r-chip);border:1px solid var(--line);font-size:.85rem}
+    .b-done{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+    .b-soon{background:#fff7ed;color:#7c2d12;border-color:#fed7aa}
+    .b-todo{background:#f8fafc;color:#0f172a;border-color:#e2e8f0}
 
-Роадмап (публичный план)
-Сейчас
-Публичная бета и сбор обратной связи
-Онбординг публикаций (форма, чек‑лист)
-Наполнение каталога (MVP‑карточки)
-Далее
-Кейсы и пилоты (шаблоны метрик)
-Расширенный поиск и фильтры
-Профили участников и сообщения
-Дальше
-Партнёрские программы
-Витрины отраслей и подборки
-Публичный API/интеграции
-Журнал изменений
-2025‑11‑09 · v0.4.0 — голубая бренд‑палитра в кнопках, уменьшён радиус до 12px, обновлён хиро‑заголовок.
-2025‑11‑09 · v0.3.0 — добавлены «Технологии», уточнены тексты, введён единый радиус кнопок, улучшены empty‑states.
-2025‑11‑09 · v0.2.0 — добавлены «Цели» и «ИИ», статус‑блок расширен, сетка приведена к 8‑pt.
-2025‑11‑09 · v0.1.0 — публичная бета, новая главная (светлая), статус‑блоки, роадмап и FAQ.
-Присоединиться к раннему доступу
-Стать участником
-Получите ранний доступ и влияйте на приоритеты. В обмен — конструктивный фидбек и готовность тестировать фичи.
+    footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted)}
 
-Оставить заявку
+    /* Dark scheme */
+    @media (prefers-color-scheme: dark){
+      :root{color-scheme: dark;
+        --bg:#0b1220; --surface:#0f172a; --soft:#0b1323; --text:#e6edf6; --muted:#9cb3c8; --line:#12213a;
+        --shadow:0 10px 24px rgba(0,0,0,.35);
+      }
+      .btn{color:var(--primary-ink)}
+      header{background:rgba(15,23,42,.75)}
+      .phase .text{color:#e6edf6}
+    }
+  </style>
 
-Обратная связь
-Пока самый быстрый канал — email. Форма с файлом/скриншотом появится в ближайших релизах.
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"UPGRADE INNOVATIONS",
+    "url":"https://upgradefor.com/",
+    "logo":"https://robotorgovec.github.io/upgradefor-page-generator/assets/upgrade-innovations-logo-main.svg",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "MD",
+      "addressLocality": "Chișinău",
+      "streetAddress": "Указать юридический адрес",
+      "postalCode": "MD‑20xxx"
+    },
+    "contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"info@upgradefor.com","areaServed":["EU","Worldwide"],"availableLanguage":["ru","en","ro"]}]
+  }
+  </script>
 
-info@upgradefor.com
+<!-- v7 UI overrides: refined buttons + font token -->
+<style id="v7-overrides">
+:root{
+  /* Font system: switch to Inter/Manrope later by editing --font-sans */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Brand tokens (ensure both cyan and blue variants exist) */
+  --brand-cyan: #12aff0;
+  --brand-cyan-600: #0e8bc0;
+  --brand-blue: #2563eb;
+  --brand-blue-600: #1d4ed8;
+  /* Button elevations */
+  --btn-elev: 0 6px 14px rgba(2,132,199,.16);
+  --btn-elev-hover: 0 12px 24px rgba(2,132,199,.22);
+  --btn-elev-active: 0 4px 10px rgba(2,132,199,.18);
+  /* Button sizing */
+  --btn-min-h: 44px;
+  --btn-pad-x: 1rem;
+  --btn-pad-y: 0.625rem; /* аккуратная высота */
+}
+/* Apply font token */
+body{ font-family: var(--font-sans); }
+/* Base button (filled) */
+.btn{
+  position:relative; isolation:isolate;
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  min-height: var(--btn-min-h);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--r-btn, 12px);
+  border:1px solid #000;
+  background: var(--brand-cyan);
+  color: #ffffff;
+  font-weight: 700; letter-spacing:.1px;
+  box-shadow: none;
+  transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
+  text-decoration: none !important; cursor: pointer;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: none;
+  background: var(--brand-cyan-600);
+}
+.btn:active{
+  transform: translateY(0);
+  box-shadow: none;
+  filter: none;
+}
+/* State layer for subtle sheen */
+.btn::after{
+  content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
+  background: none;
+  opacity:0; transition: none;
+}
+.btn:hover::after{ opacity:0 }
+/* Focus-visible ring */
+.btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(0,0,0,.3);
+}
+/* Ghost button */
+.btn.btn--ghost{
+  color: #000;
+  background: transparent; border-color: #000;
+  box-shadow: none;
+}
+.btn.btn--ghost:hover{
+  background: rgba(0,0,0,0.06);
+  border-color: #000;
+  color: #000;
+}
+/* Disabled */
+.btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .btn{ transition: none !important }
+    .btn:hover,.btn:active{ transform: none }
+    }
 
-Контакты
-Юридический адрес (Республика Молдова)
-UPGRADE INNOVATIONS SRL
+</style>
+<style id="custom-btn-colors">
+  /* Кнопка SIGN UP — правильный голубой */
+  .btn,
+  .btn:visited {
+    background: #12aff0 !important;     /* цвет как в логотипе */
+    background-color: #12aff0 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
 
-Указать юридический адрес
+  .btn::after { display: none !important; }
 
-Chișinău, MD‑20xxx, Moldova
+  .btn:hover,
+  .btn:focus,
+  .btn:focus-visible,
+  .btn:active {
+    background: #0e8bc0 !important;     /* затемнение для hover */
+    background-color: #0e8bc0 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
-Телефон на главной странице не публикуем, чтобы не перегружать линию — используйте email.
+  /* Кнопка SIGN IN — чёрная окантовка */
+  .btn.btn--ghost,
+  .btn.btn--ghost:visited {
+    background: transparent !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+  }
 
-Почта
-info@upgradefor.com
+  .btn.btn--ghost:hover,
+  .btn.btn--ghost:focus,
+  .btn.btn--ghost:focus-visible,
+  .btn.btn--ghost:active {
+    background: rgba(0,0,0,0.06) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+</style>
 
-Международная платформа — поддерживаем RU / EN / RO.
+<style id="v8-cards6">
+  .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+  @media (max-width:900px){.cards-6{grid-template-columns:1fr}}
+</style>
 
-Витрины направлений
-Платформа мультивендорная, но витрины разделяют контент по назначению — так навигация остаётся понятной, а уровень качества — ровным.
+  <!-- Дополнительные стили для бокового меню и кнопки-бургера -->
+  <style>
+    :root {
+      --sidebar-collapsed-width: 46px;
+      --sidebar-expanded-width: 260px;
+      --header-height: 64px; /* значение по умолчанию, точное выставит JS */
+      --bg-sidebar: #f9fafb;
+      --bg-sidebar-hover: #e5e7eb;
+      --border-color-soft: #e5e7eb;
+      --sidebar-accent: #0ea5e9;
+      --sidebar-accent-strong: #0ea5e9;
+      --transition-fast: 0.25s ease;
+    }
 
-Недвижимость (премиум)
-Объекты с верификацией продавца и документов. Премодерация фото, планировок и правового статуса.
+    /* Хэдер всегда на полную ширину; двигаем только контент под ним */
+    body {
+      padding-left: 0;
+      transition: none;
+    }
 
-Открыть витрину →
+    /* Сдвиг основного контента (баннер, main, footer) вправо, чтобы меню не перекрывало страницу */
+    body > .phase,
+    body > main,
+    body > footer {
+      margin-left: var(--sidebar-collapsed-width);
+      transition: margin-left var(--transition-fast);
+    }
 
-Образование
-Учебные стенды, лаборатории, методические комплексы, EdTech‑решения.
+    body.menu-open > .phase,
+    body.menu-open > main,
+    body.menu-open > footer {
+      margin-left: var(--sidebar-expanded-width);
+    }
 
-Открыть витрину →
+    /* Левая панель под хэдером */
+    .sidebar {
+      position: fixed;
+      z-index: 40;
+      top: var(--header-height);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-collapsed-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color-soft);
+      display: flex;
+      flex-direction: column;
+      transition: width var(--transition-fast);
+    }
+    body.menu-open .sidebar {
+      width: var(--sidebar-expanded-width);
+    }
 
-Ремонт и услуги
-Сервисные центры, промышленный ремонт, аудит, инжиниринг.
+    .sidebar-inner {
+      flex: 1 1 auto;
+      padding: 8px 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #9ca3af transparent;
+    }
+    .sidebar-inner::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar-inner::-webkit-scrollbar-thumb {
+      background: #9ca3af;
+      border-radius: 999px;
+    }
+    .sidebar-inner::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-Открыть витрину →
+    .sidebar-section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      padding: 8px 18px 4px;
+      white-space: normal;
+    }
 
-Оборудование и материалы
-Индустриальные модули, композиты, аддитив, энергетика.
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #111827;
+      cursor: pointer;
+      transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast);
+      border-radius: 10px;
+      margin: 0 8px;
+    }
+    .menu-item:hover {
+      background: var(--bg-sidebar-hover);
+      transform: translateX(2px);
+    }
+    .menu-item.active {
+      background: #e0edff;
+      color: var(--sidebar-accent-strong);
+      font-weight: 600;
+    }
 
-Открыть витрину →
+    .menu-icon.material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 200,
+        'GRAD' 0,
+        'opsz' 24;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--sidebar-accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .menu-item:hover .menu-icon,
+    .menu-item.active .menu-icon {
+      color: var(--sidebar-accent-strong);
+    }
 
-Сообщество
-Ленты проектов и событий — без смешения с торговыми карточками.
+    .menu-label {
+      opacity: 1;
+      white-space: normal;
+      line-height: 1.3;
+      word-break: break-word;
+      transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
+    }
 
-Перейти →
+    body:not(.menu-open) .menu-item {
+      justify-content: center;
+      padding-inline: 0;
+      margin-inline: 0;
+    }
+    body:not(.menu-open) .menu-label,
+    body:not(.menu-open) .sidebar-section-label {
+      display: none;
+    }
 
-R&D и пилоты
-НИОКР, прототипы, пилотные внедрения и партнёрства.
+    .menu-separator {
+      margin: 6px 10px;
+      border-bottom: 1px solid rgba(209, 213, 219, 0.9);
+    }
 
-Открыть витрину →
+    /* Кнопка-бургер в шапке */
+    .burger {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      margin-right: 8px;
+    }
+    .burger-icon {
+      width: 18px;
+      height: 14px;
+      position: relative;
+    }
+    .burger-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: #000000;
+      transition:
+        transform var(--transition-fast),
+        opacity var(--transition-fast),
+        top var(--transition-fast),
+        bottom var(--transition-fast);
+    }
+    .burger-line:nth-child(1) {
+      top: 0;
+    }
+    .burger-line:nth-child(2) {
+      top: 6px;
+    }
+    .burger-line:nth-child(3) {
+      bottom: 0;
+    }
 
-Надёжность и серьёзность платформы
-Верификация и премодерация
-KYC/документы продавца для премиальных разделов (например, недвижимость).
-Стандарты листингов: фото, планировки, метрики, юридические атрибуты.
-Раздельные витрины, чтобы не смешивать рыночные и социальные посты.
-Безопасная сделка
-Эскроу/депонирование (на этапе внедрения) для сделок повышенной стоимости.
-Проверка объекта: чек‑лист и запрос пакета документов.
-Публичный статус и changelog — видимость работ и релизов.
-Мы выстраиваем доверие через ясный язык, проверяемые факты и понятные процессы — от подачи до сделки.
+    body.menu-open .burger-line:nth-child(1) {
+      top: 6px;
+      transform: rotate(45deg);
+    }
+    body.menu-open .burger-line:nth-child(2) {
+      opacity: 0;
+    }
+    body.menu-open .burger-line:nth-child(3) {
+      bottom: 6px;
+      transform: rotate(-45deg);
+    }
 
-Правила качества публикаций
-Чёткие категории и фильтры
-Каждая карточка должна быть в правильной витрине и с корректными фильтрами — это влияет на поиск и доверие.
+    @media (max-width: 768px) {
+      /* На мобильных меню работает как выезжающая панель поверх контента */
+      body > .phase,
+      body > main,
+      body > footer {
+        margin-left: 0;
+      }
+      body.menu-open > .phase,
+      body.menu-open > main,
+      body.menu-open > footer {
+        margin-left: 0;
+      }
 
-Доказуемая ценность
-Цифры, планы помещений/схемы, спецификации, документы — вместо «общих слов».
+      .sidebar {
+        width: var(--sidebar-expanded-width);
+        transform: translateX(-100%);
+        transition: transform var(--transition-fast);
+      }
+      body.menu-open .sidebar {
+        transform: translateX(0);
+      }
 
-Соц‑посты отдельно
-Личные ленты и обсуждения — в разделе «Сообщество», чтобы не снижать серьёзность торговых витрин.
+      /* Мобильная шапка: прячем большие кнопки и показываем иконки */
+      .auth-buttons {
+        display: none;
+      }
 
-© 2026 UPGRADE INNOVATIONS — все права защищены.
+      .header-icons {
+        display: flex;
+      }
+
+      .nav {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .brand img {
+        height: 32px;
+      }
+    }}
+  </style>
+
+</head>
+<body class="menu-collapsed">
+  <a class="skip" href="#main">К содержанию</a>
+
+  <header>
+    <div class="wrap nav">
+      <!-- Бургер: открывает левое меню -->
+      <button class="burger" id="burgerBtn" aria-label="Открыть меню">
+        <span class="burger-icon">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </span>
+      </button>
+
+      <!-- Логотип по центру -->
+      <div class="brand" aria-label="UPGRADE INNOVATIONS">
+        <img src="assets/upgrade-innovations-logo-main.svg"
+             alt="UPGRADE Innovations logo"
+             style="height:40px;width:auto;">
+      </div>
+
+      <div class="grow"></div>
+
+      <!-- Иконки действий (мобильная шапка) -->
+      <div class="header-icons" aria-label="Быстрые действия">
+        <button class="icon-btn" aria-label="Поиск" data-path="/search">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <button class="icon-btn" aria-label="Сообщения" data-path="/messages">
+          <span class="material-symbols-outlined">mark_unread_chat_alt</span>
+        </button>
+        <button class="icon-btn" aria-label="Уведомления" data-path="/notifications">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <button class="icon-btn" aria-label="Корзина" data-path="/cart">
+          <span class="material-symbols-outlined">shopping_cart</span>
+        </button>
+      </div>
+
+      <!-- Кнопки авторизации (видны на десктопе) -->
+      <div class="auth-buttons">
+        <a class="btn btn--ghost" href="#feedback" rel="nofollow">Sign in</a>
+        <a class="btn" href="#join" rel="nofollow">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Левое меню: отображается по нажатию на бургер; по умолчанию свернуто -->
+  <aside class="sidebar" aria-label="Основная навигация по платформе">
+    <div class="sidebar-inner">
+      <!-- НАВИГАЦИЯ / ЛЕНТА -->
+      <div class="sidebar-section-label">Навигация</div>
+
+      <div class="menu-item active" data-path="/" title="Главная страница (дашборд, обзор)">
+        <span class="menu-icon material-symbols-outlined">space_dashboard</span>
+        <span class="menu-label">Главная</span>
+      </div>
+      <div class="menu-item" data-path="/feed" title="Публикации пользователей, ИИ-рекомендации">
+        <span class="menu-icon material-symbols-outlined">dynamic_feed</span>
+        <span class="menu-label">Лента</span>
+      </div>
+      <div class="menu-item" data-path="/feed/trending" title="Топ записи всех пользователей">
+        <span class="menu-icon material-symbols-outlined">auto_graph</span>
+        <span class="menu-label">Популярное</span>
+      </div>
+      <div class="menu-item" data-path="/feed/subscribed" title="Посты отслеживаемых пользователей">
+        <span class="menu-icon material-symbols-outlined">subscriptions</span>
+        <span class="menu-label">Подписки</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- КОММУНИКАЦИИ -->
+      <div class="sidebar-section-label">Коммуникации</div>
+
+      <div class="menu-item" data-path="/assistant" title="Умный ИИ‑помощник, мозг платформы">
+        <span class="menu-icon material-symbols-outlined">neurology</span>
+        <span class="menu-label">ИИ-ассистент</span>
+      </div>
+      <div class="menu-item" data-path="/messages" title="Общая входящая по сообщениям и диалогам">
+        <span class="menu-icon material-symbols-outlined">mark_unread_chat_alt</span>
+        <span class="menu-label">Сообщения</span>
+      </div>
+      <div class="menu-item" data-path="/messages/chats" title="Личные и групповые переписки">
+        <span class="menu-icon material-symbols-outlined">forum</span>
+        <span class="menu-label">Чаты</span>
+      </div>
+      <div class="menu-item" data-path="/messages/calls" title="Аудио и видеосвязь">
+        <span class="menu-icon material-symbols-outlined">phone_in_talk</span>
+        <span class="menu-label">Звонки</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- ПРОФИЛЬ -->
+      <div class="sidebar-section-label">Профиль</div>
+
+      <div class="menu-item" data-path="/profile" title="Личная страница и настройки пользователя">
+        <span class="menu-icon material-symbols-outlined">person</span>
+        <span class="menu-label">Профиль</span>
+      </div>
+      <div class="menu-item" data-path="/profile/achievements" title="Награды, уровни и бейджи">
+        <span class="menu-icon material-symbols-outlined">emoji_events</span>
+        <span class="menu-label">Достижения</span>
+      </div>
+      <div class="menu-item" data-path="/profile/tokens" title="Внутренняя валюта и баллы">
+        <span class="menu-icon material-symbols-outlined">token</span>
+        <span class="menu-label">Токены</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- WIKIMARKET -->
+      <div class="sidebar-section-label">WikiMarket</div>
+
+      <div class="menu-item" data-path="/wikimarket" title="Каталог товаров с описаниями и документацией">
+        <span class="menu-icon material-symbols-outlined">shopping_bag</span>
+        <span class="menu-label">WikiMarket</span>
+      </div>
+      <div class="menu-item" data-path="/wikimarket/categories" title="Разделы каталога товаров">
+        <span class="menu-icon material-symbols-outlined">category</span>
+        <span class="menu-label">Категории</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- КЛИМАТИЧЕСКИЕ СИСТЕМЫ (ОВК) -->
+      <div class="sidebar-section-label">Климатические системы (ОВК)</div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/design" title="Проектирование климатических систем и ОВК">
+        <span class="menu-icon material-symbols-outlined">architecture</span>
+        <span class="menu-label">Проектирование</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/installation" title="Монтаж климатических систем и оборудования">
+        <span class="menu-icon material-symbols-outlined">build</span>
+        <span class="menu-label">Монтаж</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/maintenance" title="Сервисное обслуживание и поддержка ОВК">
+        <span class="menu-icon material-symbols-outlined">settings_suggest</span>
+        <span class="menu-label">Обслуживание</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/diagnostics" title="Диагностика, аудит и проверка ОВК‑систем">
+        <span class="menu-icon material-symbols-outlined">analytics</span>
+        <span class="menu-label">Диагностика</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/repair" title="Ремонт и восстановление систем ОВК">
+        <span class="menu-icon material-symbols-outlined">handyman</span>
+        <span class="menu-label">Ремонт</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/heat-exchangers" title="Каталог теплообменников для разных типов систем">
+        <span class="menu-icon material-symbols-outlined">heat_pump</span>
+        <span class="menu-label">Каталог теплообменников</span>
+      </div>
+
+      <div class="menu-item" data-path="/wikimarket/hvac/heat-exchanger-repair" title="Ремонт теплообменников по типам и задачам">
+        <span class="menu-icon material-symbols-outlined">plumbing</span>
+        <span class="menu-label">Ремонт теплообменников</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- РЕШЕНИЯ ДЛЯ НЕДВИЖИМОСТИ -->
+      <div class="sidebar-section-label">Решения для недвижимости</div>
+
+      <div class="menu-item" data-path="/wikimarket/real-estate" title="Витрина решений для рынка недвижимости">
+        <span class="menu-icon material-symbols-outlined">maps_home_work</span>
+        <span class="menu-label">Решения для недвижимости</span>
+      </div>
+      <div class="menu-item" data-path="/wikimarket/real-estate/proptech" title="PropTech и технологии для недвижимости">
+        <span class="menu-icon material-symbols-outlined">hub</span>
+        <span class="menu-label">PropTech</span>
+      </div>
+      <div class="menu-item" data-path="/wikimarket/real-estate/commercial" title="Коммерческая недвижимость и премиальные объекты">
+        <span class="menu-icon material-symbols-outlined">apartment</span>
+        <span class="menu-label">Коммерческая недвижимость</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- ИГРЫ И ОБУЧЕНИЕ -->
+      <div class="sidebar-section-label">Игры и обучение</div>
+
+      <div class="menu-item" data-path="/wikimarket/education-games" title="Игры обучающие и симуляторы (EdTech)">
+        <span class="menu-icon material-symbols-outlined">sports_esports</span>
+        <span class="menu-label">Игры обучающие</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- КОШЕЛЁК / ФИНАНСЫ -->
+      <div class="sidebar-section-label">Кошелёк</div>
+
+      <div class="menu-item" data-path="/wallet" title="Финансы пользователя (счета и платежи)">
+        <span class="menu-icon material-symbols-outlined">account_balance_wallet</span>
+        <span class="menu-label">Кошелёк</span>
+      </div>
+      <div class="menu-item" data-path="/wallet/balance" title="Текущий баланс средств и токенов">
+        <span class="menu-icon material-symbols-outlined">savings</span>
+        <span class="menu-label">Баланс</span>
+      </div>
+      <div class="menu-item" data-path="/wallet/history" title="Список транзакций и покупок">
+        <span class="menu-icon material-symbols-outlined">receipt_long</span>
+        <span class="menu-label">История</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- ОРГАНАЙЗЕР -->
+      <div class="sidebar-section-label">Органайзер</div>
+
+      <div class="menu-item" data-path="/organizer" title="Планирование, проекты, CRM-инструменты">
+        <span class="menu-icon material-symbols-outlined">view_kanban</span>
+        <span class="menu-label">Органайзер</span>
+      </div>
+      <div class="menu-item" data-path="/organizer/calendar" title="Расписание событий и встреч">
+        <span class="menu-icon material-symbols-outlined">event</span>
+        <span class="menu-label">Календарь</span>
+      </div>
+      <div class="menu-item" data-path="/organizer/tasks" title="Управление списком задач">
+        <span class="menu-icon material-symbols-outlined">task_alt</span>
+        <span class="menu-label">Задачи</span>
+      </div>
+      <div class="menu-item" data-path="/organizer/crm" title="Управление клиентами и продажами">
+        <span class="menu-icon material-symbols-outlined">stacked_bar_chart</span>
+        <span class="menu-label">CRM-модули</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- БИЗНЕС -->
+      <div class="sidebar-section-label">Бизнес</div>
+
+      <div class="menu-item" data-path="/business" title="Компании и B2B-возможности">
+        <span class="menu-icon material-symbols-outlined">business_center</span>
+        <span class="menu-label">Бизнес</span>
+      </div>
+      <div class="menu-item" data-path="/business/companies" title="Профили и страницы компаний">
+        <span class="menu-icon material-symbols-outlined">apartment</span>
+        <span class="menu-label">Компании</span>
+      </div>
+      <div class="menu-item" data-path="/business/b2b" title="Инструменты для корпоративных клиентов">
+        <span class="menu-icon material-symbols-outlined">diversity_3</span>
+        <span class="menu-label">B2B-портал</span>
+      </div>
+
+      <div class="menu-separator"></div>
+
+      <!-- СЕРВИСЫ / ЖИЗНЬ / РАЗВИТИЕ -->
+      <div class="sidebar-section-label">Сервисы и развитие</div>
+
+      <div class="menu-item" data-path="/health" title="Здоровье и фитнес (медицинские сервисы)">
+        <span class="menu-icon material-symbols-outlined">monitor_heart</span>
+        <span class="menu-label">Здоровье</span>
+      </div>
+      <div class="menu-item" data-path="/logistics" title="Доставки и транспортные сервисы">
+        <span class="menu-icon material-symbols-outlined">local_shipping</span>
+        <span class="menu-label">Логистика</span>
+      </div>
+      <div class="menu-item" data-path="/education" title="Обучение и профессиональное развитие">
+        <span class="menu-icon material-symbols-outlined">menu_book</span>
+        <span class="menu-label">Образование</span>
+      </div>
+      <div class="menu-item" data-path="/education/courses" title="Онлайн-обучение и тренинги">
+        <span class="menu-icon material-symbols-outlined">school</span>
+        <span class="menu-label">Курсы</span>
+      </div>
+      <div class="menu-item" data-path="/education/careers" title="Вакансии и карьерные возможности">
+        <span class="menu-icon material-symbols-outlined">work_outline</span>
+        <span class="menu-label">Профессии</span>
+      </div>
+      <div class="menu-item" data-path="/entertainment" title="Игры, контент, события">
+        <span class="menu-icon material-symbols-outlined">theater_comedy</span>
+        <span class="menu-label">Развлечения</span>
+      </div>
+      <div class="menu-item" data-path="/entertainment/games" title="Игровые сервисы, мини-игры">
+        <span class="menu-icon material-symbols-outlined">sports_esports</span>
+        <span class="menu-label">Игры</span>
+      </div>
+      <div class="menu-item" data-path="/entertainment/creative" title="Проекты для самореализации и творчества">
+        <span class="menu-icon material-symbols-outlined">brush</span>
+        <span class="menu-label">Творчество</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Бета‑баннер -->
+  <div class="phase" role="status" aria-live="polite">
+    <div class="wrap content">
+      <span class="tag" aria-label="Этап разработки">BETA</span>
+      <div class="text">Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.</div>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="wrap hero">
+      <div>
+        <h1>UPGRADE — платформа, где технологии находят применение</h1>
+        <p class="lead">
+          Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
+        </p>
+        <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
+          <a class="btn" href="#join">Присоединиться</a>
+          <a class="btn btn--ghost" href="#catalog">Каталог</a>
+          <a class="btn btn--ghost" href="#faq">Как это работает?</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <img class="hero-figure" src="hero-character.png" alt="Персонаж">
+      </div>
+    </section>
+
+    <!-- Status -->
+    <section class="wrap" id="status" aria-labelledby="status-title">
+      <h2 class="section-title" id="status-title">Состояние разделов</h2>
+      <div class="card">
+        <div class="status-grid">
+          <div class="h"><strong>Раздел</strong></div><div class="h"><strong>Статус</strong></div><div class="h"><strong>Комментарий</strong></div>
+
+          <div>Каталог решений</div><div><span class="badge b-soon">В процессе</span></div><div>Наполнение карточек и фильтров</div>
+          <div>Публикации от пользователей</div><div><span class="badge b-soon">В процессе</span></div><div>Онбординг и модерация</div>
+          <div>Кейсы/проекты</div><div><span class="badge b-todo">Запланировано</span></div><div>Первые публикации — после пилотов</div>
+          <div>Пилоты и партнёры</div><div><span class="badge b-todo">Запланировано</span></div><div>Форма заявки на пилот</div>
+          <div>Сообщество</div><div><span class="badge b-todo">Запланировано</span></div><div>Профили и сообщения</div>
+          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек‑листы по качеству публикаций</div>
+        </div>
+        <p class="lead" style="margin-top:var(--space-3)">
+          Публичная статус‑страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Goals -->
+    <section class="wrap" id="goals" aria-labelledby="goals-title">
+      <h2 class="section-title" id="goals-title">Наши цели</h2>
+      <div class="cards-3">
+        <article class="card"><h3>Апгрейд через применение</h3><p>Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.</p></article>
+        <article class="card"><h3>Прозрачность ожиданий</h3><p>Статус, план и изменения — на одной странице. Пользователи понимают этап и следующий шаг.</p></article>
+        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, human‑in‑the-loop, приватность и корректное цитирование.</p></article>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section class="wrap" id="ai" aria-labelledby="ai-title">
+      <h2 class="section-title" id="ai-title">Искусственный интеллект на платформе</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Что запускаем</h3>
+          <ul>
+            <li><strong>Семантический поиск</strong> по продуктам и исследованиям.</li>
+            <li><strong>Ассистент публикации</strong>: подсказки качества, авто‑саммари, перевод.</li>
+            <li><strong>Матчинг пилотов</strong>: сопоставление задач и решений.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Принципы</h3>
+          <ul>
+            <li><strong>Понятность</strong>: видно, где ИИ помогает и как.</li>
+            <li><strong>Human‑in‑the-loop</strong>: финальное слово — за людьми.</li>
+            <li><strong>Конфиденциальность</strong> и уважение авторских прав.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology directions -->
+    <section class="wrap" id="tech" aria-labelledby="tech-title">
+      <h2 class="section-title" id="tech-title">Направления технологий</h2>
+      <div class="cards-6">
+        <article class="card"><h3>AI/ML</h3><p>Модели, пайплайны, MLOps, доверие и безопасность ИИ.</p></article>
+        <article class="card"><h3>Робототехника</h3><p>Манипуляторы, мобильные платформы, ROS‑экосистема.</p></article>
+        <article class="card"><h3>Новые материалы</h3><p>Композиты, покрытия, упрочнение, аддитив.</p></article>
+        <article class="card"><h3>Энергоэффективность</h3><p>Smart‑grid, энергоаудит, оптимизация потребления.</p></article>
+        <article class="card"><h3>Био/медтех</h3><p>Диагностика, лабораторные наборы, биосенсоры.</p></article>
+        <article class="card"><h3>EdTech</h3><p>Учебные стенды, симуляторы, методические комплексы.</p></article>
+      </div>
+      <p class="lead" style="margin-top:var(--space-3)">Карточки появятся по мере наполнения — можно подать заявку на публикацию уже сейчас.</p>
+    </section>
+
+    <!-- Catalog teaser -->
+    <section class="wrap" id="catalog" aria-labelledby="catalog-title">
+      <h2 class="section-title" id="catalog-title">Каталог и публикации</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Решения от UPGRADE&nbsp;INNOVATIONS</h3>
+          <p>Собственные продукты и учебные комплексы с методическими материалами. Поддержка внедрения и обучение.</p>
+          <p><a href="#">Открыть каталог компании →</a></p>
+        </article>
+        <article class="card">
+          <h3>Публикации от пользователей</h3>
+          <p>Раздел в процессе наполнения. Подать публикацию можно за <strong>3–5 минут</strong>: короткая форма, авто‑подсказки качества и модерация.</p>
+          <p><a href="#">Как опубликовать →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="wrap" id="roadmap" aria-labelledby="roadmap-title">
+      <h2 class="section-title" id="roadmap-title">Роадмап (публичный план)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Сейчас</h3>
+          <ul>
+            <li>Публичная бета и сбор обратной связи</li>
+            <li>Онбординг публикаций (форма, чек‑лист)</li>
+            <li>Наполнение каталога (MVP‑карточки)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Далее</h3>
+          <ul>
+            <li>Кейсы и пилоты (шаблоны метрик)</li>
+            <li>Расширенный поиск и фильтры</li>
+            <li>Профили участников и сообщения</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Дальше</h3>
+          <ul>
+            <li>Партнёрские программы</li>
+            <li>Витрины отраслей и подборки</li>
+            <li>Публичный API/интеграции</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section class="wrap" id="changelog" aria-labelledby="changelog-title">
+      <h2 class="section-title" id="changelog-title">Журнал изменений</h2>
+      <div class="card">
+        <ul>
+          <li><strong>2025‑11‑09 · v0.4.0</strong> — голубая бренд‑палитра в кнопках, уменьшён радиус до 12px, обновлён хиро‑заголовок.</li>
+          <li><strong>2025‑11‑09 · v0.3.0</strong> — добавлены «Технологии», уточнены тексты, введён единый радиус кнопок, улучшены empty‑states.</li>
+          <li><strong>2025‑11‑09 · v0.2.0</strong> — добавлены «Цели» и «ИИ», статус‑блок расширен, сетка приведена к 8‑pt.</li>
+          <li><strong>2025‑11‑09 · v0.1.0</strong> — публичная бета, новая главная (светлая), статус‑блоки, роадмап и FAQ.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Join / Feedback -->
+    <section class="wrap" id="join" aria-labelledby="join-title">
+      <h2 class="section-title" id="join-title">Присоединиться к раннему доступу</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Стать участником</h3>
+          <p>Получите ранний доступ и влияйте на приоритеты. В обмен — конструктивный фидбек и готовность тестировать фичи.</p>
+          <p><a class="btn" href="#feedback">Оставить заявку</a></p>
+        </div>
+        <div class="card" id="feedback">
+          <h3>Обратная связь</h3>
+          <p>Пока самый быстрый канал — email. Форма с файлом/скриншотом появится в ближайших релизах.</p>
+          <p><a class="btn btn--ghost" href="mailto:info@upgradefor.com?subject=%5BUPGRADE%20BETA%5D%20Отзыв%20или%20идея">info@upgradefor.com</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacts -->
+    <section class="wrap" id="contacts" aria-labelledby="contacts-title">
+      <h2 class="section-title" id="contacts-title">Контакты</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Юридический адрес (Республика Молдова)</h3>
+          <address>
+            <p>UPGRADE INNOVATIONS SRL</p>
+            <p>Указать юридический адрес</p>
+            <p>Chișinău, MD‑20xxx, Moldova</p>
+          </address>
+          <p style="color:var(--muted)">Телефон на главной странице не публикуем, чтобы не перегружать линию — используйте email.</p>
+        </div>
+        <div class="card">
+          <h3>Почта</h3>
+          <p><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></p>
+          <p>Международная платформа — поддерживаем RU / EN / RO.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Premium Marketplace: Vitrines + Trust -->
+    <section class="wrap" id="vitrines" aria-labelledby="vitrines-title">
+      <h2 class="section-title" id="vitrines-title">Витрины направлений</h2>
+      <p class="lead">Платформа мультивендорная, но витрины разделяют контент по назначению — так навигация остаётся понятной, а уровень качества — ровным.</p>
+      <div class="cards-6">
+        <article class="card">
+          <h3>Недвижимость (премиум)</h3>
+          <p>Объекты с верификацией продавца и документов. Премодерация фото, планировок и правового статуса.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Образование</h3>
+          <p>Учебные стенды, лаборатории, методические комплексы, EdTech‑решения.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Ремонт и услуги</h3>
+          <p>Сервисные центры, промышленный ремонт, аудит, инжиниринг.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Оборудование и материалы</h3>
+          <p>Индустриальные модули, композиты, аддитив, энергетика.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+        <article class="card">
+          <h3>Сообщество</h3>
+          <p>Ленты проектов и событий — без смешения с торговыми карточками.</p>
+          <p><a class="btn btn--ghost" href="#">Перейти →</a></p>
+        </article>
+        <article class="card">
+          <h3>R&amp;D и пилоты</h3>
+          <p>НИОКР, прототипы, пилотные внедрения и партнёрства.</p>
+          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="trust" aria-labelledby="trust-title">
+      <h2 class="section-title" id="trust-title">Надёжность и серьёзность платформы</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Верификация и премодерация</h3>
+          <ul>
+            <li><strong>KYC/документы продавца</strong> для премиальных разделов (например, недвижимость).</li>
+            <li><strong>Стандарты листингов</strong>: фото, планировки, метрики, юридические атрибуты.</li>
+            <li><strong>Раздельные витрины</strong>, чтобы не смешивать рыночные и социальные посты.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Безопасная сделка</h3>
+          <ul>
+            <li><strong>Эскроу/депонирование</strong> (на этапе внедрения) для сделок повышенной стоимости.</li>
+            <li><strong>Проверка объекта</strong>: чек‑лист и запрос пакета документов.</li>
+            <li><strong>Публичный статус</strong> и <strong>changelog</strong> — видимость работ и релизов.</li>
+          </ul>
+        </article>
+      </div>
+      <p class="lead" style="margin-top:var(--space-3)">Мы выстраиваем доверие через ясный язык, проверяемые факты и понятные процессы — от подачи до сделки.</p>
+    </section>
+
+    <section class="wrap" id="quality" aria-labelledby="quality-title">
+      <h2 class="section-title" id="quality-title">Правила качества публикаций</h2>
+      <div class="cards-3">
+        <article class="card">
+          <h3>Чёткие категории и фильтры</h3>
+          <p>Каждая карточка должна быть в правильной витрине и с корректными фильтрами — это влияет на поиск и доверие.</p>
+        </article>
+        <article class="card">
+          <h3>Доказуемая ценность</h3>
+          <p>Цифры, планы помещений/схемы, спецификации, документы — вместо «общих слов».</p>
+        </article>
+        <article class="card">
+          <h3>Соц‑посты отдельно</h3>
+          <p>Личные ленты и обсуждения — в разделе «Сообщество», чтобы не снижать серьёзность торговых витрин.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="y"></span> UPGRADE INNOVATIONS — все права защищены.</div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Скрипт для переключения бокового меню (показывает/скрывает боковую панель) и установки высоты хедера -->
+  <script>
+    (function () {
+      const body = document.body;
+      const burger = document.getElementById('burgerBtn');
+      const root = document.documentElement;
+      const header = document.querySelector('header');
+
+      function updateHeaderHeight() {
+        if (!header) return;
+        const h = header.offsetHeight;
+        root.style.setProperty('--header-height', h + 'px');
+      }
+
+      if (burger) {
+        burger.addEventListener('click', function () {
+          body.classList.toggle('menu-open');
+        });
+      }
+
+      // Закрытие меню по Esc
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && body.classList.contains('menu-open')) {
+          body.classList.remove('menu-open');
+        }
+      });
+
+      window.addEventListener('load', updateHeaderHeight);
+      window.addEventListener('resize', updateHeaderHeight);
+      updateHeaderHeight();
+    })();
+  </script>
+</body>
+</html>
