@@ -86,20 +86,22 @@
       backdrop-filter:saturate(160%) blur(10px);
     }
 
-    /* Make the header container flush with the left edge of the viewport */
-    header .wrap{
-      /* remove automatic centering from the generic .wrap */
-      margin-left:0;
-      margin-right:0;
-      /* add a small left padding equal to the base spacing unit */
-      padding-left:var(--space-1);
-    }
-
-    /* Reduce left padding on the nav within the header so the burger sits near the edge */
+  /* Make the header container flush with the edges of the viewport and span full width */
+header .wrap{
+  /* remove automatic centering from the generic .wrap */
+  margin-left:0;
+  margin-right:0;
+  /* allow the nav container to span the full width of the header */
+  max-width:none;
+  /* add symmetric horizontal padding equal to the base spacing unit */
+  padding-left:var(--space-1);
+  padding-right:var(--space-1);
+}
+         /* Reduce left padding on the nav within the header so the burger sits near the edge */
     header .nav{
       padding-left:0;
     }
-    .nav{
+    .nv{
       display:flex;
       align-items:center;
       gap:18px;
