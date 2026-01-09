@@ -1230,26 +1230,21 @@ body:not(.menu-open) .burger {
       updateHeaderHeight();
     })();
   </script>
-<  <style id="v9-auth-burger-adjustments">
+<<style id="v9-auth-burger-adjustments">
   /* Reduce height of sign-in/up buttons by ~10% */
   .auth-buttons .btn {
-    min-height: 40px;
-    padding-top: 0.5625rem;
-    padding-bottom: 0.5625rem;
+    mmin-height: 40px;
+  padding-top: 0.5625rem;
+  padding-bottom: 0.5625rem;
   }
-  /* Shift collapsed burger 5px to the right for better centering */
+  /* Shift collapsed burger button slightly right to center it over the collapsed sidebar */
   body:not(.menu-open) .burger {
-    margin-left: calc(var(--sidebar-collapsed-width)/2 - 11px);
+    margin-left: calc(var(--sidebar-collapsed-width)/2 - 14px);
+  }
+  /* Keep burger aligned when menu is open so cross and lines stay in same position */
+  body.menu-open .burger {
+    margin-left: calc(var(--sidebar-collapsed-width)/2 - 14px);
+  }
 </style>
-
-    
-    </body>>
-</html>
-}
-  
-</
- >
-style>
-
-  /body>
-</html>
+<</body>
+></html>
