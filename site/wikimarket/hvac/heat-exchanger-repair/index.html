@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Ремонт и обслуживание теплообменников всех типов | UPGR Upgrade Innovations</title>
+  <meta name="description" content="Сервис теплообменников всех типов: пластинчатые, кожухотрубные, ребристо‑трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные и др. Диагностика, чистка, герметичность, восстановление, замена." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Каноникал лучше подставлять генератором под конкретный URL страницы -->
+  <link rel="canonical" href="{{CANONICAL_URL}}" />
+
+  <!-- hreflang (опционально; подставлять генератором) -->
+  <link rel="alternate" hreflang="ru" href="{{URL_RU}}" />
+  <link rel="alternate" hreflang="en" href="{{URL_EN}}" />
+  <link rel="alternate" hreflang="tr" href="{{URL_TR}}" />
+  <link rel="alternate" hreflang="ar" href="{{URL_AR}}" />
+  <link rel="alternate" hreflang="x-default" href="{{URL_DEFAULT}}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ремонт и обслуживание теплообменников всех типов | UPGR" />
+  <meta property="og:description" content="Диагностика, чистка, испытания, восстановление герметичности, ремонт и замена теплообменников разных конструкций." />
+  <meta property="og:url" content="{{CANONICAL_URL}}" />
+
+  <style>
+    /* =========================
+       UPGR Heat Exchangers HUB v2
+       - No header
+       - No left menu
+       - Mobile-first, overflow-safe
+       ========================= */
+
+    :root{
+      --bg:#f7fafc;
+      --surface:#ffffff;
+      --soft:#f1f5f9;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#e2e8f0;
+
+      --brand:#0ea5e9;
+      --brand-700:#0369a1;
+      --brand-soft:#e6f7ff;
+      --ok:#16a34a;
+      --warn:#f59e0b;
+
+      --shadow:0 14px 34px rgba(2,6,23,.08);
+      --r-1:14px;
+      --r-2:18px;
+      --r-3:24px;
+
+      --w:clamp(320px, 92vw, 1160px);
+      --pad:clamp(14px, 3.5vw, 22px);
+      --gap:clamp(12px, 2.6vw, 20px);
+
+      /* typography */
+      --fs-0: clamp(14px, 1.2vw, 16px);
+      --fs-1: clamp(18px, 2.0vw, 22px);
+      --fs-2: clamp(22px, 3.0vw, 30px);
+      --fs-hero: clamp(28px, 4.4vw, 44px);
+
+      --btn-h: 46px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font: var(--fs-0)/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Prevent page-level horizontal scroll */
+    body{ overflow-x:hidden; }
+
+    a{ color: inherit; text-decoration:none; }
+    a:hover{ text-decoration: underline; }
+
+    img, svg{ max-width:100%; height:auto; display:block; }
+
+    /* Wrapper scopes all styles to avoid theme conflicts */
+    .upgr-hx{
+      width:100%;
+      overflow-x: clip;
+      overflow-wrap:anywhere;
+      word-break: break-word;
+      hyphens:auto;
+    }
+
+    .upgr-hx *{ min-width:0; }
+
+    .upgr-hx .wrap{ max-width: var(--w); margin:0 auto; padding: 0 var(--pad); }
+
+    .upgr-hx .section{ padding: clamp(18px, 4vw, 44px) 0; }
+
+    .upgr-hx .card{
+      background: var(--surface);
+      border:1px solid var(--line);
+      border-radius: var(--r-2);
+      box-shadow: var(--shadow);
+    }
+
+    .upgr-hx .muted{ color: var(--muted); }
+
+    .upgr-hx .kicker{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 12px;
+      background: var(--brand-soft);
+      border:1px solid color-mix(in srgb, var(--brand) 22%, white);
+      border-radius: 999px;
+      color: var(--brand-700);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .upgr-hx h1{ margin: 12px 0 10px; font-size: var(--fs-hero); line-height:1.08; letter-spacing:-.02em; }
+    .upgr-hx h2{ margin: 0 0 12px; font-size: var(--fs-2); line-height:1.15; letter-spacing:-.01em; }
+    .upgr-hx h3{ margin: 0 0 8px; font-size: var(--fs-1); line-height:1.2; }
+
+    .upgr-hx p{ margin: 0 0 12px; }
+
+    .upgr-hx .hr{ height:1px; background: var(--line); margin: 14px 0; }
+
+    /* Buttons */
+    .upgr-hx .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      height: var(--btn-h);
+      padding: 0 16px;
+      border-radius: 14px;
+      border:1px solid transparent;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing:.1px;
+      box-shadow: 0 10px 24px rgba(14,165,233,.18);
+      cursor:pointer;
+      white-space:nowrap;
+      text-decoration:none;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .upgr-hx .btn:hover{ background: var(--brand-700); text-decoration:none; }
+
+    .upgr-hx .btn-outline{
+      background: transparent;
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--text) 14%, var(--line));
+      box-shadow:none;
+    }
+    .upgr-hx .btn-outline:hover{ border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); background: rgba(14,165,233,.06); }
+
+    .upgr-hx .btn-soft{
+      background: rgba(15,23,42,.04);
+      border-color: rgba(15,23,42,.10);
+      color: var(--text);
+      box-shadow:none;
+    }
+
+    /* Layout helpers (mobile-first) */
+    .upgr-hx .grid{ display:grid; gap: var(--gap); }
+    .upgr-hx .grid-2{ grid-template-columns: 1fr; }
+    .upgr-hx .grid-3{ grid-template-columns: 1fr; }
+    .upgr-hx .grid-4{ grid-template-columns: 1fr; }
+
+    @media (min-width: 720px){
+      .upgr-hx .grid-2{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .grid-3{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .grid-4{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1040px){
+      .upgr-hx .grid-3{ grid-template-columns: repeat(3, 1fr); }
+      .upgr-hx .grid-4{ grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Hero */
+    .upgr-hx .hero{ padding: clamp(22px, 4vw, 46px) 0; }
+
+    .upgr-hx .hero-grid{
+      display:grid;
+      gap: var(--gap);
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    @media (min-width: 980px){
+      .upgr-hx .hero-grid{ grid-template-columns: 1.1fr .9fr; }
+    }
+
+    .upgr-hx .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
+
+    .upgr-hx .lead{ color: var(--muted); font-size: clamp(15px, 1.35vw, 17px); line-height:1.55; max-width: 72ch; }
+
+    .upgr-hx .cta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
+
+    .upgr-hx .cta-row .btn{ flex: 1 1 180px; }
+
+    @media (max-width: 420px){
+      .upgr-hx .cta-row .btn{ flex: 1 1 100%; }
+    }
+
+    .upgr-hx .nav-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 14px; }
+
+    .upgr-hx .chip-link{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .upgr-hx .chip-link:hover{ border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); color: var(--text); text-decoration:none; }
+
+    /* Right contact card */
+    .upgr-hx .hero-side{ padding: clamp(16px, 2.6vw, 20px); }
+
+    .upgr-hx .contact-box{ display:grid; gap:12px; }
+
+    .upgr-hx .contact-line{
+      display:flex; align-items:flex-start; gap:12px;
+      padding: 12px;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(15,23,42,.02);
+    }
+
+    .upgr-hx .icon{
+      width: 42px;
+      aspect-ratio: 1/1;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: radial-gradient(circle at 30% 30%, rgba(14,165,233,.22), rgba(3,105,161,.10));
+      color: var(--brand-700);
+      font-weight: 900;
+    }
+
+    .upgr-hx .contact-line b{ display:block; margin-bottom:2px; }
+
+    .upgr-hx .contact-actions{ display:grid; grid-template-columns: 1fr; gap:10px; }
+
+    @media (min-width: 720px){
+      .upgr-hx .contact-actions{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .upgr-hx .note{ font-size: 12px; color: var(--muted); }
+
+    /* Feature cards */
+    .upgr-hx .feature{ padding: 14px; border-radius: var(--r-2); border:1px solid var(--line); background: #fff; box-shadow: none; }
+    .upgr-hx .feature .mini{ display:flex; gap:12px; align-items:flex-start; }
+    .upgr-hx .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Type directory */
+    .upgr-hx .type-card{ padding: 16px; }
+    .upgr-hx .type-card .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
+    .upgr-hx .tag{
+      display:inline-flex; align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.02);
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .upgr-hx .type-card .type-cta{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
+
+    /* Lists */
+    .upgr-hx .list{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+    .upgr-hx .li{ display:flex; gap:10px; align-items:flex-start; }
+    .upgr-hx .dot{ width: 18px; flex: 0 0 18px; aspect-ratio:1/1; border-radius: 50%; background: var(--ok); margin-top: 3px; }
+
+    /* Forms */
+    .upgr-hx label{ font-weight: 800; font-size: 13px; }
+    .upgr-hx input, .upgr-hx select, .upgr-hx textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline:none;
+      font: inherit;
+    }
+
+    .upgr-hx textarea{ min-height: 110px; resize: vertical; }
+
+    .upgr-hx input:focus, .upgr-hx select:focus, .upgr-hx textarea:focus{
+      border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
+      box-shadow: 0 0 0 4px rgba(14,165,233,.12);
+    }
+
+    .upgr-hx .form{
+      padding: 16px;
+    }
+
+    .upgr-hx .form-grid{ display:grid; gap: 12px; grid-template-columns: 1fr; }
+
+    @media (min-width: 720px){
+      .upgr-hx .form-grid{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .span-2{ grid-column: 1 / -1; }
+    }
+
+    /* FAQ */
+    .upgr-hx details{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background:#fff;
+    }
+    .upgr-hx summary{ cursor:pointer; font-weight: 900; }
+
+    /* Price: table for desktop + cards for mobile */
+    .upgr-hx .price-table{ width:100%; border-collapse: separate; border-spacing: 0; border:1px solid var(--line); border-radius: 16px; overflow:hidden; }
+    .upgr-hx .price-table th, .upgr-hx .price-table td{ padding: 12px 12px; text-align:left; vertical-align: top; border-bottom: 1px solid var(--line); }
+    .upgr-hx .price-table tr:last-child td{ border-bottom:none; }
+
+    .upgr-hx .price-mobile{ display:grid; gap:10px; }
+    .upgr-hx .price-item{ border:1px solid var(--line); border-radius: 16px; padding: 12px; background:#fff; }
+    .upgr-hx .price-item b{ display:block; margin-bottom: 6px; }
+
+    @media (min-width: 720px){
+      .upgr-hx .price-mobile{ display:none; }
+    }
+    @media (max-width: 719px){
+      .upgr-hx .price-desktop{ display:none; }
+    }
+
+    /* Country selector list */
+    .upgr-hx .geo-list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .upgr-hx .geo-item{ display:flex; justify-content:space-between; gap:10px; align-items:center; padding: 12px; border:1px solid var(--line); border-radius: 16px; background:#fff; }
+    .upgr-hx .geo-item a{ font-weight: 900; color: var(--text); }
+    .upgr-hx .geo-item a:hover{ text-decoration: underline; }
+    .upgr-hx .geo-phone{ font-weight: 900; color: var(--brand-700); }
+
+    /* Sticky mobile CTA bar */
+    .upgr-hx .sticky-bar{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999;
+      padding: 10px var(--pad);
+      background: rgba(255,255,255,.92);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .upgr-hx .sticky-bar .wrap{ max-width: var(--w); padding:0; }
+    .upgr-hx .sticky-actions{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+
+    @media (min-width: 980px){
+      .upgr-hx .sticky-bar{ display:none; }
+    }
+
+    /* Space so sticky bar doesn't cover content on mobile */
+    .upgr-hx .bottom-safe{ padding-bottom: 86px; }
+    @media (min-width: 980px){ .upgr-hx .bottom-safe{ padding-bottom: 0; } }
+
+    /* Dark scheme */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1220;
+        --surface:#0f172a;
+        --soft:#0b1323;
+        --text:#e6edf6;
+        --muted:#9cb3c8;
+        --line:#12213a;
+        --shadow: 0 18px 44px rgba(0,0,0,.38);
+      }
+      .upgr-hx .chip-link{ background: rgba(15,23,42,.55); }
+      .upgr-hx .btn-outline{ color: var(--text); border-color: rgba(230,237,246,.18); }
+      .upgr-hx .btn-soft{ background: rgba(230,237,246,.06); border-color: rgba(230,237,246,.14); color: var(--text); }
+      .upgr-hx .sticky-bar{ background: rgba(15,23,42,.78); }
+    }
+  </style>
+
+  <!-- Structured data (минимум; детали лучше подставлять генератором под конкретный URL/язык) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"UPGR Upgrade Innovations",
+    "url":"https://upgradefor.com",
+    "email":"info@upgradefor.com"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Ремонт и обслуживание теплообменников всех типов",
+    "url":"{{CANONICAL_URL}}",
+    "inLanguage":"ru",
+    "description":"Сервис теплообменников разных конструкций: диагностика, чистка, испытания, восстановление, ремонт и замена."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"С какими типами теплообменников вы работаете?",
+        "acceptedAnswer":{"@type":"Answer","text":"С большинством распространённых конструкций: пластинчатые, кожухотрубные, ребристо‑трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные. Редкие конструкции оцениваем по запросу."}
+      },
+      {
+        "@type":"Question",
+        "name":"Какие данные нужны, чтобы рассчитать стоимость и сроки?",
+        "acceptedAnswer":{"@type":"Answer","text":"Фото шильдика/маркировки (если есть), тип теплообменника, среда, температуры/давления, описание проблемы, габариты/доступность. Если данных нет — пришлите фото и мы уточним вопросы."}
+      },
+      {
+        "@type":"Question",
+        "name":"Когда выгоднее ремонт, а когда замена?",
+        "acceptedAnswer":{"@type":"Answer","text":"Если повреждения критические или конструкция неремонтопригодна, часто выгоднее замена. Мы сравниваем варианты: ремонт vs замена по срокам, рискам и стоимости владения."}
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
+
+    <div class="bottom-safe">
+
+      <!-- HERO (без хедера; страница встраивается в любой шаблон) -->
+      <section class="hero">
+        <div class="wrap hero-grid">
+
+          <div class="card hero-main">
+            <span class="kicker">Сервис • Диагностика • Чистка • Герметичность • Ремонт/замена</span>
+            <h1>Ремонт и обслуживание теплообменников всех типов</h1>
+            <p class="lead">
+              Универсальная сервис‑страница для всех конструкций и назначений: <b>пластинчатые</b>, <b>кожухотрубные</b>,
+              <b>ребристо‑трубные (калориферы/радиаторы/воздухонагреватели/воздухоохладители)</b>,
+              <b>испарители/конденсаторы HVAC/R</b>, <b>микроканальные</b> и другие.
+              Если тип редкий — <b>оцениваем по фото и параметрам</b> и предложим лучший вариант.
+            </p>
+
+            <div class="cta-row" aria-label="Основные действия">
+              <a class="btn" href="#request">Оставить заявку</a>
+              <a class="btn btn-outline" href="#types">Выбрать тип</a>
+              <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
+            </div>
+
+            <div class="nav-chips" aria-label="Навигация по странице">
+              <a class="chip-link" href="#types">Каталог типов</a>
+              <a class="chip-link" href="#works">Что делаем</a>
+              <a class="chip-link" href="#faults">Неисправности</a>
+              <a class="chip-link" href="#data">Что прислать</a>
+              <a class="chip-link" href="#prices">Цены</a>
+              <a class="chip-link" href="#faq">FAQ</a>
+              <a class="chip-link" href="#contacts">Контакты</a>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="grid grid-4" aria-label="Короткие преимущества">
+              <div class="feature">
+                <div class="mini">
+                  <div class="icon" aria-hidden="true">1D</div>
+                  <div>
+                    <b>Быстрый ответ</b>
+                    <div class="muted">Оценка по фото/данным — часто в течение рабочего дня.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="mini">
+                  <div class="icon" aria-hidden="true">QC</div>
+                  <div>
+                    <b>Контроль качества</b>
+                    <div class="muted">Испытания, герметичность, отчёт по работам.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="mini">
+                  <div class="icon" aria-hidden="true">SLA</div>
+                  <div>
+                    <b>B2B‑процессы</b>
+                    <div class="muted">Договор, закрывающие, понятные сроки и этапы.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="feature">
+                <div class="mini">
+                  <div class="icon" aria-hidden="true">INT</div>
+                  <div>
+                    <b>Международно</b>
+                    <div class="muted">Локальные контакты по странам — через выбор региона.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="card hero-side" aria-label="Контакты и быстрый запрос">
+            <div class="contact-box">
+
+              <div class="contact-line">
+                <div class="icon" aria-hidden="true">☎</div>
+                <div>
+                  <b>Телефон (локальный)</b>
+                  <div class="muted">{{PHONE_DISPLAY}}</div>
+                  <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
+                </div>
+              </div>
+
+              <div class="contact-actions">
+                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
+                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+              </div>
+
+              <div class="contact-line">
+                <div class="icon" aria-hidden="true">✉</div>
+                <div>
+                  <b>Email</b>
+                  <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
+                  <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:14px; border-radius:16px; box-shadow:none;">
+                <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
+                <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+                  <div class="form-grid">
+                    <div>
+                      <label for="q-name">Имя/Компания</label>
+                      <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
+                    </div>
+                    <div>
+                      <label for="q-phone">Телефон/мессенджер</label>
+                      <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                    </div>
+                    <div class="span-2">
+                      <label for="q-type">Тип теплообменника</label>
+                      <select id="q-type" name="type">
+                        <option value="">Не знаю / определить по фото</option>
+                        <option>Пластинчатый (разборный/паяный/полусварной)</option>
+                        <option>Кожухотрубный</option>
+                        <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
+                        <option>Испаритель HVAC/R</option>
+                        <option>Конденсатор HVAC/R</option>
+                        <option>Микроканальный</option>
+                        <option>Спиральный / навивной / другой</option>
+                      </select>
+                    </div>
+                    <div class="span-2">
+                      <label for="q-details">Коротко о проблеме</label>
+                      <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
+                    </div>
+                    <div class="span-2">
+                      <button class="btn" type="submit" style="width:100%">Отправить</button>
+                      <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
+      </section>
+
+      <!-- TYPES DIRECTORY -->
+      <section class="section" id="types">
+        <div class="wrap">
+          <h2>Каталог типов теплообменников</h2>
+          <p class="lead">
+            На главной мы показываем <b>семейства конструкций</b> и <b>функциональные названия</b>.
+            Узкие страницы (под конкретный тип и запрос) генерируются на этом же шаблоне и получают отдельный URL.
+          </p>
+
+          <div class="grid grid-3" style="margin-top:14px">
+
+            <article class="card type-card" id="type-plate">
+              <h3>Пластинчатые</h3>
+              <p class="muted">Разборные (на прокладках), паяные, сварные/полусварные. Частые задачи: чистка, прокладки, испытания, восстановление пластин.</p>
+              <div class="tags">
+                <span class="tag">plate heat exchanger</span>
+                <span class="tag">разборный</span>
+                <span class="tag">паяный</span>
+                <span class="tag">полусварной</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_PLATE}}">Страница типа</a>
+                <a class="btn btn-soft" href="#request">Заявка</a>
+              </div>
+            </article>
+
+            <article class="card type-card" id="type-shell">
+              <h3>Кожухотрубные</h3>
+              <p class="muted">U‑tube, straight, floating head. Частые задачи: чистка, дефектация, ретюбинг, ремонт трубной решётки, испытания.</p>
+              <div class="tags">
+                <span class="tag">shell and tube</span>
+                <span class="tag">ретюбинг</span>
+                <span class="tag">опрессовка</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_SHELL_TUBE}}">Страница типа</a>
+                <a class="btn btn-soft" href="#request">Заявка</a>
+              </div>
+            </article>
+
+            <article class="card type-card" id="type-coil">
+              <h3>Воздушные ребристо‑трубные (coil)</h3>
+              <p class="muted">Калориферы, воздухонагреватели, воздухоохладители, приточные радиаторы. Частые задачи: чистка ламелей, восстановление герметичности, ремонт трубок/коллекторов, замена секции.</p>
+              <div class="tags">
+                <span class="tag">калорифер</span>
+                <span class="tag">радиатор</span>
+                <span class="tag">air heater / air cooler</span>
+                <span class="tag">медно‑алюминиевый</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_COIL}}">Страница типа</a>
+                <a class="btn btn-soft" href="#request">Заявка</a>
+              </div>
+            </article>
+
+            <article class="card type-card" id="type-hvacr">
+              <h3>HVAC/R: испарители и конденсаторы</h3>
+              <p class="muted">Пользователи часто ищут по функции. Конструктивно это может быть coil‑радиатор или микроканал. Мы определяем тип по фото/маркировке и предлагаем сценарий ремонта/замены.</p>
+              <div class="tags">
+                <span class="tag">испаритель</span>
+                <span class="tag">конденсатор</span>
+                <span class="tag">evaporator coil</span>
+                <span class="tag">condenser coil</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_EVAPORATOR}}">Испарители</a>
+                <a class="btn btn-outline" href="{{SLUG_CONDENSER}}">Конденсаторы</a>
+              </div>
+            </article>
+
+            <article class="card type-card" id="type-microchannel">
+              <h3>Микроканальные</h3>
+              <p class="muted">Часто алюминиевые. Ремонт зависит от конструкции и доступности зон пайки/восстановления. Если ремонт нерентабелен — предложим замену или альтернативу.</p>
+              <div class="tags">
+                <span class="tag">microchannel</span>
+                <span class="tag">алюминиевый</span>
+                <span class="tag">герметичность</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_MICROCHANNEL}}">Страница типа</a>
+                <a class="btn btn-soft" href="#request">Заявка</a>
+              </div>
+            </article>
+
+            <article class="card type-card" id="type-other">
+              <h3>Спиральные, навивные и прочие</h3>
+              <p class="muted">Спиральные, навивные (coil‑wound), пластинчато‑ребристые (plate‑fin), heat‑pipe, рекуператоры. Для редких конструкций делаем оценку по исходным данным и предлагаем маршрут: ремонт / частичная замена / полная замена.</p>
+              <div class="tags">
+                <span class="tag">spiral</span>
+                <span class="tag">coil‑wound</span>
+                <span class="tag">plate‑fin</span>
+                <span class="tag">heat‑pipe</span>
+              </div>
+              <div class="type-cta">
+                <a class="btn btn-outline" href="{{SLUG_OTHER_TYPES}}">Каталог редких типов</a>
+                <a class="btn btn-soft" href="#request">Заявка</a>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="grid grid-2">
+            <div class="card" style="padding:16px">
+              <h3>Терминология: что люди часто имеют в виду</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span><b>Калорифер</b> = воздухонагреватель = приточный радиатор = coil‑heater.</span></li>
+                <li class="li"><span class="dot"></span><span><b>Воздухоохладитель</b> = air‑cooler coil (часто в вентиляции/климате).</span></li>
+                <li class="li"><span class="dot"></span><span><b>Испаритель/конденсатор</b> — функциональные названия (по холодильному контуру), конструктивно это coil или микроканал.</span></li>
+                <li class="li"><span class="dot"></span><span><b>Радиатор</b> — часто ребристо‑трубный теплообменник (air/water), но бывает и водяной/масляный контур.</span></li>
+              </ul>
+            </div>
+
+            <div class="card" style="padding:16px">
+              <h3>Где применяется (без перечисления 100 установок)</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span><b>HVAC</b>: вентиляция, отопление, кондиционирование, климатические системы зданий.</span></li>
+                <li class="li"><span class="dot"></span><span><b>HVAC/R</b>: холодильные контуры, теплоотвод/теплоприток, технологическое охлаждение.</span></li>
+                <li class="li"><span class="dot"></span><span><b>Промышленность</b>: технологические контуры, теплоутилизация, охлаждение сред.</span></li>
+                <li class="li"><span class="dot"></span><span><b>Инфраструктура</b>: энергетика, инженерные системы объектов, ЦОД.</span></li>
+              </ul>
+              <details style="margin-top:10px">
+                <summary>Примеры оборудования (кратко)</summary>
+                <p class="muted" style="margin-top:10px">Чиллеры, фанкойлы, rooftop‑установки, прецизионные кондиционеры, вентиляционные агрегаты, холодильные машины.</p>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- WORKS -->
+      <section class="section" id="works">
+        <div class="wrap">
+          <h2>Что делаем (универсально)</h2>
+          <div class="grid grid-3" style="margin-top:14px">
+            <article class="card" style="padding:16px">
+              <h3>Диагностика и дефектация</h3>
+              <p class="muted">Определяем тип/конструкцию, причину падения эффективности или утечки, оцениваем ремонтопригодность и риски.</p>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Осмотр, фото‑фиксация</span></li>
+                <li class="li"><span class="dot"></span><span>Анализ режима работы</span></li>
+                <li class="li"><span class="dot"></span><span>Рекомендации: ремонт vs замена</span></li>
+              </ul>
+            </article>
+            <article class="card" style="padding:16px">
+              <h3>Чистка и восстановление теплоотдачи</h3>
+              <p class="muted">Подбираем метод очистки под среду и конструкцию, чтобы вернуть эффективность без повреждений.</p>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>CIP / разборная чистка</span></li>
+                <li class="li"><span class="dot"></span><span>Очистка ламелей/каналов</span></li>
+                <li class="li"><span class="dot"></span><span>Проверка результата</span></li>
+              </ul>
+            </article>
+            <article class="card" style="padding:16px">
+              <h3>Герметичность и испытания</h3>
+              <p class="muted">Проверяем утечки, делаем испытания и оформляем результаты (по запросу — акт/отчёт).</p>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Опрессовка / тест герметичности</span></li>
+                <li class="li"><span class="dot"></span><span>Локализация дефектов</span></li>
+                <li class="li"><span class="dot"></span><span>Финальная проверка</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAULTS -->
+      <section class="section" id="faults">
+        <div class="wrap">
+          <h2>Типовые проблемы (для всех типов)</h2>
+          <div class="grid grid-2" style="margin-top:14px">
+            <div class="card" style="padding:16px">
+              <h3>Симптомы, которые видит заказчик</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Падение мощности (не греет / не охлаждает)</span></li>
+                <li class="li"><span class="dot"></span><span>Рост перепада давления, шум, вибрации</span></li>
+                <li class="li"><span class="dot"></span><span>Протечки / следы масла/влаги</span></li>
+                <li class="li"><span class="dot"></span><span>Быстрое загрязнение, запахи, пыль/жир на ламелях</span></li>
+              </ul>
+            </div>
+            <div class="card" style="padding:16px">
+              <h3>Причины (часто)</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Отложения/накипь/пыль → ухудшение теплообмена</span></li>
+                <li class="li"><span class="dot"></span><span>Коррозия/эрозия → утечки</span></li>
+                <li class="li"><span class="dot"></span><span>Нарушение режима (температуры/давления) → деформации</span></li>
+                <li class="li"><span class="dot"></span><span>Износ уплотнений/соединений/пайки</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="note" style="margin-top:10px">Для каждого типа есть свои особенности — поэтому мы разводим типы отдельными страницами и чек‑листами.</p>
+        </div>
+      </section>
+
+      <!-- DATA -->
+      <section class="section" id="data">
+        <div class="wrap">
+          <h2>Что прислать, чтобы быстро получить оценку</h2>
+          <div class="grid grid-3" style="margin-top:14px">
+            <div class="card" style="padding:16px">
+              <h3>Если есть шильдик/паспорт</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Фото шильдика/маркировки</span></li>
+                <li class="li"><span class="dot"></span><span>Модель/серия/год (если есть)</span></li>
+                <li class="li"><span class="dot"></span><span>Среда и режим (t°, P, расход)</span></li>
+              </ul>
+            </div>
+            <div class="card" style="padding:16px">
+              <h3>Если данных нет</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Фото теплообменника и подключения</span></li>
+                <li class="li"><span class="dot"></span><span>Габариты (примерно)</span></li>
+                <li class="li"><span class="dot"></span><span>Симптомы (что не так)</span></li>
+              </ul>
+            </div>
+            <div class="card" style="padding:16px">
+              <h3>Если это HVAC/R</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Тип: испаритель/конденсатор</span></li>
+                <li class="li"><span class="dot"></span><span>Следы утечки/масла, места повреждений</span></li>
+                <li class="li"><span class="dot"></span><span>Требуется ли замена секции/узла</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICES -->
+      <section class="section" id="prices">
+        <div class="wrap">
+          <h2>Ориентиры цен (универсально)</h2>
+          <p class="lead">Цены зависят от типа, размеров и загрязнения. Ниже — ориентиры «от». Точную смету даём после фото/данных.</p>
+
+          <!-- Mobile cards -->
+          <div class="price-mobile" style="margin-top:14px">
+            <div class="price-item"><b>Диагностика и дефектация</b><div class="muted">от {{PRICE_DIAG}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Чистка (по типу/объёму)</b><div class="muted">от {{PRICE_CLEAN}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Испытания герметичности</b><div class="muted">от {{PRICE_TEST}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Работы типа‑специфичные</b><div class="muted">регаскинг / ретюбинг / ремонт coil — по запросу</div></div>
+          </div>
+
+          <!-- Desktop table -->
+          <div class="price-desktop" style="margin-top:14px">
+            <table class="price-table" aria-label="Таблица ориентировочных цен">
+              <thead>
+                <tr>
+                  <th style="width:55%">Работа</th>
+                  <th style="width:15%">Ед.</th>
+                  <th style="width:30%">От</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Диагностика и дефектация</td><td>шт</td><td>{{PRICE_DIAG}} {{CURRENCY}}</td></tr>
+                <tr><td>Чистка (метод подбирается под конструкцию)</td><td>проект</td><td>{{PRICE_CLEAN}} {{CURRENCY}}</td></tr>
+                <tr><td>Испытания герметичности / опрессовка</td><td>комплект</td><td>{{PRICE_TEST}} {{CURRENCY}}</td></tr>
+                <tr><td>Тип‑специфичные работы</td><td>—</td><td>регаскинг / ретюбинг / coil‑repair — по запросу</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note" style="margin-top:10px">Под разные страны/города генератор подставляет валюту/формат цены и контактный номер.</div>
+        </div>
+      </section>
+
+      <!-- REQUEST -->
+      <section class="section" id="request">
+        <div class="wrap">
+          <h2>Заявка на ремонт / обслуживание</h2>
+          <div class="grid grid-2" style="margin-top:14px; align-items:start">
+
+            <form class="card form" onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+              <div class="form-grid">
+                <div>
+                  <label for="name">Имя</label>
+                  <input id="name" name="name" required placeholder="Сергей" autocomplete="name" />
+                </div>
+                <div>
+                  <label for="phone">Телефон</label>
+                  <input id="phone" name="phone" required placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                </div>
+                <div>
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="mail@company.com" autocomplete="email" />
+                </div>
+                <div>
+                  <label for="city">Город/страна</label>
+                  <input id="city" name="city" placeholder="Dubai / Istanbul / Chisinau" />
+                </div>
+
+                <div class="span-2">
+                  <label for="type">Тип теплообменника</label>
+                  <select id="type" name="type">
+                    <option value="">Не знаю / определить по фото</option>
+                    <option>Пластинчатый</option>
+                    <option>Кожухотрубный</option>
+                    <option>Ребристо‑трубный (калорифер/радиатор/coil)</option>
+                    <option>Испаритель HVAC/R</option>
+                    <option>Конденсатор HVAC/R</option>
+                    <option>Микроканальный</option>
+                    <option>Спиральный / навивной / другой</option>
+                  </select>
+                </div>
+
+                <div class="span-2">
+                  <label for="problem">Опишите задачу</label>
+                  <textarea id="problem" name="problem" placeholder="Что не так? Протечка, падение мощности, загрязнение, требуется испытание…"></textarea>
+                </div>
+
+                <div class="span-2">
+                  <button class="btn" type="submit" style="width:100%">Отправить заявку</button>
+                  <div class="note" style="margin-top:8px">Альтернатива: <a href="tel:{{PHONE_E164}}">позвонить</a> или написать в <a href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>.</div>
+                </div>
+              </div>
+            </form>
+
+            <aside class="card" style="padding:16px">
+              <h3>Как мы быстро даём решение</h3>
+              <ul class="list">
+                <li class="li"><span class="dot"></span><span>Определяем тип по фото/шильдику и симптомам</span></li>
+                <li class="li"><span class="dot"></span><span>Уточняем режим: среда, t°, давление, доступ</span></li>
+                <li class="li"><span class="dot"></span><span>Делаем предложение: ремонт / частичная замена / полная замена</span></li>
+                <li class="li"><span class="dot"></span><span>Фиксируем сроки, этапы, контроль качества</span></li>
+              </ul>
+
+              <div class="hr"></div>
+
+              <div class="badge">Совет</div>
+              <p class="muted" style="margin-top:10px">Если не уверены в типе — просто пришлите фото. На практике это самый быстрый способ стартовать.</p>
+            </aside>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq">
+        <div class="wrap">
+          <h2>FAQ</h2>
+          <div class="grid" style="gap:10px; max-width: 920px">
+
+            <details>
+              <summary>Как определить тип теплообменника, если нет паспорта?</summary>
+              <p class="muted" style="margin-top:10px">Пришлите фото общего вида и подключения. Обычно по геометрии/ламелям/пакету пластин/коллекторам мы определяем семейство и дальше задаём 3–5 уточняющих вопросов.</p>
+            </details>
+
+            <details>
+              <summary>Вы ремонтируете медно‑алюминиевые калориферы и радиаторы?</summary>
+              <p class="muted" style="margin-top:10px">Да, это относится к ребристо‑трубным (coil) теплообменникам. Решение зависит от дефекта: загрязнение → чистка, утечка → локализация и восстановление герметичности/замена секции.</p>
+            </details>
+
+            <details>
+              <summary>Испаритель/конденсатор — это отдельный тип?</summary>
+              <p class="muted" style="margin-top:10px">Это функциональное название. Конструктивно испаритель/конденсатор чаще всего — ребристо‑трубный coil или микроканальный радиатор. Мы определяем конструкцию и предлагаем сценарий ремонта/замены.</p>
+            </details>
+
+            <details>
+              <summary>Делаете ли вы работы в разных странах?</summary>
+              <p class="muted" style="margin-top:10px">Да. На страницах по странам мы показываем локальные контакты. Для старта — достаточно заявки с городом/страной и фото.</p>
+            </details>
+
+            <details>
+              <summary>Сколько контактов (телефон) должно быть на странице?</summary>
+              <p class="muted" style="margin-top:10px">Оптимально 3 точки: в первом экране (CTA), рядом с формой, и в конце в контактах. Для мобильных можно добавить нижнюю фикс‑панель «Позвонить/WhatsApp».</p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTS -->
+      <section class="section" id="contacts">
+        <div class="wrap">
+          <h2>Контакты и выбор страны</h2>
+          <div class="grid grid-2" style="margin-top:14px; align-items:start">
+
+            <div class="card" style="padding:16px">
+              <h3>Быстрый контакт</h3>
+              <p class="muted">Телефон/мессенджер подставляется по стране. Если вы на глобальной странице — выберите регион ниже.</p>
+
+              <div class="hr"></div>
+
+              <div class="contact-line">
+                <div class="icon" aria-hidden="true">☎</div>
+                <div>
+                  <b>{{PHONE_DISPLAY}}</b>
+                  <div class="note">Локальный номер для выбранной страны</div>
+                </div>
+              </div>
+
+              <div class="contact-actions" style="margin-top:10px">
+                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
+                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="note">Email: <a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
+            </div>
+
+            <div class="card" style="padding:16px">
+              <h3>Выберите страну (локальные контакты)</h3>
+              <p class="muted">На локальной странице будут: местный номер, валюта, язык и примеры кейсов по региону.</p>
+
+              <ul class="geo-list" style="margin-top:12px">
+                <li class="geo-item">
+                  <div>
+                    <a href="{{URL_UAE}}">UAE • Dubai</a>
+                    <div class="note">Английский/Арабский</div>
+                  </div>
+                  <div class="geo-phone">{{PHONE_UAE}}</div>
+                </li>
+                <li class="geo-item">
+                  <div>
+                    <a href="{{URL_TURKEY}}">Türkiye</a>
+                    <div class="note">Турецкий/Английский</div>
+                  </div>
+                  <div class="geo-phone">{{PHONE_TURKEY}}</div>
+                </li>
+                <li class="geo-item">
+                  <div>
+                    <a href="{{URL_EU}}">EU</a>
+                    <div class="note">English</div>
+                  </div>
+                  <div class="geo-phone">{{PHONE_EU}}</div>
+                </li>
+                <li class="geo-item">
+                  <div>
+                    <a href="{{URL_CIS}}">CIS</a>
+                    <div class="note">Русский</div>
+                  </div>
+                  <div class="geo-phone">{{PHONE_CIS}}</div>
+                </li>
+              </ul>
+
+              <div class="note" style="margin-top:12px">*Номера/ссылки подставляются генератором в зависимости от страны и города.</div>
+            </div>
+
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="note">© <span id="y"></span> UPGR Upgrade Innovations</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sticky mobile CTA (без хедера) -->
+    <div class="sticky-bar" role="navigation" aria-label="Быстрые действия">
+      <div class="wrap">
+        <div class="sticky-actions">
+          <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
+          <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Year
+    (function(){
+      var el = document.getElementById('y');
+      if(el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
