@@ -442,6 +442,9 @@
 </head>
 
 <body>
+    <header></header>
+  <aside class="sidebar"></aside>
+  
   <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
 
     <div class="bottom-safe">
@@ -1053,7 +1056,12 @@
     (function(){
       var el = document.getElementById('y');
       if(el) el.textContent = new Date().getFullYear();
+       
+  
     })();
   </script>
+
+<script src="/assets/load-layout.js"></script>
+  
 </body>
 </html>
