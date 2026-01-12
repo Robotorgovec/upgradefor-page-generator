@@ -298,15 +298,18 @@ body{ font-family: var(--font-sans); }
 /* Shift content when sidebar collapses */
 body {
   padding-left: 0;
+   
   transition: none;
 }
 body > .phase,
 body > main,
+ body > .upgr-hx,
 body > footer {
   margin-left: var(--sidebar-collapsed-width);
   transition: margin-left var(--transition-fast);
 }
 body.menu-open > .phase,
+  body.menu-open > .upgr-hx,
 body.menu-open > main,
 body.menu-open > footer {
   margin-left: var(--sidebar-expanded-width);
@@ -482,11 +485,16 @@ body.menu-open .burger-line:nth-child(3) {
 @media (max-width: 768px) {
   body > .phase,
   body > main,
+      body > .upgr-hx,
+
   body > footer {
     margin-left: 0;
   }
+  
   body.menu-open > .phase,
   body.menu-open > main,
+      body.menu-open > .upgr-hx,
+
   body.menu-open > footer {
     margin-left: 0;
   }
