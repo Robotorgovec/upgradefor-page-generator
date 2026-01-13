@@ -25,8 +25,8 @@
   --r-btn:12px;
   --r-chip:999px;
   --shadow:0 10px 24px rgba(15,23,42,.06);
-  --w:clamp(300px,92vw,1160px);
-  --gap:clamp(14px,2vw,24px);
+--w:clamp(300px,92vw,1320px);
+
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -85,9 +85,9 @@ header .nav{
   display:flex;
   margin-left:auto;
   
-  marginright: var(--space-2);
+  margin-right: var(--space-2);
   align-items:center;
-  gap:var(--space-1);
+  gap:var(--space-1)
 }
 .header-icons{
   
