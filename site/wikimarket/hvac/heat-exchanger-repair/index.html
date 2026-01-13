@@ -397,7 +397,11 @@
       .upgr-hx .sticky-bar{ background: rgba(15,23,42,.78); }
     }
  
-  /* Additional responsive tweaks */
+  @media (min-width: 980px){
+  .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+    /* Additional responsive tweaks */
 @media (min-width: 1280px) {
   .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
   .upgr-hx .grid-3{ grid-template-columns: repeat(3, 1fr); }
