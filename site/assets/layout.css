@@ -571,3 +571,23 @@ header .nav {
   }
 }
 
+/* Fix margin-left and grid columns on mobile for heat exchanger pages */
+@media (max-width: 980px) {
+  body > .upgr-hx {
+    margin-left: 0 !important;
+  }
+  .upgr-hx .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .upgr-hx .contact-box {
+    width: 100% !important;
+  }
+}
+
+/* Adjust margin-left for menu open on larger screens */
+@media (min-width: 980px) {
+  body.menu-open > .upgr-hx {
+    margin-left: var(--sidebar-expanded-width) !important;
+  }
+}
+
