@@ -419,6 +419,11 @@ body:not(.menu-open) .menu-item {
   justify-content: center;
   padding-inline: 0;
   margin-inline: 0;
+/* Remove margin-left for collapsed menu on heat exchanger pages */
+body:not(.menu-open) > .upgr-hx {
+  margin-left: 0 !important;
+}
+
 }
 body:not(.menu-open) .menu-label,
 body:not(.menu-open) .sidebar-section-label {
