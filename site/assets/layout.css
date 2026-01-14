@@ -561,4 +561,13 @@ header .nav {
 .auth-buttons {
   margin-right: 0;
 }
+/* Override hero grid and contact box width on heat exchanger pages */
+@media (min-width: 980px) {
+  .upgr-hx .hero-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .upgr-hx .contact-box {
+    width: 100% !important;
+  }
+}
 
