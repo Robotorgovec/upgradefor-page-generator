@@ -31,7 +31,8 @@
   <style>
     /* =========================
        UPGR Heat Exchangers HUB v2
-       - No header
+ 
+    - No header
        - No left menu
        - Mobile-first, overflow-safe
        ========================= */
@@ -65,6 +66,7 @@
       --fs-2: clamp(22px, 3.0vw, 30px);
       --fs-hero: clamp(28px, 4.4vw, 44px);
 
+      
       --btn-h: 46px;
     }
 
@@ -242,6 +244,7 @@
       border-radius: 14px;
       display:grid;
       place-items:center;
+      
       background: radial-gradient(circle at 30% 30%, rgba(14,165,233,.22), rgba(3,105,161,.10));
       color: var(--brand-700);
       font-weight: 900;
@@ -277,6 +280,7 @@
     .upgr-hx .type-card{ padding: 16px; }
     .upgr-hx .type-card .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
     .upgr-hx .tag{
+
       display:inline-flex; align-items:center;
       padding: 6px 10px;
       border-radius: 999px;
@@ -397,8 +401,11 @@
       .upgr-hx .sticky-bar{ background: rgba(15,23,42,.78); }
     }
  
-  @media (min-width: 980px){
-  .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
+ @media (min-width: 980px){
+  .upgr-hx .hero-grid{ grid-template-columns:  1fr 1fr;
+  .upgr-hx .contact-box{ width: 100%; }
+}
+   
 }
 
     /* Additional responsive tweaks */
