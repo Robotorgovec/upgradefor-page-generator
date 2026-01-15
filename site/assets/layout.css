@@ -312,11 +312,17 @@ body > footer {
   margin-left: var(--sidebar-collapsed-width);
   transition: margin-left var(--transition-fast);
 }
+body > .upgr-hx {
+  width: calc(100% - var(--sidebar-collapsed-width));
+}
 body.menu-open > .phase,
   body.menu-open > .upgr-hx,
 body.menu-open > main,
 body.menu-open > footer {
   margin-left: var(--sidebar-expanded-width);
+}
+body.menu-open > .upgr-hx {
+  width: calc(100% - var(--sidebar-expanded-width));
 }
 /* Sidebar */
 .sidebar {
@@ -420,10 +426,6 @@ body:not(.menu-open) .menu-item {
   padding-inline: 0;
   margin-inline: 0;
 }
-/* Remove margin-left for collapsed menu on heat exchanger pages */
-body:not(.menu-open) > .upgr-hx {
-  margin-left: 0 !important;
-}
 
 body:not(.menu-open) .menu-label,
 body:not(.menu-open) .sidebar-section-label {
@@ -507,6 +509,10 @@ body.menu-open .burger-line:nth-child(3) {
   body.menu-open > footer {
     margin-left: 0;
   }
+  body > .upgr-hx,
+  body.menu-open > .upgr-hx {
+    width: 100%;
+  }
   .sidebar {
     width: var(--sidebar-expanded-width);
     transform: translateX(-100%);
@@ -565,33 +571,4 @@ header .nav {
 }
 .auth-buttons {
   margin-right: 0;
-}
-/* Override hero grid and contact box width on heat exchanger pages */
-@media (min-width: 980px) {
-  .upgr-hx .hero-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-  .upgr-hx .contact-box {
-    width: 100% !important;
-  }
-}
-
-/* Fix margin-left and grid columns on mobile for heat exchanger pages */
-@media (max-width: 980px) {
-  body > .upgr-hx {
-    margin-left: 0 !important;
-  }
-  .upgr-hx .hero-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .upgr-hx .contact-box {
-    width: 100% !important;
-  }
-}
-
-/* Adjust margin-left for menu open on larger screens */
-@media (min-width: 980px) {
-  body.menu-open > .upgr-hx {
-    margin-left: var(--sidebar-expanded-width) !important;
-  }
 }
