@@ -193,13 +193,15 @@
       gap: var(--gap);
       grid-template-columns: 1fr;
       align-items:center;
-          justify-content: center;
-@media (min-width: 768px){
-  .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
-    .upgr-hx .hero-side{ min-width: 360px; }}   
+      justify-content: center;
     }
 
-    . .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
+    @media (min-width: 768px){
+      .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .hero-side{ min-width: 360px; }
+    }
+
+    .upgr-hx .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
 
     .upgr-hx .lead{ color: var(--muted); font-size: clamp(15px, 1.35vw, 17px); line-height:1.55; max-width: 72ch; }
 
@@ -400,26 +402,22 @@
       .upgr-hx .btn-soft{ background: rgba(230,237,246,.06); border-color: rgba(230,237,246,.14); color: var(--text); }
       .upgr-hx .sticky-bar{ background: rgba(15,23,42,.78); }
     }
- 
-@media (min-width: 980px){
-  .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
-  .upgr-hx .contact-box{ width: 100%; }
-}
-
- 
-}
+    @media (min-width: 980px){
+      .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .contact-box{ width: 100%; }
+    }
 
     /* Additional responsive tweaks */
-@media (min-width: 1280px) {
-  .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
-  .upgr-hx .grid-3{ grid-template-columns: repeat(3, 1fr); }
-  .upgr-hx .grid-4{ grid-template-columns: repeat(4, 1fr); }
-}
+    @media (min-width: 1280px) {
+      .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
+      .upgr-hx .grid-3{ grid-template-columns: repeat(3, 1fr); }
+      .upgr-hx .grid-4{ grid-template-columns: repeat(4, 1fr); }
+    }
 
-@media (max-width: 480px) {
-  .upgr-hx .nav-chips{ overflow-x:auto; -webkit-overflow-scrolling: touch; }
- .upgr-hx .nav-chips::-webkit-scrollbar{ display:none; }
-}
+    @media (max-width: 480px) {
+      .upgr-hx .nav-chips{ overflow-x:auto; -webkit-overflow-scrolling: touch; }
+      .upgr-hx .nav-chips::-webkit-scrollbar{ display:none; }
+    }
   </style>
 
   <!-- Structured data (минимум; детали лучше подставлять генератором под конкретный URL/язык) -->
