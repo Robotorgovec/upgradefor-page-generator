@@ -101,6 +101,22 @@
 
     .upgr-hx *{ min-width:0; }
 
+    /* Align content within the viewport excluding the fixed sidebar */
+    body > .upgr-hx{
+      width: calc(100% - var(--sidebar-collapsed-width));
+      margin-left: var(--sidebar-collapsed-width);
+    }
+    body.menu-open > .upgr-hx{
+      width: calc(100% - var(--sidebar-expanded-width));
+      margin-left: var(--sidebar-expanded-width);
+    }
+    @media (max-width: 768px){
+      body > .upgr-hx{
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+
     .upgr-hx .wrap{ max-width: var(--w); margin:0 auto; padding: 0 var(--pad); }
 
     .upgr-hx .section{ padding: clamp(18px, 4vw, 44px) 0; }
