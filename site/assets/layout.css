@@ -35,6 +35,8 @@ body{
   margin:0;background:var(--bg);color:var(--text);
   font:16px/1.6 var(--font-sans),-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
   text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
+  --content-left: var(--sidebar-collapsed-width);
+  --content-width: calc(100% - var(--sidebar-collapsed-width));
 }
 a{color:var(--brand-blue);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -59,7 +61,7 @@ header .wrap{
   margin-right:0;
   max-width:none;
     width:100%;
-  padding-left:var(--space-1);
+  padding-left: calc(var(--space-1) + var(--content-left));
   padding-right:var(--space-1);
 }
 /* Reduce left padding on the nav within the header so the burger sits near the edge */
@@ -309,22 +311,19 @@ body > .phase,
 body > main,
  body > .upgr-hx,
 body > footer {
-  margin-left: var(--sidebar-collapsed-width);
+  margin-left: var(--content-left);
+  width: var(--content-width);
   transition: margin-left var(--transition-fast);
 }
-body > main,
-body > .upgr-hx {
-  width: calc(100% - var(--sidebar-collapsed-width));
+body.menu-open {
+  --content-left: var(--sidebar-expanded-width);
+  --content-width: calc(100% - var(--sidebar-expanded-width));
 }
 body.menu-open > .phase,
   body.menu-open > .upgr-hx,
 body.menu-open > main,
 body.menu-open > footer {
-  margin-left: var(--sidebar-expanded-width);
-}
-body.menu-open > main,
-body.menu-open > .upgr-hx {
-  width: calc(100% - var(--sidebar-expanded-width));
+  margin-left: var(--content-left);
 }
 /* Sidebar */
 .sidebar {
@@ -451,9 +450,6 @@ body:not(.menu-open) .sidebar-section-label {
   padding: 0;
   margin-right: 16px;
 }
-body:not(.menu-open) header .wrap {
-  padding-left: 0;
-}
 body:not(.menu-open) .burger {
   margin-left: calc(var(--sidebar-collapsed-width)/2 - 16px);
 }
@@ -496,6 +492,10 @@ body.menu-open .burger-line:nth-child(3) {
   transform: rotate(-45deg);
 }
 @media (max-width: 768px) {
+  body {
+    --content-left: 0;
+    --content-width: 100%;
+  }
   body > .phase,
   body > main,
       body > .upgr-hx,
@@ -510,12 +510,6 @@ body.menu-open .burger-line:nth-child(3) {
 
   body.menu-open > footer {
     margin-left: 0;
-  }
-  body > .upgr-hx,
-  body > main,
-  body.menu-open > main,
-  body.menu-open > .upgr-hx {
-    width: 100%;
   }
   .sidebar {
     width: var(--sidebar-expanded-width);
