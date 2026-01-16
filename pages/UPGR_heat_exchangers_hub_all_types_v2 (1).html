@@ -186,6 +186,7 @@
       padding: clamp(22px, 4vw, 46px) 0;
       min-height: 420px;
       max-height: 520px;
+      overflow: hidden;
     }
 
     .upgr-hx .hero-grid{
@@ -206,6 +207,12 @@
         grid-template-areas:
           "text media"
           "cta media";
+      }
+    }
+
+    @media (max-width: 979px){
+      .upgr-hx .hero{
+        max-height: none;
       }
     }
 
