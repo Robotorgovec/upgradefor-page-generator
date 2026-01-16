@@ -152,6 +152,40 @@ section{padding:var(--section-y) 0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:var(--space-3);box-shadow:var(--shadow)}
 .card h3{margin:.1em 0 .35em;font-size:clamp(18px,2.2vw,22px)}
 .card p{color:var(--muted)}
+.is-home{
+  --home-bg-primary:#f7f9fc;
+  --home-bg-secondary:#ffffff;
+  --home-surface-card:#ffffff;
+  --home-border-subtle:var(--line);
+  --home-shadow-card:var(--shadow);
+  --home-text-primary:#0f172a;
+  --home-text-secondary:#475569;
+}
+.is-home section{
+  padding-block:clamp(48px,6vw,96px);
+}
+.is-home section:nth-of-type(even){
+  background:var(--home-bg-secondary);
+}
+.is-home section:nth-of-type(odd){
+  background:var(--home-bg-primary);
+}
+.is-home .card,
+.is-home .surface,
+.is-home .panel{
+  background:var(--home-surface-card);
+  border:1px solid var(--home-border-subtle);
+  box-shadow:var(--home-shadow-card);
+}
+.is-home h1,
+.is-home h2,
+.is-home h3{
+  color:var(--home-text-primary);
+}
+.is-home p,
+.is-home li{
+  color:var(--home-text-secondary);
+}
 /* Status table */
 .status-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center}
 @media (max-width:900px){.status-grid{grid-template-columns:1fr 1fr;row-gap:10px} .status-grid .h{grid-column:1 / -1}}
