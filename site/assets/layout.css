@@ -78,6 +78,8 @@ header .nav{
   gap:10px;
   font-weight:700;
   letter-spacing:.2px;
+  color: inherit;
+  text-decoration: none;
 }
 .brand svg{width:28px;height:28px}
 .grow{flex:1}
@@ -426,6 +428,11 @@ body.menu-open .sidebar {
   color: var(--sidebar-accent-strong);
   font-weight: 600;
 }
+.is-home .menu-item[data-path="/"] {
+  background: #e0edff;
+  color: var(--sidebar-accent-strong);
+  font-weight: 600;
+}
 .menu-icon.material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
@@ -442,6 +449,9 @@ body.menu-open .sidebar {
 }
 .menu-item:hover .menu-icon,
 .menu-item.active .menu-icon {
+  color: var(--sidebar-accent-strong);
+}
+.is-home .menu-item[data-path="/"] .menu-icon {
   color: var(--sidebar-accent-strong);
 }
 .menu-label {
