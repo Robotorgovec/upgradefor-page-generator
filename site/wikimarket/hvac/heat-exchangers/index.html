@@ -181,24 +181,85 @@
 
     /* Hero */
     .upgr-hx .hero{
-      display: block;
+      display: flex;
+      align-items: center;
       padding: clamp(22px, 4vw, 46px) 0;
+      min-height: 420px;
+      max-height: 520px;
     }
 
     .upgr-hx .hero-grid{
       display:grid;
       gap: var(--gap);
       grid-template-columns: 1fr;
-      align-items: stretch;
+      grid-template-areas:
+        "text"
+        "media"
+        "cta";
+      align-items: center;
+      width: 100%;
     }
 
     @media (min-width: 980px){
-      .upgr-hx .hero-grid{ grid-template-columns: 1.1fr .9fr; }
+      .upgr-hx .hero-grid{
+        grid-template-columns: 1.1fr .9fr;
+        grid-template-areas:
+          "text media"
+          "cta media";
+      }
     }
 
-    .upgr-hx .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
+    .upgr-hx .hero-text{
+      grid-area: text;
+      padding: clamp(16px, 2.6vw, 22px);
+    }
+
+    .upgr-hx .hero-media{
+      grid-area: media;
+      border:1px solid var(--line);
+      border-radius: var(--r-2);
+      background: radial-gradient(circle at 20% 20%, rgba(14,165,233,.12), transparent 45%), #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: clamp(12px, 2vw, 18px);
+      min-height: 220px;
+      max-height: 420px;
+      overflow: hidden;
+    }
+
+    .upgr-hx .hero-media img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      max-height: 100%;
+      display:block;
+    }
+
+    .upgr-hx .hero-media .hero-placeholder{
+      display:none;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+      text-align:center;
+    }
+
+    .upgr-hx .hero-media.is-placeholder .hero-placeholder{ display:block; }
+
+    .upgr-hx .hero-cta{
+      grid-area: cta;
+      padding: 0 clamp(16px, 2.6vw, 22px) clamp(12px, 2.2vw, 18px);
+    }
 
     .upgr-hx .lead{ color: var(--muted); font-size: clamp(15px, 1.35vw, 17px); line-height:1.55; max-width: 72ch; }
+    .upgr-hx .hero .lead{
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .upgr-hx .trust-line{ font-size: 13px; color: var(--muted); font-weight: 700; }
 
     .upgr-hx .cta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
 
@@ -221,9 +282,6 @@
       font-size: 13px;
     }
     .upgr-hx .chip-link:hover{ border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); color: var(--text); text-decoration:none; }
-
-    /* Right contact card */
-    .upgr-hx .hero-side{ padding: clamp(16px, 2.6vw, 20px); }
 
     .upgr-hx .contact-box{ display:grid; gap:12px; }
 
@@ -394,6 +452,7 @@
       .upgr-hx .btn-outline{ color: var(--text); border-color: rgba(230,237,246,.18); }
       .upgr-hx .btn-soft{ background: rgba(230,237,246,.06); border-color: rgba(230,237,246,.14); color: var(--text); }
       .upgr-hx .sticky-bar{ background: rgba(15,23,42,.78); }
+      .upgr-hx .hero-media{ background: radial-gradient(circle at 20% 20%, rgba(56,189,248,.18), transparent 45%), rgba(15,23,42,.6); }
     }
   </style>
 
@@ -456,140 +515,114 @@
       <section class="hero">
         <div class="wrap hero-grid">
 
-          <div class="card hero-main">
+          <div class="card hero-text">
             <span class="kicker">Сервис • Диагностика • Чистка • Герметичность • Ремонт/замена</span>
             <h1>Ремонт и обслуживание теплообменников всех типов</h1>
-            <p class="lead">
-              Универсальная сервис‑страница для всех конструкций и назначений: <b>пластинчатые</b>, <b>кожухотрубные</b>,
-              <b>ребристо‑трубные (калориферы/радиаторы/воздухонагреватели/воздухоохладители)</b>,
-              <b>испарители/конденсаторы HVAC/R</b>, <b>микроканальные</b> и другие.
-              Если тип редкий — <b>оцениваем по фото и параметрам</b> и предложим лучший вариант.
-            </p>
+            <p class="lead">Диагностика, чистка и ремонт с оценкой по фото и параметрам — обычно в день обращения.</p>
+            <div class="trust-line">Выезд / диагностика / договор</div>
+          </div>
 
-            <div class="cta-row" aria-label="Основные действия">
+          <div class="hero-media" aria-hidden="true">
+            <img src="{{HERO_IMAGE_URL}}" alt="Теплообменник" loading="lazy" onerror="this.closest('.hero-media').classList.add('is-placeholder'); this.remove();">
+            <span class="hero-placeholder">Изображение теплообменника</span>
+          </div>
+
+          <div class="hero-cta" aria-label="Основные действия">
+            <div class="cta-row">
               <a class="btn" href="#request">Оставить заявку</a>
-              <a class="btn btn-outline" href="#types">Выбрать тип</a>
-              <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
+              <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- QUICK REQUEST -->
+      <section class="section" id="request">
+        <div class="wrap">
+          <h2>Быстрый запрос (2 минуты)</h2>
+          <p class="lead">Напишите тип теплообменника и коротко опишите задачу — ответим с вариантами и сроками.</p>
+
+          <div class="grid grid-2" style="margin-top:14px; align-items:start">
+            <div class="card form">
+              <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+                <div class="form-grid">
+                  <div>
+                    <label for="q-name">Имя/Компания</label>
+                    <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
+                  </div>
+                  <div>
+                    <label for="q-phone">Телефон/мессенджер</label>
+                    <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                  </div>
+                  <div class="span-2">
+                    <label for="q-type">Тип теплообменника</label>
+                    <select id="q-type" name="type">
+                      <option value="">Не знаю / определить по фото</option>
+                      <option>Пластинчатый (разборный/паяный/полусварной)</option>
+                      <option>Кожухотрубный</option>
+                      <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
+                      <option>Испаритель HVAC/R</option>
+                      <option>Конденсатор HVAC/R</option>
+                      <option>Микроканальный</option>
+                      <option>Спиральный / навивной / другой</option>
+                    </select>
+                  </div>
+                  <div class="span-2">
+                    <label for="q-details">Коротко о проблеме</label>
+                    <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
+                  </div>
+                  <div class="span-2">
+                    <button class="btn" type="submit" style="width:100%">Отправить</button>
+                    <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
+                  </div>
+                </div>
+              </form>
             </div>
 
-            <div class="nav-chips" aria-label="Навигация по странице">
-              <a class="chip-link" href="#types">Каталог типов</a>
-              <a class="chip-link" href="#works">Что делаем</a>
-              <a class="chip-link" href="#faults">Неисправности</a>
-              <a class="chip-link" href="#data">Что прислать</a>
-              <a class="chip-link" href="#prices">Цены</a>
-              <a class="chip-link" href="#faq">FAQ</a>
-              <a class="chip-link" href="#contacts">Контакты</a>
-            </div>
+            <div class="card" style="padding:16px">
+              <div class="contact-box">
+                <div class="contact-line">
+                  <div class="icon" aria-hidden="true">☎</div>
+                  <div>
+                    <b>Телефон (локальный)</b>
+                    <div class="muted">{{PHONE_DISPLAY}}</div>
+                    <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
+                  </div>
+                </div>
 
-            <div class="hr"></div>
+                <div class="contact-actions">
+                  <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
+                  <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+                </div>
 
-            <div class="grid grid-4" aria-label="Короткие преимущества">
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">1D</div>
+                <div class="contact-line">
+                  <div class="icon" aria-hidden="true">✉</div>
                   <div>
-                    <b>Быстрый ответ</b>
-                    <div class="muted">Оценка по фото/данным — часто в течение рабочего дня.</div>
-                  </div>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">QC</div>
-                  <div>
-                    <b>Контроль качества</b>
-                    <div class="muted">Испытания, герметичность, отчёт по работам.</div>
-                  </div>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">SLA</div>
-                  <div>
-                    <b>B2B‑процессы</b>
-                    <div class="muted">Договор, закрывающие, понятные сроки и этапы.</div>
-                  </div>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">INT</div>
-                  <div>
-                    <b>Международно</b>
-                    <div class="muted">Локальные контакты по странам — через выбор региона.</div>
+                    <b>Email</b>
+                    <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
+                    <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <aside class="card hero-side" aria-label="Контакты и быстрый запрос">
-            <div class="contact-box">
+        </div>
+      </section>
 
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">☎</div>
-                <div>
-                  <b>Телефон (локальный)</b>
-                  <div class="muted">{{PHONE_DISPLAY}}</div>
-                  <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
-                </div>
-              </div>
-
-              <div class="contact-actions">
-                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
-                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
-              </div>
-
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">✉</div>
-                <div>
-                  <b>Email</b>
-                  <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
-                  <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
-                </div>
-              </div>
-
-              <div class="card" style="padding:14px; border-radius:16px; box-shadow:none;">
-                <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
-                <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
-                  <div class="form-grid">
-                    <div>
-                      <label for="q-name">Имя/Компания</label>
-                      <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
-                    </div>
-                    <div>
-                      <label for="q-phone">Телефон/мессенджер</label>
-                      <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
-                    </div>
-                    <div class="span-2">
-                      <label for="q-type">Тип теплообменника</label>
-                      <select id="q-type" name="type">
-                        <option value="">Не знаю / определить по фото</option>
-                        <option>Пластинчатый (разборный/паяный/полусварной)</option>
-                        <option>Кожухотрубный</option>
-                        <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
-                        <option>Испаритель HVAC/R</option>
-                        <option>Конденсатор HVAC/R</option>
-                        <option>Микроканальный</option>
-                        <option>Спиральный / навивной / другой</option>
-                      </select>
-                    </div>
-                    <div class="span-2">
-                      <label for="q-details">Коротко о проблеме</label>
-                      <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
-                    </div>
-                    <div class="span-2">
-                      <button class="btn" type="submit" style="width:100%">Отправить</button>
-                      <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-          </aside>
-
+      <!-- PAGE NAVIGATION -->
+      <section class="section">
+        <div class="wrap">
+          <div class="nav-chips" aria-label="Навигация по странице">
+            <a class="chip-link" href="#types">Каталог типов</a>
+            <a class="chip-link" href="#works">Что делаем</a>
+            <a class="chip-link" href="#faults">Неисправности</a>
+            <a class="chip-link" href="#data">Что прислать</a>
+            <a class="chip-link" href="#prices">Ориентиры цен</a>
+            <a class="chip-link" href="#faq">FAQ</a>
+            <a class="chip-link" href="#contacts">Контакты</a>
+          </div>
         </div>
       </section>
 
@@ -859,10 +892,10 @@
         </div>
       </section>
 
-      <!-- REQUEST -->
-      <section class="section" id="request">
+      <!-- REQUEST (FULL) -->
+      <section class="section" id="request-full">
         <div class="wrap">
-          <h2>Заявка на ремонт / обслуживание</h2>
+          <h2>Подробная заявка на ремонт / обслуживание</h2>
           <div class="grid grid-2" style="margin-top:14px; align-items:start">
 
             <form class="card form" onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
