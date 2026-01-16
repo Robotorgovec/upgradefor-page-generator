@@ -29,8 +29,33 @@
     root.style.setProperty('--header-height', h + 'px');
   }
 
+  const desktopBreakpoint = 1200;
+  let isDesktop = window.innerWidth >= desktopBreakpoint;
+
+  function syncMenuState() {
+    const nowDesktop = window.innerWidth >= desktopBreakpoint;
+    if (nowDesktop !== isDesktop) {
+      isDesktop = nowDesktop;
+      if (isDesktop) {
+        body.classList.add('menu-open');
+      } else {
+        body.classList.remove('menu-open');
+      }
+    }
+  }
+
+  if (isDesktop) {
+    body.classList.add('menu-open');
+  } else {
+    body.classList.remove('menu-open');
+  }
+
   if (burger) {
     burger.addEventListener('click', function () {
+      if (window.innerWidth >= desktopBreakpoint) {
+        body.classList.add('menu-open');
+        return;
+      }
       body.classList.toggle('menu-open');
     });
   }
@@ -43,5 +68,7 @@
 
   window.addEventListener('load', updateHeaderHeight);
   window.addEventListener('resize', updateHeaderHeight);
+  window.addEventListener('resize', syncMenuState);
   updateHeaderHeight();
+  syncMenuState();
 })();

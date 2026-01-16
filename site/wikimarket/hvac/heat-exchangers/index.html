@@ -18,6 +18,8 @@
   <link rel="alternate" hreflang="ar" href="{{URL_AR}}" />
   <link rel="alternate" hreflang="x-default" href="{{URL_DEFAULT}}" />
 
+  <link rel="stylesheet" href="/assets/layout.css" />
+
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ремонт и обслуживание теплообменников всех типов | UPGR" />
@@ -27,8 +29,6 @@
   <style>
     /* =========================
        UPGR Heat Exchangers HUB v2
-       - No header
-       - No left menu
        - Mobile-first, overflow-safe
        ========================= */
 
@@ -445,11 +445,14 @@
 </head>
 
 <body>
-  <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
+  <header></header>
+  <aside class="sidebar"></aside>
+  <main class="app-content">
+    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
 
     <div class="bottom-safe">
 
-      <!-- HERO (без хедера; страница встраивается в любой шаблон) -->
+      <!-- HERO -->
       <section class="hero">
         <div class="wrap hero-grid">
 
@@ -1039,7 +1042,7 @@
 
     </div>
 
-    <!-- Sticky mobile CTA (без хедера) -->
+    <!-- Sticky mobile CTA -->
     <div class="sticky-bar" role="navigation" aria-label="Быстрые действия">
       <div class="wrap">
         <div class="sticky-actions">
@@ -1049,7 +1052,8 @@
       </div>
     </div>
 
-  </div>
+    </div>
+  </main>
 
   <script>
     // Year
@@ -1058,5 +1062,6 @@
       if(el) el.textContent = new Date().getFullYear();
     })();
   </script>
+  <script src="/assets/load-layout.js"></script>
 </body>
 </html>

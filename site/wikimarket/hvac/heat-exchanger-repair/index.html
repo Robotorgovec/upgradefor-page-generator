@@ -32,8 +32,6 @@
     /* =========================
        UPGR Heat Exchangers HUB v2
  
-    - No header
-       - No left menu
        - Mobile-first, overflow-safe
        ========================= */
 
@@ -471,14 +469,14 @@
 </head>
 
 <body>
-    <header></header>
+  <header></header>
   <aside class="sidebar"></aside>
-  
-  <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
+  <main class="app-content">
+    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
 
     <div class="bottom-safe">
 
-      <!-- HERO (без хедера; страница встраивается в любой шаблон) -->
+      <!-- HERO -->
       <section class="hero">
         <div class="wrap hero-grid">
 
@@ -1068,7 +1066,7 @@
 
     </div>
 
-    <!-- Sticky mobile CTA (без хедера) -->
+    <!-- Sticky mobile CTA -->
     <div class="sticky-bar" role="navigation" aria-label="Быстрые действия">
       <div class="wrap">
         <div class="sticky-actions">
@@ -1078,7 +1076,8 @@
       </div>
     </div>
 
-  </div>
+    </div>
+  </main>
 
   <script>
     // Year
@@ -1090,7 +1089,6 @@
     })();
   </script>
 
-<script src="/assets/load-layout.js"></script>
-  
+  <script src="/assets/load-layout.js"></script>
 </body>
 </html>

@@ -1,3 +1,27 @@
+   <style>
+     @media (min-width: 1200px) {
+       body > .app-content,
+       body > footer {
+         margin-left: var(--sidebar-expanded-width);
+       }
+       body > .app-content {
+         width: calc(100% - var(--sidebar-expanded-width));
+       }
+       .sidebar {
+         width: var(--sidebar-expanded-width);
+         transform: none;
+       }
+       body:not(.menu-open) .menu-item {
+         justify-content: flex-start;
+         padding-inline: 16px;
+         margin-inline: 8px;
+       }
+       body:not(.menu-open) .menu-label,
+       body:not(.menu-open) .sidebar-section-label {
+         display: block;
+       }
+     }
+   </style>
    <div class="sidebar-inner">
       <!-- НАВИГАЦИЯ / ЛЕНТА -->
       <div class="sidebar-section-label">Навигация</div>
