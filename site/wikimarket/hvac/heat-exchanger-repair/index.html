@@ -9,14 +9,14 @@
   <meta name="robots" content="index,follow,max-image-preview:large" />
 
   <!-- Каноникал лучше подставлять генератором под конкретный URL страницы -->
-  <link rel="canonical" href="{{CANONICAL_URL}}" />
+  <link rel="canonical" href="https://upgradefor.com/wikimarket/hvac/heat-exchanger-repair/" />
 
   <!-- hreflang (опционально; подставлять генератором) -->
-  <link rel="alternate" hreflang="ru" href="{{URL_RU}}" />
-  <link rel="alternate" hreflang="en" href="{{URL_EN}}" />
-  <link rel="alternate" hreflang="tr" href="{{URL_TR}}" />
-  <link rel="alternate" hreflang="ar" href="{{URL_AR}}" />
-  <link rel="alternate" hreflang="x-default" href="{{URL_DEFAULT}}" />
+  <link rel="alternate" hreflang="ru" href="https://upgradefor.com/wikimarket/hvac/heat-exchanger-repair/" />
+  <link rel="alternate" hreflang="en" href="https://upgradefor.com/en/wikimarket/hvac/heat-exchanger-repair/" />
+  <link rel="alternate" hreflang="tr" href="https://upgradefor.com/tr/wikimarket/hvac/heat-exchanger-repair/" />
+  <link rel="alternate" hreflang="ar" href="https://upgradefor.com/ar/wikimarket/hvac/heat-exchanger-repair/" />
+  <link rel="alternate" hreflang="x-default" href="https://upgradefor.com/wikimarket/hvac/heat-exchanger-repair/" />
 
       <link rel="stylesheet" href="/assets/layout.css" />
 
@@ -26,7 +26,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ремонт и обслуживание теплообменников всех типов | UPGR" />
   <meta property="og:description" content="Диагностика, чистка, испытания, восстановление герметичности, ремонт и замена теплообменников разных конструкций." />
-  <meta property="og:url" content="{{CANONICAL_URL}}" />
+  <meta property="og:url" content="https://upgradefor.com/wikimarket/hvac/heat-exchanger-repair/" />
 
   <style>
     /* =========================
@@ -187,10 +187,15 @@
     .upgr-hx .hero-heat-exchanger{
       display: flex;
       align-items: center;
-      padding: clamp(22px, 4vw, 46px) 0;
-      height: 100vh;
+      padding: clamp(18px, 3.2vw, 36px) 0;
+      min-height: 70vh;
       max-height: 850px;
       overflow: hidden;
+    }
+
+    .upgr-hx .hero-heat-exchanger .wrap{
+      max-width: 1240px;
+      margin: 0 auto;
     }
 
     .upgr-hx .hero-grid{
@@ -207,7 +212,7 @@
 
     @media (max-width: 979px){
       .upgr-hx .hero-heat-exchanger{
-        height: auto;
+        min-height: auto;
         max-height: none;
       }
     }
@@ -272,6 +277,30 @@
 
     @media (max-width: 420px){
       .upgr-hx .cta-row .btn{ flex: 1 1 100%; }
+    }
+
+    .upgr-hx .second-screen-grid{ align-items: start; }
+
+    .upgr-hx .nav-strip{
+      padding: 0 0 clamp(18px, 3vw, 28px);
+    }
+
+    .upgr-hx .nav-strip .nav-chips{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.85);
+      width: fit-content;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+
+    @media (max-width: 720px){
+      .upgr-hx .nav-strip .nav-chips{
+        position: static;
+        width: 100%;
+      }
     }
 
     .upgr-hx .nav-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 14px; }
@@ -493,7 +522,7 @@
     "@context":"https://schema.org",
     "@type":"WebPage",
     "name":"Ремонт и обслуживание теплообменников всех типов",
-    "url":"{{CANONICAL_URL}}",
+    "url":"https://upgradefor.com/wikimarket/hvac/heat-exchanger-repair/",
     "inLanguage":"ru",
     "description":"Сервис теплообменников разных конструкций: диагностика, чистка, испытания, восстановление, ремонт и замена."
   }
@@ -528,7 +557,7 @@
   <header></header>
   <aside class="sidebar"></aside>
   <main class="app-content">
-    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
+    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="+74951234567" data-upgr-phone-display="+7 (495) 123-45-67" data-upgr-whatsapp="+74951234567">
 
     <div class="bottom-safe">
 
@@ -542,8 +571,8 @@
             <p class="lead">Диагностика, восстановление, испытания. Работаем с промышленными и инженерными системами.</p>
 
             <div class="hero-actions" aria-label="Основные действия">
-              <a class="btn" href="#request">Оценить по фото</a>
-              <a class="hero-phone" href="tel:{{PHONE_E164}}">Телефон: {{PHONE_DISPLAY}}</a>
+              <a class="btn" href="#quick-request">Оценить по фото</a>
+              <a class="hero-phone" href="tel:+74951234567">Телефон: +7 (495) 123-45-67</a>
             </div>
           </div>
 
@@ -557,9 +586,10 @@
       <section class="section" id="types">
         <div class="wrap">
           <h2>Типы теплообменников и возможности ремонта</h2>
-          <div class="grid grid-2" style="margin-top:14px">
+          <div class="grid grid-2 second-screen-grid" style="margin-top:14px">
             <div class="card" style="padding:16px">
               <h3>Типы теплообменников</h3>
+              <p class="muted" style="margin-top:8px">Работаем с основными конструкциями и назначениями промышленного оборудования.</p>
               <ul class="list">
                 <li class="li"><span class="dot"></span><span>Пластинчатые (разборные, паяные, полусварные)</span></li>
                 <li class="li"><span class="dot"></span><span>Кожухотрубные и U‑tube</span></li>
@@ -611,17 +641,17 @@
               </div>
 
               <div class="cta-row" aria-label="Основные действия" style="margin-top:16px">
-                <a class="btn" href="#request">Оценить по фото</a>
-                <a class="btn btn-outline" href="#types-catalog">Выбрать тип</a>
+                <a class="btn" href="#quick-request">Оценить по фото</a>
+                <a class="btn btn-outline" href="#catalog">Выбрать тип</a>
                 <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
               </div>
               <div class="trust-line" id="contacts" style="margin-top:10px">
-                <a class="hero-phone" href="tel:{{PHONE_E164}}">Телефон: {{PHONE_DISPLAY}}</a>
+                <a class="hero-phone" href="tel:+74951234567">Телефон: +7 (495) 123-45-67</a>
               </div>
 
-              <div class="card" style="padding:14px; border-radius:16px; box-shadow:none; margin-top:16px;">
+              <div class="card" id="quick-request" style="padding:14px; border-radius:16px; box-shadow:none; margin-top:16px;">
                 <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
-                <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+                <form onsubmit="event.preventDefault(); if(!this.reportValidity()){document.getElementById('quick-status').textContent='Проверьте обязательные поля.'; return;} document.getElementById('quick-status').textContent='Спасибо! Мы свяжемся с вами в ближайшее время.';">
                   <div class="form-grid">
                     <div>
                       <label for="q-name">Имя/Компания</label>
@@ -629,7 +659,7 @@
                     </div>
                     <div>
                       <label for="q-phone">Телефон/мессенджер</label>
-                      <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                      <input id="q-phone" name="phone" required placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
                     </div>
                     <div class="span-2">
                       <label for="q-type">Тип теплообменника</label>
@@ -651,27 +681,32 @@
                     <div class="span-2">
                       <button class="btn" type="submit" style="width:100%">Отправить</button>
                       <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
+                      <div class="note" id="quick-status" aria-live="polite" style="margin-top:6px;"></div>
                     </div>
                   </div>
                 </form>
-              </div>
-
-              <div class="nav-chips" aria-label="Навигация по странице">
-                <a class="chip-link" href="#types">Каталог типов</a>
-                <a class="chip-link" href="#works">Что делаем</a>
-                <a class="chip-link" href="#faults">Неисправности</a>
-                <a class="chip-link" href="#data">Что прислать</a>
-                <a class="chip-link" href="#prices">Цены</a>
-                <a class="chip-link" href="#faq">FAQ</a>
-                <a class="chip-link" href="#contacts">Контакты</a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <section class="section nav-strip">
+        <div class="wrap">
+          <div class="nav-chips" aria-label="Навигация по странице">
+            <a class="chip-link" href="#catalog">Каталог типов</a>
+            <a class="chip-link" href="#works">Что делаем</a>
+            <a class="chip-link" href="#faults">Неисправности</a>
+            <a class="chip-link" href="#data">Что прислать</a>
+            <a class="chip-link" href="#prices">Цены</a>
+            <a class="chip-link" href="#faq">FAQ</a>
+            <a class="chip-link" href="#contacts">Контакты</a>
+          </div>
+        </div>
+      </section>
+
       <!-- TYPES DIRECTORY -->
-      <section class="section" id="types-catalog">
+      <section class="section" id="catalog">
         <div class="wrap">
           <h2>Каталог типов теплообменников</h2>
           <p class="lead">
@@ -691,8 +726,8 @@
                 <span class="tag">полусварной</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_PLATE}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -705,8 +740,8 @@
                 <span class="tag">опрессовка</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_SHELL_TUBE}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -720,8 +755,8 @@
                 <span class="tag">медно‑алюминиевый</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_COIL}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -735,8 +770,8 @@
                 <span class="tag">condenser coil</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_EVAPORATOR}}">Испарители</a>
-                <a class="btn btn-outline" href="{{SLUG_CONDENSER}}">Конденсаторы</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -749,8 +784,8 @@
                 <span class="tag">герметичность</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_MICROCHANNEL}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -764,8 +799,8 @@
                 <span class="tag">heat‑pipe</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_OTHER_TYPES}}">Каталог редких типов</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="/wikimarket/hvac/heat-exchangers/">Страница типа</a>
               </div>
             </article>
 
@@ -907,9 +942,9 @@
 
           <!-- Mobile cards -->
           <div class="price-mobile" style="margin-top:14px">
-            <div class="price-item"><b>Диагностика и дефектация</b><div class="muted">от {{PRICE_DIAG}} {{CURRENCY}}</div></div>
-            <div class="price-item"><b>Чистка (по типу/объёму)</b><div class="muted">от {{PRICE_CLEAN}} {{CURRENCY}}</div></div>
-            <div class="price-item"><b>Испытания герметичности</b><div class="muted">от {{PRICE_TEST}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Диагностика и дефектация</b><div class="muted">от 15 000 ₽</div></div>
+            <div class="price-item"><b>Чистка (по типу/объёму)</b><div class="muted">от 25 000 ₽</div></div>
+            <div class="price-item"><b>Испытания герметичности</b><div class="muted">от 12 000 ₽</div></div>
             <div class="price-item"><b>Работы типа‑специфичные</b><div class="muted">регаскинг / ретюбинг / ремонт coil — по запросу</div></div>
           </div>
 
@@ -924,9 +959,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Диагностика и дефектация</td><td>шт</td><td>{{PRICE_DIAG}} {{CURRENCY}}</td></tr>
-                <tr><td>Чистка (метод подбирается под конструкцию)</td><td>проект</td><td>{{PRICE_CLEAN}} {{CURRENCY}}</td></tr>
-                <tr><td>Испытания герметичности / опрессовка</td><td>комплект</td><td>{{PRICE_TEST}} {{CURRENCY}}</td></tr>
+                <tr><td>Диагностика и дефектация</td><td>шт</td><td>15 000 ₽</td></tr>
+                <tr><td>Чистка (метод подбирается под конструкцию)</td><td>проект</td><td>25 000 ₽</td></tr>
+                <tr><td>Испытания герметичности / опрессовка</td><td>комплект</td><td>12 000 ₽</td></tr>
                 <tr><td>Тип‑специфичные работы</td><td>—</td><td>регаскинг / ретюбинг / coil‑repair — по запросу</td></tr>
               </tbody>
             </table>
@@ -942,7 +977,7 @@
           <h2>Заявка на ремонт / обслуживание</h2>
           <div class="grid grid-2" style="margin-top:14px; align-items:start">
 
-            <form class="card form" onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+            <form class="card form" onsubmit="event.preventDefault(); if(!this.reportValidity()){document.getElementById('request-status').textContent='Проверьте обязательные поля.'; return;} document.getElementById('request-status').textContent='Спасибо! Мы свяжемся с вами в ближайшее время.';">
               <div class="form-grid">
                 <div>
                   <label for="name">Имя</label>
@@ -982,7 +1017,8 @@
 
                 <div class="span-2">
                   <button class="btn" type="submit" style="width:100%">Отправить заявку</button>
-                  <div class="note" style="margin-top:8px">Альтернатива: <a href="tel:{{PHONE_E164}}">позвонить</a> или написать в <a href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>.</div>
+                  <div class="note" style="margin-top:8px">Альтернатива: <a href="tel:+74951234567">позвонить</a> или написать в <a href="https://wa.me/74951234567" rel="nofollow">WhatsApp</a>.</div>
+                  <div class="note" id="request-status" aria-live="polite" style="margin-top:6px;"></div>
                 </div>
               </div>
             </form>
@@ -1056,14 +1092,14 @@
               <div class="contact-line">
                 <div class="icon" aria-hidden="true">☎</div>
                 <div>
-                  <b>{{PHONE_DISPLAY}}</b>
+                  <b>+7 (495) 123-45-67</b>
                   <div class="note">Локальный номер для выбранной страны</div>
                 </div>
               </div>
 
               <div class="contact-actions" style="margin-top:10px">
-                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
-                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+                <a class="btn" href="tel:+74951234567">Позвонить</a>
+                <a class="btn btn-outline" href="https://wa.me/74951234567" rel="nofollow">WhatsApp</a>
               </div>
 
               <div class="hr"></div>
@@ -1078,31 +1114,31 @@
               <ul class="geo-list" style="margin-top:12px">
                 <li class="geo-item">
                   <div>
-                    <a href="{{URL_UAE}}">UAE • Dubai</a>
+                    <a href="https://upgradefor.com/uae/">UAE • Dubai</a>
                     <div class="note">Английский/Арабский</div>
                   </div>
-                  <div class="geo-phone">{{PHONE_UAE}}</div>
+                  <div class="geo-phone">+971 55 123 4567</div>
                 </li>
                 <li class="geo-item">
                   <div>
-                    <a href="{{URL_TURKEY}}">Türkiye</a>
+                    <a href="https://upgradefor.com/tr/">Türkiye</a>
                     <div class="note">Турецкий/Английский</div>
                   </div>
-                  <div class="geo-phone">{{PHONE_TURKEY}}</div>
+                  <div class="geo-phone">+90 532 123 45 67</div>
                 </li>
                 <li class="geo-item">
                   <div>
-                    <a href="{{URL_EU}}">EU</a>
+                    <a href="https://upgradefor.com/eu/">EU</a>
                     <div class="note">English</div>
                   </div>
-                  <div class="geo-phone">{{PHONE_EU}}</div>
+                  <div class="geo-phone">+49 30 1234 5678</div>
                 </li>
                 <li class="geo-item">
                   <div>
-                    <a href="{{URL_CIS}}">CIS</a>
+                    <a href="https://upgradefor.com/cis/">CIS</a>
                     <div class="note">Русский</div>
                   </div>
-                  <div class="geo-phone">{{PHONE_CIS}}</div>
+                  <div class="geo-phone">+7 (495) 123-45-67</div>
                 </li>
               </ul>
 
@@ -1123,8 +1159,8 @@
     <div class="sticky-bar" role="navigation" aria-label="Быстрые действия">
       <div class="wrap">
         <div class="sticky-actions">
-          <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
-          <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+          <a class="btn" href="tel:+74951234567">Позвонить</a>
+          <a class="btn btn-outline" href="https://wa.me/74951234567" rel="nofollow">WhatsApp</a>
         </div>
       </div>
     </div>
