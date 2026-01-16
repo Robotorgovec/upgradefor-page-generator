@@ -30,14 +30,24 @@
   }
 
   const desktopBreakpoint = 1200;
+  const collapsedStorageKey = 'upgr-sidebar-collapsed';
   let isDesktop = window.innerWidth >= desktopBreakpoint;
+
+  function getCollapsedPreference() {
+    return localStorage.getItem(collapsedStorageKey) === 'true';
+  }
+
+  function setCollapsedPreference(isCollapsed) {
+    localStorage.setItem(collapsedStorageKey, String(isCollapsed));
+  }
 
   function syncMenuState() {
     const nowDesktop = window.innerWidth >= desktopBreakpoint;
     if (nowDesktop !== isDesktop) {
       isDesktop = nowDesktop;
       if (isDesktop) {
-        body.classList.add('menu-open');
+        const preferCollapsed = getCollapsedPreference();
+        body.classList.toggle('menu-open', !preferCollapsed);
       } else {
         body.classList.remove('menu-open');
       }
@@ -45,15 +55,18 @@
   }
 
   if (isDesktop) {
-    body.classList.add('menu-open');
+    const preferCollapsed = getCollapsedPreference();
+    body.classList.toggle('menu-open', !preferCollapsed);
   } else {
     body.classList.remove('menu-open');
   }
 
   if (burger) {
     burger.addEventListener('click', function () {
-      if (window.innerWidth >= desktopBreakpoint) {
-        body.classList.add('menu-open');
+      const nowDesktop = window.innerWidth >= desktopBreakpoint;
+      if (nowDesktop) {
+        body.classList.toggle('menu-open');
+        setCollapsedPreference(!body.classList.contains('menu-open'));
         return;
       }
       body.classList.toggle('menu-open');
