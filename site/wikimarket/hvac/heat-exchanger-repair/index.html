@@ -193,13 +193,15 @@
       display:grid;
       gap: var(--gap);
       grid-template-columns: 1fr;
-      align-items:center;
-      justify-content: center;
+      align-items: center;
     }
 
     @media (min-width: 768px){
-      .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
-      .upgr-hx .hero-side{ min-width: 360px; }
+      .upgr-hx .hero-grid{ grid-template-columns: 1.1fr .9fr; }
+    }
+
+    @media (min-width: 1024px){
+      .upgr-hx .hero-grid{ grid-template-columns: 1.15fr .85fr; }
     }
 
     .upgr-hx .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
@@ -228,8 +230,64 @@
     }
     .upgr-hx .chip-link:hover{ border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); color: var(--text); text-decoration:none; }
 
-    /* Right contact card */
-    .upgr-hx .hero-side{ padding: clamp(16px, 2.6vw, 20px); }
+    /* Hero media */
+    .upgr-hx .hero-media{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: clamp(16px, 3vw, 28px);
+      border-radius: var(--r-3);
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(14,165,233,.08), rgba(15,23,42,.02));
+      aspect-ratio: 4 / 3;
+      min-height: clamp(220px, 34vw, 420px);
+      max-height: 460px;
+      overflow:hidden;
+    }
+
+    .upgr-hx .hero-media__image{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      z-index:1;
+    }
+
+    .upgr-hx .hero-media__placeholder{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      color: var(--muted);
+      gap: 10px;
+      font-weight: 600;
+      z-index:0;
+      text-align:center;
+      padding: 16px;
+      transition: opacity .2s ease;
+    }
+
+    .upgr-hx .hero-media__placeholder svg{
+      width: 72px;
+      height: 72px;
+      opacity:.7;
+    }
+
+    .upgr-hx .hero-media.is-loaded .hero-media__placeholder{ opacity:0; }
+
+    @media (max-width: 1023px){
+      .upgr-hx .hero-media{ max-height: 380px; }
+    }
+
+    @media (max-width: 768px){
+      .upgr-hx .hero-media{
+        order:-1;
+        max-height: 320px;
+      }
+    }
+
+    /* Left column contact card */
+    .upgr-hx .hero-contact{ padding: clamp(16px, 2.6vw, 20px); margin-top: 16px; }
 
     .upgr-hx .contact-box{ display:grid; gap:12px; }
 
@@ -472,7 +530,7 @@
   <header></header>
   <aside class="sidebar"></aside>
   <main class="app-content">
-    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
+    <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}" data-hero-image-url="{{HERO_IMAGE_URL}}" data-default-hero-image-url="{{DEFAULT_HERO_IMAGE_URL}}" data-hero-image-alt="{{HERO_IMAGE_ALT}}">
 
     <div class="bottom-safe">
 
@@ -494,6 +552,72 @@
               <a class="btn" href="#request">Оставить заявку</a>
               <a class="btn btn-outline" href="#types">Выбрать тип</a>
               <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
+            </div>
+
+            <div class="card hero-contact" aria-label="Контакты и быстрый запрос">
+              <div class="contact-box">
+
+                <div class="contact-line">
+                  <div class="icon" aria-hidden="true">☎</div>
+                  <div>
+                    <b>Телефон (локальный)</b>
+                    <div class="muted">{{PHONE_DISPLAY}}</div>
+                    <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
+                  </div>
+                </div>
+
+                <div class="contact-actions">
+                  <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
+                  <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
+                </div>
+
+                <div class="contact-line">
+                  <div class="icon" aria-hidden="true">✉</div>
+                  <div>
+                    <b>Email</b>
+                    <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
+                    <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
+                  </div>
+                </div>
+
+                <div class="card" style="padding:14px; border-radius:16px; box-shadow:none;">
+                  <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
+                  <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
+                    <div class="form-grid">
+                      <div>
+                        <label for="q-name">Имя/Компания</label>
+                        <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
+                      </div>
+                      <div>
+                        <label for="q-phone">Телефон/мессенджер</label>
+                        <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                      </div>
+                      <div class="span-2">
+                        <label for="q-type">Тип теплообменника</label>
+                        <select id="q-type" name="type">
+                          <option value="">Не знаю / определить по фото</option>
+                          <option>Пластинчатый (разборный/паяный/полусварной)</option>
+                          <option>Кожухотрубный</option>
+                          <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
+                          <option>Испаритель HVAC/R</option>
+                          <option>Конденсатор HVAC/R</option>
+                          <option>Микроканальный</option>
+                          <option>Спиральный / навивной / другой</option>
+                        </select>
+                      </div>
+                      <div class="span-2">
+                        <label for="q-details">Коротко о проблеме</label>
+                        <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
+                      </div>
+                      <div class="span-2">
+                        <button class="btn" type="submit" style="width:100%">Отправить</button>
+                        <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
             </div>
 
             <div class="nav-chips" aria-label="Навигация по странице">
@@ -548,71 +672,18 @@
             </div>
           </div>
 
-          <aside class="card hero-side" aria-label="Контакты и быстрый запрос">
-            <div class="contact-box">
-
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">☎</div>
-                <div>
-                  <b>Телефон (локальный)</b>
-                  <div class="muted">{{PHONE_DISPLAY}}</div>
-                  <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
-                </div>
-              </div>
-
-              <div class="contact-actions">
-                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
-                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
-              </div>
-
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">✉</div>
-                <div>
-                  <b>Email</b>
-                  <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
-                  <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
-                </div>
-              </div>
-
-              <div class="card" style="padding:14px; border-radius:16px; box-shadow:none;">
-                <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
-                <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
-                  <div class="form-grid">
-                    <div>
-                      <label for="q-name">Имя/Компания</label>
-                      <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
-                    </div>
-                    <div>
-                      <label for="q-phone">Телефон/мессенджер</label>
-                      <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
-                    </div>
-                    <div class="span-2">
-                      <label for="q-type">Тип теплообменника</label>
-                      <select id="q-type" name="type">
-                        <option value="">Не знаю / определить по фото</option>
-                        <option>Пластинчатый (разборный/паяный/полусварной)</option>
-                        <option>Кожухотрубный</option>
-                        <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
-                        <option>Испаритель HVAC/R</option>
-                        <option>Конденсатор HVAC/R</option>
-                        <option>Микроканальный</option>
-                        <option>Спиральный / навивной / другой</option>
-                      </select>
-                    </div>
-                    <div class="span-2">
-                      <label for="q-details">Коротко о проблеме</label>
-                      <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
-                    </div>
-                    <div class="span-2">
-                      <button class="btn" type="submit" style="width:100%">Отправить</button>
-                      <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
+          <div class="hero-media" aria-hidden="true">
+            <img class="hero-media__image" loading="lazy" decoding="async" alt="" />
+            <div class="hero-media__placeholder" aria-hidden="true">
+              <svg viewBox="0 0 120 120" role="img" aria-label="Плейсхолдер теплообменника">
+                <rect x="12" y="18" width="96" height="84" rx="18" fill="rgba(15,23,42,0.08)" stroke="rgba(15,23,42,0.18)" stroke-width="2"/>
+                <rect x="28" y="32" width="64" height="12" rx="6" fill="rgba(14,165,233,0.35)"/>
+                <rect x="28" y="52" width="64" height="12" rx="6" fill="rgba(14,165,233,0.35)"/>
+                <rect x="28" y="72" width="64" height="12" rx="6" fill="rgba(14,165,233,0.35)"/>
+              </svg>
+              <div>Изображение теплообменника</div>
             </div>
-          </aside>
+          </div>
 
         </div>
       </section>
@@ -1084,8 +1155,30 @@
     (function(){
       var el = document.getElementById('y');
       if(el) el.textContent = new Date().getFullYear();
-       
-  
+    })();
+
+    // Hero image
+    (function(){
+      var root = document.querySelector('.upgr-hx');
+      if(!root) return;
+      var media = root.querySelector('.hero-media');
+      if(!media) return;
+      var img = media.querySelector('img');
+      if(!img) return;
+      var heroUrl = root.dataset.heroImageUrl;
+      var defaultUrl = root.dataset.defaultHeroImageUrl;
+      var alt = root.dataset.heroImageAlt || 'Теплообменник';
+      var src = heroUrl || defaultUrl;
+      img.alt = alt;
+      if(src){
+        img.src = src;
+        img.addEventListener('load', function(){
+          media.classList.add('is-loaded');
+        });
+        img.addEventListener('error', function(){
+          media.classList.remove('is-loaded');
+        });
+      }
     })();
   </script>
 
