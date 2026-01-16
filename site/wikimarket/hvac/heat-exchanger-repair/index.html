@@ -187,7 +187,7 @@
     .upgr-hx .hero-heat-exchanger{
       display: flex;
       align-items: center;
-      padding: clamp(18px, 3.2vw, 36px) 0;
+      padding: clamp(8px, 1.8vw, 22px) 0;
       min-height: 70vh;
       max-height: 850px;
       overflow: hidden;
@@ -218,7 +218,7 @@
     }
 
     .upgr-hx .hero-content{
-      padding: clamp(16px, 2.6vw, 22px);
+      padding: clamp(18px, 3vw, 28px);
       display:flex;
       flex-direction: column;
       gap: 12px;
@@ -280,6 +280,28 @@
     }
 
     .upgr-hx .second-screen-grid{ align-items: start; }
+
+    .upgr-hx .second-screen{ padding-top: clamp(12px, 2.5vw, 26px); }
+
+    .upgr-hx .second-screen .card{
+      background: var(--surface);
+      box-shadow: none;
+      border-radius: var(--r-1);
+    }
+
+    .upgr-hx .secondary-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .upgr-hx .secondary-links a{
+      color: var(--muted);
+      font-weight: 700;
+    }
 
     .upgr-hx .nav-strip{
       padding: 0 0 clamp(18px, 3vw, 28px);
@@ -583,7 +605,21 @@
         </div>
       </section>
 
-      <section class="section" id="types">
+      <section class="section nav-strip">
+        <div class="wrap">
+          <div class="nav-chips" aria-label="Навигация по странице">
+            <a class="chip-link" href="#catalog">Каталог типов</a>
+            <a class="chip-link" href="#works">Что делаем</a>
+            <a class="chip-link" href="#faults">Неисправности</a>
+            <a class="chip-link" href="#data">Что прислать</a>
+            <a class="chip-link" href="#prices">Цены</a>
+            <a class="chip-link" href="#faq">FAQ</a>
+            <a class="chip-link" href="#contacts">Контакты</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section second-screen" id="types">
         <div class="wrap">
           <h2>Типы теплообменников и возможности ремонта</h2>
           <div class="grid grid-2 second-screen-grid" style="margin-top:14px">
@@ -642,65 +678,52 @@
 
               <div class="cta-row" aria-label="Основные действия" style="margin-top:16px">
                 <a class="btn" href="#quick-request">Оценить по фото</a>
-                <a class="btn btn-outline" href="#catalog">Выбрать тип</a>
-                <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
+              </div>
+              <div class="secondary-links" aria-label="Вторичные действия">
+                <a href="#catalog">Выбрать тип</a>
+                <a href="#prices">Ориентиры цен</a>
               </div>
               <div class="trust-line" id="contacts" style="margin-top:10px">
                 <a class="hero-phone" href="tel:+74951234567">Телефон: +7 (495) 123-45-67</a>
               </div>
-
-              <div class="card" id="quick-request" style="padding:14px; border-radius:16px; box-shadow:none; margin-top:16px;">
-                <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
-                <form onsubmit="event.preventDefault(); if(!this.reportValidity()){document.getElementById('quick-status').textContent='Проверьте обязательные поля.'; return;} document.getElementById('quick-status').textContent='Спасибо! Мы свяжемся с вами в ближайшее время.';">
-                  <div class="form-grid">
-                    <div>
-                      <label for="q-name">Имя/Компания</label>
-                      <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
-                    </div>
-                    <div>
-                      <label for="q-phone">Телефон/мессенджер</label>
-                      <input id="q-phone" name="phone" required placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
-                    </div>
-                    <div class="span-2">
-                      <label for="q-type">Тип теплообменника</label>
-                      <select id="q-type" name="type">
-                        <option value="">Не знаю / определить по фото</option>
-                        <option>Пластинчатый (разборный/паяный/полусварной)</option>
-                        <option>Кожухотрубный</option>
-                        <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
-                        <option>Испаритель HVAC/R</option>
-                        <option>Конденсатор HVAC/R</option>
-                        <option>Микроканальный</option>
-                        <option>Спиральный / навивной / другой</option>
-                      </select>
-                    </div>
-                    <div class="span-2">
-                      <label for="q-details">Коротко о проблеме</label>
-                      <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
-                    </div>
-                    <div class="span-2">
-                      <button class="btn" type="submit" style="width:100%">Отправить</button>
-                      <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
-                      <div class="note" id="quick-status" aria-live="polite" style="margin-top:6px;"></div>
-                    </div>
-                  </div>
-                </form>
-              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="section nav-strip">
-        <div class="wrap">
-          <div class="nav-chips" aria-label="Навигация по странице">
-            <a class="chip-link" href="#catalog">Каталог типов</a>
-            <a class="chip-link" href="#works">Что делаем</a>
-            <a class="chip-link" href="#faults">Неисправности</a>
-            <a class="chip-link" href="#data">Что прислать</a>
-            <a class="chip-link" href="#prices">Цены</a>
-            <a class="chip-link" href="#faq">FAQ</a>
-            <a class="chip-link" href="#contacts">Контакты</a>
+          <div class="card" id="quick-request" style="padding:16px; margin-top:16px;">
+            <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
+            <form onsubmit="event.preventDefault(); if(!this.reportValidity()){document.getElementById('quick-status').textContent='Проверьте обязательные поля.'; return;} document.getElementById('quick-status').textContent='Спасибо! Мы свяжемся с вами в ближайшее время.';">
+              <div class="form-grid">
+                <div>
+                  <label for="q-name">Имя/Компания</label>
+                  <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
+                </div>
+                <div>
+                  <label for="q-phone">Телефон/мессенджер</label>
+                  <input id="q-phone" name="phone" required placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
+                </div>
+                <div class="span-2">
+                  <label for="q-type">Тип теплообменника</label>
+                  <select id="q-type" name="type">
+                    <option value="">Не знаю / определить по фото</option>
+                    <option>Пластинчатый (разборный/паяный/полусварной)</option>
+                    <option>Кожухотрубный</option>
+                    <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
+                    <option>Испаритель HVAC/R</option>
+                    <option>Конденсатор HVAC/R</option>
+                    <option>Микроканальный</option>
+                    <option>Спиральный / навивной / другой</option>
+                  </select>
+                </div>
+                <div class="span-2">
+                  <label for="q-details">Коротко о проблеме</label>
+                  <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
+                </div>
+                <div class="span-2">
+                  <button class="btn" type="submit" style="width:100%">Отправить</button>
+                  <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
+                  <div class="note" id="quick-status" aria-live="polite" style="margin-top:6px;"></div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </section>
