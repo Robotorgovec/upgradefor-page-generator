@@ -307,7 +307,11 @@ body {
 }
 body > .phase,
 body > main,
- body > .upgr-hx,
+body > .upgr-hx {
+  margin-left: var(--sidebar-collapsed-width);
+  padding-top: calc(var(--header-height) + 8px);
+  transition: margin-left var(--transition-fast);
+}
 body > footer {
   margin-left: var(--sidebar-collapsed-width);
   transition: margin-left var(--transition-fast);
