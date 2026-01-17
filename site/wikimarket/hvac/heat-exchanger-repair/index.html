@@ -231,6 +231,25 @@
     /* Right contact card */
     .upgr-hx .hero-side{ padding: clamp(16px, 2.6vw, 20px); }
 
+    .upgr-hx .hero-illustration{
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .upgr-hx .hero-illustration img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
     .upgr-hx .contact-box{ display:grid; gap:12px; }
 
     .upgr-hx .contact-line{
@@ -550,6 +569,9 @@
 
           <aside class="card hero-side" aria-label="Контакты и быстрый запрос">
             <div class="contact-box">
+              <div class="hero-illustration">
+                <img src="/assets/heat-exchanger-placeholder-4x3.svg" alt="Промышленный теплообменник — пример" width="800" height="600" loading="lazy" decoding="async" />
+              </div>
 
               <div class="contact-line">
                 <div class="icon" aria-hidden="true">☎</div>
