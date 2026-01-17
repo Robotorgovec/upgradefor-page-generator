@@ -123,7 +123,7 @@
       font-size: 13px;
     }
 
-    .upgr-hx h1{ margin: 12px 0 10px; font-size: var(--fs-hero); line-height:1.08; letter-spacing:-.02em; }
+    .upgr-hx h1{ margin: 12px 0 10px; font-size: var(--fs-hero); line-height:1.08; letter-spacing:-.02em; hyphens: none; word-break: normal; }
     .upgr-hx h2{ margin: 0 0 12px; font-size: var(--fs-2); line-height:1.15; letter-spacing:-.01em; }
     .upgr-hx h3{ margin: 0 0 8px; font-size: var(--fs-1); line-height:1.2; }
 
@@ -186,7 +186,7 @@
     /* Hero */
     .upgr-hx .hero{
       display: block;
-      padding: clamp(22px, 4vw, 46px) 0;
+      padding: 0 0 clamp(18px, 3.6vw, 36px);
     }
 
     .upgr-hx .hero-grid{
@@ -198,11 +198,10 @@
     }
 
     @media (min-width: 768px){
-      .upgr-hx .hero-grid{ grid-template-columns: 1fr 1fr; }
-      .upgr-hx .hero-side{ min-width: 360px; }
+      .upgr-hx .hero-grid{ grid-template-columns: 1fr; }
     }
 
-    .upgr-hx .hero-main{ padding: clamp(16px, 2.6vw, 22px); }
+    .upgr-hx .hero-main{ padding: clamp(10px, 2vw, 18px); }
 
     .upgr-hx .lead{ color: var(--muted); font-size: clamp(15px, 1.35vw, 17px); line-height:1.55; max-width: 72ch; }
 
@@ -214,7 +213,7 @@
       .upgr-hx .cta-row .btn{ flex: 1 1 100%; }
     }
 
-    .upgr-hx .nav-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 14px; }
+    .upgr-hx .nav-chips{ display:flex; flex-wrap:wrap; gap:8px; }
 
     .upgr-hx .chip-link{
       display:inline-flex; align-items:center; justify-content:center;
@@ -277,6 +276,26 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .upgr-hx .hero-phone{
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .upgr-hx .types-trust{
+      padding-top: clamp(12px, 2.6vw, 18px);
+    }
+
+    .upgr-hx .plain-card{
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .upgr-hx .trust-cta{
+      margin-top: 12px;
     }
 
     /* Type directory */
@@ -349,6 +368,23 @@
     .upgr-hx .price-mobile{ display:grid; gap:10px; }
     .upgr-hx .price-item{ border:1px solid var(--line); border-radius: 16px; padding: 12px; background:#fff; }
     .upgr-hx .price-item b{ display:block; margin-bottom: 6px; }
+
+    .upgr-hx .price-disclaimer{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 10px;
+    }
+
+    .upgr-hx .price-pill{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid color-mix(in srgb, var(--brand) 25%, var(--line));
+      background: var(--brand-soft);
+      color: var(--brand-700);
+      font-weight: 700;
+      font-size: 12px;
+    }
 
     @media (min-width: 720px){
       .upgr-hx .price-mobile{ display:none; }
@@ -479,146 +515,77 @@
       <!-- HERO -->
       <section class="hero">
         <div class="wrap hero-grid">
-
-          <div class="card hero-main">
+          <div class="hero-main">
             <span class="kicker">Сервис • Диагностика • Чистка • Герметичность • Ремонт/замена</span>
             <h1>Ремонт и обслуживание теплообменников всех типов</h1>
-            <p class="lead">
-              Универсальная сервис‑страница для всех конструкций и назначений: <b>пластинчатые</b>, <b>кожухотрубные</b>,
-              <b>ребристо‑трубные (калориферы/радиаторы/воздухонагреватели/воздухоохладители)</b>,
-              <b>испарители/конденсаторы HVAC/R</b>, <b>микроканальные</b> и другие.
-              Если тип редкий — <b>оцениваем по фото и параметрам</b> и предложим лучший вариант.
-            </p>
-
-            <div class="cta-row" aria-label="Основные действия">
-              <a class="btn" href="#request">Оставить заявку</a>
-              <a class="btn btn-outline" href="#types">Выбрать тип</a>
-              <a class="btn btn-soft" href="#prices">Ориентиры цен</a>
+            <p class="lead">Оцениваем состояние по фото и параметрам, подбираем ремонт или замену под вашу задачу.</p>
+            <div class="cta-row" aria-label="Основное действие">
+              <a class="btn" href="#request">Оценить по фото</a>
             </div>
-
-            <div class="nav-chips" aria-label="Навигация по странице">
-              <a class="chip-link" href="#types">Каталог типов</a>
-              <a class="chip-link" href="#works">Что делаем</a>
-              <a class="chip-link" href="#faults">Неисправности</a>
-              <a class="chip-link" href="#data">Что прислать</a>
-              <a class="chip-link" href="#prices">Цены</a>
-              <a class="chip-link" href="#faq">FAQ</a>
-              <a class="chip-link" href="#contacts">Контакты</a>
+            <div class="hero-phone">
+              Телефон: <a href="tel:{{PHONE_E164}}">{{PHONE_DISPLAY}}</a>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div class="hr"></div>
+      <!-- NAVIGATION CHIPS -->
+      <section class="section" aria-label="Навигационные якоря">
+        <div class="wrap">
+          <div class="nav-chips">
+            <a class="chip-link" href="#catalog">Каталог типов</a>
+            <a class="chip-link" href="#process">Что делаем</a>
+            <a class="chip-link" href="#issues">Типовые проблемы</a>
+            <a class="chip-link" href="#what-to-send">Что прислать</a>
+            <a class="chip-link" href="#prices">Цены</a>
+            <a class="chip-link" href="#faq">FAQ</a>
+            <a class="chip-link" href="#contacts">Контакты</a>
+          </div>
+        </div>
+      </section>
 
-            <div class="grid grid-4" aria-label="Короткие преимущества">
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">1D</div>
-                  <div>
-                    <b>Быстрый ответ</b>
-                    <div class="muted">Оценка по фото/данным — часто в течение рабочего дня.</div>
-                  </div>
-                </div>
+      <!-- TYPES + TRUST -->
+      <section class="section types-trust">
+        <div class="wrap">
+          <div class="grid grid-2" style="align-items:start">
+            <div class="card" style="padding:16px">
+              <h3>Типы теплообменников</h3>
+              <p class="muted">Работаем с основными конструкциями, подбираем решение под тип и задачу.</p>
+              <ul class="list" style="margin-top:12px">
+                <li class="li"><span class="dot"></span><span>Пластинчатые (разборные/паяные/полусварные)</span></li>
+                <li class="li"><span class="dot"></span><span>Кожухотрубные</span></li>
+                <li class="li"><span class="dot"></span><span>Ребристо‑трубные (калориферы/радиаторы/coil)</span></li>
+                <li class="li"><span class="dot"></span><span>Испарители и конденсаторы HVAC/R</span></li>
+                <li class="li"><span class="dot"></span><span>Микроканальные и другие</span></li>
+              </ul>
+            </div>
+            <div class="grid" style="gap:12px">
+              <div class="card" style="padding:16px">
+                <h3>Основные характеристики</h3>
+                <ul class="list" style="margin-top:10px">
+                  <li class="li"><span class="dot"></span><span>Диагностика, чистка, восстановление герметичности</span></li>
+                  <li class="li"><span class="dot"></span><span>Оценка по фото и исходным данным</span></li>
+                  <li class="li"><span class="dot"></span><span>Отчёт по работам и контроль качества</span></li>
+                </ul>
               </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">QC</div>
-                  <div>
-                    <b>Контроль качества</b>
-                    <div class="muted">Испытания, герметичность, отчёт по работам.</div>
-                  </div>
-                </div>
+              <div class="card" style="padding:16px">
+                <h3>Почему доверяют</h3>
+                <ul class="list" style="margin-top:10px">
+                  <li class="li"><span class="dot"></span><span>Чёткие этапы и сроки работ</span></li>
+                  <li class="li"><span class="dot"></span><span>Опыт с HVAC и промышленными системами</span></li>
+                  <li class="li"><span class="dot"></span><span>Выбор: ремонт или замена под задачу</span></li>
+                </ul>
               </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">SLA</div>
-                  <div>
-                    <b>B2B‑процессы</b>
-                    <div class="muted">Договор, закрывающие, понятные сроки и этапы.</div>
-                  </div>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="mini">
-                  <div class="icon" aria-hidden="true">INT</div>
-                  <div>
-                    <b>Международно</b>
-                    <div class="muted">Локальные контакты по странам — через выбор региона.</div>
-                  </div>
-                </div>
+              <div class="trust-cta">
+                <a class="btn" href="#request">Оценить по фото</a>
               </div>
             </div>
           </div>
-
-          <aside class="card hero-side" aria-label="Контакты и быстрый запрос">
-            <div class="contact-box">
-
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">☎</div>
-                <div>
-                  <b>Телефон (локальный)</b>
-                  <div class="muted">{{PHONE_DISPLAY}}</div>
-                  <div class="note">*На локальных страницах страны номер подставляется автоматически.</div>
-                </div>
-              </div>
-
-              <div class="contact-actions">
-                <a class="btn" href="tel:{{PHONE_E164}}">Позвонить</a>
-                <a class="btn btn-outline" href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>
-              </div>
-
-              <div class="contact-line">
-                <div class="icon" aria-hidden="true">✉</div>
-                <div>
-                  <b>Email</b>
-                  <div class="muted"><a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
-                  <div class="note">Если не знаете тип — просто пришлите фото и описание проблемы.</div>
-                </div>
-              </div>
-
-              <div class="card" style="padding:14px; border-radius:16px; box-shadow:none;">
-                <b style="display:block; margin-bottom:8px;">Быстрый запрос (2 минуты)</b>
-                <form onsubmit="event.preventDefault(); alert('Предпросмотр. Подключим отправку в WP (CF7/WPForms) или webhook.');">
-                  <div class="form-grid">
-                    <div>
-                      <label for="q-name">Имя/Компания</label>
-                      <input id="q-name" name="name" placeholder="Например: Сергей / UPGR" autocomplete="name" />
-                    </div>
-                    <div>
-                      <label for="q-phone">Телефон/мессенджер</label>
-                      <input id="q-phone" name="phone" placeholder="+7… / +971…" inputmode="tel" autocomplete="tel" />
-                    </div>
-                    <div class="span-2">
-                      <label for="q-type">Тип теплообменника</label>
-                      <select id="q-type" name="type">
-                        <option value="">Не знаю / определить по фото</option>
-                        <option>Пластинчатый (разборный/паяный/полусварной)</option>
-                        <option>Кожухотрубный</option>
-                        <option>Воздушный ребристо‑трубный (калорифер/радиатор/coil)</option>
-                        <option>Испаритель HVAC/R</option>
-                        <option>Конденсатор HVAC/R</option>
-                        <option>Микроканальный</option>
-                        <option>Спиральный / навивной / другой</option>
-                      </select>
-                    </div>
-                    <div class="span-2">
-                      <label for="q-details">Коротко о проблеме</label>
-                      <textarea id="q-details" name="details" placeholder="Протечка / падение мощности / загрязнение / требуется испытание…"></textarea>
-                    </div>
-                    <div class="span-2">
-                      <button class="btn" type="submit" style="width:100%">Отправить</button>
-                      <div class="note" style="margin-top:8px;">На проде подключим отправку в Telegram/Email и учёт страны (номер телефона).</div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-          </aside>
-
         </div>
       </section>
 
       <!-- TYPES DIRECTORY -->
-      <section class="section" id="types">
+      <section class="section" id="catalog">
         <div class="wrap">
           <h2>Каталог типов теплообменников</h2>
           <p class="lead">
@@ -638,8 +605,8 @@
                 <span class="tag">полусварной</span>
               </div>
               <div class="type-cta">
+                <a class="btn" href="#request">Заявка</a>
                 <a class="btn btn-outline" href="{{SLUG_PLATE}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
               </div>
             </article>
 
@@ -652,8 +619,8 @@
                 <span class="tag">опрессовка</span>
               </div>
               <div class="type-cta">
+                <a class="btn" href="#request">Заявка</a>
                 <a class="btn btn-outline" href="{{SLUG_SHELL_TUBE}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
               </div>
             </article>
 
@@ -667,8 +634,8 @@
                 <span class="tag">медно‑алюминиевый</span>
               </div>
               <div class="type-cta">
+                <a class="btn" href="#request">Заявка</a>
                 <a class="btn btn-outline" href="{{SLUG_COIL}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
               </div>
             </article>
 
@@ -682,8 +649,8 @@
                 <span class="tag">condenser coil</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_EVAPORATOR}}">Испарители</a>
-                <a class="btn btn-outline" href="{{SLUG_CONDENSER}}">Конденсаторы</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="{{SLUG_EVAPORATOR}}">Страница типа</a>
               </div>
             </article>
 
@@ -696,8 +663,8 @@
                 <span class="tag">герметичность</span>
               </div>
               <div class="type-cta">
+                <a class="btn" href="#request">Заявка</a>
                 <a class="btn btn-outline" href="{{SLUG_MICROCHANNEL}}">Страница типа</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
               </div>
             </article>
 
@@ -711,8 +678,8 @@
                 <span class="tag">heat‑pipe</span>
               </div>
               <div class="type-cta">
-                <a class="btn btn-outline" href="{{SLUG_OTHER_TYPES}}">Каталог редких типов</a>
-                <a class="btn btn-soft" href="#request">Заявка</a>
+                <a class="btn" href="#request">Заявка</a>
+                <a class="btn btn-outline" href="{{SLUG_OTHER_TYPES}}">Страница типа</a>
               </div>
             </article>
 
@@ -750,11 +717,11 @@
       </section>
 
       <!-- WORKS -->
-      <section class="section" id="works">
+      <section class="section" id="process">
         <div class="wrap">
           <h2>Что делаем (универсально)</h2>
           <div class="grid grid-3" style="margin-top:14px">
-            <article class="card" style="padding:16px">
+            <article class="plain-card">
               <h3>Диагностика и дефектация</h3>
               <p class="muted">Определяем тип/конструкцию, причину падения эффективности или утечки, оцениваем ремонтопригодность и риски.</p>
               <ul class="list">
@@ -763,7 +730,7 @@
                 <li class="li"><span class="dot"></span><span>Рекомендации: ремонт vs замена</span></li>
               </ul>
             </article>
-            <article class="card" style="padding:16px">
+            <article class="plain-card">
               <h3>Чистка и восстановление теплоотдачи</h3>
               <p class="muted">Подбираем метод очистки под среду и конструкцию, чтобы вернуть эффективность без повреждений.</p>
               <ul class="list">
@@ -772,7 +739,7 @@
                 <li class="li"><span class="dot"></span><span>Проверка результата</span></li>
               </ul>
             </article>
-            <article class="card" style="padding:16px">
+            <article class="plain-card">
               <h3>Герметичность и испытания</h3>
               <p class="muted">Проверяем утечки, делаем испытания и оформляем результаты (по запросу — акт/отчёт).</p>
               <ul class="list">
@@ -786,7 +753,7 @@
       </section>
 
       <!-- FAULTS -->
-      <section class="section" id="faults">
+      <section class="section" id="issues">
         <div class="wrap">
           <h2>Типовые проблемы (для всех типов)</h2>
           <div class="grid grid-2" style="margin-top:14px">
@@ -814,7 +781,7 @@
       </section>
 
       <!-- DATA -->
-      <section class="section" id="data">
+      <section class="section" id="what-to-send">
         <div class="wrap">
           <h2>Что прислать, чтобы быстро получить оценку</h2>
           <div class="grid grid-3" style="margin-top:14px">
@@ -843,43 +810,6 @@
               </ul>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- PRICES -->
-      <section class="section" id="prices">
-        <div class="wrap">
-          <h2>Ориентиры цен (универсально)</h2>
-          <p class="lead">Цены зависят от типа, размеров и загрязнения. Ниже — ориентиры «от». Точную смету даём после фото/данных.</p>
-
-          <!-- Mobile cards -->
-          <div class="price-mobile" style="margin-top:14px">
-            <div class="price-item"><b>Диагностика и дефектация</b><div class="muted">от {{PRICE_DIAG}} {{CURRENCY}}</div></div>
-            <div class="price-item"><b>Чистка (по типу/объёму)</b><div class="muted">от {{PRICE_CLEAN}} {{CURRENCY}}</div></div>
-            <div class="price-item"><b>Испытания герметичности</b><div class="muted">от {{PRICE_TEST}} {{CURRENCY}}</div></div>
-            <div class="price-item"><b>Работы типа‑специфичные</b><div class="muted">регаскинг / ретюбинг / ремонт coil — по запросу</div></div>
-          </div>
-
-          <!-- Desktop table -->
-          <div class="price-desktop" style="margin-top:14px">
-            <table class="price-table" aria-label="Таблица ориентировочных цен">
-              <thead>
-                <tr>
-                  <th style="width:55%">Работа</th>
-                  <th style="width:15%">Ед.</th>
-                  <th style="width:30%">От</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>Диагностика и дефектация</td><td>шт</td><td>{{PRICE_DIAG}} {{CURRENCY}}</td></tr>
-                <tr><td>Чистка (метод подбирается под конструкцию)</td><td>проект</td><td>{{PRICE_CLEAN}} {{CURRENCY}}</td></tr>
-                <tr><td>Испытания герметичности / опрессовка</td><td>комплект</td><td>{{PRICE_TEST}} {{CURRENCY}}</td></tr>
-                <tr><td>Тип‑специфичные работы</td><td>—</td><td>регаскинг / ретюбинг / coil‑repair — по запросу</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="note" style="margin-top:10px">Под разные страны/города генератор подставляет валюту/формат цены и контактный номер.</div>
         </div>
       </section>
 
@@ -927,12 +857,12 @@
                   <textarea id="problem" name="problem" placeholder="Что не так? Протечка, падение мощности, загрязнение, требуется испытание…"></textarea>
                 </div>
 
-                <div class="span-2">
-                  <button class="btn" type="submit" style="width:100%">Отправить заявку</button>
-                  <div class="note" style="margin-top:8px">Альтернатива: <a href="tel:{{PHONE_E164}}">позвонить</a> или написать в <a href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>.</div>
-                </div>
+              <div class="span-2">
+                <button class="btn" type="submit" style="width:100%">Отправить заявку</button>
+                <div class="note" style="margin-top:8px">Альтернатива: <a href="tel:{{PHONE_E164}}">позвонить</a> или написать в <a href="https://wa.me/{{WHATSAPP_E164_NO_PLUS}}" rel="nofollow">WhatsApp</a>.</div>
               </div>
-            </form>
+            </div>
+          </form>
 
             <aside class="card" style="padding:16px">
               <h3>Как мы быстро даём решение</h3>
@@ -950,6 +880,48 @@
             </aside>
 
           </div>
+        </div>
+      </section>
+
+      <!-- PRICES -->
+      <section class="section" id="prices">
+        <div class="wrap">
+          <h2>Ориентиры цен (универсально)</h2>
+          <p class="lead">Цены зависят от типа, размеров и загрязнения. Ниже — ориентиры «от». Точную смету даём после фото/данных.</p>
+          <div class="price-disclaimer">
+            <span class="price-pill">Цены ориентировочные</span>
+            <span class="price-pill">Окончательно — после диагностики</span>
+          </div>
+          <p class="muted" style="margin-top:10px">В большинстве случаев укладываемся в указанный диапазон.</p>
+
+          <!-- Mobile cards -->
+          <div class="price-mobile" style="margin-top:14px">
+            <div class="price-item"><b>Диагностика и дефектация</b><div class="muted">от {{PRICE_DIAG}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Чистка (по типу/объёму)</b><div class="muted">от {{PRICE_CLEAN}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Испытания герметичности</b><div class="muted">от {{PRICE_TEST}} {{CURRENCY}}</div></div>
+            <div class="price-item"><b>Работы типа‑специфичные</b><div class="muted">регаскинг / ретюбинг / ремонт coil — по запросу</div></div>
+          </div>
+
+          <!-- Desktop table -->
+          <div class="price-desktop" style="margin-top:14px">
+            <table class="price-table" aria-label="Таблица ориентировочных цен">
+              <thead>
+                <tr>
+                  <th style="width:55%">Работа</th>
+                  <th style="width:15%">Ед.</th>
+                  <th style="width:30%">От</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Диагностика и дефектация</td><td>шт</td><td>{{PRICE_DIAG}} {{CURRENCY}}</td></tr>
+                <tr><td>Чистка (метод подбирается под конструкцию)</td><td>проект</td><td>{{PRICE_CLEAN}} {{CURRENCY}}</td></tr>
+                <tr><td>Испытания герметичности / опрессовка</td><td>комплект</td><td>{{PRICE_TEST}} {{CURRENCY}}</td></tr>
+                <tr><td>Тип‑специфичные работы</td><td>—</td><td>регаскинг / ретюбинг / coil‑repair — по запросу</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note" style="margin-top:10px">Под разные страны/города генератор подставляет валюту/формат цены и контактный номер.</div>
         </div>
       </section>
 
