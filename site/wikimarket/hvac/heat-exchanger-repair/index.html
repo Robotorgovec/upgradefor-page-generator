@@ -204,6 +204,127 @@
       .upgr-hx .grid-4{ grid-template-columns: repeat(4, 1fr); }
     }
 
+    /* Seller marketplace block */
+    .upgr-hx .seller-block{ padding-top: clamp(12px, 3vw, 28px); }
+    .upgr-hx .seller-head{ display:flex; flex-direction:column; gap:10px; }
+    .upgr-hx .seller-subtitle{ margin: 0; }
+    .upgr-hx .seller-filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin: 14px 0 18px;
+    }
+    .upgr-hx .seller-chip{
+      border-radius: 999px;
+      border:1px solid color-mix(in srgb, var(--text) 12%, var(--line));
+      padding: 8px 16px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--text);
+      cursor:pointer;
+      transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .upgr-hx .seller-chip.is-active{
+      background: var(--brand-soft);
+      border-color: color-mix(in srgb, var(--brand) 40%, var(--line));
+      color: var(--brand-700);
+      font-weight: 700;
+    }
+    .upgr-hx .seller-chip:hover{ box-shadow: 0 6px 16px rgba(15,23,42,.08); }
+    .upgr-hx .seller-chip:focus-visible{
+      outline: 2px solid color-mix(in srgb, var(--brand) 60%, white);
+      outline-offset: 2px;
+    }
+
+    .upgr-hx .seller-grid{ align-items: stretch; }
+    .upgr-hx .seller-card{
+      background: var(--surface);
+      border:1px solid var(--line);
+      border-radius: var(--r-2);
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height: 100%;
+      transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .upgr-hx .seller-card:hover{
+      border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+      box-shadow: 0 16px 30px rgba(15,23,42,.08);
+      transform: translateY(-2px);
+    }
+    .upgr-hx .seller-card:focus-within{
+      border-color: color-mix(in srgb, var(--brand) 45%, var(--line));
+      box-shadow: 0 0 0 2px rgba(14,165,233,.18);
+    }
+    .upgr-hx .seller-card-top{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .upgr-hx .seller-avatar{
+      width:54px;
+      height:54px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      flex: 0 0 auto;
+      background: var(--soft);
+    }
+    .upgr-hx .seller-name{ margin:0 0 6px; font-size: 18px; }
+    .upgr-hx .seller-rating{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .upgr-hx .seller-stars{ color: #f59e0b; letter-spacing:1px; }
+    .upgr-hx .seller-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .upgr-hx .seller-tag{
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.04);
+      border: 1px solid rgba(15,23,42,.08);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .upgr-hx .seller-location{ font-size: 14px; }
+    .upgr-hx .seller-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:auto;
+      flex-wrap:wrap;
+    }
+    .upgr-hx .seller-btn{ height: 42px; padding: 0 14px; font-size: 14px; }
+    .upgr-hx .seller-link{
+      color: var(--brand-700);
+      font-weight: 600;
+    }
+    .upgr-hx .seller-link:focus-visible{
+      outline: 2px solid color-mix(in srgb, var(--brand) 60%, white);
+      outline-offset: 2px;
+    }
+    .upgr-hx .seller-card a{ text-decoration: none; }
+    .upgr-hx .seller-card a:hover{ text-decoration: underline; }
+    .upgr-hx .seller-card .btn:hover{ text-decoration: none; }
+    .upgr-hx .seller-sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
     /* Hero */
     .upgr-hx .hero{
       display: block;
@@ -591,6 +712,175 @@
               <line x1="56" y1="54" x2="56" y2="146" stroke="#E5E7EB" stroke-width="1" />
               <line x1="244" y1="54" x2="244" y2="146" stroke="#E5E7EB" stroke-width="1" />
             </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELLER MARKETPLACE -->
+      <section class="section seller-block" aria-labelledby="seller-marketplace-title">
+        <div class="wrap">
+          <div class="seller-head">
+            <h2 id="seller-marketplace-title">Выберите исполнителя по ремонту теплообменников</h2>
+            <p class="muted seller-subtitle">Проверенные специалисты, рейтинг, быстрый контакт.</p>
+          </div>
+
+          <div class="seller-filters" role="tablist" aria-label="Фильтр исполнителей">
+            <button class="seller-chip is-active" type="button" data-filter="all" aria-pressed="true">Все</button>
+            <button class="seller-chip" type="button" data-filter="plate" aria-pressed="false">Пластинчатые</button>
+            <button class="seller-chip" type="button" data-filter="shell" aria-pressed="false">Кожухотрубные</button>
+            <button class="seller-chip" type="button" data-filter="urgent" aria-pressed="false">Срочно 24/7</button>
+          </div>
+
+          <div class="grid grid-3 seller-grid" data-seller-grid>
+            <article class="seller-card" data-seller data-categories="plate urgent">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23e0f2fe'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%230369a1' font-family='Arial'>ТС</text></svg>" alt="Seller: ТеплоСервис Плюс">
+                <div>
+                  <h3 class="seller-name">ТеплоСервис Плюс</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.8 из 5 на основе 23 отзывов">
+                    <span class="seller-stars" aria-hidden="true">★★★★☆</span>
+                    <span>4.8</span>
+                    <span>(23)</span>
+                    <span class="seller-sr-only">Рейтинг 4.8 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Диагностика</span>
+                <span class="seller-tag">Промывка</span>
+                <span class="seller-tag">Герметизация</span>
+              </div>
+              <div class="seller-location muted">Выезд: 24/7 • Москва и область</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/teploservice-plus">Открыть профиль</a>
+                <a class="seller-link" href="/seller/teploservice-plus#contact">Написать</a>
+              </div>
+            </article>
+
+            <article class="seller-card" data-seller data-categories="shell">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23f1f5f9'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%231e293b' font-family='Arial'>ХТ</text></svg>" alt="Seller: ХимТепло Групп">
+                <div>
+                  <h3 class="seller-name">ХимТепло Групп</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.6 из 5 на основе 18 отзывов">
+                    <span class="seller-stars" aria-hidden="true">★★★★☆</span>
+                    <span>4.6</span>
+                    <span>(18)</span>
+                    <span class="seller-sr-only">Рейтинг 4.6 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Дефектация</span>
+                <span class="seller-tag">Ретюбинг</span>
+                <span class="seller-tag">Испытания</span>
+              </div>
+              <div class="seller-location muted">Выезд: будни • Нижний Новгород</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/khimteplo-group">Открыть профиль</a>
+                <a class="seller-link" href="/seller/khimteplo-group#contact">Написать</a>
+              </div>
+            </article>
+
+            <article class="seller-card" data-seller data-categories="plate">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23ede9fe'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%235b21b6' font-family='Arial'>ПХ</text></svg>" alt="Seller: ПластХит Сервис">
+                <div>
+                  <h3 class="seller-name">ПластХит Сервис</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.9 из 5 на основе 31 отзыва">
+                    <span class="seller-stars" aria-hidden="true">★★★★★</span>
+                    <span>4.9</span>
+                    <span>(31)</span>
+                    <span class="seller-sr-only">Рейтинг 4.9 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Прокладки</span>
+                <span class="seller-tag">Чистка пластин</span>
+                <span class="seller-tag">Сборка</span>
+              </div>
+              <div class="seller-location muted">Выезд: по запросу • Санкт‑Петербург</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/plast-hit">Открыть профиль</a>
+                <a class="seller-link" href="/seller/plast-hit#contact">Написать</a>
+              </div>
+            </article>
+
+            <article class="seller-card" data-seller data-categories="shell urgent">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23fee2e2'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%23b91c1c' font-family='Arial'>ЭК</text></svg>" alt="Seller: ЭнергоКанал">
+                <div>
+                  <h3 class="seller-name">ЭнергоКанал</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.7 из 5 на основе 27 отзывов">
+                    <span class="seller-stars" aria-hidden="true">★★★★☆</span>
+                    <span>4.7</span>
+                    <span>(27)</span>
+                    <span class="seller-sr-only">Рейтинг 4.7 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Срочный выезд</span>
+                <span class="seller-tag">Ремонт пучков</span>
+                <span class="seller-tag">Контроль течи</span>
+              </div>
+              <div class="seller-location muted">Выезд: 24/7 • Екатеринбург</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/energokanal">Открыть профиль</a>
+                <a class="seller-link" href="/seller/energokanal#contact">Написать</a>
+              </div>
+            </article>
+
+            <article class="seller-card" data-seller data-categories="plate">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23dcfce7'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%23166534' font-family='Arial'>ЭР</text></svg>" alt="Seller: Экострим Ремонт">
+                <div>
+                  <h3 class="seller-name">Экострим Ремонт</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.5 из 5 на основе 15 отзывов">
+                    <span class="seller-stars" aria-hidden="true">★★★★☆</span>
+                    <span>4.5</span>
+                    <span>(15)</span>
+                    <span class="seller-sr-only">Рейтинг 4.5 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Промывка</span>
+                <span class="seller-tag">Химочистка</span>
+                <span class="seller-tag">Замена уплотнений</span>
+              </div>
+              <div class="seller-location muted">Выезд: по графику • Казань</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/ecostream-remont">Открыть профиль</a>
+                <a class="seller-link" href="/seller/ecostream-remont#contact">Написать</a>
+              </div>
+            </article>
+
+            <article class="seller-card" data-seller data-categories="shell urgent">
+              <div class="seller-card-top">
+                <img class="seller-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='32' fill='%23ffedd5'/><text x='50%' y='54%' font-size='22' text-anchor='middle' fill='%239a3412' font-family='Arial'>ТК</text></svg>" alt="Seller: ТрубКонтур">
+                <div>
+                  <h3 class="seller-name">ТрубКонтур</h3>
+                  <div class="seller-rating" aria-label="Рейтинг 4.4 из 5 на основе 12 отзывов">
+                    <span class="seller-stars" aria-hidden="true">★★★★☆</span>
+                    <span>4.4</span>
+                    <span>(12)</span>
+                    <span class="seller-sr-only">Рейтинг 4.4 из 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="seller-tags">
+                <span class="seller-tag">Ретюбинг</span>
+                <span class="seller-tag">Сварка</span>
+                <span class="seller-tag">Опрессовка</span>
+              </div>
+              <div class="seller-location muted">Выезд: 24/7 • Новосибирск</div>
+              <div class="seller-actions">
+                <a class="btn seller-btn" href="/seller/trubkontur">Открыть профиль</a>
+                <a class="seller-link" href="/seller/trubkontur#contact">Написать</a>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1281,8 +1571,38 @@
     (function(){
       var el = document.getElementById('y');
       if(el) el.textContent = new Date().getFullYear();
-       
-  
+    })();
+
+    // Seller filters
+    (function(){
+      var block = document.querySelector('.seller-block');
+      if(!block) return;
+
+      var buttons = block.querySelectorAll('[data-filter]');
+      var cards = block.querySelectorAll('[data-seller]');
+
+      var applyFilter = function(filter){
+        cards.forEach(function(card){
+          var categories = (card.dataset.categories || '').split(' ').filter(Boolean);
+          var isMatch = filter === 'all' || categories.indexOf(filter) !== -1;
+          card.hidden = !isMatch;
+        });
+
+        buttons.forEach(function(button){
+          var isActive = button.dataset.filter === filter;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      };
+
+      buttons.forEach(function(button){
+        button.addEventListener('click', function(){
+          applyFilter(button.dataset.filter);
+        });
+      });
+
+      applyFilter('all');
+
     })();
   </script>
 
