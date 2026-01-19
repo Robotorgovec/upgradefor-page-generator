@@ -27,6 +27,7 @@
           <a class="btn" href="#form" data-cta-link="primary">Оформить домен</a>
           <span class="tag" aria-label="Срок предложения">Предложение действительно 24 часа</span>
         </div>
+        <p class="lead" id="domain-missing-note" hidden>Домен не определён. Используйте персональную ссылку.</p>
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <strong>Таймер:</strong>
           <div id="countdown" style="margin-top:8px;color:var(--muted)">24:00:00</div>
@@ -99,15 +100,18 @@
 
     <section class="wrap" id="form" aria-labelledby="form-title">
       <h2 class="section-title" id="form-title">Заполните форму</h2>
+      <p class="lead" id="form-status" hidden>Срок действия ссылки истёк. Отправка заявки недоступна.</p>
       <form class="card" aria-label="Форма получения домена">
         <div class="grid" style="margin-bottom:var(--space-3)">
           <div>
             <label for="first-name"><strong>Имя</strong></label>
             <input id="first-name" name="first-name" type="text" placeholder="Имя" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
+            <p class="lead" data-error-for="first-name" hidden>Пожалуйста, заполните поле</p>
           </div>
           <div>
             <label for="last-name"><strong>Фамилия</strong></label>
             <input id="last-name" name="last-name" type="text" placeholder="Фамилия" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
+            <p class="lead" data-error-for="last-name" hidden>Пожалуйста, заполните поле</p>
           </div>
         </div>
         <div class="grid" style="margin-bottom:var(--space-3)">
@@ -118,10 +122,11 @@
           <div>
             <label for="email"><strong>Email</strong></label>
             <input id="email" name="email" type="email" placeholder="Email" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
+            <p class="lead" data-error-for="email" hidden>Пожалуйста, заполните поле</p>
           </div>
         </div>
         <button class="btn" type="submit" data-cta-button="submit">Получить мой домен</button>
-        <p class="lead" id="form-message" hidden>Заявка отправлена. Мы свяжемся с вами.</p>
+        <p class="lead" id="form-message" hidden>Заявка принята. Мы свяжемся с вами в ближайшее время.</p>
       </form>
     </section>
 
@@ -169,6 +174,8 @@
     (function() {
       var params = new URLSearchParams(window.location.search);
       var token = params.get('t');
+      var currentToken = token || '';
+      // TODO: fetch domain data by token from backend
       var nameParam = params.get('name');
       var domainParam = params.get('domain');
       var expiresParam = params.get('expires');
@@ -190,10 +197,16 @@
       var countdownEl = document.getElementById('countdown');
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
+      var formStatus = document.getElementById('form-status');
+      var domainMissingNote = document.getElementById('domain-missing-note');
       var ctaLinks = document.querySelectorAll('[data-cta-link]');
       var ctaButton = document.querySelector('[data-cta-button]');
+      var form = document.querySelector('form');
+      var formMessage = document.getElementById('form-message');
+      var formFields = form ? form.querySelectorAll('input') : [];
       var storageKey = 'fio-rus-expires-at';
       var expiresAt;
+      var isExpired = false;
 
       if (expiresParam) {
         var parsedDate = new Date(expiresParam);
@@ -219,7 +232,20 @@
         localStorage.setItem(storageKey, expiresAt.toISOString());
       }
 
+      function disableForm() {
+        if (formStatus) {
+          formStatus.hidden = false;
+        }
+        formFields.forEach(function(field) {
+          field.setAttribute('disabled', 'disabled');
+        });
+        if (ctaButton) {
+          ctaButton.setAttribute('disabled', 'disabled');
+        }
+      }
+
       function setExpiredState() {
+        isExpired = true;
         if (countdownEl) {
           countdownEl.textContent = 'Срок истёк (00:00:00)';
         }
@@ -233,9 +259,17 @@
           link.setAttribute('aria-disabled', 'true');
           link.setAttribute('tabindex', '-1');
         });
-        if (ctaButton) {
-          ctaButton.setAttribute('disabled', 'disabled');
+        disableForm();
+      }
+
+      function setDomainMissingState() {
+        if (domainMissingNote) {
+          domainMissingNote.hidden = false;
         }
+        ctaLinks.forEach(function(link) {
+          link.setAttribute('aria-disabled', 'true');
+          link.setAttribute('tabindex', '-1');
+        });
       }
 
       function formatTime(ms) {
@@ -268,19 +302,96 @@
         tick();
       }, 1000);
 
+      if (userDomain === 'ваш-домен.рус') {
+        setDomainMissingState();
+      }
+
       ctaLinks.forEach(function(link) {
         link.addEventListener('click', function(event) {
           if (link.getAttribute('aria-disabled') === 'true') {
             event.preventDefault();
+            return;
+          }
+          var firstNameField = document.getElementById('first-name');
+          if (firstNameField) {
+            setTimeout(function() {
+              firstNameField.focus();
+            }, 0);
           }
         });
       });
 
-      var form = document.querySelector('form');
-      var formMessage = document.getElementById('form-message');
+      function setFieldError(field, message) {
+        var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.hidden = false;
+        }
+        field.setAttribute('aria-invalid', 'true');
+        field.style.borderColor = '#ef4444';
+      }
+
+      function clearFieldError(field) {
+        var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
+        if (errorEl) {
+          errorEl.hidden = true;
+        }
+        field.removeAttribute('aria-invalid');
+        field.style.borderColor = 'var(--line)';
+      }
+
+      function validateEmail(value) {
+        return value.indexOf('@') > 0 && value.indexOf('.') > 0;
+      }
+
       if (form) {
         form.addEventListener('submit', function(event) {
           event.preventDefault();
+          if (isExpired) {
+            disableForm();
+            return;
+          }
+
+          var firstName = document.getElementById('first-name');
+          var lastName = document.getElementById('last-name');
+          var email = document.getElementById('email');
+          var middleName = document.getElementById('middle-name');
+          var isValid = true;
+
+          [firstName, lastName, email].forEach(function(field) {
+            if (!field) {
+              return;
+            }
+            if (!field.value.trim()) {
+              setFieldError(field, 'Пожалуйста, заполните поле');
+              isValid = false;
+            } else {
+              clearFieldError(field);
+            }
+          });
+
+          if (email && email.value.trim() && !validateEmail(email.value.trim())) {
+            setFieldError(email, 'Пожалуйста, заполните поле');
+            isValid = false;
+          }
+
+          if (!isValid) {
+            return;
+          }
+
+          var payload = {
+            name: firstName ? firstName.value.trim() : '',
+            lastName: lastName ? lastName.value.trim() : '',
+            middleName: middleName ? middleName.value.trim() : '',
+            email: email ? email.value.trim() : '',
+            domain: userDomain,
+            token: currentToken,
+            expiresAt: expiresAt ? expiresAt.toISOString() : ''
+          };
+
+          // TODO: send to backend /api/domain-request
+          console.log('Domain request payload:', payload);
+
           if (formMessage) {
             formMessage.hidden = false;
           }
