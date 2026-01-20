@@ -403,18 +403,69 @@
             email: email ? email.value.trim() : '',
             domain: userDomain,
             token: currentToken,
-            expiresAt: expiresAt ? expiresAt.toISOString() : ''
+            expiresAt: expiresAt ? expiresAt.toISOString() : '',
+            source: 'domain-rus-landing'
           };
 
-          // TODO: send to backend /api/domain-request
-          console.log('Domain request payload:', payload);
-
           if (ctaButton) {
-            ctaButton.hidden = true;
+            ctaButton.setAttribute('disabled', 'disabled');
           }
-          if (formSuccess) {
-            formSuccess.hidden = false;
-          }
+
+          fetch('/api/domain-request', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          })
+            .then(function(response) {
+              if (response.status === 410) {
+                if (formStatus) {
+                  formStatus.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку.';
+                  formStatus.hidden = false;
+                }
+                setExpiredState();
+                return null;
+              }
+              if (response.status === 409) {
+                if (formStatus) {
+                  formStatus.textContent = 'Заявка уже отправлена.';
+                  formStatus.hidden = false;
+                }
+                return null;
+              }
+              if (!response.ok) {
+                if (formStatus) {
+                  formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
+                  formStatus.hidden = false;
+                }
+                return null;
+              }
+              return response.json();
+            })
+            .then(function(data) {
+              if (!data || data.status !== 'ok') {
+                if (ctaButton) {
+                  ctaButton.removeAttribute('disabled');
+                }
+                return;
+              }
+              if (ctaButton) {
+                ctaButton.hidden = true;
+              }
+              if (formSuccess) {
+                formSuccess.hidden = false;
+              }
+            })
+            .catch(function() {
+              if (formStatus) {
+                formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
+                formStatus.hidden = false;
+              }
+              if (ctaButton) {
+                ctaButton.removeAttribute('disabled');
+              }
+            });
         });
       }
     })();
