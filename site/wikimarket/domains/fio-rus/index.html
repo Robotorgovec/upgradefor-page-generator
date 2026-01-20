@@ -10,6 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
   >
   <link rel="stylesheet" href="/assets/layout.css">
+
   <style>
     .deadline-badge {
       display: flex;
@@ -51,6 +52,7 @@
     .deadline-badge.expired .deadline-value {
       font-weight: 700;
     }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -58,12 +60,11 @@
       row-gap: 20px;
     }
     @media (max-width: 768px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body class="is-home">
   <a class="skip" href="#main">К содержанию</a>
 
@@ -75,12 +76,19 @@
       <div>
         <h1 id="hero-title">Здравствуйте, <span data-user-name>{{user_name}}</span>!</h1>
         <p class="lead">Ваш персональный домен уже доступен:</p>
-        <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)"><span data-user-domain>{{user_domain}}</span></p>
+        <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)">
+          <span data-user-domain>{{user_domain}}</span>
+        </p>
         <p class="lead" id="domain-status">🟢 Домен доступен и зарезервирован за вами</p>
+
         <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
           <a class="btn" href="#form" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
         </div>
-        <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
+
+        <p class="lead" id="domain-cta-status" style="margin-top:8px">
+          Домен зарезервирован на 24 часа и ожидает оформления.
+        </p>
+
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <div class="deadline-badge" id="deadlineBadge">
             <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
@@ -92,10 +100,13 @@
           </div>
         </div>
       </div>
+
       <div class="hero-art" aria-label="Визуальный блок домена">
         <div style="padding:var(--space-4);text-align:center">
           <div class="tag" style="margin-bottom:var(--space-2)">Домен .РУС</div>
-          <div style="font-size:clamp(24px,4vw,42px);font-weight:700"><span data-user-domain>{{user_domain}}</span></div>
+          <div style="font-size:clamp(24px,4vw,42px);font-weight:700">
+            <span data-user-domain>{{user_domain}}</span>
+          </div>
           <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
         </div>
       </div>
@@ -164,6 +175,7 @@
       <h2 class="section-title" id="form-title">Заполните форму</h2>
       <p class="lead">Мы используем данные только для регистрации домена. Никакого спама. Вы получите подтверждение по email.</p>
       <p class="lead" id="form-status" hidden>Срок действия ссылки истёк. Отправка заявки недоступна.</p>
+
       <form class="card" aria-label="Форма получения домена">
         <div class="form-grid" style="margin-bottom:var(--space-3)">
           <div>
@@ -186,7 +198,11 @@
             <p class="lead" data-error-for="email" hidden>Пожалуйста, заполните поле</p>
           </div>
         </div>
-        <button class="btn" type="submit" data-cta-button="submit" data-event="form_submit" data-domain="{{user_domain}}">Получить мой домен</button>
+
+        <button class="btn" type="submit" data-cta-button="submit" data-event="form_submit" data-domain="{{user_domain}}">
+          Получить мой домен
+        </button>
+
         <div class="card" id="form-success" hidden style="margin-top:var(--space-3)">
           <p style="margin:0"><strong>Заявка принята ✅</strong></p>
           <p style="margin:8px 0 0">Мы свяжемся с вами в ближайшее время.</p>
@@ -207,7 +223,7 @@
         </details>
         <details class="card">
           <summary>Нужно ли что-то настраивать самостоятельно?</summary>
-          <p>Мы берём на себя настройку и подключение к вашему профилю.</p>
+          <p>Мы берём на себя настройку и подключение.</p>
         </details>
         <details class="card">
           <summary>Что будет, если не успеть за 24 часа?</summary>
@@ -227,9 +243,13 @@
     <section class="wrap" id="final-cta" aria-labelledby="final-cta-title">
       <div class="card">
         <h2 class="section-title" id="final-cta-title">Ограничение 24 часа</h2>
-        <p class="lead" id="expiry-text">Мы резервируем домен <span data-user-domain>{{user_domain}}</span> на 24 часа, чтобы вы могли принять решение без спешки. После окончания срока предложение может быть отозвано.</p>
+        <p class="lead" id="expiry-text">
+          Мы резервируем домен <span data-user-domain>{{user_domain}}</span> на 24 часа, чтобы вы могли принять решение без спешки. После окончания срока предложение может быть отозвано.
+        </p>
         <a class="btn" href="#form" style="margin-top:var(--space-3)" data-cta-link="secondary">Оформить домен</a>
-        <a class="btn btn--ghost" href="/signup" data-expired-link hidden data-event="request_new_link" style="margin-top:var(--space-2)">Запросить новую ссылку</a>
+        <a class="btn btn--ghost" href="/signup" data-expired-link hidden data-event="request_new_link" style="margin-top:var(--space-2)">
+          Запросить новую ссылку
+        </a>
       </div>
     </section>
   </main>
@@ -242,6 +262,7 @@
       var nameParam = params.get('name');
       var domainParam = params.get('domain');
       var expiresParam = params.get('expires');
+
       var userName = nameParam || 'друг';
       var userDomain = domainParam || 'ваш-домен.рус';
 
@@ -256,8 +277,10 @@
       document.querySelectorAll('[data-user-domain]').forEach(function(node) {
         node.textContent = userDomain;
       });
+
       var countdownEl = document.getElementById('deadlineValue');
       var countdownBadge = document.getElementById('deadlineBadge');
+
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
       var formStatus = document.getElementById('form-status');
@@ -268,12 +291,15 @@
       var form = document.querySelector('form');
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
+
       var storageKey = 'fio-rus-expires-at';
       var sentKey = 'domain_request_sent:' + (currentToken || 'no-token') + ':' + userDomain;
+
       var expiresAt;
       if (ctaButton) {
         ctaButton.setAttribute('data-domain', userDomain);
       }
+
       var isExpired = false;
       var isSent = localStorage.getItem(sentKey) === 'true';
 
@@ -302,15 +328,9 @@
       }
 
       function disableForm() {
-        if (formStatus) {
-          formStatus.hidden = false;
-        }
-        formFields.forEach(function(field) {
-          field.setAttribute('disabled', 'disabled');
-        });
-        if (ctaButton) {
-          ctaButton.setAttribute('disabled', 'disabled');
-        }
+        if (formStatus) formStatus.hidden = false;
+        formFields.forEach(function(field) { field.setAttribute('disabled', 'disabled'); });
+        if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
       }
 
       function disableCtas() {
@@ -318,53 +338,38 @@
           link.setAttribute('aria-disabled', 'true');
           link.setAttribute('tabindex', '-1');
         });
-        if (ctaButton) {
-          ctaButton.setAttribute('disabled', 'disabled');
-        }
+        if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
       }
 
       function setExpiredState() {
         isExpired = true;
-        if (countdownEl) {
-          countdownEl.textContent = '00:00:00';
-        }
+
+        if (countdownEl) countdownEl.textContent = '00:00:00';
         if (countdownBadge) {
           countdownBadge.classList.remove('deadline-urgent');
           countdownBadge.classList.add('expired');
         }
+
         if (expiryText) {
           expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
         }
-        if (domainStatus) {
-          domainStatus.textContent = '🔴 Срок резервирования истёк';
-        }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Срок резервирования истёк.';
-        }
-        if (expiredLink) {
-          expiredLink.hidden = false;
-        }
+        if (domainStatus) domainStatus.textContent = '🔴 Срок резервирования истёк';
+        if (domainCtaStatus) domainCtaStatus.textContent = 'Срок резервирования истёк.';
+        if (expiredLink) expiredLink.hidden = false;
+
         disableCtas();
         disableForm();
       }
 
       function setDomainMissingState() {
-        if (domainStatus) {
-          domainStatus.textContent = '🔴 Домен не определён — требуется персональная ссылка';
-        }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Используйте персональную ссылку для оформления домена.';
-        }
+        if (domainStatus) domainStatus.textContent = '🔴 Домен не определён — требуется персональная ссылка';
+        if (domainCtaStatus) domainCtaStatus.textContent = 'Используйте персональную ссылку для оформления домена.';
         disableCtas();
       }
 
       function setActiveState() {
-        if (domainStatus) {
-          domainStatus.textContent = '🟢 Домен доступен и зарезервирован за вами';
-        }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Домен зарезервирован на 24 часа и ожидает оформления.';
-        }
+        if (domainStatus) domainStatus.textContent = '🟢 Домен доступен и зарезервирован за вами';
+        if (domainCtaStatus) domainCtaStatus.textContent = 'Домен зарезервирован на 24 часа и ожидает оформления.';
       }
 
       function setSentState() {
@@ -372,9 +377,7 @@
           formStatus.textContent = 'Заявка уже отправлена.';
           formStatus.hidden = false;
         }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Заявка уже отправлена.';
-        }
+        if (domainCtaStatus) domainCtaStatus.textContent = 'Заявка уже отправлена.';
         disableCtas();
         disableForm();
       }
@@ -384,53 +387,41 @@
         var hours = Math.floor(totalSeconds / 3600);
         var minutes = Math.floor((totalSeconds % 3600) / 60);
         var seconds = totalSeconds % 60;
-        return String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+        return String(hours).padStart(2, '0') + ':' +
+               String(minutes).padStart(2, '0') + ':' +
+               String(seconds).padStart(2, '0');
       }
 
       function tick() {
-        if (isSent) {
-          return;
-        }
+        if (isSent) return;
+
         var now = new Date();
         var remaining = expiresAt - now;
+
         if (remaining <= 0) {
           setExpiredState();
           return;
         }
-        if (countdownEl) {
-          countdownEl.textContent = formatTime(remaining);
-        }
+
+        if (countdownEl) countdownEl.textContent = formatTime(remaining);
+
         if (countdownBadge) {
           countdownBadge.classList.remove('expired');
-          if (remaining <= 60 * 60 * 1000) {
-            countdownBadge.classList.add('deadline-urgent');
-          } else {
-            countdownBadge.classList.remove('deadline-urgent');
-          }
+          if (remaining <= 60 * 60 * 1000) countdownBadge.classList.add('deadline-urgent');
+          else countdownBadge.classList.remove('deadline-urgent');
         }
       }
 
       tick();
       var interval = setInterval(function() {
-        if (isSent) {
-          clearInterval(interval);
-          return;
-        }
-        if (new Date() > expiresAt) {
-          clearInterval(interval);
-          setExpiredState();
-          return;
-        }
+        if (isSent) { clearInterval(interval); return; }
+        if (new Date() > expiresAt) { clearInterval(interval); setExpiredState(); return; }
         tick();
       }, 1000);
 
-      if (isSent) {
-        setSentState();
-      } else if (userDomain === 'ваш-домен.рус') {
-        setDomainMissingState();
-      } else {
-        setActiveState();
-      }
+      if (isSent) setSentState();
+      else if (userDomain === 'ваш-домен.рус') setDomainMissingState();
+      else setActiveState();
 
       ctaLinks.forEach(function(link) {
         link.addEventListener('click', function(event) {
@@ -439,29 +430,20 @@
             return;
           }
           var firstNameField = document.getElementById('first-name');
-          if (firstNameField) {
-            setTimeout(function() {
-              firstNameField.focus();
-            }, 0);
-          }
+          if (firstNameField) setTimeout(function() { firstNameField.focus(); }, 0);
         });
       });
 
       function setFieldError(field, message) {
         var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
-        if (errorEl) {
-          errorEl.textContent = message;
-          errorEl.hidden = false;
-        }
+        if (errorEl) { errorEl.textContent = message; errorEl.hidden = false; }
         field.setAttribute('aria-invalid', 'true');
         field.style.borderColor = '#ef4444';
       }
 
       function clearFieldError(field) {
         var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
-        if (errorEl) {
-          errorEl.hidden = true;
-        }
+        if (errorEl) errorEl.hidden = true;
         field.removeAttribute('aria-invalid');
         field.style.borderColor = 'var(--line)';
       }
@@ -473,27 +455,20 @@
       if (form) {
         form.addEventListener('submit', function(event) {
           event.preventDefault();
-          if (isExpired) {
-            disableForm();
-            return;
-          }
+
+          if (isExpired) { disableForm(); return; }
 
           var firstName = document.getElementById('first-name');
           var lastName = document.getElementById('last-name');
           var email = document.getElementById('email');
           var middleName = document.getElementById('middle-name');
+
           var isValid = true;
 
           [firstName, lastName, email].forEach(function(field) {
-            if (!field) {
-              return;
-            }
-            if (!field.value.trim()) {
-              setFieldError(field, 'Пожалуйста, заполните поле');
-              isValid = false;
-            } else {
-              clearFieldError(field);
-            }
+            if (!field) return;
+            if (!field.value.trim()) { setFieldError(field, 'Пожалуйста, заполните поле'); isValid = false; }
+            else { clearFieldError(field); }
           });
 
           if (email && email.value.trim() && !validateEmail(email.value.trim())) {
@@ -501,9 +476,7 @@
             isValid = false;
           }
 
-          if (!isValid) {
-            return;
-          }
+          if (!isValid) return;
 
           var payload = {
             name: firstName ? firstName.value.trim() : '',
@@ -516,70 +489,47 @@
             source: 'domain-rus-landing'
           };
 
-          if (ctaButton) {
-            ctaButton.setAttribute('disabled', 'disabled');
-          }
+          if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
 
           fetch('/api/domain-request', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           })
-            .then(function(response) {
-              if (response.status === 410) {
-                if (formStatus) {
-                  formStatus.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку.';
-                  formStatus.hidden = false;
-                }
-                setExpiredState();
-                return null;
-              }
-              if (response.status === 409) {
-                if (formStatus) {
-                  formStatus.textContent = 'Заявка уже отправлена.';
-                  formStatus.hidden = false;
-                }
-                return null;
-              }
-              if (!response.ok) {
-                if (formStatus) {
-                  formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
-                  formStatus.hidden = false;
-                }
-                return null;
-              }
-              return response.json();
-            })
-            .then(function(data) {
-              if (!data || data.status !== 'ok') {
-                if (ctaButton) {
-                  ctaButton.removeAttribute('disabled');
-                }
-                return;
-              }
-              if (ctaButton) {
-                ctaButton.hidden = true;
-              }
-              if (formSuccess) {
-                formSuccess.hidden = false;
-              }
-              localStorage.setItem(sentKey, 'true');
-            })
-            .catch(function() {
-              if (formStatus) {
-                formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
-                formStatus.hidden = false;
-              }
-              if (ctaButton) {
-                ctaButton.removeAttribute('disabled');
-              }
-            });
+          .then(function(response) {
+            if (response.status === 410) {
+              if (formStatus) { formStatus.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку.'; formStatus.hidden = false; }
+              setExpiredState();
+              return null;
+            }
+            if (response.status === 409) {
+              if (formStatus) { formStatus.textContent = 'Заявка уже отправлена.'; formStatus.hidden = false; }
+              return null;
+            }
+            if (!response.ok) {
+              if (formStatus) { formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.'; formStatus.hidden = false; }
+              return null;
+            }
+            return response.json();
+          })
+          .then(function(data) {
+            if (!data || data.status !== 'ok') {
+              if (ctaButton) ctaButton.removeAttribute('disabled');
+              return;
+            }
+            if (ctaButton) ctaButton.hidden = true;
+            if (formSuccess) formSuccess.hidden = false;
+            localStorage.setItem(sentKey, 'true');
+          })
+          .catch(function() {
+            if (formStatus) { formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.'; formStatus.hidden = false; }
+            if (ctaButton) ctaButton.removeAttribute('disabled');
+          });
         });
       }
     })();
   </script>
+
   <script src="/assets/load-layout.js"></script>
 </body>
 </html>
