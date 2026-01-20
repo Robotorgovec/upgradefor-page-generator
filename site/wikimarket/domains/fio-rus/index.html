@@ -13,18 +13,37 @@
   <style>
     .deadline-badge {
       display: flex;
+      gap: 12px;
       align-items: center;
-      justify-content: center;
       padding: 12px 14px;
       border: 1px solid var(--line);
       border-radius: var(--r-card);
       background: var(--surface);
       box-shadow: var(--shadow);
     }
+    .deadline-badge .material-symbols-outlined {
+      font-size: 22px;
+      color: var(--brand-blue);
+    }
+    .deadline-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .deadline-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
+    }
     .deadline-value {
       font-size: clamp(20px, 3vw, 28px);
       font-weight: 700;
       letter-spacing: 0.04em;
+      margin: 4px 0;
+    }
+    .deadline-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
     }
     .deadline-urgent .deadline-value {
       font-weight: 800;
@@ -64,7 +83,12 @@
         <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <div class="deadline-badge" id="deadlineBadge">
-            <div class="deadline-value" id="deadlineValue">24:00:00</div>
+            <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+            <div class="deadline-text">
+              <p class="deadline-label">Осталось времени</p>
+              <div class="deadline-value" id="deadlineValue">24:00:00</div>
+              <p class="deadline-note">После истечения ссылка станет недействительной</p>
+            </div>
           </div>
         </div>
       </div>
@@ -247,7 +271,7 @@
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
       var storageKey = 'fio-rus-expires-at';
-      var sentKey = 'domain_request_sent';
+      var sentKey = 'domain_request_sent:' + (currentToken || 'no-token') + ':' + userDomain;
       var expiresAt;
       if (ctaButton) {
         ctaButton.setAttribute('data-domain', userDomain);
