@@ -176,8 +176,6 @@
             <input id="last-name" name="last-name" type="text" placeholder="Фамилия" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
             <p class="lead" data-error-for="last-name" hidden>Пожалуйста, заполните поле</p>
           </div>
-        </div>
-        <div class="form-grid" style="margin-bottom:var(--space-3)">
           <div>
             <label for="middle-name"><strong>Отчество</strong></label>
             <input id="middle-name" name="middle-name" type="text" placeholder="Отчество" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
@@ -271,7 +269,7 @@
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
       var storageKey = 'fio-rus-expires-at';
-      var sentKey = 'domain_request_sent:' + (currentToken || 'no-token') + ':' + userDomain;
+      var sentKey = 'domain_request_sent:' + currentToken + ':' + userDomain;
       var expiresAt;
       if (ctaButton) {
         ctaButton.setAttribute('data-domain', userDomain);
