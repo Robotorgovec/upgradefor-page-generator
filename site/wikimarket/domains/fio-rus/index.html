@@ -27,8 +27,7 @@
         <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
           <a class="btn" href="#form" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
         </div>
-        <p class="lead" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления</p>
-        <p class="lead" id="domain-missing-note" hidden>Домен не определён. Используйте персональную ссылку.</p>
+        <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <strong>Таймер:</strong>
           <div id="countdown" style="margin-top:8px;color:var(--muted)">24:00:00</div>
@@ -183,7 +182,6 @@
       var params = new URLSearchParams(window.location.search);
       var token = params.get('t');
       var currentToken = token || '';
-      // TODO: fetch domain data by token from backend
       var nameParam = params.get('name');
       var domainParam = params.get('domain');
       var expiresParam = params.get('expires');
@@ -205,19 +203,21 @@
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
       var formStatus = document.getElementById('form-status');
-      var domainMissingNote = document.getElementById('domain-missing-note');
       var domainStatus = document.getElementById('domain-status');
+      var domainCtaStatus = document.getElementById('domain-cta-status');
       var ctaLinks = document.querySelectorAll('[data-cta-link]');
       var ctaButton = document.querySelector('[data-cta-button]');
       var form = document.querySelector('form');
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
       var storageKey = 'fio-rus-expires-at';
+      var sentKey = 'domain_request_sent';
       var expiresAt;
       if (ctaButton) {
         ctaButton.setAttribute('data-domain', userDomain);
       }
       var isExpired = false;
+      var isSent = localStorage.getItem(sentKey) === 'true';
 
       if (expiresParam) {
         var parsedDate = new Date(expiresParam);
@@ -255,6 +255,16 @@
         }
       }
 
+      function disableCtas() {
+        ctaLinks.forEach(function(link) {
+          link.setAttribute('aria-disabled', 'true');
+          link.setAttribute('tabindex', '-1');
+        });
+        if (ctaButton) {
+          ctaButton.setAttribute('disabled', 'disabled');
+        }
+      }
+
       function setExpiredState() {
         isExpired = true;
         if (countdownEl) {
@@ -266,27 +276,45 @@
         if (domainStatus) {
           domainStatus.textContent = '🔴 Срок резервирования истёк';
         }
+        if (domainCtaStatus) {
+          domainCtaStatus.textContent = 'Срок резервирования истёк.';
+        }
         if (expiredLink) {
           expiredLink.hidden = false;
         }
-        ctaLinks.forEach(function(link) {
-          link.setAttribute('aria-disabled', 'true');
-          link.setAttribute('tabindex', '-1');
-        });
+        disableCtas();
         disableForm();
       }
 
       function setDomainMissingState() {
-        if (domainMissingNote) {
-          domainMissingNote.hidden = false;
-        }
         if (domainStatus) {
           domainStatus.textContent = '🔴 Домен не определён — требуется персональная ссылка';
         }
-        ctaLinks.forEach(function(link) {
-          link.setAttribute('aria-disabled', 'true');
-          link.setAttribute('tabindex', '-1');
-        });
+        if (domainCtaStatus) {
+          domainCtaStatus.textContent = 'Используйте персональную ссылку для оформления домена.';
+        }
+        disableCtas();
+      }
+
+      function setActiveState() {
+        if (domainStatus) {
+          domainStatus.textContent = '🟢 Домен доступен и зарезервирован за вами';
+        }
+        if (domainCtaStatus) {
+          domainCtaStatus.textContent = 'Домен зарезервирован на 24 часа и ожидает оформления.';
+        }
+      }
+
+      function setSentState() {
+        if (formStatus) {
+          formStatus.textContent = 'Заявка уже отправлена.';
+          formStatus.hidden = false;
+        }
+        if (domainCtaStatus) {
+          domainCtaStatus.textContent = 'Заявка уже отправлена.';
+        }
+        disableCtas();
+        disableForm();
       }
 
       function formatTime(ms) {
@@ -298,6 +326,9 @@
       }
 
       function tick() {
+        if (isSent) {
+          return;
+        }
         var now = new Date();
         var remaining = expiresAt - now;
         if (remaining <= 0) {
@@ -311,6 +342,10 @@
 
       tick();
       var interval = setInterval(function() {
+        if (isSent) {
+          clearInterval(interval);
+          return;
+        }
         if (new Date() > expiresAt) {
           clearInterval(interval);
           setExpiredState();
@@ -319,8 +354,12 @@
         tick();
       }, 1000);
 
-      if (userDomain === 'ваш-домен.рус') {
+      if (isSent) {
+        setSentState();
+      } else if (userDomain === 'ваш-домен.рус') {
         setDomainMissingState();
+      } else {
+        setActiveState();
       }
 
       ctaLinks.forEach(function(link) {
@@ -456,6 +495,7 @@
               if (formSuccess) {
                 formSuccess.hidden = false;
               }
+              localStorage.setItem(sentKey, 'true');
             })
             .catch(function() {
               if (formStatus) {
