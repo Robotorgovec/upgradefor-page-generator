@@ -10,44 +10,6 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
   >
   <link rel="stylesheet" href="/assets/layout.css">
-  <style>
-    .deadline-badge {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: var(--r-card);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-    .deadline-badge .material-symbols-outlined {
-      font-size: 22px;
-      color: var(--brand-blue);
-    }
-    .deadline-label {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin: 0;
-    }
-    .deadline-value {
-      font-size: clamp(20px, 3vw, 28px);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin: 4px 0;
-    }
-    .deadline-note {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin: 0;
-    }
-    .deadline-urgent .deadline-value {
-      font-weight: 800;
-    }
-    .deadline-badge.expired .deadline-value {
-      font-weight: 700;
-    }
-  </style>
 </head>
 <body class="is-home">
   <a class="skip" href="#main">К содержанию</a>
@@ -67,14 +29,8 @@
         </div>
         <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
-          <div class="deadline-badge" id="deadlineBadge">
-            <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
-            <div class="deadline-text">
-              <p class="deadline-label">Осталось времени</p>
-              <div class="deadline-value" id="deadlineValue">24:00:00</div>
-              <p class="deadline-note">После истечения ссылка станет недействительной</p>
-            </div>
-          </div>
+          <strong>Таймер:</strong>
+          <div id="countdown" style="margin-top:8px;color:var(--muted)">24:00:00</div>
         </div>
       </div>
       <div class="hero-art" aria-label="Визуальный блок домена">
@@ -243,8 +199,7 @@
       document.querySelectorAll('[data-user-domain]').forEach(function(node) {
         node.textContent = userDomain;
       });
-      var countdownEl = document.getElementById('deadlineValue');
-      var countdownBadge = document.getElementById('deadlineBadge');
+      var countdownEl = document.getElementById('countdown');
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
       var formStatus = document.getElementById('form-status');
@@ -313,11 +268,7 @@
       function setExpiredState() {
         isExpired = true;
         if (countdownEl) {
-          countdownEl.textContent = '00:00:00';
-        }
-        if (countdownBadge) {
-          countdownBadge.classList.remove('deadline-urgent');
-          countdownBadge.classList.add('expired');
+          countdownEl.textContent = 'Срок истёк (00:00:00)';
         }
         if (expiryText) {
           expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
@@ -386,14 +337,6 @@
         }
         if (countdownEl) {
           countdownEl.textContent = formatTime(remaining);
-        }
-        if (countdownBadge) {
-          countdownBadge.classList.remove('expired');
-          if (remaining <= 60 * 60 * 1000) {
-            countdownBadge.classList.add('deadline-urgent');
-          } else {
-            countdownBadge.classList.remove('deadline-urgent');
-          }
         }
       }
 
