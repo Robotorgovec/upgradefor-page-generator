@@ -79,14 +79,30 @@
       <!-- WIKIMARKET -->
       <div class="sidebar-section-label">WikiMarket</div>
 
-      <div class="menu-item" data-path="/wikimarket" title="Каталог товаров с описаниями и документацией">
-        <span class="menu-icon material-symbols-outlined">shopping_bag</span>
-        <span class="menu-label">WikiMarket</span>
-      </div>
-      <div class="menu-item" data-path="/wikimarket/categories" title="Разделы каталога товаров">
-        <span class="menu-icon material-symbols-outlined">category</span>
-        <span class="menu-label">Категории</span>
-      </div>
+      <details class="menu-group">
+        <summary class="menu-item" aria-label="WikiMarket">
+          <span class="menu-icon material-symbols-outlined">shopping_bag</span>
+          <span class="menu-label">WikiMarket</span>
+        </summary>
+        <div style="margin-left:12px">
+          <a class="menu-item" href="/wikimarket/categories" data-path="/wikimarket/categories" title="Разделы каталога товаров">
+            <span class="menu-icon material-symbols-outlined">category</span>
+            <span class="menu-label">Категории</span>
+          </a>
+          <details class="menu-group">
+            <summary class="menu-item" aria-label="Домены">
+              <span class="menu-icon material-symbols-outlined">domain</span>
+              <span class="menu-label">Домены</span>
+            </summary>
+            <div style="margin-left:12px">
+              <a class="menu-item" href="/wikimarket/domains/fio-rus" data-path="/wikimarket/domains/fio-rus" title="Именной домен .РУС (ФИО)">
+                <span class="menu-icon material-symbols-outlined">badge</span>
+                <span class="menu-label">Именной домен .РУС (ФИО)</span>
+              </a>
+            </div>
+          </details>
+        </div>
+      </details>
 
       <div class="menu-separator"></div>
 
