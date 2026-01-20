@@ -34,25 +34,6 @@
       color: var(--text);
       margin: 0 0 var(--space-2);
     }
-    .reserve-status {
-      border: 1px solid var(--line);
-      border-radius: var(--r-card);
-      background: var(--surface);
-      padding: 12px 14px;
-      margin: var(--space-2) 0 var(--space-3);
-    }
-    .reserve-status h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-    }
-    .reserve-status p {
-      margin: 0 0 6px;
-      color: var(--text);
-      font-size: 0.95rem;
-    }
-    .reserve-status p:last-child {
-      margin-bottom: 0;
-    }
     .hero-cta-meta {
       font-size: 0.85rem;
       color: var(--muted);
@@ -99,32 +80,32 @@
     }
     .deadline-badge {
       display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 12px 14px;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 16px;
       border: 1px solid var(--line);
       border-radius: var(--r-card);
       background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-    .deadline-badge .material-symbols-outlined {
-      font-size: 22px;
-      color: var(--brand-blue);
     }
     .deadline-text {
       display: flex;
       flex-direction: column;
     }
     .deadline-label {
-      font-size: 0.85rem;
-      color: var(--muted);
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 600;
       margin: 0;
     }
     .deadline-value {
-      font-size: clamp(20px, 3vw, 28px);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin: 4px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .deadline-secondary {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
     }
     .deadline-note {
       font-size: 0.85rem;
@@ -132,10 +113,10 @@
       margin: 0;
     }
     .deadline-urgent .deadline-value {
-      font-weight: 800;
+      font-weight: 600;
     }
     .deadline-badge.expired .deadline-value {
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .form-grid {
@@ -169,13 +150,6 @@
         </div>
         <p class="hero-fact">Совпадение домена с вашим ФИО — 100%.</p>
 
-        <div class="reserve-status" aria-live="polite">
-          <h3>Статус домена</h3>
-          <p id="domain-status">Резерв активен до: <span id="reserve-until">сегодня 23:59</span> (МСК)</p>
-          <p id="reserve-note">После этого домен может быть зарегистрирован другим лицом.</p>
-          <p id="reserve-warning">Если домен займут — вернуться к этому варианту уже нельзя.</p>
-        </div>
-
         <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap;align-items:center">
           <a class="btn" href="#form" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен сейчас</a>
           <a class="hero-secondary" href="#why-unique">Как это работает? →</a>
@@ -183,13 +157,15 @@
 
         <p class="hero-cta-meta">Оплата займёт 2 минуты</p>
 
-        <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
-          <div class="deadline-badge" id="deadlineBadge">
-            <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+        <div class="card" style="margin-top:var(--space-3)" aria-label="Статус резерва домена">
+          <div class="deadline-badge" id="reserve-status">
             <div class="deadline-text">
-              <p class="deadline-label">Осталось времени</p>
-              <div class="deadline-value" id="deadlineValue">24:00:00</div>
-              <p class="deadline-note">После истечения ссылка станет недействительной</p>
+              <h3 class="deadline-label">Статус резерва домена</h3>
+              <p class="deadline-value" id="domain-status">Резерв активен до: <span id="reserve-until">сегодня 23:59</span> (МСК)</p>
+              <p class="deadline-note" id="reserve-note">После этого домен может быть зарегистрирован другим лицом.</p>
+              <p class="deadline-note" id="reserve-warning">Если домен будет занят — этот вариант станет для вас недоступен.</p>
+              <p class="deadline-secondary" id="reserve-late">Нельзя “вернуться позже”, “выкупить дороже” или “заказать через поддержку”, если домен займут.</p>
+              <p class="deadline-secondary">Осталось времени: <span id="deadlineValue">24:00:00</span></p>
             </div>
           </div>
         </div>
@@ -497,7 +473,7 @@
       });
 
       var countdownEl = document.getElementById('deadlineValue');
-      var countdownBadge = document.getElementById('deadlineBadge');
+      var countdownBadge = document.getElementById('reserve-status');
 
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
@@ -506,6 +482,7 @@
       var reserveUntil = document.getElementById('reserve-until');
       var reserveNote = document.getElementById('reserve-note');
       var reserveWarning = document.getElementById('reserve-warning');
+      var reserveLate = document.getElementById('reserve-late');
       var ctaLinks = document.querySelectorAll('[data-cta-link]');
       var ctaButton = document.querySelector('[data-cta-button]');
       var form = document.querySelector('form');
@@ -607,16 +584,19 @@
           expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
         }
         if (domainStatus) {
-          domainStatus.textContent = 'Резерв истёк.';
+          domainStatus.textContent = 'Резерв завершён.';
         }
         if (reserveUntil) {
           reserveUntil.textContent = '—';
         }
         if (reserveNote) {
-          reserveNote.textContent = 'Срок резерва закончился, оформление недоступно.';
+          reserveNote.textContent = 'Домен может быть уже недоступен. Проверьте статус.';
         }
         if (reserveWarning) {
-          reserveWarning.textContent = 'Запросите новую ссылку, чтобы получить актуальный резерв.';
+          reserveWarning.textContent = 'Домен может быть уже недоступен. Проверьте статус.';
+        }
+        if (reserveLate) {
+          reserveLate.textContent = 'Нельзя “вернуться позже” или оформить через поддержку, если домен займут.';
         }
         if (expiredLink) {
           expiredLink.hidden = false;
@@ -639,6 +619,9 @@
         if (reserveWarning) {
           reserveWarning.textContent = 'После подтверждения домен будет доступен для оформления.';
         }
+        if (reserveLate) {
+          reserveLate.textContent = 'Используйте персональную ссылку, чтобы увидеть условия резерва.';
+        }
         disableCtas();
       }
 
@@ -648,6 +631,9 @@
         }
         if (reserveWarning) {
           reserveWarning.textContent = 'Если домен займут — вернуться к этому варианту уже нельзя.';
+        }
+        if (reserveLate) {
+          reserveLate.textContent = 'Нельзя “вернуться позже”, “выкупить дороже” или “заказать через поддержку”, если домен займут.';
         }
       }
 
