@@ -179,19 +179,6 @@
         </div>
 
         <p class="hero-cta-meta">Оплата займёт 2 минуты</p>
-
-        <div class="card" style="margin-top:var(--space-3)" aria-label="Статус резерва домена">
-          <div class="deadline-badge" id="reserve-status">
-            <div class="deadline-text">
-              <h3 class="deadline-label">Статус резерва домена</h3>
-              <p class="deadline-value" id="domain-status">Резерв активен до: <span id="reserve-until">сегодня 23:59</span> (МСК)</p>
-              <p class="deadline-note" id="reserve-note">После этого домен может быть зарегистрирован другим лицом.</p>
-              <p class="deadline-note" id="reserve-warning">Если домен будет занят — этот вариант станет для вас недоступен.</p>
-              <p class="deadline-secondary" id="reserve-late">Нельзя “вернуться позже”, “выкупить дороже” или “заказать через поддержку”, если домен займут.</p>
-              <p class="deadline-secondary">Осталось времени: <span id="deadlineValue">24:00:00</span></p>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="hero-art" aria-label="Визуальный блок домена">
@@ -201,6 +188,37 @@
             <span data-user-domain>{{user_domain}}</span>
           </div>
           <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="why-unique" aria-labelledby="why-unique-title">
+      <div class="card" style="background:var(--surface);border:1px solid var(--line)">
+        <h2 class="section-title" id="why-unique-title" style="margin-top:0">Почему этот домен уникален</h2>
+        <p class="lead" style="margin-top:var(--space-1)">Это единственный вариант на кириллице, который 1:1 совпадает с вашим ФИО.</p>
+        <ul style="margin-top:var(--space-2)">
+          <li>Кириллица ≠ латиница: это другой адрес в интернете.</li>
+          <li>Ваше ФИО пишется только так — без замен и аналогов.</li>
+          <li>Второго такого домена быть не может.</li>
+          <li>Если домен станет недоступен — альтернатив на кириллице не будет.</li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2);margin-bottom:0">
+          Речь о совпадении строки домена с ФИО, а не о “праве собственности” на имя.
+        </p>
+      </div>
+    </section>
+
+    <section class="wrap" aria-label="Статус резерва домена">
+      <div class="card" style="margin-top:var(--space-1)" aria-label="Статус резерва домена">
+        <div class="deadline-badge" id="reserve-status">
+          <div class="deadline-text">
+            <h3 class="deadline-label">Статус резерва домена</h3>
+            <p class="deadline-value" id="domain-status">Резерв активен до: <span id="reserve-until">сегодня 23:59</span> (МСК)</p>
+            <p class="deadline-note" id="reserve-note">После этого домен может быть зарегистрирован другим лицом.</p>
+            <p class="deadline-note" id="reserve-warning">Если домен будет занят — этот вариант станет для вас недоступен.</p>
+            <p class="deadline-secondary" id="reserve-late">Нельзя “вернуться позже”, “выкупить дороже” или “заказать через поддержку”, если домен займут.</p>
+            <p class="deadline-secondary">Осталось времени: <span id="deadlineValue">24:00:00</span></p>
+          </div>
         </div>
       </div>
     </section>
@@ -225,54 +243,31 @@
       <a class="btn" href="#form" data-cta-link="mobile" data-event="cta_click" data-location="sticky">Оформить</a>
     </div>
 
-    <section class="wrap" id="why-unique" aria-labelledby="why-unique-title">
-      <div class="card" style="background:var(--surface);border:1px solid var(--line)">
-        <h2 class="section-title" id="why-unique-title" style="margin-top:0">Почему этот домен уникален</h2>
-        <p class="lead" style="margin-top:var(--space-1)">Это единственный вариант на кириллице, который 1:1 совпадает с вашим ФИО.</p>
-        <ul style="margin-top:var(--space-2)">
-          <li>Кириллица ≠ латиница: это другой адрес в интернете.</li>
-          <li>Ваше ФИО пишется только так — без замен и аналогов.</li>
-          <li>Второго такого домена быть не может.</li>
-          <li>Если домен станет недоступен — альтернатив на кириллице не будет.</li>
-        </ul>
-        <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2);margin-bottom:0">
-          Речь о совпадении строки домена с ФИО, а не о “праве собственности” на имя.
-        </p>
-      </div>
-    </section>
-
     <section class="wrap" id="reputation" aria-labelledby="reputation-title">
       <div class="grid" style="align-items:start">
         <div class="card">
-          <h2 class="section-title" id="reputation-title">Ваше имя может оформить кто угодно</h2>
-          <p class="lead">Доменные зоны — открытая система. Если домен свободен, его может зарегистрировать любой человек.</p>
+          <h2 class="section-title" id="reputation-title">Что даёт владение персональным доменом</h2>
+          <p class="lead">Доменное имя фиксируется за вами в реестре. Это означает, что адрес нельзя занять без вашего согласия.</p>
 
           <p style="margin-top:var(--space-2)">
-            <strong>Поэтому личный домен лучше, чтобы принадлежал именно вам — а не кому-то другому.</strong>
+            <strong>Владение доменом определяет, какая страница будет открываться при поиске вашего имени.</strong>
           </p>
 
           <ul style="margin-top:var(--space-2)">
-            <li>Ваш ФИО-домен может оформить не только вы, но и любой другой человек</li>
-            <li>Это может быть знакомый, коллега, конкурент или случайный пользователь</li>
-            <li>Домен не является документом и сам по себе не подтверждает личность владельца</li>
+            <li>Ваш домен с ФИО будет единственным точным совпадением в зоне .РУС</li>
+            <li>Никто не сможет занять этот адрес вместо вас</li>
+            <li>Вы контролируете, какая информация открывается по вашему имени</li>
           </ul>
 
-          <h3 style="margin-top:var(--space-3)">Что будет, если домен оформит другой человек</h3>
+          <h3 style="margin-top:var(--space-3)">Что происходит, если домен оформит другой человек</h3>
           <ul>
-            <li>Он определяет, что будет размещено на странице</li>
-            <li>Именно его сайт может показываться выше при поиске вашего имени</li>
-            <li>Вернуть домен позже может быть сложно, долго или дорого</li>
+            <li>Он определяет, какая информация будет размещена по этому адресу</li>
+            <li>Именно этот сайт может стать основным результатом поиска</li>
+            <li>Вернуть домен позже может быть сложно или невозможно</li>
           </ul>
-
-          <div class="card" style="margin-top:var(--space-3);background:var(--surface);border:1px solid var(--line)">
-            <p style="margin:0">
-              <strong>Оценка по модели ИИ (без гарантий):</strong>
-              для уникального ФИО-домена при корректном заполнении страницы шанс занять позиции в топ-3 по запросу “Фамилия Имя Отчество” часто высокий, ориентировочно 60–85% в течение 2–8 недель. Фактический результат зависит от конкуренции, региона, языка, качества контента и возраста домена.
-            </p>
-          </div>
 
           <p class="lead" style="margin-top:var(--space-2)">
-            Совет: проверьте ФИО близких — иногда свободные домены можно занять заранее (семья, родители, дети, публичные лица).
+            Совет: проверьте ФИО близких — иногда свободные домены можно занять заранее (семья, родители, дети).
           </p>
 
           <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2)">
@@ -281,103 +276,48 @@
         </div>
 
         <div class="card">
-          <h3 style="margin-top:0">Заберите домен первым</h3>
-          <p class="lead">Пока домен свободен и зарезервирован по вашей ссылке, вы можете оформить его на себя.</p>
-          <a class="btn" href="#form" data-cta-link="reputation" style="margin-top:var(--space-2)">Оформить домен на себя</a>
-          <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2);margin-bottom:0">
-            Чем раньше вы оформите домен, тем меньше риск, что его зарегистрирует кто-то другой.
-          </p>
+          <h3 style="margin-top:0">Факты о регистрации</h3>
+          <ul style="margin-bottom:0">
+            <li>Домен фиксируется за одним владельцем до окончания срока регистрации.</li>
+            <li>Перенос или выкуп возможен только с согласия текущего владельца.</li>
+            <li>Резерв действует ограниченное время и потом снимается.</li>
+          </ul>
         </div>
       </div>
     </section>
 
     <section class="wrap" aria-labelledby="seo-advantage-title">
-      <h2 class="section-title" id="seo-advantage-title">ФИО-домен — фора к первому месту в поиске</h2>
-      <p class="lead">Когда человека ищут по фамилии, имени и отчеству, поисковые системы стремятся показать наиболее точный и релевантный результат. Персональный домен с вашим ФИО даёт сильное преимущество в этой выдаче.</p>
+      <h2 class="section-title" id="seo-advantage-title">Как домен влияет на поиск</h2>
+      <p class="lead">Поисковые системы показывают наиболее точный адрес, совпадающий с запросом. Персональный домен с ФИО помогает связать имя и страницу.</p>
 
       <div class="card" style="margin-top:var(--space-3)">
-        <p>По оценке ИИ-анализа низкочастотных запросов и поведения поисковых систем (Google и Яндекс):</p>
         <ul>
-          <li>запросы вида «Фамилия Имя Отчество» относятся к ультранизкой частотности</li>
-          <li>конкуренция по таким запросам, как правило, в 10–50 раз ниже, чем по общим ключам</li>
-          <li>персональный домен, точно совпадающий с ФИО, значительно усиливает релевантность страницы</li>
+          <li>Запросы вида «Фамилия Имя Отчество» чаще всего ведут на страницы с точным совпадением.</li>
+          <li>Свой домен позволяет разместить подтверждённую информацию о себе.</li>
+          <li>Адрес с вашим ФИО легче запомнить и проверить.</li>
         </ul>
-        <p class="lead">Это создаёт фору ещё до SEO-продвижения.</p>
       </div>
 
       <div class="card" style="margin-top:var(--space-3)">
-        <h3>Оценка вероятности попадания в ТОП-1 поисковой выдачи*</h3>
-        <p class="lead">(при корректно заполненной странице и отсутствии сильных конкурентов)</p>
+        <h3>Что меняется после регистрации</h3>
         <ul>
-          <li>Яндекс: ~ 65–85%</li>
-          <li>Google: ~ 55–75%</li>
+          <li>Вы контролируете содержимое страницы по этому адресу.</li>
+          <li>Никто другой не сможет использовать этот домен.</li>
+          <li>Информация о вас ведёт на официальный источник.</li>
         </ul>
-        <p><strong>Факторы, повышающие вероятность:</strong></p>
-        <ul>
-          <li>уникальный домен, совпадающий с ФИО</li>
-          <li>персональный контент (биография, регалии, деятельность)</li>
-          <li>отсутствие прямых однофамильцев с сильными сайтами</li>
-        </ul>
-        <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2)">
-          *Оценка основана на модели ИИ-анализа низкочастотных персональных запросов и практике SEO. Не является гарантией.
-        </p>
       </div>
-
-      <div class="cards-3" style="margin-top:var(--space-3)">
-        <article class="card">
-          <h3>Контроль репутации</h3>
-          <p>Вы сами определяете, какая информация о вас показывается первой: профессия, опыт, достижения, контакты, ссылки.</p>
-        </article>
-        <article class="card">
-          <h3>Защита от искажений</h3>
-          <p>Вместо случайных справочников, форумов или устаревших данных — официальная страница под вашим именем.</p>
-        </article>
-        <article class="card">
-          <h3>Долгосрочный эффект</h3>
-          <p>ФИО-домен работает годами: один раз оформляется — постоянно усиливает вашу позицию в поиске.</p>
-        </article>
-      </div>
-
-      <div style="margin-top:var(--space-3)">
-        <p class="lead" style="font-size:0.85rem;color:var(--muted)">
-          Результаты зависят от контента, конкуренции, региона и алгоритмов поисковых систем. UpgradeFor не гарантирует конкретную позицию, но предоставляет инструмент, значительно повышающий вероятность выхода в верхние позиции по персональному запросу.
-        </p>
-      </div>
-
-      <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
-        <a class="btn" href="#form">Оформить домен и закрепить имя</a>
-      </div>
-      <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:8px">Домен резервируется на 24 часа</p>
     </section>
 
     <section class="wrap" id="benefits" aria-labelledby="benefits-title">
-      <h2 class="section-title" id="benefits-title">Преимущества домена .РУС</h2>
-      <div class="cards-6">
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">public</span>
-          <h3>Локальная идентичность</h3>
-          <p>Показывает связь с русскоязычной аудиторией.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">verified</span>
-          <h3>Доверие пользователей</h3>
-          <p>Домен с понятным окончанием вызывает уверенность.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">search</span>
-          <h3>Хорошая заметность</h3>
-          <p>Простой домен легче запомнить и найти.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">security</span>
-          <h3>Защита бренда</h3>
-          <p>Закрепляет ваш проект в русскоязычной зоне.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">support</span>
-          <h3>Поддержка и сопровождение</h3>
-          <p>Помогаем с регистрацией и подключением.</p>
-        </article>
+      <h2 class="section-title" id="benefits-title">Что даёт домен в зоне .РУС</h2>
+      <div class="card">
+        <ul style="margin:0">
+          <li>Кириллический адрес понятен русскоязычной аудитории.</li>
+          <li>Домен легко запомнить и проверить при поиске.</li>
+          <li>Адрес в зоне .РУС закрепляет вас в русскоязычном сегменте.</li>
+          <li>Регистрация фиксирует владельца в реестре доменной зоны.</li>
+          <li>Подключение и сопровождение доступны в рамках оформления.</li>
+        </ul>
       </div>
     </section>
 
@@ -481,8 +421,8 @@
 
     <section class="wrap" id="final-cta" aria-labelledby="final-cta-title">
       <div class="card">
-        <h2 class="section-title" id="final-cta-title">Ограничение 24 часа</h2>
-        <p class="lead" id="expiry-text">Мы резервируем домен <span data-user-domain>{{user_domain}}</span> на 24 часа, чтобы вы могли принять решение без спешки. После окончания срока предложение может быть отозвано.</p>
+        <h2 class="section-title" id="final-cta-title">Решение принимается один раз</h2>
+        <p class="lead" id="expiry-text">Резерв действует до <span data-reserve-until>сегодня 23:59</span> (МСК). После этого домен может стать недоступным.</p>
         <a class="btn" href="#form" style="margin-top:var(--space-3)" data-cta-link="secondary">Оформить домен</a>
         <a class="btn btn--ghost" href="/signup" data-expired-link hidden data-event="request_new_link" style="margin-top:var(--space-2)">Запросить новую ссылку</a>
       </div>
@@ -519,6 +459,7 @@
       var reserveNote = document.getElementById('reserve-note');
       var reserveWarning = document.getElementById('reserve-warning');
       var reserveLate = document.getElementById('reserve-late');
+      var reserveUntilTargets = document.querySelectorAll('[data-reserve-until]');
       var ctaLinks = document.querySelectorAll('[data-cta-link]');
       var ctaButton = document.querySelector('[data-cta-button]');
       var form = document.querySelector('form');
@@ -583,6 +524,16 @@
         }
       }
 
+      function syncReserveUntilTargets(value) {
+        reserveUntilTargets.forEach(function(node) {
+          node.textContent = value;
+        });
+      }
+
+      if (reserveUntil) {
+        syncReserveUntilTargets(reserveUntil.textContent);
+      }
+
       function disableForm() {
         if (formStatus) {
           formStatus.hidden = false;
@@ -625,6 +576,7 @@
         if (reserveUntil) {
           reserveUntil.textContent = '—';
         }
+        syncReserveUntilTargets('—');
         if (reserveNote) {
           reserveNote.textContent = 'Домен может быть уже недоступен. Проверьте статус.';
         }
@@ -649,6 +601,7 @@
         if (reserveUntil) {
           reserveUntil.textContent = '—';
         }
+        syncReserveUntilTargets('—');
         if (reserveNote) {
           reserveNote.textContent = 'Используйте персональную ссылку, чтобы подтвердить резерв.';
         }
