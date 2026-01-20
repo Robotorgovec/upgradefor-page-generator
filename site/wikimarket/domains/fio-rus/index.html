@@ -10,6 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
   >
   <link rel="stylesheet" href="/assets/layout.css">
+
   <style>
     .deadline-badge {
       display: flex;
@@ -51,9 +52,10 @@
     .deadline-badge.expired .deadline-value {
       font-weight: 700;
     }
+
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 24px;
       row-gap: 20px;
     }
@@ -64,6 +66,7 @@
     }
   </style>
 </head>
+
 <body class="is-home">
   <a class="skip" href="#main">К содержанию</a>
 
@@ -75,12 +78,18 @@
       <div>
         <h1 id="hero-title">Здравствуйте, <span data-user-name>{{user_name}}</span>!</h1>
         <p class="lead">Ваш персональный домен уже доступен:</p>
-        <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)"><span data-user-domain>{{user_domain}}</span></p>
+        <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)">
+          <span data-user-domain>{{user_domain}}</span>
+        </p>
+
         <p class="lead" id="domain-status">🟢 Домен доступен и зарезервирован за вами</p>
+
         <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
           <a class="btn" href="#form" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
         </div>
+
         <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
+
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <div class="deadline-badge" id="deadlineBadge">
             <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
@@ -92,10 +101,13 @@
           </div>
         </div>
       </div>
+
       <div class="hero-art" aria-label="Визуальный блок домена">
         <div style="padding:var(--space-4);text-align:center">
           <div class="tag" style="margin-bottom:var(--space-2)">Домен .РУС</div>
-          <div style="font-size:clamp(24px,4vw,42px);font-weight:700"><span data-user-domain>{{user_domain}}</span></div>
+          <div style="font-size:clamp(24px,4vw,42px);font-weight:700">
+            <span data-user-domain>{{user_domain}}</span>
+          </div>
           <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
         </div>
       </div>
@@ -107,7 +119,9 @@
           <h2 class="section-title" id="reputation-title">Ваше имя может оформить кто угодно</h2>
           <p class="lead">Доменные зоны — открытая система. Если домен свободен, его может зарегистрировать любой человек.</p>
 
-          <p style="margin-top:var(--space-2)"><strong>Поэтому личный домен лучше, чтобы принадлежал именно вам — а не кому-то другому.</strong></p>
+          <p style="margin-top:var(--space-2)">
+            <strong>Поэтому личный домен лучше, чтобы принадлежал именно вам — а не кому-то другому.</strong>
+          </p>
 
           <ul style="margin-top:var(--space-2)">
             <li>Ваш ФИО-домен может оформить не только вы, но и любой другой человек</li>
@@ -123,10 +137,15 @@
           </ul>
 
           <div class="card" style="margin-top:var(--space-3);background:var(--surface);border:1px solid var(--line)">
-            <p style="margin:0"><strong>Оценка по модели ИИ (без гарантий):</strong> для уникального ФИО-домена при корректном заполнении страницы шанс занять позиции в топ-3 по запросу “Фамилия Имя Отчество” часто высокий, ориентировочно 60–85% в течение 2–8 недель. Фактический результат зависит от конкуренции, региона, языка, качества контента и возраста домена.</p>
+            <p style="margin:0">
+              <strong>Оценка по модели ИИ (без гарантий):</strong>
+              для уникального ФИО-домена при корректном заполнении страницы шанс занять позиции в топ-3 по запросу “Фамилия Имя Отчество” часто высокий, ориентировочно 60–85% в течение 2–8 недель. Фактический результат зависит от конкуренции, региона, языка, качества контента и возраста домена.
+            </p>
           </div>
 
-          <p class="lead" style="margin-top:var(--space-2)">Совет: проверьте ФИО близких — иногда свободные домены можно занять заранее (семья, родители, дети, публичные лица).</p>
+          <p class="lead" style="margin-top:var(--space-2)">
+            Совет: проверьте ФИО близких — иногда свободные домены можно занять заранее (семья, родители, дети, публичные лица).
+          </p>
 
           <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2)">
             Домен не подтверждает личность владельца и может быть зарегистрирован любым пользователем в рамках правил доменной зоны. Мы рекомендуем оформлять персональные домены владельцам соответствующих имён для контроля репутации и публичной информации.
@@ -147,6 +166,7 @@
     <section class="wrap" aria-labelledby="seo-advantage-title">
       <h2 class="section-title" id="seo-advantage-title">ФИО-домен — фора к первому месту в поиске</h2>
       <p class="lead">Когда человека ищут по фамилии, имени и отчеству, поисковые системы стремятся показать наиболее точный и релевантный результат. Персональный домен с вашим ФИО даёт сильное преимущество в этой выдаче.</p>
+
       <div class="card" style="margin-top:var(--space-3)">
         <p>По оценке ИИ-анализа низкочастотных запросов и поведения поисковых систем (Google и Яндекс):</p>
         <ul>
@@ -156,6 +176,7 @@
         </ul>
         <p class="lead">Это создаёт фору ещё до SEO-продвижения.</p>
       </div>
+
       <div class="card" style="margin-top:var(--space-3)">
         <h3>Оценка вероятности попадания в ТОП-1 поисковой выдачи*</h3>
         <p class="lead">(при корректно заполненной странице и отсутствии сильных конкурентов)</p>
@@ -169,8 +190,11 @@
           <li>персональный контент (биография, регалии, деятельность)</li>
           <li>отсутствие прямых однофамильцев с сильными сайтами</li>
         </ul>
-        <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2)">*Оценка основана на модели ИИ-анализа низкочастотных персональных запросов и практике SEO. Не является гарантией.</p>
+        <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2)">
+          *Оценка основана на модели ИИ-анализа низкочастотных персональных запросов и практике SEO. Не является гарантией.
+        </p>
       </div>
+
       <div class="cards-3" style="margin-top:var(--space-3)">
         <article class="card">
           <h3>Контроль репутации</h3>
@@ -185,9 +209,13 @@
           <p>ФИО-домен работает годами: один раз оформляется — постоянно усиливает вашу позицию в поиске.</p>
         </article>
       </div>
+
       <div style="margin-top:var(--space-3)">
-        <p class="lead" style="font-size:0.85rem;color:var(--muted)">Результаты зависят от контента, конкуренции, региона и алгоритмов поисковых систем. UpgradeFor не гарантирует конкретную позицию, но предоставляет инструмент, значительно повышающий вероятность выхода в верхние позиции по персональному запросу.</p>
+        <p class="lead" style="font-size:0.85rem;color:var(--muted)">
+          Результаты зависят от контента, конкуренции, региона и алгоритмов поисковых систем. UpgradeFor не гарантирует конкретную позицию, но предоставляет инструмент, значительно повышающий вероятность выхода в верхние позиции по персональному запросу.
+        </p>
       </div>
+
       <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
         <a class="btn" href="#form">Оформить домен и закрепить имя</a>
       </div>
@@ -257,6 +285,7 @@
       <h2 class="section-title" id="form-title">Заполните форму</h2>
       <p class="lead">Мы используем данные только для регистрации домена. Никакого спама. Вы получите подтверждение по email.</p>
       <p class="lead" id="form-status" hidden>Срок действия ссылки истёк. Отправка заявки недоступна.</p>
+
       <form class="card" aria-label="Форма получения домена">
         <div class="form-grid" style="margin-bottom:var(--space-3)">
           <div>
@@ -269,6 +298,9 @@
             <input id="last-name" name="last-name" type="text" placeholder="Фамилия" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
             <p class="lead" data-error-for="last-name" hidden>Пожалуйста, заполните поле</p>
           </div>
+        </div>
+
+        <div class="form-grid" style="margin-bottom:var(--space-3)">
           <div>
             <label for="middle-name"><strong>Отчество</strong></label>
             <input id="middle-name" name="middle-name" type="text" placeholder="Отчество" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:8px">
@@ -279,7 +311,9 @@
             <p class="lead" data-error-for="email" hidden>Пожалуйста, заполните поле</p>
           </div>
         </div>
+
         <button class="btn" type="submit" data-cta-button="submit" data-event="form_submit" data-domain="{{user_domain}}">Получить мой домен</button>
+
         <div class="card" id="form-success" hidden style="margin-top:var(--space-3)">
           <p style="margin:0"><strong>Заявка принята ✅</strong></p>
           <p style="margin:8px 0 0">Мы свяжемся с вами в ближайшее время.</p>
@@ -335,13 +369,9 @@
       var nameParam = params.get('name');
       var domainParam = params.get('domain');
       var expiresParam = params.get('expires');
+
       var userName = nameParam || 'друг';
       var userDomain = domainParam || 'ваш-домен.рус';
-
-      if (!nameParam && !domainParam && token) {
-        userName = 'друг';
-        userDomain = 'ваш-домен.рус';
-      }
 
       document.querySelectorAll('[data-user-name]').forEach(function(node) {
         node.textContent = userName;
@@ -349,8 +379,10 @@
       document.querySelectorAll('[data-user-domain]').forEach(function(node) {
         node.textContent = userDomain;
       });
+
       var countdownEl = document.getElementById('deadlineValue');
       var countdownBadge = document.getElementById('deadlineBadge');
+
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
       var formStatus = document.getElementById('form-status');
@@ -361,12 +393,16 @@
       var form = document.querySelector('form');
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
+
       var storageKey = 'fio-rus-expires-at';
       var sentKey = 'domain_request_sent:' + (currentToken || 'no-token') + ':' + userDomain;
+
       var expiresAt;
+
       if (ctaButton) {
         ctaButton.setAttribute('data-domain', userDomain);
       }
+
       var isExpired = false;
       var isSent = localStorage.getItem(sentKey) === 'true';
 
@@ -418,6 +454,7 @@
 
       function setExpiredState() {
         isExpired = true;
+
         if (countdownEl) {
           countdownEl.textContent = '00:00:00';
         }
@@ -425,6 +462,7 @@
           countdownBadge.classList.remove('deadline-urgent');
           countdownBadge.classList.add('expired');
         }
+
         if (expiryText) {
           expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
         }
@@ -437,6 +475,7 @@
         if (expiredLink) {
           expiredLink.hidden = false;
         }
+
         disableCtas();
         disableForm();
       }
@@ -481,18 +520,20 @@
       }
 
       function tick() {
-        if (isSent) {
-          return;
-        }
+        if (isSent) return;
+
         var now = new Date();
         var remaining = expiresAt - now;
+
         if (remaining <= 0) {
           setExpiredState();
           return;
         }
+
         if (countdownEl) {
           countdownEl.textContent = formatTime(remaining);
         }
+
         if (countdownBadge) {
           countdownBadge.classList.remove('expired');
           if (remaining <= 60 * 60 * 1000) {
@@ -533,9 +574,7 @@
           }
           var firstNameField = document.getElementById('first-name');
           if (firstNameField) {
-            setTimeout(function() {
-              firstNameField.focus();
-            }, 0);
+            setTimeout(function() { firstNameField.focus(); }, 0);
           }
         });
       });
@@ -566,6 +605,7 @@
       if (form) {
         form.addEventListener('submit', function(event) {
           event.preventDefault();
+
           if (isExpired) {
             disableForm();
             return;
@@ -575,12 +615,11 @@
           var lastName = document.getElementById('last-name');
           var email = document.getElementById('email');
           var middleName = document.getElementById('middle-name');
+
           var isValid = true;
 
           [firstName, lastName, email].forEach(function(field) {
-            if (!field) {
-              return;
-            }
+            if (!field) return;
             if (!field.value.trim()) {
               setFieldError(field, 'Пожалуйста, заполните поле');
               isValid = false;
@@ -590,13 +629,11 @@
           });
 
           if (email && email.value.trim() && !validateEmail(email.value.trim())) {
-            setFieldError(email, 'Пожалуйста, заполните поле');
+            setFieldError(email, 'Пожалуйста, введите корректный email');
             isValid = false;
           }
 
-          if (!isValid) {
-            return;
-          }
+          if (!isValid) return;
 
           var payload = {
             name: firstName ? firstName.value.trim() : '',
@@ -615,9 +652,7 @@
 
           fetch('/api/domain-request', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           })
             .then(function(response) {
@@ -647,17 +682,11 @@
             })
             .then(function(data) {
               if (!data || data.status !== 'ok') {
-                if (ctaButton) {
-                  ctaButton.removeAttribute('disabled');
-                }
+                if (ctaButton) ctaButton.removeAttribute('disabled');
                 return;
               }
-              if (ctaButton) {
-                ctaButton.hidden = true;
-              }
-              if (formSuccess) {
-                formSuccess.hidden = false;
-              }
+              if (ctaButton) ctaButton.hidden = true;
+              if (formSuccess) formSuccess.hidden = false;
               localStorage.setItem(sentKey, 'true');
             })
             .catch(function() {
@@ -665,14 +694,13 @@
                 formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
                 formStatus.hidden = false;
               }
-              if (ctaButton) {
-                ctaButton.removeAttribute('disabled');
-              }
+              if (ctaButton) ctaButton.removeAttribute('disabled');
             });
         });
       }
     })();
   </script>
+
   <script src="/assets/load-layout.js"></script>
 </body>
 </html>
