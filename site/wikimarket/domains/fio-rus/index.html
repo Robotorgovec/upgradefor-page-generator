@@ -64,10 +64,75 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .fio-rus-landing .sidebar {
+      display: none;
+    }
+
+    .fio-rus-landing .burger,
+    .fio-rus-landing .auth-buttons {
+      display: none;
+    }
+
+    .checkout-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease;
+      z-index: 2000;
+    }
+
+    .checkout-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .checkout-modal .checkout-card {
+      width: min(560px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r-card);
+      padding: var(--space-4);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .checkout-modal .checkout-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .checkout-modal .checkout-close {
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .checkout-modal .checkout-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .checkout-modal .checkout-price {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 700;
+    }
   </style>
 </head>
 
-<body class="is-home">
+<body class="is-home fio-rus-landing">
   <a class="skip" href="#main">К содержанию</a>
 
   <header></header>
@@ -76,7 +141,7 @@
   <main id="main" class="app-content">
     <section class="wrap hero" aria-labelledby="hero-title">
       <div>
-        <h1 id="hero-title">Здравствуйте, <span data-user-name>{{user_name}}</span>!</h1>
+        <h1 id="hero-title"><span data-user-name>{{user_name}}</span></h1>
         <p class="lead">Ваш персональный домен уже доступен:</p>
         <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)">
           <span data-user-domain>{{user_domain}}</span>
@@ -85,7 +150,7 @@
         <p class="lead" id="domain-status">🟢 Домен доступен и зарезервирован за вами</p>
 
         <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
-          <a class="btn" href="#form" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
+          <a class="btn" href="#checkout" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
         </div>
 
         <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
@@ -110,6 +175,65 @@
           </div>
           <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
         </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="benefits" aria-labelledby="benefits-title">
+      <h2 class="section-title" id="benefits-title">Что даёт владение доменом</h2>
+      <div class="cards-6">
+        <article class="card">
+          <span class="material-symbols-outlined" aria-hidden="true">public</span>
+          <h3>Локальная идентичность</h3>
+          <p>Показывает связь с русскоязычной аудиторией.</p>
+        </article>
+        <article class="card">
+          <span class="material-symbols-outlined" aria-hidden="true">verified</span>
+          <h3>Доверие пользователей</h3>
+          <p>Домен с понятным окончанием вызывает уверенность.</p>
+        </article>
+        <article class="card">
+          <span class="material-symbols-outlined" aria-hidden="true">search</span>
+          <h3>Хорошая заметность</h3>
+          <p>Простой домен легче запомнить и найти.</p>
+        </article>
+        <article class="card">
+          <span class="material-symbols-outlined" aria-hidden="true">security</span>
+          <h3>Защита бренда</h3>
+          <p>Закрепляет ваш проект в русскоязычной зоне.</p>
+        </article>
+        <article class="card">
+          <span class="material-symbols-outlined" aria-hidden="true">support</span>
+          <h3>Поддержка и сопровождение</h3>
+          <p>Помогаем с регистрацией и подключением.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="visual" aria-labelledby="visual-title">
+      <h2 class="section-title" id="visual-title">Как выглядит ваш домен</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span data-user-domain>{{user_domain}}</span></h3>
+          <p>Домен будет отображаться на всех страницах, в письмах и в ссылках на ваш сервис.</p>
+        </div>
+        <div class="card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center">
+          <div style="font-size:clamp(22px,4vw,40px);font-weight:700"><span data-user-domain>{{user_domain}}</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="includes" aria-labelledby="includes-title">
+      <h2 class="section-title" id="includes-title">Что входит в услугу</h2>
+      <div class="card">
+        <ul>
+          <li>Регистрация домена</li>
+          <li>Настройка и подключение</li>
+          <li>Поддержка</li>
+          <li>Привязка к профилю UpgradeFor</li>
+          <li>Без скрытых платежей</li>
+          <li>Поддержка реального специалиста</li>
+          <li>Работаем официально</li>
+        </ul>
       </div>
     </section>
 
@@ -155,7 +279,7 @@
         <div class="card">
           <h3 style="margin-top:0">Заберите домен первым</h3>
           <p class="lead">Пока домен свободен и зарезервирован по вашей ссылке, вы можете оформить его на себя.</p>
-          <a class="btn" href="#form" data-cta-link="reputation" style="margin-top:var(--space-2)">Оформить домен на себя</a>
+          <a class="btn" href="#checkout" data-cta-link="reputation" style="margin-top:var(--space-2)">Оформить домен на себя</a>
           <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2);margin-bottom:0">
             Чем раньше вы оформите домен, тем меньше риск, что его зарегистрирует кто-то другой.
           </p>
@@ -217,73 +341,32 @@
       </div>
 
       <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
-        <a class="btn" href="#form">Оформить домен и закрепить имя</a>
+        <a class="btn" href="#checkout" data-cta-link="seo">Оформить домен и закрепить имя</a>
       </div>
       <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:8px">Домен резервируется на 24 часа</p>
     </section>
 
-    <section class="wrap" id="benefits" aria-labelledby="benefits-title">
-      <h2 class="section-title" id="benefits-title">Преимущества домена .РУС</h2>
-      <div class="cards-6">
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">public</span>
-          <h3>Локальная идентичность</h3>
-          <p>Показывает связь с русскоязычной аудиторией.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">verified</span>
-          <h3>Доверие пользователей</h3>
-          <p>Домен с понятным окончанием вызывает уверенность.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">search</span>
-          <h3>Хорошая заметность</h3>
-          <p>Простой домен легче запомнить и найти.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">security</span>
-          <h3>Защита бренда</h3>
-          <p>Закрепляет ваш проект в русскоязычной зоне.</p>
-        </article>
-        <article class="card">
-          <span class="material-symbols-outlined" aria-hidden="true">support</span>
-          <h3>Поддержка и сопровождение</h3>
-          <p>Помогаем с регистрацией и подключением.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="wrap" id="visual" aria-labelledby="visual-title">
-      <h2 class="section-title" id="visual-title">Как выглядит ваш домен</h2>
-      <div class="grid">
-        <div class="card">
-          <h3><span data-user-domain>{{user_domain}}</span></h3>
-          <p>Домен будет отображаться на всех страницах, в письмах и в ссылках на ваш сервис.</p>
+    <section class="checkout-modal" id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title" aria-hidden="true">
+      <div class="checkout-card">
+        <div class="checkout-head">
+          <h2 class="section-title" id="checkout-title" style="margin:0">Checkout</h2>
+          <button class="checkout-close" type="button" aria-label="Закрыть">×</button>
         </div>
-        <div class="card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center">
-          <div style="font-size:clamp(22px,4vw,40px);font-weight:700"><span data-user-domain>{{user_domain}}</span></div>
+        <div class="checkout-row">
+          <span>Домен</span>
+          <span data-user-domain>{{user_domain}}</span>
         </div>
-      </div>
-    </section>
-
-    <section class="wrap" id="includes" aria-labelledby="includes-title">
-      <h2 class="section-title" id="includes-title">Что входит в услугу</h2>
-      <div class="card">
-        <ul>
-          <li>Регистрация домена</li>
-          <li>Настройка и подключение</li>
-          <li>Поддержка</li>
-          <li>Привязка к профилю UpgradeFor</li>
-          <li>Без скрытых платежей</li>
-          <li>Поддержка реального специалиста</li>
-          <li>Работаем официально</li>
-        </ul>
+        <div class="checkout-row checkout-price">
+          <span>Цена</span>
+          <span>1 990 ₽</span>
+        </div>
+        <button class="btn" type="button">Оплатить</button>
       </div>
     </section>
 
     <section class="wrap" id="form" aria-labelledby="form-title">
-      <h2 class="section-title" id="form-title">Заполните форму</h2>
-      <p class="lead">Мы используем данные только для регистрации домена. Никакого спама. Вы получите подтверждение по email.</p>
+      <h2 class="section-title" id="form-title">Нужна помощь или консультация?</h2>
+      <p class="lead">Оставьте контакт — мы подскажем по регистрации домена и оплате. Это необязательный шаг.</p>
       <p class="lead" id="form-status" hidden>Срок действия ссылки истёк. Отправка заявки недоступна.</p>
 
       <form class="card" aria-label="Форма получения домена">
@@ -312,7 +395,7 @@
           </div>
         </div>
 
-        <button class="btn" type="submit" data-cta-button="submit" data-event="form_submit" data-domain="{{user_domain}}">Получить мой домен</button>
+        <button class="btn" type="submit" data-cta-button="submit" data-event="form_submit" data-domain="{{user_domain}}">Отправить запрос</button>
 
         <div class="card" id="form-success" hidden style="margin-top:var(--space-3)">
           <p style="margin:0"><strong>Заявка принята ✅</strong></p>
@@ -355,7 +438,7 @@
       <div class="card">
         <h2 class="section-title" id="final-cta-title">Ограничение 24 часа</h2>
         <p class="lead" id="expiry-text">Мы резервируем домен <span data-user-domain>{{user_domain}}</span> на 24 часа, чтобы вы могли принять решение без спешки. После окончания срока предложение может быть отозвано.</p>
-        <a class="btn" href="#form" style="margin-top:var(--space-3)" data-cta-link="secondary">Оформить домен</a>
+        <a class="btn" href="#checkout" style="margin-top:var(--space-3)" data-cta-link="secondary">Оформить домен</a>
         <a class="btn btn--ghost" href="/signup" data-expired-link hidden data-event="request_new_link" style="margin-top:var(--space-2)">Запросить новую ссылку</a>
       </div>
     </section>
@@ -370,7 +453,7 @@
       var domainParam = params.get('domain');
       var expiresParam = params.get('expires');
 
-      var userName = nameParam || 'друг';
+      var userName = nameParam && nameParam.trim() ? nameParam.trim() : 'Здравствуйте';
       var userDomain = domainParam || 'ваш-домен.рус';
 
       document.querySelectorAll('[data-user-name]').forEach(function(node) {
@@ -389,6 +472,8 @@
       var domainStatus = document.getElementById('domain-status');
       var domainCtaStatus = document.getElementById('domain-cta-status');
       var ctaLinks = document.querySelectorAll('[data-cta-link]');
+      var checkoutModal = document.getElementById('checkout');
+      var checkoutClose = checkoutModal ? checkoutModal.querySelector('.checkout-close') : null;
       var ctaButton = document.querySelector('[data-cta-button]');
       var form = document.querySelector('form');
       var formSuccess = document.getElementById('form-success');
@@ -428,6 +513,20 @@
         var now = new Date();
         expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
         localStorage.setItem(storageKey, expiresAt.toISOString());
+      }
+
+      function openCheckout() {
+        if (!checkoutModal) return;
+        checkoutModal.classList.add('is-open');
+        checkoutModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeCheckout() {
+        if (!checkoutModal) return;
+        checkoutModal.classList.remove('is-open');
+        checkoutModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
       }
 
       function disableForm() {
@@ -476,6 +575,7 @@
           expiredLink.hidden = false;
         }
 
+        closeCheckout();
         disableCtas();
         disableForm();
       }
@@ -572,12 +672,34 @@
             event.preventDefault();
             return;
           }
-          var firstNameField = document.getElementById('first-name');
-          if (firstNameField) {
-            setTimeout(function() { firstNameField.focus(); }, 0);
-          }
+          event.preventDefault();
+          openCheckout();
         });
       });
+
+      if (checkoutModal) {
+        checkoutModal.addEventListener('click', function(event) {
+          if (event.target === checkoutModal) {
+            closeCheckout();
+          }
+        });
+      }
+
+      if (checkoutClose) {
+        checkoutClose.addEventListener('click', function() {
+          closeCheckout();
+        });
+      }
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeCheckout();
+        }
+      });
+
+      if (window.location.hash === '#checkout') {
+        openCheckout();
+      }
 
       function setFieldError(field, message) {
         var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
