@@ -16,26 +16,15 @@ export const authOptions: NextAuthOptions = {
         const email = credentials?.email?.trim().toLowerCase();
         const password = credentials?.password ?? "";
 
-        if (!email || !password) {
-          return null;
-        }
+        if (!email || !password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
-
-        if (!user) {
-          return null;
-        }
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) return null;
 
         const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+        if (!passwordMatches) return null;
 
-        if (!passwordMatches) {
-          return null;
-        }
-
-        // Важно: используем "AccessDenied", чтобы NextAuth корректно редиректил обратно на /account/login?error=AccessDenied
-        // и форма логина показала понятное сообщение.
+        // Важно: используем "AccessDenied", чтобы NextAuth корректно редиректил на /account/login?error=AccessDenied
         if (!user.emailVerified) {
           throw new Error("AccessDenied");
         }
@@ -49,9 +38,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -62,7 +49,6 @@ export const authOptions: NextAuthOptions = {
             ? user.emailVerified.toISOString()
             : user.emailVerified ?? null;
       }
-
       return token;
     },
     async session({ session, token }) {
@@ -71,7 +57,6 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as string;
         session.user.emailVerified = token.emailVerified as string | null;
       }
-
       return session;
     },
   },
