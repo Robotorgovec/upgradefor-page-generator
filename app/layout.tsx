@@ -1,4 +1,4 @@
-export default function RootLayout({
+    <html lang="en">
   children,
 }: {
   children: React.ReactNode;
