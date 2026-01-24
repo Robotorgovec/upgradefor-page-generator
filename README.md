@@ -1,23 +1,23 @@
 # upgradefor-page-generator
 
-## Database / Prisma
+## База данных (Prisma, этап 1)
 
-This stage prepares models for future authentication and account features.
+Этот этап подготавливает структуру базы данных для будущих аккаунтов и авторизации.
 
-### Environment
+Используется PostgreSQL и Prisma.
 
-- `DATABASE_URL` (PostgreSQL connection string)
+---
 
-Example:
+## Авторизация (Auth.js, этап 2)
 
-```bash
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE?schema=public"
-```
+На этом этапе реализован вход и выход пользователей по email и паролю,
+а также защищённая страница личного кабинета `/account`.
 
-### Commands
+Что уже есть:
+- вход через `/account/login`
+- защищённая страница `/account`
+- выход из аккаунта
+- тестовый пользователь создаётся через скрипт
+- используются существующие модели пользователя
 
-```bash
-npx prisma migrate dev
-npx prisma generate
-npm run db:smoke
-```
+Регистрация, подтверждение email и восстановление пароля будут добавлены на следующем этапе.
