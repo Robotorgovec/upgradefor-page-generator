@@ -15,8 +15,8 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const errorParam = searchParams.get("error");
-  const nextParam = searchParams.get("next") ?? "/account";
+  const errorParam = searchParams?.get("error");
+  const nextParam = searchParams?.get("next") ?? "/account";
 
   const errorFromParams = useMemo(() => {
     if (!errorParam) return null;
