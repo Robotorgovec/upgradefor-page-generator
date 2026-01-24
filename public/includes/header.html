@@ -1,0 +1,37 @@
+<div class="wrap nav">
+  <!-- Бургер: открывает левое меню -->
+  <button class="burger" id="burgerBtn" aria-label="Открыть меню">
+    <span class="burger-icon">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </span>
+  </button>
+
+  <!-- Логотип по центру -->
+  <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
+    <img src="/assets/upgrade-innovations-logo-main.svg" alt="UPGRADE Innovations logo" style="height:40px;width:auto;">
+  </a>
+<div class="grow"></div>
+  <!-- Иконки действий (мобильная шапка) -->
+  <div class="header-icons" aria-label="Быстрые действия">
+    <button class="icon-btn" aria-label="Поиск" data-path="/search">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="icon-btn" aria-label="Сообщения" data-path="/messages">
+      <span class="material-symbols-outlined">mark_unread_chat_alt</span>
+    </button>
+    <button class="icon-btn" aria-label="Уведомления" data-path="/notifications">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <button class="icon-btn" aria-label="Корзина" data-path="/cart">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </button>
+  </div>
+
+  <!-- Кнопки авторизации (видны на десктопе) -->
+  <div class="auth-buttons">
+    <a class="btn btn--ghost" href="/account/login" rel="nofollow" data-auth-link="signin">Sign in</a>
+    <a class="btn" href="/account/register" rel="nofollow" data-auth-link="signup">Sign up</a>
+  </div>
+</div>
