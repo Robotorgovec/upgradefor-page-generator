@@ -38,3 +38,27 @@
 EMAIL_FROM="noreply@upgradefor.com"
 EMAIL_PROVIDER="resend"
 RESEND_API_KEY=""
+```
+
+---
+
+## Восстановление пароля (этап 4)
+
+На этом этапе добавлено восстановление пароля через email.
+
+Что уже есть:
+- запрос ссылки на восстановление через `/account/forgot`
+- установка нового пароля через `/account/reset`
+- письма на восстановление отправляются через Resend
+
+### Переменные окружения для почты
+
+Используется Resend API. Базовый URL для ссылок берётся из `NEXTAUTH_URL`.
+
+Добавьте в `.env`:
+
+```env
+EMAIL_FROM="noreply@upgradefor.com"
+EMAIL_PROVIDER="resend"
+RESEND_API_KEY=""
+```
