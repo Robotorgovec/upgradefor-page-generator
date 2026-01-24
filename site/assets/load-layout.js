@@ -22,6 +22,38 @@
   const burger = document.getElementById('burgerBtn');
   const root = document.documentElement;
   const headerEl = document.querySelector('header');
+  const authButtonsEl = headerEl?.querySelector('.auth-buttons') ?? null;
+
+  async function updateAuthButtons() {
+    if (!authButtonsEl) return;
+
+    try {
+      const res = await fetch('/api/auth/session', { credentials: 'include' });
+      if (!res.ok) return;
+
+      const session = await res.json();
+      const isAuthenticated = Boolean(session?.user);
+
+      if (!isAuthenticated) {
+        return;
+      }
+
+      let hasProfileRoute = false;
+      try {
+        const profileRes = await fetch('/account/profile', { method: 'HEAD', credentials: 'include' });
+        hasProfileRoute = profileRes.ok;
+      } catch (error) {
+        hasProfileRoute = false;
+      }
+
+      authButtonsEl.innerHTML = `
+        <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
+        ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ''}
+      `;
+    } catch (err) {
+      console.error('Error loading auth session', err);
+    }
+  }
 
   function updateHeaderHeight() {
     if (!headerEl) return;
@@ -84,4 +116,5 @@
   window.addEventListener('resize', syncMenuState);
   updateHeaderHeight();
   syncMenuState();
+  await updateAuthButtons();
 })();

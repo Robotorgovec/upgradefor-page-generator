@@ -34,8 +34,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Важно: используем "AccessDenied", чтобы NextAuth корректно редиректил обратно на /account/login?error=AccessDenied
+        // и форма логина показала понятное сообщение.
         if (!user.emailVerified) {
-          throw new Error("EMAIL_NOT_VERIFIED");
+          throw new Error("AccessDenied");
         }
 
         return {
@@ -56,7 +58,9 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role;
         token.emailVerified =
-          user.emailVerified instanceof Date ? user.emailVerified.toISOString() : user.emailVerified ?? null;
+          user.emailVerified instanceof Date
+            ? user.emailVerified.toISOString()
+            : user.emailVerified ?? null;
       }
 
       return token;
