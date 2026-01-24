@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type VerifyState = "loading" | "success" | "error";
@@ -11,7 +11,7 @@ type VerifyResponse = {
   code?: string;
 };
 
-export default function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token"), [searchParams]);
   const [state, setState] = useState<VerifyState>("loading");
@@ -78,5 +78,13 @@ export default function VerifyPage() {
         </Link>
       )}
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div style={{ maxWidth: 520, margin: "40px auto", padding: 24 }}>Проверяем ссылку...</div>}>
+      <VerifyContent />
+    </Suspense>
   );
 }
