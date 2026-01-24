@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type ResetState = "idle" | "loading" | "success" | "error";
 
 const PASSWORD_MIN_LENGTH = 8;
 
-export default function ResetPage() {
+function ResetContent() {
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token"), [searchParams]);
 
@@ -24,7 +24,7 @@ export default function ResetPage() {
     }
   }, [token]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!token) {
@@ -117,7 +117,7 @@ export default function ResetPage() {
           </label>
           <button
             type="submit"
-            disabled={state === "loading" || state === "error" && !token}
+            disabled={state === "loading" || (state === "error" && !token)}
             style={{ padding: "8px 16px", background: "black", color: "white" }}
           >
             {state === "loading" ? "Сохраняем..." : "Сменить пароль"}
@@ -132,5 +132,13 @@ export default function ResetPage() {
         </p>
       )}
     </div>
+  );
+}
+
+export default function ResetPage() {
+  return (
+    <Suspense fallback={<div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>Загружаем форму...</div>}>
+      <ResetContent />
+    </Suspense>
   );
 }
