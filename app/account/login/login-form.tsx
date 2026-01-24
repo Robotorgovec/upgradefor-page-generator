@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 const ERROR_MESSAGES: Record<string, string> = {
-  EMAIL_NOT_VERIFIED: "Подтвердите email.",
+  AccessDenied: "Please verify your email before signing in.",
   CredentialsSignin: "Неверный email или пароль.",
 };
 

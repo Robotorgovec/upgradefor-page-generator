@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         if (!user.emailVerified) {
-          throw new Error("EMAIL_NOT_VERIFIED");
+          throw new Error("AccessDenied");
         }
 
         return {
