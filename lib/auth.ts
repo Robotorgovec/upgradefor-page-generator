@@ -34,6 +34,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        if (!user.emailVerified) {
+          throw new Error("AccessDenied");
+        }
+
         return {
           id: user.id,
           email: user.email,
