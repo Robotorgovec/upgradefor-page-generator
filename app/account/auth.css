@@ -105,3 +105,8 @@ body::before {
 .auth-message.success {
   color: #15803d;
 }
+
+body {
+  outline: 10px solid red !important;
+  background: #fff0f0 !important;
+}
