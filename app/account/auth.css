@@ -85,7 +85,8 @@
   box-shadow: 0 0 0 4px rgba(46, 144, 250, 0.15);
 }
 
-.auth-card button {
+/* ВАЖНО: стили "большой синей кнопки" — только для submit */
+.auth-card form > button[type="submit"] {
   margin-top: 10px;
   width: 100%;
   height: 46px;
@@ -99,15 +100,15 @@
   transition: filter 0.15s ease, transform 0.05s ease;
 }
 
-.auth-card button:hover {
+.auth-card form > button[type="submit"]:hover {
   filter: brightness(0.96);
 }
 
-.auth-card button:active {
+.auth-card form > button[type="submit"]:active {
   transform: translateY(1px);
 }
 
-.auth-card button:disabled {
+.auth-card form > button[type="submit"]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -138,11 +139,13 @@
   padding-right: 40px; /* место под глаз */
 }
 
+/* маленький "глаз" внутри input справа */
 .password-toggle {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
+
   width: 20px;
   height: 20px;
 
@@ -157,6 +160,10 @@
 
   color: #667085;
   cursor: pointer;
+
+  /* защита от глобальных стилей кнопок */
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .password-toggle:hover {
