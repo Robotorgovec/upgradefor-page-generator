@@ -16,24 +16,24 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
         К содержанию
       </a>
 
-      {/* ВАЖНО: сохраняем DOM-структуру, которую ожидают site styles + load-layout.js */}
+      {/* DOM-структура, которую обычно ожидают site styles + load-layout.js */}
       <div className="layout">
         <header></header>
 
         <div className="layout-body">
           <aside className="sidebar"></aside>
 
-          {/* id нужен для skip-link */}
-          <main id="main" className="content">
+          {/* id нужен для skip-link; классы — чтобы не ломать стили */}
+          <main id="main" className="content app-content">
             {children}
           </main>
         </div>
       </div>
 
-      {/* ВАЖНО: инжект хедера/меню и поведение бургер/аккордеон */}
+      {/* Инжект хедера/меню и поведение бургер/аккордеон */}
       <Script src="/assets/load-layout.js" strategy="afterInteractive" />
 
-      {/* ВАЖНО: если load-layout.js/стили завязаны на route (active menu/open), оставляем */}
+      {/* Если load-layout.js/стили завязаны на route (active menu/open) */}
       <Script id="account-route" strategy="afterInteractive">
         {`document.body.dataset.route = window.location.pathname;`}
       </Script>
