@@ -2,95 +2,74 @@
 
 import { useState } from "react";
 
-type RegisterState = "idle" | "loading" | "success";
-
-const PASSWORD_MIN_LENGTH = 8;
-
-export function RegisterForm() {
+export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [state, setState] = useState<RegisterState>("idle");
-  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-    setState("loading");
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage(null);
 
-    const response = await fetch("/api/auth/register", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-      setState("success");
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok) {
+      setMessage({
+        type: "error",
+        text: data?.message || data?.error || "Ошибка регистрации",
+      });
+      setLoading(false);
       return;
     }
 
-    const payload = (await response.json().catch(() => null)) as { code?: string } | null;
-    setState("idle");
-
-    if (response.status === 409 || payload?.code === "USER_EXISTS") {
-      setError("Пользователь с таким email уже существует.");
-      return;
-    }
-
-    if (payload?.code === "INVALID_PASSWORD") {
-      setError(`Пароль должен быть не короче ${PASSWORD_MIN_LENGTH} символов.`);
-      return;
-    }
-
-    if (payload?.code === "RATE_LIMIT") {
-      setError("Слишком много попыток. Попробуйте позже.");
-      return;
-    }
-
-    setError("Не удалось зарегистрироваться. Попробуйте ещё раз.");
-  };
+    setMessage({ type: "success", text: data?.message || "Регистрация успешна" });
+    setLoading(false);
+  }
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Регистрация</h1>
-      {state === "success" ? (
-        <p style={{ color: "green" }}>
-          Проверьте почту, мы отправили ссылку подтверждения.
-        </p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          {error && <p style={{ color: "crimson", marginBottom: 16 }}>{error}</p>}
-          <label style={{ display: "block", marginBottom: 12 }}>
-            Email
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Регистрация</h1>
+
+        {message && <p className={`auth-message ${message.type}`}>{message.text}</p>}
+
+        <form onSubmit={onSubmit}>
+          <label>Email</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+
+          <label>Пароль</label>
+          <div className="password-field">
             <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-            />
-          </label>
-          <label style={{ display: "block", marginBottom: 16 }}>
-            Пароль
-            <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              minLength={PASSWORD_MIN_LENGTH}
+              onChange={e => setPassword(e.target.value)}
               required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
             />
-          </label>
-          <button
-            type="submit"
-            disabled={state === "loading"}
-            style={{ padding: "8px 16px", background: "black", color: "white" }}
-          >
-            {state === "loading" ? "Отправка..." : "Зарегистрироваться"}
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(v => !v)}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
+
+          <button disabled={loading}>
+            {loading ? "Регистрация..." : "Зарегистрироваться"}
           </button>
         </form>
-      )}
+      </div>
     </div>
   );
 }
