@@ -52,7 +52,7 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="auth-card">
+    <>
       <h1>Регистрация</h1>
       {state === "success" ? (
         <p className="auth-message success">
@@ -85,6 +85,6 @@ export function RegisterForm() {
           </button>
         </form>
       )}
-    </div>
+    </>
   );
 }

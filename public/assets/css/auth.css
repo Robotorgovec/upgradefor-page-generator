@@ -1,44 +1,48 @@
+.auth-page {
+  padding: 48px 24px 24px;
+  display: flex;
+  justify-content: center;
+}
+
 .auth-card {
-  max-width: 440px;
-  margin: clamp(32px, 8vh, 88px) auto;
-  padding: 32px;
-  background: var(--surface, #ffffff);
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
   border: 1px solid #eef1f4;
   border-radius: 12px;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
+  padding: 28px;
 }
 
 .auth-card h1 {
-  margin: 0 0 12px;
-  font-size: 21px;
-  font-weight: 600;
-  color: #1f2937;
+  margin: 0 0 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #101828;
 }
 
 .auth-card form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .auth-card label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
+  margin: 12px 0 6px;
   font-size: 14px;
-  line-height: 1.4;
-  color: var(--text, #0f172a);
+  color: #344054;
 }
 
 .auth-card input {
   width: 100%;
-  min-height: 44px;
+  height: 46px;
   padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #d0d7de;
-  background: var(--surface, #ffffff);
-  color: var(--text, #0f172a);
-  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  outline: none;
+  font-size: 14px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -47,28 +51,25 @@
 }
 
 .auth-card input:focus {
-  outline: none;
-  border-color: var(--brand-cyan, #12aff0);
-  box-shadow: 0 0 0 3px rgba(18, 175, 240, 0.2);
+  border-color: #2e90fa;
+  box-shadow: 0 0 0 4px rgba(46, 144, 250, 0.15);
 }
 
 .auth-card button {
-  min-height: 44px;
-  padding: 10px 16px;
+  margin-top: 18px;
   width: 100%;
+  height: 46px;
   border-radius: 10px;
-  border: 1px solid #000000;
-  background: var(--brand-cyan, #12aff0);
+  border: 0;
+  background: #2e90fa;
   color: #ffffff;
-  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease;
+  transition: filter 0.15s ease, transform 0.05s ease;
 }
 
 .auth-card button:hover {
-  background: var(--brand-cyan-600, #0e8bc0);
-  box-shadow: 0 10px 20px rgba(14, 139, 192, 0.25);
+  filter: brightness(0.95);
 }
 
 .auth-card button:active {
@@ -91,4 +92,9 @@
 
 .auth-message.success {
   color: #15803d;
+}
+
+body[data-route^="/account"] .auth-card {
+  outline: 2px dashed rgba(0, 128, 255, 0.35);
+  outline-offset: 2px;
 }

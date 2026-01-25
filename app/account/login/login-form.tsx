@@ -42,7 +42,7 @@ export function LoginForm() {
   const displayedError = error ?? errorFromParams;
 
   return (
-    <div className="auth-card">
+    <>
       <h1>Вход</h1>
 
       {displayedError && <p className="auth-message error">{displayedError}</p>}
@@ -70,6 +70,6 @@ export function LoginForm() {
 
         <button type="submit">Войти</button>
       </form>
-    </div>
+    </>
   );
 }

@@ -19,6 +19,9 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <Script src="/assets/load-layout.js" strategy="afterInteractive" />
+      <Script id="account-route" strategy="afterInteractive">
+        {`document.body.dataset.route = window.location.pathname;`}
+      </Script>
     </>
   );
 }
