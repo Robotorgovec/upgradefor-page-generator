@@ -22,6 +22,19 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
       <Script id="account-route" strategy="afterInteractive">
         {`document.body.dataset.route = window.location.pathname;`}
       </Script>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 10,
+          left: 10,
+          background: "black",
+          color: "white",
+          padding: "6px 10px",
+          zIndex: 99999,
+        }}
+      >
+        ACTIVE LAYOUT: app/account/layout.tsx
+      </div>
     </>
   );
 }
