@@ -10,7 +10,10 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,64 +42,74 @@ export default function RegisterForm() {
         return;
       }
 
-      setMessage({ type: "success", text: data?.message || "Регистрация успешна. Проверьте почту." });
+      setMessage({
+        type: "success",
+        text: data?.message || "Регистрация успешна. Проверьте почту.",
+      });
     } catch {
-      setMessage({ type: "error", text: "Ошибка сети. Попробуйте ещё раз." });
+      setMessage({
+        type: "error",
+        text: "Ошибка сети. Попробуйте ещё раз.",
+      });
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <>
-      <h1>Регистрация</h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Регистрация</h1>
 
-      {message ? <p className={`auth-message ${message.type}`}>{message.text}</p> : null}
+        {message && (
+          <p className={`auth-message ${message.type}`}>{message.text}</p>
+        )}
 
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password">Пароль</label>
-
-          <div className="password-field">
+        <form onSubmit={onSubmit}>
+          <div>
+            <label htmlFor="email">Email</label>
             <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowPassword((v) => !v)}
-              aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-              title={showPassword ? "Скрыть пароль" : "Показать пароль"}
-            >
-              <span className="material-symbols-outlined">
-                {showPassword ? "visibility_off" : "visibility"}
-              </span>
-            </button>
           </div>
-        </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Регистрация..." : "Зарегистрироваться"}
-        </button>
-      </form>
-    </>
+          <div>
+            <label htmlFor="password">Пароль</label>
+
+            <div className="password-field">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+                title={showPassword ? "Скрыть пароль" : "Показать пароль"}
+              >
+                <span className="material-symbols-outlined">
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Регистрация..." : "Зарегистрироваться"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
