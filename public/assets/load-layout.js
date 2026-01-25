@@ -1,26 +1,7 @@
 (async function () {
   "use strict";
 
-  async function fetchAndInsert(url, selector) {
-    const container = document.querySelector(selector);
-    if (!container) {
-      console.warn("[UPGR] container not found for", selector);
-      return;
-    }
-
-    try {
-      const res = await fetch(url, { credentials: "include" });
-      if (!res.ok) {
-        console.error("[UPGR] failed to load", url, res.status);
-        return;
-      }
-      const html = await res.text();
-      container.innerHTML = html;
-    } catch (err) {
-      console.error("[UPGR] Error loading", url, err);
-    }
-  }
-
+  /* ================== helpers ================== */
   function qs(sel, root = document) {
     return root.querySelector(sel);
   }
@@ -29,12 +10,29 @@
     const el = document.createElement(tag);
     if (className) el.className = className;
     if (attrs) {
-      for (const [k, v] of Object.entries(attrs)) {
-        if (v === null || v === undefined) continue;
-        el.setAttribute(k, String(v));
-      }
+      Object.entries(attrs).forEach(([k, v]) => {
+        if (v !== undefined && v !== null) el.setAttribute(k, String(v));
+      });
     }
     return el;
+  }
+
+  async function fetchAndInsert(url, selector) {
+    const container = document.querySelector(selector);
+    if (!container) {
+      console.warn("[UPGR] container not found:", selector);
+      return;
+    }
+    try {
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) {
+        console.error("[UPGR] failed to load:", url, res.status);
+        return;
+      }
+      container.innerHTML = await res.text();
+    } catch (e) {
+      console.error("[UPGR] load error:", url, e);
+    }
   }
 
   async function getSessionSafe() {
@@ -48,6 +46,7 @@
     }
   }
 
+  /* ================== sticky footer ================== */
   function ensureSidebarFooter(sidebar) {
     let footer = sidebar.querySelector(":scope > .sidebar-footer");
     if (!footer) {
@@ -62,7 +61,7 @@
 
     const title = createEl("div", "sidebar-footer-title");
     title.innerHTML =
-      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">account_circle</span>' +
+      '<span class="material-symbols-outlined menu-icon">account_circle</span>' +
       "<span>Аккаунт</span>";
     footer.appendChild(title);
 
@@ -71,35 +70,35 @@
     if (!session) {
       const login = createEl("a", "menu-item sidebar-footer-item", { href: "/account/login" });
       login.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">login</span>' +
+        '<span class="material-symbols-outlined menu-icon">login</span>' +
         '<span class="menu-label">Войти</span>';
 
       const register = createEl("a", "menu-item sidebar-footer-item", { href: "/account/register" });
       register.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person_add</span>' +
+        '<span class="material-symbols-outlined menu-icon">person_add</span>' +
         '<span class="menu-label">Регистрация</span>';
 
-      actions.appendChild(login);
-      actions.appendChild(register);
+      actions.append(login, register);
     } else {
       const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
       account.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
+        '<span class="material-symbols-outlined menu-icon">person</span>' +
         '<span class="menu-label">Мой аккаунт</span>';
 
-      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
-        type: "button",
-      });
+      const logout = createEl(
+        "button",
+        "menu-item sidebar-footer-item sidebar-footer-logout",
+        { type: "button" }
+      );
       logout.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
+        '<span class="material-symbols-outlined menu-icon">logout</span>' +
         '<span class="menu-label">Выйти</span>';
 
       logout.addEventListener("click", () => {
         window.location.href = "/api/auth/signout?callbackUrl=/";
       });
 
-      actions.appendChild(account);
-      actions.appendChild(logout);
+      actions.append(account, logout);
     }
 
     footer.appendChild(actions);
@@ -110,84 +109,46 @@
     if (!sidebar) return;
 
     const inner = qs(".sidebar-inner", sidebar);
-    if (!inner) {
-      return;
-    }
+    if (!inner) return; // меню ещё не загружено
 
     const footer = ensureSidebarFooter(sidebar);
     renderFooter(footer, null);
 
     getSessionSafe().then((session) => {
       const sidebar2 = qs(".sidebar");
-      const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-      if (!sidebar2 || !inner2) return;
+      if (!sidebar2) return;
       const footer2 = ensureSidebarFooter(sidebar2);
       renderFooter(footer2, session);
     });
   }
 
+  /* ================== main init ================== */
   try {
+    // 1) КРИТИЧНО: сначала грузим layout
     await fetchAndInsert("/includes/header.html", "header");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
 
+    // 2) burger / menu-open / header-height — ВАША СТАРАЯ ЛОГИКА
     const body = document.body;
     const burger = document.getElementById("burgerBtn");
     const root = document.documentElement;
-    const headerEl = document.querySelector("header");
-    const authButtonsEl = headerEl?.querySelector(".auth-buttons") ?? null;
-
-    async function updateAuthButtons() {
-      if (!authButtonsEl) return;
-
-      try {
-        const res = await fetch("/api/auth/session", { credentials: "include" });
-        if (!res.ok) return;
-
-        const session = await res.json();
-        const isAuthenticated = Boolean(session?.user);
-        if (!isAuthenticated) return;
-
-        let hasProfileRoute = false;
-        try {
-          const profileRes = await fetch("/account/profile", { method: "HEAD", credentials: "include" });
-          hasProfileRoute = profileRes.ok;
-        } catch {
-          hasProfileRoute = false;
-        }
-
-        authButtonsEl.innerHTML = `
-          <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-          ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
-        `;
-      } catch (err) {
-        console.error("[UPGR] Error loading auth session", err);
-      }
-    }
+    const headerEl = qs("header");
 
     function updateHeaderHeight() {
       if (!headerEl) return;
-      const h = headerEl.offsetHeight;
-      root.style.setProperty("--header-height", h + "px");
+      root.style.setProperty("--header-height", headerEl.offsetHeight + "px");
     }
 
     const desktopBreakpoint = 1200;
-    const collapsedStorageKey = "upgr-sidebar-collapsed";
+    const storageKey = "upgr-sidebar-collapsed";
     let isDesktop = window.innerWidth >= desktopBreakpoint;
-
-    function getCollapsedPreference() {
-      return localStorage.getItem(collapsedStorageKey) === "true";
-    }
-    function setCollapsedPreference(isCollapsed) {
-      localStorage.setItem(collapsedStorageKey, String(isCollapsed));
-    }
 
     function syncMenuState() {
       const nowDesktop = window.innerWidth >= desktopBreakpoint;
       if (nowDesktop !== isDesktop) {
         isDesktop = nowDesktop;
         if (isDesktop) {
-          const preferCollapsed = getCollapsedPreference();
-          body.classList.toggle("menu-open", !preferCollapsed);
+          body.classList.toggle("menu-open", localStorage.getItem(storageKey) !== "true");
         } else {
           body.classList.remove("menu-open");
         }
@@ -195,38 +156,28 @@
     }
 
     if (isDesktop) {
-      const preferCollapsed = getCollapsedPreference();
-      body.classList.toggle("menu-open", !preferCollapsed);
-    } else {
-      body.classList.remove("menu-open");
+      body.classList.toggle("menu-open", localStorage.getItem(storageKey) !== "true");
     }
 
     if (burger) {
-      burger.addEventListener("click", function () {
-        const nowDesktop = window.innerWidth >= desktopBreakpoint;
-        if (nowDesktop) {
-          body.classList.toggle("menu-open");
-          setCollapsedPreference(!body.classList.contains("menu-open"));
-          return;
-        }
+      burger.addEventListener("click", () => {
         body.classList.toggle("menu-open");
+        if (isDesktop) {
+          localStorage.setItem(storageKey, String(!body.classList.contains("menu-open")));
+        }
       });
     }
 
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && body.classList.contains("menu-open")) {
-        body.classList.remove("menu-open");
-      }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") body.classList.remove("menu-open");
     });
 
-    window.addEventListener("load", updateHeaderHeight);
     window.addEventListener("resize", updateHeaderHeight);
     window.addEventListener("resize", syncMenuState);
     updateHeaderHeight();
     syncMenuState();
 
-    await updateAuthButtons();
-
+    // 3) ПОСЛЕ menu.html — footer
     initStickyFooter();
   } catch (e) {
     console.error("[UPGR] load-layout.js fatal error:", e);
