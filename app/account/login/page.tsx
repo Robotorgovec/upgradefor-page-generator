@@ -11,5 +11,11 @@ export default async function LoginPage() {
     redirect("/account");
   }
 
-  return <LoginForm />;
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <LoginForm />
+      </div>
+    </div>
+  );
 }

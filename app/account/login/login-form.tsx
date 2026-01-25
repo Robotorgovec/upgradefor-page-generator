@@ -42,43 +42,34 @@ export function LoginForm() {
   const displayedError = error ?? errorFromParams;
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Вход</h1>
+    <>
+      <h1>Вход</h1>
 
-      {displayedError && (
-        <p style={{ color: "crimson", marginBottom: 16 }}>{displayedError}</p>
-      )}
+      {displayedError && <p className="auth-message error">{displayedError}</p>}
 
       <form onSubmit={handleSubmit}>
-        <label style={{ display: "block", marginBottom: 12 }}>
+        <label>
           Email
           <input
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
-            style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
           />
         </label>
 
-        <label style={{ display: "block", marginBottom: 16 }}>
+        <label>
           Пароль
           <input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             required
-            style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
           />
         </label>
 
-        <button
-          type="submit"
-          style={{ padding: "8px 16px", background: "black", color: "white" }}
-        >
-          Войти
-        </button>
+        <button type="submit">Войти</button>
       </form>
-    </div>
+    </>
   );
 }
