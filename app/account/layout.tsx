@@ -10,31 +10,33 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
       />
       <link rel="stylesheet" href="/assets/layout.css" />
+
+      {/* skip-link для доступности */}
       <a className="skip" href="#main">
         К содержанию
       </a>
-      <header></header>
-      <aside className="sidebar"></aside>
-      <main id="main" className="app-content">
-        {children}
-      </main>
+
+      {/* ВАЖНО: сохраняем DOM-структуру, которую ожидают site styles + load-layout.js */}
+      <div className="layout">
+        <header></header>
+
+        <div className="layout-body">
+          <aside className="sidebar"></aside>
+
+          {/* id нужен для skip-link */}
+          <main id="main" className="content">
+            {children}
+          </main>
+        </div>
+      </div>
+
+      {/* ВАЖНО: инжект хедера/меню и поведение бургер/аккордеон */}
       <Script src="/assets/load-layout.js" strategy="afterInteractive" />
+
+      {/* ВАЖНО: если load-layout.js/стили завязаны на route (active menu/open), оставляем */}
       <Script id="account-route" strategy="afterInteractive">
         {`document.body.dataset.route = window.location.pathname;`}
       </Script>
-      <div
-        style={{
-          position: "fixed",
-          bottom: 10,
-          left: 10,
-          background: "black",
-          color: "white",
-          padding: "6px 10px",
-          zIndex: 99999,
-        }}
-      >
-        ACTIVE LAYOUT: app/account/layout.tsx
-      </div>
     </>
   );
 }
