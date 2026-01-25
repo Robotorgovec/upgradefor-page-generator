@@ -90,3 +90,68 @@
   border: none;
   text-align: left;
 }
+
+/* ===== Sticky Account Footer (mobile sidebar) ===== */
+.sidebar-footer {
+  flex: 0 0 auto;
+  padding: 10px 8px 12px;
+  border-top: 1px solid rgba(209, 213, 219, 0.9);
+  background: var(--bg-sidebar);
+}
+
+.sidebar-footer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6b7280;
+  padding: 8px 18px 4px;
+}
+
+.sidebar-footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-footer-logout {
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+/* Account footer нужен в mobile drawer; на десктопе убираем (там есть Sign in/up в хедере) */
+@media (min-width: 769px) {
+  .sidebar-footer {
+    display: none;
+  }
+}
+
+/* ===== Sidebar footer (mobile) alignment fixes ===== */
+.sidebar-footer .sidebar-footer-item {
+  width: auto;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+}
+
+body:not(.menu-open) .sidebar-footer .menu-label {
+  display: none;
+}
+
+body:not(.menu-open) .sidebar-footer .menu-item {
+  justify-content: center;
+  padding-inline: 0;
+  margin-inline: 0;
+}
+
+body:not(.menu-open) .sidebar-footer-title span:last-child {
+  display: none;
+}
+
+body:not(.menu-open) .sidebar-footer {
+  padding-left: 0;
+  padding-right: 0;
+}
