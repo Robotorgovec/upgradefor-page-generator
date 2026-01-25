@@ -9,7 +9,7 @@
     }
 
     try {
-      const res = await fetch(url, { credentials: "include" });
+      const res = await fetch(url, { credentials: "include", cache: "no-store" });
       if (!res.ok) {
         console.error("[UPGR] failed to load", url, res.status);
         return;
@@ -103,9 +103,25 @@
     footer.appendChild(actions);
   }
 
+  function shouldShowFooter() {
+    return window.innerWidth < 768;
+  }
+
+  function removeFooter(sidebar) {
+    const footer = sidebar.querySelector(":scope > .sidebar-footer");
+    if (footer) {
+      footer.remove();
+    }
+  }
+
   function initStickyFooter() {
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
+
+    if (!shouldShowFooter()) {
+      removeFooter(sidebar);
+      return;
+    }
 
     // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
     const inner = qs(".sidebar-inner", sidebar);
@@ -117,7 +133,7 @@
     getSessionSafe().then((session) => {
       const sidebar2 = qs(".sidebar");
       const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-      if (!sidebar2 || !inner2) return;
+      if (!sidebar2 || !inner2 || !shouldShowFooter()) return;
       const footer2 = ensureSidebarFooter(sidebar2);
       renderFooter(footer2, session);
     });
@@ -221,6 +237,7 @@
     window.addEventListener("load", updateHeaderHeight);
     window.addEventListener("resize", updateHeaderHeight);
     window.addEventListener("resize", syncMenuState);
+    window.addEventListener("resize", initStickyFooter);
     updateHeaderHeight();
     syncMenuState();
 

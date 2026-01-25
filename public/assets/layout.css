@@ -1,71 +1,27 @@
 /* ===== Sticky Account Footer (mobile sidebar) ===== */
-/* ВАЖНО: .sidebar и .sidebar-inner уже настроены выше (flex + scroll).
-   Здесь добавляем только footer, без переопределения .sidebar. */
+@media (max-width: 768px) {
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
 
-.sidebar-footer {
-  flex: 0 0 auto;
-  padding: 12px 14px;
-  border-top: 1px solid #eef1f4;
-  background: #ffffff;
+  .sidebar-inner {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  .sidebar-footer {
+    flex: 0 0 auto;
+    padding: 10px 8px 12px;
+    border-top: 1px solid rgba(209, 213, 219, 0.9);
+    background: var(--bg-sidebar);
+  }
 }
 
-.sidebar-footer-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #98a2b3;
-  padding: 6px 6px 10px;
-}
-
-.sidebar-footer-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.sidebar-footer-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 10px;
-  border-radius: 12px;
-
-  text-decoration: none;
-  color: inherit;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.sidebar-footer-item:hover {
-  background: rgba(46, 144, 250, 0.08);
-}
-
-.sidebar-footer-item:active {
-  background: rgba(46, 144, 250, 0.12);
-}
-
-.sidebar-footer-item .material-symbols-outlined {
-  font-size: 22px;
-  line-height: 1;
-  color: var(--sidebar-accent, #0ea5e9);
-}
-
-.sidebar-footer-logout .material-symbols-outlined {
-  color: #667085;
-}
-
-/* ===== Sticky Account Footer (mobile sidebar) ===== */
-.sidebar-footer {
-  flex: 0 0 auto;
-  padding: 10px 8px 12px;
-  border-top: 1px solid rgba(209, 213, 219, 0.9);
-  background: var(--bg-sidebar);
+@media (min-width: 769px) {
+  .sidebar-footer {
+    display: none;
+  }
 }
 
 .sidebar-footer-title {
@@ -85,8 +41,30 @@
   gap: 4px;
 }
 
-.sidebar-footer-logout {
+.sidebar-footer-item {
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
   background: transparent;
   border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.sidebar-footer-logout {
   text-align: left;
+}
+
+body:not(.menu-open) .sidebar-footer-title {
+  display: none;
+}
+
+body:not(.menu-open) .sidebar-footer-item {
+  justify-content: center;
+  padding-inline: 0;
+  margin-inline: 0;
+}
+
+body:not(.menu-open) .sidebar-footer-item .menu-label {
+  display: none;
 }
