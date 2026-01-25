@@ -107,20 +107,34 @@
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
 
-    // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
-    const inner = qs(".sidebar-inner", sidebar);
-    if (!inner) return;
+    const mountFooter = () => {
+      // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
+      const inner = qs(".sidebar-inner", sidebar);
+      if (!inner) return false;
 
-    const footer = ensureSidebarFooter(sidebar);
-    renderFooter(footer, null);
+      const footer = ensureSidebarFooter(sidebar);
+      renderFooter(footer, null);
 
-    getSessionSafe().then((session) => {
-      const sidebar2 = qs(".sidebar");
-      const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-      if (!sidebar2 || !inner2) return;
-      const footer2 = ensureSidebarFooter(sidebar2);
-      renderFooter(footer2, session);
+      getSessionSafe().then((session) => {
+        const sidebar2 = qs(".sidebar");
+        const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
+        if (!sidebar2 || !inner2) return;
+        const footer2 = ensureSidebarFooter(sidebar2);
+        renderFooter(footer2, session);
+      });
+
+      return true;
+    };
+
+    if (mountFooter()) return;
+
+    const observer = new MutationObserver(() => {
+      if (mountFooter()) {
+        observer.disconnect();
+      }
     });
+
+    observer.observe(sidebar, { childList: true, subtree: true });
   }
 
   try {
