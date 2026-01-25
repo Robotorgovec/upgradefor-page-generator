@@ -608,3 +608,57 @@ header .nav {
 .auth-buttons {
   margin-right: 0;
 }
+
+/* ===== Sticky Account Footer (mobile sidebar) ===== */
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-footer {
+  flex: 0;
+  padding: 12px 14px;
+  border-top: 1px solid #eef1f4;
+  background: #ffffff;
+}
+
+.sidebar-footer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #98a2b3;
+  padding: 6px 6px 10px;
+}
+
+.sidebar-footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-footer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  text-decoration: none;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar-footer-item .material-symbols-outlined {
+  font-size: 22px;
+  line-height: 1;
+  color: #2e90fa;
+}
+
+.sidebar-footer-logout .material-symbols-outlined {
+  color: #667085;
+}
