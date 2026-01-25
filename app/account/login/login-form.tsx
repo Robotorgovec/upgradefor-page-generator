@@ -1,3 +1,4 @@
+// app/account/login/login-form.tsx
 "use client";
 
 import { useState } from "react";
@@ -43,51 +44,55 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <>
+      <h1>Вход</h1>
+
       {message ? <p className={`auth-message ${message.type}`}>{message.text}</p> : null}
 
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="password">Пароль</label>
-
-        <div className="password-field">
+      <form onSubmit={onSubmit}>
+        <div>
+          <label htmlFor="email">Email</label>
           <input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-
-          <button
-            type="button"
-            className="password-toggle"
-            onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-            title={showPassword ? "Скрыть пароль" : "Показать пароль"}
-          >
-            <span className="material-symbols-outlined">
-              {showPassword ? "visibility_off" : "visibility"}
-            </span>
-          </button>
         </div>
-      </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Вход..." : "Войти"}
-      </button>
-    </form>
+        <div>
+          <label htmlFor="password">Пароль</label>
+
+          <div className="password-field">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+              title={showPassword ? "Скрыть пароль" : "Показать пароль"}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Вход..." : "Войти"}
+        </button>
+      </form>
+    </>
   );
 }
