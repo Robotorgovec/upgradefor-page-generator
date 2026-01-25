@@ -59,3 +59,34 @@
 .sidebar-footer-logout .material-symbols-outlined {
   color: #667085;
 }
+
+/* ===== Sticky Account Footer (mobile sidebar) ===== */
+.sidebar-footer {
+  flex: 0 0 auto;
+  padding: 10px 8px 12px;
+  border-top: 1px solid rgba(209, 213, 219, 0.9);
+  background: var(--bg-sidebar);
+}
+
+.sidebar-footer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6b7280;
+  padding: 8px 18px 4px;
+}
+
+.sidebar-footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-footer-logout {
+  background: transparent;
+  border: none;
+  text-align: left;
+}

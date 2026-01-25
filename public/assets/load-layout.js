@@ -1,5 +1,26 @@
-// ===== Sticky Account Footer (mobile sidebar) =====
-(function initStickyAccountFooter() {
+(async function () {
+  "use strict";
+
+  async function fetchAndInsert(url, selector) {
+    const container = document.querySelector(selector);
+    if (!container) {
+      console.warn("[UPGR] container not found for", selector);
+      return;
+    }
+
+    try {
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) {
+        console.error("[UPGR] failed to load", url, res.status);
+        return;
+      }
+      const html = await res.text();
+      container.innerHTML = html;
+    } catch (err) {
+      console.error("[UPGR] Error loading", url, err);
+    }
+  }
+
   function qs(sel, root = document) {
     return root.querySelector(sel);
   }
@@ -8,10 +29,10 @@
     const el = document.createElement(tag);
     if (className) el.className = className;
     if (attrs) {
-      Object.entries(attrs).forEach(([k, v]) => {
-        if (v === null || v === undefined) return;
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v === null || v === undefined) continue;
         el.setAttribute(k, String(v));
-      });
+      }
     }
     return el;
   }
@@ -27,9 +48,8 @@
     }
   }
 
-  function ensureFooter(sidebar) {
-    // ВАЖНО: НЕ трогаем .sidebar-inner (он уже скролл-контейнер)
-    let footer = qs(":scope > .sidebar-footer", sidebar);
+  function ensureSidebarFooter(sidebar) {
+    let footer = sidebar.querySelector(":scope > .sidebar-footer");
     if (!footer) {
       footer = createEl("div", "sidebar-footer");
       sidebar.appendChild(footer);
@@ -83,34 +103,132 @@
     footer.appendChild(actions);
   }
 
-  function setup() {
+  function initStickyFooter() {
     const sidebar = qs(".sidebar");
-    if (!sidebar) return false;
+    if (!sidebar) return;
 
-    // меню должно быть уже вставлено и содержать .sidebar-inner
+    // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
     const inner = qs(".sidebar-inner", sidebar);
-    if (!inner) return false;
+    if (!inner) return;
 
-    const footer = ensureFooter(sidebar);
+    const footer = ensureSidebarFooter(sidebar);
     renderFooter(footer, null);
 
     getSessionSafe().then((session) => {
       const sidebar2 = qs(".sidebar");
-      if (!sidebar2) return;
-      const inner2 = qs(".sidebar-inner", sidebar2);
-      if (!inner2) return;
-      const footer2 = ensureFooter(sidebar2);
+      const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
+      if (!sidebar2 || !inner2) return;
+      const footer2 = ensureSidebarFooter(sidebar2);
       renderFooter(footer2, session);
     });
-
-    return true;
   }
 
-  // В вашем файле меню вставляется до этого блока, но на всякий:
-  if (setup()) return;
+  try {
+    // КРИТИЧНО: эти 2 строки возвращают header и menu
+    await fetchAndInsert("/includes/header.html", "header");
+    await fetchAndInsert("/includes/menu.html", ".sidebar");
 
-  const mo = new MutationObserver(() => {
-    if (setup()) mo.disconnect();
-  });
-  mo.observe(document.documentElement, { childList: true, subtree: true });
+    // --- burger toggling и высота header (ваша логика) ---
+    const body = document.body;
+    const burger = document.getElementById("burgerBtn");
+    const root = document.documentElement;
+    const headerEl = document.querySelector("header");
+    const authButtonsEl = headerEl?.querySelector(".auth-buttons") ?? null;
+
+    async function updateAuthButtons() {
+      if (!authButtonsEl) return;
+
+      try {
+        const res = await fetch("/api/auth/session", { credentials: "include" });
+        if (!res.ok) return;
+
+        const session = await res.json();
+        const isAuthenticated = Boolean(session?.user);
+        if (!isAuthenticated) return;
+
+        let hasProfileRoute = false;
+        try {
+          const profileRes = await fetch("/account/profile", { method: "HEAD", credentials: "include" });
+          hasProfileRoute = profileRes.ok;
+        } catch {
+          hasProfileRoute = false;
+        }
+
+        authButtonsEl.innerHTML = `
+          <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
+          ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
+        `;
+      } catch (err) {
+        console.error("[UPGR] Error loading auth session", err);
+      }
+    }
+
+    function updateHeaderHeight() {
+      if (!headerEl) return;
+      const h = headerEl.offsetHeight;
+      root.style.setProperty("--header-height", h + "px");
+    }
+
+    const desktopBreakpoint = 1200;
+    const collapsedStorageKey = "upgr-sidebar-collapsed";
+    let isDesktop = window.innerWidth >= desktopBreakpoint;
+
+    function getCollapsedPreference() {
+      return localStorage.getItem(collapsedStorageKey) === "true";
+    }
+    function setCollapsedPreference(isCollapsed) {
+      localStorage.setItem(collapsedStorageKey, String(isCollapsed));
+    }
+
+    function syncMenuState() {
+      const nowDesktop = window.innerWidth >= desktopBreakpoint;
+      if (nowDesktop !== isDesktop) {
+        isDesktop = nowDesktop;
+        if (isDesktop) {
+          const preferCollapsed = getCollapsedPreference();
+          body.classList.toggle("menu-open", !preferCollapsed);
+        } else {
+          body.classList.remove("menu-open");
+        }
+      }
+    }
+
+    if (isDesktop) {
+      const preferCollapsed = getCollapsedPreference();
+      body.classList.toggle("menu-open", !preferCollapsed);
+    } else {
+      body.classList.remove("menu-open");
+    }
+
+    if (burger) {
+      burger.addEventListener("click", function () {
+        const nowDesktop = window.innerWidth >= desktopBreakpoint;
+        if (nowDesktop) {
+          body.classList.toggle("menu-open");
+          setCollapsedPreference(!body.classList.contains("menu-open"));
+          return;
+        }
+        body.classList.toggle("menu-open");
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && body.classList.contains("menu-open")) {
+        body.classList.remove("menu-open");
+      }
+    });
+
+    window.addEventListener("load", updateHeaderHeight);
+    window.addEventListener("resize", updateHeaderHeight);
+    window.addEventListener("resize", syncMenuState);
+    updateHeaderHeight();
+    syncMenuState();
+
+    await updateAuthButtons();
+
+    // Footer — строго после вставки menu.html
+    initStickyFooter();
+  } catch (e) {
+    console.error("[UPGR] load-layout.js fatal error:", e);
+  }
 })();
