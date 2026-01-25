@@ -112,6 +112,7 @@
   cursor: not-allowed;
 }
 
+/* skip-link */
 .skip {
   position: absolute;
   left: -9999px;
