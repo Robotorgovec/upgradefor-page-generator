@@ -1,74 +1,97 @@
+// app/account/login/login-form.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 
-const ERROR_MESSAGES: Record<string, string> = {
-  AccessDenied: "Подтвердите email перед входом.",
-  CredentialsSignin: "Неверный email или пароль.",
-};
-
-export function LoginForm() {
-  const searchParams = useSearchParams();
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
-  const errorParam = searchParams.get("error");
-  const nextParam = searchParams.get("next") ?? "/account";
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const errorFromParams = useMemo(() => {
-    if (!errorParam) return null;
-    return ERROR_MESSAGES[errorParam] ?? "Не удалось войти. Попробуйте ещё раз.";
-  }, [errorParam]);
+  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setMessage(null);
+    setLoading(true);
 
-    const result = await signIn("credentials", {
-      redirect: true,
-      callbackUrl: nextParam,
-      email,
-      password,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError(ERROR_MESSAGES[result.error] ?? "Неверный email или пароль.");
+      if (!result) {
+        setMessage({ type: "error", text: "Не удалось выполнить вход. Попробуйте ещё раз." });
+        return;
+      }
+
+      if (result.error) {
+        setMessage({ type: "error", text: "Неверный email или пароль." });
+        return;
+      }
+
+      window.location.href = "/account";
+    } catch {
+      setMessage({ type: "error", text: "Ошибка сети. Попробуйте ещё раз." });
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const displayedError = error ?? errorFromParams;
+  }
 
   return (
     <>
       <h1>Вход</h1>
 
-      {displayedError && <p className="auth-message error">{displayedError}</p>}
+      {message ? <p className={`auth-message ${message.type}`}>{message.text}</p> : null}
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
+      <form onSubmit={onSubmit}>
+        <div>
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
+            autoComplete="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
+        </div>
 
-        <label>
-          Пароль
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-        </label>
+        <div>
+          <label htmlFor="password">Пароль</label>
 
-        <button type="submit">Войти</button>
+          <div className="password-field">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+              title={showPassword ? "Скрыть пароль" : "Показать пароль"}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Вход..." : "Войти"}
+        </button>
       </form>
     </>
   );

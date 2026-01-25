@@ -128,3 +128,41 @@
   padding: 8px 10px;
   box-shadow: 0 10px 30px rgba(16, 24, 40, 0.12);
 }
+
+/* Password toggle (eye) */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: #667085;
+}
+
+.password-toggle:hover {
+  background: rgba(16, 24, 40, 0.06);
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.password-toggle .material-symbols-outlined {
+  font-size: 20px;
+  line-height: 1;
+}
