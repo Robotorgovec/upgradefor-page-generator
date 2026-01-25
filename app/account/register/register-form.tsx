@@ -2,95 +2,96 @@
 
 import { useState } from "react";
 
-type RegisterState = "idle" | "loading" | "success";
-
-const PASSWORD_MIN_LENGTH = 8;
-
-export function RegisterForm() {
+export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [state, setState] = useState<RegisterState>("idle");
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-    setState("loading");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
-    if (response.ok) {
-      setState("success");
-      return;
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setMessage(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      let data: { message?: string; error?: string } | null = null;
+      try {
+        data = (await res.json()) as { message?: string; error?: string };
+      } catch {
+        data = null;
+      }
+
+      if (!res.ok) {
+        const text =
+          (data && (data.message || data.error)) ||
+          `Не удалось зарегистрироваться (код ${res.status}).`;
+        setMessage({ type: "error", text });
+        return;
+      }
+
+      setMessage({ type: "success", text: data?.message || "Регистрация успешна. Проверьте почту." });
+    } catch {
+      setMessage({ type: "error", text: "Ошибка сети. Попробуйте ещё раз." });
+    } finally {
+      setLoading(false);
     }
-
-    const payload = (await response.json().catch(() => null)) as { code?: string } | null;
-    setState("idle");
-
-    if (response.status === 409 || payload?.code === "USER_EXISTS") {
-      setError("Пользователь с таким email уже существует.");
-      return;
-    }
-
-    if (payload?.code === "INVALID_PASSWORD") {
-      setError(`Пароль должен быть не короче ${PASSWORD_MIN_LENGTH} символов.`);
-      return;
-    }
-
-    if (payload?.code === "RATE_LIMIT") {
-      setError("Слишком много попыток. Попробуйте позже.");
-      return;
-    }
-
-    setError("Не удалось зарегистрироваться. Попробуйте ещё раз.");
-  };
+  }
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Регистрация</h1>
-      {state === "success" ? (
-        <p style={{ color: "green" }}>
-          Проверьте почту, мы отправили ссылку подтверждения.
-        </p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          {error && <p style={{ color: "crimson", marginBottom: 16 }}>{error}</p>}
-          <label style={{ display: "block", marginBottom: 12 }}>
-            Email
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-            />
-          </label>
-          <label style={{ display: "block", marginBottom: 16 }}>
-            Пароль
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              minLength={PASSWORD_MIN_LENGTH}
-              required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-            />
-          </label>
+    <form onSubmit={onSubmit}>
+      {message ? <p className={`auth-message ${message.type}`}>{message.text}</p> : null}
+
+      <div>
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="password">Пароль</label>
+
+        <div className="password-field">
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
           <button
-            type="submit"
-            disabled={state === "loading"}
-            style={{ padding: "8px 16px", background: "black", color: "white" }}
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+            title={showPassword ? "Скрыть пароль" : "Показать пароль"}
           >
-            {state === "loading" ? "Отправка..." : "Зарегистрироваться"}
+            <span className="material-symbols-outlined">
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
           </button>
-        </form>
-      )}
-    </div>
+        </div>
+      </div>
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Регистрация..." : "Зарегистрироваться"}
+      </button>
+    </form>
   );
 }
