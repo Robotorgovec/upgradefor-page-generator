@@ -1,3 +1,15 @@
+body::before {
+  content: "AUTH CSS LOADED";
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #ff0000;
+  color: #ffffff;
+  padding: 6px 10px;
+  font-size: 12px;
+  z-index: 99999;
+}
+
 .auth-page {
   padding: 48px 24px 24px;
   display: flex;
@@ -8,7 +20,7 @@
   width: 100%;
   max-width: 460px;
   background: #ffffff;
-  border: 1px solid #eef1f4;
+  border: 2px solid red;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
   padding: 28px;
@@ -92,9 +104,4 @@
 
 .auth-message.success {
   color: #15803d;
-}
-
-body[data-route^="/account"] .auth-card {
-  outline: 2px dashed rgba(0, 128, 255, 0.35);
-  outline-offset: 2px;
 }
