@@ -87,9 +87,7 @@
         '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
         '<span class="menu-label">Мой аккаунт</span>';
 
-      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
-        type: "button",
-      });
+      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", { type: "button" });
       logout.innerHTML =
         '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
         '<span class="menu-label">Выйти</span>';
@@ -109,10 +107,9 @@
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
 
+    // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
     const inner = qs(".sidebar-inner", sidebar);
-    if (!inner) {
-      return;
-    }
+    if (!inner) return;
 
     const footer = ensureSidebarFooter(sidebar);
     renderFooter(footer, null);
@@ -127,9 +124,11 @@
   }
 
   try {
+    // КРИТИЧНО: эти 2 строки возвращают header и menu
     await fetchAndInsert("/includes/header.html", "header");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
 
+    // --- burger toggling и высота header (ваша логика) ---
     const body = document.body;
     const burger = document.getElementById("burgerBtn");
     const root = document.documentElement;
@@ -227,6 +226,7 @@
 
     await updateAuthButtons();
 
+    // Footer — строго после вставки menu.html
     initStickyFooter();
   } catch (e) {
     console.error("[UPGR] load-layout.js fatal error:", e);
