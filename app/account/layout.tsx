@@ -1,3 +1,4 @@
+// app/account/layout.tsx
 import type { ReactNode } from "react";
 import Script from "next/script";
 import "./auth.css";
@@ -7,11 +8,13 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
     <>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
       />
       <link rel="stylesheet" href="/assets/layout.css" />
 
-      <a className="skip" href="#main">К содержанию</a>
+      <a className="skip" href="#main">
+        К содержанию
+      </a>
 
       <div className="layout">
         <header></header>
@@ -26,6 +29,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
       </div>
 
       <Script src="/assets/load-layout.js" strategy="afterInteractive" />
+
       <Script id="account-route" strategy="afterInteractive">
         {`document.body.dataset.route = window.location.pathname;`}
       </Script>
