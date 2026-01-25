@@ -1,84 +1,70 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 
-const ERROR_MESSAGES: Record<string, string> = {
-  AccessDenied: "Подтвердите email перед входом.",
-  CredentialsSignin: "Неверный email или пароль.",
-};
-
-export function LoginForm() {
-  const searchParams = useSearchParams();
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
-  const errorParam = searchParams.get("error");
-  const nextParam = searchParams.get("next") ?? "/account";
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setMessage(null);
+    setLoading(true);
 
-  const errorFromParams = useMemo(() => {
-    if (!errorParam) return null;
-    return ERROR_MESSAGES[errorParam] ?? "Не удалось войти. Попробуйте ещё раз.";
-  }, [errorParam]);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-
-    const result = await signIn("credentials", {
-      redirect: true,
-      callbackUrl: nextParam,
+    const res = await signIn("credentials", {
       email,
       password,
+      redirect: false,
     });
 
-    if (result?.error) {
-      setError(ERROR_MESSAGES[result.error] ?? "Неверный email или пароль.");
+    if (!res || res.error) {
+      setMessage("Неверный email или пароль.");
+      setLoading(false);
+      return;
     }
-  };
 
-  const displayedError = error ?? errorFromParams;
+    window.location.href = "/account";
+  }
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Вход</h1>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Вход</h1>
 
-      {displayedError && (
-        <p style={{ color: "crimson", marginBottom: 16 }}>{displayedError}</p>
-      )}
+        {message && <p className="auth-message error">{message}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <label style={{ display: "block", marginBottom: 12 }}>
-          Email
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </label>
+        <form onSubmit={onSubmit}>
+          <label>Email</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
 
-        <label style={{ display: "block", marginBottom: 16 }}>
-          Пароль
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-            style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </label>
+          <label>Пароль</label>
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(v => !v)}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
 
-        <button
-          type="submit"
-          style={{ padding: "8px 16px", background: "black", color: "white" }}
-        >
-          Войти
-        </button>
-      </form>
+          <button disabled={loading}>
+            {loading ? "Вход..." : "Войти"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -28,7 +28,10 @@ export async function POST(request: Request) {
   const limitResult = rateLimit({ key: `register:${ip}`, limit: 5, windowMs: 10 * 60 * 1000 });
 
   if (!limitResult.ok) {
-    return NextResponse.json({ ok: false, code: "RATE_LIMIT" }, { status: 429 });
+    return NextResponse.json(
+      { ok: false, code: "RATE_LIMIT", message: "Слишком много попыток. Попробуйте позже." },
+      { status: 429 }
+    );
   }
 
   const body = await request.json().catch(() => null);
@@ -36,16 +39,29 @@ export async function POST(request: Request) {
   const password = body?.password ?? "";
 
   if (!email || !EMAIL_REGEX.test(email)) {
-    return NextResponse.json({ ok: false, code: "INVALID_EMAIL" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, code: "INVALID_EMAIL", message: "Введите корректный email." },
+      { status: 400 }
+    );
   }
 
   if (typeof password !== "string" || password.length < PASSWORD_MIN_LENGTH) {
-    return NextResponse.json({ ok: false, code: "INVALID_PASSWORD" }, { status: 400 });
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "INVALID_PASSWORD",
+        message: `Пароль должен быть не короче ${PASSWORD_MIN_LENGTH} символов.`,
+      },
+      { status: 400 }
+    );
   }
 
   const existingUser = await prisma.user.findUnique({ where: { email }, select: { id: true } });
   if (existingUser) {
-    return NextResponse.json({ ok: false, code: "USER_EXISTS" }, { status: 409 });
+    return NextResponse.json(
+      { ok: false, code: "USER_EXISTS", message: "Пользователь с таким email уже существует." },
+      { status: 409 }
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
@@ -92,5 +108,5 @@ export async function POST(request: Request) {
     `,
   });
 
-  return NextResponse.json({ ok: true }, { status: 201 });
+  return NextResponse.json({ ok: true, message: "Регистрация успешна. Проверьте почту." }, { status: 201 });
 }

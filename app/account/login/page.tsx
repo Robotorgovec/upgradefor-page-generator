@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { authOptions } from "../../../lib/auth";
-import { LoginForm } from "./login-form";
+import LoginForm from "./login-form";
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions);
@@ -11,5 +11,11 @@ export default async function LoginPage() {
     redirect("/account");
   }
 
-  return <LoginForm />;
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <LoginForm />
+      </div>
+    </div>
+  );
 }
