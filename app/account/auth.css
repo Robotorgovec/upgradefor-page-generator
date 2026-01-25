@@ -47,7 +47,7 @@
 }
 
 .auth-card input::placeholder {
-  color: var(--muted, #6b7280);
+  color: #6b7280;
 }
 
 .auth-card input:focus {
