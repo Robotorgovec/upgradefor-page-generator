@@ -52,26 +52,25 @@ export function RegisterForm() {
   };
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Регистрация</h1>
+    <>
+      <h1>Регистрация</h1>
       {state === "success" ? (
-        <p style={{ color: "green" }}>
+        <p className="auth-message success">
           Проверьте почту, мы отправили ссылку подтверждения.
         </p>
       ) : (
         <form onSubmit={handleSubmit}>
-          {error && <p style={{ color: "crimson", marginBottom: 16 }}>{error}</p>}
-          <label style={{ display: "block", marginBottom: 12 }}>
+          {error && <p className="auth-message error">{error}</p>}
+          <label>
             Email
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
             />
           </label>
-          <label style={{ display: "block", marginBottom: 16 }}>
+          <label>
             Пароль
             <input
               type="password"
@@ -79,18 +78,13 @@ export function RegisterForm() {
               onChange={(event) => setPassword(event.target.value)}
               minLength={PASSWORD_MIN_LENGTH}
               required
-              style={{ display: "block", width: "100%", padding: 8, marginTop: 4 }}
             />
           </label>
-          <button
-            type="submit"
-            disabled={state === "loading"}
-            style={{ padding: "8px 16px", background: "black", color: "white" }}
-          >
+          <button type="submit" disabled={state === "loading"}>
             {state === "loading" ? "Отправка..." : "Зарегистрироваться"}
           </button>
         </form>
       )}
-    </div>
+    </>
   );
 }
