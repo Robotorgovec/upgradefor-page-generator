@@ -1,3 +1,4 @@
+// app/account/layout.tsx
 import type { ReactNode } from "react";
 import Script from "next/script";
 import "./auth.css";
@@ -16,7 +17,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
         К содержанию
       </a>
 
-      {/* DOM-структура, которую обычно ожидают site styles + load-layout.js */}
+      {/* DOM-структура, которую ожидают site styles + load-layout.js */}
       <div className="layout">
         <header></header>
 
