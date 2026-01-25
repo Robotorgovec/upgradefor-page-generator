@@ -61,9 +61,9 @@ export default function RegisterForm() {
       <div className="auth-card">
         <h1>Регистрация</h1>
 
-        {message && (
+        {message ? (
           <p className={`auth-message ${message.type}`}>{message.text}</p>
-        )}
+        ) : null}
 
         <form onSubmit={onSubmit}>
           <div>

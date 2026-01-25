@@ -60,9 +60,9 @@ export default function LoginForm() {
       <div className="auth-card">
         <h1>Вход</h1>
 
-        {message && (
+        {message ? (
           <p className={`auth-message ${message.type}`}>{message.text}</p>
-        )}
+        ) : null}
 
         <form onSubmit={onSubmit}>
           <div>
