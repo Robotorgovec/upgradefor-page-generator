@@ -1,3 +1,4 @@
+// app/account/register/register-form.tsx
 "use client";
 
 import { useState } from "react";
@@ -5,34 +6,54 @@ import { useState } from "react";
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
+
+  const [message, setMessage] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setMessage(null);
+    setLoading(true);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json().catch(() => null);
+      let data: { message?: string; error?: string } | null = null;
+      try {
+        data = (await res.json()) as { message?: string; error?: string };
+      } catch {
+        data = null;
+      }
 
-    if (!res.ok) {
+      if (!res.ok) {
+        const text =
+          (data && (data.message || data.error)) ||
+          `Не удалось зарегистрироваться (код ${res.status}).`;
+        setMessage({ type: "error", text });
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: data?.message || "Регистрация успешна. Проверьте почту.",
+      });
+    } catch {
       setMessage({
         type: "error",
-        text: data?.message || data?.error || "Ошибка регистрации",
+        text: "Ошибка сети. Попробуйте ещё раз.",
       });
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setMessage({ type: "success", text: data?.message || "Регистрация успешна" });
-    setLoading(false);
   }
 
   return (
@@ -40,32 +61,51 @@ export default function RegisterForm() {
       <div className="auth-card">
         <h1>Регистрация</h1>
 
-        {message && <p className={`auth-message ${message.type}`}>{message.text}</p>}
+        {message ? (
+          <p className={`auth-message ${message.type}`}>{message.text}</p>
+        ) : null}
 
         <form onSubmit={onSubmit}>
-          <label>Email</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-
-          <label>Пароль</label>
-          <div className="password-field">
+          <div>
+            <label htmlFor="email">Email</label>
             <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              id="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowPassword(v => !v)}
-            >
-              <span className="material-symbols-outlined">
-                {showPassword ? "visibility_off" : "visibility"}
-              </span>
-            </button>
           </div>
 
-          <button disabled={loading}>
+          <div>
+            <label htmlFor="password">Пароль</label>
+
+            <div className="password-field">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+                title={showPassword ? "Скрыть пароль" : "Показать пароль"}
+              >
+                <span className="material-symbols-outlined">
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading}>
             {loading ? "Регистрация..." : "Зарегистрироваться"}
           </button>
         </form>
