@@ -138,7 +138,6 @@
   padding-right: 40px; /* место под глаз */
 }
 
-/* маленький "глаз" внутри input справа */
 .password-toggle {
   position: absolute;
   right: 12px;
@@ -166,6 +165,10 @@
 
 .password-toggle:focus {
   outline: none;
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.98);
 }
 
 .password-toggle .material-symbols-outlined {
