@@ -1,9 +1,36 @@
 :root{
+  --color-primary: #12AFF0;
+  --color-soft: #E6F7FF;
+  --color-bg-accent: #F5FCFF;
+}
+
+html[data-theme="red"]{
+  --color-primary:#EF4444; --color-soft:#FEE2E2; --color-bg-accent:#FFF5F5;
+}
+html[data-theme="orange"]{
+  --color-primary:#F97316; --color-soft:#FFEDD5; --color-bg-accent:#FFF7ED;
+}
+html[data-theme="yellow"]{
+  --color-primary:#EAB308; --color-soft:#FEF9C3; --color-bg-accent:#FEFCE8;
+}
+html[data-theme="green"]{
+  --color-primary:#22C55E; --color-soft:#DCFCE7; --color-bg-accent:#F0FDF4;
+}
+html[data-theme="cyan"]{
+  --color-primary:#12AFF0; --color-soft:#E6F7FF; --color-bg-accent:#F5FCFF;
+}
+html[data-theme="blue"]{
+  --color-primary:#2563EB; --color-soft:#DBEAFE; --color-bg-accent:#EFF6FF;
+}
+html[data-theme="violet"]{
+  --color-primary:#8B5CF6; --color-soft:#EDE9FE; --color-bg-accent:#F5F3FF;
+}
+
+:root{
   color-scheme: light;
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 
-  /* ===== Theme colors ===== */
-  /* Брендовый cyan (как в логотипе) */
+  /* ===== Theme colors (default = brand cyan) ===== */
   --color-primary: #12AFF0;
   --color-soft: #E6F7FF;
   --color-bg-accent: #F5FCFF;
@@ -119,8 +146,6 @@
   --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
   --space-5:40px; --space-6:48px; --space-8:64px;
   --section-y: var(--space-8);
-
-  /* ВАЖНО: gap используется ниже в .wrap/.hero/.grid — задаём дефолт */
   --gap: 24px;
 
   /* Радиусы через токены */
@@ -138,6 +163,31 @@ body{
   font:16px/1.6 var(--font-sans);
   text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;
 }
+body.chameleon-intro::before{
+  content:"";
+  position: fixed;
+  inset: -25%;
+  pointer-events:none;
+  z-index: 9999;
+  background: linear-gradient(
+    90deg,
+    #ff2d55, #ff9500, #ffd60a, #34c759, #32ade6, #5856d6, #af52de, #ff2d55
+  );
+  opacity: 0;
+  transform: translateX(-120%) rotate(-10deg) scale(1.05);
+  mix-blend-mode: soft-light;
+  filter: saturate(1.15) contrast(1.02);
+  animation: chameleonIntro 900ms ease-in-out forwards;
+}
+@keyframes chameleonIntro{
+  0%{opacity:0;transform:translateX(-120%) rotate(-10deg) scale(1.05);}
+  15%{opacity:.55;}
+  70%{opacity:.55;transform:translateX(0%) rotate(-10deg) scale(1.05);}
+  100%{opacity:0;transform:translateX(120%) rotate(-10deg) scale(1.05);}
+}
+@media (prefers-reduced-motion: reduce){
+  body.chameleon-intro::before{display:none;}
+}
 a{color:var(--link-color);text-decoration:none}
 a:hover{text-decoration:underline}
 .wrap{max-width:var(--w);margin:0 auto;padding:0 var(--gap)}
@@ -147,13 +197,13 @@ a:hover{text-decoration:underline}
 
 /* Header */
 header{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:50;
+  display: block;
+  position: relative;
+  z-index: 100;
+  min-height: 56px;
   background:var(--header-bg);
   border-bottom:3px solid var(--color-primary);
+  overflow-x: clip;
 }
 /* Make the header container flush with the edges of the viewport and span full width */
 header .wrap{
@@ -173,6 +223,7 @@ header .nav{
   align-items:center;
   gap:18px;
   padding:12px 0;
+  min-width: 0;
 }
 .brand{
   display:flex;
@@ -182,13 +233,27 @@ header .nav{
   letter-spacing:.2px;
   color: var(--neutral-900);
   text-decoration: none;
+  min-width: 0;
+  max-width: 60vw;
 }
-.brand svg{height:40px;width:auto;display:block}
+.brand img,
+.brand svg{
+  height:40px;
+  width:auto;
+  display:block;
+  max-width: 240px;
+}
+.upgr-logo{
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.brand #upgr-logo-slot{max-width: 100%;}
 .brand-logo{font-family: var(--font-sans);}
 .brand-logo .logo-text{font-size:20px;font-weight:800;letter-spacing:0.6px;fill:currentColor}
 .brand-logo .logo-subtext{font-size:11px;font-weight:600;letter-spacing:0.4px;fill:currentColor}
 .brand-logo .logo-accent{fill:var(--color-primary)}
-.grow{flex:1}
+.grow{flex:1;min-width:0}
 .auth-buttons{
   display:flex;
   margin-left:auto;
@@ -200,6 +265,7 @@ header .nav{
   display:none;
   align-items:center;
   gap:8px;
+  flex-shrink: 0;
 }
 .icon-btn{
   border:none;
@@ -222,14 +288,22 @@ header .nav{
 }
 
 /* Defensive sizing for icons */
-.material-symbols-outlined{font-size:22px}
+.material-symbols-outlined{font-size:22px;line-height:1}
 .mini-icon{width:24px;height:24px;flex-shrink:0}
 .mini-icon svg{max-width:32px;max-height:32px}
+svg.theme-icon{
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  display: inline-block;
+}
 
 .theme-switch{
   position: relative;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 }
 .theme-switch--sidebar{
   width: calc(100% - 16px);
@@ -320,8 +394,6 @@ header .nav{
 @media (max-width: 768px){
   .theme-switch-label{display: none;}
   .theme-switch-trigger{padding: 6px;}
-  header .theme-switch{display: none;}
-  .sidebar .theme-switch{display: inline-flex;}
 }
 
 .btn{
@@ -585,6 +657,12 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 }
 
 @media (max-width: 768px){
+  header{
+    position: sticky;
+    top: 0;
+    background: var(--neutral-0);
+  }
+
   body > .app-content,
   body > footer{margin-left: 0;}
 
@@ -609,6 +687,9 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
     padding-left: 12px !important;
     padding-right: 12px !important;
   }
+
+  .nav{gap:12px;}
+  .brand{max-width: 50vw;}
 
   .burger{margin-left: 4px !important;}
   body:not(.menu-open) .burger,
