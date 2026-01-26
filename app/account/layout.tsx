@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 import Script from "next/script";
 import "./auth.css";
+import "./account.css";
 
 export default function AccountLayout({ children }: { children: ReactNode }) {
   return (

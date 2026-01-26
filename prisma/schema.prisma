@@ -13,6 +13,8 @@ model User {
   passwordHash  String
   role          String       @default("user")
   emailVerified DateTime?
+  profileCompleted Boolean   @default(false)
+  welcomeSeen     Boolean   @default(false)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
@@ -24,7 +26,10 @@ model Profile {
   userId      String  @id
   displayName String?
   avatarUrl   String?
+  headline    String?
   bio         String?
+  location    String?
+  links       String[] @default([])
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
