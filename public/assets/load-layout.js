@@ -107,6 +107,7 @@
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
 
+    let footerObserver = null;
     const mountFooter = () => {
       // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
       const inner = qs(".sidebar-inner", sidebar);
@@ -123,24 +124,113 @@
         renderFooter(footer2, session);
       });
 
+      console.log("[layout] footer initialized");
       return true;
     };
 
-    if (mountFooter()) return;
-
-    const observer = new MutationObserver(() => {
-      if (mountFooter()) {
-        observer.disconnect();
+    const ensureMobileFooter = () => {
+      const isMobile = window.innerWidth < 769;
+      const existingFooter = sidebar.querySelector(":scope > .sidebar-footer");
+      if (!isMobile) {
+        if (existingFooter) existingFooter.remove();
+        if (footerObserver) {
+          footerObserver.disconnect();
+          footerObserver = null;
+        }
+        return;
       }
-    });
 
-    observer.observe(sidebar, { childList: true, subtree: true });
+      if (mountFooter()) {
+        if (footerObserver) {
+          footerObserver.disconnect();
+          footerObserver = null;
+        }
+        return;
+      }
+
+      if (!footerObserver) {
+        footerObserver = new MutationObserver(() => {
+          if (mountFooter()) {
+            footerObserver.disconnect();
+            footerObserver = null;
+          }
+        });
+
+        footerObserver.observe(sidebar, { childList: true, subtree: true });
+      }
+    };
+
+    ensureMobileFooter();
+    window.addEventListener("resize", ensureMobileFooter);
+  }
+
+  function ensureBottomNavContainer() {
+    let nav = qs(".mobile-bottom-nav");
+    if (!nav) {
+      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "Нижняя навигация" });
+      document.body.appendChild(nav);
+    }
+    return nav;
+  }
+
+  function renderBottomNav(nav) {
+    nav.innerHTML = "";
+    const items = [
+      { label: "Home", icon: "home", href: "/" },
+      { label: "Feed", icon: "dynamic_feed", href: "/feed" },
+      { label: "Messages", icon: "mark_unread_chat_alt", href: "/messages" },
+      { label: "Account", icon: "account_circle", href: "/account" },
+    ];
+
+    const currentPath = window.location.pathname;
+
+    items.forEach((item) => {
+      const link = createEl("a", "mobile-bottom-nav-item", { href: item.href });
+      if (
+        (item.href !== "/" && currentPath.startsWith(item.href)) ||
+        (item.href === "/" && currentPath === "/")
+      ) {
+        link.classList.add("is-active");
+        link.setAttribute("aria-current", "page");
+      }
+
+      const icon = createEl("span", "material-symbols-outlined mobile-bottom-nav-icon", { "aria-hidden": "true" });
+      icon.textContent = item.icon;
+
+      const label = createEl("span", "mobile-bottom-nav-label");
+      label.textContent = item.label;
+
+      link.appendChild(icon);
+      link.appendChild(label);
+      nav.appendChild(link);
+    });
+  }
+
+  function initMobileBottomNav() {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const updateNav = () => {
+      const isMobile = mediaQuery.matches;
+      document.body.classList.toggle("has-mobile-bottom-nav", isMobile);
+      const existing = qs(".mobile-bottom-nav");
+      if (!isMobile) {
+        if (existing) existing.remove();
+        return;
+      }
+
+      const nav = existing || ensureBottomNavContainer();
+      renderBottomNav(nav);
+    };
+
+    updateNav();
+    mediaQuery.addEventListener("change", updateNav);
   }
 
   try {
     // КРИТИЧНО: эти 2 строки возвращают header и menu
     await fetchAndInsert("/includes/header.html", "header");
+    console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
+    console.log("[layout] sidebar loaded");
 
     // --- burger toggling и высота header (ваша логика) ---
     const body = document.body;
@@ -207,13 +297,6 @@
       }
     }
 
-    if (isDesktop) {
-      const preferCollapsed = getCollapsedPreference();
-      body.classList.toggle("menu-open", !preferCollapsed);
-    } else {
-      body.classList.remove("menu-open");
-    }
-
     if (burger) {
       burger.addEventListener("click", function () {
         const nowDesktop = window.innerWidth >= desktopBreakpoint;
@@ -224,6 +307,13 @@
         }
         body.classList.toggle("menu-open");
       });
+    }
+
+    if (isDesktop) {
+      const preferCollapsed = getCollapsedPreference();
+      body.classList.toggle("menu-open", !preferCollapsed);
+    } else {
+      body.classList.remove("menu-open");
     }
 
     document.addEventListener("keydown", function (e) {
@@ -242,6 +332,7 @@
 
     // Footer — строго после вставки menu.html
     initStickyFooter();
+    initMobileBottomNav();
   } catch (e) {
     console.error("[UPGR] load-layout.js fatal error:", e);
   }
