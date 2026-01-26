@@ -117,8 +117,6 @@
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
-}
-
 async function renderUpgradeLogo() {
   const slot = document.getElementById("upgr-logo-slot");
   if (!slot) return;
@@ -519,7 +517,8 @@ if (!headerLoaded) {
       startChameleon();
     }
     enableChameleonOnNavigation();
-const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+const startChameleon = () =>
+  runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
@@ -534,8 +533,7 @@ enableChameleonOnNavigation();
     const body = document.body;
     const root = document.documentElement;
 
-    const headerEl = document.querySelector("header");
-    const authButtonsEl = headerEl?.querySelector(".auth-buttons") ?? null;
+    const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
     // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
     // поэтому берём по data-burger или .burger, а id оставляем как fallback.
@@ -573,8 +571,8 @@ enableChameleonOnNavigation();
     }
 
     function updateHeaderHeight() {
-      if (!headerEl) return;
-      const h = headerEl.offsetHeight;
+      if (!headerNode) return;
+      const h = headerNode.offsetHeight;
       root.style.setProperty("--header-height", h + "px");
     }
 
