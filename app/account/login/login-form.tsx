@@ -2,11 +2,14 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const searchParams = useSearchParams();
+  const nextPath = searchParams.get("next") || "/account";
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,7 +47,7 @@ export default function LoginForm() {
         return;
       }
 
-      window.location.href = "/account";
+      window.location.href = nextPath;
     } catch {
       setMessage({
         type: "error",
