@@ -178,7 +178,6 @@
     const items = [
       { label: "Home", icon: "home", href: "/" },
       { label: "Feed", icon: "dynamic_feed", href: "/feed" },
-      { label: "Create", icon: "add_circle", href: "/create" },
       { label: "Messages", icon: "mark_unread_chat_alt", href: "/messages" },
       { label: "Account", icon: "account_circle", href: "/account" },
     ];
@@ -208,8 +207,9 @@
   }
 
   function initMobileBottomNav() {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateNav = () => {
-      const isMobile = window.innerWidth < 769;
+      const isMobile = mediaQuery.matches;
       document.body.classList.toggle("has-mobile-bottom-nav", isMobile);
       const existing = qs(".mobile-bottom-nav");
       if (!isMobile) {
@@ -222,7 +222,7 @@
     };
 
     updateNav();
-    window.addEventListener("resize", updateNav);
+    mediaQuery.addEventListener("change", updateNav);
   }
 
   try {
