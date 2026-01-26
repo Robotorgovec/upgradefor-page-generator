@@ -491,12 +491,6 @@ body:not(.menu-open) .sidebar-section-label {
   padding: 0;
   margin-right: 16px;
 }
-body:not(.menu-open) header .wrap {
-  padding-left: 0;
-}
-body:not(.menu-open) .burger {
-  margin-left: calc(var(--sidebar-collapsed-width)/2 - 16px);
-}
 .burger-icon {
   width: 18px;
   height: 14px;
@@ -535,6 +529,16 @@ body.menu-open .burger-line:nth-child(3) {
   bottom: 6px;
   transform: rotate(-45deg);
 }
+@media (min-width: 769px) {
+  body:not(.menu-open) header .wrap {
+    padding-left: 0;
+  }
+
+  body:not(.menu-open) .burger,
+  body.menu-open .burger {
+    margin-left: calc(var(--sidebar-collapsed-width)/2 - 14px);
+  }
+}
 @media (max-width: 768px) {
   body > .app-content,
   body > footer {
@@ -563,9 +567,10 @@ body.menu-open .burger-line:nth-child(3) {
   .header-icons {
     display: flex;
   }
-  .nav {
-    padding-left: 8px;
-    padding-right: 8px;
+  header .wrap,
+  header .nav {
+    padding-left: 12px;
+    padding-right: 12px;
   }
   .brand img {
     height: 32px;
@@ -578,15 +583,6 @@ body.menu-open .burger-line:nth-child(3) {
   padding-top: 0.5625rem;
   padding-bottom: 0.5625rem;
 }
-/* Shift collapsed burger button slightly right to center it */
-body:not(.menu-open) .burger {
-  margin-left: calc(var(--sidebar-collapsed-width)/2 - 14px);
-}
-/* Keep burger aligned when menu is open so cross and lines stay in same position */
-body.menu-open .burger {
-  margin-left: calc(var(--sidebar-collapsed-width)/2 - 14px);
-}
-
 /* Remove underline from menu items */
 .menu-item,
 .menu-item *,
@@ -695,29 +691,12 @@ body:not(.menu-open) .sidebar-footer-item .menu-label {
 }
 
 @media (max-width: 768px) {
-  body.has-mobile-bottom-nav .content,
   body.has-mobile-bottom-nav .app-content {
     padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   }
 
-  .content,
   .app-content {
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 8px);
-  }
-
-  header .wrap,
-  header .nav {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  body:not(.menu-open) header .wrap {
-    padding-left: 12px;
-  }
-
-  body:not(.menu-open) .burger,
-  body.menu-open .burger {
-    margin-left: 0;
   }
 }
 
