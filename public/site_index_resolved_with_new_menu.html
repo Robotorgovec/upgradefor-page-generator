@@ -26,7 +26,15 @@
     try {
       var storageKey = "userTheme";
       var stored = localStorage.getItem(storageKey);
-      var cycle = { "0":"red","1":"orange","2":"yellow","3":"green","4":"cyan","5":"blue","6":"violet" };
+      var cycle = {
+        "0": "red",
+        "1": "orange",
+        "2": "yellow",
+        "3": "green",
+        "4": "cyan",
+        "5": "blue",
+        "6": "violet"
+      };
       var day = String(new Date().getDay());
       var autoTheme = cycle[day] || "cyan";
       var theme = (!stored || stored === "auto") ? autoTheme : stored;
