@@ -104,6 +104,7 @@
   }
 
   function initStickyFooter() {
+    if (window.innerWidth >= 769) return;
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
 

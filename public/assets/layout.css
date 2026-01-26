@@ -9,6 +9,7 @@
   }
 }
 
+/* Desktop (>=1200): when menu-open, shift content/footer and keep sidebar expanded */
 @media (min-width: 1200px) {
   body.menu-open > .app-content,
   body.menu-open > footer {
