@@ -104,6 +104,7 @@
   }
 
   function initStickyFooter() {
+    if (window.innerWidth >= 769) return;
     const sidebar = qs(".sidebar");
     if (!sidebar) return;
 
@@ -123,6 +124,7 @@
         renderFooter(footer2, session);
       });
 
+      console.log("[layout] footer initialized");
       return true;
     };
 
@@ -140,7 +142,9 @@
   try {
     // КРИТИЧНО: эти 2 строки возвращают header и menu
     await fetchAndInsert("/includes/header.html", "header");
+    console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
+    console.log("[layout] sidebar loaded");
 
     // --- burger toggling и высота header (ваша логика) ---
     const body = document.body;
@@ -207,13 +211,6 @@
       }
     }
 
-    if (isDesktop) {
-      const preferCollapsed = getCollapsedPreference();
-      body.classList.toggle("menu-open", !preferCollapsed);
-    } else {
-      body.classList.remove("menu-open");
-    }
-
     if (burger) {
       burger.addEventListener("click", function () {
         const nowDesktop = window.innerWidth >= desktopBreakpoint;
@@ -224,6 +221,13 @@
         }
         body.classList.toggle("menu-open");
       });
+    }
+
+    if (isDesktop) {
+      const preferCollapsed = getCollapsedPreference();
+      body.classList.toggle("menu-open", !preferCollapsed);
+    } else {
+      body.classList.remove("menu-open");
     }
 
     document.addEventListener("keydown", function (e) {

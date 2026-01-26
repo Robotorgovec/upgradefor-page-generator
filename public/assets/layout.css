@@ -1,4 +1,14 @@
 /* ===== Sticky Account Footer (mobile sidebar) ===== */
+:root {
+  --sidebar-footer-display: block;
+}
+
+@media (min-width: 769px) {
+  :root {
+    --sidebar-footer-display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .sidebar {
     display: flex;
@@ -9,19 +19,16 @@
     flex: 1 1 auto;
     overflow-y: auto;
   }
-
-  .sidebar-footer {
-    flex: 0 0 auto;
-    padding: 10px 8px 12px;
-    border-top: 1px solid rgba(209, 213, 219, 0.9);
-    background: var(--bg-sidebar);
-  }
 }
 
-@media (min-width: 769px) {
-  .sidebar-footer {
-    display: none;
-  }
+.sidebar-footer {
+  position: sticky;
+  bottom: 0;
+  display: var(--sidebar-footer-display);
+  flex: 0 0 auto;
+  padding: 10px 8px 12px;
+  border-top: 1px solid rgba(209, 213, 219, 0.9);
+  background: var(--bg-sidebar);
 }
 
 .sidebar-footer-title {
