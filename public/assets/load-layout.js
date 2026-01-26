@@ -108,42 +108,51 @@
     const config = await loadThemeConfig();
     if (!config) return;
 
-    const switcher = document.querySelector("[data-theme-switch]");
-    const trigger = switcher?.querySelector(".theme-switch-trigger");
-    const items = switcher ? Array.from(switcher.querySelectorAll(".theme-switch-item")) : [];
+    // Поддержка нескольких переключателей (например: header + sidebar mobile)
+    const switchers = Array.from(document.querySelectorAll("[data-theme-switch]"));
+    const allItems = switchers.flatMap((switcher) =>
+      Array.from(switcher.querySelectorAll(".theme-switch-item"))
+    );
 
-    // Если сохранена валидная тема — применяем её, иначе auto
     const storedTheme = localStorage.getItem(themeStorageKey);
     const initialMode =
       storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
 
-    await applyTheme(initialMode, config, { items });
+    await applyTheme(initialMode, config, { items: allItems });
 
-    if (!switcher || !trigger) return;
+    if (!switchers.length) return;
 
-    const closeMenu = () => {
-      switcher.classList.remove("is-open");
-      trigger.setAttribute("aria-expanded", "false");
+    const closeMenus = () => {
+      switchers.forEach((switcher) => {
+        switcher.classList.remove("is-open");
+        const trigger = switcher.querySelector(".theme-switch-trigger");
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      });
     };
 
-    trigger.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const isOpen = switcher.classList.toggle("is-open");
-      trigger.setAttribute("aria-expanded", String(isOpen));
+    switchers.forEach((switcher) => {
+      const trigger = switcher.querySelector(".theme-switch-trigger");
+      if (!trigger) return;
+
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = switcher.classList.toggle("is-open");
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
     });
 
     document.addEventListener("click", (event) => {
-      if (!switcher.contains(event.target)) closeMenu();
+      if (!switchers.some((switcher) => switcher.contains(event.target))) closeMenus();
     });
 
-    items.forEach((item) => {
+    allItems.forEach((item) => {
       item.addEventListener("click", async () => {
         const selected = item.dataset.theme || "auto";
         if (selected === "auto") localStorage.removeItem(themeStorageKey);
         else localStorage.setItem(themeStorageKey, selected);
 
-        await applyTheme(selected, config, { items });
-        closeMenu();
+        await applyTheme(selected, config, { items: allItems });
+        closeMenus();
       });
     });
   }

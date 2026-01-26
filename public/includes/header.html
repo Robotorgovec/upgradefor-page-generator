@@ -8,13 +8,13 @@
     </span>
   </button>
 
-  <!-- Логотип -->
+  <!-- Логотип (inline SVG: черное остаётся черным, акцент меняется от темы) -->
   <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
-    <img
-      src="/assets/upgrade-innovations-logo-main.svg"
-      alt="UPGRADE Innovations logo"
-      style="height:40px;width:auto;"
-    />
+    <svg class="brand-logo" viewBox="0 0 240 40" aria-hidden="true" focusable="false">
+      <text class="logo-text" x="0" y="26">UPGRADE</text>
+      <text class="logo-subtext" x="120" y="26">INNOVATIONS</text>
+      <circle class="logo-accent" cx="230" cy="13" r="6"></circle>
+    </svg>
   </a>
 
   <div class="grow"></div>
@@ -44,7 +44,7 @@
         <path
           fill="currentColor"
           d="M12 3a9 9 0 0 0-1 17.94c.6.12 1.24-.2 1.48-.77.23-.53.03-1.15-.44-1.5l-.4-.3c-.68-.52-.34-1.6.5-1.6h2.2c2.76 0 5-2.24 5-5 0-4.42-3.58-8-8-8Zm-4 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3-3.5a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm4 0a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm3 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
-        />
+        ></path>
       </svg>
 
       <span class="theme-switch-label">Цвет</span>
