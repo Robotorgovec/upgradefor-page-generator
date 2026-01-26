@@ -80,12 +80,13 @@
     document.documentElement.setAttribute("data-theme", name);
   }
 
-  document.addEventListener("layout:ready", () => {
-    sanitizePhaseBlocks();
-  });
-  setTimeout(() => {
-    sanitizePhaseBlocks();
-  }, 0);
+document.addEventListener("layout:ready", () => {
+  sanitizePhaseBlocks();
+});
+
+setTimeout(() => {
+  sanitizePhaseBlocks();
+}, 0);
 
   async function renderUpgradeLogo() {
     const slot = document.getElementById("upgr-logo-slot");
@@ -124,6 +125,45 @@
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
+async function renderUpgradeLogo() {
+  const slot = document.getElementById("upgr-logo-slot");
+  if (!slot) return;
+
+  try {
+    const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    slot.innerHTML = `
+      <svg
+        class="upgr-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="${data.viewBox}"
+        role="img"
+        aria-label="UPGRADE Innovations"
+        focusable="false"
+      >
+        <defs>
+          <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
+            <image href="${data.accentMask}" width="100%" height="100%" />
+          </mask>
+        </defs>
+
+        <image href="${data.base}" width="100%" height="100%" />
+
+        <rect
+          width="100%"
+          height="100%"
+          fill="var(--color-primary)"
+          mask="url(#upgrAccentMask)"
+        />
+      </svg>
+    `;
+  } catch (err) {
+    console.error("[UPGR] logo render error", err);
+  }
+}
+
   }
 
   async function applyTheme(mode, config, elements) {
@@ -240,25 +280,33 @@
     );
   }
 
-  function sanitizePhaseBlocks() {
-    if (document.body.classList.contains("is-home")) return;
-    const main = document.querySelector("main");
-    if (!main) return;
+function sanitizePhaseBlocks() {
+  // НИКОГДА не работаем на главной
+  if (document.body.classList.contains("is-home")) return;
 
-    main.querySelectorAll(".phase").forEach((phase) => {
-      const textEl = phase.querySelector(".text");
-      const tagEl = phase.querySelector(".tag");
-      const text = textEl?.textContent.trim() ?? "";
-      const tag = tagEl?.textContent.trim() ?? "";
+  const main = document.querySelector("main");
+  if (!main) return;
 
-      if (!text && !tag) {
-        phase.remove();
-        return;
-      }
-      if (!text && textEl) textEl.remove();
-      if (!tag && tagEl) tagEl.remove();
-    });
-  }
+  main.querySelectorAll(".phase").forEach((phase) => {
+    // Защита: не трогаем навигацию вообще
+    if (phase.closest("header, nav, aside")) return;
+
+    const textEl = phase.querySelector(".text");
+    const tagEl = phase.querySelector(".tag");
+
+    const text = textEl ? textEl.textContent.trim() : "";
+    const tag = tagEl ? tagEl.textContent.trim() : "";
+
+    if (!text && !tag) {
+      phase.remove();
+      return;
+    }
+
+    if (!text && textEl) textEl.remove();
+    if (!tag && tagEl) tagEl.remove();
+  });
+}
+
 
   async function getSessionSafe() {
     try {
@@ -459,24 +507,32 @@
   try {
     // КРИТИЧНО: эти 2 строки вставляют header и menu
     await fetchAndInsert("/includes/header.html", "header");
-    const headerNode = qs("header");
-    const headerLoaded = headerNode && headerNode.children.length > 0;
-    if (!headerLoaded) {
-      console.warn("[UPGR] header is empty — abort cleanup");
-    } else {
+const headerEl = qs("header");
+const headerLoaded = headerEl && headerEl.children.length > 0;
+
+if (!headerLoaded) {
+  document.addEventListener(
+    "layout:ready",
+    async () => {
       await renderUpgradeLogo();
-    }
+    },
+    { once: true }
+  );
+} else {
+  await renderUpgradeLogo();
+}
+
     console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
     console.log("[layout] sidebar loaded");
 
     // Theme switcher — строго после вставки header.html
     await initThemeSwitcher();
-    applyAuthVisibility(null);
-    getSessionSafe().then((session) => applyAuthVisibility(session));
+applyAuthVisibility(null);
+getSessionSafe().then((session) => applyAuthVisibility(session));
 
-    const layoutReadyEvent = new Event("layout:ready");
-    document.dispatchEvent(layoutReadyEvent);
+const layoutReadyEvent = new Event("layout:ready");
+document.dispatchEvent(layoutReadyEvent);
 
     const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
     if (document.readyState === "loading") {
@@ -485,6 +541,17 @@
       startChameleon();
     }
     enableChameleonOnNavigation();
+const startChameleon = () =>
+  runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+} else {
+  startChameleon();
+}
+
+enableChameleonOnNavigation();
+
 
     // --- burger toggling и высота header ---
     const body = document.body;

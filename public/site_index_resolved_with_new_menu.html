@@ -21,19 +21,28 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
   />
-  <script>
-    (function () {
-      try {
-        var storageKey = "userTheme";
-        var stored = localStorage.getItem(storageKey);
-        var cycle = { "0":"red","1":"orange","2":"yellow","3":"green","4":"cyan","5":"blue","6":"violet" };
-        var day = String(new Date().getDay());
-        var autoTheme = cycle[day] || "cyan";
-        var theme = (!stored || stored === "auto") ? autoTheme : stored;
-        document.documentElement.setAttribute("data-theme", theme);
-      } catch (e) {}
-    })();
-  </script>
+<script>
+  (function () {
+    try {
+      var storageKey = "userTheme";
+      var stored = localStorage.getItem(storageKey);
+      var cycle = {
+        "0": "red",
+        "1": "orange",
+        "2": "yellow",
+        "3": "green",
+        "4": "cyan",
+        "5": "blue",
+        "6": "violet"
+      };
+      var day = String(new Date().getDay());
+      var autoTheme = cycle[day] || "cyan";
+      var theme = (!stored || stored === "auto") ? autoTheme : stored;
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {}
+  })();
+</script>
+
   <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
   <style>
@@ -59,14 +68,14 @@
       --primary-50:#e6f7ff;          /* мягкий фон/баннер */
       --primary-600:var(--brand-cyan-600);
 
-      /* Сетка и отступы (8‑pt) */
+      /* Сетка и отступы (8-pt) */
       --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
       --space-5:40px; --space-6:48px; --space-8:64px;
       --section-y: var(--space-8);
 
       /* Радиусы через токены — управляют «характером» интерфейса */
       --r-card:16px;                 /* карточки — дружелюбно */
-      --r-btn:12px;                  /* кнопки — «полу‑капсула» (инновационно, но без «желе») */
+      --r-btn:12px;                  /* кнопки — «полу-капсула» (инновационно, но без «желе») */
       --r-chip:999px;                /* бейджи/тэги — капсулы */
 
       --shadow:0 10px 24px rgba(15,23,42,.06);
@@ -132,8 +141,7 @@
     .auth-buttons{
       display:flex;
       align-items:center;
-          margin-left:auto;
-      
+      margin-left:auto;
       gap:var(--space-1);
     }
     .header-icons{
@@ -160,7 +168,6 @@
       font-size:22px;
     }
 
-
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
       padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid #000;
@@ -172,7 +179,7 @@
     .btn--ghost{background:transparent;border:1px solid #000;color:#000;box-shadow:none}
     .btn--ghost:hover{border-color:#000;color:#000;background:rgba(0,0,0,0.06)}
 
-    /* Бета‑баннер */
+    /* Бета-баннер */
     .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
     .phase .content{display:flex;gap:12px;align-items:center;padding:10px 0}
     .tag{font-size:.8rem;font-weight:800;color:#0b3cbd;background:#e0e7ff;border:1px solid #c7d2fe;border-radius:6px;padding:.25rem .5rem}
@@ -239,7 +246,7 @@
       "addressCountry": "MD",
       "addressLocality": "Chișinău",
       "streetAddress": "Указать юридический адрес",
-      "postalCode": "MD‑20xxx"
+      "postalCode": "MD-20xxx"
     },
     "contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"info@upgradefor.com","areaServed":["EU","Worldwide"],"availableLanguage":["ru","en","ro"]}]
   }
@@ -634,7 +641,7 @@ body{ font-family: var(--font-sans); }
   <aside class="sidebar"></aside>
 
   <main id="main" class="app-content">
-    <!-- Бета‑баннер -->
+    <!-- Бета-баннер -->
     <div class="phase" role="status" aria-live="polite">
       <div class="wrap content">
         <span class="tag" aria-label="Этап разработки">BETA</span>
@@ -671,10 +678,10 @@ body{ font-family: var(--font-sans); }
           <div>Кейсы/проекты</div><div><span class="badge b-todo">Запланировано</span></div><div>Первые публикации — после пилотов</div>
           <div>Пилоты и партнёры</div><div><span class="badge b-todo">Запланировано</span></div><div>Форма заявки на пилот</div>
           <div>Сообщество</div><div><span class="badge b-todo">Запланировано</span></div><div>Профили и сообщения</div>
-          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек‑листы по качеству публикаций</div>
+          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек-листы по качеству публикаций</div>
         </div>
         <p class="lead" style="margin-top:var(--space-3)">
-          Публичная статус‑страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
+          Публичная статус-страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
         </p>
       </div>
     </section>
@@ -685,7 +692,7 @@ body{ font-family: var(--font-sans); }
       <div class="cards-3">
         <article class="card"><h3>Апгрейд через применение</h3><p>Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.</p></article>
         <article class="card"><h3>Прозрачность ожиданий</h3><p>Статус, план и изменения — на одной странице. Пользователи понимают этап и следующий шаг.</p></article>
-        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, human‑in‑the-loop, приватность и корректное цитирование.</p></article>
+        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, human-in-the-loop, приватность и корректное цитирование.</p></article>
       </div>
     </section>
 
@@ -697,7 +704,7 @@ body{ font-family: var(--font-sans); }
           <h3>Что запускаем</h3>
           <ul>
             <li><strong>Семантический поиск</strong> по продуктам и исследованиям.</li>
-            <li><strong>Ассистент публикации</strong>: подсказки качества, авто‑саммари, перевод.</li>
+            <li><strong>Ассистент публикации</strong>: подсказки качества, авто-саммари, перевод.</li>
             <li><strong>Матчинг пилотов</strong>: сопоставление задач и решений.</li>
           </ul>
         </div>
@@ -705,7 +712,7 @@ body{ font-family: var(--font-sans); }
           <h3>Принципы</h3>
           <ul>
             <li><strong>Понятность</strong>: видно, где ИИ помогает и как.</li>
-            <li><strong>Human‑in‑the-loop</strong>: финальное слово — за людьми.</li>
+            <li><strong>Human-in-the-loop</strong>: финальное слово — за людьми.</li>
             <li><strong>Конфиденциальность</strong> и уважение авторских прав.</li>
           </ul>
         </div>
@@ -717,9 +724,9 @@ body{ font-family: var(--font-sans); }
       <h2 class="section-title" id="tech-title">Направления технологий</h2>
       <div class="cards-6">
         <article class="card"><h3>AI/ML</h3><p>Модели, пайплайны, MLOps, доверие и безопасность ИИ.</p></article>
-        <article class="card"><h3>Робототехника</h3><p>Манипуляторы, мобильные платформы, ROS‑экосистема.</p></article>
+        <article class="card"><h3>Робототехника</h3><p>Манипуляторы, мобильные платформы, ROS-экосистема.</p></article>
         <article class="card"><h3>Новые материалы</h3><p>Композиты, покрытия, упрочнение, аддитив.</p></article>
-        <article class="card"><h3>Энергоэффективность</h3><p>Smart‑grid, энергоаудит, оптимизация потребления.</p></article>
+        <article class="card"><h3>Энергоэффективность</h3><p>Smart-grid, энергоаудит, оптимизация потребления.</p></article>
         <article class="card"><h3>Био/медтех</h3><p>Диагностика, лабораторные наборы, биосенсоры.</p></article>
         <article class="card"><h3>EdTech</h3><p>Учебные стенды, симуляторы, методические комплексы.</p></article>
       </div>
@@ -737,7 +744,7 @@ body{ font-family: var(--font-sans); }
         </article>
         <article class="card">
           <h3>Публикации от пользователей</h3>
-          <p>Раздел в процессе наполнения. Подать публикацию можно за <strong>3–5 минут</strong>: короткая форма, авто‑подсказки качества и модерация.</p>
+          <p>Раздел в процессе наполнения. Подать публикацию можно за <strong>3–5 минут</strong>: короткая форма, авто-подсказки качества и модерация.</p>
           <p><a href="#">Как опубликовать →</a></p>
         </article>
       </div>
@@ -751,8 +758,8 @@ body{ font-family: var(--font-sans); }
           <h3>Сейчас</h3>
           <ul>
             <li>Публичная бета и сбор обратной связи</li>
-            <li>Онбординг публикаций (форма, чек‑лист)</li>
-            <li>Наполнение каталога (MVP‑карточки)</li>
+            <li>Онбординг публикаций (форма, чек-лист)</li>
+            <li>Наполнение каталога (MVP-карточки)</li>
           </ul>
         </div>
         <div class="card">
@@ -779,10 +786,10 @@ body{ font-family: var(--font-sans); }
       <h2 class="section-title" id="changelog-title">Журнал изменений</h2>
       <div class="card">
         <ul>
-          <li><strong>2025‑11‑09 · v0.4.0</strong> — голубая бренд‑палитра в кнопках, уменьшён радиус до 12px, обновлён хиро‑заголовок.</li>
-          <li><strong>2025‑11‑09 · v0.3.0</strong> — добавлены «Технологии», уточнены тексты, введён единый радиус кнопок, улучшены empty‑states.</li>
-          <li><strong>2025‑11‑09 · v0.2.0</strong> — добавлены «Цели» и «ИИ», статус‑блок расширен, сетка приведена к 8‑pt.</li>
-          <li><strong>2025‑11‑09 · v0.1.0</strong> — публичная бета, новая главная (светлая), статус‑блоки, роадмап и FAQ.</li>
+          <li><strong>2025-11-09 · v0.4.0</strong> — голубая бренд-палитра в кнопках, уменьшён радиус до 12px, обновлён хиро-заголовок.</li>
+          <li><strong>2025-11-09 · v0.3.0</strong> — добавлены «Технологии», уточнены тексты, введён единый радиус кнопок, улучшены empty-states.</li>
+          <li><strong>2025-11-09 · v0.2.0</strong> — добавлены «Цели» и «ИИ», статус-блок расширен, сетка приведена к 8-pt.</li>
+          <li><strong>2025-11-09 · v0.1.0</strong> — публичная бета, новая главная (светлая), статус-блоки, роадмап и FAQ.</li>
         </ul>
       </div>
     </section>
@@ -816,7 +823,7 @@ body{ font-family: var(--font-sans); }
         </article>
         <article class="card">
           <h3>Образование</h3>
-          <p>Учебные стенды, лаборатории, методические комплексы, EdTech‑решения.</p>
+          <p>Учебные стенды, лаборатории, методические комплексы, EdTech-решения.</p>
           <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
         </article>
         <article class="card">
@@ -857,7 +864,7 @@ body{ font-family: var(--font-sans); }
           <h3>Безопасная сделка</h3>
           <ul>
             <li><strong>Эскроу/депонирование</strong> (на этапе внедрения) для сделок повышенной стоимости.</li>
-            <li><strong>Проверка объекта</strong>: чек‑лист и запрос пакета документов.</li>
+            <li><strong>Проверка объекта</strong>: чек-лист и запрос пакета документов.</li>
             <li><strong>Публичный статус</strong> и <strong>changelog</strong> — видимость работ и релизов.</li>
           </ul>
         </article>
@@ -877,7 +884,7 @@ body{ font-family: var(--font-sans); }
           <p>Цифры, планы помещений/схемы, спецификации, документы — вместо «общих слов».</p>
         </article>
         <article class="card">
-          <h3>Соц‑посты отдельно</h3>
+          <h3>Соц-посты отдельно</h3>
           <p>Личные ленты и обсуждения — в разделе «Сообщество», чтобы не снижать серьёзность торговых витрин.</p>
         </article>
       </div>
