@@ -3,9 +3,10 @@
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 
   /* ===== Theme colors ===== */
-  --color-primary: #22D3EE;
-  --color-soft: #CFFAFE;
-  --color-bg-accent: #ECFEFF;
+  --color-primary: #12AFF0;
+  --color-soft: #E6F7FF;
+  --color-bg-accent: #F5FCFF;
+
   --color-primary-strong: color-mix(in srgb, var(--color-primary) 86%, var(--neutral-900));
 
   /* ===== Neutral palette ===== */
@@ -111,7 +112,10 @@
   --scrollbar-thumb: var(--neutral-400);
 
   --shadow:0 10px 24px rgba(15,23,42,.06);
+
+  /* Контейнер */
   --w:clamp(300px,92vw,1320px);
+  --gap:24px;
 
   /* Сетка и отступы (8-pt) */
   --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
@@ -148,7 +152,6 @@ header{
   right:0;
   z-index:50;
   background:var(--header-bg);
-  /* ВАЖНО: делаем “видимо” */
   border-bottom:3px solid var(--color-primary);
 }
 /* Make the header container flush with the edges of the viewport and span full width */
@@ -176,10 +179,14 @@ header .nav{
   gap:10px;
   font-weight:700;
   letter-spacing:.2px;
-  color: inherit;
+  color: var(--neutral-900);
   text-decoration: none;
 }
-.brand svg{width:28px;height:28px}
+.brand svg{height:40px;width:auto;display:block}
+.brand-logo{font-family: var(--font-sans);}
+.brand-logo .logo-text{font-size:20px;font-weight:800;letter-spacing:0.6px;fill:currentColor}
+.brand-logo .logo-subtext{font-size:11px;font-weight:600;letter-spacing:0.4px;fill:currentColor}
+.brand-logo .logo-accent{fill:var(--color-primary)}
 .grow{flex:1}
 .auth-buttons{
   display:flex;
@@ -294,6 +301,7 @@ header .nav{
   .theme-switch-trigger{padding: 6px;}
 }
 
+/* Buttons */
 .btn{
   position:relative; isolation:isolate;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;

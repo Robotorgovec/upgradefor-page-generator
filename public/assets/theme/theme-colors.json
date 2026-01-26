@@ -21,9 +21,9 @@
       "bg": "#F0FDF4"
     },
     "cyan": {
-      "primary": "#22D3EE",
-      "soft": "#CFFAFE",
-      "bg": "#ECFEFF"
+      "primary": "#12AFF0",
+      "soft": "#E6F7FF",
+      "bg": "#F5FCFF"
     },
     "blue": {
       "primary": "#2563EB",

@@ -74,9 +74,12 @@
   function applyThemeColors(colors, name) {
     if (!colors) return;
     const root = document.documentElement;
-    root.style.setProperty("--color-primary", colors.primary);
-    root.style.setProperty("--color-soft", colors.soft);
-    root.style.setProperty("--color-bg-accent", colors.bg);
+
+    // ожидаем структуру: { primary, soft, bg }
+    if (colors.primary) root.style.setProperty("--color-primary", colors.primary);
+    if (colors.soft) root.style.setProperty("--color-soft", colors.soft);
+    if (colors.bg) root.style.setProperty("--color-bg-accent", colors.bg);
+
     root.dataset.theme = name;
   }
 
@@ -109,7 +112,7 @@
     if (!config) return;
 
     const switcher = document.querySelector("[data-theme-switch]");
-    const trigger = switcher?.querySelector(".theme-switch-trigger");
+    const trigger = switcher?.querySelector(".theme-switch-trigger") || null;
     const items = switcher ? Array.from(switcher.querySelectorAll(".theme-switch-item")) : [];
 
     // Если сохранена валидная тема — применяем её, иначе auto
