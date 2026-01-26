@@ -51,7 +51,9 @@
   --btn-primary-text: var(--neutral-0);
   --btn-ghost-border: var(--neutral-900);
   --btn-ghost-text: var(--neutral-900);
-  --btn-ghost-bg-hover: color-mix(in srgb, var(--neutral-900) 8%, var(--neutral-0));
+  --hover-soft: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
+  --hover-soft-strong: color-mix(in srgb, var(--color-primary) 20%, var(--neutral-0));
+  --btn-ghost-bg-hover: var(--hover-soft);
   --btn-elev: 0 6px 14px color-mix(in srgb, var(--color-primary) 35%, transparent);
   --btn-elev-hover: 0 12px 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
   --btn-elev-active: 0 4px 10px color-mix(in srgb, var(--color-primary) 35%, transparent);
@@ -95,7 +97,7 @@
   --sidebar-expanded-width: 260px;
   --header-height: 64px;
   --bg-sidebar: var(--neutral-50);
-  --bg-sidebar-hover: var(--neutral-200);
+  --bg-sidebar-hover: var(--hover-soft);
   --border-color-soft: var(--neutral-200);
   --sidebar-accent: var(--color-primary);
   --sidebar-accent-strong: var(--color-primary);
@@ -224,7 +226,7 @@ header .nav{
   display: inline-flex;
 }
 .theme-switch-trigger:hover{
-  background: var(--soft);
+  background: var(--hover-soft);
 }
 .theme-switch-menu{
   position: absolute;
@@ -261,7 +263,7 @@ header .nav{
   cursor: pointer;
 }
 .theme-switch-item:hover{
-  background: var(--soft);
+  background: var(--hover-soft);
 }
 .theme-switch-item[aria-checked="true"]{
   background: var(--menu-active-bg);
