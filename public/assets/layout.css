@@ -6,6 +6,7 @@
   --color-primary: #12AFF0;
   --color-soft: #E6F7FF;
   --color-bg-accent: #F5FCFF;
+
   --color-primary-strong: color-mix(in srgb, var(--color-primary) 86%, var(--neutral-900));
 
   /* ===== Neutral palette ===== */
@@ -49,14 +50,18 @@
   --btn-primary-bg-hover: var(--color-primary-strong);
   --btn-primary-border: var(--neutral-900);
   --btn-primary-text: var(--neutral-0);
+
   --btn-ghost-border: var(--neutral-900);
   --btn-ghost-text: var(--neutral-900);
+
   --hover-soft: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
   --hover-soft-strong: color-mix(in srgb, var(--color-primary) 20%, var(--neutral-0));
   --btn-ghost-bg-hover: var(--hover-soft);
+
   --btn-elev: 0 6px 14px color-mix(in srgb, var(--color-primary) 35%, transparent);
   --btn-elev-hover: 0 12px 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
   --btn-elev-active: 0 4px 10px color-mix(in srgb, var(--color-primary) 35%, transparent);
+
   --btn-min-h: 44px;
   --btn-pad-x: 1rem;
   --btn-pad-y: 0.625rem;
@@ -73,8 +78,10 @@
   --form-placeholder: var(--neutral-500);
   --form-focus: var(--color-primary);
   --form-focus-ring: color-mix(in srgb, var(--color-primary) 25%, transparent);
+
   --danger: #dc2626;
   --success: #15803d;
+
   --info-bg: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
   --info-border: color-mix(in srgb, var(--color-primary) 28%, var(--neutral-0));
   --info-text: color-mix(in srgb, var(--color-primary) 70%, var(--neutral-900));
@@ -105,15 +112,21 @@
   --scrollbar-thumb: var(--neutral-400);
 
   --shadow:0 10px 24px rgba(15,23,42,.06);
+
+  /* Контейнер */
   --w:clamp(300px,92vw,1320px);
+  --gap:24px;
+
   /* Сетка и отступы (8-pt) */
   --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
   --space-5:40px; --space-6:48px; --space-8:64px;
   --section-y: var(--space-8);
-  /* Радиусы через токены — управляют «характером» интерфейса */
+
+  /* Радиусы через токены */
   --r-card:16px;
   --r-btn:12px;
   --r-chip:999px;
+
   --transition-fast: 0.25s ease;
 }
 
@@ -207,10 +220,6 @@ header .nav{
   font-size:22px;
 }
 
-.material-symbols-outlined{font-size:22px}
-.mini-icon{width:24px;height:24px;flex-shrink:0}
-.mini-icon svg{max-width:32px;max-height:32px}
-
 .theme-switch{
   position: relative;
   display: inline-flex;
@@ -291,16 +300,39 @@ header .nav{
   .theme-switch-label{display: none;}
   .theme-switch-trigger{padding: 6px;}
 }
+
+/* Buttons */
 .btn{
+  position:relative; isolation:isolate;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  padding:.6rem 1rem;border-radius:var(--r-btn);border:1px solid var(--btn-primary-border);
-  background:var(--btn-primary-bg); color:var(--btn-primary-text);
-  font-weight:700; letter-spacing:.1px; min-height:44px;
-  box-shadow:none; transition:transform .06s ease-out, box-shadow .2s ease, background .15s ease;
+  min-height: var(--btn-min-h);
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius:var(--r-btn);
+  border:1px solid var(--btn-primary-border);
+  background:var(--btn-primary-bg);
+  color:var(--btn-primary-text);
+  font-weight:700; letter-spacing:.1px;
+  box-shadow:none;
+  transition:transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
+  text-decoration:none !important;
+  cursor:pointer;
 }
 .btn:hover{transform:translateY(-1px); background:var(--btn-primary-bg-hover)}
-.btn--ghost{background:transparent;border:1px solid var(--btn-ghost-border);color:var(--btn-ghost-text);box-shadow:none}
-.btn--ghost:hover{border-color:var(--btn-ghost-border);color:var(--btn-ghost-text);background:var(--btn-ghost-bg-hover)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 5px color-mix(in srgb, var(--neutral-900) 30%, transparent);
+}
+
+/* Ghost */
+.btn.btn--ghost{background:transparent;border:1px solid var(--btn-ghost-border);color:var(--btn-ghost-text);box-shadow:none}
+.btn.btn--ghost:hover{background:var(--btn-ghost-bg-hover); border-color:var(--btn-ghost-border); color:var(--btn-ghost-text)}
+.btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
+
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition: none !important }
+  .btn:hover,.btn:active{ transform: none }
+}
 
 /* Бета-баннер */
 .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -367,7 +399,7 @@ section{padding:var(--section-y) 0}
 .b-todo{background:var(--status-muted-bg);color:var(--status-muted-text);border-color:var(--status-muted-border)}
 footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted)}
 
-/* Dark scheme */
+/* Dark scheme (оставляем как есть, но сайт в light) */
 @media (prefers-color-scheme: dark){
   :root{color-scheme: dark;
     --bg:#0b1220; --surface:#0f172a; --soft:#0b1323; --text:#e6edf6; --muted:#9cb3c8; --line:#12213a;
@@ -377,98 +409,6 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted)}
   .btn{color:var(--primary-ink)}
   .phase .text{color:var(--text)}
 }
-
-/* v7 overrides: refined buttons + font token */
-:root{
-  --btn-elev: 0 6px 14px color-mix(in srgb, var(--color-primary) 35%, transparent);
-  --btn-elev-hover: 0 12px 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
-  --btn-elev-active: 0 4px 10px color-mix(in srgb, var(--color-primary) 35%, transparent);
-}
-body{ font-family: var(--font-sans); }
-
-/* Base button (filled) */
-.btn{
-  position:relative; isolation:isolate;
-  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-  min-height: var(--btn-min-h);
-  padding: var(--btn-pad-y) var(--btn-pad-x);
-  border-radius: var(--r-btn, 12px);
-  border:1px solid var(--btn-primary-border);
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  font-weight: 700; letter-spacing:.1px;
-  box-shadow: none;
-  transition: transform .12s ease, box-shadow .22s ease, background .18s ease, border-color .18s ease, filter .18s ease;
-  text-decoration: none !important; cursor: pointer;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  box-shadow: none;
-  background: var(--btn-primary-bg-hover);
-}
-.btn:active{
-  transform: translateY(0);
-  box-shadow: none;
-  filter: none;
-}
-.btn::after{content:''; position:absolute; inset:0; border-radius: inherit; pointer-events:none; background: none; opacity:0; transition: none;}
-.btn:hover::after{ opacity:0 }
-.btn:focus-visible{outline: none; box-shadow: 0 0 0 2px var(--surface), 0 0 0 5px color-mix(in srgb, var(--neutral-900) 30%, transparent);}
-
-/* Ghost button */
-.btn.btn--ghost{color: var(--btn-ghost-text); background: transparent; border-color: var(--btn-ghost-border); box-shadow: none;}
-.btn.btn--ghost:hover{background: var(--btn-ghost-bg-hover); border-color: var(--btn-ghost-border); color: var(--btn-ghost-text);}
-.btn[disabled], .btn[aria-disabled="true"]{ opacity:.55; pointer-events:none; box-shadow:none }
-@media (prefers-reduced-motion: reduce){
-  .btn{ transition: none !important }
-  .btn:hover,.btn:active{ transform: none }
-}
-
-/* Custom button colors */
-.btn,
-.btn:visited{
-  background: var(--btn-primary-bg) !important;
-  background-color: var(--btn-primary-bg) !important;
-  background-image: none !important;
-  color: var(--btn-primary-text) !important;
-  border-color: var(--btn-primary-border) !important;
-  box-shadow: none !important;
-  filter: none !important;
-}
-.btn::after { display: none !important; }
-.btn:hover,
-.btn:focus,
-.btn:focus-visible,
-.btn:active{
-  background: var(--btn-primary-bg-hover) !important;
-  background-color: var(--btn-primary-bg-hover) !important;
-  background-image: none !important;
-  color: var(--btn-primary-text) !important;
-  border-color: var(--btn-primary-border) !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-.btn.btn--ghost,
-.btn.btn--ghost:visited{
-  background: transparent !important;
-  color: var(--btn-ghost-text) !important;
-  border-color: var(--btn-ghost-border) !important;
-  box-shadow: none !important;
-}
-.btn.btn--ghost:hover,
-.btn.btn--ghost:focus,
-.btn.btn--ghost:focus-visible,
-.btn.btn--ghost:active{
-  background: var(--btn-ghost-bg-hover) !important;
-  color: var(--btn-ghost-text) !important;
-  border-color: var(--btn-ghost-border) !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* Cards 6 */
-.cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-@media (max-width:900px){.cards-6{grid-template-columns:1fr}}
 
 /* Sidebar and burger */
 /* Shift content when sidebar collapses */
@@ -648,10 +588,7 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
     padding-right: 12px !important;
   }
 
-  /* burger: небольшой отступ от левого края */
   .burger{margin-left: 4px !important;}
-
-  /* на мобилке не делаем “центровку” бургера через sidebar-collapsed формулы */
   body:not(.menu-open) .burger,
   body.menu-open .burger{margin-left: 4px !important;}
 
@@ -665,7 +602,7 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
   padding-bottom: 0.5625rem;
 }
 
-/* Remove underline from menu items (важно для /account/login,/account/register) */
+/* Remove underline from menu items */
 .menu-item,
 .menu-item *,
 .menu-item:hover,
@@ -681,12 +618,10 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 header .nav{width: 100%;}
 .auth-buttons{margin-right: 0;}
 
-
-/* ===== Sticky Account Footer (mobile sidebar) ===== */
+/* Sticky Account Footer (mobile sidebar) */
 :root{ --sidebar-footer-display: block; }
 @media (min-width: 769px){ :root{ --sidebar-footer-display: none; } }
 
-/* Desktop (>=1200): when menu-open, shift content/footer and keep sidebar expanded */
 @media (min-width: 1200px){
   body.menu-open > .app-content,
   body.menu-open > footer{
@@ -745,20 +680,17 @@ body:not(.menu-open) .sidebar-footer-item{
 }
 body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 
-
-/* ===== Mobile Bottom Navigation (VK-style) ===== */
+/* Mobile Bottom Navigation */
 @media (min-width: 769px){
   .mobile-bottom-nav{display: none;}
 }
 
 @media (max-width: 768px){
-  /* bottom-nav: не перекрываем контент */
   body.has-mobile-bottom-nav .content,
   body.has-mobile-bottom-nav .app-content{
     padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   }
 
-  /* header: контент НЕ должен уходить под fixed header (первый экран) */
   body > .app-content{
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 12px) !important;
   }

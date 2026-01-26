@@ -1,6 +1,6 @@
 <div class="wrap nav">
   <!-- Бургер: открывает левое меню -->
-  <button class="burger" id="burgerBtn" aria-label="Открыть меню">
+  <button class="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
     <span class="burger-icon">
       <span class="burger-line"></span>
       <span class="burger-line"></span>
@@ -8,63 +8,121 @@
     </span>
   </button>
 
-  <!-- Логотип по центру -->
+  <!-- Логотип -->
   <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
     <svg class="brand-logo" viewBox="0 0 240 40" aria-hidden="true" focusable="false">
       <text class="logo-text" x="0" y="26">UPGRADE</text>
       <text class="logo-subtext" x="120" y="26">INNOVATIONS</text>
-      <circle class="logo-accent" cx="230" cy="13" r="6" />
+      <circle class="logo-accent" cx="230" cy="13" r="6"></circle>
     </svg>
   </a>
-<div class="grow"></div>
+
+  <div class="grow"></div>
+
   <!-- Иконки действий (мобильная шапка) -->
   <div class="header-icons" aria-label="Быстрые действия">
-    <button class="icon-btn" aria-label="Поиск" data-path="/search">
+    <button class="icon-btn" aria-label="Поиск" data-path="/search" type="button">
       <span class="material-symbols-outlined">search</span>
     </button>
-    <button class="icon-btn" aria-label="Сообщения" data-path="/messages">
+    <button class="icon-btn" aria-label="Сообщения" data-path="/messages" type="button">
       <span class="material-symbols-outlined">mark_unread_chat_alt</span>
     </button>
-    <button class="icon-btn" aria-label="Уведомления" data-path="/notifications">
+    <button class="icon-btn" aria-label="Уведомления" data-path="/notifications" type="button">
       <span class="material-symbols-outlined">notifications</span>
     </button>
-    <button class="icon-btn" aria-label="Корзина" data-path="/cart">
+    <button class="icon-btn" aria-label="Корзина" data-path="/cart" type="button">
       <span class="material-symbols-outlined">shopping_cart</span>
     </button>
   </div>
 
+  <!-- Theme switcher -->
   <div class="theme-switch" data-theme-switch>
     <button class="theme-switch-trigger" type="button" aria-haspopup="true" aria-expanded="false">
-      <svg class="theme-switch-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path fill="currentColor" d="M12 3a9 9 0 0 0-1 17.94c.6.12 1.24-.2 1.48-.77.23-.53.03-1.15-.44-1.5l-.4-.3c-.68-.52-.34-1.6.5-1.6h2.2c2.76 0 5-2.24 5-5 0-4.42-3.58-8-8-8Zm-4 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3-3.5a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm4 0a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm3 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/>
-      </svg>
       <span class="theme-dot" aria-hidden="true"></span>
+
+      <svg class="theme-switch-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          fill="currentColor"
+          d="M12 3a9 9 0 0 0-1 17.94c.6.12 1.24-.2 1.48-.77.23-.53.03-1.15-.44-1.5l-.4-.3c-.68-.52-.34-1.6.5-1.6h2.2c2.76 0 5-2.24 5-5 0-4.42-3.58-8-8-8Zm-4 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3-3.5a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm4 0a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm3 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
+        ></path>
+      </svg>
+
       <span class="theme-switch-label">Цвет</span>
     </button>
+
     <div class="theme-switch-menu" role="menu" aria-label="Цвет сайта">
       <div class="theme-switch-title">🎨 Цвет сайта</div>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="auto" aria-checked="false">
+
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="auto"
+        aria-checked="false"
+      >
         Авто (по дню)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="red" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="red"
+        aria-checked="false"
+      >
         Красный (Воскресенье)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="orange" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="orange"
+        aria-checked="false"
+      >
         Оранжевый (Понедельник)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="yellow" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="yellow"
+        aria-checked="false"
+      >
         Жёлтый (Вторник)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="green" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="green"
+        aria-checked="false"
+      >
         Зелёный (Среда)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="cyan" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="cyan"
+        aria-checked="false"
+      >
         Голубой (Четверг)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="blue" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="blue"
+        aria-checked="false"
+      >
         Синий (Пятница)
       </button>
-      <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="violet" aria-checked="false">
+      <button
+        type="button"
+        class="theme-switch-item"
+        role="menuitemradio"
+        data-theme="violet"
+        aria-checked="false"
+      >
         Фиолетовый (Суббота)
       </button>
     </div>

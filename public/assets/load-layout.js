@@ -54,27 +54,48 @@
     }
   }
 
+  // Sunday=0 ... Saturday=6
   function getAutoThemeName(config) {
-    if (!config || !config.weekCycle) return "cyan";
-    const dayIndex = new Date().getDay();
-    return config.weekCycle[String(dayIndex)] || "cyan";
+    if (!config) return "cyan";
+
+    if (config.weekCycle) {
+      const dayIndex = new Date().getDay();
+      return config.weekCycle[String(dayIndex)] || "cyan";
+    }
+
+    if (Array.isArray(config.cycle)) {
+      const dayIndex = new Date().getDay();
+      return config.cycle[dayIndex] || "cyan";
+    }
+
+    return "cyan";
   }
 
   function applyThemeColors(colors, name) {
     if (!colors) return;
     const root = document.documentElement;
-    root.style.setProperty("--color-primary", colors.primary);
-    root.style.setProperty("--color-soft", colors.soft);
-    root.style.setProperty("--color-bg-accent", colors.bg);
+
+    // ожидаем структуру: { primary, soft, bg }
+    if (colors.primary) root.style.setProperty("--color-primary", colors.primary);
+    if (colors.soft) root.style.setProperty("--color-soft", colors.soft);
+    if (colors.bg) root.style.setProperty("--color-bg-accent", colors.bg);
+
     root.dataset.theme = name;
   }
 
   async function applyTheme(mode, config, elements) {
     const autoTheme = getAutoThemeName(config);
+
+    // mode может быть "auto" или именем темы ("red", "cyan", ...)
     const themeName = mode === "auto" ? autoTheme : mode;
     const themeColors = config?.colors?.[themeName];
+
     if (themeColors) {
       applyThemeColors(themeColors, themeName);
+    } else {
+      // fallback чтобы точно было видно (если конфиг не совпал)
+      const fallback = config?.colors?.cyan || config?.colors?.blue || null;
+      if (fallback) applyThemeColors(fallback, "cyan");
     }
 
     if (elements?.items) {
@@ -91,12 +112,14 @@
     if (!config) return;
 
     const switcher = document.querySelector("[data-theme-switch]");
-    const trigger = switcher?.querySelector(".theme-switch-trigger");
+    const trigger = switcher?.querySelector(".theme-switch-trigger") || null;
     const items = switcher ? Array.from(switcher.querySelectorAll(".theme-switch-item")) : [];
 
+    // Если сохранена валидная тема — применяем её, иначе auto
     const storedTheme = localStorage.getItem(themeStorageKey);
     const initialMode =
       storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
+
     await applyTheme(initialMode, config, { items });
 
     if (!switcher || !trigger) return;
@@ -113,19 +136,15 @@
     });
 
     document.addEventListener("click", (event) => {
-      if (!switcher.contains(event.target)) {
-        closeMenu();
-      }
+      if (!switcher.contains(event.target)) closeMenu();
     });
 
     items.forEach((item) => {
       item.addEventListener("click", async () => {
         const selected = item.dataset.theme || "auto";
-        if (selected === "auto") {
-          localStorage.removeItem(themeStorageKey);
-        } else {
-          localStorage.setItem(themeStorageKey, selected);
-        }
+        if (selected === "auto") localStorage.removeItem(themeStorageKey);
+        else localStorage.setItem(themeStorageKey, selected);
+
         await applyTheme(selected, config, { items });
         closeMenu();
       });
@@ -182,7 +201,9 @@
         '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
         '<span class="menu-label">Мой аккаунт</span>';
 
-      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", { type: "button" });
+      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
+        type: "button",
+      });
       logout.innerHTML =
         '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
         '<span class="menu-label">Выйти</span>';
@@ -204,8 +225,8 @@
     if (!sidebar) return;
 
     let footerObserver = null;
+
     const mountFooter = () => {
-      // У вас скролл уже на .sidebar-inner. Footer должен быть соседом, не внутри inner.
       const inner = qs(".sidebar-inner", sidebar);
       if (!inner) return false;
 
@@ -227,6 +248,7 @@
     const ensureMobileFooter = () => {
       const isMobile = window.innerWidth < 769;
       const existingFooter = sidebar.querySelector(":scope > .sidebar-footer");
+
       if (!isMobile) {
         if (existingFooter) existingFooter.remove();
         if (footerObserver) {
@@ -251,7 +273,6 @@
             footerObserver = null;
           }
         });
-
         footerObserver.observe(sidebar, { childList: true, subtree: true });
       }
     };
@@ -282,6 +303,7 @@
 
     items.forEach((item) => {
       const link = createEl("a", "mobile-bottom-nav-item", { href: item.href });
+
       if (
         (item.href !== "/" && currentPath.startsWith(item.href)) ||
         (item.href === "/" && currentPath === "/")
@@ -290,7 +312,9 @@
         link.setAttribute("aria-current", "page");
       }
 
-      const icon = createEl("span", "material-symbols-outlined mobile-bottom-nav-icon", { "aria-hidden": "true" });
+      const icon = createEl("span", "material-symbols-outlined mobile-bottom-nav-icon", {
+        "aria-hidden": "true",
+      });
       icon.textContent = item.icon;
 
       const label = createEl("span", "mobile-bottom-nav-label");
@@ -307,6 +331,7 @@
     const updateNav = () => {
       const isMobile = mediaQuery.matches;
       document.body.classList.toggle("has-mobile-bottom-nav", isMobile);
+
       const existing = qs(".mobile-bottom-nav");
       if (!isMobile) {
         if (existing) existing.remove();
@@ -322,20 +347,28 @@
   }
 
   try {
-    // КРИТИЧНО: эти 2 строки возвращают header и menu
+    // КРИТИЧНО: эти 2 строки вставляют header и menu
     await fetchAndInsert("/includes/header.html", "header");
     console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
     console.log("[layout] sidebar loaded");
 
+    // Theme switcher — строго после вставки header.html
     await initThemeSwitcher();
 
-    // --- burger toggling и высота header (ваша логика) ---
+    // --- burger toggling и высота header ---
     const body = document.body;
-    const burger = document.getElementById("burgerBtn");
     const root = document.documentElement;
+
     const headerEl = document.querySelector("header");
     const authButtonsEl = headerEl?.querySelector(".auth-buttons") ?? null;
+
+    // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
+    // поэтому берём по data-burger или .burger, а id оставляем как fallback.
+    const burger =
+      document.querySelector("[data-burger]") ||
+      document.querySelector(".burger") ||
+      document.getElementById("burgerBtn");
 
     async function updateAuthButtons() {
       if (!authButtonsEl) return;
@@ -350,7 +383,10 @@
 
         let hasProfileRoute = false;
         try {
-          const profileRes = await fetch("/account/profile", { method: "HEAD", credentials: "include" });
+          const profileRes = await fetch("/account/profile", {
+            method: "HEAD",
+            credentials: "include",
+          });
           hasProfileRoute = profileRes.ok;
         } catch {
           hasProfileRoute = false;
@@ -405,6 +441,8 @@
         }
         body.classList.toggle("menu-open");
       });
+    } else {
+      console.warn("[layout] burger button not found (check header.html)");
     }
 
     if (isDesktop) {
