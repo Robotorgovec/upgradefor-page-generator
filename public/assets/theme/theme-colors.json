@@ -1,0 +1,48 @@
+{
+  "colors": {
+    "red": {
+      "primary": "#EF4444",
+      "soft": "#FEE2E2",
+      "bg": "#FFF5F5"
+    },
+    "orange": {
+      "primary": "#F97316",
+      "soft": "#FFEDD5",
+      "bg": "#FFF7ED"
+    },
+    "yellow": {
+      "primary": "#EAB308",
+      "soft": "#FEF9C3",
+      "bg": "#FEFCE8"
+    },
+    "green": {
+      "primary": "#22C55E",
+      "soft": "#DCFCE7",
+      "bg": "#F0FDF4"
+    },
+    "cyan": {
+      "primary": "#12AFF0",
+      "soft": "#E6F7FF",
+      "bg": "#F5FCFF"
+    },
+    "blue": {
+      "primary": "#2563EB",
+      "soft": "#DBEAFE",
+      "bg": "#EFF6FF"
+    },
+    "violet": {
+      "primary": "#8B5CF6",
+      "soft": "#EDE9FE",
+      "bg": "#F5F3FF"
+    }
+  },
+  "weekCycle": {
+    "0": "red",
+    "1": "orange",
+    "2": "yellow",
+    "3": "green",
+    "4": "cyan",
+    "5": "blue",
+    "6": "violet"
+  }
+}
