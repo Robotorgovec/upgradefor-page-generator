@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="menu-separator"></div>
+      <div class="menu-separator" data-auth="private"></div>
 
       <!-- НАВИГАЦИЯ / ЛЕНТА -->
       <div class="sidebar-section-label">Навигация</div>
@@ -85,22 +85,22 @@
       <div class="menu-separator"></div>
 
       <!-- ПРОФИЛЬ -->
-      <div class="sidebar-section-label">Профиль</div>
+      <div class="sidebar-section-label" data-auth="private">Профиль</div>
 
-      <div class="menu-item" data-path="/profile" title="Личная страница и настройки пользователя">
+      <div class="menu-item" data-auth="private" data-path="/profile" title="Личная страница и настройки пользователя">
         <span class="menu-icon material-symbols-outlined">person</span>
         <span class="menu-label">Профиль</span>
       </div>
-      <div class="menu-item" data-path="/profile/achievements" title="Награды, уровни и бейджи">
+      <div class="menu-item" data-auth="private" data-path="/profile/achievements" title="Награды, уровни и бейджи">
         <span class="menu-icon material-symbols-outlined">emoji_events</span>
         <span class="menu-label">Достижения</span>
       </div>
-      <div class="menu-item" data-path="/profile/tokens" title="Внутренняя валюта и баллы">
+      <div class="menu-item" data-auth="private" data-path="/profile/tokens" title="Внутренняя валюта и баллы">
         <span class="menu-icon material-symbols-outlined">token</span>
         <span class="menu-label">Токены</span>
       </div>
 
-      <div class="menu-separator"></div>
+      <div class="menu-separator" data-auth="private"></div>
 
       <!-- WIKIMARKET -->
       <div class="sidebar-section-label">WikiMarket</div>
@@ -130,7 +130,7 @@
         </div>
       </details>
 
-      <div class="menu-separator"></div>
+      <div class="menu-separator" data-auth="private"></div>
 
       <!-- КЛИМАТИЧЕСКИЕ СИСТЕМЫ (ОВК) -->
       <div class="sidebar-section-label">Климатические системы (ОВК)</div>
@@ -203,17 +203,17 @@
       <div class="menu-separator"></div>
 
       <!-- КОШЕЛЁК / ФИНАНСЫ -->
-      <div class="sidebar-section-label">Кошелёк</div>
+      <div class="sidebar-section-label" data-auth="private">Кошелёк</div>
 
-      <div class="menu-item" data-path="/wallet" title="Финансы пользователя (счета и платежи)">
+      <div class="menu-item" data-auth="private" data-path="/wallet" title="Финансы пользователя (счета и платежи)">
         <span class="menu-icon material-symbols-outlined">account_balance_wallet</span>
         <span class="menu-label">Кошелёк</span>
       </div>
-      <div class="menu-item" data-path="/wallet/balance" title="Текущий баланс средств и токенов">
+      <div class="menu-item" data-auth="private" data-path="/wallet/balance" title="Текущий баланс средств и токенов">
         <span class="menu-icon material-symbols-outlined">savings</span>
         <span class="menu-label">Баланс</span>
       </div>
-      <div class="menu-item" data-path="/wallet/history" title="Список транзакций и покупок">
+      <div class="menu-item" data-auth="private" data-path="/wallet/history" title="Список транзакций и покупок">
         <span class="menu-icon material-symbols-outlined">receipt_long</span>
         <span class="menu-label">История</span>
       </div>
