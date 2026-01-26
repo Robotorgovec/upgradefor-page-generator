@@ -15,6 +15,10 @@
         return;
       }
       const html = await res.text();
+      if (!html || !html.trim()) {
+        console.warn("[UPGR] empty layout response for", url);
+        return;
+      }
       container.innerHTML = html;
     } catch (err) {
       console.error("[UPGR] Error loading", url, err);
@@ -272,6 +276,9 @@ async function renderUpgradeLogo() {
 
 function sanitizePhaseBlocks() {
   document.querySelectorAll(".phase").forEach((phase) => {
+    // ВАЖНО: не трогаем фазовые блоки внутри header/nav/aside (они могут быть частью меню/хедера)
+    if (phase.closest("header, nav, aside")) return;
+
     const textEl = phase.querySelector(".text");
     const tagEl = phase.querySelector(".tag");
     const text = textEl ? textEl.textContent.trim() : "";
@@ -285,6 +292,7 @@ function sanitizePhaseBlocks() {
     if (!tag && tagEl) tagEl.remove();
   });
 }
+
 
   async function getSessionSafe() {
     try {
@@ -485,7 +493,15 @@ function sanitizePhaseBlocks() {
   try {
     // КРИТИЧНО: эти 2 строки вставляют header и menu
     await fetchAndInsert("/includes/header.html", "header");
-    await renderUpgradeLogo();
+const headerEl = qs("header");
+const headerLoaded = headerEl && headerEl.children.length > 0;
+
+if (!headerLoaded) {
+  console.warn("[UPGR] header is empty — abort logo render");
+} else {
+  await renderUpgradeLogo();
+}
+
     console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
     console.log("[layout] sidebar loaded");
@@ -503,14 +519,16 @@ function sanitizePhaseBlocks() {
       startChameleon();
     }
     enableChameleonOnNavigation();
+const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
 
-    const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
-    } else {
-      startChameleon();
-    }
-    enableChameleonOnNavigation();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+} else {
+  startChameleon();
+}
+
+enableChameleonOnNavigation();
+
 
     // --- burger toggling и высота header ---
     const body = document.body;
