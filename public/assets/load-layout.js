@@ -113,45 +113,47 @@
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
+}
+
+async function renderUpgradeLogo() {
+  const slot = document.getElementById("upgr-logo-slot");
+  if (!slot) return;
+
+  try {
+    const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    slot.innerHTML = `
+      <svg
+        class="upgr-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="${data.viewBox}"
+        role="img"
+        aria-label="UPGRADE Innovations"
+        focusable="false"
+      >
+        <defs>
+          <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
+            <image href="${data.accentMask}" width="100%" height="100%" />
+          </mask>
+        </defs>
+
+        <image href="${data.base}" width="100%" height="100%" />
+
+        <rect
+          width="100%"
+          height="100%"
+          fill="var(--color-primary)"
+          mask="url(#upgrAccentMask)"
+        />
+      </svg>
+    `;
+  } catch (err) {
+    console.error("[UPGR] logo render error", err);
   }
+}
 
-  async function renderUpgradeLogo() {
-    const slot = document.getElementById("upgr-logo-slot");
-    if (!slot) return;
-
-    try {
-      const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
-      if (!res.ok) return;
-      const data = await res.json();
-
-      slot.innerHTML = `
-        <svg
-          class="upgr-logo"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="${data.viewBox}"
-          role="img"
-          aria-label="UPGRADE Innovations"
-          focusable="false"
-        >
-          <defs>
-            <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
-              <image href="${data.accentMask}" width="100%" height="100%" />
-            </mask>
-          </defs>
-
-          <image href="${data.base}" width="100%" height="100%" />
-
-          <rect
-            width="100%"
-            height="100%"
-            fill="var(--color-primary)"
-            mask="url(#upgrAccentMask)"
-          />
-        </svg>
-      `;
-    } catch (err) {
-      console.error("[UPGR] logo render error", err);
-    }
   }
 
   async function applyTheme(mode, config, elements) {
@@ -268,6 +270,22 @@
     );
   }
 
+function sanitizePhaseBlocks() {
+  document.querySelectorAll(".phase").forEach((phase) => {
+    const textEl = phase.querySelector(".text");
+    const tagEl = phase.querySelector(".tag");
+    const text = textEl ? textEl.textContent.trim() : "";
+    const tag = tagEl ? tagEl.textContent.trim() : "";
+
+    if (!text && !tag) {
+      phase.remove();
+      return;
+    }
+    if (!text && textEl) textEl.remove();
+    if (!tag && tagEl) tagEl.remove();
+  });
+}
+
   async function getSessionSafe() {
     try {
       const res = await fetch("/api/auth/session", { credentials: "include" });
@@ -277,6 +295,15 @@
     } catch {
       return null;
     }
+  }
+
+  function applyAuthVisibility(session) {
+    const isAuthenticated = Boolean(session?.user);
+    const privateNodes = document.querySelectorAll("[data-auth=\"private\"]");
+    privateNodes.forEach((node) => {
+      if (isAuthenticated) node.removeAttribute("hidden");
+      else node.setAttribute("hidden", "true");
+    });
   }
 
   function ensureSidebarFooter(sidebar) {
@@ -290,6 +317,11 @@
 
   function renderFooter(footer, session) {
     footer.innerHTML = "";
+    if (!session) {
+      footer.setAttribute("hidden", "true");
+      return false;
+    }
+    footer.removeAttribute("hidden");
 
     const title = createEl("div", "sidebar-footer-title");
     title.innerHTML =
@@ -299,41 +331,27 @@
 
     const actions = createEl("div", "sidebar-footer-actions");
 
-    if (!session) {
-      const login = createEl("a", "menu-item sidebar-footer-item", { href: "/account/login" });
-      login.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">login</span>' +
-        '<span class="menu-label">Войти</span>';
+    const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
+    account.innerHTML =
+      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
+      '<span class="menu-label">Мой аккаунт</span>';
 
-      const register = createEl("a", "menu-item sidebar-footer-item", { href: "/account/register" });
-      register.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person_add</span>' +
-        '<span class="menu-label">Регистрация</span>';
+    const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
+      type: "button",
+    });
+    logout.innerHTML =
+      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
+      '<span class="menu-label">Выйти</span>';
 
-      actions.appendChild(login);
-      actions.appendChild(register);
-    } else {
-      const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
-      account.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
-        '<span class="menu-label">Мой аккаунт</span>';
+    logout.addEventListener("click", () => {
+      window.location.href = "/api/auth/signout?callbackUrl=/";
+    });
 
-      const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
-        type: "button",
-      });
-      logout.innerHTML =
-        '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
-        '<span class="menu-label">Выйти</span>';
-
-      logout.addEventListener("click", () => {
-        window.location.href = "/api/auth/signout?callbackUrl=/";
-      });
-
-      actions.appendChild(account);
-      actions.appendChild(logout);
-    }
+    actions.appendChild(account);
+    actions.appendChild(logout);
 
     footer.appendChild(actions);
+    return true;
   }
 
   function initStickyFooter() {
@@ -351,6 +369,7 @@
       renderFooter(footer, null);
 
       getSessionSafe().then((session) => {
+        applyAuthVisibility(session);
         const sidebar2 = qs(".sidebar");
         const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
         if (!sidebar2 || !inner2) return;
@@ -473,6 +492,17 @@
 
     // Theme switcher — строго после вставки header.html
     await initThemeSwitcher();
+    sanitizePhaseBlocks();
+    applyAuthVisibility(null);
+    getSessionSafe().then((session) => applyAuthVisibility(session));
+
+    const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+    } else {
+      startChameleon();
+    }
+    enableChameleonOnNavigation();
 
     const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
     if (document.readyState === "loading") {
@@ -500,10 +530,7 @@
       if (!authButtonsEl) return;
 
       try {
-        const res = await fetch("/api/auth/session", { credentials: "include" });
-        if (!res.ok) return;
-
-        const session = await res.json();
+        const session = await getSessionSafe();
         const isAuthenticated = Boolean(session?.user);
         if (!isAuthenticated) return;
 

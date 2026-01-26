@@ -204,6 +204,7 @@ header{
   z-index:50;
   background:var(--header-bg);
   border-bottom:3px solid var(--color-primary);
+  overflow-x: clip;
 }
 /* Make the header container flush with the edges of the viewport and span full width */
 header .wrap{
@@ -223,6 +224,7 @@ header .nav{
   align-items:center;
   gap:18px;
   padding:12px 0;
+  min-width: 0;
 }
 .brand{
   display:flex;
@@ -232,12 +234,26 @@ header .nav{
   letter-spacing:.2px;
   color: var(--neutral-900);
   text-decoration: none;
+  min-width: 0;
+  max-width: 60vw;
 }
 .brand img,
 .brand svg{
   height:40px;
   width:auto;
   display:block;
+  max-width: 240px;
+}
+.upgr-logo{
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.brand img,
+.brand svg{
+  height: 40px;
+  width: auto;
+  display: block;
   max-width: 240px;
 }
 
@@ -252,7 +268,7 @@ header .nav{
 .brand-logo .logo-text{font-size:20px;font-weight:800;letter-spacing:0.6px;fill:currentColor}
 .brand-logo .logo-subtext{font-size:11px;font-weight:600;letter-spacing:0.4px;fill:currentColor}
 .brand-logo .logo-accent{fill:var(--color-primary)}
-.grow{flex:1}
+.grow{flex:1;min-width:0}
 .auth-buttons{
   display:flex;
   margin-left:auto;
@@ -264,6 +280,7 @@ header .nav{
   display:none;
   align-items:center;
   gap:8px;
+  flex-shrink: 0;
 }
 .icon-btn{
   border:none;
@@ -301,6 +318,7 @@ svg.theme-icon{
   position: relative;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 }
 .theme-switch--sidebar{
   width: calc(100% - 16px);
@@ -678,6 +696,9 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
     padding-left: 12px !important;
     padding-right: 12px !important;
   }
+
+  .nav{gap:12px;}
+  .brand{max-width: 50vw;}
 
   .burger{margin-left: 4px !important;}
   body:not(.menu-open) .burger,
