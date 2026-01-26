@@ -18,7 +18,20 @@
   <link rel="alternate" hreflang="ar" href="{{URL_AR}}" />
   <link rel="alternate" hreflang="x-default" href="{{URL_DEFAULT}}" />
 
-  <link rel="stylesheet" href="/assets/layout.css?v=20260126-1" />
+  <script>
+    (function () {
+      try {
+        var storageKey = "userTheme";
+        var stored = localStorage.getItem(storageKey);
+        var cycle = { "0":"red","1":"orange","2":"yellow","3":"green","4":"cyan","5":"blue","6":"violet" };
+        var day = String(new Date().getDay());
+        var autoTheme = cycle[day] || "cyan";
+        var theme = (!stored || stored === "auto") ? autoTheme : stored;
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -1102,6 +1115,6 @@
       if(el) el.textContent = new Date().getFullYear();
     })();
   </script>
-  <script src="/assets/load-layout.js?v=20260126-1"></script>
+  <script src="/assets/load-layout.js?v=20260205-1"></script>
 </body>
 </html>
