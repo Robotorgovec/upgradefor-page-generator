@@ -71,13 +71,48 @@
     return "cyan";
   }
 
-  function applyThemeColors(colors, name) {
-    if (!colors) return;
-    const root = document.documentElement;
-    root.style.setProperty("--color-primary", colors.primary);
-    root.style.setProperty("--color-soft", colors.soft);
-    root.style.setProperty("--color-bg-accent", colors.bg);
-    root.dataset.theme = name;
+  function applyThemeName(name) {
+    if (!name) return;
+    document.documentElement.setAttribute("data-theme", name);
+  }
+
+  async function renderUpgradeLogo() {
+    const slot = document.getElementById("upgr-logo-slot");
+    if (!slot) return;
+
+    try {
+      const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
+      if (!res.ok) return;
+      const data = await res.json();
+
+      slot.innerHTML = `
+        <svg
+          class="upgr-logo"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="${data.viewBox}"
+          role="img"
+          aria-label="UPGRADE Innovations"
+          focusable="false"
+        >
+          <defs>
+            <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
+              <image href="${data.accentMask}" width="100%" height="100%" />
+            </mask>
+          </defs>
+
+          <image href="${data.base}" width="100%" height="100%" />
+
+          <rect
+            width="100%"
+            height="100%"
+            fill="var(--color-primary)"
+            mask="url(#upgrAccentMask)"
+          />
+        </svg>
+      `;
+    } catch (err) {
+      console.error("[UPGR] logo render error", err);
+    }
   }
 
   async function renderUpgradeLogo() {
@@ -126,13 +161,8 @@
     const themeName = mode === "auto" ? autoTheme : mode;
     const themeColors = config?.colors?.[themeName];
 
-    if (themeColors) {
-      applyThemeColors(themeColors, themeName);
-    } else {
-      // fallback чтобы точно было видно (если конфиг не совпал)
-      const fallback = config?.colors?.cyan || config?.colors?.blue || null;
-      if (fallback) applyThemeColors(fallback, "cyan");
-    }
+    const resolvedTheme = themeColors ? themeName : "cyan";
+    applyThemeName(resolvedTheme);
 
     if (elements?.items) {
       elements.items.forEach((item) => {
@@ -194,6 +224,48 @@
         closeMenus();
       });
     });
+  }
+
+  function runChameleonIntro(opts = {}) {
+    const key = "upgr_chameleon_last";
+    const cooldownHours = opts.cooldownHours ?? 12;
+    const probability = opts.probability ?? 0.35;
+
+    try {
+      const last = Number(localStorage.getItem(key) || "0");
+      const now = Date.now();
+      const cooldownMs = cooldownHours * 3600 * 1000;
+
+      if (now - last < cooldownMs) return;
+      if (Math.random() > probability) return;
+
+      localStorage.setItem(key, String(now));
+      document.body.classList.add("chameleon-intro");
+      setTimeout(() => document.body.classList.remove("chameleon-intro"), 950);
+    } catch (e) {
+      console.warn("[UPGR] chameleon intro error", e);
+    }
+  }
+
+  function enableChameleonOnNavigation() {
+    document.addEventListener(
+      "click",
+      (event) => {
+        const link = event.target.closest("a");
+        if (!link || !link.href) return;
+        if (link.origin !== location.origin) return;
+        if (link.target && link.target !== "_self") return;
+        if (link.hasAttribute("download")) return;
+        if (link.getAttribute("href")?.startsWith("#")) return;
+
+        document.body.classList.add("chameleon-intro");
+        event.preventDefault();
+        setTimeout(() => {
+          location.href = link.href;
+        }, 180);
+      },
+      true
+    );
   }
 
   async function getSessionSafe() {
@@ -401,6 +473,14 @@
 
     // Theme switcher — строго после вставки header.html
     await initThemeSwitcher();
+
+    const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+    } else {
+      startChameleon();
+    }
+    enableChameleonOnNavigation();
 
     // --- burger toggling и высота header ---
     const body = document.body;
