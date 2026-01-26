@@ -37,6 +37,101 @@
     return el;
   }
 
+  const themeStorageKey = "userTheme";
+  const themeConfigUrl = "/assets/theme/theme-colors.json";
+  let cachedThemeConfig = null;
+
+  async function loadThemeConfig() {
+    if (cachedThemeConfig) return cachedThemeConfig;
+    try {
+      const res = await fetch(themeConfigUrl, { credentials: "include" });
+      if (!res.ok) throw new Error("Theme config not available");
+      cachedThemeConfig = await res.json();
+      return cachedThemeConfig;
+    } catch (err) {
+      console.error("[UPGR] theme config error", err);
+      return null;
+    }
+  }
+
+  function getAutoThemeName(config) {
+    if (!config || !config.weekCycle) return "cyan";
+    const dayIndex = new Date().getDay();
+    return config.weekCycle[String(dayIndex)] || "cyan";
+  }
+
+  function applyThemeColors(colors, name) {
+    if (!colors) return;
+    const root = document.documentElement;
+    root.style.setProperty("--color-primary", colors.primary);
+    root.style.setProperty("--color-soft", colors.soft);
+    root.style.setProperty("--color-bg-accent", colors.bg);
+    root.dataset.theme = name;
+  }
+
+  async function applyTheme(mode, config, elements) {
+    const autoTheme = getAutoThemeName(config);
+    const themeName = mode === "auto" ? autoTheme : mode;
+    const themeColors = config?.colors?.[themeName];
+    if (themeColors) {
+      applyThemeColors(themeColors, themeName);
+    }
+
+    if (elements?.items) {
+      elements.items.forEach((item) => {
+        const itemTheme = item.dataset.theme || "";
+        const isActive = mode === "auto" ? itemTheme === "auto" : itemTheme === themeName;
+        item.setAttribute("aria-checked", isActive ? "true" : "false");
+      });
+    }
+  }
+
+  async function initThemeSwitcher() {
+    const config = await loadThemeConfig();
+    if (!config) return;
+
+    const switcher = document.querySelector("[data-theme-switch]");
+    const trigger = switcher?.querySelector(".theme-switch-trigger");
+    const items = switcher ? Array.from(switcher.querySelectorAll(".theme-switch-item")) : [];
+
+    const storedTheme = localStorage.getItem(themeStorageKey);
+    const initialMode =
+      storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
+    await applyTheme(initialMode, config, { items });
+
+    if (!switcher || !trigger) return;
+
+    const closeMenu = () => {
+      switcher.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen = switcher.classList.toggle("is-open");
+      trigger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!switcher.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    items.forEach((item) => {
+      item.addEventListener("click", async () => {
+        const selected = item.dataset.theme || "auto";
+        if (selected === "auto") {
+          localStorage.removeItem(themeStorageKey);
+        } else {
+          localStorage.setItem(themeStorageKey, selected);
+        }
+        await applyTheme(selected, config, { items });
+        closeMenu();
+      });
+    });
+  }
+
   async function getSessionSafe() {
     try {
       const res = await fetch("/api/auth/session", { credentials: "include" });
@@ -232,6 +327,8 @@
     console.log("[layout] header loaded");
     await fetchAndInsert("/includes/menu.html", ".sidebar");
     console.log("[layout] sidebar loaded");
+
+    await initThemeSwitcher();
 
     // --- burger toggling и высота header (ваша логика) ---
     const body = document.body;
