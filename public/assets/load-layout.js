@@ -113,6 +113,47 @@
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
+}
+
+async function renderUpgradeLogo() {
+  const slot = document.getElementById("upgr-logo-slot");
+  if (!slot) return;
+
+  try {
+    const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    slot.innerHTML = `
+      <svg
+        class="upgr-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="${data.viewBox}"
+        role="img"
+        aria-label="UPGRADE Innovations"
+        focusable="false"
+      >
+        <defs>
+          <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
+            <image href="${data.accentMask}" width="100%" height="100%" />
+          </mask>
+        </defs>
+
+        <image href="${data.base}" width="100%" height="100%" />
+
+        <rect
+          width="100%"
+          height="100%"
+          fill="var(--color-primary)"
+          mask="url(#upgrAccentMask)"
+        />
+      </svg>
+    `;
+  } catch (err) {
+    console.error("[UPGR] logo render error", err);
+  }
+}
+
   }
 
   async function applyTheme(mode, config, elements) {
@@ -229,21 +270,21 @@
     );
   }
 
-  function sanitizePhaseBlocks() {
-    document.querySelectorAll(".phase").forEach((phase) => {
-      const textEl = phase.querySelector(".text");
-      const tagEl = phase.querySelector(".tag");
-      const text = textEl ? textEl.textContent.trim() : "";
-      const tag = tagEl ? tagEl.textContent.trim() : "";
+function sanitizePhaseBlocks() {
+  document.querySelectorAll(".phase").forEach((phase) => {
+    const textEl = phase.querySelector(".text");
+    const tagEl = phase.querySelector(".tag");
+    const text = textEl ? textEl.textContent.trim() : "";
+    const tag = tagEl ? tagEl.textContent.trim() : "";
 
-      if (!text && !tag) {
-        phase.remove();
-        return;
-      }
-      if (!text && textEl) textEl.remove();
-      if (!tag && tagEl) tagEl.remove();
-    });
-  }
+    if (!text && !tag) {
+      phase.remove();
+      return;
+    }
+    if (!text && textEl) textEl.remove();
+    if (!tag && tagEl) tagEl.remove();
+  });
+}
 
   async function getSessionSafe() {
     try {
@@ -454,6 +495,14 @@
     sanitizePhaseBlocks();
     applyAuthVisibility(null);
     getSessionSafe().then((session) => applyAuthVisibility(session));
+
+    const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+    } else {
+      startChameleon();
+    }
+    enableChameleonOnNavigation();
 
     const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
     if (document.readyState === "loading") {

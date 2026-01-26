@@ -249,7 +249,21 @@ header .nav{
   width: auto;
   display: block;
 }
-.brand #upgr-logo-slot{max-width: 100%;}
+.brand img,
+.brand svg{
+  height: 40px;
+  width: auto;
+  display: block;
+  max-width: 240px;
+}
+
+/* совместимость: если где-то используется класс upgr-logo */
+.upgr-logo{
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .brand-logo{font-family: var(--font-sans);}
 .brand-logo .logo-text{font-size:20px;font-weight:800;letter-spacing:0.6px;fill:currentColor}
 .brand-logo .logo-subtext{font-size:11px;font-weight:600;letter-spacing:0.4px;fill:currentColor}
