@@ -80,17 +80,11 @@
     document.documentElement.setAttribute("data-theme", name);
   }
 
-document.addEventListener("layout:ready", () => {
-  sanitizePhaseBlocks();
-});
-
-setTimeout(() => {
-  sanitizePhaseBlocks();
-}, 0);
+  let upgradeLogoRendered = false;
 
   async function renderUpgradeLogo() {
     const slot = document.getElementById("upgr-logo-slot");
-    if (!slot) return;
+    if (!slot || upgradeLogoRendered) return;
 
     try {
       const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
@@ -122,48 +116,10 @@ setTimeout(() => {
           />
         </svg>
       `;
+      upgradeLogoRendered = true;
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
-async function renderUpgradeLogo() {
-  const slot = document.getElementById("upgr-logo-slot");
-  if (!slot) return;
-
-  try {
-    const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
-    if (!res.ok) return;
-    const data = await res.json();
-
-    slot.innerHTML = `
-      <svg
-        class="upgr-logo"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="${data.viewBox}"
-        role="img"
-        aria-label="UPGRADE Innovations"
-        focusable="false"
-      >
-        <defs>
-          <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
-            <image href="${data.accentMask}" width="100%" height="100%" />
-          </mask>
-        </defs>
-
-        <image href="${data.base}" width="100%" height="100%" />
-
-        <rect
-          width="100%"
-          height="100%"
-          fill="var(--color-primary)"
-          mask="url(#upgrAccentMask)"
-        />
-      </svg>
-    `;
-  } catch (err) {
-    console.error("[UPGR] logo render error", err);
-  }
-}
-
   }
 
   async function applyTheme(mode, config, elements) {
@@ -280,32 +236,24 @@ async function renderUpgradeLogo() {
     );
   }
 
-function sanitizePhaseBlocks() {
-  // НИКОГДА не работаем на главной
-  if (document.body.classList.contains("is-home")) return;
+  function sanitizePhaseBlocks() {
+    document.querySelectorAll(".phase").forEach((phase) => {
+      if (phase.closest("header, nav, aside")) return;
 
-  const main = document.querySelector("main");
-  if (!main) return;
+      const textEl = phase.querySelector(".text");
+      const tagEl = phase.querySelector(".tag");
 
-  main.querySelectorAll(".phase").forEach((phase) => {
-    // Защита: не трогаем навигацию вообще
-    if (phase.closest("header, nav, aside")) return;
+      const text = textEl?.textContent.trim() ?? "";
+      const tag = tagEl?.textContent.trim() ?? "";
 
-    const textEl = phase.querySelector(".text");
-    const tagEl = phase.querySelector(".tag");
-
-    const text = textEl ? textEl.textContent.trim() : "";
-    const tag = tagEl ? tagEl.textContent.trim() : "";
-
-    if (!text && !tag) {
-      phase.remove();
-      return;
-    }
-
-    if (!text && textEl) textEl.remove();
-    if (!tag && tagEl) tagEl.remove();
-  });
-}
+      if (!text && !tag) {
+        phase.remove();
+        return;
+      }
+      if (!text && textEl) textEl.remove();
+      if (!tag && tagEl) tagEl.remove();
+    });
+  }
 
 
   async function getSessionSafe() {
@@ -504,165 +452,150 @@ function sanitizePhaseBlocks() {
     mediaQuery.addEventListener("change", updateNav);
   }
 
-  try {
-    // КРИТИЧНО: эти 2 строки вставляют header и menu
-    await fetchAndInsert("/includes/header.html", "header");
-const headerEl = qs("header");
-const headerLoaded = headerEl && headerEl.children.length > 0;
+  document.addEventListener("layout:ready", renderUpgradeLogo);
 
-if (!headerLoaded) {
-  document.addEventListener(
-    "layout:ready",
-    async () => {
-      await renderUpgradeLogo();
-    },
-    { once: true }
-  );
-} else {
-  await renderUpgradeLogo();
-}
+  document.addEventListener("layout:ready", async () => {
+    sanitizePhaseBlocks();
+    await renderUpgradeLogo();
+    applyAuthVisibility(null);
+    getSessionSafe().then(applyAuthVisibility);
+  });
 
-    console.log("[layout] header loaded");
-    await fetchAndInsert("/includes/menu.html", ".sidebar");
-    console.log("[layout] sidebar loaded");
+  async function loadLayout() {
+    try {
+      // КРИТИЧНО: эти 2 строки вставляют header и menu
+      await fetchAndInsert("/includes/header.html", "header");
+      console.log("[layout] header loaded");
+      await fetchAndInsert("/includes/menu.html", ".sidebar");
+      console.log("[layout] sidebar loaded");
 
-    // Theme switcher — строго после вставки header.html
-    await initThemeSwitcher();
-applyAuthVisibility(null);
-getSessionSafe().then((session) => applyAuthVisibility(session));
+      // Theme switcher — строго после вставки header.html
+      await initThemeSwitcher();
 
-const layoutReadyEvent = new Event("layout:ready");
-document.dispatchEvent(layoutReadyEvent);
+      document.dispatchEvent(new Event("layout:ready"));
 
-    const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
-    } else {
-      startChameleon();
-    }
-    enableChameleonOnNavigation();
-const startChameleon = () =>
-  runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+      const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+      } else {
+        startChameleon();
+      }
+      enableChameleonOnNavigation();
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
-} else {
-  startChameleon();
-}
+      // --- burger toggling и высота header ---
+      const body = document.body;
+      const root = document.documentElement;
+      const headerNode = qs("header");
 
-enableChameleonOnNavigation();
+      const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
+      // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
+      // поэтому берём по data-burger или .burger, а id оставляем как fallback.
+      const burger =
+        document.querySelector("[data-burger]") ||
+        document.querySelector(".burger") ||
+        document.getElementById("burgerBtn");
 
-    // --- burger toggling и высота header ---
-    const body = document.body;
-    const root = document.documentElement;
+      async function updateAuthButtons() {
+        if (!authButtonsEl) return;
 
-    const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
-
-    // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
-    // поэтому берём по data-burger или .burger, а id оставляем как fallback.
-    const burger =
-      document.querySelector("[data-burger]") ||
-      document.querySelector(".burger") ||
-      document.getElementById("burgerBtn");
-
-    async function updateAuthButtons() {
-      if (!authButtonsEl) return;
-
-      try {
-        const session = await getSessionSafe();
-        const isAuthenticated = Boolean(session?.user);
-        if (!isAuthenticated) return;
-
-        let hasProfileRoute = false;
         try {
-          const profileRes = await fetch("/account/profile", {
-            method: "HEAD",
-            credentials: "include",
-          });
-          hasProfileRoute = profileRes.ok;
-        } catch {
-          hasProfileRoute = false;
-        }
+          const session = await getSessionSafe();
+          const isAuthenticated = Boolean(session?.user);
+          if (!isAuthenticated) return;
 
-        authButtonsEl.innerHTML = `
-          <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-          ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
-        `;
-      } catch (err) {
-        console.error("[UPGR] Error loading auth session", err);
-      }
-    }
+          let hasProfileRoute = false;
+          try {
+            const profileRes = await fetch("/account/profile", {
+              method: "HEAD",
+              credentials: "include",
+            });
+            hasProfileRoute = profileRes.ok;
+          } catch {
+            hasProfileRoute = false;
+          }
 
-    function updateHeaderHeight() {
-      if (!headerNode) return;
-      const h = headerNode.offsetHeight;
-      root.style.setProperty("--header-height", h + "px");
-    }
-
-    const desktopBreakpoint = 1200;
-    const collapsedStorageKey = "upgr-sidebar-collapsed";
-    let isDesktop = window.innerWidth >= desktopBreakpoint;
-
-    function getCollapsedPreference() {
-      return localStorage.getItem(collapsedStorageKey) === "true";
-    }
-    function setCollapsedPreference(isCollapsed) {
-      localStorage.setItem(collapsedStorageKey, String(isCollapsed));
-    }
-
-    function syncMenuState() {
-      const nowDesktop = window.innerWidth >= desktopBreakpoint;
-      if (nowDesktop !== isDesktop) {
-        isDesktop = nowDesktop;
-        if (isDesktop) {
-          const preferCollapsed = getCollapsedPreference();
-          body.classList.toggle("menu-open", !preferCollapsed);
-        } else {
-          body.classList.remove("menu-open");
+          authButtonsEl.innerHTML = `
+            <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
+            ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
+          `;
+        } catch (err) {
+          console.error("[UPGR] Error loading auth session", err);
         }
       }
-    }
 
-    if (burger) {
-      burger.addEventListener("click", function () {
+      function updateHeaderHeight() {
+        if (!headerNode) return;
+        const h = headerNode.offsetHeight;
+        root.style.setProperty("--header-height", h + "px");
+      }
+
+      const desktopBreakpoint = 1200;
+      const collapsedStorageKey = "upgr-sidebar-collapsed";
+      let isDesktop = window.innerWidth >= desktopBreakpoint;
+
+      function getCollapsedPreference() {
+        return localStorage.getItem(collapsedStorageKey) === "true";
+      }
+      function setCollapsedPreference(isCollapsed) {
+        localStorage.setItem(collapsedStorageKey, String(isCollapsed));
+      }
+
+      function syncMenuState() {
         const nowDesktop = window.innerWidth >= desktopBreakpoint;
-        if (nowDesktop) {
-          body.classList.toggle("menu-open");
-          setCollapsedPreference(!body.classList.contains("menu-open"));
-          return;
+        if (nowDesktop !== isDesktop) {
+          isDesktop = nowDesktop;
+          if (isDesktop) {
+            const preferCollapsed = getCollapsedPreference();
+            body.classList.toggle("menu-open", !preferCollapsed);
+          } else {
+            body.classList.remove("menu-open");
+          }
         }
-        body.classList.toggle("menu-open");
-      });
-    } else {
-      console.warn("[layout] burger button not found (check header.html)");
-    }
+      }
 
-    if (isDesktop) {
-      const preferCollapsed = getCollapsedPreference();
-      body.classList.toggle("menu-open", !preferCollapsed);
-    } else {
-      body.classList.remove("menu-open");
-    }
+      if (burger) {
+        burger.addEventListener("click", function () {
+          const nowDesktop = window.innerWidth >= desktopBreakpoint;
+          if (nowDesktop) {
+            body.classList.toggle("menu-open");
+            setCollapsedPreference(!body.classList.contains("menu-open"));
+            return;
+          }
+          body.classList.toggle("menu-open");
+        });
+      } else {
+        console.warn("[layout] burger button not found (check header.html)");
+      }
 
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && body.classList.contains("menu-open")) {
+      if (isDesktop) {
+        const preferCollapsed = getCollapsedPreference();
+        body.classList.toggle("menu-open", !preferCollapsed);
+      } else {
         body.classList.remove("menu-open");
       }
-    });
 
-    window.addEventListener("load", updateHeaderHeight);
-    window.addEventListener("resize", updateHeaderHeight);
-    window.addEventListener("resize", syncMenuState);
-    updateHeaderHeight();
-    syncMenuState();
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && body.classList.contains("menu-open")) {
+          body.classList.remove("menu-open");
+        }
+      });
 
-    await updateAuthButtons();
+      window.addEventListener("load", updateHeaderHeight);
+      window.addEventListener("resize", updateHeaderHeight);
+      window.addEventListener("resize", syncMenuState);
+      updateHeaderHeight();
+      syncMenuState();
 
-    // Footer — строго после вставки menu.html
-    initStickyFooter();
-    initMobileBottomNav();
-  } catch (e) {
-    console.error("[UPGR] load-layout.js fatal error:", e);
+      await updateAuthButtons();
+
+      // Footer — строго после вставки menu.html
+      initStickyFooter();
+      initMobileBottomNav();
+    } catch (e) {
+      console.error("[UPGR] load-layout.js fatal error:", e);
+    }
   }
+
+  await loadLayout();
 })();
