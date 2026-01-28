@@ -92,6 +92,7 @@
           <img
             class="upgr-logo__base"
             src="/assets/logo/logo-black-only.png"
+
             alt="UPGRADE Innovations"
             loading="lazy"
             decoding="async"
