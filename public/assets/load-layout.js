@@ -87,34 +87,17 @@
     if (!slot || upgradeLogoRendered) return;
 
     try {
-      const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
-      if (!res.ok) return;
-      const data = await res.json();
-
       slot.innerHTML = `
-        <svg
-          class="upgr-logo"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="${data.viewBox}"
-          role="img"
-          aria-label="UPGRADE Innovations"
-          focusable="false"
-        >
-          <defs>
-            <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
-              <image href="${data.accentMask}" width="100%" height="100%" />
-            </mask>
-          </defs>
-
-          <image href="${data.base}" width="100%" height="100%" />
-
-          <rect
-            width="100%"
-            height="100%"
-            fill="var(--color-primary)"
-            mask="url(#upgrAccentMask)"
+        <span class="upgr-logo" aria-label="UPGRADE Innovations">
+          <img
+            class="upgr-logo__base"
+            src="/assets/brand/logo-black-only.png"
+            alt="UPGRADE Innovations"
+            loading="lazy"
+            decoding="async"
           />
-        </svg>
+          <span class="upgr-logo__accent" aria-hidden="true"></span>
+        </span>
       `;
       upgradeLogoRendered = true;
     } catch (err) {
