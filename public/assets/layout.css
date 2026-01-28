@@ -247,6 +247,9 @@ header .nav{
   height: 40px;
   width: auto;
   display: block;
+  position: relative;
+  max-width: 240px;
+  flex-shrink: 0;
 }
 .brand img,
 .brand svg{
@@ -261,6 +264,31 @@ header .nav{
   height: 40px;
   width: auto;
   display: block;
+  position: relative;
+  max-width: 240px;
+  flex-shrink: 0;
+}
+
+.upgr-logo__base{
+  height: 100%;
+  width: auto;
+  display: block;
+  max-width: 100%;
+}
+
+.upgr-logo__accent{
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary);
+  mask-image: url("/assets/logo/logo-blue-only.png");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-image: url("/assets/logo/logo-blue-only.png");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  pointer-events: none;
 }
 
 .brand-logo{font-family: var(--font-sans);}
