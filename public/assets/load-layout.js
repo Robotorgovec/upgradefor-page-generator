@@ -91,7 +91,8 @@
         <span class="upgr-logo" aria-label="UPGRADE Innovations">
           <img
             class="upgr-logo__base"
-            src="/assets/brand/logo-black-only.png"
+            src="/assets/logo/logo-black-only.png"
+
             alt="UPGRADE Innovations"
             loading="lazy"
             decoding="async"
