@@ -227,6 +227,8 @@ header{
   min-height: 56px;
   background:var(--header-bg);
   border-bottom:3px solid var(--brand);
+  overflow-x: clip;
+
 }
 /* Make the header container flush with the edges of the viewport and span full width */
 header .wrap{
@@ -303,11 +305,15 @@ header .nav{
   position: absolute;
   inset: 0;
   background-color: var(--color-primary);
-  mask-image: url("/assets/logo/logo-blue-only.png");
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: center;
-  -webkit-mask-image: url("/assets/logo/logo-blue-only.png");
+mask-image: url("/assets/logo/logo-blue-only.png");
+mask-repeat: no-repeat;
+mask-size: contain;
+mask-position: center;
+-webkit-mask-image: url("/assets/logo/logo-blue-only.png");
+-webkit-mask-repeat: no-repeat;
+-webkit-mask-size: contain;
+-webkit-mask-position: center;
+
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
