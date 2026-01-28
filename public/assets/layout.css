@@ -221,12 +221,14 @@ a:hover{text-decoration:underline}
 /* Header */
 header{
   display: block;
-  position: relative;
-  z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
   min-height: 56px;
   background:var(--header-bg);
   border-bottom:3px solid var(--brand);
   overflow-x: clip;
+
 }
 /* Make the header container flush with the edges of the viewport and span full width */
 header .wrap{
@@ -635,7 +637,7 @@ body.menu-open > .app-content{
 /* Sidebar */
 .sidebar{
   position: fixed;
-  z-index: 40;
+  z-index: 1200;
   top: var(--header-height);
   left: 0;
   bottom: 0;
@@ -762,8 +764,6 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 
 @media (max-width: 768px){
   header{
-    position: sticky;
-    top: 0;
     background: var(--neutral-0);
   }
 
@@ -780,6 +780,7 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
     width: var(--sidebar-expanded-width);
     transform: translateX(-100%);
     transition: transform var(--transition-fast);
+    z-index: 2100;
   }
   body.menu-open .sidebar{transform: translateX(0);}
 
@@ -801,6 +802,26 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 
   /* header использует inline svg, но оставим совместимость */
   .brand img{height: 32px;}
+}
+
+/* Mobile drawer overlay */
+.mobile-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+body.menu-open .mobile-overlay{
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (max-width: 768px){
+  body.menu-open{
+    overflow: hidden;
+  }
 }
 
 /* v9 auth burger adjustments */
