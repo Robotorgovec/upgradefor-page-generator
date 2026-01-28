@@ -87,34 +87,17 @@
     if (!slot || upgradeLogoRendered) return;
 
     try {
-      const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
-      if (!res.ok) return;
-      const data = await res.json();
-
       slot.innerHTML = `
-        <svg
-          class="upgr-logo"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="${data.viewBox}"
-          role="img"
-          aria-label="UPGRADE Innovations"
-          focusable="false"
-        >
-          <defs>
-            <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
-              <image href="${data.accentMask}" width="100%" height="100%" />
-            </mask>
-          </defs>
-
-          <image href="${data.base}" width="100%" height="100%" />
-
-          <rect
-            width="100%"
-            height="100%"
-            fill="var(--color-primary)"
-            mask="url(#upgrAccentMask)"
+        <span class="upgr-logo" aria-label="UPGRADE Innovations">
+          <img
+            class="upgr-logo__base"
+            src="/assets/logo/logo-black-only.png"
+            alt="UPGRADE Innovations"
+            loading="lazy"
+            decoding="async"
           />
-        </svg>
+          <span class="upgr-logo__accent" aria-hidden="true"></span>
+        </span>
       `;
       upgradeLogoRendered = true;
     } catch (err) {
@@ -486,6 +469,12 @@
       const body = document.body;
       const root = document.documentElement;
       const headerNode = qs("header");
+      const sidebar = qs(".sidebar");
+      let overlay = qs(".mobile-overlay");
+      if (!overlay) {
+        overlay = createEl("div", "mobile-overlay", { "aria-hidden": "true" });
+        document.body.appendChild(overlay);
+      }
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
@@ -495,6 +484,12 @@
         document.querySelector("[data-burger]") ||
         document.querySelector(".burger") ||
         document.getElementById("burgerBtn");
+
+      if (burger && sidebar) {
+        if (!sidebar.id) sidebar.id = "mobile-menu";
+        burger.setAttribute("aria-controls", sidebar.id);
+        burger.setAttribute("aria-expanded", "false");
+      }
 
       async function updateAuthButtons() {
         if (!authButtonsEl) return;
@@ -533,6 +528,7 @@
       const desktopBreakpoint = 1200;
       const collapsedStorageKey = "upgr-sidebar-collapsed";
       let isDesktop = window.innerWidth >= desktopBreakpoint;
+      let lastFocused = null;
 
       function getCollapsedPreference() {
         return localStorage.getItem(collapsedStorageKey) === "true";
@@ -547,37 +543,91 @@
           isDesktop = nowDesktop;
           if (isDesktop) {
             const preferCollapsed = getCollapsedPreference();
-            body.classList.toggle("menu-open", !preferCollapsed);
+            setMenuOpen(!preferCollapsed, { focus: false });
           } else {
-            body.classList.remove("menu-open");
+            setMenuOpen(false, { focus: false });
           }
         }
+      }
+
+      function setMenuOpen(shouldOpen, opts = {}) {
+        const { focus = true } = opts;
+        body.classList.toggle("menu-open", shouldOpen);
+        if (burger) burger.setAttribute("aria-expanded", String(shouldOpen));
+        if (shouldOpen && focus && sidebar) {
+          lastFocused = document.activeElement;
+          const focusable = sidebar.querySelector(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusable) focusable.focus();
+        }
+        if (!shouldOpen && lastFocused instanceof HTMLElement) {
+          lastFocused.focus();
+          lastFocused = null;
+        }
+      }
+
+      function closeMenu() {
+        setMenuOpen(false);
       }
 
       if (burger) {
         burger.addEventListener("click", function () {
           const nowDesktop = window.innerWidth >= desktopBreakpoint;
           if (nowDesktop) {
-            body.classList.toggle("menu-open");
-            setCollapsedPreference(!body.classList.contains("menu-open"));
+            const nextOpen = !body.classList.contains("menu-open");
+            setMenuOpen(nextOpen, { focus: false });
+            setCollapsedPreference(!nextOpen);
             return;
           }
-          body.classList.toggle("menu-open");
+          setMenuOpen(!body.classList.contains("menu-open"));
         });
       } else {
         console.warn("[layout] burger button not found (check header.html)");
       }
 
+      if (overlay) {
+        overlay.addEventListener("click", closeMenu);
+      }
+
+      if (sidebar) {
+        sidebar.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+          const link = target.closest("a");
+          if (!link) return;
+          if (window.innerWidth < 769) closeMenu();
+        });
+      }
+
       if (isDesktop) {
         const preferCollapsed = getCollapsedPreference();
-        body.classList.toggle("menu-open", !preferCollapsed);
+        setMenuOpen(!preferCollapsed, { focus: false });
       } else {
-        body.classList.remove("menu-open");
+        setMenuOpen(false, { focus: false });
       }
 
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && body.classList.contains("menu-open")) {
-          body.classList.remove("menu-open");
+          closeMenu();
+          return;
+        }
+        if (e.key !== "Tab" || !body.classList.contains("menu-open") || !sidebar) return;
+        if (window.innerWidth >= 769) return;
+        const focusable = Array.from(
+          sidebar.querySelectorAll(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex=\"-1\"])'
+          )
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
         }
       });
 
