@@ -303,11 +303,15 @@ header .nav{
   position: absolute;
   inset: 0;
   background-color: var(--color-primary);
-  mask-image: url("/assets/logo/logo-blue-only.png");
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: center;
-  -webkit-mask-image: url("/assets/logo/logo-blue-only.png");
+mask-image: url("/assets/logo/logo-blue-only.png");
+mask-repeat: no-repeat;
+mask-size: contain;
+mask-position: center;
+-webkit-mask-image: url("/assets/logo/logo-blue-only.png");
+-webkit-mask-repeat: no-repeat;
+-webkit-mask-size: contain;
+-webkit-mask-position: center;
+
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
