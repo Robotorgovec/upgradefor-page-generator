@@ -1,27 +1,53 @@
 (async function () {
   "use strict";
 
+  const layoutVersion = "2026-01-29-01";
+  console.info("[UPGR] layout init v" + layoutVersion, new Date().toISOString());
+
   async function fetchAndInsert(url, selector) {
     const container = document.querySelector(selector);
     if (!container) {
       console.warn("[UPGR] container not found for", selector);
-      return;
+      return false;
     }
 
     try {
       const res = await fetch(url, { credentials: "include" });
       if (!res.ok) {
         console.error("[UPGR] failed to load", url, res.status);
-        return;
+        return false;
       }
       const html = await res.text();
       if (!html || !html.trim()) {
         console.warn("[UPGR] empty layout response for", url);
-        return;
+        return false;
       }
       container.innerHTML = html;
+      return true;
     } catch (err) {
       console.error("[UPGR] Error loading", url, err);
+      return false;
+    }
+  }
+
+  async function fetchAndInsertInto(url, container) {
+    if (!container) return false;
+    try {
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) {
+        console.error("[UPGR] failed to load", url, res.status);
+        return false;
+      }
+      const html = await res.text();
+      if (!html || !html.trim()) {
+        console.warn("[UPGR] empty layout response for", url);
+        return false;
+      }
+      container.innerHTML = html;
+      return true;
+    } catch (err) {
+      console.error("[UPGR] Error loading", url, err);
+      return false;
     }
   }
 
@@ -39,6 +65,74 @@
       }
     }
     return el;
+  }
+
+  function ensureHeaderSlot() {
+    let slot =
+      document.querySelector('[data-slot="header"]') ||
+      document.getElementById("site-header-slot") ||
+      document.querySelector("header");
+    if (!slot) {
+      slot = document.createElement("header");
+      slot.id = "site-header-slot";
+      document.body.prepend(slot);
+    } else if (!slot.id) {
+      slot.id = "site-header-slot";
+    }
+    return slot;
+  }
+
+  function ensureSidebarSlot(afterNode) {
+    let slot = document.querySelector(".sidebar");
+    if (!slot) {
+      slot = document.createElement("aside");
+      slot.className = "sidebar";
+      if (afterNode && afterNode.parentNode) {
+        afterNode.parentNode.insertBefore(slot, afterNode.nextSibling);
+      } else {
+        document.body.appendChild(slot);
+      }
+    }
+    return slot;
+  }
+
+  function renderFallbackHeader(slot) {
+    if (!slot) return false;
+    slot.innerHTML = `
+      <div class="wrap nav">
+        <button class="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
+          <span class="burger-icon">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+          </span>
+        </button>
+        <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
+          <div id="upgr-logo-slot"></div>
+        </a>
+        <div class="grow"></div>
+        <div class="auth-buttons">
+          <a class="btn btn--ghost" href="/account/login" rel="nofollow">Sign in</a>
+          <a class="btn" href="/account/register" rel="nofollow">Sign up</a>
+        </div>
+      </div>
+    `;
+    return true;
+  }
+
+  function renderFallbackMenu(slot) {
+    if (!slot) return false;
+    slot.innerHTML = `
+      <div class="sidebar-inner">
+        <div class="sidebar-section">
+          <a class="menu-item" href="/"><span class="menu-label">Главная</span></a>
+          <a class="menu-item" href="/catalog"><span class="menu-label">Каталог</span></a>
+          <a class="menu-item" href="/account/login"><span class="menu-label">Вход</span></a>
+          <a class="menu-item" href="/account/register"><span class="menu-label">Регистрация</span></a>
+        </div>
+      </div>
+    `;
+    return true;
   }
 
   const themeStorageKey = "userTheme";
@@ -87,34 +181,17 @@
     if (!slot || upgradeLogoRendered) return;
 
     try {
-      const res = await fetch("/assets/logo/logo-data.json", { credentials: "include" });
-      if (!res.ok) return;
-      const data = await res.json();
-
       slot.innerHTML = `
-        <svg
-          class="upgr-logo"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="${data.viewBox}"
-          role="img"
-          aria-label="UPGRADE Innovations"
-          focusable="false"
-        >
-          <defs>
-            <mask id="upgrAccentMask" maskUnits="userSpaceOnUse">
-              <image href="${data.accentMask}" width="100%" height="100%" />
-            </mask>
-          </defs>
-
-          <image href="${data.base}" width="100%" height="100%" />
-
-          <rect
-            width="100%"
-            height="100%"
-            fill="var(--color-primary)"
-            mask="url(#upgrAccentMask)"
+        <span class="upgr-logo" aria-label="UPGRADE Innovations">
+          <img
+            class="upgr-logo__base"
+            src="/assets/logo/logo-black-only.png"
+            alt="UPGRADE Innovations"
+            loading="lazy"
+            decoding="async"
           />
-        </svg>
+          <span class="upgr-logo__accent" aria-hidden="true"></span>
+        </span>
       `;
       upgradeLogoRendered = true;
     } catch (err) {
@@ -463,11 +540,31 @@
 
   async function loadLayout() {
     try {
+      const waitForSlot = async (attempts = 5, delayMs = 200) => {
+        for (let i = 0; i < attempts; i++) {
+          const slot = ensureHeaderSlot();
+          if (slot) return slot;
+          await new Promise((resolve) => setTimeout(resolve, delayMs));
+        }
+        return ensureHeaderSlot();
+      };
+
       // КРИТИЧНО: эти 2 строки вставляют header и menu
-      await fetchAndInsert("/includes/header.html", "header");
+      const headerSlot = await waitForSlot();
+      const headerOk = await fetchAndInsertInto("/includes/header.html", headerSlot);
+      if (!headerOk) {
+        renderFallbackHeader(headerSlot);
+      }
       console.log("[layout] header loaded");
-      await fetchAndInsert("/includes/menu.html", ".sidebar");
+
+      const sidebarSlot = ensureSidebarSlot(headerSlot);
+      const menuOk = await fetchAndInsertInto("/includes/menu.html", sidebarSlot);
+      if (!menuOk) {
+        renderFallbackMenu(sidebarSlot);
+      }
       console.log("[layout] sidebar loaded");
+
+      window.__UPGR_LAYOUT_OK__ = Boolean(headerSlot?.innerHTML?.trim());
 
       // Theme switcher — строго после вставки header.html
       await initThemeSwitcher();
@@ -486,6 +583,12 @@
       const body = document.body;
       const root = document.documentElement;
       const headerNode = qs("header");
+      const sidebar = qs(".sidebar");
+      let overlay = qs(".mobile-overlay");
+      if (!overlay) {
+        overlay = createEl("div", "mobile-overlay", { "aria-hidden": "true" });
+        document.body.appendChild(overlay);
+      }
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
@@ -495,6 +598,12 @@
         document.querySelector("[data-burger]") ||
         document.querySelector(".burger") ||
         document.getElementById("burgerBtn");
+
+      if (burger && sidebar) {
+        if (!sidebar.id) sidebar.id = "mobile-menu";
+        burger.setAttribute("aria-controls", sidebar.id);
+        burger.setAttribute("aria-expanded", "false");
+      }
 
       async function updateAuthButtons() {
         if (!authButtonsEl) return;
@@ -533,6 +642,7 @@
       const desktopBreakpoint = 1200;
       const collapsedStorageKey = "upgr-sidebar-collapsed";
       let isDesktop = window.innerWidth >= desktopBreakpoint;
+      let lastFocused = null;
 
       function getCollapsedPreference() {
         return localStorage.getItem(collapsedStorageKey) === "true";
@@ -547,37 +657,91 @@
           isDesktop = nowDesktop;
           if (isDesktop) {
             const preferCollapsed = getCollapsedPreference();
-            body.classList.toggle("menu-open", !preferCollapsed);
+            setMenuOpen(!preferCollapsed, { focus: false });
           } else {
-            body.classList.remove("menu-open");
+            setMenuOpen(false, { focus: false });
           }
         }
+      }
+
+      function setMenuOpen(shouldOpen, opts = {}) {
+        const { focus = true } = opts;
+        body.classList.toggle("menu-open", shouldOpen);
+        if (burger) burger.setAttribute("aria-expanded", String(shouldOpen));
+        if (shouldOpen && focus && sidebar) {
+          lastFocused = document.activeElement;
+          const focusable = sidebar.querySelector(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusable) focusable.focus();
+        }
+        if (!shouldOpen && lastFocused instanceof HTMLElement) {
+          lastFocused.focus();
+          lastFocused = null;
+        }
+      }
+
+      function closeMenu() {
+        setMenuOpen(false);
       }
 
       if (burger) {
         burger.addEventListener("click", function () {
           const nowDesktop = window.innerWidth >= desktopBreakpoint;
           if (nowDesktop) {
-            body.classList.toggle("menu-open");
-            setCollapsedPreference(!body.classList.contains("menu-open"));
+            const nextOpen = !body.classList.contains("menu-open");
+            setMenuOpen(nextOpen, { focus: false });
+            setCollapsedPreference(!nextOpen);
             return;
           }
-          body.classList.toggle("menu-open");
+          setMenuOpen(!body.classList.contains("menu-open"));
         });
       } else {
         console.warn("[layout] burger button not found (check header.html)");
       }
 
+      if (overlay) {
+        overlay.addEventListener("click", closeMenu);
+      }
+
+      if (sidebar) {
+        sidebar.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+          const link = target.closest("a");
+          if (!link) return;
+          if (window.innerWidth < 769) closeMenu();
+        });
+      }
+
       if (isDesktop) {
         const preferCollapsed = getCollapsedPreference();
-        body.classList.toggle("menu-open", !preferCollapsed);
+        setMenuOpen(!preferCollapsed, { focus: false });
       } else {
-        body.classList.remove("menu-open");
+        setMenuOpen(false, { focus: false });
       }
 
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && body.classList.contains("menu-open")) {
-          body.classList.remove("menu-open");
+          closeMenu();
+          return;
+        }
+        if (e.key !== "Tab" || !body.classList.contains("menu-open") || !sidebar) return;
+        if (window.innerWidth >= 769) return;
+        const focusable = Array.from(
+          sidebar.querySelectorAll(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex=\"-1\"])'
+          )
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
         }
       });
 
@@ -594,8 +758,22 @@
       initMobileBottomNav();
     } catch (e) {
       console.error("[UPGR] load-layout.js fatal error:", e);
+      const headerSlot = ensureHeaderSlot();
+      renderFallbackHeader(headerSlot);
+      const sidebarSlot = ensureSidebarSlot(headerSlot);
+      renderFallbackMenu(sidebarSlot);
+      window.__UPGR_LAYOUT_OK__ = Boolean(headerSlot?.innerHTML?.trim());
+      renderUpgradeLogo();
     }
   }
 
-  await loadLayout();
+  const startLayout = () => {
+    loadLayout();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startLayout, { once: true });
+  } else {
+    startLayout();
+  }
 })();
