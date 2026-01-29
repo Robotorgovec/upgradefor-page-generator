@@ -42,6 +42,27 @@ RESEND_API_KEY=""
 
 ---
 
+## Навигация и Layout (обязательная архитектура)
+
+Навигация (`Header` + `Sidebar`) рендерится **только** через единый `app/layout.tsx`.
+Любые динамические вставки навигации, HTML-includes и `load-layout.js` запрещены.
+
+### Проверки для CI
+
+Запускайте в CI:
+
+```bash
+npm run test:layout
+npm run check:layout
+```
+
+Эти проверки гарантируют:
+- snapshot LayoutShell
+- наличие `Header` и `Sidebar` в layout-дереве
+- отсутствие ссылок на `load-layout.js` внутри `app/` и `components/`
+
+---
+
 ## Восстановление пароля (этап 4)
 
 На этом этапе добавлено восстановление пароля через email.

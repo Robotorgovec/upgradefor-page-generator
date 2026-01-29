@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "next start"
+    "start": "next start",
+    "test:layout": "node scripts/layout.test.mjs",
+    "check:layout": "node scripts/verify-layout.mjs"
   },
   "dependencies": {
     "next": "^16.1.4",

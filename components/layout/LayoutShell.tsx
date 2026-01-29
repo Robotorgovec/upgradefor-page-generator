@@ -1,0 +1,43 @@
+"use client";
+
+import { useCallback, useState } from "react";
+import type { ReactNode } from "react";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+
+type LayoutShellProps = {
+  children: ReactNode;
+};
+
+export default function LayoutShell({ children }: LayoutShellProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen((prev) => !prev);
+  }, []);
+
+  const closeSidebar = useCallback(() => {
+    setIsSidebarOpen(false);
+  }, []);
+
+  return (
+    <>
+      <a className="skip" href="#main-content">
+        К содержанию
+      </a>
+      <Header isSidebarOpen={isSidebarOpen} onToggleSidebar={toggleSidebar} />
+      <div className="app-shell" data-sidebar-open={isSidebarOpen}>
+        <Sidebar onClose={closeSidebar} />
+        <main id="main-content" className="app-content">
+          {children}
+        </main>
+      </div>
+      <button
+        className="sidebar-overlay"
+        type="button"
+        aria-label="Закрыть меню"
+        onClick={closeSidebar}
+      />
+    </>
+  );
+}
