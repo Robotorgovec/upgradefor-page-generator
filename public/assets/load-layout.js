@@ -1,27 +1,53 @@
 (async function () {
   "use strict";
 
+  const layoutVersion = "2026-01-29-01";
+  console.info("[UPGR] layout init v" + layoutVersion, new Date().toISOString());
+
   async function fetchAndInsert(url, selector) {
     const container = document.querySelector(selector);
     if (!container) {
       console.warn("[UPGR] container not found for", selector);
-      return;
+      return false;
     }
 
     try {
       const res = await fetch(url, { credentials: "include" });
       if (!res.ok) {
         console.error("[UPGR] failed to load", url, res.status);
-        return;
+        return false;
       }
       const html = await res.text();
       if (!html || !html.trim()) {
         console.warn("[UPGR] empty layout response for", url);
-        return;
+        return false;
       }
       container.innerHTML = html;
+      return true;
     } catch (err) {
       console.error("[UPGR] Error loading", url, err);
+      return false;
+    }
+  }
+
+  async function fetchAndInsertInto(url, container) {
+    if (!container) return false;
+    try {
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) {
+        console.error("[UPGR] failed to load", url, res.status);
+        return false;
+      }
+      const html = await res.text();
+      if (!html || !html.trim()) {
+        console.warn("[UPGR] empty layout response for", url);
+        return false;
+      }
+      container.innerHTML = html;
+      return true;
+    } catch (err) {
+      console.error("[UPGR] Error loading", url, err);
+      return false;
     }
   }
 
@@ -39,6 +65,74 @@
       }
     }
     return el;
+  }
+
+  function ensureHeaderSlot() {
+    let slot =
+      document.querySelector('[data-slot="header"]') ||
+      document.getElementById("site-header-slot") ||
+      document.querySelector("header");
+    if (!slot) {
+      slot = document.createElement("header");
+      slot.id = "site-header-slot";
+      document.body.prepend(slot);
+    } else if (!slot.id) {
+      slot.id = "site-header-slot";
+    }
+    return slot;
+  }
+
+  function ensureSidebarSlot(afterNode) {
+    let slot = document.querySelector(".sidebar");
+    if (!slot) {
+      slot = document.createElement("aside");
+      slot.className = "sidebar";
+      if (afterNode && afterNode.parentNode) {
+        afterNode.parentNode.insertBefore(slot, afterNode.nextSibling);
+      } else {
+        document.body.appendChild(slot);
+      }
+    }
+    return slot;
+  }
+
+  function renderFallbackHeader(slot) {
+    if (!slot) return false;
+    slot.innerHTML = `
+      <div class="wrap nav">
+        <button class="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
+          <span class="burger-icon">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+          </span>
+        </button>
+        <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
+          <div id="upgr-logo-slot"></div>
+        </a>
+        <div class="grow"></div>
+        <div class="auth-buttons">
+          <a class="btn btn--ghost" href="/account/login" rel="nofollow">Sign in</a>
+          <a class="btn" href="/account/register" rel="nofollow">Sign up</a>
+        </div>
+      </div>
+    `;
+    return true;
+  }
+
+  function renderFallbackMenu(slot) {
+    if (!slot) return false;
+    slot.innerHTML = `
+      <div class="sidebar-inner">
+        <div class="sidebar-section">
+          <a class="menu-item" href="/"><span class="menu-label">Главная</span></a>
+          <a class="menu-item" href="/catalog"><span class="menu-label">Каталог</span></a>
+          <a class="menu-item" href="/account/login"><span class="menu-label">Вход</span></a>
+          <a class="menu-item" href="/account/register"><span class="menu-label">Регистрация</span></a>
+        </div>
+      </div>
+    `;
+    return true;
   }
 
   const themeStorageKey = "userTheme";
@@ -459,11 +553,31 @@ slot.innerHTML = `
 
   async function loadLayout() {
     try {
+      const waitForSlot = async (attempts = 5, delayMs = 200) => {
+        for (let i = 0; i < attempts; i++) {
+          const slot = ensureHeaderSlot();
+          if (slot) return slot;
+          await new Promise((resolve) => setTimeout(resolve, delayMs));
+        }
+        return ensureHeaderSlot();
+      };
+
       // КРИТИЧНО: эти 2 строки вставляют header и menu
-      await fetchAndInsert("/includes/header.html", "header");
+      const headerSlot = await waitForSlot();
+      const headerOk = await fetchAndInsertInto("/includes/header.html", headerSlot);
+      if (!headerOk) {
+        renderFallbackHeader(headerSlot);
+      }
       console.log("[layout] header loaded");
-      await fetchAndInsert("/includes/menu.html", ".sidebar");
+
+      const sidebarSlot = ensureSidebarSlot(headerSlot);
+      const menuOk = await fetchAndInsertInto("/includes/menu.html", sidebarSlot);
+      if (!menuOk) {
+        renderFallbackMenu(sidebarSlot);
+      }
       console.log("[layout] sidebar loaded");
+
+      window.__UPGR_LAYOUT_OK__ = Boolean(headerSlot?.innerHTML?.trim());
 
       // Theme switcher — строго после вставки header.html
       await initThemeSwitcher();
@@ -657,8 +771,22 @@ slot.innerHTML = `
       initMobileBottomNav();
     } catch (e) {
       console.error("[UPGR] load-layout.js fatal error:", e);
+      const headerSlot = ensureHeaderSlot();
+      renderFallbackHeader(headerSlot);
+      const sidebarSlot = ensureSidebarSlot(headerSlot);
+      renderFallbackMenu(sidebarSlot);
+      window.__UPGR_LAYOUT_OK__ = Boolean(headerSlot?.innerHTML?.trim());
+      renderUpgradeLogo();
     }
   }
 
-  await loadLayout();
+  const startLayout = () => {
+    loadLayout();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startLayout, { once: true });
+  } else {
+    startLayout();
+  }
 })();
