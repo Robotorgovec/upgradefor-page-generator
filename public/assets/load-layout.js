@@ -186,6 +186,19 @@
           <img
             class="upgr-logo__base"
             src="/assets/logo/logo-black-only.png"
+slot.innerHTML = `
+  <span class="upgr-logo" aria-label="UPGRADE Innovations">
+    <img
+      class="upgr-logo__base"
+      src="/assets/logo/logo-black-only.png"
+      alt="UPGRADE Innovations"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="upgr-logo__accent" aria-hidden="true"></span>
+  </span>
+`;
+
             alt="UPGRADE Innovations"
             loading="lazy"
             decoding="async"
