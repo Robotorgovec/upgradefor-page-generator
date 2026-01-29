@@ -79,7 +79,7 @@ async function fetchAndInsertInto(url, container) {
     } catch (err) {
       console.error("[UPGR] Error loading", url, err);
       return false;
-    }
+}
 
     }
   }
@@ -103,20 +103,28 @@ async function fetchAndInsertInto(url, container) {
   function ensureHeaderSlot() {
     let slot =
       document.querySelector('[data-slot="header"]') ||
+document.getElementById("upgr-header") ||
+
       document.getElementById("site-header-slot") ||
       document.querySelector("header");
     if (!slot) {
       slot = document.createElement("header");
-      slot.id = "site-header-slot";
-      document.body.prepend(slot);
-    } else if (!slot.id) {
-      slot.id = "site-header-slot";
+slot.id = "upgr-header";
+document.body.prepend(slot);
+} else if (!slot.id) {
+  slot.id = "upgr-header";
+}
+
     }
     return slot;
   }
 
   function ensureSidebarSlot(afterNode) {
-    let slot = document.querySelector(".sidebar");
+let slot =
+  document.querySelector('[data-slot="sidebar"]') ||
+  document.getElementById("upgr-sidebar") ||
+  document.querySelector(".sidebar");
+
     if (!slot) {
       slot = document.createElement("aside");
       slot.className = "sidebar";
@@ -126,6 +134,10 @@ async function fetchAndInsertInto(url, container) {
         document.body.appendChild(slot);
       }
     }
+if (!slot.id) {
+  slot.id = "upgr-sidebar";
+}
+
     return slot;
   }
 
