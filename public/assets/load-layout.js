@@ -1,7 +1,7 @@
 (async function () {
   "use strict";
 
-const layoutVersion = "2026-01-29-02";
+const layoutVersion = "2026-01-29-03";
 console.info("[UPGR] layout init v" + layoutVersion, new Date().toISOString());
 
 
@@ -101,16 +101,16 @@ async function fetchAndInsertInto(url, container) {
   }
 
   function ensureHeaderSlot() {
-    let slot =
-      document.querySelector('[data-slot="header"]') ||
-document.getElementById("upgr-header") ||
+let slot =
+  document.querySelector('[data-slot="header"]') ||
+  document.getElementById("upgr-header") ||
+  document.getElementById("site-header-slot") ||
+  document.querySelector("header");
 
-      document.getElementById("site-header-slot") ||
-      document.querySelector("header");
-    if (!slot) {
-      slot = document.createElement("header");
-slot.id = "upgr-header";
-document.body.prepend(slot);
+if (!slot) {
+  slot = document.createElement("header");
+  slot.id = "upgr-header";
+  document.body.prepend(slot);
 } else if (!slot.id) {
   slot.id = "upgr-header";
 }
@@ -119,23 +119,25 @@ document.body.prepend(slot);
     return slot;
   }
 
-  function ensureSidebarSlot(afterNode) {
-let slot =
-  document.querySelector('[data-slot="sidebar"]') ||
-  document.getElementById("upgr-sidebar") ||
-  document.querySelector(".sidebar");
+function ensureSidebarSlot(afterNode) {
+  let slot =
+    document.querySelector('[data-slot="sidebar"]') ||
+    document.getElementById("upgr-sidebar") ||
+    document.querySelector(".sidebar");
 
-    if (!slot) {
-      slot = document.createElement("aside");
-      slot.className = "sidebar";
-      if (afterNode && afterNode.parentNode) {
-        afterNode.parentNode.insertBefore(slot, afterNode.nextSibling);
-      } else {
-        document.body.appendChild(slot);
-      }
+  if (!slot) {
+    slot = document.createElement("aside");
+    slot.className = "sidebar";
+    if (afterNode && afterNode.parentNode) {
+      afterNode.parentNode.insertBefore(slot, afterNode.nextSibling);
+    } else {
+      document.body.appendChild(slot);
     }
-if (!slot.id) {
-  slot.id = "upgr-sidebar";
+  }
+
+  if (!slot.id) {
+    slot.id = "upgr-sidebar";
+  }
 }
 
     return slot;
@@ -615,7 +617,8 @@ slot.innerHTML = `
       }
       console.log("[layout] header loaded");
 
-      const sidebarSlot = ensureSidebarSlot(headerSlot);
+const sidebarSlot = ensureSidebarSlot(headerSlot);
+
       const menuOk = await fetchAndInsertInto("/includes/menu.html", sidebarSlot);
       if (!menuOk) {
         renderFallbackMenu(sidebarSlot);
@@ -818,7 +821,8 @@ slot.innerHTML = `
       console.error("[UPGR] load-layout.js fatal error:", e);
       const headerSlot = ensureHeaderSlot();
       renderFallbackHeader(headerSlot);
-      const sidebarSlot = ensureSidebarSlot(headerSlot);
+const sidebarSlot = ensureSidebarSlot(headerSlot);
+
       renderFallbackMenu(sidebarSlot);
       window.__UPGR_LAYOUT_OK__ = Boolean(headerSlot?.innerHTML?.trim());
       renderUpgradeLogo();
