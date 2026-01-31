@@ -13,8 +13,14 @@
     <img src="/assets/upgrade-innovations-logo-main.svg" alt="UPGRADE Innovations logo" style="height:40px;width:auto;">
   </a>
 <div class="grow"></div>
+  <!-- Кнопки авторизации (видны на десктопе) -->
+  <div class="auth-buttons">
+    <a class="btn btn--ghost" href="/account/login" rel="nofollow" data-auth-link="signin">Sign in</a>
+    <a class="btn" href="/account/register" rel="nofollow" data-auth-link="signup">Sign up</a>
+  </div>
+
   <!-- Иконки действий (мобильная шапка) -->
-  <div class="header-icons" aria-label="Быстрые действия">
+  <div class="header-icons" aria-label="Быстрые действия" style="display:flex">
     <button class="icon-btn" aria-label="Поиск" data-path="/search">
       <span class="material-symbols-outlined">search</span>
     </button>
@@ -28,9 +34,46 @@
         aria-haspopup="true"
         aria-expanded="false"
         aria-label="Выбор цвета"
-      >
-        <span class="theme-dot" aria-hidden="true"></span>
-      </button>
+<button
+  class="theme-switch-trigger"
+  type="button"
+  aria-haspopup="true"
+  aria-expanded="false"
+  aria-label="Выбор цвета"
+  style="border:none;background:transparent;padding:0"
+>
+  <span class="theme-dot" aria-hidden="true"></span>
+</button>
+
+<div class="theme-switch-menu" role="menu" aria-label="Цвет сайта">
+  <div class="theme-switch-title">🎨 Цвет сайта</div>
+
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="auto" aria-checked="false">
+    Авто (по дню)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="red" aria-checked="false">
+    Красный (Воскресенье)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="orange" aria-checked="false">
+    Оранжевый (Понедельник)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="yellow" aria-checked="false">
+    Жёлтый (Вторник)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="green" aria-checked="false">
+    Зелёный (Среда)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="cyan" aria-checked="false">
+    Голубой (Четверг)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="blue" aria-checked="false">
+    Синий (Пятница)
+  </button>
+  <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="violet" aria-checked="false">
+    Фиолетовый (Суббота)
+  </button>
+</div>
+
 
       <div class="theme-switch-menu" role="menu" aria-label="Цвет сайта">
         <div class="theme-switch-title">🎨 Цвет сайта</div>
@@ -61,11 +104,5 @@
         </button>
       </div>
     </div>
-  </div>
-
-  <!-- Кнопки авторизации (видны на десктопе) -->
-  <div class="auth-buttons">
-    <a class="btn btn--ghost" href="/account/login" rel="nofollow" data-auth-link="signin">Sign in</a>
-    <a class="btn" href="/account/register" rel="nofollow" data-auth-link="signup">Sign up</a>
   </div>
 </div>
