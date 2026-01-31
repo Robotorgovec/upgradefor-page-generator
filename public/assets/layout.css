@@ -236,6 +236,21 @@ header .nav{
   min-width: 0;
   max-width: 60vw;
 }
+.brand .upgr-logo{
+  display:inline-flex;
+  align-items:center;
+  height:40px;
+}
+.brand .upgr-logo__base{
+  height:100%;
+  width:auto;
+}
+#upgr-logo-slot > img,
+#upgr-logo-slot > svg{
+  height: 40px;
+  width: auto;
+  display: block;
+}
 .brand img,
 .brand svg{
   height:40px;
@@ -243,23 +258,6 @@ header .nav{
   display:block;
   max-width: 240px;
 }
-.upgr-logo{
-  height: 40px;
-  width: auto;
-  display: block;
-  position: relative;
-  max-width: 240px;
-  flex-shrink: 0;
-}
-.brand img,
-.brand svg{
-  height: 40px;
-  width: auto;
-  display: block;
-  max-width: 240px;
-}
-
-/* совместимость: если где-то используется класс upgr-logo */
 .upgr-logo{
   height: 40px;
   width: auto;
@@ -302,16 +300,21 @@ mask-position: center;
 .grow{flex:1;min-width:0}
 .auth-buttons{
   display:flex;
-  margin-left:auto;
-  margin-right: var(--space-2);
+  margin-left: 0;
+  margin-right: 0;
   align-items:center;
   gap:var(--space-1)
 }
 .header-icons{
-  display:none;
+  display:flex;
   align-items:center;
   gap:8px;
   flex-shrink: 0;
+}
+.header-icons .theme-switch-trigger{
+  border: none;
+  background: transparent;
+  padding: 0;
 }
 .icon-btn{
   border:none;
@@ -476,7 +479,7 @@ svg.theme-icon{
 
 /* Бета-баннер */
 .phase{background:var(--primary-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.phase .content{display:flex;gap:12px;align-items:center;padding:10px 0}
+.phase .content{display:flex;gap:12px;align-items:center;padding:8px 0}
 .tag{font-size:.8rem;font-weight:800;color:var(--tag-text);background:var(--tag-bg);border:1px solid var(--tag-border);border-radius:6px;padding:.25rem .5rem}
 .phase .text{color:var(--text)}
 
@@ -558,7 +561,7 @@ body{
 }
 body > .app-content{
   margin-left: var(--sidebar-collapsed-width);
-  padding-top: calc(var(--header-height) + 8px);
+  padding-top: calc(var(--header-height) + 4px);
   transition: margin-left var(--transition-fast);
   width: calc(100% - var(--sidebar-collapsed-width));
 }
@@ -736,6 +739,14 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 
   .nav{gap:12px;}
   .brand{max-width: 50vw;}
+  .brand .upgr-logo{
+    height: 32px;
+  }
+  #upgr-logo-slot > img,
+  #upgr-logo-slot > svg{
+    height: 32px;
+    width: auto;
+  }
 
   .burger{margin-left: 4px !important;}
   body:not(.menu-open) .burger,
@@ -743,6 +754,10 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 
   /* header использует inline svg, но оставим совместимость */
   .brand img{height: 32px;}
+
+  .phase .content{
+    padding: 6px 0;
+  }
 }
 
 /* v9 auth burger adjustments */
@@ -842,7 +857,7 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   }
 
   body > .app-content{
-    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 12px) !important;
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 6px) !important;
   }
 }
 
