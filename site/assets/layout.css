@@ -582,6 +582,9 @@ body.menu-open .burger-line:nth-child(3) {
     padding-left: 8px;
     padding-right: 8px;
   }
+  .brand {
+    transform: translateY(1px);
+  }
   .brand img {
     height: 32px;
   }

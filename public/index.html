@@ -37,6 +37,35 @@
 
   <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
+  <style>
+    body > .app-content {
+      padding-top: var(--header-height);
+    }
+    .phase .content {
+      padding: 6px 0 4px;
+    }
+    @media (max-width: 768px) {
+      body > .app-content {
+        padding-top: calc(var(--header-height) - 1px);
+      }
+      .phase {
+        border-radius: 0 0 8px 8px;
+      }
+      .phase .content {
+        padding: 4px 0 3px;
+        gap: 6px;
+      }
+      .phase .text {
+        font-size: 0.88rem;
+        line-height: 1.35;
+      }
+      .tag {
+        font-size: 0.7rem;
+        padding: 0.18rem 0.4rem;
+      }
+    }
+  </style>
+
   
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -323,7 +352,7 @@
   </main>
 
   <footer>
-    <div class="wrap">© <span id="y"></span> UPGRADE INNOVATIONS — все права защищены.</div>
+    <div class="wrap">© <span id="y"></span> UPGRADE INNOVATIONS — все права защищены. <a href="/_upgr_deploy_check.txt" style="font-size:12px;opacity:.6;text-decoration:none">deploy marker</a></div>
   </footer>
 
   <script>
