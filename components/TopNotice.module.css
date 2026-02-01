@@ -1,22 +1,23 @@
 .notice {
+  position: relative;
   margin: 8px auto 0;
-  padding: 10px 14px;
+  padding: 10px 12px;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #e9f7ef;
-  border: 1px solid rgba(54, 126, 94, 0.2);
+  align-items: flex-start;
+  gap: 10px;
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(22, 52, 38, 0.08);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .iconBlock {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  color: #2f7a55;
+  gap: 8px;
+  color: var(--color-primary);
   flex-shrink: 0;
+  align-self: center;
 }
 
 .bellIcon {
@@ -31,27 +32,39 @@
   text-transform: uppercase;
   padding: 2px 6px;
   border-radius: 999px;
-  background: rgba(47, 122, 85, 0.12);
-  color: #2f7a55;
+  background: color-mix(in srgb, var(--color-primary) 18%, var(--neutral-0));
+  color: var(--color-primary);
 }
 
 .text {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.4;
-  color: #214737;
+  color: var(--text);
   flex: 1;
+  padding-right: 52px;
 }
 
 .closeButton {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
   border: none;
-  background: transparent;
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
   padding: 0;
-  color: #2f7a55;
+  color: var(--color-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 999px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.closeButton:hover {
+  background: color-mix(in srgb, var(--color-primary) 20%, var(--neutral-0));
 }
 
 .closeButton:focus-visible {
@@ -68,11 +81,11 @@
 @media (max-width: 768px) {
   .notice {
     padding: 10px 12px;
-    align-items: flex-start;
     gap: 10px;
   }
 
   .text {
     font-size: 0.9rem;
+    padding-right: 48px;
   }
 }
