@@ -1,0 +1,4 @@
+DEPLOY_MARKER: SERVING_FROM_PUBLIC
+UTC: 2026-02-01T04:32:40Z
+BRANCH_EXPECTED: vercel-prod-sync
+NOTE: if you can open /_upgr_deploy_check.txt on production — Vercel serves /public path.
