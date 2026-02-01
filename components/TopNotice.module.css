@@ -1,0 +1,78 @@
+.notice {
+  margin: 8px auto 0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #e9f7ef;
+  border: 1px solid rgba(54, 126, 94, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(22, 52, 38, 0.08);
+}
+
+.iconBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #2f7a55;
+  flex-shrink: 0;
+}
+
+.bellIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(47, 122, 85, 0.12);
+  color: #2f7a55;
+}
+
+.text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #214737;
+  flex: 1;
+}
+
+.closeButton {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: #2f7a55;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid rgba(47, 122, 85, 0.35);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.closeIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .notice {
+    padding: 10px 12px;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .text {
+    font-size: 0.9rem;
+  }
+}

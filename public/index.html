@@ -41,33 +41,10 @@
     body > .app-content {
       padding-top: var(--header-height);
     }
-    .phase .content {
-      padding: 6px 0 4px;
-    }
     @media (max-width: 768px) {
       body > .app-content {
         padding-top: calc(var(--header-height) - 1px);
       }
-      .phase {
-        border-radius: 0 0 8px 8px;
-      }
-      .phase .content {
-        padding: 4px 0 3px;
-        gap: 6px;
-      }
-      .phase .text {
-        font-size: 0.88rem;
-        line-height: 1.35;
-      }
-      .tag {
-        font-size: 0.7rem;
-        padding: 0.18rem 0.4rem;
-      }
-.tag {
-  font-size: 0.7rem;
-  padding: 0.18rem 0.4rem;
-}
-
     }
   </style>
 
@@ -99,13 +76,6 @@
   <aside class="sidebar"></aside>
 
   <main id="main" class="app-content">
-    <!-- Бета-баннер -->
-    <div class="phase" role="status" aria-live="polite">
-      <div class="wrap content">
-        <span class="tag" aria-label="Этап разработки">BETA</span>
-        <div class="text">Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.</div>
-      </div>
-    </div>
     <!-- Hero -->
     <section class="wrap hero">
       <div>
