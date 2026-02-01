@@ -310,11 +310,15 @@ mask-position: center;
   align-items:center;
   gap:8px;
   flex-shrink: 0;
+  min-height: 40px;
 }
 .header-icons .theme-switch-trigger{
   border: none;
   background: transparent;
   padding: 0;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
 }
 .icon-btn{
   border:none;
@@ -326,6 +330,7 @@ mask-position: center;
   justify-content:center;
   cursor:pointer;
   color: var(--icon-accent);
+  height: 40px;
 }
 .icon-btn .material-symbols-outlined{
   font-variation-settings:
