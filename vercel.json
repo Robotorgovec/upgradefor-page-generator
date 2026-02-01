@@ -2,10 +2,30 @@
   "builds": [
     { "src": "public/**", "use": "@vercel/static" }
   ],
-  "routes": [
-    { "src": "/_upgr_deploy_check.txt", "dest": "/_upgr_deploy_check.txt" },
-    { "src": "/_upgr_deploy_check.html", "dest": "/_upgr_deploy_check.html" },
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/$1" }
+{
+  "headers": [
+    {
+      "source": "/_upgr_deploy_check.txt",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "Pragma", "value": "no-cache" },
+        { "key": "Expires", "value": "0" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "Pragma", "value": "no-cache" },
+        { "key": "Expires", "value": "0" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}
+
   ]
 }
