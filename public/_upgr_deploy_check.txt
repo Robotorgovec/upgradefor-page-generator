@@ -1,0 +1,5 @@
+UPGR DEPLOY CHECK
+branch=vercel-prod-sync
+created_by=codex
+utc_timestamp=2026-02-01T02:20:50Z
+note=If you see this file on production, CI+Vercel pipeline is healthy.
