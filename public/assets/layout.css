@@ -738,7 +738,10 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
   }
 
   .nav{gap:12px;}
-  .brand{max-width: 50vw;}
+  .brand{
+    max-width: 50vw;
+    transform: translateY(1px);
+  }
   .brand .upgr-logo{
     height: 32px;
   }
