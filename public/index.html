@@ -37,6 +37,35 @@
 
   <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
+  <style>
+    body > .app-content {
+      padding-top: calc(var(--header-height) + 1px);
+    }
+    .phase .content {
+      padding: 6px 0;
+    }
+    @media (max-width: 768px) {
+      body > .app-content {
+        padding-top: var(--header-height);
+      }
+      .phase {
+        border-radius: 0 0 10px 10px;
+      }
+      .phase .content {
+        padding: 4px 0;
+        gap: 8px;
+      }
+      .phase .text {
+        font-size: 0.92rem;
+        line-height: 1.4;
+      }
+      .tag {
+        font-size: 0.72rem;
+        padding: 0.2rem 0.45rem;
+      }
+    }
+  </style>
+
   
   <!-- Structured data -->
   <script type="application/ld+json">
