@@ -1,0 +1,91 @@
+.notice {
+  position: relative;
+  margin: 8px auto 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+.iconBlock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.bellIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 18%, var(--neutral-0));
+  color: var(--color-primary);
+}
+
+.text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--text);
+  flex: 1;
+  padding-right: 52px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
+  padding: 0;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.closeButton:hover {
+  background: color-mix(in srgb, var(--color-primary) 20%, var(--neutral-0));
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid rgba(47, 122, 85, 0.35);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.closeIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .notice {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .text {
+    font-size: 0.9rem;
+    padding-right: 48px;
+  }
+}

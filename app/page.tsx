@@ -1,6 +1,7 @@
 import Script from "next/script";
 
 import BodyClass from "../components/layout/BodyClass";
+import TopNotice from "../components/TopNotice";
 import { loadHtmlTemplate } from "../lib/html-template";
 
 const homeTemplate = loadHtmlTemplate("index.html");
@@ -28,6 +29,7 @@ export default function HomePage() {
         </Script>
       ))}
       <BodyClass className="is-home" />
+      <TopNotice />
       <div dangerouslySetInnerHTML={{ __html: homeTemplate.mainHtml }} />
     </>
   );
