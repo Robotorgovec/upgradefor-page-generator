@@ -931,4 +931,12 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   body.is-home [data-debug="TOPNOTICE"]{
     margin-top: 10px !important;
   }
+  body.is-home [data-debug="TOPNOTICE"] + *{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  body.is-home [data-debug="TOPNOTICE"] + * > :first-child{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
 }
