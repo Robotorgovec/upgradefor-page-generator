@@ -926,17 +926,12 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   color: var(--sidebar-accent-strong);
 }
 
-/* HOME mobile: exact Header -> TopNotice = 10px (do not affect bottom) */
+/* HOME mobile: exact Header -> TopNotice = 10px */
 @media (max-width: 768px){
+  body.is-home > .app-content > .is-home{
+    padding-top: 10px !important;
+  }
   body.is-home [data-debug="TOPNOTICE"]{
-    margin-top: 10px !important;
-  }
-  body.is-home [data-debug="TOPNOTICE"] + *{
     margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-  body.is-home [data-debug="TOPNOTICE"] + * > :first-child{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
   }
 }
