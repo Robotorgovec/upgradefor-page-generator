@@ -490,7 +490,6 @@ svg.theme-icon{
 
 /* Hero */
 .hero{display:grid;grid-template-columns:1fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
-.is-home .hero{padding-top:calc(var(--space-6) * 2)}
 h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
 .hero-title{font-size:clamp(24px,4.6vw,44px)}
 .hero-title span{display:block}
@@ -878,15 +877,6 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   body > .app-content{
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 3px) !important;
   }
-
-  .is-home .hero{
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-
-  .is-home h1{
-    margin-top: 0;
-  }
 }
 
 .mobile-bottom-nav{
@@ -934,4 +924,19 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 }
 .mobile-bottom-nav-item.is-active .mobile-bottom-nav-icon{
   color: var(--sidebar-accent-strong);
+}
+
+/* HOME mobile: фиксируем отступ между Header и первым контентом (TopNotice) = 10px */
+@media (max-width: 768px){
+  body.is-home > .app-content{
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 10px) !important;
+  }
+  body.is-home [data-debug="TOPNOTICE"] + *{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  body.is-home [data-debug="TOPNOTICE"] + * > :first-child{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
 }
