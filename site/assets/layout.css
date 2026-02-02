@@ -651,3 +651,29 @@ header .nav {
 .auth-buttons {
   margin-right: 0;
 }
+
+@media (max-width: 768px) {
+  /* 1) Fix 10px gap between header and TopNotice */
+  .Header {
+    margin-bottom: 0 !important;
+  }
+
+  /* Remove top padding on home main content if it interferes */
+  main.app-content.is-home {
+    padding-top: 0 !important;
+  }
+
+  /* 2) TopNotice: 10px from header, 2px from viewport edges */
+  .TopNotice[data-debug="TOPNOTICE"] {
+    margin-top: 10px !important;
+    width: calc(100vw - 4px) !important;
+    margin-left: calc(50% - 50vw + 2px) !important;
+    margin-right: calc(50% - 50vw + 2px) !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* 3) Ensure next block starts exactly 10px below TopNotice */
+  .TopNotice[data-debug="TOPNOTICE"] + * {
+    margin-top: 0 !important;
+  }
+}
