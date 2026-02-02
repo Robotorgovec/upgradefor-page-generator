@@ -3,7 +3,7 @@
   margin: 8px auto 0;
   --left-block-width: 40px;
   --close-hit-area: 36px;
-  padding: 12px 12px;
+  padding: 11px 12px;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -91,6 +91,7 @@
 
 @media (max-width: 768px) {
   .notice {
+    padding: 11px 12px;
     gap: 10px;
   }
 
