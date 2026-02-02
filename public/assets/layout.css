@@ -490,6 +490,7 @@ svg.theme-icon{
 
 /* Hero */
 .hero{display:grid;grid-template-columns:1fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
+.is-home .hero{padding-top:calc(var(--space-6) * 2)}
 h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
 .hero-title{font-size:clamp(24px,4.6vw,44px)}
 .hero-title span{display:block}
