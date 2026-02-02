@@ -492,6 +492,24 @@ svg.theme-icon{
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
 @media (max-width:900px){.hero{grid-template-columns:1fr}}
 h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
+.hero-title span{display:block}
+.hero-avatar{
+  width:clamp(56px,10vw,72px);
+  height:clamp(56px,10vw,72px);
+  border-radius:9999px;
+  border:1px solid var(--line);
+  background:var(--neutral-100);
+  padding:10px;
+  display:block;
+  object-fit:contain;
+  margin:var(--space-3) 0;
+}
+.hero .cta{display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap}
+@media (max-width:900px){
+  .hero-avatar{margin-left:auto;margin-right:auto}
+  .hero .cta{width:100%}
+  .hero .cta .btn{width:100%}
+}
 .lead{color:var(--muted);max-width:64ch}
 .hero-art{
   background:var(--hero-bg);
