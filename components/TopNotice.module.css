@@ -86,13 +86,28 @@
 
 @media (max-width: 768px) {
   .notice {
-    padding: 11px 12px;
     gap: 10px;
   }
 
   .text {
     font-size: 0.9rem;
-    margin-left: 42px;
-    padding-right: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notice {
+    padding: 12px 12px;
+  }
+
+  .text {
+    margin-left: 43px;
+    margin-right: 41px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+
+  .closeButton {
+    top: 5px;
+    right: 5px;
   }
 }
