@@ -489,14 +489,24 @@ svg.theme-icon{
 .phase .text{color:var(--text)}
 
 /* Hero */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
-@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero{display:grid;grid-template-columns:1fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
 h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
+.hero-title{font-size:clamp(24px,4.6vw,44px)}
+.hero-title span{display:block}
+.hero-title span:first-child{white-space:nowrap}
+.hero-content{text-align:center}
+.hero .cta{display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap;justify-content:center}
+@media (max-width:900px){
+  .hero .cta{width:100%}
+  .hero .cta .btn{width:100%}
+}
 .lead{color:var(--muted);max-width:64ch}
 .hero-art{
   background:var(--hero-bg);
   border-radius:20px;border:1px solid var(--line);
   box-shadow:var(--shadow); padding:18px; overflow:hidden;
+  max-width:420px;
+  margin:var(--space-3) auto;
 }
 .hero-figure{width:100%;height:auto;display:block}
 
