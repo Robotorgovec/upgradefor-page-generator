@@ -14,7 +14,7 @@
 
 .iconBlock {
   position: absolute;
-  left: 3px;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -48,16 +48,15 @@
   line-height: 1.4;
   color: var(--text);
   flex: 1;
-  width: 100%;
-  padding-left: 45px;
-  padding-right: 30px;
+  padding-left: 48px;
+  padding-right: 36px;
   text-align: left;
 }
 
 .closeButton {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 5px;
+  right: 5px;
   width: 28px;
   height: 28px;
   min-width: 28px;
