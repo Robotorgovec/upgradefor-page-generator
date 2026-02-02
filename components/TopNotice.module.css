@@ -1,6 +1,8 @@
 .notice {
   position: relative;
-  margin: 8px auto 0;
+  margin: 3px 1px 5px;
+  width: calc(100% - 2px);
+  max-width: none;
   padding: 11px 12px;
   display: flex;
   align-items: flex-start;
