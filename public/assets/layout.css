@@ -4,6 +4,11 @@
   --color-bg-accent: #F5FCFF;
 }
 
+html, body{
+  margin: 0;
+  padding: 0;
+}
+
 html[data-theme="red"]{
   --color-primary:#EF4444; --color-soft:#FEE2E2; --color-bg-accent:#FFF5F5;
 }
@@ -918,28 +923,4 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 }
 .mobile-bottom-nav-item.is-active .mobile-bottom-nav-icon{
   color: var(--sidebar-accent-strong);
-}
-
-/* === HOME mobile: exact 3px gap under header above TopNotice === */
-@media (max-width: 768px){
-  /* Баннер: держим 3px */
-  body.is-home div.is-home [data-debug="TOPNOTICE"]{
-    margin-top: 3px !important;
-  }
-
-  /* Убрать верхний воздух у первого контентного блока после баннера (не привязываемся к .hero) */
-  body.is-home div.is-home [data-debug="TOPNOTICE"] + *{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  body.is-home div.is-home [data-debug="TOPNOTICE"] + * > :first-child{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  /* КЛЮЧ: если зазор идет от контейнера контента под хедером */
-  body.is-home > .app-content{
-    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 3px) !important;
-  }
 }
