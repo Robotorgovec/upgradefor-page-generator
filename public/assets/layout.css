@@ -876,7 +876,14 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   .is-home h1{
     margin-top: 0;
   }
+
+  /* Home only: remove extra top space on first block after TopNotice */
+  body.is-home [data-debug="TOPNOTICE"] + *{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
 }
+
 
 .mobile-bottom-nav{
   position: fixed;
