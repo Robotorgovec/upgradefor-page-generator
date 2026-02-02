@@ -926,9 +926,16 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   color: var(--sidebar-accent-strong);
 }
 
-/* HOME mobile: lock Header -> TopNotice and notice bottom gap to 10px */
+/* HOME mobile: lock Header/TopNotice/Heading gaps to 10px */
 @media (max-width: 768px){
   body.is-home > .app-content{
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px)) !important;
+  }
+  body.is-home [data-debug="TOPNOTICE"]{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  body.is-home [data-debug="TOPNOTICE"] + *{
+    margin-top: 0 !important;
   }
 }
