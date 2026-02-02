@@ -869,7 +869,8 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   }
 
   .is-home .hero{
-    padding-top: 5px;
+    padding-top: 3px;
+    margin-top: 0;
   }
 
   .is-home h1{
