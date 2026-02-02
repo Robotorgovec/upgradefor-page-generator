@@ -915,8 +915,3 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 .mobile-bottom-nav-item.is-active .mobile-bottom-nav-icon{
   color: var(--sidebar-accent-strong);
 }
-
-[data-debug="TOPNOTICE"]{
-  outline: 6px solid red !important;
-  background: #00ff00 !important;
-}

@@ -1,8 +1,6 @@
 .notice {
   position: relative;
   margin: 8px auto 0;
-  --left-block-width: 40px;
-  --close-hit-area: 36px;
   padding: 11px 12px;
   display: flex;
   align-items: flex-start;
@@ -22,7 +20,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  width: var(--left-block-width, 40px);
+  width: 40px;
   color: var(--color-primary);
   flex-shrink: 0;
 }
@@ -50,8 +48,9 @@
   color: var(--text);
   flex: 1;
   width: 100%;
-  padding-left: calc(3px + var(--left-block-width, 40px) + 3px);
-  padding-right: calc(3px + var(--close-hit-area, 36px) + 3px);
+  padding-left: 46px;
+  padding-right: 42px;
+  text-align: left;
 }
 
 .closeButton {
