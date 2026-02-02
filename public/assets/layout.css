@@ -924,3 +924,33 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 .mobile-bottom-nav-item.is-active .mobile-bottom-nav-icon{
   color: var(--sidebar-accent-strong);
 }
+
+@media (max-width: 768px){
+  body.is-home div.is-home [data-debug="TOPNOTICE"]{
+    margin-top: 3px !important;
+  }
+  body.is-home div.is-home .hero,
+  body.is-home div.is-home .hero *{
+    margin-top: 0 !important;
+  }
+}
+
+/* === Home mobile: tighten gap between header and TopNotice safely === */
+@media (max-width: 768px){
+  /* Only affects Home wrapper created in app/page.tsx */
+  body.is-home div.is-home [data-debug="TOPNOTICE"]{
+    margin-top: 3px !important;
+  }
+
+  /* Only affects the first block right after the banner on Home */
+  body.is-home div.is-home [data-debug="TOPNOTICE"] + *{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* If that first block has an inner wrapper that adds top space */
+  body.is-home div.is-home [data-debug="TOPNOTICE"] + * > :first-child{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
