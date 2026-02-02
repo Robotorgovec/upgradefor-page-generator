@@ -1,9 +1,9 @@
 .notice {
   position: relative;
-  margin: 0 1px 5px;
+  margin: 8px 1px 5px;
   width: calc(100% - 2px);
   max-width: none;
-  padding: 11px 12px;
+  padding: 12px 12px;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -98,7 +98,7 @@
 
 @media (max-width: 768px) {
   .notice {
-    padding: 11px 12px;
+    padding: 12px 12px;
     gap: 10px;
   }
 
