@@ -29,8 +29,10 @@ export default function HomePage() {
         </Script>
       ))}
       <BodyClass className="is-home" />
-      <TopNotice />
-      <div dangerouslySetInnerHTML={{ __html: homeTemplate.mainHtml }} />
+      <div className="is-home">
+        <TopNotice />
+        <div dangerouslySetInnerHTML={{ __html: homeTemplate.mainHtml }} />
+      </div>
     </>
   );
 }
