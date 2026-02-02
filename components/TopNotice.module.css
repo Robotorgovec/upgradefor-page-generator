@@ -1,7 +1,9 @@
 .notice {
   position: relative;
   margin: 8px auto 0;
-  padding: 11px 12px;
+  --left-block-width: 40px;
+  --close-hit-area: 36px;
+  padding: 12px 12px;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -20,7 +22,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  width: 40px;
+  width: var(--left-block-width, 40px);
   color: var(--color-primary);
   flex-shrink: 0;
 }
@@ -47,8 +49,9 @@
   line-height: 1.4;
   color: var(--text);
   flex: 1;
-  margin-left: 42px;
-  padding-right: 28px;
+  width: 100%;
+  padding-left: calc(3px + var(--left-block-width, 40px) + 3px);
+  padding-right: calc(3px + var(--close-hit-area, 36px) + 3px);
 }
 
 .closeButton {
@@ -57,6 +60,8 @@
   right: 3px;
   width: 36px;
   height: 36px;
+  min-width: 32px;
+  min-height: 32px;
   border: none;
   background: color-mix(in srgb, var(--color-primary) 12%, var(--neutral-0));
   padding: 0;
@@ -91,23 +96,5 @@
 
   .text {
     font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .notice {
-    padding: 12px 12px;
-  }
-
-  .text {
-    margin-left: 43px;
-    margin-right: 41px;
-    padding-left: 3px;
-    padding-right: 3px;
-  }
-
-  .closeButton {
-    top: 5px;
-    right: 5px;
   }
 }
