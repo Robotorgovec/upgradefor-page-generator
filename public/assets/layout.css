@@ -729,6 +729,21 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 }
 
 @media (max-width: 768px){
+  main.app-content.is-home,
+  body.is-home main.app-content{
+    padding-top: 0 !important;
+  }
+
+  header,
+  .Header{
+    margin-bottom: 0 !important;
+  }
+
+  .TopNotice[data-debug="TOPNOTICE"],
+  [data-debug="TOPNOTICE"]{
+    margin-top: 3px !important;
+  }
+
   header{
     position: sticky;
     top: 0;
