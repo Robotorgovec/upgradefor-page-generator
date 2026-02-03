@@ -20,8 +20,17 @@
     <button class="icon-btn" aria-label="Поиск" data-path="/search" type="button">
       <span class="material-symbols-outlined">search</span>
     </button>
-    <button class="icon-btn" aria-label="Уведомления" data-path="/notifications" type="button">
+    <button
+      class="icon-btn icon-btn--notice"
+      aria-label="Уведомления"
+      aria-expanded="false"
+      aria-controls="top-notice"
+      aria-disabled="true"
+      data-notice-button
+      type="button"
+    >
       <span class="material-symbols-outlined">notifications</span>
+      <span class="notice-badge" data-notice-badge>1</span>
     </button>
     <div class="theme-switch" data-theme-switch>
       <button
