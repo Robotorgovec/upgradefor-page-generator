@@ -1,32 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import styles from "./TopNotice.module.css";
 
-const STORAGE_KEY = "upgr_home_notice_dismissed";
+type TopNoticeProps = {
+  onClose: () => void;
+};
 
-export default function TopNotice() {
-  const [isReady, setIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const dismissed = window.localStorage.getItem(STORAGE_KEY) === "1";
-    if (dismissed) {
-      setIsVisible(false);
-    }
-    setIsReady(true);
-  }, []);
-
-  const handleDismiss = () => {
-    window.localStorage.setItem(STORAGE_KEY, "1");
-    setIsVisible(false);
-  };
-
-  if (!isReady || !isVisible) {
-    return null;
-  }
-
+export default function TopNotice({ onClose }: TopNoticeProps) {
   return (
     <div className={styles.notice} role="status" aria-live="polite" data-debug="TOPNOTICE">
       <div className={styles.iconBlock}>
@@ -43,7 +23,7 @@ export default function TopNotice() {
         className={styles.closeButton}
         type="button"
         aria-label="Закрыть уведомление"
-        onClick={handleDismiss}
+        onClick={onClose}
       >
         <span className={`material-symbols-outlined ${styles.closeIcon}`} aria-hidden="true">
           close
