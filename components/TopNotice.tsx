@@ -4,22 +4,24 @@ import { useEffect, useState } from "react";
 
 import styles from "./TopNotice.module.css";
 
-const STORAGE_KEY = "upgr_home_notice_dismissed";
-
 export default function TopNotice() {
   const [isReady, setIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const dismissed = window.localStorage.getItem(STORAGE_KEY) === "1";
-    if (dismissed) {
-      setIsVisible(false);
-    }
+    const handleToggle = () => {
+      setIsVisible((prev) => !prev);
+    };
+
+    window.addEventListener("upgr:topnotice-toggle", handleToggle);
     setIsReady(true);
+
+    return () => {
+      window.removeEventListener("upgr:topnotice-toggle", handleToggle);
+    };
   }, []);
 
   const handleDismiss = () => {
-    window.localStorage.setItem(STORAGE_KEY, "1");
     setIsVisible(false);
   };
 
@@ -28,7 +30,13 @@ export default function TopNotice() {
   }
 
   return (
-    <div className={styles.notice} role="status" aria-live="polite" data-debug="TOPNOTICE">
+    <div
+      className={styles.notice}
+      role="status"
+      aria-live="polite"
+      id="top-notice"
+      data-debug="TOPNOTICE"
+    >
       <div className={styles.iconBlock}>
         <span className={`material-symbols-outlined ${styles.bellIcon}`} aria-hidden="true">
           notifications

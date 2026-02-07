@@ -555,6 +555,9 @@ section{padding:var(--section-y) 0}
 .is-home h3{color:var(--home-text-primary)}
 .is-home p,
 .is-home li{color:var(--home-text-secondary)}
+.app-content.is-home .hero:first-of-type{
+  margin-top: 30px;
+}
 
 /* Status table */
 .status-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center}
@@ -886,9 +889,9 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
     padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 3px) !important;
   }
 
-  .is-home .hero{
+  .app-content.is-home .hero:first-of-type{
     padding-top: 0 !important;
-    margin-top: 0 !important;
+    margin-top: 30px !important;
   }
 
   .is-home h1{

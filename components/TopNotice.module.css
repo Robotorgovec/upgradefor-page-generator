@@ -1,8 +1,11 @@
 .notice {
-  position: relative;
-  margin: 8px 1px 5px;
-  width: calc(100% - 2px);
-  max-width: none;
+  position: fixed;
+  top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 10px);
+  left: 12px;
+  right: 12px;
+  margin: 0 auto;
+  width: auto;
+  max-width: 900px;
   padding: 12px 12px;
   display: flex;
   align-items: flex-start;
@@ -12,6 +15,7 @@
   border: 1px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
   border-radius: 12px;
   box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary) 10%, transparent);
+  z-index: 1400;
 }
 
 .iconBlock {

@@ -450,6 +450,14 @@
       // КРИТИЧНО: эти 2 строки вставляют header и menu
       await fetchAndInsert("/includes/header.html", "header");
       console.log("[layout] header loaded");
+      const topNoticeTrigger = document.querySelector('[data-notice-trigger="top"]');
+      if (topNoticeTrigger) {
+        topNoticeTrigger.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          window.dispatchEvent(new CustomEvent("upgr:topnotice-toggle"));
+        });
+      }
       await fetchAndInsert("/includes/menu.html", ".sidebar");
       console.log("[layout] sidebar loaded");
 
