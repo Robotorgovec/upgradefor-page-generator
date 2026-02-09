@@ -14,6 +14,14 @@ export default function Hero() {
               src="/assets/hero-character.png"
               alt="Изображение участника UPGRADE"
               className={styles.image}
+              onError={(event) => {
+                const target = event.currentTarget;
+                if (target.dataset.fallbackApplied) {
+                  return;
+                }
+                target.dataset.fallbackApplied = "true";
+                target.src = "/assets/upgrade-innovations-logo-main.svg";
+              }}
             />
           </div>
         </div>
