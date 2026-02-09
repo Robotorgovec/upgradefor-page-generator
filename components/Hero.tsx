@@ -11,8 +11,8 @@ export default function Hero() {
         <div className={styles.imageCard}>
           <div className={styles.imageWrap}>
             <img
-              src="/assets/upgrade-innovations-logo-main.svg"
-              alt="Логотип UPGRADE"
+              src="/assets/hero-character.png"
+              alt="Изображение участника UPGRADE"
               className={styles.image}
             />
           </div>
