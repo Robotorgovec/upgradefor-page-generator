@@ -491,22 +491,12 @@ svg.theme-icon{
 /* Hero */
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--gap);align-items:center;padding:var(--space-6) 0}
 @media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-content{max-width:640px}
 h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
 .hero-title span{display:block}
-.hero-avatar{
-  width:clamp(56px,10vw,72px);
-  height:clamp(56px,10vw,72px);
-  border-radius:9999px;
-  border:1px solid var(--line);
-  background:var(--neutral-100);
-  padding:10px;
-  display:block;
-  object-fit:contain;
-  margin:var(--space-3) 0;
-}
 .hero .cta{display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap}
 @media (max-width:900px){
-  .hero-avatar{margin-left:auto;margin-right:auto}
+  .hero-art{margin-right:0;justify-self:stretch;max-width:100%}
   .hero .cta{width:100%}
   .hero .cta .btn{width:100%}
 }
@@ -515,6 +505,9 @@ h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
   background:var(--hero-bg);
   border-radius:20px;border:1px solid var(--line);
   box-shadow:var(--shadow); padding:18px; overflow:hidden;
+  max-width:520px;
+  justify-self:end;
+  margin-right:clamp(8px,1.8vw,28px);
 }
 .hero-figure{width:100%;height:auto;display:block}
 
@@ -541,6 +534,17 @@ section{padding:var(--section-y) 0}
   --home-text-secondary:var(--neutral-600);
 }
 .is-home section{padding-block:clamp(48px,6vw,96px)}
+.is-home .hero{
+  max-width:1200px;
+  grid-template-columns:minmax(0, 1fr) minmax(360px, 520px);
+  gap:clamp(24px,4vw,56px);
+  padding-block:clamp(36px,5vw,72px);
+}
+.is-home .hero + section{padding-top:clamp(32px,4vw,56px)}
+.is-home .hero-art{margin-right:clamp(10px,2.2vw,32px)}
+@media (max-width:1279px){
+  .is-home .hero-art{margin-right:clamp(6px,1.2vw,16px)}
+}
 .is-home section:nth-of-type(even){background:var(--home-bg-secondary)}
 .is-home section:nth-of-type(odd){background:var(--home-bg-primary)}
 .is-home .card,
@@ -565,15 +569,10 @@ section{padding:var(--section-y) 0}
 .b-todo{background:var(--status-muted-bg);color:var(--status-muted-text);border-color:var(--status-muted-border)}
 footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted)}
 
-/* Dark scheme (оставляем как есть, но сайт в light) */
+/* Root cause: dark-scheme override previously forced --bg/#0b1220 (and header dark tokens), creating blue gutters around light content. */
+/* Keep page chrome neutral in all OS color-schemes (avoid unexpected dark-blue gutters). */
 @media (prefers-color-scheme: dark){
-  :root{color-scheme: dark;
-    --bg:#0b1220; --surface:#0f172a; --soft:#0b1323; --text:#e6edf6; --muted:#9cb3c8; --line:#12213a;
-    --shadow:0 10px 24px rgba(0,0,0,.35);
-    --header-bg: #0f172a;
-  }
-  .btn{color:var(--primary-ink)}
-  .phase .text{color:var(--text)}
+  :root{color-scheme: light;}
 }
 
 /* Sidebar and burger */
@@ -889,6 +888,13 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   .is-home .hero{
     padding-top: 0 !important;
     margin-top: 0 !important;
+    grid-template-columns:1fr;
+  }
+
+  .is-home .hero-art{
+    margin-right:0;
+    justify-self:stretch;
+    max-width:100%;
   }
 
   .is-home h1{
