@@ -1,4 +1,8 @@
 (async function() {
+  function qs(sel, root = document) {
+    return root.querySelector(sel);
+  }
+
   async function fetchAndInsert(url, selector) {
     try {
       const res = await fetch(url);
@@ -14,6 +18,143 @@
     }
   }
 
+  function initNotifications() {
+    const trigger = qs('[data-notifications-trigger="true"]');
+    if (!trigger) return;
+    const appContent = qs('.app-content');
+    if (!appContent) return;
+
+    const storageKey = 'ui.dismissedNotifications';
+    const notifications = [
+      {
+        id: 'beta-2026-02',
+        title: 'BETA',
+        text: 'Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.',
+        type: 'info',
+        createdAt: '2026-02-01',
+      },
+    ];
+
+    const badge = trigger.querySelector('[data-notification-badge]');
+    let panel = document.querySelector('[data-notifications-panel]');
+
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.className = 'notifications-overlay';
+      panel.setAttribute('data-notifications-panel', 'true');
+      panel.setAttribute('aria-label', 'Уведомления');
+      panel.setAttribute('hidden', 'true');
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      appContent.insertBefore(panel, appContent.firstChild);
+    }
+
+    const listEl = panel.querySelector('[data-notifications-list]');
+    let dismissedIds = [];
+
+    try {
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
+    } catch (err) {
+      dismissedIds = [];
+    }
+
+    function getActiveNotifications() {
+      return notifications.filter((item) => !dismissedIds.includes(item.id));
+    }
+
+    function persistDismissed() {
+      localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
+    }
+
+    function closePanel() {
+      panel.setAttribute('hidden', 'true');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function render() {
+      const active = getActiveNotifications();
+
+      if (badge) {
+        if (active.length > 0) {
+          badge.hidden = false;
+          badge.textContent = String(active.length);
+        } else {
+          badge.hidden = true;
+          badge.textContent = '';
+        }
+      }
+
+      if (!listEl) return;
+
+      if (!active.length) {
+        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        return;
+      }
+
+      listEl.innerHTML = active
+        .map(
+          (item) =>
+            `<article class="notice notice--beta" data-notification-id="${item.id}">
+              <div class="notice__content">
+                <div class="notice__head">
+                  <span class="notice__icon material-symbols-outlined" aria-hidden="true">notifications_active</span>
+                  <span class="notice__tag">${item.title}</span>
+                </div>
+                <p class="notice__text">${item.text}</p>
+              </div>
+              <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+            </article>`
+        )
+        .join('');
+    }
+
+    trigger.addEventListener('click', function (event) {
+      event.preventDefault();
+      if (panel.hasAttribute('hidden')) {
+        panel.removeAttribute('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
+      } else {
+        closePanel();
+      }
+    });
+
+    panel.addEventListener('click', function (event) {
+      const dismissBtn = event.target.closest('[data-dismiss-id]');
+      if (dismissBtn) {
+        const id = dismissBtn.getAttribute('data-dismiss-id');
+        if (id && !dismissedIds.includes(id)) {
+          dismissedIds.push(id);
+          persistDismissed();
+          render();
+          if (!getActiveNotifications().length) {
+            closePanel();
+          }
+        }
+        return;
+      }
+
+      if (!event.target.closest('.notifications-panel')) {
+        closePanel();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      const clickedInside = panel.contains(event.target);
+      const clickedTrigger = trigger.contains(event.target);
+      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) {
+        closePanel();
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) {
+        closePanel();
+      }
+    });
+
+    render();
+  }
+
   await fetchAndInsert('/includes/header.html', 'header');
   await fetchAndInsert('/includes/menu.html', '.sidebar');
 
@@ -23,6 +164,8 @@
   const root = document.documentElement;
   const headerEl = document.querySelector('header');
   const authButtonsEl = headerEl?.querySelector('.auth-buttons') ?? null;
+
+  initNotifications();
 
   async function updateAuthButtons() {
     if (!authButtonsEl) return;
