@@ -1,4 +1,4 @@
-(async function() {
+(async function () {
   function qs(sel, root = document) {
     return root.querySelector(sel);
   }
@@ -14,46 +14,47 @@
         }
       }
     } catch (err) {
-      console.error('Error loading', url, err);
+      console.error("Error loading", url, err);
     }
   }
 
   function initNotifications() {
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
-    const appContent = qs('.app-content');
+    const appContent = qs(".app-content");
     if (!appContent) return;
 
-    const storageKey = 'ui.dismissedNotifications';
+    const storageKey = "ui.dismissedNotifications";
     const notifications = [
       {
-        id: 'beta-2026-02',
-        title: 'BETA',
-        text: 'Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.',
-        type: 'info',
-        createdAt: '2026-02-01',
+        id: "beta-2026-02",
+        title: "BETA",
+        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
+        type: "info",
+        createdAt: "2026-02-01",
       },
     ];
 
-    const badge = trigger.querySelector('[data-notification-badge]');
-    let panel = document.querySelector('[data-notifications-panel]');
+    const badge = trigger.querySelector("[data-notification-badge]");
+    let panel = document.querySelector("[data-notifications-panel]");
 
     if (!panel) {
-      panel = document.createElement('section');
-      panel.className = 'notifications-overlay';
-      panel.setAttribute('data-notifications-panel', 'true');
-      panel.setAttribute('aria-label', 'Уведомления');
-      panel.setAttribute('hidden', 'true');
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      panel = document.createElement("section");
+      panel.className = "notifications-overlay";
+      panel.setAttribute("data-notifications-panel", "true");
+      panel.setAttribute("aria-label", "Уведомления");
+      panel.setAttribute("hidden", "true");
+      panel.innerHTML =
+        '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
-    const listEl = panel.querySelector('[data-notifications-list]');
+    const listEl = panel.querySelector("[data-notifications-list]");
     let dismissedIds = [];
 
     try {
-      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string") : [];
     } catch (err) {
       dismissedIds = [];
     }
@@ -67,12 +68,12 @@
     }
 
     function setNotificationsOpen(isOpen) {
-      document.body.classList.toggle('notifications-open', Boolean(isOpen));
+      document.body.classList.toggle("notifications-open", Boolean(isOpen));
     }
 
     function closePanel() {
-      panel.setAttribute('hidden', 'true');
-      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute("hidden", "true");
+      trigger.setAttribute("aria-expanded", "false");
       setNotificationsOpen(false);
     }
 
@@ -85,7 +86,7 @@
           badge.textContent = String(active.length);
         } else {
           badge.hidden = true;
-          badge.textContent = '';
+          badge.textContent = "";
         }
       }
 
@@ -110,24 +111,24 @@
               <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
-        .join('');
+        .join("");
     }
 
-    trigger.addEventListener('click', function (event) {
+    trigger.addEventListener("click", function (event) {
       event.preventDefault();
-      if (panel.hasAttribute('hidden')) {
-        panel.removeAttribute('hidden');
-        trigger.setAttribute('aria-expanded', 'true');
+      if (panel.hasAttribute("hidden")) {
+        panel.removeAttribute("hidden");
+        trigger.setAttribute("aria-expanded", "true");
         setNotificationsOpen(true);
       } else {
         closePanel();
       }
     });
 
-    panel.addEventListener('click', function (event) {
-      const dismissBtn = event.target.closest('[data-dismiss-id]');
+    panel.addEventListener("click", function (event) {
+      const dismissBtn = event.target.closest("[data-dismiss-id]");
       if (dismissBtn) {
-        const id = dismissBtn.getAttribute('data-dismiss-id');
+        const id = dismissBtn.getAttribute("data-dismiss-id");
         if (id && !dismissedIds.includes(id)) {
           dismissedIds.push(id);
           persistDismissed();
@@ -139,21 +140,21 @@
         return;
       }
 
-      if (!event.target.closest('.notifications-panel')) {
+      if (!event.target.closest(".notifications-panel")) {
         closePanel();
       }
     });
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener("click", function (event) {
       const clickedInside = panel.contains(event.target);
       const clickedTrigger = trigger.contains(event.target);
-      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) {
+      if (!panel.hasAttribute("hidden") && !clickedInside && !clickedTrigger) {
         closePanel();
       }
     });
 
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) {
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !panel.hasAttribute("hidden")) {
         closePanel();
       }
     });
@@ -162,15 +163,15 @@
     setNotificationsOpen(false);
   }
 
-  await fetchAndInsert('/includes/header.html', 'header');
-  await fetchAndInsert('/includes/menu.html', '.sidebar');
+  await fetchAndInsert("/includes/header.html", "header");
+  await fetchAndInsert("/includes/menu.html", ".sidebar");
 
   // Set up burger toggling and header height after insertion
   const body = document.body;
-  const burger = document.getElementById('burgerBtn');
+  const burger = document.getElementById("burgerBtn");
   const root = document.documentElement;
-  const headerEl = document.querySelector('header');
-  const authButtonsEl = headerEl?.querySelector('.auth-buttons') ?? null;
+  const headerEl = document.querySelector("header");
+  const authButtonsEl = headerEl?.querySelector(".auth-buttons") ?? null;
 
   initNotifications();
 
@@ -178,7 +179,7 @@
     if (!authButtonsEl) return;
 
     try {
-      const res = await fetch('/api/auth/session', { credentials: 'include' });
+      const res = await fetch("/api/auth/session", { credentials: "include" });
       if (!res.ok) return;
 
       const session = await res.json();
@@ -190,7 +191,10 @@
 
       let hasProfileRoute = false;
       try {
-        const profileRes = await fetch('/account/profile', { method: 'HEAD', credentials: 'include' });
+        const profileRes = await fetch("/account/profile", {
+          method: "HEAD",
+          credentials: "include",
+        });
         hasProfileRoute = profileRes.ok;
       } catch (error) {
         hasProfileRoute = false;
@@ -198,25 +202,25 @@
 
       authButtonsEl.innerHTML = `
         <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-        ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ''}
+        ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
       `;
     } catch (err) {
-      console.error('Error loading auth session', err);
+      console.error("Error loading auth session", err);
     }
   }
 
   function updateHeaderHeight() {
     if (!headerEl) return;
     const h = headerEl.offsetHeight;
-    root.style.setProperty('--header-height', h + 'px');
+    root.style.setProperty("--header-height", h + "px");
   }
 
   const desktopBreakpoint = 1200;
-  const collapsedStorageKey = 'upgr-sidebar-collapsed';
+  const collapsedStorageKey = "upgr-sidebar-collapsed";
   let isDesktop = window.innerWidth >= desktopBreakpoint;
 
   function getCollapsedPreference() {
-    return localStorage.getItem(collapsedStorageKey) === 'true';
+    return localStorage.getItem(collapsedStorageKey) === "true";
   }
 
   function setCollapsedPreference(isCollapsed) {
@@ -229,41 +233,41 @@
       isDesktop = nowDesktop;
       if (isDesktop) {
         const preferCollapsed = getCollapsedPreference();
-        body.classList.toggle('menu-open', !preferCollapsed);
+        body.classList.toggle("menu-open", !preferCollapsed);
       } else {
-        body.classList.remove('menu-open');
+        body.classList.remove("menu-open");
       }
     }
   }
 
   if (isDesktop) {
     const preferCollapsed = getCollapsedPreference();
-    body.classList.toggle('menu-open', !preferCollapsed);
+    body.classList.toggle("menu-open", !preferCollapsed);
   } else {
-    body.classList.remove('menu-open');
+    body.classList.remove("menu-open");
   }
 
   if (burger) {
-    burger.addEventListener('click', function () {
+    burger.addEventListener("click", function () {
       const nowDesktop = window.innerWidth >= desktopBreakpoint;
       if (nowDesktop) {
-        body.classList.toggle('menu-open');
-        setCollapsedPreference(!body.classList.contains('menu-open'));
+        body.classList.toggle("menu-open");
+        setCollapsedPreference(!body.classList.contains("menu-open"));
         return;
       }
-      body.classList.toggle('menu-open');
+      body.classList.toggle("menu-open");
     });
   }
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && body.classList.contains('menu-open')) {
-      body.classList.remove('menu-open');
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && body.classList.contains("menu-open")) {
+      body.classList.remove("menu-open");
     }
   });
 
-  window.addEventListener('load', updateHeaderHeight);
-  window.addEventListener('resize', updateHeaderHeight);
-  window.addEventListener('resize', syncMenuState);
+  window.addEventListener("load", updateHeaderHeight);
+  window.addEventListener("resize", updateHeaderHeight);
+  window.addEventListener("resize", syncMenuState);
   updateHeaderHeight();
   syncMenuState();
   await updateAuthButtons();

@@ -239,7 +239,6 @@
     });
   }
 
-
   async function getSessionSafe() {
     try {
       const res = await fetch("/api/auth/session", { credentials: "include" });
@@ -253,7 +252,7 @@
 
   function applyAuthVisibility(session) {
     const isAuthenticated = Boolean(session?.user);
-    const privateNodes = document.querySelectorAll("[data-auth=\"private\"]");
+    const privateNodes = document.querySelectorAll('[data-auth="private"]');
     privateNodes.forEach((node) => {
       if (isAuthenticated) node.removeAttribute("hidden");
       else node.setAttribute("hidden", "true");
@@ -436,7 +435,6 @@
     mediaQuery.addEventListener("change", updateNav);
   }
 
-
   function initNotifications() {
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
@@ -454,24 +452,25 @@
       },
     ];
 
-    const badge = trigger.querySelector('[data-notification-badge]');
-    let panel = document.querySelector('[data-notifications-panel]');
+    const badge = trigger.querySelector("[data-notification-badge]");
+    let panel = document.querySelector("[data-notifications-panel]");
     if (!panel) {
-      panel = createEl('section', 'notifications-overlay', {
-        'data-notifications-panel': 'true',
-        'aria-label': 'Уведомления',
-        hidden: 'true',
+      panel = createEl("section", "notifications-overlay", {
+        "data-notifications-panel": "true",
+        "aria-label": "Уведомления",
+        hidden: "true",
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      panel.innerHTML =
+        '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
-    const listEl = panel.querySelector('[data-notifications-list]');
+    const listEl = panel.querySelector("[data-notifications-list]");
     let dismissedIds = [];
 
     try {
-      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === "string") : [];
     } catch {
       dismissedIds = [];
     }
@@ -483,12 +482,12 @@
     };
 
     const setNotificationsOpen = (isOpen) => {
-      document.body.classList.toggle('notifications-open', Boolean(isOpen));
+      document.body.classList.toggle("notifications-open", Boolean(isOpen));
     };
 
     const closePanel = () => {
-      panel.setAttribute('hidden', 'true');
-      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute("hidden", "true");
+      trigger.setAttribute("aria-expanded", "false");
       setNotificationsOpen(false);
     };
 
@@ -500,7 +499,7 @@
           badge.textContent = String(active.length);
         } else {
           badge.hidden = true;
-          badge.textContent = '';
+          badge.textContent = "";
         }
       }
 
@@ -524,25 +523,25 @@
               <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
-        .join('');
+        .join("");
     };
 
-    trigger.addEventListener('click', (event) => {
+    trigger.addEventListener("click", (event) => {
       event.preventDefault();
-      const isHidden = panel.hasAttribute('hidden');
+      const isHidden = panel.hasAttribute("hidden");
       if (isHidden) {
-        panel.removeAttribute('hidden');
-        trigger.setAttribute('aria-expanded', 'true');
+        panel.removeAttribute("hidden");
+        trigger.setAttribute("aria-expanded", "true");
         setNotificationsOpen(true);
       } else {
         closePanel();
       }
     });
 
-    panel.addEventListener('click', (event) => {
-      const dismissBtn = event.target.closest('[data-dismiss-id]');
+    panel.addEventListener("click", (event) => {
+      const dismissBtn = event.target.closest("[data-dismiss-id]");
       if (dismissBtn) {
-        const id = dismissBtn.getAttribute('data-dismiss-id');
+        const id = dismissBtn.getAttribute("data-dismiss-id");
         if (id && !dismissedIds.includes(id)) {
           dismissedIds.push(id);
           persistDismissed();
@@ -551,17 +550,17 @@
         }
         return;
       }
-      if (!event.target.closest('.notifications-panel')) closePanel();
+      if (!event.target.closest(".notifications-panel")) closePanel();
     });
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener("click", (event) => {
       const clickedInside = panel.contains(event.target);
       const clickedTrigger = trigger.contains(event.target);
-      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) closePanel();
+      if (!panel.hasAttribute("hidden") && !clickedInside && !clickedTrigger) closePanel();
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.hasAttribute("hidden")) closePanel();
     });
 
     render();
