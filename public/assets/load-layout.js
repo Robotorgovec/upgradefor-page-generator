@@ -436,6 +436,128 @@
     mediaQuery.addEventListener("change", updateNav);
   }
 
+
+  function initNotifications() {
+    const trigger = qs('[data-notifications-trigger="true"]');
+    if (!trigger) return;
+    const appContent = qs(".app-content");
+    if (!appContent) return;
+
+    const storageKey = "ui.dismissedNotifications";
+    const notifications = [
+      {
+        id: "beta-2026-02",
+        title: "BETA",
+        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
+        type: "info",
+        createdAt: "2026-02-01",
+      },
+    ];
+
+    const badge = trigger.querySelector('[data-notification-badge]');
+    let panel = document.querySelector('[data-notifications-panel]');
+    if (!panel) {
+      panel = createEl('section', 'notifications-overlay', {
+        'data-notifications-panel': 'true',
+        'aria-label': 'Уведомления',
+        hidden: 'true',
+      });
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      appContent.insertBefore(panel, appContent.firstChild);
+    }
+
+    const listEl = panel.querySelector('[data-notifications-list]');
+    let dismissedIds = [];
+
+    try {
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
+    } catch {
+      dismissedIds = [];
+    }
+
+    const getActive = () => notifications.filter((item) => !dismissedIds.includes(item.id));
+
+    const persistDismissed = () => {
+      localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
+    };
+
+    const closePanel = () => {
+      panel.setAttribute('hidden', 'true');
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+
+    const render = () => {
+      const active = getActive();
+      if (badge) {
+        if (active.length > 0) {
+          badge.hidden = false;
+          badge.textContent = String(active.length);
+        } else {
+          badge.hidden = true;
+          badge.textContent = '';
+        }
+      }
+
+      if (!listEl) return;
+      if (!active.length) {
+        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        return;
+      }
+
+      listEl.innerHTML = active
+        .map(
+          (item) =>
+            `<article class="notification-card" data-notification-id="${item.id}">
+              <div class="notification-card__body">
+                <h3 class="notification-card__title">${item.title}</h3>
+                <p class="notification-card__text">${item.text}</p>
+              </div>
+              <button class="notification-close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+            </article>`
+        )
+        .join('');
+    };
+
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      const isHidden = panel.hasAttribute('hidden');
+      if (isHidden) {
+        panel.removeAttribute('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
+      } else {
+        closePanel();
+      }
+    });
+
+    panel.addEventListener('click', (event) => {
+      const dismissBtn = event.target.closest('[data-dismiss-id]');
+      if (dismissBtn) {
+        const id = dismissBtn.getAttribute('data-dismiss-id');
+        if (id && !dismissedIds.includes(id)) {
+          dismissedIds.push(id);
+          persistDismissed();
+          render();
+          if (!getActive().length) closePanel();
+        }
+        return;
+      }
+      if (!event.target.closest('.notifications-panel')) closePanel();
+    });
+
+    document.addEventListener('click', (event) => {
+      const clickedInside = panel.contains(event.target);
+      const clickedTrigger = trigger.contains(event.target);
+      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) closePanel();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
+    });
+
+    render();
+  }
+
   document.addEventListener("layout:ready", renderUpgradeLogo);
 
   document.addEventListener("layout:ready", async () => {
@@ -455,6 +577,7 @@
 
       // Theme switcher — строго после вставки header.html
       await initThemeSwitcher();
+      initNotifications();
 
       document.dispatchEvent(new Event("layout:ready"));
 
