@@ -1,0 +1,63 @@
+name: Notifications Guardrails
+
+on:
+  pull_request:
+    paths:
+      - 'public/assets/layout.css'
+      - 'public/assets/load-layout.js'
+      - 'public/index.html'
+      - 'public/includes/header.html'
+      - 'site/assets/layout.css'
+      - 'site/assets/load-layout.js'
+      - 'site/index.html'
+      - 'site/includes/header.html'
+      - 'scripts/notifications_guard.py'
+      - 'scripts/css_header_guard.py'
+      - '.github/workflows/notifications-guard.yml'
+  push:
+    branches: ["main"]
+    paths:
+      - 'public/assets/layout.css'
+      - 'public/assets/load-layout.js'
+      - 'public/index.html'
+      - 'public/includes/header.html'
+      - 'site/assets/layout.css'
+      - 'site/assets/load-layout.js'
+      - 'site/index.html'
+      - 'site/includes/header.html'
+      - 'scripts/notifications_guard.py'
+      - 'scripts/css_header_guard.py'
+      - '.github/workflows/notifications-guard.yml'
+
+jobs:
+  guardrails:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Playwright (Python)
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install firefox --with-deps
+
+      - name: CSS guardrail check
+        run: python scripts/css_header_guard.py
+
+      - name: Notifications regression guard (mobile + desktop)
+        run: python scripts/notifications_guard.py
+
+      - name: Upload guard screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notifications-guard-snapshots
+          path: artifacts/notifications-guard
+          if-no-files-found: ignore
