@@ -508,12 +508,15 @@
       listEl.innerHTML = active
         .map(
           (item) =>
-            `<article class="notification-card" data-notification-id="${item.id}">
-              <div class="notification-card__body">
-                <h3 class="notification-card__title">${item.title}</h3>
-                <p class="notification-card__text">${item.text}</p>
+            `<article class="notice notice--beta" data-notification-id="${item.id}">
+              <div class="notice__content">
+                <div class="notice__head">
+                  <span class="notice__icon material-symbols-outlined" aria-hidden="true">notifications_active</span>
+                  <span class="notice__tag">${item.title}</span>
+                </div>
+                <p class="notice__text">${item.text}</p>
               </div>
-              <button class="notification-close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+              <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
         .join('');
