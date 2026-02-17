@@ -1,733 +1,194 @@
-(async function () {
-  "use strict";
+function initNotifications() {
+  function isTopNoticePresent() {
+    const topNoticeSelectors = [
+      '[data-debug="TOPNOTICE"]',
+      '[data-top-notice="true"]',
+      '[data-topnotice="true"]',
+      ".top-notice",
+      '[data-component="TopNotice"]',
+    ];
 
-  async function fetchAndInsert(url, selector) {
-    const container = document.querySelector(selector);
-    if (!container) {
-      console.warn("[UPGR] container not found for", selector);
+    for (const selector of topNoticeSelectors) {
+      const el = qs(selector);
+      if (el && !el.closest('[data-notifications-panel]')) return true;
+    }
+
+    const textMarker = "Новый сервис. Публикуем статус разделов";
+    const textCandidates = document.querySelectorAll("p, div, span, article, section");
+
+    for (const candidate of textCandidates) {
+      const text = candidate.textContent || "";
+      if (!text.includes(textMarker)) continue;
+
+      const isNotificationsBanner = candidate.closest(
+        '[data-notifications-panel], .notifications-overlay, .notice.notice--beta'
+      );
+      if (isNotificationsBanner) continue;
+
+      const cardContainer = candidate.closest(
+        '[data-debug="TOPNOTICE"], [data-top-notice="true"], [data-topnotice="true"], [data-component="TopNotice"], .top-notice, [class*="TopNotice_notice"]'
+      );
+      if (cardContainer) return true;
+    }
+
+    return false;
+  }
+
+  const trigger = qs('[data-notifications-trigger="true"]');
+  if (!trigger) return;
+
+  const appContent = qs(".app-content");
+  if (!appContent) return;
+
+  const topNoticeStorageKey = "upgr_home_notice_dismissed";
+  const storageKey = "ui.dismissedNotifications";
+
+  // ВАЖНО: сюда должны добавляться JS-уведомления (если они используются)
+  const notifications = [];
+
+  const badge = trigger.querySelector("[data-notification-badge]");
+
+  let panel = document.querySelector("[data-notifications-panel]");
+  if (!panel) {
+    panel = createEl("section", "notifications-overlay", {
+      "data-notifications-panel": "true",
+      "aria-label": "Уведомления",
+      hidden: "true",
+    });
+    panel.innerHTML =
+      '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
+    appContent.insertBefore(panel, appContent.firstChild);
+  }
+
+  const listEl = panel.querySelector("[data-notifications-list]");
+  const topNoticeSlot = panel.querySelector('[data-top-notice-slot="true"]');
+
+  let dismissedIds = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    dismissedIds = Array.isArray(parsed) ? parsed.filter((x) => typeof x === "string") : [];
+  } catch {
+    dismissedIds = [];
+  }
+
+  const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== "1";
+
+  // MERGED: hide duplicate JS notification when React TopNotice exists
+  const getActive = () => {
+    const topNoticePresent = isTopNoticePresent();
+    return notifications.filter((item) => {
+      if (!item || !item.id) return false;
+      if (dismissedIds.includes(item.id)) return false;
+      if (topNoticePresent && item.id === "beta-2026-02") return false;
+      return true;
+    });
+  };
+
+  const getTotalActiveCount = () => {
+    const topVisible = isTopNoticeVisible();
+    const active = getActive();
+    return (topVisible ? 1 : 0) + active.length;
+  };
+
+  const persistDismissed = () => {
+    localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
+  };
+
+  const closePanel = () => {
+    panel.setAttribute("hidden", "true");
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
+  const render = () => {
+    const topVisible = isTopNoticeVisible();
+    const active = getActive();
+    const totalActiveCount = (topVisible ? 1 : 0) + active.length;
+
+    if (topNoticeSlot) {
+      topNoticeSlot.toggleAttribute("hidden", !topVisible);
+    }
+
+    if (badge) {
+      if (totalActiveCount > 0) {
+        badge.hidden = false;
+        badge.textContent = String(totalActiveCount);
+      } else {
+        badge.hidden = true;
+        badge.textContent = "";
+      }
+    }
+
+    if (!listEl) return;
+
+    if (totalActiveCount === 0) {
+      listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
       return;
     }
 
-    try {
-      const res = await fetch(url, { credentials: "include" });
-      if (!res.ok) {
-        console.error("[UPGR] failed to load", url, res.status);
-        return;
-      }
-      const html = await res.text();
-      if (!html || !html.trim()) {
-        console.warn("[UPGR] empty layout response for", url);
-        return;
-      }
-      container.innerHTML = html;
-    } catch (err) {
-      console.error("[UPGR] Error loading", url, err);
-    }
-  }
-
-  function qs(sel, root = document) {
-    return root.querySelector(sel);
-  }
-
-  function createEl(tag, className, attrs) {
-    const el = document.createElement(tag);
-    if (className) el.className = className;
-    if (attrs) {
-      for (const [k, v] of Object.entries(attrs)) {
-        if (v === null || v === undefined) continue;
-        el.setAttribute(k, String(v));
-      }
-    }
-    return el;
-  }
-
-  const themeStorageKey = "userTheme";
-  const themeConfigUrl = "/assets/theme/theme-colors.json";
-  let cachedThemeConfig = null;
-
-  async function loadThemeConfig() {
-    if (cachedThemeConfig) return cachedThemeConfig;
-    try {
-      const res = await fetch(themeConfigUrl, { credentials: "include" });
-      if (!res.ok) throw new Error("Theme config not available");
-      cachedThemeConfig = await res.json();
-      return cachedThemeConfig;
-    } catch (err) {
-      console.error("[UPGR] theme config error", err);
-      return null;
-    }
-  }
-
-  // Sunday=0 ... Saturday=6
-  function getAutoThemeName(config) {
-    if (!config) return "cyan";
-
-    if (config.weekCycle) {
-      const dayIndex = new Date().getDay();
-      return config.weekCycle[String(dayIndex)] || "cyan";
+    if (!active.length) {
+      listEl.innerHTML = "";
+      return;
     }
 
-    if (Array.isArray(config.cycle)) {
-      const dayIndex = new Date().getDay();
-      return config.cycle[dayIndex] || "cyan";
-    }
-
-    return "cyan";
-  }
-
-  function applyThemeName(name) {
-    if (!name) return;
-    document.documentElement.setAttribute("data-theme", name);
-  }
-
-  let upgradeLogoRendered = false;
-
-  async function renderUpgradeLogo() {
-    const slot = document.getElementById("upgr-logo-slot");
-    if (!slot || upgradeLogoRendered) return;
-
-    try {
-      slot.innerHTML = `
-        <span class="upgr-logo" aria-label="UPGRADE Innovations">
-          <img
-            class="upgr-logo__base"
-            src="/assets/logo/logo-black-only.png"
-
-            alt="UPGRADE Innovations"
-            loading="lazy"
-            decoding="async"
-          />
-          <span class="upgr-logo__accent" aria-hidden="true"></span>
-        </span>
-      `;
-      upgradeLogoRendered = true;
-    } catch (err) {
-      console.error("[UPGR] logo render error", err);
-    }
-  }
-
-  async function applyTheme(mode, config, elements) {
-    const autoTheme = getAutoThemeName(config);
-
-    // mode может быть "auto" или именем темы ("red", "cyan", ...)
-    const themeName = mode === "auto" ? autoTheme : mode;
-    const themeColors = config?.colors?.[themeName];
-
-    const resolvedTheme = themeColors ? themeName : "cyan";
-    applyThemeName(resolvedTheme);
-
-    if (elements?.items) {
-      elements.items.forEach((item) => {
-        const itemTheme = item.dataset.theme || "";
-        const isActive = mode === "auto" ? itemTheme === "auto" : itemTheme === themeName;
-        item.setAttribute("aria-checked", isActive ? "true" : "false");
-      });
-    }
-  }
-
-  async function initThemeSwitcher() {
-    const config = await loadThemeConfig();
-    if (!config) return;
-
-    // Поддержка нескольких переключателей (например: header + sidebar mobile)
-    const switchers = Array.from(document.querySelectorAll("[data-theme-switch]"));
-    const allItems = switchers.flatMap((switcher) =>
-      Array.from(switcher.querySelectorAll(".theme-switch-item"))
-    );
-
-    const storedTheme = localStorage.getItem(themeStorageKey);
-    const initialMode =
-      storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
-
-    await applyTheme(initialMode, config, { items: allItems });
-
-    if (!switchers.length) return;
-
-    const closeMenus = () => {
-      switchers.forEach((switcher) => {
-        switcher.classList.remove("is-open");
-        const trigger = switcher.querySelector(".theme-switch-trigger");
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-      });
-    };
-
-    switchers.forEach((switcher) => {
-      const trigger = switcher.querySelector(".theme-switch-trigger");
-      if (!trigger) return;
-
-      trigger.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const isOpen = switcher.classList.toggle("is-open");
-        trigger.setAttribute("aria-expanded", String(isOpen));
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!switchers.some((switcher) => switcher.contains(event.target))) closeMenus();
-    });
-
-    allItems.forEach((item) => {
-      item.addEventListener("click", async () => {
-        const selected = item.dataset.theme || "auto";
-        if (selected === "auto") localStorage.removeItem(themeStorageKey);
-        else localStorage.setItem(themeStorageKey, selected);
-
-        await applyTheme(selected, config, { items: allItems });
-        closeMenus();
-      });
-    });
-  }
-
-  function runChameleonIntro(opts = {}) {
-    const key = "upgr_chameleon_last";
-    const cooldownHours = opts.cooldownHours ?? 12;
-    const probability = opts.probability ?? 0.35;
-
-    try {
-      const last = Number(localStorage.getItem(key) || "0");
-      const now = Date.now();
-      const cooldownMs = cooldownHours * 3600 * 1000;
-
-      if (now - last < cooldownMs) return;
-      if (Math.random() > probability) return;
-
-      localStorage.setItem(key, String(now));
-      document.body.classList.add("chameleon-intro");
-      setTimeout(() => document.body.classList.remove("chameleon-intro"), 950);
-    } catch (e) {
-      console.warn("[UPGR] chameleon intro error", e);
-    }
-  }
-
-  function enableChameleonOnNavigation() {
-    document.addEventListener(
-      "click",
-      (event) => {
-        const link = event.target.closest("a");
-        if (!link || !link.href) return;
-        if (link.origin !== location.origin) return;
-        if (link.target && link.target !== "_self") return;
-        if (link.hasAttribute("download")) return;
-        if (link.getAttribute("href")?.startsWith("#")) return;
-
-        document.body.classList.add("chameleon-intro");
-        event.preventDefault();
-        setTimeout(() => {
-          location.href = link.href;
-        }, 180);
-      },
-      true
-    );
-  }
-
-  function sanitizePhaseBlocks() {
-    document.querySelectorAll(".phase").forEach((phase) => {
-      if (phase.closest("header, nav, aside")) return;
-
-      const textEl = phase.querySelector(".text");
-      const tagEl = phase.querySelector(".tag");
-
-      const text = textEl?.textContent.trim() ?? "";
-      const tag = tagEl?.textContent.trim() ?? "";
-
-      if (!text && !tag) {
-        phase.remove();
-        return;
-      }
-      if (!text && textEl) textEl.remove();
-      if (!tag && tagEl) tagEl.remove();
-    });
-  }
-
-
-  async function getSessionSafe() {
-    try {
-      const res = await fetch("/api/auth/session", { credentials: "include" });
-      if (!res.ok) return null;
-      const data = await res.json().catch(() => null);
-      return data && data.user ? data : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function applyAuthVisibility(session) {
-    const isAuthenticated = Boolean(session?.user);
-    const privateNodes = document.querySelectorAll("[data-auth=\"private\"]");
-    privateNodes.forEach((node) => {
-      if (isAuthenticated) node.removeAttribute("hidden");
-      else node.setAttribute("hidden", "true");
-    });
-  }
-
-  function ensureSidebarFooter(sidebar) {
-    let footer = sidebar.querySelector(":scope > .sidebar-footer");
-    if (!footer) {
-      footer = createEl("div", "sidebar-footer");
-      sidebar.appendChild(footer);
-    }
-    return footer;
-  }
-
-  function renderFooter(footer, session) {
-    footer.innerHTML = "";
-    if (!session) {
-      footer.setAttribute("hidden", "true");
-      return false;
-    }
-    footer.removeAttribute("hidden");
-
-    const title = createEl("div", "sidebar-footer-title");
-    title.innerHTML =
-      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">account_circle</span>' +
-      "<span>Аккаунт</span>";
-    footer.appendChild(title);
-
-    const actions = createEl("div", "sidebar-footer-actions");
-
-    const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
-    account.innerHTML =
-      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
-      '<span class="menu-label">Мой аккаунт</span>';
-
-    const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
-      type: "button",
-    });
-    logout.innerHTML =
-      '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
-      '<span class="menu-label">Выйти</span>';
-
-    logout.addEventListener("click", () => {
-      window.location.href = "/api/auth/signout?callbackUrl=/";
-    });
-
-    actions.appendChild(account);
-    actions.appendChild(logout);
-
-    footer.appendChild(actions);
-    return true;
-  }
-
-  function initStickyFooter() {
-    if (window.innerWidth >= 769) return;
-    const sidebar = qs(".sidebar");
-    if (!sidebar) return;
-
-    let footerObserver = null;
-
-    const mountFooter = () => {
-      const inner = qs(".sidebar-inner", sidebar);
-      if (!inner) return false;
-
-      const footer = ensureSidebarFooter(sidebar);
-      renderFooter(footer, null);
-
-      getSessionSafe().then((session) => {
-        applyAuthVisibility(session);
-        const sidebar2 = qs(".sidebar");
-        const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-        if (!sidebar2 || !inner2) return;
-        const footer2 = ensureSidebarFooter(sidebar2);
-        renderFooter(footer2, session);
-      });
-
-      console.log("[layout] footer initialized");
-      return true;
-    };
-
-    const ensureMobileFooter = () => {
-      const isMobile = window.innerWidth < 769;
-      const existingFooter = sidebar.querySelector(":scope > .sidebar-footer");
-
-      if (!isMobile) {
-        if (existingFooter) existingFooter.remove();
-        if (footerObserver) {
-          footerObserver.disconnect();
-          footerObserver = null;
-        }
-        return;
-      }
-
-      if (mountFooter()) {
-        if (footerObserver) {
-          footerObserver.disconnect();
-          footerObserver = null;
-        }
-        return;
-      }
-
-      if (!footerObserver) {
-        footerObserver = new MutationObserver(() => {
-          if (mountFooter()) {
-            footerObserver.disconnect();
-            footerObserver = null;
-          }
-        });
-        footerObserver.observe(sidebar, { childList: true, subtree: true });
-      }
-    };
-
-    ensureMobileFooter();
-    window.addEventListener("resize", ensureMobileFooter);
-  }
-
-  function ensureBottomNavContainer() {
-    let nav = qs(".mobile-bottom-nav");
-    if (!nav) {
-      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "Нижняя навигация" });
-      document.body.appendChild(nav);
-    }
-    return nav;
-  }
-
-  function renderBottomNav(nav) {
-    nav.innerHTML = "";
-    const items = [
-      { label: "Home", icon: "home", href: "/" },
-      { label: "Feed", icon: "dynamic_feed", href: "/feed" },
-      { label: "Messages", icon: "mark_unread_chat_alt", href: "/messages" },
-      { label: "Account", icon: "account_circle", href: "/account" },
-    ];
-
-    const currentPath = window.location.pathname;
-
-    items.forEach((item) => {
-      const link = createEl("a", "mobile-bottom-nav-item", { href: item.href });
-
-      if (
-        (item.href !== "/" && currentPath.startsWith(item.href)) ||
-        (item.href === "/" && currentPath === "/")
-      ) {
-        link.classList.add("is-active");
-        link.setAttribute("aria-current", "page");
-      }
-
-      const icon = createEl("span", "material-symbols-outlined mobile-bottom-nav-icon", {
-        "aria-hidden": "true",
-      });
-      icon.textContent = item.icon;
-
-      const label = createEl("span", "mobile-bottom-nav-label");
-      label.textContent = item.label;
-
-      link.appendChild(icon);
-      link.appendChild(label);
-      nav.appendChild(link);
-    });
-  }
-
-  function initMobileBottomNav() {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    const updateNav = () => {
-      const isMobile = mediaQuery.matches;
-      document.body.classList.toggle("has-mobile-bottom-nav", isMobile);
-
-      const existing = qs(".mobile-bottom-nav");
-      if (!isMobile) {
-        if (existing) existing.remove();
-        return;
-      }
-
-      const nav = existing || ensureBottomNavContainer();
-      renderBottomNav(nav);
-    };
-
-    updateNav();
-    mediaQuery.addEventListener("change", updateNav);
-  }
-
-
-  function initNotifications() {
-    const trigger = qs('[data-notifications-trigger="true"]');
-    if (!trigger) return;
-    const appContent = qs(".app-content");
-    if (!appContent) return;
-
-    const topNoticeStorageKey = 'upgr_home_notice_dismissed';
-    const storageKey = "ui.dismissedNotifications";
-    const notifications = [];
-
-    const badge = trigger.querySelector('[data-notification-badge]');
-    let panel = document.querySelector('[data-notifications-panel]');
-    if (!panel) {
-      panel = createEl('section', 'notifications-overlay', {
-        'data-notifications-panel': 'true',
-        'aria-label': 'Уведомления',
-        hidden: 'true',
-      });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
-      appContent.insertBefore(panel, appContent.firstChild);
-    }
-
-    const listEl = panel.querySelector('[data-notifications-list]');
-    const topNoticeSlot = panel.querySelector('[data-top-notice-slot="true"]');
-    let dismissedIds = [];
-
-    try {
-      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
-    } catch {
-      dismissedIds = [];
-    }
-
-    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
-
-    const getActive = () => notifications.filter((item) => !dismissedIds.includes(item.id));
-
-    const getTotalActiveCount = () => {
-      const topVisible = isTopNoticeVisible();
-      const active = getActive();
-      return (topVisible ? 1 : 0) + active.length;
-    };
-
-    const persistDismissed = () => {
-      localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
-    };
-
-    const closePanel = () => {
-      panel.setAttribute('hidden', 'true');
-      trigger.setAttribute('aria-expanded', 'false');
-    };
-
-    const render = () => {
-      const topVisible = isTopNoticeVisible();
-      const active = getActive();
-      const totalActiveCount = (topVisible ? 1 : 0) + active.length;
-
-      if (topNoticeSlot) {
-        topNoticeSlot.toggleAttribute('hidden', !topVisible);
-      }
-
-      if (badge) {
-        if (totalActiveCount > 0) {
-          badge.hidden = false;
-          badge.textContent = String(totalActiveCount);
-        } else {
-          badge.hidden = true;
-          badge.textContent = '';
-        }
-      }
-
-      if (!listEl) return;
-      if (totalActiveCount === 0) {
-        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
-        return;
-      }
-
-      if (!active.length) {
-        listEl.innerHTML = '';
-        return;
-      }
-
-      listEl.innerHTML = active
-        .map(
-          (item) =>
-            `<article class="notice notice--beta" data-notification-id="${item.id}">
-              <div class="notice__content">
-                <div class="notice__head">
-                  <span class="notice__icon material-symbols-outlined" aria-hidden="true">notifications_active</span>
-                  <span class="notice__tag">${item.title}</span>
-                </div>
-                <p class="notice__text">${item.text}</p>
+    listEl.innerHTML = active
+      .map(
+        (item) =>
+          `<article class="notice notice--beta" data-notification-id="${item.id}">
+            <div class="notice__content">
+              <div class="notice__head">
+                <span class="notice__icon material-symbols-outlined" aria-hidden="true">notifications_active</span>
+                <span class="notice__tag">${item.title || ""}</span>
               </div>
-              <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
-            </article>`
-        )
-        .join('');
-    };
+              <p class="notice__text">${item.text || ""}</p>
+            </div>
+            <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+          </article>`
+      )
+      .join("");
+  };
 
-    window.addEventListener('storage', (event) => {
-      if (event.key === topNoticeStorageKey || event.key === storageKey) {
-        render();
-      }
-    });
-
-    window.addEventListener('upgr:topnotice-dismissed', render);
-
-    trigger.addEventListener('click', (event) => {
-      event.preventDefault();
-      const isHidden = panel.hasAttribute('hidden');
-      if (isHidden) {
-        panel.removeAttribute('hidden');
-        trigger.setAttribute('aria-expanded', 'true');
-      } else {
-        closePanel();
-      }
-    });
-
-    panel.addEventListener('click', (event) => {
-      const dismissBtn = event.target.closest('[data-dismiss-id]');
-      if (dismissBtn) {
-        const id = dismissBtn.getAttribute('data-dismiss-id');
-        if (id && !dismissedIds.includes(id)) {
-          dismissedIds.push(id);
-          persistDismissed();
-          render();
-          if (getTotalActiveCount() === 0) closePanel();
-        }
-        return;
-      }
-      if (!event.target.closest('.notifications-panel')) closePanel();
-    });
-
-    document.addEventListener('click', (event) => {
-      const clickedInside = panel.contains(event.target);
-      const clickedTrigger = trigger.contains(event.target);
-      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) closePanel();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
-    });
-
-    render();
-  }
-
-  document.addEventListener("layout:ready", renderUpgradeLogo);
-
-  document.addEventListener("layout:ready", async () => {
-    sanitizePhaseBlocks();
-    await renderUpgradeLogo();
-    applyAuthVisibility(null);
-    getSessionSafe().then(applyAuthVisibility);
+  window.addEventListener("storage", (event) => {
+    if (event.key === topNoticeStorageKey || event.key === storageKey) render();
   });
 
-  async function loadLayout() {
-    try {
-      // КРИТИЧНО: эти 2 строки вставляют header и menu
-      await fetchAndInsert("/includes/header.html", "header");
-      console.log("[layout] header loaded");
-      await fetchAndInsert("/includes/menu.html", ".sidebar");
-      console.log("[layout] sidebar loaded");
+  window.addEventListener("upgr:topnotice-dismissed", render);
 
-      // Theme switcher — строго после вставки header.html
-      await initThemeSwitcher();
-      initNotifications();
-
-      document.dispatchEvent(new Event("layout:ready"));
-
-      const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
-      } else {
-        startChameleon();
-      }
-      enableChameleonOnNavigation();
-
-      // --- burger toggling и высота header ---
-      const body = document.body;
-      const root = document.documentElement;
-      const headerNode = qs("header");
-
-      const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
-
-      // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
-      // поэтому берём по data-burger или .burger, а id оставляем как fallback.
-      const burger =
-        document.querySelector("[data-burger]") ||
-        document.querySelector(".burger") ||
-        document.getElementById("burgerBtn");
-
-      async function updateAuthButtons() {
-        if (!authButtonsEl) return;
-
-        try {
-          const session = await getSessionSafe();
-          const isAuthenticated = Boolean(session?.user);
-          if (!isAuthenticated) return;
-
-          let hasProfileRoute = false;
-          try {
-            const profileRes = await fetch("/account/profile", {
-              method: "HEAD",
-              credentials: "include",
-            });
-            hasProfileRoute = profileRes.ok;
-          } catch {
-            hasProfileRoute = false;
-          }
-
-          authButtonsEl.innerHTML = `
-            <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-            ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
-          `;
-        } catch (err) {
-          console.error("[UPGR] Error loading auth session", err);
-        }
-      }
-
-      function updateHeaderHeight() {
-        if (!headerNode) return;
-        const h = headerNode.offsetHeight;
-        root.style.setProperty("--header-height", h + "px");
-      }
-
-      const desktopBreakpoint = 1200;
-      const collapsedStorageKey = "upgr-sidebar-collapsed";
-      let isDesktop = window.innerWidth >= desktopBreakpoint;
-
-      function getCollapsedPreference() {
-        return localStorage.getItem(collapsedStorageKey) === "true";
-      }
-      function setCollapsedPreference(isCollapsed) {
-        localStorage.setItem(collapsedStorageKey, String(isCollapsed));
-      }
-
-      function syncMenuState() {
-        const nowDesktop = window.innerWidth >= desktopBreakpoint;
-        if (nowDesktop !== isDesktop) {
-          isDesktop = nowDesktop;
-          if (isDesktop) {
-            const preferCollapsed = getCollapsedPreference();
-            body.classList.toggle("menu-open", !preferCollapsed);
-          } else {
-            body.classList.remove("menu-open");
-          }
-        }
-      }
-
-      if (burger) {
-        burger.addEventListener("click", function () {
-          const nowDesktop = window.innerWidth >= desktopBreakpoint;
-          if (nowDesktop) {
-            body.classList.toggle("menu-open");
-            setCollapsedPreference(!body.classList.contains("menu-open"));
-            return;
-          }
-          body.classList.toggle("menu-open");
-        });
-      } else {
-        console.warn("[layout] burger button not found (check header.html)");
-      }
-
-      if (isDesktop) {
-        const preferCollapsed = getCollapsedPreference();
-        body.classList.toggle("menu-open", !preferCollapsed);
-      } else {
-        body.classList.remove("menu-open");
-      }
-
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && body.classList.contains("menu-open")) {
-          body.classList.remove("menu-open");
-        }
-      });
-
-      window.addEventListener("load", updateHeaderHeight);
-      window.addEventListener("resize", updateHeaderHeight);
-      window.addEventListener("resize", syncMenuState);
-      updateHeaderHeight();
-      syncMenuState();
-
-      await updateAuthButtons();
-
-      // Footer — строго после вставки menu.html
-      initStickyFooter();
-      initMobileBottomNav();
-    } catch (e) {
-      console.error("[UPGR] load-layout.js fatal error:", e);
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    const isHidden = panel.hasAttribute("hidden");
+    if (isHidden) {
+      panel.removeAttribute("hidden");
+      trigger.setAttribute("aria-expanded", "true");
+    } else {
+      closePanel();
     }
-  }
+  });
 
-  await loadLayout();
-})();
+  panel.addEventListener("click", (event) => {
+    const dismissBtn = event.target.closest("[data-dismiss-id]");
+    if (dismissBtn) {
+      const id = dismissBtn.getAttribute("data-dismiss-id");
+      if (id && !dismissedIds.includes(id)) {
+        dismissedIds.push(id);
+        persistDismissed();
+        render();
+        if (getTotalActiveCount() === 0) closePanel();
+      }
+      return;
+    }
+
+    if (!event.target.closest(".notifications-panel")) closePanel();
+  });
+
+  document.addEventListener("click", (event) => {
+    const clickedInside = panel.contains(event.target);
+    const clickedTrigger = trigger.contains(event.target);
+    if (!panel.hasAttribute("hidden") && !clickedInside && !clickedTrigger) closePanel();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !panel.hasAttribute("hidden")) closePanel();
+  });
+
+  render();
+}
