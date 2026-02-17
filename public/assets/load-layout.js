@@ -438,6 +438,40 @@
 
 
   function initNotifications() {
+    function isTopNoticePresent() {
+      const topNoticeSelectors = [
+        '[data-debug="TOPNOTICE"]',
+        '[data-top-notice="true"]',
+        '[data-topnotice="true"]',
+        '.top-notice',
+        '[data-component="TopNotice"]',
+      ];
+
+      for (const selector of topNoticeSelectors) {
+        const el = qs(selector);
+        if (el && !el.closest('[data-notifications-panel]')) return true;
+      }
+
+      const textMarker = 'Новый сервис. Публикуем статус разделов';
+      const textCandidates = document.querySelectorAll('p, div, span, article, section');
+      for (const candidate of textCandidates) {
+        const text = candidate.textContent || '';
+        if (!text.includes(textMarker)) continue;
+
+        const isNotificationsBanner = candidate.closest(
+          '[data-notifications-panel], .notifications-overlay, .notice.notice--beta'
+        );
+        if (isNotificationsBanner) continue;
+
+        const cardContainer = candidate.closest(
+          '[data-debug="TOPNOTICE"], [data-top-notice="true"], [data-topnotice="true"], [data-component="TopNotice"], .top-notice, [class*="TopNotice_notice"]'
+        );
+        if (cardContainer) return true;
+      }
+
+      return false;
+    }
+
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
     const appContent = qs(".app-content");
@@ -469,9 +503,20 @@
       dismissedIds = [];
     }
 
-    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
+// KEEP (from codex branch)
+const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
 
-    const getActive = () => notifications.filter((item) => !dismissedIds.includes(item.id));
+// MERGED getActive(): use robust TopNotice presence check + keep dismissedIds logic
+const getActive = () => {
+  const topNoticePresent = isTopNoticePresent();
+  return notifications.filter((item) => {
+    if (dismissedIds.includes(item.id)) return false;
+    // Hide the duplicate JS notification when TopNotice exists (the React one)
+    if (topNoticePresent && item.id === 'beta-2026-02') return false;
+    return true;
+  });
+};
+
 
     const persistDismissed = () => {
       localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
