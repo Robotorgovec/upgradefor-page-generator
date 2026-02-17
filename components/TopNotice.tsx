@@ -28,7 +28,14 @@ export default function TopNotice() {
   }
 
   return (
-    <div className={styles.notice} role="status" aria-live="polite" data-debug="TOPNOTICE">
+    <div
+      className={styles.notice}
+      role="status"
+      aria-live="polite"
+      data-debug="TOPNOTICE"
+      data-top-notice="true"
+      data-component="TopNotice"
+    >
       <div className={styles.iconBlock}>
         <span className={`material-symbols-outlined ${styles.bellIcon}`} aria-hidden="true">
           notifications
