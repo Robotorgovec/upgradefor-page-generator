@@ -443,16 +443,9 @@
     const appContent = qs(".app-content");
     if (!appContent) return;
 
+    const topNoticeStorageKey = 'upgr_home_notice_dismissed';
     const storageKey = "ui.dismissedNotifications";
-    const notifications = [
-      {
-        id: "beta-2026-02",
-        title: "BETA",
-        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
-        type: "info",
-        createdAt: "2026-02-01",
-      },
-    ];
+    const notifications = [];
 
     const badge = trigger.querySelector('[data-notification-badge]');
     let panel = document.querySelector('[data-notifications-panel]');
@@ -462,11 +455,12 @@
         'aria-label': 'Уведомления',
         hidden: 'true',
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
     const listEl = panel.querySelector('[data-notifications-list]');
+    const topNoticeSlot = panel.querySelector('[data-top-notice-slot="true"]');
     let dismissedIds = [];
 
     try {
@@ -476,7 +470,15 @@
       dismissedIds = [];
     }
 
+    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
+
     const getActive = () => notifications.filter((item) => !dismissedIds.includes(item.id));
+
+    const getTotalActiveCount = () => {
+      const topVisible = isTopNoticeVisible();
+      const active = getActive();
+      return (topVisible ? 1 : 0) + active.length;
+    };
 
     const persistDismissed = () => {
       localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
@@ -488,11 +490,18 @@
     };
 
     const render = () => {
+      const topVisible = isTopNoticeVisible();
       const active = getActive();
+      const totalActiveCount = (topVisible ? 1 : 0) + active.length;
+
+      if (topNoticeSlot) {
+        topNoticeSlot.toggleAttribute('hidden', !topVisible);
+      }
+
       if (badge) {
-        if (active.length > 0) {
+        if (totalActiveCount > 0) {
           badge.hidden = false;
-          badge.textContent = String(active.length);
+          badge.textContent = String(totalActiveCount);
         } else {
           badge.hidden = true;
           badge.textContent = '';
@@ -500,8 +509,13 @@
       }
 
       if (!listEl) return;
-      if (!active.length) {
+      if (totalActiveCount === 0) {
         listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        return;
+      }
+
+      if (!active.length) {
+        listEl.innerHTML = '';
         return;
       }
 
@@ -522,6 +536,14 @@
         .join('');
     };
 
+    window.addEventListener('storage', (event) => {
+      if (event.key === topNoticeStorageKey || event.key === storageKey) {
+        render();
+      }
+    });
+
+    window.addEventListener('upgr:topnotice-dismissed', render);
+
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
       const isHidden = panel.hasAttribute('hidden');
@@ -541,7 +563,7 @@
           dismissedIds.push(id);
           persistDismissed();
           render();
-          if (!getActive().length) closePanel();
+          if (getTotalActiveCount() === 0) closePanel();
         }
         return;
       }
