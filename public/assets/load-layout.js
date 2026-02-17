@@ -438,6 +438,40 @@
 
 
   function initNotifications() {
+    function isTopNoticePresent() {
+      const topNoticeSelectors = [
+        '[data-debug="TOPNOTICE"]',
+        '[data-top-notice="true"]',
+        '[data-topnotice="true"]',
+        '.top-notice',
+        '[data-component="TopNotice"]',
+      ];
+
+      for (const selector of topNoticeSelectors) {
+        const el = qs(selector);
+        if (el && !el.closest('[data-notifications-panel]')) return true;
+      }
+
+      const textMarker = 'Новый сервис. Публикуем статус разделов';
+      const textCandidates = document.querySelectorAll('p, div, span, article, section');
+      for (const candidate of textCandidates) {
+        const text = candidate.textContent || '';
+        if (!text.includes(textMarker)) continue;
+
+        const isNotificationsBanner = candidate.closest(
+          '[data-notifications-panel], .notifications-overlay, .notice.notice--beta'
+        );
+        if (isNotificationsBanner) continue;
+
+        const cardContainer = candidate.closest(
+          '[data-debug="TOPNOTICE"], [data-top-notice="true"], [data-topnotice="true"], [data-component="TopNotice"], .top-notice, [class*="TopNotice_notice"]'
+        );
+        if (cardContainer) return true;
+      }
+
+      return false;
+    }
+
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
     const appContent = qs(".app-content");
@@ -470,9 +504,20 @@
       dismissedIds = [];
     }
 
-    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
+    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== "1";
 
-    const getActive = () => notifications.filter((item) => !dismissedIds.includes(item.id));
+    // getActive(): фильтруем dismissed + убираем дубликат JS-уведомления,
+    // если на странице уже есть React TopNotice.
+    const getActive = () => {
+      const topNoticePresent = isTopNoticePresent();
+      return notifications.filter((item) => {
+        if (!item || !item.id) return false;
+        if (dismissedIds.includes(item.id)) return false;
+        if (topNoticePresent && item.id === "beta-2026-02") return false;
+        return true;
+      });
+    };
+
 
     const getTotalActiveCount = () => {
       const topVisible = isTopNoticeVisible();
@@ -492,16 +537,54 @@
     const render = () => {
       const topVisible = isTopNoticeVisible();
       const active = getActive();
+    const render = () => {
+      const topVisible = isTopNoticeVisible();
+      const active = getActive();
       const totalActiveCount = (topVisible ? 1 : 0) + active.length;
 
       if (topNoticeSlot) {
-        topNoticeSlot.toggleAttribute('hidden', !topVisible);
+        topNoticeSlot.toggleAttribute("hidden", !topVisible);
       }
 
       if (badge) {
         if (totalActiveCount > 0) {
           badge.hidden = false;
           badge.textContent = String(totalActiveCount);
+        } else {
+          badge.hidden = true;
+          badge.textContent = "";
+        }
+      }
+
+      if (!listEl) return;
+
+      if (totalActiveCount === 0) {
+        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        return;
+      }
+
+      if (!active.length) {
+        listEl.innerHTML = "";
+        return;
+      }
+
+      listEl.innerHTML = active
+        .map(
+          (item) =>
+            `<article class="notice notice--beta" data-notification-id="${item.id}">
+              <div class="notice__content">
+                <div class="notice__head">
+                  <span class="notice__icon material-symbols-outlined" aria-hidden="true">notifications_active</span>
+                  <span class="notice__tag">${item.title || ""}</span>
+                </div>
+                <p class="notice__text">${item.text || ""}</p>
+              </div>
+              <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+            </article>`
+        )
+        .join("");
+    };
+
         } else {
           badge.hidden = true;
           badge.textContent = '';

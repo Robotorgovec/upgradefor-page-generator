@@ -16,13 +16,15 @@ export default function NotificationsTopNoticeMount() {
 
     const resolveSlot = () => {
       const nextSlot = document.querySelector(TOP_NOTICE_SLOT_SELECTOR);
-      setSlot((currentSlot) => (currentSlot === nextSlot ? currentSlot : nextSlot));
+
+      // Avoid unnecessary state updates (prevents extra renders)
+      setSlot((current) => (current === nextSlot ? current : nextSlot));
+
       return nextSlot;
     };
 
-    if (resolveSlot()) {
-      return;
-    }
+    // Slot already exists → done.
+    if (resolveSlot()) return;
 
     const observer = new MutationObserver(() => {
       if (resolveSlot()) {
@@ -36,21 +38,18 @@ export default function NotificationsTopNoticeMount() {
 
     observer.observe(document.body, { childList: true, subtree: true });
 
+    // Safety: do not keep observer alive forever
     timeoutId = window.setTimeout(() => {
       observer.disconnect();
     }, OBSERVER_TIMEOUT_MS);
 
     return () => {
       observer.disconnect();
-      if (timeoutId !== null) {
-        window.clearTimeout(timeoutId);
-      }
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
     };
   }, []);
 
-  if (!slot || !slot.isConnected) {
-    return null;
-  }
+  if (!slot || !slot.isConnected) return null;
 
   return createPortal(<TopNotice />, slot);
 }
