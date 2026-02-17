@@ -20,6 +20,7 @@ export default function TopNotice() {
 
   const handleDismiss = () => {
     window.localStorage.setItem(STORAGE_KEY, "1");
+    window.dispatchEvent(new Event("upgr:topnotice-dismissed"));
     setIsVisible(false);
   };
 

@@ -477,16 +477,9 @@
     const appContent = qs(".app-content");
     if (!appContent) return;
 
+    const topNoticeStorageKey = 'upgr_home_notice_dismissed';
     const storageKey = "ui.dismissedNotifications";
-    const notifications = [
-      {
-        id: "beta-2026-02",
-        title: "BETA",
-        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
-        type: "info",
-        createdAt: "2026-02-01",
-      },
-    ];
+    const notifications = [];
 
     const badge = trigger.querySelector('[data-notification-badge]');
     let panel = document.querySelector('[data-notifications-panel]');
@@ -496,7 +489,7 @@
         'aria-label': 'Уведомления',
         hidden: 'true',
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap" data-notifications-list></div></div>';
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
@@ -510,14 +503,20 @@
       dismissedIds = [];
     }
 
-    const getActive = () => {
-      const topNoticePresent = isTopNoticePresent();
-      return notifications.filter((item) => {
-        if (dismissedIds.includes(item.id)) return false;
-        if (topNoticePresent && item.id === 'beta-2026-02') return false;
-        return true;
-      });
-    };
+// KEEP (from codex branch)
+const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
+
+// MERGED getActive(): use robust TopNotice presence check + keep dismissedIds logic
+const getActive = () => {
+  const topNoticePresent = isTopNoticePresent();
+  return notifications.filter((item) => {
+    if (dismissedIds.includes(item.id)) return false;
+    // Hide the duplicate JS notification when TopNotice exists (the React one)
+    if (topNoticePresent && item.id === 'beta-2026-02') return false;
+    return true;
+  });
+};
+
 
     const persistDismissed = () => {
       localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
@@ -530,10 +529,13 @@
 
     const render = () => {
       const active = getActive();
+      const topNoticeCount = isTopNoticeVisible() ? 1 : 0;
+      const activeCount = active.length + topNoticeCount;
+
       if (badge) {
-        if (active.length > 0) {
+        if (activeCount > 0) {
           badge.hidden = false;
-          badge.textContent = String(active.length);
+          badge.textContent = String(activeCount);
         } else {
           badge.hidden = true;
           badge.textContent = '';
@@ -562,6 +564,14 @@
         )
         .join('');
     };
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === topNoticeStorageKey || event.key === storageKey) {
+        render();
+      }
+    });
+
+    window.addEventListener('upgr:topnotice-dismissed', render);
 
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
