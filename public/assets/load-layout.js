@@ -492,6 +492,7 @@
       panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
+    panel.style.pointerEvents = 'none';
 
     const listEl = panel.querySelector('[data-notifications-list]');
     let dismissedIds = [];
@@ -522,12 +523,14 @@
 
     const closePanel = () => {
       panel.setAttribute('hidden', 'true');
+      panel.style.pointerEvents = 'none';
       trigger.setAttribute('aria-expanded', 'false');
     };
 
     const render = () => {
       const active = getActive();
-      const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
+const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
+
       const topNoticeCount = hasTopNotice ? 1 : 0;
       const activeCount = active.length + topNoticeCount;
       const showEmpty = activeCount === 0;
@@ -587,6 +590,7 @@
       const isHidden = panel.hasAttribute('hidden');
       if (isHidden) {
         panel.removeAttribute('hidden');
+        panel.style.pointerEvents = 'auto';
         trigger.setAttribute('aria-expanded', 'true');
       } else {
         closePanel();
