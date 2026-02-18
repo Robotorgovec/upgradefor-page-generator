@@ -625,6 +625,26 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
     render();
   }
 
+  async function initNotificationsRuntime() {
+    try {
+      const notificationsModule = await import('/assets/notifications/index.js');
+      const initNotificationsModule = notificationsModule?.initNotificationsModule;
+
+      if (typeof initNotificationsModule === 'function') {
+        initNotificationsModule();
+        return;
+      }
+
+      console.warn('[UPGR] notifications module loaded without initNotificationsModule export');
+    } catch (error) {
+      console.error('[UPGR] notifications module import failed, using fallback', error);
+    }
+
+    if (typeof initNotifications === 'function') {
+      initNotifications();
+    }
+  }
+
   document.addEventListener("layout:ready", renderUpgradeLogo);
 
   document.addEventListener("layout:ready", async () => {
@@ -644,7 +664,7 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
 
       // Theme switcher — строго после вставки header.html
       await initThemeSwitcher();
-      initNotifications();
+      await initNotificationsRuntime();
 
       document.dispatchEvent(new Event("layout:ready"));
 
