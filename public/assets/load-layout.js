@@ -636,12 +636,12 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
       }
 
       console.warn('[UPGR] notifications module loaded without initNotificationsModule export');
+      return;
     } catch (error) {
       console.error('[UPGR] notifications module import failed, using fallback', error);
-    }
-
-    if (typeof initNotifications === 'function') {
-      initNotifications();
+      if (typeof initNotifications === 'function') {
+        initNotifications();
+      }
     }
   }
 
