@@ -51,6 +51,16 @@ export default function FioRusDomainPage() {
               Адрес: MD-2062, Chișinău, bd. Ștefan cel Mare și Sfânt, 6/2
             </p>
           </address>
+          <p style={{ marginTop: "var(--space-3)", marginBottom: "8px" }}>
+            Домен регистрируется на вас (вы — администратор домена). Оплата включает
+            регистрационные сборы у регистратора и сервис сопровождения. Итоговая цена
+            отображается до оплаты.
+          </p>
+          <p style={{ margin: 0 }}>
+            Оплачивая, вы соглашаетесь с <a href="/legal/terms" style={{ textDecoration: "underline" }}>Публичной офертой</a>,{" "}
+            <a href="/legal/refunds" style={{ textDecoration: "underline" }}>Политикой возвратов</a> и{" "}
+            <a href="/legal/privacy" style={{ textDecoration: "underline" }}>Политикой конфиденциальности</a>.
+          </p>
         </div>
       </section>
       {template.inlineScripts.map((script, index) => (
