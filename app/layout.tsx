@@ -44,6 +44,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main id="main" className="app-content">
           {children}
         </main>
+        <footer>
+          <div
+            className="wrap"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "12px 24px",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>© {new Date().getFullYear()} UPGRADE INNOVATIONS — все права защищены.</div>
+            <div>
+              <strong>Документы:</strong>{" "}
+              <a href="/legal/terms">Публичная оферта</a>{" · "}
+              <a href="/legal/refunds">Политика возвратов и отмены</a>{" · "}
+              <a href="/legal/privacy">Политика конфиденциальности</a>
+            </div>
+          </div>
+        </footer>
         <NotificationsTopNoticeMount />
         <MobileBottomNav />
         <Script src="/assets/load-layout.js?v=20260205-1" strategy="afterInteractive" />

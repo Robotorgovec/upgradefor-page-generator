@@ -268,8 +268,9 @@ export default function LegalTermsPage() {
             <li>
               <p>
                 <strong>6.1.</strong> Условия возвратов и отмен регулируются отдельным документом
-                Refund &amp; Cancellation Policy, размещённым на Сайте, и являются неотъемлемой
-                частью Оферты.
+                «Политика возвратов и отмены», размещённым на Сайте по адресу:{" "}
+                <a href="/legal/refunds" style={{ textDecoration: "underline" }}>/legal/refunds</a>,
+                и являются неотъемлемой частью Оферты.
               </p>
             </li>
             <li>
@@ -417,6 +418,29 @@ export default function LegalTermsPage() {
           <p>Email: info@upgradefor.com</p>
           <p style={{ marginBottom: 0 }}>Телефон: +373 78 856 998</p>
         </section>
+
+        <div style={{ marginTop: "var(--space-4)" }}>
+          <p style={{ marginBottom: "8px" }}>
+            <strong>Документы:</strong>
+          </p>
+          <ul style={{ margin: 0, paddingLeft: "18px" }}>
+            <li>
+              <a href="/legal/terms" style={{ textDecoration: "underline" }}>
+                Публичная оферта
+              </a>
+            </li>
+            <li>
+              <a href="/legal/refunds" style={{ textDecoration: "underline" }}>
+                Политика возвратов и отмены
+              </a>
+            </li>
+            <li>
+              <a href="/legal/privacy" style={{ textDecoration: "underline" }}>
+                Политика конфиденциальности
+              </a>
+            </li>
+          </ul>
+        </div>
       </article>
     </section>
   );
