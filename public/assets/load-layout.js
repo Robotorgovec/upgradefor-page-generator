@@ -527,7 +527,9 @@
 
     const render = () => {
       const active = getActive();
-      const hasTopNotice = isTopNoticeVisible();
+-      const hasTopNotice = isTopNoticeVisible();
++      const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
+
       const topNoticeCount = hasTopNotice ? 1 : 0;
       const activeCount = active.length + topNoticeCount;
       const showEmpty = activeCount === 0;
