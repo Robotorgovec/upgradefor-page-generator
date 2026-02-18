@@ -503,19 +503,17 @@
       dismissedIds = [];
     }
 
-// KEEP (from codex branch)
-const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
+    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
 
-// MERGED getActive(): use robust TopNotice presence check + keep dismissedIds logic
-const getActive = () => {
-  const topNoticePresent = isTopNoticePresent();
-  return notifications.filter((item) => {
-    if (dismissedIds.includes(item.id)) return false;
-    // Hide the duplicate JS notification when TopNotice exists (the React one)
-    if (topNoticePresent && item.id === 'beta-2026-02') return false;
-    return true;
-  });
-};
+    const getActive = () => {
+      const topNoticePresent = isTopNoticePresent();
+
+      return notifications.filter((item) => {
+        if (dismissedIds.includes(item.id)) return false;
+        if (topNoticePresent && item.id === 'beta-2026-02') return false;
+        return true;
+      });
+    };
 
 
     const persistDismissed = () => {
@@ -529,8 +527,10 @@ const getActive = () => {
 
     const render = () => {
       const active = getActive();
-      const topNoticeCount = isTopNoticeVisible() ? 1 : 0;
+      const hasTopNotice = isTopNoticeVisible();
+      const topNoticeCount = hasTopNotice ? 1 : 0;
       const activeCount = active.length + topNoticeCount;
+      const showEmpty = activeCount === 0;
 
       if (badge) {
         if (activeCount > 0) {
@@ -544,9 +544,18 @@ const getActive = () => {
 
       if (!listEl) return;
       if (!active.length) {
-        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        if (showEmpty) {
+          listEl.hidden = false;
+          listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        } else {
+          // TopNotice есть, но JS-уведомлений нет — список должен быть пустым/скрытым
+          listEl.hidden = true;
+          listEl.innerHTML = '';
+        }
         return;
       }
+
+      listEl.hidden = false;
 
       listEl.innerHTML = active
         .map(
