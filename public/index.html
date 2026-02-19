@@ -48,20 +48,27 @@
     }
   
     .hero-content{--hero-h1:clamp(28px,3.2vw,44px);display:grid;grid-template-areas:"title" "subtitle" "desc" "cta";gap:12px;min-width:0}
-    .hero-title{grid-area:title;margin:0}
-    .hero-title-main{white-space:nowrap;overflow-wrap:normal;word-break:keep-all;hyphens:none;font-size:var(--hero-h1);line-height:1.05;display:block}
-    .hero-subtitle{grid-area:subtitle;font-size:clamp(18px,4.8vw,calc(var(--hero-h1) * .92));line-height:1.1;font-weight:700;text-align:center;max-width:26ch;margin:0 auto}
-    .hero-subtitle-line1,.hero-subtitle-line2{display:block}
-    .hero .lead{grid-area:desc;margin:0}
-    .hero .cta{grid-area:cta}
-    .hero-art-mobile{display:none}
-    .hero-art-desktop{display:block}
-    @media (max-width:768px){
-      .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center;margin-top:12px}
-      .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
-      .hero-art-desktop{display:none}
-      .hero-title-main{font-size:clamp(20px,6vw,30px)}
-      .hero-subtitle{font-size:clamp(16px,4.6vw,22px);max-width:none}
+.hero-left-inner{width:100%;max-width:480px;margin:0 auto}
+.hero-title{grid-area:title;margin:0 0 10px}
+.hero-title-main{white-space:nowrap;overflow-wrap:normal;word-break:keep-all;hyphens:none;font-size:var(--hero-h1);line-height:1.05;display:block;color:var(--text)}
+.hero-subtitle{grid-area:subtitle;font-size:clamp(16px,2.2vw,30px);line-height:1.1;font-weight:700;text-align:center;max-width:none;margin:10px auto 0;color:var(--color-primary, #19A7FF)}
+.hero-subtitle-line1,.hero-subtitle-line2{display:block;white-space:nowrap}
+.hero-lead{grid-area:desc;margin:18px 0 0;color:var(--text);text-align:left;font-size:clamp(16px,1.15vw,19px);line-height:1.45}
+.hero .cta{grid-area:cta;margin-top:18px}
+.hero .cta .btn{width:100%;max-width:560px}
+.hero-art-mobile{display:none}
+.hero-art-desktop{display:block}
+
+@media (max-width:768px){
+  .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center;margin-top:16px}
+  .hero-title{margin-top:-4px}
+  .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
+  .hero-art-desktop{display:none}
+  .hero-title-main{font-size:clamp(20px,6vw,30px)}
+  .hero-subtitle{font-size:clamp(16px,4.6vw,22px);max-width:none;line-height:1.1;margin:0 auto}
+  .hero-lead,.hero .lead{margin-top:14px;font-size:clamp(15px,4vw,17px)}
+}
+
       .hero-subtitle-line1,.hero-subtitle-line2{white-space:nowrap}
     }
     @media (max-width:360px){
@@ -105,6 +112,7 @@
     <!-- Hero -->
     <section class="wrap hero">
       <div class="hero-content">
+        <div class="hero-left-inner">
         <h1 class="hero-title">
           <span class="hero-title-main">UPGRADE - INNOVATIONS</span>
         </h1>
@@ -112,11 +120,11 @@
         <div class="hero-art hero-art-mobile" aria-hidden="true">
           <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
         </div>
-        <p class="lead">
-          Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
-        </p>
+<p class="lead hero-lead">Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.</p>
+
         <div class="cta">
           <a class="btn" href="#join">Присоединиться</a>
+        </div>
         </div>
       </div>
       <div class="hero-art hero-art-desktop" aria-hidden="true">
