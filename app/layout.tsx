@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 
 import Header from "../components/layout/Header";
-import NotificationsTopNoticeMount from "../components/layout/NotificationsTopNoticeMount";
 import Sidebar from "../components/layout/Sidebar";
 import MobileBottomNav from "../components/layout/MobileBottomNav";
 
@@ -30,7 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
         />
-        <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
+        <link rel="stylesheet" href="/assets/layout.css?v=20260219-2" />
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
@@ -44,9 +43,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main id="main" className="app-content">
           {children}
         </main>
-        <NotificationsTopNoticeMount />
         <MobileBottomNav />
-        <Script src="/assets/load-layout.js?v=20260205-1" strategy="afterInteractive" />
+        <Script src="/assets/load-layout.js?v=20260219-2" strategy="afterInteractive" />
       </body>
     </html>
   );
