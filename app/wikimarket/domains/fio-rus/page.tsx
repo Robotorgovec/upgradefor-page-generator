@@ -19,7 +19,9 @@ export default function FioRusDomainPage() {
           dangerouslySetInnerHTML={{ __html: style }}
         />
       ))}
+
       <div dangerouslySetInnerHTML={{ __html: template.mainHtml }} />
+
       {template.inlineScripts.map((script, index) => (
         <Script
           key={`fio-rus-inline-${index}`}
