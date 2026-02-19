@@ -1,6 +1,11 @@
 (async function () {
   "use strict";
 
+  document.documentElement.setAttribute(
+    "data-ui-buttons",
+    document.documentElement.getAttribute("data-ui-buttons") || "A"
+  );
+
   async function fetchAndInsert(url, selector) {
     const container = document.querySelector(selector);
     if (!container) {
@@ -625,6 +630,80 @@
   }
 
 
+  function initUiButtonEffects() {
+    let raf = 0;
+    let lastMoveEvent = null;
+
+    const resolveButton = (target) => {
+      if (!(target instanceof Element)) return null;
+      return target.closest(".ui-btn, .btn");
+    };
+
+    const clearButtonVars = (btn) => {
+      btn.style.removeProperty("--mx");
+      btn.style.removeProperty("--bx");
+      btn.style.removeProperty("--sx");
+      btn.style.removeProperty("--sy");
+    };
+
+    const applyPointerPosition = () => {
+      raf = 0;
+      const event = lastMoveEvent;
+      if (!event) return;
+
+      const btn = resolveButton(event.target);
+      if (!btn) return;
+
+      const rect = btn.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const mx = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+      btn.style.setProperty("--mx", String(mx));
+      btn.style.setProperty("--bx", `${mx}%`);
+      btn.style.setProperty("--sx", `${x}px`);
+      btn.style.setProperty("--sy", `${y}px`);
+    };
+
+    document.addEventListener(
+      "pointermove",
+      (event) => {
+        lastMoveEvent = event;
+        if (raf) return;
+        raf = requestAnimationFrame(applyPointerPosition);
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("pointerdown", (event) => {
+      const btn = resolveButton(event.target);
+      if (!btn) return;
+      if (btn.hasAttribute("disabled") || btn.getAttribute("aria-disabled") === "true") return;
+
+      const rect = btn.getBoundingClientRect();
+      const size = Math.ceil(Math.max(rect.width, rect.height) * 1.2);
+      const ripple = document.createElement("span");
+      ripple.className = "ui-btn__ripple";
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+      btn.appendChild(ripple);
+      ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+    });
+
+    document.addEventListener("pointerout", (event) => {
+      const btn = resolveButton(event.target);
+      if (!btn) return;
+      const to = event.relatedTarget;
+      if (to instanceof Element && btn.contains(to)) return;
+      clearButtonVars(btn);
+    });
+  }
+
+
   async function initNotificationsRuntime() {
     try {
       const notificationsModule = await import('/assets/notifications/index.js');
@@ -791,5 +870,6 @@
     }
   }
 
+  initUiButtonEffects();
   await loadLayout();
 })();

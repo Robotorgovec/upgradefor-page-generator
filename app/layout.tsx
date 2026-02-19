@@ -4,10 +4,6 @@ import Script from "next/script";
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
 import MobileBottomNav from "../components/layout/MobileBottomNav";
-import UiButtonEffectsMount from "../components/layout/UiButtonEffectsMount";
-
-import "./ui-buttons.css";
-
 const themeInitScript = `
 (function () {
   try {
@@ -37,7 +33,7 @@ const themeInitScript = `
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru" data-ui-buttons="glass">
+    <html lang="ru" data-ui-buttons="A">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -46,6 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
         />
         <link rel="stylesheet" href="/assets/layout.css?v=20260219-2" />
+        <link rel="stylesheet" href="/assets/ui-buttons.css?v=20260219-3" />
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
@@ -60,8 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <MobileBottomNav />
-        <UiButtonEffectsMount />
-        <Script src="/assets/load-layout.js?v=20260219-2" strategy="afterInteractive" />
+        <Script src="/assets/load-layout.js?v=20260219-3" strategy="afterInteractive" />
       </body>
     </html>
   );

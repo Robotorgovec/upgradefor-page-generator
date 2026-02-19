@@ -1,0 +1,214 @@
+:root {
+  --accent: #3b82f6;
+  --accent-rgb: 59 130 246;
+
+  --ui-btn-radius: 14px;
+  --ui-btn-h: 44px;
+  --ui-btn-h-mobile: 42px;
+  --ui-btn-pad-x: 18px;
+
+  --ui-btn-text: #0f172a;
+  --ui-btn-shadow: 0 10px 26px rgba(15, 23, 42, 0.1);
+  --ui-btn-shadow-hover: 0 14px 34px rgba(15, 23, 42, 0.16);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn) {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--ui-btn-radius);
+  height: var(--ui-btn-h);
+  padding: 0 var(--ui-btn-pad-x);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--ui-btn-text);
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38)),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.65), rgba(255, 255, 255, 0.85), rgba(var(--accent-rgb), 0.65));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  background-repeat: no-repeat;
+  background-size: 100% 100%, 200% 100%;
+  background-position: 50% 50%, var(--bx, 50%) 50%;
+  box-shadow: var(--ui-btn-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: transform 160ms ease, box-shadow 200ms ease, filter 200ms ease, background-position 220ms ease;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn)::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--ui-btn-radius) - 1px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.12));
+  opacity: 0.55;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn)::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -65%;
+  width: 55%;
+  height: 180%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.58),
+    rgba(var(--accent-rgb), 0.24),
+    rgba(255, 255, 255, 0.48),
+    rgba(255, 255, 255, 0)
+  );
+  transform: translateX(-140%) rotate(14deg);
+  opacity: 0;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--ui-btn-shadow-hover), 0 0 0 2px rgba(var(--accent-rgb), 0.24), 0 0 28px rgba(var(--accent-rgb), 0.18);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):hover::before {
+  opacity: 1;
+  animation: uiBtnSheen 1250ms ease-in-out infinite;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):active {
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14), 0 0 0 2px rgba(var(--accent-rgb), 0.18);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):focus {
+  outline: none;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):focus-visible {
+  box-shadow: var(--ui-btn-shadow-hover), 0 0 0 3px rgba(var(--accent-rgb), 0.34);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):disabled,
+html[data-ui-buttons="A"] :where(.ui-btn, .btn)[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn, .btn):disabled::before,
+html[data-ui-buttons="A"] :where(.ui-btn, .btn)[aria-disabled="true"]::before {
+  animation: none;
+  opacity: 0;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--sm) {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--lg) {
+  height: 50px;
+  padding: 0 22px;
+  border-radius: 16px;
+  font-size: 16px;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--block) {
+  width: 100%;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--icon) {
+  width: 44px;
+  padding: 0;
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--ghost) {
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.22)),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.5), rgba(255, 255, 255, 0.7), rgba(var(--accent-rgb), 0.5));
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--outline, .btn-outline) {
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06)),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.72), rgba(255, 255, 255, 0.88), rgba(var(--accent-rgb), 0.72));
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--outline, .btn-outline):hover {
+  box-shadow: var(--ui-btn-shadow-hover), 0 0 0 2px rgba(var(--accent-rgb), 0.32), 0 0 36px rgba(var(--accent-rgb), 0.24);
+}
+
+html[data-ui-buttons="A"] :where(.ui-btn--soft, .btn-soft) {
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.5)),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.42), rgba(255, 255, 255, 0.64), rgba(var(--accent-rgb), 0.42));
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+html[data-ui-buttons="A"] .ui-btn__ripple {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(var(--accent-rgb), 0.28) 35%,
+    rgba(var(--accent-rgb), 0) 72%
+  );
+  transform: scale(0.2);
+  opacity: 0.9;
+  animation: uiBtnRipple 620ms ease-out forwards;
+  mix-blend-mode: normal;
+}
+
+@media (max-width: 640px) {
+  html[data-ui-buttons="A"] :where(.ui-btn, .btn) {
+    height: var(--ui-btn-h-mobile);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui-buttons="A"] :where(.ui-btn, .btn),
+  html[data-ui-buttons="A"] :where(.ui-btn, .btn)::before,
+  html[data-ui-buttons="A"] .ui-btn__ripple {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  html[data-ui-buttons="A"] :where(.ui-btn, .btn):hover {
+    transform: none !important;
+  }
+}
+
+@keyframes uiBtnSheen {
+  0% {
+    transform: translateX(-140%) rotate(14deg);
+  }
+  100% {
+    transform: translateX(260%) rotate(14deg);
+  }
+}
+
+@keyframes uiBtnRipple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
