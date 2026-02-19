@@ -456,7 +456,7 @@
       </div>
     </section>
 
-    <section class="wrap" id="final-cta" aria-labelledby="final-cta-title">
+    <section class="wrap" id="final-cta" aria-labelledby="final-cta-title" style="margin-top:var(--space-3)">
       <div class="card">
         <h2 class="section-title" id="final-cta-title">Ограничение 24 часа</h2>
         <p class="lead" id="expiry-text">Мы фиксируем наше предложение по помощи в регистрации домена «<span data-user-domain>{{user_domain}}</span>» на 24 часа, чтобы вы могли принять решение без спешки. По истечении срока условия, цена и/или доступность домена у регистратора могут измениться, и предложение может быть отозвано.</p>
@@ -476,6 +476,23 @@
         <li><a href="/legal/privacy">Политикой конфиденциальности</a></li>
       </ul>
     </section>
+
+    <section class="wrap" aria-labelledby="merchant-disclosure-title" style="margin-bottom:clamp(16px, 3vw, 48px)">
+      <div class="card" style="margin-top:var(--space-3)">
+        <h2 class="section-title" id="merchant-disclosure-title">Реквизиты продавца</h2>
+        <address style="font-style:normal;margin:0">
+          <p style="margin:0">UPGRADE INNOVATIONS S.R.L. (Republica Moldova)</p>
+          <p style="margin:0">IDNO: 1025600022961</p>
+          <p style="margin:0">
+            Поддержка:
+            <a href="mailto:info@upgradefor.com" aria-label="Email support at info@upgradefor.com">info@upgradefor.com</a>
+            <span aria-hidden="true"> • </span>
+            <a href="tel:+37378856998" aria-label="Call support at +373 78 856 998">+373 78 856 998</a>
+          </p>
+          <p style="margin:0">Адрес: MD-2062, Chișinău, bd. Ștefan cel Mare și Sfânt, 6/2</p>
+        </address>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -488,7 +505,7 @@
       var expiresParam = params.get('expires');
 
       var userName = nameParam && nameParam.trim() ? nameParam.trim() : 'Здравствуйте';
-      var userDomain = domainParam || 'ваш-домен.рус';
+      var userDomain = domainParam || 'ваш-домен.рф';
 
       document.querySelectorAll('[data-user-name]').forEach(function(node) {
         node.textContent = userName;
@@ -694,7 +711,7 @@
 
       if (isSent) {
         setSentState();
-      } else if (userDomain === 'ваш-домен.рус') {
+      } else if (userDomain === 'ваш-домен.рф') {
         setDomainMissingState();
       } else {
         setActiveState();
