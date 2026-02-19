@@ -20,7 +20,11 @@ export default function FioRusDomainPage() {
         />
       ))}
       <div dangerouslySetInnerHTML={{ __html: template.mainHtml }} />
-      <section className="wrap" aria-labelledby="merchant-disclosure-title">
+      <section
+        className="wrap"
+        aria-labelledby="merchant-disclosure-title"
+        style={{ marginBottom: "clamp(16px, 3vw, 48px)" }}
+      >
         <div className="card" style={{ marginTop: "var(--space-3)" }}>
           <h2 className="section-title" id="merchant-disclosure-title">
             Реквизиты продавца

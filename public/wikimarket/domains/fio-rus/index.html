@@ -154,7 +154,7 @@
   <main id="main" class="app-content">
     <section class="wrap hero" aria-labelledby="hero-title">
       <div>
-        <h1 id="hero-title">Моё должно принадлежать мне</h1>
+        <h1 id="hero-title">Моё может принадлежать мне</h1>
         <p class="lead">Ваше имя, фамилия и отчество могут стать вашим доменом в зоне .рф — и принадлежать только вам.</p>
         <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)">
           <span data-user-domain>{{user_domain}}</span>
@@ -166,7 +166,7 @@
           <a class="btn" href="#checkout" data-cta-link="primary" data-event="cta_click" data-location="hero">Оформить домен</a>
         </div>
 
-        <p class="lead" id="domain-cta-status" style="margin-top:8px">Домен зарезервирован на 24 часа и ожидает оформления.</p>
+        <p class="lead" id="domain-cta-status" style="margin-top:8px">Мы зафиксировали условия предложения на 24 часа — вы можете оформить домен без спешки.</p>
 
         <div class="card" style="margin-top:var(--space-3)" aria-label="Контейнер таймера">
           <div class="deadline-badge" id="deadlineBadge">
@@ -250,8 +250,8 @@
       </div>
     </section>
 
-    <section class="wrap" id="reputation" aria-labelledby="reputation-title">
-      <div class="grid" style="align-items:start">
+    <section class="wrap" id="reputation" aria-labelledby="reputation-title" style="margin-top:var(--space-4)">
+      <div style="display:grid;gap:var(--gap);align-items:start">
         <div class="card">
           <h2 class="section-title" id="reputation-title">Ваше имя может оформить кто угодно</h2>
           <p class="lead">Доменные зоны — открытая система. Если домен свободен, его может зарегистрировать любой человек.</p>
@@ -291,7 +291,7 @@
 
         <div class="card">
           <h3 style="margin-top:0">Заберите домен первым</h3>
-          <p class="lead">Пока домен свободен и зарезервирован по вашей ссылке, вы можете оформить его на себя.</p>
+          <p class="lead">Пока домен свободен, вы можете оформить его на себя на текущих условиях предложения.</p>
           <a class="btn" href="#checkout" data-cta-link="reputation" style="margin-top:var(--space-2)">Оформить домен на себя</a>
           <p style="font-size:0.85rem;color:var(--muted);margin-top:var(--space-2);margin-bottom:0">
             Чем раньше вы оформите домен, тем меньше риск, что его зарегистрирует кто-то другой.
@@ -356,7 +356,7 @@
       <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
         <a class="btn" href="#checkout" data-cta-link="seo">Оформить домен и закрепить имя</a>
       </div>
-      <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:8px">Домен резервируется на 24 часа</p>
+      <p class="lead" style="font-size:0.85rem;color:var(--muted);margin-top:8px">Условия предложения действуют 24 часа</p>
     </section>
 
     <section class="checkout-modal" id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title" aria-hidden="true">
@@ -459,7 +459,7 @@
     <section class="wrap" id="final-cta" aria-labelledby="final-cta-title">
       <div class="card">
         <h2 class="section-title" id="final-cta-title">Ограничение 24 часа</h2>
-        <p class="lead" id="expiry-text">Мы резервируем домен <span data-user-domain>{{user_domain}}</span> на 24 часа, чтобы вы могли принять решение без спешки. После окончания срока предложение может быть отозвано.</p>
+        <p class="lead" id="expiry-text">Мы фиксируем наше предложение по помощи в регистрации домена «<span data-user-domain>{{user_domain}}</span>» на 24 часа, чтобы вы могли принять решение без спешки. По истечении срока условия, цена и/или доступность домена у регистратора могут измениться, и предложение может быть отозвано.</p>
         <a class="btn" href="#checkout" style="margin-top:var(--space-3)" data-cta-link="secondary">Оформить домен</a>
         <a class="btn btn--ghost" href="/signup" data-expired-link hidden data-event="request_new_link" style="margin-top:var(--space-2)">Запросить новую ссылку</a>
       </div>
@@ -600,10 +600,10 @@
           expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
         }
         if (domainStatus) {
-          domainStatus.textContent = '🔴 Срок резервирования истёк';
+          domainStatus.textContent = '🔴 Срок действия предложения истёк';
         }
         if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Срок резервирования истёк.';
+          domainCtaStatus.textContent = 'Срок действия предложения истёк.';
         }
         if (expiredLink) {
           expiredLink.hidden = false;
@@ -626,10 +626,10 @@
 
       function setActiveState() {
         if (domainStatus) {
-          domainStatus.textContent = '🟢 Домен доступен и зарезервирован за вами';
+          domainStatus.textContent = '🟢 Домен доступен — предложение активно';
         }
         if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Домен зарезервирован на 24 часа и ожидает оформления.';
+          domainCtaStatus.textContent = 'Мы зафиксировали условия предложения на 24 часа — вы можете оформить домен без спешки.';
         }
       }
 
