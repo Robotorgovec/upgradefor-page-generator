@@ -438,50 +438,46 @@
 
 
   function initNotifications() {
-    function isTopNoticePresent() {
-      const topNoticeSelectors = [
-        '[data-debug="TOPNOTICE"]',
-        '[data-top-notice="true"]',
-        '[data-topnotice="true"]',
-        '.top-notice',
-        '[data-component="TopNotice"]',
-      ];
-
-      for (const selector of topNoticeSelectors) {
-        const el = qs(selector);
-        if (el && !el.closest('[data-notifications-panel]')) return true;
-      }
-
-      const textMarker = 'Новый сервис. Публикуем статус разделов';
-      const textCandidates = document.querySelectorAll('p, div, span, article, section');
-      for (const candidate of textCandidates) {
-        const text = candidate.textContent || '';
-        if (!text.includes(textMarker)) continue;
-
-        const isNotificationsBanner = candidate.closest(
-          '[data-notifications-panel], .notifications-overlay, .notice.notice--beta'
-        );
-        if (isNotificationsBanner) continue;
-
-        const cardContainer = candidate.closest(
-          '[data-debug="TOPNOTICE"], [data-top-notice="true"], [data-topnotice="true"], [data-component="TopNotice"], .top-notice, [class*="TopNotice_notice"]'
-        );
-        if (cardContainer) return true;
-      }
-
-      return false;
-    }
-
+    const STORAGE_KEY = 'upgr.notifications.v1';
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
-    const appContent = qs(".app-content");
+
+    const appContent = qs('.app-content');
     if (!appContent) return;
 
-    const topNoticeStorageKey = 'upgr_home_notice_dismissed';
-    const storageKey = "ui.dismissedNotifications";
-    const notifications = [];
-
     const badge = trigger.querySelector('[data-notification-badge]');
+
+    const getSeedNotifications = () => [
+      {
+        id: 'beta-announce',
+        title: 'BETA',
+        text: 'Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.',
+        dismissed: false,
+        createdAtIso: new Date().toISOString(),
+      },
+    ];
+
+    const loadNotifications = () => {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.filter((item) => item && typeof item.id === 'string');
+        }
+      } catch {
+        // ignore invalid storage payload
+      }
+
+      const seed = getSeedNotifications();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+      return seed;
+    };
+
+    let notifications = loadNotifications();
+
+    const persistNotifications = () => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
+    };
+
     let panel = document.querySelector('[data-notifications-panel]');
     if (!panel) {
       panel = createEl('section', 'notifications-overlay', {
@@ -489,37 +485,16 @@
         'aria-label': 'Уведомления',
         hidden: 'true',
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div data-top-notice-slot="true"></div><div data-notifications-list></div></div></div>';
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>Уведомления</strong><button class="notifications-close" type="button" aria-label="Закрыть уведомления">×</button></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
+
     panel.style.pointerEvents = 'none';
 
     const listEl = panel.querySelector('[data-notifications-list]');
-    let dismissedIds = [];
 
-    try {
-      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      dismissedIds = Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
-    } catch {
-      dismissedIds = [];
-    }
-
-    const isTopNoticeVisible = () => localStorage.getItem(topNoticeStorageKey) !== '1';
-
-    const getActive = () => {
-      const topNoticePresent = isTopNoticePresent();
-
-      return notifications.filter((item) => {
-        if (dismissedIds.includes(item.id)) return false;
-        if (topNoticePresent && item.id === 'beta-2026-02') return false;
-        return true;
-      });
-    };
-
-
-    const persistDismissed = () => {
-      localStorage.setItem(storageKey, JSON.stringify(dismissedIds));
-    };
+    const getVisible = () => notifications.filter((item) => !item.dismissed);
+    const getActiveCount = () => getVisible().length;
 
     const closePanel = () => {
       panel.setAttribute('hidden', 'true');
@@ -527,40 +502,35 @@
       trigger.setAttribute('aria-expanded', 'false');
     };
 
-    const render = () => {
-      const active = getActive();
-const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
+        const dismissNotification = (id) => {
+      notifications = notifications.map((item) =>
+        item.id === id ? { ...item, dismissed: true } : item
+      );
+      persistNotifications();
+    };
 
-      const topNoticeCount = hasTopNotice ? 1 : 0;
-      const activeCount = active.length + topNoticeCount;
-      const showEmpty = activeCount === 0;
+    const render = () => {
+      const visible = getVisible();
+      const activeCount = getActiveCount();
 
       if (badge) {
-        if (activeCount > 0) {
-          badge.hidden = false;
-          badge.textContent = String(activeCount);
-        } else {
-          badge.hidden = true;
-          badge.textContent = '';
-        }
+        badge.hidden = activeCount === 0;
+        badge.textContent = '';
       }
 
+      trigger.setAttribute(
+        'aria-label',
+        activeCount > 0 ? `Уведомления: ${activeCount}` : 'Уведомления'
+      );
+
       if (!listEl) return;
-      if (!active.length) {
-        if (showEmpty) {
-          listEl.hidden = false;
-          listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
-        } else {
-          // TopNotice есть, но JS-уведомлений нет — список должен быть пустым/скрытым
-          listEl.hidden = true;
-          listEl.innerHTML = '';
-        }
+
+      if (visible.length === 0) {
+        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
         return;
       }
 
-      listEl.hidden = false;
-
-      listEl.innerHTML = active
+      listEl.innerHTML = visible
         .map(
           (item) =>
             `<article class="notice notice--beta" data-notification-id="${item.id}">
@@ -571,19 +541,11 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
                 </div>
                 <p class="notice__text">${item.text}</p>
               </div>
-              <button class="notice__close" type="button" aria-label="Закрыть уведомление" data-dismiss-id="${item.id}">×</button>
+              <button class="notice__close" type="button" aria-label="Скрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
         .join('');
     };
-
-    window.addEventListener('storage', (event) => {
-      if (event.key === topNoticeStorageKey || event.key === storageKey) {
-        render();
-      }
-    });
-
-    window.addEventListener('upgr:topnotice-dismissed', render);
 
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
@@ -592,38 +554,42 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
         panel.removeAttribute('hidden');
         panel.style.pointerEvents = 'auto';
         trigger.setAttribute('aria-expanded', 'true');
-      } else {
-        closePanel();
+        render();
+        return;
       }
+
+      closePanel();
     });
 
     panel.addEventListener('click', (event) => {
       const dismissBtn = event.target.closest('[data-dismiss-id]');
       if (dismissBtn) {
         const id = dismissBtn.getAttribute('data-dismiss-id');
-        if (id && !dismissedIds.includes(id)) {
-          dismissedIds.push(id);
-          persistDismissed();
+        if (id) {
+          dismissNotification(id);
           render();
-          if (!getActive().length) closePanel();
         }
         return;
       }
-      if (!event.target.closest('.notifications-panel')) closePanel();
-    });
 
-    document.addEventListener('click', (event) => {
-      const clickedInside = panel.contains(event.target);
-      const clickedTrigger = trigger.contains(event.target);
-      if (!panel.hasAttribute('hidden') && !clickedInside && !clickedTrigger) closePanel();
+      if (event.target.closest('.notifications-close')) {
+        closePanel();
+      }
     });
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
     });
 
+    window.addEventListener('storage', (event) => {
+      if (event.key !== STORAGE_KEY) return;
+      notifications = loadNotifications();
+      render();
+    });
+
     render();
   }
+
 
   async function initNotificationsRuntime() {
     try {
@@ -679,7 +645,7 @@ const hasTopNotice = isTopNoticeVisible() && isTopNoticePresent();
       // --- burger toggling и высота header ---
       const body = document.body;
       const root = document.documentElement;
-      const headerNode = qs("header");
+      const headerNode = qs('[data-site-header="true"]') || qs("header.site-header") || qs("body > header") || qs("header");
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 

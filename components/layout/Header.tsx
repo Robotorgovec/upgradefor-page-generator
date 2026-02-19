@@ -7,5 +7,5 @@ export default function Header() {
     "utf8"
   );
 
-  return <header dangerouslySetInnerHTML={{ __html: headerHtml }} />;
+  return <header className="site-header" data-site-header="true" dangerouslySetInnerHTML={{ __html: headerHtml }} />;
 }
