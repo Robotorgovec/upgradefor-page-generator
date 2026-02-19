@@ -76,7 +76,10 @@
     :focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
     /* Header */
-    header{
+    body > header,
+    header.site-header,
+    header[data-site-header="true"],
+    .site-header{
       /* Fixed position so the header stays in place when scrolling */
       position:fixed;
       top:0;
@@ -89,7 +92,7 @@
     }
 
   /* Make the header container flush with the edges of the viewport and span full width */
-header .wrap{
+body > header .wrap, header.site-header .wrap, header[data-site-header="true"] .wrap, .site-header .wrap{
   /* remove automatic centering from the generic .wrap */
   margin-left:0;
   margin-right:0;
@@ -100,7 +103,7 @@ header .wrap{
   padding-right:var(--space-1);
 }
          /* Reduce left padding on the nav within the header so the burger sits near the edge */
-    header .nav{
+    body > header .nav, header.site-header .nav, header[data-site-header="true"] .nav, .site-header .nav{
       padding-left:0;
     }
     .nav{
@@ -174,7 +177,9 @@ header .wrap{
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
     h1{margin:.2em 0 .5em;font-size:clamp(28px,4.2vw,44px);line-height:1.12}
     .lead{color:var(--muted);max-width:64ch}
-    .hero-art{
+    .hero-art-mobile{display:none}
+.hero-art-desktop{display:block}
+.hero-art{
       background:radial-gradient(1000px 500px at 80% -40%, rgba(14,197,255,.18), transparent 60%),
                  radial-gradient(700px 420px at 0% 20%, rgba(37,99,235,.12), transparent 60%);
       border-radius:20px;border:1px solid var(--line);
@@ -215,6 +220,26 @@ header .wrap{
       header{background:rgba(15,23,42,.75)}
       .phase .text{color:#e6edf6}
     }
+  
+    .hero-content{--hero-h1:clamp(26px,6.8vw,56px);display:grid;grid-template-areas:"title" "subtitle" "desc" "cta";gap:12px}
+    .hero-title{grid-area:title;margin:0}
+    .hero-title-main{white-space:nowrap;overflow-wrap:normal;word-break:keep-all;hyphens:none;font-size:var(--hero-h1);line-height:1.05;display:block}
+    .hero-subtitle{grid-area:subtitle;font-size:clamp(18px,4.8vw,calc(var(--hero-h1) * .92));line-height:1.1;font-weight:700;text-align:center;max-width:26ch;margin:0 auto}
+    .hero .lead{grid-area:desc;margin:0}
+    .hero .cta{grid-area:cta}
+    .hero-art-mobile{display:none}
+    .hero-art-desktop{display:block}
+    @media (max-width:768px){
+      .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center}
+      .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
+      .hero-art-desktop{display:none}
+      .hero-title-main{font-size:clamp(20px,6vw,30px)}
+      .hero-subtitle{font-size:clamp(16px,4.4vw,calc(var(--hero-h1) * .92));max-width:24ch}
+    }
+    @media (max-width:360px){
+      .hero-content{--hero-h1:clamp(24px,7.2vw,52px)}
+    }
+
   </style>
 
   <!-- Structured data -->
@@ -638,9 +663,12 @@ body:not(.menu-open) .burger {
     <section class="wrap hero">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span>UPGRADE - INNOVATIONS</span>
-          <span>платформа, где технологии находят применение</span>
+          <span class="hero-title-main">UPGRADE - INNOVATIONS</span>
         </h1>
+        <h2 class="hero-subtitle">платформа, где технологии находят применение</h2>
+        <div class="hero-art hero-art-mobile" aria-hidden="true">
+          <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
+        </div>
         <p class="lead">
           Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
         </p>
@@ -648,7 +676,7 @@ body:not(.menu-open) .burger {
           <a class="btn" href="#join">Присоединиться</a>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true">
+      <div class="hero-art hero-art-desktop" aria-hidden="true">
         <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
       </div>
     </section>
