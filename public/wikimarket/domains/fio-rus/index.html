@@ -144,6 +144,20 @@
       font-weight: 700;
     }
 
+.fio-rus-landing .hero {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.fio-rus-landing .hero > div {
+  width: min(100%, 860px);
+}
+
+.fio-rus-landing .hero .cta {
+  justify-content: center;
+}
+
 
     .search-preview-section {
       background: linear-gradient(180deg, #f8faff 0%, #f3f6fc 100%);
@@ -155,9 +169,12 @@
 
     .search-preview-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.44fr) minmax(0, 0.56fr);
-      gap: clamp(32px, 4vw, 48px);
-      align-items: flex-start;
+grid-template-columns: 1fr;
+gap: clamp(24px, 3vw, 32px);
+align-items: flex-start;
+max-width: min(100%, 980px);
+margin: 0 auto;
+
     }
 
     .search-preview-title {
@@ -539,7 +556,7 @@
   <main id="main" class="app-content">
     <section class="wrap hero" aria-labelledby="hero-title">
       <div>
-        <h1 id="hero-title">Моё может принадлежать мне</h1>
+        <h1 id="hero-title">Моё ФИО в .рф может принадлежать мне</h1>
         <p class="lead">Ваше имя, фамилия и отчество могут стать вашим доменом в зоне .рф — и принадлежать только вам.</p>
         <p style="font-size:clamp(22px,4vw,40px);font-weight:700;margin:0 0 var(--space-1)">
           <span data-user-domain>{{user_domain}}</span>
@@ -564,14 +581,122 @@
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="hero-art" aria-label="Визуальный блок домена">
-        <div style="padding:var(--space-4);text-align:center">
-          <div class="tag" style="margin-bottom:var(--space-2)">Домен .РФ</div>
-          <div style="font-size:clamp(24px,4vw,42px);font-weight:700">
-            <span data-user-domain>{{user_domain}}</span>
+    <section class="wrap" id="search-preview" aria-labelledby="search-preview-title">
+      <div class="search-preview-section">
+        <div class="search-preview-grid">
+          <div class="search-preview-text">
+            <h2 class="section-title search-preview-title" id="search-preview-title"><span class="search-preview-title-line">Как ваше ФИО</span><span class="search-preview-title-line">может выглядеть в поиске</span></h2>
+            <p class="lead search-preview-description">Показываем пример выдачи по запросу ФИО — без привязки к конкретной поисковой системе.</p>
+
+            <div class="fio-input-card" aria-label="Персонализация примера">
+              <p class="fio-input-title">Персонализируйте пример под ваше ФИО</p>
+              <div class="fio-input-grid">
+                <input id="fio-surname" type="text" autocomplete="family-name" placeholder="Иванов" aria-label="Фамилия">
+                <input id="fio-name" type="text" autocomplete="given-name" placeholder="Пётр" aria-label="Имя">
+                <input id="fio-patronymic" type="text" autocomplete="additional-name" placeholder="Петрович" aria-label="Отчество">
+              </div>
+              <p class="fio-input-hint">Введите ФИО как в паспорте (без сокращений).</p>
+              <p class="fio-domain-preview">Ваш домен: <strong data-fio-token="domain">ваш-домен.рф</strong></p>
+              <p class="fio-domain-error" id="fio-domain-error" hidden>Слишком длинно для домена, сократите/уберите отчество.</p>
+              <div class="fio-actions">
+                <button class="btn" type="button" id="fio-apply-btn">Показать пример</button>
+                <button class="btn btn--ghost" type="button" id="fio-share-btn">Поделиться ссылкой</button>
+              </div>
+              <div class="fio-share-output" id="fio-share-output" hidden>
+                <p class="fio-share-link" id="fio-share-link"></p>
+                <button class="btn btn--ghost" type="button" id="fio-copy-btn">Скопировать</button>
+              </div>
+            </div>
+
+            <ul class="search-preview-points">
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25c-3.8 0-6.75 2.95-6.75 6.75 0 5.4 6.75 10.75 6.75 10.75s6.75-5.35 6.75-10.75c0-3.8-2.95-6.75-6.75-6.75z"/><path d="M9.4 10.1a2.6 2.6 0 0 1 5.2 0"/><path d="M9.25 13.2c.9-.85 1.75-1.15 2.75-1.15s1.85.3 2.75 1.15"/></svg>
+                </span>
+                <span>В строке поиска: фамилия, имя, отчество</span>
+              </li>
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="M3.75 12h16.5"/><path d="M12 3.75c2.45 2.2 3.5 4.9 3.5 8.25S14.45 18.05 12 20.25"/><path d="M12 3.75c-2.45 2.2-3.5 4.9-3.5 8.25s1.05 6.05 3.5 8.25"/></svg>
+                </span>
+                <span>В выдаче — пример результатов с вашим доменом ФИО.рф</span>
+              </li>
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2.5"/><path d="M8 9h8"/><path d="M8 12h8"/><path d="M8 15h5"/></svg>
+                </span>
+                <span>Ниже — другие сайты и справочники (пример)</span>
+              </li>
+            </ul>
+            <a class="btn" href="#form" data-cta-link="search-preview">Оформить домен</a>
+            <p class="search-preview-note">Иллюстрация демонстрационная. Не относится к конкретным поисковым системам и не является гарантией позиций в выдаче. Результаты зависят от множества факторов.</p>
           </div>
-          <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
+
+          <div class="search-mock" aria-label="Демонстрационный макет поисковой выдачи">
+            <div class="search-mock-toolbar">
+              <span class="search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="M16 16L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              <div class="search-mock-query">
+                <span data-fio-token="fio">Иванов Иван Иванович</span>
+                <span class="search-query-icons" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 4v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="8" y="3" width="8" height="12" rx="4" stroke="currentColor" stroke-width="2"/><path d="M6 11a6 6 0 1 0 12 0" stroke="currentColor" stroke-width="2"/><path d="M12 17v3" stroke="currentColor" stroke-width="2"/></svg>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+              </div>
+              <button class="search-mock-demo" type="button">Демо</button>
+            </div>
+
+            <div class="search-mock-tabs" aria-hidden="true">
+              <span class="search-mock-tab active">поиск</span>
+              <span class="search-mock-tab">картинки</span>
+              <span class="search-mock-tab">видео</span>
+              <span class="search-mock-tab">карты</span>
+              <span class="search-mock-tab">новости</span>
+            </div>
+
+            <div class="search-mock-results">
+              <article class="search-result highlight">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">1. <span data-fio-token="fio">Иванов Иван Иванович</span> — контакты и краткая справка</h3>
+                </div>
+                <div class="search-result-url">https://<span data-fio-token="slug">иванов-иван-иванович</span>.рф</div>
+                <p class="search-result-snippet">Сводная страница: контакты, сфера занятости и ссылки. Источник: страница на домене имени.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">2. Профиль в справочнике специалистов (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-directory.ru/people/<span data-fio-token="slug">ivanov-ii</span></div>
+                <p class="search-result-snippet">Открытые данные из разных источников. Информация может быть неполной или устаревшей.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">3. Реестр организаций и ИП (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-registry.ru/search?q=<span data-fio-token="slug">ivanov</span></div>
+                <p class="search-result-snippet">Сводка по компаниям и связям. Данные представлены для ознакомления.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">4. Публикации и упоминания (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-news.ru/person/<span data-fio-token="slug">ivanov</span></div>
+                <p class="search-result-snippet">Подборка материалов и ссылок. Результаты зависят от запроса и настроек поиска.</p>
+              </article>
+            </div>
+
+            <p class="search-mock-note">Демонстрационный макет: не относится к конкретным поисковым системам и не является гарантией позиций в выдаче.</p>
+          </div>
         </div>
       </div>
     </section>
