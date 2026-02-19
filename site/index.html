@@ -221,23 +221,29 @@ body > header .wrap, header.site-header .wrap, header[data-site-header="true"] .
       .phase .text{color:#e6edf6}
     }
   
-    .hero-content{--hero-h1:clamp(26px,6.8vw,56px);display:grid;grid-template-areas:"title" "subtitle" "desc" "cta";gap:12px}
+    .hero-content{--hero-h1:clamp(28px,3.2vw,44px);display:grid;grid-template-areas:"title" "subtitle" "desc" "cta";gap:12px;min-width:0}
     .hero-title{grid-area:title;margin:0}
     .hero-title-main{white-space:nowrap;overflow-wrap:normal;word-break:keep-all;hyphens:none;font-size:var(--hero-h1);line-height:1.05;display:block}
     .hero-subtitle{grid-area:subtitle;font-size:clamp(18px,4.8vw,calc(var(--hero-h1) * .92));line-height:1.1;font-weight:700;text-align:center;max-width:26ch;margin:0 auto}
+    .hero-subtitle-line1,.hero-subtitle-line2{display:block}
     .hero .lead{grid-area:desc;margin:0}
     .hero .cta{grid-area:cta}
     .hero-art-mobile{display:none}
     .hero-art-desktop{display:block}
     @media (max-width:768px){
-      .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center}
+      .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center;margin-top:12px}
       .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
       .hero-art-desktop{display:none}
       .hero-title-main{font-size:clamp(20px,6vw,30px)}
-      .hero-subtitle{font-size:clamp(16px,4.4vw,calc(var(--hero-h1) * .92));max-width:24ch}
+      .hero-subtitle{font-size:clamp(16px,4.6vw,22px);max-width:none}
+      .hero-subtitle-line1,.hero-subtitle-line2{white-space:nowrap}
     }
     @media (max-width:360px){
       .hero-content{--hero-h1:clamp(24px,7.2vw,52px)}
+    }
+    @media (min-width:901px) and (max-width:1200px){
+      .hero{grid-template-columns:1.25fr .75fr}
+      .hero-art{max-width:460px}
     }
 
   </style>
@@ -665,7 +671,7 @@ body:not(.menu-open) .burger {
         <h1 class="hero-title">
           <span class="hero-title-main">UPGRADE - INNOVATIONS</span>
         </h1>
-        <h2 class="hero-subtitle">платформа, где технологии находят применение</h2>
+        <h2 class="hero-subtitle"><span class="hero-subtitle-line1">платформа, где технологии</span><span class="hero-subtitle-line2">находят применение</span></h2>
         <div class="hero-art hero-art-mobile" aria-hidden="true">
           <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
         </div>
