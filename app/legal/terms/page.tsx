@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
   title: "Публичная оферта | UpgradeFor",
   description:
@@ -267,9 +269,10 @@ export default function LegalTermsPage() {
           <ol>
             <li>
               <p>
-                <strong>6.1.</strong> Условия возвратов и отмен регулируются отдельным документом
-                Refund &amp; Cancellation Policy, размещённым на Сайте, и являются неотъемлемой
-                частью Оферты.
+                <strong>6.1.</strong> Условия возвратов и отмен регулируются отдельным документом{" "}
+                <Link href="/legal/refunds">Refund &amp; Cancellation Policy</Link>, размещённым на Сайте, и
+                являются неотъемлемой частью Оферты. Обработка персональных данных описана в{" "}
+                <Link href="/legal/privacy">Политике конфиденциальности</Link>.
               </p>
             </li>
             <li>
