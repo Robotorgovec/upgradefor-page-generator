@@ -37,7 +37,7 @@
     .deadline-badge {
       display: flex;
       gap: 12px;
-      align-items: center;
+      align-items: flex-start;
       padding: 12px 14px;
       border: 1px solid var(--line);
       border-radius: var(--r-card);
@@ -92,7 +92,7 @@
       inset: 0;
       background: rgba(15, 23, 42, 0.5);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 24px;
       opacity: 0;
@@ -142,6 +142,390 @@
       font-size: clamp(20px, 3vw, 28px);
       font-weight: 700;
     }
+
+
+    .search-preview-section {
+      background: linear-gradient(180deg, #f8faff 0%, #f3f6fc 100%);
+      border: 1px solid #e2e8f0;
+      border-radius: clamp(24px, 3vw, 34px);
+      padding: clamp(18px, 3vw, 38px) clamp(20px, 3.6vw, 48px) clamp(24px, 4vw, 44px);
+      margin-top: clamp(28px, 5vw, 56px);
+    }
+
+    .search-preview-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.44fr) minmax(0, 0.56fr);
+      gap: clamp(32px, 4vw, 48px);
+      align-items: flex-start;
+    }
+
+    .search-preview-title {
+      margin: 0;
+      display: grid;
+      gap: 8px;
+      line-height: 1.12;
+      font-size: clamp(20px, 3.2vw, 44px);
+    }
+
+    .search-preview-title-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .search-preview-description {
+      max-width: 56ch;
+      margin: 14px 0 0;
+    }
+
+    .search-preview-points {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .search-preview-point {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .search-preview-check {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--surface) 94%, var(--neutral-200));
+      border: 1px solid var(--line);
+      color: var(--color-primary);
+    }
+
+    .search-preview-check svg {
+      width: 19px;
+      height: 19px;
+      display: block;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .search-preview-note {
+      margin: 15px 0 0;
+      max-width: 420px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    .search-preview-text {
+      display: block;
+      padding-top: 0;
+    }
+
+    .search-preview-text .btn {
+      margin-top: 20px;
+    }
+
+
+    .fio-input-card {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-card);
+      background: color-mix(in srgb, var(--surface) 90%, var(--primary-50));
+      padding: clamp(14px, 2vw, 18px);
+      display: grid;
+      gap: 12px;
+    }
+
+    .fio-input-title {
+      margin: 0;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .fio-input-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .fio-input-grid input {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fio-input-hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .fio-domain-preview {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text);
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .fio-domain-preview strong {
+      color: var(--color-primary);
+      font-size: 16px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      word-break: break-all;
+    }
+
+    .fio-domain-error {
+      margin: 0;
+      color: #b91c1c;
+      font-size: 12px;
+    }
+
+    .fio-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .fio-actions .btn {
+      min-height: 44px;
+    }
+
+    .fio-share-output {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .fio-share-link {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+
+    [data-user-domain],
+    [data-fio-token="domain"],
+    [data-fio-token="slug"] {
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      vertical-align: bottom;
+    }
+
+    .search-result-title,
+    .search-result-url,
+    .search-result-snippet,
+    [data-fio-token="domain"] {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .search-mock {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      box-shadow: 0 28px 55px rgba(15, 23, 42, 0.1);
+      padding: clamp(14px, 2vw, 22px);
+      display: grid;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .search-mock-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-icon {
+      color: #2563eb;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-mock-query {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #1e293b;
+      font-size: clamp(15px, 2vw, 18px);
+    }
+
+    .search-query-icons {
+      margin-left: auto;
+      display: inline-flex;
+      gap: 8px;
+      color: #94a3b8;
+    }
+
+    .search-mock-demo {
+      border: none;
+      min-height: 40px;
+      padding: 10px 16px;
+      border-radius: 16px;
+      background: #2563eb;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .search-mock-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .search-mock-tab {
+      font-size: 14px;
+      color: #64748b;
+      padding: 7px 12px;
+      border-radius: 12px;
+    }
+
+    .search-mock-tab.active {
+      color: #2563eb;
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    .search-mock-results {
+      display: grid;
+      gap: 14px;
+    }
+
+    .search-result {
+      border: 1px solid #e2e8f0;
+      border-radius: 19px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      background: #ffffff;
+    }
+
+    .search-result.highlight {
+      background: #eff6ff;
+      border-left: 9px solid #2563eb;
+      padding-left: 12px;
+    }
+
+    .search-result-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #334155;
+    }
+
+    .search-favicon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #cbd5e1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .search-result-title {
+      margin: 0;
+      color: #1d4ed8;
+      font-size: clamp(18px, 2.4vw, 20px);
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    .search-result-url {
+      color: #15803d;
+      font-size: 15px;
+    }
+
+    .search-result-snippet {
+      margin: 0;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .search-mock-note {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1023px) {
+      .search-preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .search-preview-section {
+        padding: 22px 16px;
+        border-radius: 22px;
+      }
+
+      .fio-input-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-preview-title {
+        font-size: clamp(20px, 8vw, 30px);
+      }
+
+      .search-preview-title-line {
+        white-space: normal;
+      }
+
+      .search-mock-toolbar {
+        flex-wrap: wrap;
+      }
+
+      .search-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .search-mock-demo {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -187,6 +571,124 @@
             <span data-user-domain>{{user_domain}}</span>
           </div>
           <p class="lead" style="margin-top:var(--space-2)">Запоминающийся адрес для вашего проекта.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="search-preview" aria-labelledby="search-preview-title">
+      <div class="search-preview-section">
+        <div class="search-preview-grid">
+          <div class="search-preview-text">
+            <h2 class="section-title search-preview-title" id="search-preview-title"><span class="search-preview-title-line">Как ваше ФИО</span><span class="search-preview-title-line">может выглядеть в поиске</span></h2>
+            <p class="lead search-preview-description">Показываем пример выдачи по запросу ФИО — без привязки к конкретной поисковой системе.</p>
+
+            <div class="fio-input-card" aria-label="Персонализация примера">
+              <p class="fio-input-title">Персонализируйте пример под ваше ФИО</p>
+              <div class="fio-input-grid">
+                <input id="fio-surname" type="text" autocomplete="family-name" placeholder="Иванов" aria-label="Фамилия">
+                <input id="fio-name" type="text" autocomplete="given-name" placeholder="Пётр" aria-label="Имя">
+                <input id="fio-patronymic" type="text" autocomplete="additional-name" placeholder="Петрович" aria-label="Отчество">
+              </div>
+              <p class="fio-input-hint">Введите ФИО как в паспорте (без сокращений).</p>
+              <p class="fio-domain-preview">Ваш домен: <strong data-fio-token="domain">ваш-домен.рф</strong></p>
+              <p class="fio-domain-error" id="fio-domain-error" hidden>Слишком длинно для домена, сократите/уберите отчество.</p>
+              <div class="fio-actions">
+                <button class="btn" type="button" id="fio-apply-btn">Показать пример</button>
+                <button class="btn btn--ghost" type="button" id="fio-share-btn">Поделиться ссылкой</button>
+              </div>
+              <div class="fio-share-output" id="fio-share-output" hidden>
+                <p class="fio-share-link" id="fio-share-link"></p>
+                <button class="btn btn--ghost" type="button" id="fio-copy-btn">Скопировать</button>
+              </div>
+            </div>
+
+            <ul class="search-preview-points">
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25c-3.8 0-6.75 2.95-6.75 6.75 0 5.4 6.75 10.75 6.75 10.75s6.75-5.35 6.75-10.75c0-3.8-2.95-6.75-6.75-6.75z"/><path d="M9.4 10.1a2.6 2.6 0 0 1 5.2 0"/><path d="M9.25 13.2c.9-.85 1.75-1.15 2.75-1.15s1.85.3 2.75 1.15"/></svg>
+                </span>
+                <span>В строке поиска: фамилия, имя, отчество</span>
+              </li>
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="M3.75 12h16.5"/><path d="M12 3.75c2.45 2.2 3.5 4.9 3.5 8.25S14.45 18.05 12 20.25"/><path d="M12 3.75c-2.45 2.2-3.5 4.9-3.5 8.25s1.05 6.05 3.5 8.25"/></svg>
+                </span>
+                <span>В выдаче — пример результатов с вашим доменом ФИО.рф</span>
+              </li>
+              <li class="search-preview-point">
+                <span class="search-preview-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2.5"/><path d="M8 9h8"/><path d="M8 12h8"/><path d="M8 15h5"/></svg>
+                </span>
+                <span>Ниже — другие сайты и справочники (пример)</span>
+              </li>
+            </ul>
+            <a class="btn" href="#form" data-cta-link="search-preview">Оформить домен</a>
+            <p class="search-preview-note">Иллюстрация демонстрационная. Не относится к конкретным поисковым системам и не является гарантией позиций в выдаче. Результаты зависят от множества факторов.</p>
+          </div>
+
+          <div class="search-mock" aria-label="Демонстрационный макет поисковой выдачи">
+            <div class="search-mock-toolbar">
+              <span class="search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="M16 16L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              <div class="search-mock-query">
+                <span data-fio-token="fio">Иванов Иван Иванович</span>
+                <span class="search-query-icons" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 4v9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="8" y="3" width="8" height="12" rx="4" stroke="currentColor" stroke-width="2"/><path d="M6 11a6 6 0 1 0 12 0" stroke="currentColor" stroke-width="2"/><path d="M12 17v3" stroke="currentColor" stroke-width="2"/></svg>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+              </div>
+              <button class="search-mock-demo" type="button">Демо</button>
+            </div>
+
+            <div class="search-mock-tabs" aria-hidden="true">
+              <span class="search-mock-tab active">поиск</span>
+              <span class="search-mock-tab">картинки</span>
+              <span class="search-mock-tab">видео</span>
+              <span class="search-mock-tab">карты</span>
+              <span class="search-mock-tab">новости</span>
+            </div>
+
+            <div class="search-mock-results">
+              <article class="search-result highlight">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">1. <span data-fio-token="fio">Иванов Иван Иванович</span> — контакты и краткая справка</h3>
+                </div>
+                <div class="search-result-url">https://<span data-fio-token="slug">иванов-иван-иванович</span>.рф</div>
+                <p class="search-result-snippet">Сводная страница: контакты, сфера занятости и ссылки. Источник: страница на домене имени.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">2. Профиль в справочнике специалистов (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-directory.ru/people/<span data-fio-token="slug">ivanov-ii</span></div>
+                <p class="search-result-snippet">Открытые данные из разных источников. Информация может быть неполной или устаревшей.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">3. Реестр организаций и ИП (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-registry.ru/search?q=<span data-fio-token="slug">ivanov</span></div>
+                <p class="search-result-snippet">Сводка по компаниям и связям. Данные представлены для ознакомления.</p>
+              </article>
+
+              <article class="search-result">
+                <div class="search-result-head">
+                  <span class="search-favicon" aria-hidden="true"></span>
+                  <h3 class="search-result-title">4. Публикации и упоминания (пример)</h3>
+                </div>
+                <div class="search-result-url">https://example-news.ru/person/<span data-fio-token="slug">ivanov</span></div>
+                <p class="search-result-snippet">Подборка материалов и ссылок. Результаты зависят от запроса и настроек поиска.</p>
+              </article>
+            </div>
+
+            <p class="search-mock-note">Демонстрационный макет: не относится к конкретным поисковым системам и не является гарантией позиций в выдаче.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -505,18 +1007,21 @@
       var expiresParam = params.get('expires');
 
       var userName = nameParam && nameParam.trim() ? nameParam.trim() : 'Здравствуйте';
-      var userDomain = domainParam || 'ваш-домен.рф';
+      var defaultDomain = domainParam || 'ваш-домен.рф';
+      var defaultSlug = defaultDomain.replace(/\.рф$/i, '');
+      var defaultFio = 'Иванов Иван Иванович';
+
+      var fioStorageKey = 'upgr_fio_v1';
+      var fioShareToken = window.__fioShareToken || (window.location.pathname.match(/^\/fio\/([^/?#]+)/) || [])[1] || '';
+      var fioState = { surname: '', name: '', patronymic: '' };
+      var personalization = { domain: defaultDomain, slug: defaultSlug, fio: defaultFio, valid: true };
 
       document.querySelectorAll('[data-user-name]').forEach(function(node) {
         node.textContent = userName;
       });
-      document.querySelectorAll('[data-user-domain]').forEach(function(node) {
-        node.textContent = userDomain;
-      });
 
       var countdownEl = document.getElementById('deadlineValue');
       var countdownBadge = document.getElementById('deadlineBadge');
-
       var expiryText = document.getElementById('expiry-text');
       var expiredLink = document.querySelector('[data-expired-link]');
       var formStatus = document.getElementById('form-status');
@@ -530,40 +1035,103 @@
       var formSuccess = document.getElementById('form-success');
       var formFields = form ? form.querySelectorAll('input') : [];
 
+      var fioSurnameInput = document.getElementById('fio-surname');
+      var fioNameInput = document.getElementById('fio-name');
+      var fioPatronymicInput = document.getElementById('fio-patronymic');
+      var fioDomainError = document.getElementById('fio-domain-error');
+      var fioApplyBtn = document.getElementById('fio-apply-btn');
+      var fioShareBtn = document.getElementById('fio-share-btn');
+      var fioShareOutput = document.getElementById('fio-share-output');
+      var fioShareLink = document.getElementById('fio-share-link');
+      var fioCopyBtn = document.getElementById('fio-copy-btn');
+
       var storageKey = 'fio-rus-expires-at';
-      var sentKey = 'domain_request_sent:' + (currentToken || 'no-token') + ':' + userDomain;
-
+      var sentKey = 'domain_request_sent:' + (currentToken || 'no-token');
       var expiresAt;
-
-      if (ctaButton) {
-        ctaButton.setAttribute('data-domain', userDomain);
-      }
-
       var isExpired = false;
       var isSent = localStorage.getItem(sentKey) === 'true';
 
-      if (expiresParam) {
-        var parsedDate = new Date(expiresParam);
-        if (!isNaN(parsedDate)) {
-          expiresAt = parsedDate;
-          localStorage.setItem(storageKey, parsedDate.toISOString());
-        }
+      function compactSpaces(value) {
+        return (value || '').replace(/\s+/g, ' ').trim();
       }
 
-      if (!expiresAt) {
-        var storedExpires = localStorage.getItem(storageKey);
-        if (storedExpires) {
-          var storedDate = new Date(storedExpires);
-          if (!isNaN(storedDate)) {
-            expiresAt = storedDate;
+      function buildFioDisplay(state) {
+        var parts = [state.surname, state.name, state.patronymic].map(compactSpaces).filter(Boolean);
+        return parts.length ? parts.join(' ') : defaultFio;
+      }
+
+      function slugifyFio(state) {
+        var source = [state.surname, state.name, state.patronymic].map(compactSpaces).filter(Boolean).join(' ');
+        if (!source) return { slug: defaultSlug, valid: true };
+
+        var normalized = source
+          .toLowerCase()
+          .replace(/ё/g, 'е')
+          .replace(/["'`.,:;!?()\[\]{}<>«»\/|_+=~@#$%^&*]+/g, ' ')
+          .replace(/\s+/g, '-')
+          .replace(/[^а-яa-z0-9-]/g, '')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+
+        if (!normalized) return { slug: defaultSlug, valid: true };
+        return { slug: normalized, valid: normalized.length <= 63 };
+      }
+
+      function applyPersonalization(state) {
+        var fioDisplay = buildFioDisplay(state);
+        var slugResult = slugifyFio(state);
+        var domain = slugResult.slug + '.рф';
+
+        personalization = {
+          domain: domain,
+          slug: slugResult.slug,
+          fio: fioDisplay,
+          valid: slugResult.valid
+        };
+
+        document.querySelectorAll('[data-user-domain]').forEach(function(node) { node.textContent = domain; });
+        document.querySelectorAll('[data-fio-token="domain"]').forEach(function(node) { node.textContent = domain; });
+        document.querySelectorAll('[data-fio-token="fio"]').forEach(function(node) { node.textContent = fioDisplay; });
+        document.querySelectorAll('[data-fio-token="slug"]').forEach(function(node) { node.textContent = slugResult.slug; });
+
+        if (ctaButton) ctaButton.setAttribute('data-domain', domain);
+
+        if (fioDomainError) {
+          fioDomainError.hidden = slugResult.valid;
+        }
+
+        if (!isSent && !isExpired) {
+          if (domainStatus) {
+            domainStatus.textContent = 'Либо домен с вашим именем принадлежит вам — либо его зарегистрирует кто-то другой.';
+          }
+          if (domainCtaStatus) {
+            domainCtaStatus.textContent = 'Мы зафиксировали условия предложения на 24 часа — вы можете оформить домен без спешки.';
           }
         }
       }
 
-      if (!expiresAt) {
-        var now = new Date();
-        expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-        localStorage.setItem(storageKey, expiresAt.toISOString());
+      function collectFioStateFromInputs() {
+        return {
+          surname: fioSurnameInput ? compactSpaces(fioSurnameInput.value) : '',
+          name: fioNameInput ? compactSpaces(fioNameInput.value) : '',
+          patronymic: fioPatronymicInput ? compactSpaces(fioPatronymicInput.value) : ''
+        };
+      }
+
+      function persistFioState(state) {
+        localStorage.setItem(fioStorageKey, JSON.stringify(state));
+      }
+
+      function hydrateFioForm(state) {
+        if (fioSurnameInput) fioSurnameInput.value = state.surname || '';
+        if (fioNameInput) fioNameInput.value = state.name || '';
+        if (fioPatronymicInput) fioPatronymicInput.value = state.patronymic || '';
+      }
+
+      function handleFioUpdate() {
+        fioState = collectFioStateFromInputs();
+        persistFioState(fioState);
+        applyPersonalization(fioState);
       }
 
       function openCheckout() {
@@ -581,15 +1149,9 @@
       }
 
       function disableForm() {
-        if (formStatus) {
-          formStatus.hidden = false;
-        }
-        formFields.forEach(function(field) {
-          field.setAttribute('disabled', 'disabled');
-        });
-        if (ctaButton) {
-          ctaButton.setAttribute('disabled', 'disabled');
-        }
+        if (formStatus) formStatus.hidden = false;
+        formFields.forEach(function(field) { field.setAttribute('disabled', 'disabled'); });
+        if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
       }
 
       function disableCtas() {
@@ -597,35 +1159,20 @@
           link.setAttribute('aria-disabled', 'true');
           link.setAttribute('tabindex', '-1');
         });
-        if (ctaButton) {
-          ctaButton.setAttribute('disabled', 'disabled');
-        }
+        if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
       }
 
       function setExpiredState() {
         isExpired = true;
-
-        if (countdownEl) {
-          countdownEl.textContent = '00:00:00';
-        }
+        if (countdownEl) countdownEl.textContent = '00:00:00';
         if (countdownBadge) {
           countdownBadge.classList.remove('deadline-urgent');
           countdownBadge.classList.add('expired');
         }
-
-        if (expiryText) {
-          expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
-        }
-        if (domainStatus) {
-          domainStatus.textContent = '🔴 Срок действия предложения истёк';
-        }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Срок действия предложения истёк.';
-        }
-        if (expiredLink) {
-          expiredLink.hidden = false;
-        }
-
+        if (expiryText) expiryText.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку, чтобы продолжить.';
+        if (domainStatus) domainStatus.textContent = '🔴 Срок действия предложения истёк';
+        if (domainCtaStatus) domainCtaStatus.textContent = 'Срок действия предложения истёк.';
+        if (expiredLink) expiredLink.hidden = false;
         closeCheckout();
         disableCtas();
         disableForm();
@@ -636,120 +1183,40 @@
           domainStatus.textContent = '🔴 Домен не определён — требуется персональная ссылка';
         }
         if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Используйте персональную ссылку для оформления домена.';
+          domainCtaStatus.textContent = 'Используйте персональную ссылку с доменом, чтобы продолжить оформление.';
         }
-        disableCtas();
       }
 
       function setActiveState() {
-        if (domainStatus) {
-          domainStatus.textContent = '🟢 Домен доступен — предложение активно';
-        }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Мы зафиксировали условия предложения на 24 часа — вы можете оформить домен без спешки.';
-        }
+        if (formStatus) formStatus.hidden = true;
+        if (expiredLink) expiredLink.hidden = true;
       }
 
       function setSentState() {
+        if (ctaButton) ctaButton.hidden = true;
+        if (formSuccess) formSuccess.hidden = false;
         if (formStatus) {
           formStatus.textContent = 'Заявка уже отправлена.';
           formStatus.hidden = false;
         }
-        if (domainCtaStatus) {
-          domainCtaStatus.textContent = 'Заявка уже отправлена.';
-        }
-        disableCtas();
-        disableForm();
       }
 
       function formatTime(ms) {
         var totalSeconds = Math.max(0, Math.floor(ms / 1000));
-        var hours = Math.floor(totalSeconds / 3600);
-        var minutes = Math.floor((totalSeconds % 3600) / 60);
-        var seconds = totalSeconds % 60;
-        return String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+        var hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        var minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        var seconds = String(totalSeconds % 60).padStart(2, '0');
+        return hours + ':' + minutes + ':' + seconds;
       }
 
       function tick() {
-        if (isSent) return;
-
-        var now = new Date();
-        var remaining = expiresAt - now;
-
-        if (remaining <= 0) {
-          setExpiredState();
-          return;
-        }
-
-        if (countdownEl) {
-          countdownEl.textContent = formatTime(remaining);
-        }
-
+        if (!expiresAt || !countdownEl) return;
+        var remaining = expiresAt.getTime() - Date.now();
+        countdownEl.textContent = formatTime(remaining);
         if (countdownBadge) {
-          countdownBadge.classList.remove('expired');
-          if (remaining <= 60 * 60 * 1000) {
-            countdownBadge.classList.add('deadline-urgent');
-          } else {
-            countdownBadge.classList.remove('deadline-urgent');
-          }
+          if (remaining <= 2 * 60 * 60 * 1000) countdownBadge.classList.add('deadline-urgent');
+          else countdownBadge.classList.remove('deadline-urgent');
         }
-      }
-
-      tick();
-      var interval = setInterval(function() {
-        if (isSent) {
-          clearInterval(interval);
-          return;
-        }
-        if (new Date() > expiresAt) {
-          clearInterval(interval);
-          setExpiredState();
-          return;
-        }
-        tick();
-      }, 1000);
-
-      if (isSent) {
-        setSentState();
-      } else if (userDomain === 'ваш-домен.рф') {
-        setDomainMissingState();
-      } else {
-        setActiveState();
-      }
-
-      ctaLinks.forEach(function(link) {
-        link.addEventListener('click', function(event) {
-          if (link.getAttribute('aria-disabled') === 'true') {
-            event.preventDefault();
-            return;
-          }
-          event.preventDefault();
-          openCheckout();
-        });
-      });
-
-      if (checkoutModal) {
-        checkoutModal.addEventListener('click', function(event) {
-          if (event.target === checkoutModal) {
-            closeCheckout();
-          }
-        });
-      }
-
-      if (checkoutClose) {
-        checkoutClose.addEventListener('click', function() {
-          closeCheckout();
-        });
-      }
-
-      document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-          closeCheckout();
-        }
-      });
-
-      if (window.location.hash === '#checkout') {
-        openCheckout();
       }
 
       function setFieldError(field, message) {
@@ -764,9 +1231,7 @@
 
       function clearFieldError(field) {
         var errorEl = document.querySelector('[data-error-for="' + field.id + '"]');
-        if (errorEl) {
-          errorEl.hidden = true;
-        }
+        if (errorEl) errorEl.hidden = true;
         field.removeAttribute('aria-invalid');
         field.style.borderColor = 'var(--line)';
       }
@@ -775,102 +1240,273 @@
         return value.indexOf('@') > 0 && value.indexOf('.') > 0;
       }
 
-      if (form) {
-        form.addEventListener('submit', function(event) {
-          event.preventDefault();
+      async function loadSharedState() {
+        if (!fioShareToken) return null;
+        try {
+          var response = await fetch('/api/fio-share/' + encodeURIComponent(fioShareToken), { cache: 'no-store' });
+          if (!response.ok) return null;
+          var data = await response.json();
+          return data && data.fioState ? data.fioState : null;
+        } catch (e) {
+          return null;
+        }
+      }
 
-          if (isExpired) {
-            disableForm();
-            return;
+      function initExpiry() {
+        if (expiresParam) {
+          var parsedDate = new Date(expiresParam);
+          if (!isNaN(parsedDate)) {
+            expiresAt = parsedDate;
+            localStorage.setItem(storageKey, parsedDate.toISOString());
           }
+        }
 
-          var firstName = document.getElementById('first-name');
-          var lastName = document.getElementById('last-name');
-          var email = document.getElementById('email');
-          var middleName = document.getElementById('middle-name');
+        if (!expiresAt) {
+          var storedExpires = localStorage.getItem(storageKey);
+          if (storedExpires) {
+            var storedDate = new Date(storedExpires);
+            if (!isNaN(storedDate)) expiresAt = storedDate;
+          }
+        }
 
-          var isValid = true;
+        if (!expiresAt) {
+          var now = new Date();
+          expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+          localStorage.setItem(storageKey, expiresAt.toISOString());
+        }
+      }
 
-          [firstName, lastName, email].forEach(function(field) {
-            if (!field) return;
-            if (!field.value.trim()) {
-              setFieldError(field, 'Пожалуйста, заполните поле');
-              isValid = false;
-            } else {
-              clearFieldError(field);
+      function bindEvents() {
+        ctaLinks.forEach(function(link) {
+          link.addEventListener('click', function(event) {
+            if (link.getAttribute('aria-disabled') === 'true') {
+              event.preventDefault();
+              return;
+            }
+            event.preventDefault();
+            openCheckout();
+          });
+        });
+
+        if (checkoutModal) {
+          checkoutModal.addEventListener('click', function(event) {
+            if (event.target === checkoutModal) closeCheckout();
+          });
+        }
+
+        if (checkoutClose) checkoutClose.addEventListener('click', closeCheckout);
+
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') closeCheckout();
+        });
+
+        if (window.location.hash === '#checkout') openCheckout();
+
+        [fioSurnameInput, fioNameInput, fioPatronymicInput].forEach(function(el) {
+          if (!el) return;
+          el.addEventListener('input', handleFioUpdate);
+        });
+
+        if (fioApplyBtn) {
+          fioApplyBtn.addEventListener('click', handleFioUpdate);
+        }
+
+        if (fioShareBtn) {
+          fioShareBtn.addEventListener('click', async function() {
+            handleFioUpdate();
+            if (!fioState.surname || !fioState.name || !personalization.valid) return;
+
+            fioShareBtn.setAttribute('disabled', 'disabled');
+            try {
+              var response = await fetch('/api/fio-share', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  fioState: {
+                    surname: fioState.surname,
+                    name: fioState.name,
+                    patronymic: fioState.patronymic,
+                    slug: personalization.slug,
+                    fioDisplay: personalization.fio
+                  },
+                  createdAt: new Date().toISOString()
+                })
+              });
+
+              if (!response.ok) return;
+              var data = await response.json();
+              if (!data || !data.shareUrl) return;
+              if (fioShareLink) fioShareLink.textContent = data.shareUrl;
+              if (fioShareOutput) fioShareOutput.hidden = false;
+            } catch (e) {
+            } finally {
+              fioShareBtn.removeAttribute('disabled');
             }
           });
+        }
 
-          if (email && email.value.trim() && !validateEmail(email.value.trim())) {
-            setFieldError(email, 'Пожалуйста, введите корректный email');
-            isValid = false;
-          }
+        if (fioCopyBtn) {
+          fioCopyBtn.addEventListener('click', async function() {
+            if (!fioShareLink || !fioShareLink.textContent) return;
+            try {
+              await navigator.clipboard.writeText(fioShareLink.textContent);
+              fioCopyBtn.textContent = 'Скопировано';
+              setTimeout(function() { fioCopyBtn.textContent = 'Скопировать'; }, 1500);
+            } catch (e) {
+            }
+          });
+        }
 
-          if (!isValid) return;
+        if (form) {
+          form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-          var payload = {
-            name: firstName ? firstName.value.trim() : '',
-            lastName: lastName ? lastName.value.trim() : '',
-            middleName: middleName ? middleName.value.trim() : '',
-            email: email ? email.value.trim() : '',
-            domain: userDomain,
-            token: currentToken,
-            expiresAt: expiresAt ? expiresAt.toISOString() : '',
-            source: 'domain-rus-landing'
-          };
+            if (isExpired) {
+              disableForm();
+              return;
+            }
 
-          if (ctaButton) {
-            ctaButton.setAttribute('disabled', 'disabled');
-          }
+            var firstName = document.getElementById('first-name');
+            var lastName = document.getElementById('last-name');
+            var email = document.getElementById('email');
+            var middleName = document.getElementById('middle-name');
+            var isValid = true;
 
-          fetch('/api/domain-request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          })
-            .then(function(response) {
-              if (response.status === 410) {
-                if (formStatus) {
-                  formStatus.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку.';
-                  formStatus.hidden = false;
-                }
-                setExpiredState();
-                return null;
+            [firstName, lastName, email].forEach(function(field) {
+              if (!field) return;
+              if (!field.value.trim()) {
+                setFieldError(field, 'Пожалуйста, заполните поле');
+                isValid = false;
+              } else {
+                clearFieldError(field);
               }
-              if (response.status === 409) {
-                if (formStatus) {
-                  formStatus.textContent = 'Заявка уже отправлена.';
-                  formStatus.hidden = false;
+            });
+
+            if (email && email.value.trim() && !validateEmail(email.value.trim())) {
+              setFieldError(email, 'Пожалуйста, введите корректный email');
+              isValid = false;
+            }
+
+            if (!isValid) return;
+
+            var payload = {
+              name: firstName ? firstName.value.trim() : '',
+              lastName: lastName ? lastName.value.trim() : '',
+              middleName: middleName ? middleName.value.trim() : '',
+              email: email ? email.value.trim() : '',
+              domain: personalization.domain,
+              token: currentToken,
+              expiresAt: expiresAt ? expiresAt.toISOString() : '',
+              source: 'domain-rus-landing'
+            };
+
+            if (ctaButton) ctaButton.setAttribute('disabled', 'disabled');
+
+            fetch('/api/domain-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            })
+              .then(function(response) {
+                if (response.status === 410) {
+                  if (formStatus) {
+                    formStatus.textContent = 'Срок действия ссылки истёк. Запросите новую ссылку.';
+                    formStatus.hidden = false;
+                  }
+                  setExpiredState();
+                  return null;
                 }
-                return null;
-              }
-              if (!response.ok) {
+                if (response.status === 409) {
+                  if (formStatus) {
+                    formStatus.textContent = 'Заявка уже отправлена.';
+                    formStatus.hidden = false;
+                  }
+                  return null;
+                }
+                if (!response.ok) {
+                  if (formStatus) {
+                    formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
+                    formStatus.hidden = false;
+                  }
+                  return null;
+                }
+                return response.json();
+              })
+              .then(function(data) {
+                if (!data || data.status !== 'ok') {
+                  if (ctaButton) ctaButton.removeAttribute('disabled');
+                  return;
+                }
+                if (ctaButton) ctaButton.hidden = true;
+                if (formSuccess) formSuccess.hidden = false;
+                localStorage.setItem(sentKey, 'true');
+              })
+              .catch(function() {
                 if (formStatus) {
                   formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
                   formStatus.hidden = false;
                 }
-                return null;
-              }
-              return response.json();
-            })
-            .then(function(data) {
-              if (!data || data.status !== 'ok') {
                 if (ctaButton) ctaButton.removeAttribute('disabled');
-                return;
-              }
-              if (ctaButton) ctaButton.hidden = true;
-              if (formSuccess) formSuccess.hidden = false;
-              localStorage.setItem(sentKey, 'true');
-            })
-            .catch(function() {
-              if (formStatus) {
-                formStatus.textContent = 'Не удалось отправить заявку. Попробуйте позже.';
-                formStatus.hidden = false;
-              }
-              if (ctaButton) ctaButton.removeAttribute('disabled');
-            });
-        });
+              });
+          });
+        }
       }
+
+      async function init() {
+        var sharedState = await loadSharedState();
+        if (sharedState) {
+          fioState = {
+            surname: compactSpaces(sharedState.surname || ''),
+            name: compactSpaces(sharedState.name || ''),
+            patronymic: compactSpaces(sharedState.patronymic || '')
+          };
+          persistFioState(fioState);
+        } else {
+          try {
+            var stored = localStorage.getItem(fioStorageKey);
+            if (stored) {
+              var parsed = JSON.parse(stored);
+              fioState = {
+                surname: compactSpaces(parsed.surname || ''),
+                name: compactSpaces(parsed.name || ''),
+                patronymic: compactSpaces(parsed.patronymic || '')
+              };
+            }
+          } catch (e) {
+          }
+        }
+
+        hydrateFioForm(fioState);
+        applyPersonalization(fioState);
+
+        initExpiry();
+        tick();
+
+        var interval = setInterval(function() {
+          if (isSent) {
+            clearInterval(interval);
+            return;
+          }
+          if (new Date() > expiresAt) {
+            clearInterval(interval);
+            setExpiredState();
+            return;
+          }
+          tick();
+        }, 1000);
+
+        if (isSent) {
+          setSentState();
+        } else if (personalization.domain === 'ваш-домен.рф') {
+          setDomainMissingState();
+        } else {
+          setActiveState();
+        }
+
+        bindEvents();
+      }
+
+      init();
     })();
   </script>
 
