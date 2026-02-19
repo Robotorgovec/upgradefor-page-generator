@@ -224,10 +224,10 @@ export default function ProfileSetupForm({ initialProfile }: { initialProfile: P
       </div>
 
       <div className="account-form-actions">
-        <button className="btn" type="submit" disabled={saving}>
+        <button className="ui-btn" type="submit" disabled={saving}>
           {saving ? "Сохранение..." : "Сохранить"}
         </button>
-        <Link className="btn btn--ghost" href="/account">
+        <Link className="ui-btn ui-btn--ghost" href="/account">
           Отмена
         </Link>
       </div>

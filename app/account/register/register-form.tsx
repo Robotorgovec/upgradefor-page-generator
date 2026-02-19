@@ -105,7 +105,7 @@ export default function RegisterForm() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading}>
+          <button type="submit" className="ui-btn ui-btn--block" disabled={loading}>
             {loading ? "Регистрация..." : "Зарегистрироваться"}
           </button>
         </form>

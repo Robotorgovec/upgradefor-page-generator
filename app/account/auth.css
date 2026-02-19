@@ -85,32 +85,8 @@
   box-shadow: 0 0 0 4px var(--form-focus-ring);
 }
 
-/* ВАЖНО: стили "большой синей кнопки" — только для submit */
-.auth-card form > button[type="submit"] {
+.auth-card form > .ui-btn[type="submit"] {
   margin-top: 10px;
-  width: 100%;
-  height: 46px;
-  border-radius: 10px;
-  border: 0;
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  transition: filter 0.15s ease, transform 0.05s ease;
-}
-
-.auth-card form > button[type="submit"]:hover {
-  filter: brightness(0.96);
-}
-
-.auth-card form > button[type="submit"]:active {
-  transform: translateY(1px);
-}
-
-.auth-card form > button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 /* skip-link */

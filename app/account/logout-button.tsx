@@ -7,7 +7,7 @@ export function LogoutButton() {
     <button
       type="button"
       onClick={() => signOut({ callbackUrl: "/" })}
-      className="btn btn--ghost"
+      className="ui-btn ui-btn--ghost"
     >
       Выйти
     </button>

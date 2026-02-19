@@ -107,7 +107,7 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading}>
+          <button type="submit" className="ui-btn ui-btn--block" disabled={loading}>
             {loading ? "Вход..." : "Войти"}
           </button>
         </form>

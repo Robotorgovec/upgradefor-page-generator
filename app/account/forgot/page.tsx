@@ -54,8 +54,8 @@ export default function ForgotPage() {
           </label>
           <button
             type="submit"
+            className="ui-btn ui-btn--block"
             disabled={state === "loading"}
-            style={{ padding: "8px 16px", background: "black", color: "white" }}
           >
             {state === "loading" ? "Отправка..." : "Отправить ссылку"}
           </button>

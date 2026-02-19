@@ -26,10 +26,10 @@ export default function LegalPrivacyPage() {
           </p>
 
           <div style={{ marginTop: "var(--space-3)", display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <Link className="btn btn--ghost" href="/legal/terms">
+            <Link className="ui-btn ui-btn--ghost" href="/legal/terms">
               Публичная оферта
             </Link>
-            <Link className="btn btn--ghost" href="/legal/refunds">
+            <Link className="ui-btn ui-btn--ghost" href="/legal/refunds">
               Политика возвратов
             </Link>
           </div>

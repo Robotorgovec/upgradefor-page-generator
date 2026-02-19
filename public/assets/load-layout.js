@@ -45,6 +45,39 @@
   const themeConfigUrl = "/assets/theme/theme-colors.json";
   let cachedThemeConfig = null;
 
+  const accentPalette = {
+    red: { hex: "#ef4444", rgb: "239 68 68" },
+    orange: { hex: "#f97316", rgb: "249 115 22" },
+    yellow: { hex: "#eab308", rgb: "234 179 8" },
+    green: { hex: "#22c55e", rgb: "34 197 94" },
+    cyan: { hex: "#12aff0", rgb: "18 175 240" },
+    blue: { hex: "#2563eb", rgb: "37 99 235" },
+    violet: { hex: "#8b5cf6", rgb: "139 92 246" }
+  };
+
+  function applyAccentVars(themeName, config) {
+    const configColor = config?.colors?.[themeName]?.primary;
+    const fallback = accentPalette[themeName] || accentPalette.cyan;
+
+    let hex = fallback.hex;
+    let rgb = fallback.rgb;
+
+    if (typeof configColor === "string") {
+      const raw = configColor.trim();
+      const match = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(raw);
+      if (match) {
+        const r = Number.parseInt(match[1], 16);
+        const g = Number.parseInt(match[2], 16);
+        const b = Number.parseInt(match[3], 16);
+        hex = raw.startsWith("#") ? raw : `#${raw}`;
+        rgb = `${r} ${g} ${b}`;
+      }
+    }
+
+    document.documentElement.style.setProperty("--accent", hex);
+    document.documentElement.style.setProperty("--accent-rgb", rgb);
+  }
+
   async function loadThemeConfig() {
     if (cachedThemeConfig) return cachedThemeConfig;
     try {
@@ -115,6 +148,7 @@
 
     const resolvedTheme = themeColors ? themeName : "cyan";
     applyThemeName(resolvedTheme);
+    applyAccentVars(resolvedTheme, config);
 
     if (elements?.items) {
       elements.items.forEach((item) => {
@@ -676,8 +710,8 @@
           }
 
           authButtonsEl.innerHTML = `
-            <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-            ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
+            <a class="ui-btn ui-btn--sm ui-btn--ghost" href="/account" rel="nofollow">Account</a>
+            ${hasProfileRoute ? '<a class="ui-btn ui-btn--sm" href="/account/profile" rel="nofollow">Profile</a>' : ""}
           `;
         } catch (err) {
           console.error("[UPGR] Error loading auth session", err);

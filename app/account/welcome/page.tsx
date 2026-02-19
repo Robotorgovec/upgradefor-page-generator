@@ -41,10 +41,10 @@ export default async function WelcomePage() {
           подбирать релевантные возможности.
         </p>
         <div className="account-section-actions" style={{ marginTop: 20 }}>
-          <Link className="btn" href="/account/profile/setup">
+          <Link className="ui-btn" href="/account/profile/setup">
             Настроить профиль
           </Link>
-          <Link className="btn btn--ghost" href="/account?skip=1">
+          <Link className="ui-btn ui-btn--ghost" href="/account?skip=1">
             Пропустить
           </Link>
         </div>

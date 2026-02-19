@@ -88,7 +88,7 @@ export default async function AccountPage({
           </div>
         </div>
         <div style={{ marginTop: 20 }} className="account-section-actions">
-          <Link className="btn" href="/account/profile/setup">
+          <Link className="ui-btn" href="/account/profile/setup">
             Редактировать профиль
           </Link>
           <LogoutButton />
