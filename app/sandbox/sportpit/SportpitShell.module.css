@@ -13,6 +13,20 @@
   background: radial-gradient(circle at 15% 0%, #1c2430 0%, var(--bg) 40%), var(--bg);
 }
 
+.skip {
+  position: absolute;
+  top: -40px;
+  left: 16px;
+  z-index: 45;
+  background: #11161d;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.skip:focus { top: 8px; }
+
 .header {
   position: fixed;
   top: 0;
@@ -132,6 +146,7 @@
   inset: 0;
   z-index: 19;
   background: rgba(0, 0, 0, 0.58);
+  border: 0;
   opacity: 0;
   pointer-events: none;
   transition: 0.2s ease;
@@ -199,6 +214,16 @@
 
 .sidebarCollapsed ~ .content { margin-left: var(--sidebar-collapsed-w); }
 
+.banner {
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(33, 255, 106, 0.6);
+  color: var(--accent);
+  background: rgba(33, 255, 106, 0.08);
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
 @media (max-width: 1120px) {
   .header { grid-template-columns: 1fr; height: auto; min-height: var(--header-h); }
   .headerActions { justify-content: flex-start; flex-wrap: wrap; }
@@ -209,4 +234,8 @@
   .sidebarMobileOpen { transform: translateX(0); }
   .content,
   .sidebarCollapsed ~ .content { margin-left: 0; }
+}
+
+@media (max-width: 640px) {
+  .headerActions a { display: none; }
 }

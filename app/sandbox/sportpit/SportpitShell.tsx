@@ -6,7 +6,6 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
 
 type NavItem = { id: string; label: string; icon: string };
-
 type CategoryItem = { label: string; icon: string };
 
 const navItems: NavItem[] = [
@@ -33,10 +32,12 @@ const categories: CategoryItem[] = [
 
 export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
+  const isMainPage = pathname === "/sandbox/sportpit";
+
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   useEffect(() => {
@@ -47,23 +48,18 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    const nextCount = Number(window.sessionStorage.getItem("sp-cart-count") || "0");
-    setCartCount(nextCount);
-
-    const sync = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
-    window.addEventListener("storage", sync);
-    window.addEventListener("sp-cart-changed", sync as EventListener);
+    const syncCart = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
+    syncCart();
+    window.addEventListener("storage", syncCart);
+    window.addEventListener("sp-cart-changed", syncCart as EventListener);
     return () => {
-      window.removeEventListener("storage", sync);
-      window.removeEventListener("sp-cart-changed", sync as EventListener);
+      window.removeEventListener("storage", syncCart);
+      window.removeEventListener("sp-cart-changed", syncCart as EventListener);
     };
   }, []);
 
   useEffect(() => {
-    if (pathname !== "/sandbox/sportpit") {
-      setActiveSection("top");
-      return;
-    }
+    if (!isMainPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -79,13 +75,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     });
 
     return () => observer.disconnect();
-  }, [pathname]);
-
-  const isMainPage = pathname === "/sandbox/sportpit";
+  }, [isMainPage]);
 
   const onBurgerClick = () => {
     if (isMobileViewport) {
-      setIsMobileOpen((prev) => !prev);
+      setIsSidebarOpen((prev) => !prev);
       return;
     }
     setIsCollapsed((prev) => !prev);
@@ -95,24 +89,30 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     if (!isMainPage) return;
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
-    setIsMobileOpen(false);
+    setIsSidebarOpen(false);
   };
 
   return (
     <div className={styles.page}>
+      <a className={styles.skip} href="#sportpit-main">
+        К содержанию
+      </a>
+
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <button
             type="button"
-            className={`${styles.burger} ${isMobileOpen ? styles.burgerOpen : ""}`}
+            className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
             aria-label="Открыть меню"
+            aria-controls="sportpit-sidebar"
+            aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
           >
             <span />
             <span />
             <span />
           </button>
-          <button type="button" className={styles.logo} onClick={() => goToSection("top")}> 
+          <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
             {/* TODO: заменить на финальный SVG/PNG логотип */}
             <span className={styles.logoMark}>S</span>
             <span className={styles.logoText}>SportPit</span>
@@ -135,15 +135,19 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </header>
 
       <div className={styles.appShell}>
-        <div
-          className={`${styles.sidebarOverlay} ${isMobileOpen ? styles.sidebarOverlayVisible : ""}`}
-          onClick={() => setIsMobileOpen(false)}
+        <button
+          type="button"
+          className={`${styles.sidebarOverlay} ${isSidebarOpen ? styles.sidebarOverlayVisible : ""}`}
+          aria-label="Закрыть меню"
+          onClick={() => setIsSidebarOpen(false)}
         />
 
         <aside
+          id="sportpit-sidebar"
           className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${
-            isMobileOpen ? styles.sidebarMobileOpen : ""
+            isSidebarOpen ? styles.sidebarMobileOpen : ""
           }`}
+          aria-label="Основная навигация"
         >
           <div className={styles.sidebarSectionLabel}>НАВИГАЦИЯ</div>
           <div className={styles.sidebarNav}>
@@ -176,7 +180,10 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           </button>
         </aside>
 
-        <div className={styles.content}>{children}</div>
+        <main id="sportpit-main" className={styles.content}>
+          <div className={styles.banner}>Sandbox: SportPit (noindex)</div>
+          {children}
+        </main>
       </div>
     </div>
   );
