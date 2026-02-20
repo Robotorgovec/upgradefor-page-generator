@@ -1,0 +1,5 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'>
+  <rect width='800' height='600' fill='#1b222b'/>
+  <rect x='30' y='30' width='740' height='540' rx='24' fill='#0f141b' stroke='#21ff6a' stroke-opacity='0.5' />
+  <text x='50%' y='50%' fill='#d6ffe4' font-size='42' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>TODO hero-can</text>
+</svg>
