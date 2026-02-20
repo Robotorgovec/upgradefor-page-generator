@@ -1,0 +1,9 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'>
+  <rect width='800' height='1000' fill='none'/>
+  <rect x='240' y='70' width='320' height='170' rx='54' fill='#0d1218' stroke='#445163' stroke-width='6'/>
+  <rect x='180' y='180' width='440' height='720' rx='130' fill='#151b23' stroke='#445163' stroke-width='7'/>
+  <rect x='248' y='360' width='304' height='405' rx='22' fill='#10161d' stroke='#54ee2b' stroke-width='4'/>
+  <text x='400' y='530' font-size='92' text-anchor='middle' fill='#e8edf2' font-family='Arial Black, Arial'>WHEY</text>
+  <text x='400' y='635' font-size='92' text-anchor='middle' fill='#e8edf2' font-family='Arial Black, Arial'>PROTEIN</text>
+  <path d='M260 220 L220 860' stroke='#b8d1ff' stroke-opacity='0.28' stroke-width='12'/>
+</svg>

@@ -79,8 +79,8 @@ export default function SportpitPreviewPage() {
           <div className={styles.trust}>★ 4.9/5 · 10 000+ клиентов · GMP · ISO</div>
         </div>
         <div className={styles.heroVisual}>
-          <Image src="/sportpit/hero-can.svg" alt="Банка протеина" width={250} height={320} />
-          <Image src="/sportpit/hero-athlete.svg" alt="Атлет" width={250} height={320} />
+<Image src="/sportpit/img/hero/protein.svg" alt="Банка протеина" width={250} height={320} />
+<Image src="/sportpit/img/hero/athlete.svg" alt="Атлет" width={250} height={320} />
         </div>
       </section>
 
