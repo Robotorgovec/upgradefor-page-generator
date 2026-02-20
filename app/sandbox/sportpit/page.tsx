@@ -17,10 +17,10 @@ type Product = {
 };
 
 const products: Product[] = [
-  { id: 1, title: "100% Whey Protein", price: "3 490 ₽", rating: 4.9, image: "/sportpit/whey.svg", tags: ["mass", "recovery"] },
-  { id: 2, title: "BCAA Power", price: "2 090 ₽", rating: 4.8, image: "/sportpit/bcaa.svg", tags: ["energy", "recovery"] },
-  { id: 3, title: "Fat Burner", price: "2 790 ₽", rating: 4.7, image: "/sportpit/fat-burner.svg", tags: ["fat", "energy"] },
-  { id: 4, title: "Omega 3", price: "1 690 ₽", rating: 4.9, image: "/sportpit/omega.svg", tags: ["recovery", "fat"] },
+  { id: 1, title: "Набор массы", price: "2 500 ₽", rating: 4.9, image: "/sportpit/whey.svg", tags: ["mass", "recovery"] },
+  { id: 2, title: "Сжигание жира", price: "1 490 ₽", rating: 4.8, image: "/sportpit/fat-burner.svg", tags: ["fat", "energy"] },
+  { id: 3, title: "Энергия", price: "1 390 ₽", rating: 4.7, image: "/sportpit/bcaa.svg", tags: ["energy", "mass"] },
+  { id: 4, title: "Восстановление", price: "990 ₽", rating: 4.9, image: "/sportpit/omega.svg", tags: ["recovery", "fat"] },
 ];
 
 const goalLabels: Record<Goal, string> = {
@@ -110,6 +110,7 @@ export default function SportpitPreviewPage() {
 
       <section id="popular" className={styles.section}>
         <h2>ПОПУЛЯРНЫЕ ПРОДУКТЫ</h2>
+        <p className={styles.muted}>Карточки в стиле Strong Preview.</p>
         {activeGoal && <p className={styles.muted}>Акцент по цели: {goalLabels[activeGoal]}</p>}
         <div className={styles.products}>
           {orderedProducts.map((product) => {

@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
 
 type NavItem = { id: string; label: string; icon: string };
-type CategoryItem = { label: string; icon: string };
+type CategoryItem = { id: string; label: string; icon: string };
 
 const navItems: NavItem[] = [
   { id: "top", label: "Главная", icon: "🏁" },
@@ -18,16 +19,22 @@ const navItems: NavItem[] = [
   { id: "blog", label: "Блог", icon: "📰" },
 ];
 
-const categories: CategoryItem[] = [
-  { label: "Протеины", icon: "🥛" },
-  { label: "BCAA/EAA", icon: "⚡" },
-  { label: "Жиросжигатели", icon: "🔥" },
-  { label: "Витамины", icon: "💊" },
-  { label: "Омега", icon: "🫧" },
-  { label: "Предтренировочные", icon: "🏋️" },
-  { label: "Восстановление", icon: "🌙" },
-  { label: "Акции", icon: "🎁" },
-  { label: "Бренды", icon: "🏷️" },
+const categoryItems: CategoryItem[] = [
+  { id: "protein", label: "Протеины", icon: "🥛" },
+  { id: "amino", label: "Аминокислоты", icon: "⚡" },
+  { id: "gainer", label: "Гейнеры", icon: "🏋️" },
+  { id: "fatburn", label: "Жиросжигатели", icon: "🔥" },
+  { id: "prebio", label: "Пребиотики", icon: "🧫" },
+  { id: "vit", label: "Витамины", icon: "💊" },
+  { id: "joints", label: "Для суставов", icon: "🦴" },
+  { id: "acc", label: "Аксессуары", icon: "🎒" },
+];
+
+const topMenu = [
+  { label: "Каталог", target: "catalog" },
+  { label: "Акции", target: "popular" },
+  { label: "Доставка", target: "subscribe" },
+  { label: "Контакты", target: "subscribe" },
 ];
 
 export default function SportpitShell({ children }: PropsWithChildren) {
@@ -36,9 +43,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
+  const [activeCategory, setActiveCategory] = useState("protein");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [filterToast, setFilterToast] = useState(false);
 
   useEffect(() => {
     const updateViewport = () => setIsMobileViewport(window.innerWidth < 1024);
@@ -60,7 +69,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (!isMainPage) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.find((entry) => entry.isIntersecting);
@@ -68,14 +76,18 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       },
       { threshold: 0.4 }
     );
-
     navItems.forEach((item) => {
       const el = document.getElementById(item.id);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, [isMainPage]);
+
+  useEffect(() => {
+    if (!filterToast) return;
+    const timer = setTimeout(() => setFilterToast(false), 1300);
+    return () => clearTimeout(timer);
+  }, [filterToast]);
 
   const onBurgerClick = () => {
     if (isMobileViewport) {
@@ -90,6 +102,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
     setIsSidebarOpen(false);
+  };
+
+  const onCategoryClick = (id: string) => {
+    setActiveCategory(id);
+    goToSection("catalog");
   };
 
   return (
@@ -113,11 +130,17 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <span />
           </button>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
-            {/* TODO: заменить на финальный SVG/PNG логотип */}
-            <span className={styles.logoMark}>S</span>
-            <span className={styles.logoText}>SportPit</span>
+            <Image src="/sportpit/strong-logo.svg" alt="Strong" width={148} height={48} priority />
           </button>
         </div>
+
+        <nav className={styles.topNav}>
+          {topMenu.map((item) => (
+            <button key={item.label} type="button" onClick={() => goToSection(item.target)}>
+              {item.label}
+            </button>
+          ))}
+        </nav>
 
         <label className={styles.searchWrap}>
           <span className={styles.searchIcon}>⌕</span>
@@ -126,11 +149,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
         <div className={styles.headerActions}>
           <button type="button">RU</button>
+          <button type="button" className={styles.cartIcon}>
+            🛒 <span>{cartCount}</span>
+          </button>
           <Link href="/sandbox/sportpit/login">Вход</Link>
           <Link href="/sandbox/sportpit/register">Регистрация</Link>
-          <button type="button" className={styles.cart}>
-            Корзина <span>{cartCount}</span>
-          </button>
         </div>
       </header>
 
@@ -144,11 +167,35 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
         <aside
           id="sportpit-sidebar"
-          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${
-            isSidebarOpen ? styles.sidebarMobileOpen : ""
-          }`}
+          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
           aria-label="Основная навигация"
         >
+          <div className={styles.sidebarSectionLabel}>ФИЛЬТР ПОИСКА</div>
+          <div className={styles.filterCard}>
+            <div className={styles.filterBlock}>
+              <h4>Страна</h4>
+              <label><input type="checkbox" defaultChecked /> Америка</label>
+              <label><input type="checkbox" /> Европа</label>
+            </div>
+            <div className={styles.filterBlock}>
+              <h4>Производитель</h4>
+              <select defaultValue="">
+                <option value="" disabled>Выбрать</option>
+                <option>Strong Labs</option>
+                <option>PowerFuel</option>
+                <option>Sport Origin</option>
+              </select>
+            </div>
+            <div className={styles.filterBlock}>
+              <h4>Цена</h4>
+              <div className={styles.rating}>★★★★★</div>
+              <input type="range" min="900" max="5000" defaultValue="2600" />
+            </div>
+            <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>
+              Показать
+            </button>
+          </div>
+
           <div className={styles.sidebarSectionLabel}>НАВИГАЦИЯ</div>
           <div className={styles.sidebarNav}>
             {navItems.map((item) => (
@@ -165,10 +212,16 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             ))}
           </div>
 
-          <div className={styles.sidebarSectionLabel}>КАТЕГОРИИ</div>
+          <div className={styles.sidebarSectionLabel}>КАТАЛОГ</div>
           <div className={styles.sidebarNav}>
-            {categories.map((item) => (
-              <button key={item.label} type="button" onClick={() => console.log(`Категория: ${item.label}`)} title={item.label}>
+            {categoryItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={activeCategory === item.id ? styles.menuItemActive : ""}
+                onClick={() => onCategoryClick(item.id)}
+                title={item.label}
+              >
                 <span>{item.icon}</span>
                 <em>{item.label}</em>
               </button>
@@ -181,10 +234,12 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         </aside>
 
         <main id="sportpit-main" className={styles.content}>
-          <div className={styles.banner}>Sandbox: SportPit (noindex)</div>
+          <div className={styles.banner}>SportPit Sandbox · {pathname}</div>
           {children}
         </main>
       </div>
+
+      {filterToast && <div className={styles.toast}>Фильтр применён</div>}
     </div>
   );
 }
