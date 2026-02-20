@@ -170,6 +170,12 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
           aria-label="Основная навигация"
         >
+          <div className={styles.sidebarTop}>
+            <strong>Меню</strong>
+            <button type="button" className={styles.sidebarClose} onClick={() => setIsSidebarOpen(false)} aria-label="Закрыть меню">
+              ✕
+            </button>
+          </div>
           <div className={styles.sidebarSectionLabel}>ФИЛЬТР ПОИСКА</div>
           <div className={styles.filterCard}>
             <div className={styles.filterBlock}>
