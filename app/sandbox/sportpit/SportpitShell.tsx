@@ -22,7 +22,7 @@ import {
   PriceIcon,
   ProteinIcon,
   VitIcon,
-} from "../../(sportpit)/sandbox/sportpit/ui/icons";
+} from "./ui/icons";
 
 type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
 type NavItem = { id: string; label: string; icon: IconComp };
@@ -63,8 +63,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const router = useRouter();
   const origin = searchParams.get("origin") || "";
   const isMainPage = pathname === MAIN_ROUTE;
-  const isUsaCatalogPath = pathname === USA_ROUTE || pathname.startsWith(`${USA_ROUTE}/`);
-  const isUsaContext = isUsaCatalogPath || origin === "USA";
+  const isUsaContext = pathname.startsWith(USA_ROUTE) || origin === "USA";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -172,7 +171,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
     setCountry(value);
 
-    if (isUsaCatalogPath) {
+    if (pathname.startsWith(USA_ROUTE)) {
       const query = new URLSearchParams(searchParams.toString());
       query.delete("origin");
       query.delete("cat");
@@ -290,11 +289,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Страна
               </h4>
-              <select
-                value={isUsaContext ? "us" : country}
-                onChange={(e) => onCountryChange(e.target.value as "kz" | "ru" | "us")}
-                aria-label="Страна"
-              >
+              <select value={isUsaContext ? "us" : country} onChange={(e) => onCountryChange(e.target.value as "kz" | "ru" | "us")}>
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>
                 <option value="us">США</option>
