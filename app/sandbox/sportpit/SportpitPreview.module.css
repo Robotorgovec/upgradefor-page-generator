@@ -145,6 +145,23 @@
 }
 
 .productCard p { margin: 0; }
+
+.productFooter {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.productPrice {
+  white-space: nowrap;
+}
+
+.productFooter button {
+  flex: 0 0 auto;
+}
+
 .highlighted { border-color: rgba(33, 255, 106, 0.9); box-shadow: 0 0 20px rgba(33, 255, 106, 0.22); }
 
 .badges { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -238,6 +255,15 @@
 }
 
 @media (max-width: 680px) {
+  .productFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .productFooter button {
+    width: 100%;
+  }
+
   .goals,
   .products,
   .gallery,

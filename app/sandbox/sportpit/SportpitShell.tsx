@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import type { ComponentType, PropsWithChildren, SVGProps } from "react";
 import { useEffect, useState } from "react";
@@ -67,8 +66,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [activeCategory, setActiveCategory] = useState("protein");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => (typeof window !== "undefined" ? window.innerWidth >= 1024 : true));
   const [isMobileViewport, setIsMobileViewport] = useState(() => (typeof window !== "undefined" ? window.innerWidth < 1024 : false));
   const [filterToast, setFilterToast] = useState(false);
 
@@ -79,7 +77,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [ratingMin, setRatingMin] = useState<number | null>(4);
 
   useEffect(() => {
-    const updateViewport = () => setIsMobileViewport(window.innerWidth < 1024);
+    const updateViewport = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobileViewport(mobile);
+      setIsSidebarOpen(!mobile);
+    };
     updateViewport();
     window.addEventListener("resize", updateViewport);
     return () => window.removeEventListener("resize", updateViewport);
@@ -119,18 +121,14 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   }, [filterToast]);
 
   const onBurgerClick = () => {
-    if (isMobileViewport) {
-      setIsSidebarOpen((prev) => !prev);
-      return;
-    }
-    setIsCollapsed((prev) => !prev);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   const goToSection = (id: string) => {
     if (!isMainPage) return;
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
-    setIsSidebarOpen(false);
+    if (isMobileViewport) setIsSidebarOpen(false);
   };
 
   const onCategoryClick = (id: string) => {
@@ -167,20 +165,23 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             type="button"
             className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
-            aria-label="Открыть меню"
+            aria-label={isSidebarOpen ? "Закрыть меню" : "Открыть меню"}
             aria-controls="sportpit-sidebar"
-            aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
+            aria-expanded={isSidebarOpen}
           >
             <span />
             <span />
             <span />
           </button>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
-            <Image src="/sportpit/strong-logo.svg" alt="Strong" width={148} height={48} priority />
+            <span className={styles.wordmark}>
+              <span>Active</span>
+              <span>Code</span>
+            </span>
           </button>
         </div>
 
-        {/* Top menu: NOT buttons — text links (Strong-like rows) */}
+        {/* Top menu: NOT buttons — text links (ActiveCode-like rows) */}
         <nav className={styles.topNav} aria-label="Верхнее меню">
           {topMenu.map((item) => (
             <a
@@ -215,14 +216,14 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       <div className={styles.appShell}>
         <button
           type="button"
-          className={`${styles.sidebarOverlay} ${isSidebarOpen ? styles.sidebarOverlayVisible : ""}`}
+          className={`${styles.sidebarOverlay} ${isMobileViewport && isSidebarOpen ? styles.sidebarOverlayVisible : ""}`}
           aria-label="Закрыть меню"
           onClick={() => setIsSidebarOpen(false)}
         />
 
         <aside
           id="sportpit-sidebar"
-          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
+          className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
           aria-label="Основная навигация"
         >
           <div className={styles.sidebarTop}>
@@ -263,7 +264,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                 <option value="" disabled>
                   Выбрать
                 </option>
-                <option>Strong Labs</option>
+                <option>ActiveCode Labs</option>
                 <option>PowerFuel</option>
                 <option>Sport Origin</option>
               </select>
@@ -331,12 +332,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             </button>
           </div>
 
-          {isCollapsed && (
-            <button type="button" className={styles.filterMini} title="Фильтр" onClick={applyFilters}>
-              <FilterIcon className={styles.smallIcon} />
-            </button>
-          )}
-
           <div className={styles.sidebarSectionLabel}>НАВИГАЦИЯ</div>
           <div className={styles.sidebarNav}>
             {navItems.map((item) => {
@@ -349,9 +344,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                   onClick={() => goToSection(item.id)}
                   title={item.label}
                 >
-                  <span className={styles.iconCapsule}>
-                    <Icon className={styles.sidebarIcon} />
-                  </span>
+                  <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
               );
@@ -370,18 +363,12 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                   onClick={() => onCategoryClick(item.id)}
                   title={item.label}
                 >
-                  <span className={styles.iconCapsule}>
-                    <Icon className={styles.sidebarIcon} />
-                  </span>
+                  <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
               );
             })}
           </div>
-
-          <button type="button" className={styles.collapseBtn} onClick={() => setIsCollapsed((prev) => !prev)}>
-            {isCollapsed ? "Развернуть меню" : "Свернуть меню"}
-          </button>
         </aside>
 
         <main id="sportpit-main" className={styles.content}>

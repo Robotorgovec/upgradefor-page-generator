@@ -124,7 +124,7 @@ export default function SportpitPreviewPage() {
 
       <section id="popular" className={styles.section}>
         <h2>ПОПУЛЯРНЫЕ ПРОДУКТЫ</h2>
-        <p className={styles.muted}>Карточки в стиле Strong Preview.</p>
+        <p className={styles.muted}>Карточки в стиле ActiveCode Preview.</p>
         {activeGoal && <p className={styles.muted}>Акцент по цели: {goalLabels[activeGoal]}</p>}
         <div className={styles.products}>
           {orderedProducts.map((product) => {
@@ -134,10 +134,12 @@ export default function SportpitPreviewPage() {
                 <img className={styles.cardPhoto} src={product.image} alt={`${product.title} фото`} width={220} height={160} loading="lazy" />
                 <h3>{product.title}</h3>
                 <p>★ {product.rating}</p>
-                <strong>{product.price}</strong>
-                <button type="button" className={styles.primaryBtn} onClick={() => addToCart(product.id)}>
-                  {addedId === product.id ? "Добавлено ✓" : "В корзину"}
-                </button>
+                <div className={styles.productFooter}>
+                  <strong className={styles.productPrice}>{product.price}</strong>
+                  <button type="button" className={styles.primaryBtn} onClick={() => addToCart(product.id)}>
+                    {addedId === product.id ? "Добавлено ✓" : "В корзину"}
+                  </button>
+                </div>
               </article>
             );
           })}
