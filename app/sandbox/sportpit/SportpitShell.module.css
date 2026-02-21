@@ -133,7 +133,7 @@
   padding-right: 10px;
   box-sizing: border-box;
 }
-.sidebarCollapsed { width: 64px; }
+.sidebarCollapsed { width: 50px; }
 
 .sidebar::-webkit-scrollbar { width: 12px; }
 .sidebar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 999px; }
@@ -199,11 +199,11 @@
 .sidebarCollapsed .filterCard,
 .sidebarCollapsed button em,
 .sidebarCollapsed .sidebarTop strong { display: none; }
-.sidebarCollapsed .sidebarNav button { justify-content: center; padding-left: 4px; padding-right: 4px; }
+.sidebarCollapsed .sidebarNav button { justify-content: center; padding-left: 2px; padding-right: 2px; }
 
 .content { margin-left: 288px; min-height: calc(100vh - 74px); padding: var(--space-4); }
 .contentInner { max-width: 1200px; margin: 0 auto; }
-.sidebarCollapsed ~ .content { margin-left: 64px; }
+.sidebarCollapsed ~ .content { margin-left: 50px; }
 .toast { position: fixed; right: 16px; bottom: 16px; z-index: 40; border-radius: 10px; border: 1px solid rgba(33, 255, 106, 0.7); background: #10251f; color: #effff1; padding: 10px 12px; }
 
 @media (max-width: 1280px) { .topNav { display: none; } }
