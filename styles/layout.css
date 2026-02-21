@@ -2,8 +2,8 @@
 /* z-index contract: header = var(--z-header), sidebar = var(--z-sidebar), overlay = var(--z-overlay). */
 
 :root {
-  --sidebar-width-open: 240px;
-  --sidebar-width-collapsed: 72px;
+--sidebar-width-open: 260px;
+--sidebar-width-collapsed: 56px;
 }
 
 header {
@@ -73,10 +73,14 @@ header {
 .burger.open .burger-lines span:nth-child(1) {
   transform: translateY(5px) rotate(45deg);
 }
+
 .burger.open .burger-lines span:nth-child(2) {
   opacity: 0;
 }
+
 .burger.open .burger-lines span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
   transform: translateY(-5px) rotate(-45deg);
 }
 
@@ -158,7 +162,7 @@ header {
   min-height: calc(100vh - var(--header-height));
 }
 
-.sidebar.collapsed {
+.app-shell[data-sidebar-open="false"] .sidebar {
   width: var(--sidebar-width-collapsed);
 }
 
@@ -189,18 +193,20 @@ header {
   pointer-events: auto;
 }
 
-.sidebar.collapsed .sidebar-inner {
+.app-shell[data-sidebar-open="false"] .sidebar-inner {
   padding: 12px 0;
 }
 
-.sidebar.collapsed .sidebar-link {
+.app-shell[data-sidebar-open="false"] .sidebar-link {
   justify-content: center;
   padding-left: 0;
   padding-right: 0;
 }
 
-.sidebar.collapsed .sidebar-link span,
-.sidebar.collapsed .sidebar-link .label {
+.app-shell[data-sidebar-open="false"] .sidebar-link span,
+.app-shell[data-sidebar-open="false"] .sidebar-link .label {
+  display: none;
+}
   display: none;
 }
 

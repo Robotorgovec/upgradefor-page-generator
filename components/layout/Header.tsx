@@ -13,12 +13,12 @@ export default function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) 
       <div className="header-inner">
         <button
           type="button"
-          className={`burger ${isSidebarOpen ? "open" : ""}`}
+className={`burger ${isSidebarOpen ? "open" : ""}`}
           aria-label={isSidebarOpen ? "Закрыть меню" : "Открыть меню"}
           aria-expanded={isSidebarOpen}
           onClick={onToggleSidebar}
         >
-          <span className="burger-lines" aria-hidden="true">
+          <span className={`burger-lines ${isSidebarOpen ? "is-open" : ""}`} aria-hidden="true">
             <span />
             <span />
             <span />
