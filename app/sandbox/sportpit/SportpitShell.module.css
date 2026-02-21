@@ -100,7 +100,15 @@
 .cartIcon { display: inline-flex; align-items: center; gap: 4px; }
 .cartIcon span { color: var(--accent); font-weight: 700; }
 
-.burger { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; background: transparent; border: none; }
+.burger {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
 .burger:hover,
 .burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; }
 .burger span { width: 17px; height: 2px; border-radius: 0; background: #fff; border: none; display: block; transition: transform 0.2s ease, opacity 0.2s ease; }
@@ -208,7 +216,7 @@
 
 @media (max-width: 1280px) { .topNav { display: none; } }
 @media (max-width: 1120px) { .header { grid-template-columns: auto minmax(180px, 1fr) auto; } .searchWrap { display: none; } }
-@media (max-width: 1023px) {
+@media (max-width: 767px) {
   .sidebar { transform: translateX(-100%); width: min(340px, 88vw); transition: transform 0.2s ease; }
   .sidebarMobileOpen { transform: translateX(0); }
   .content, .sidebarCollapsed ~ .content { margin-left: 0; }

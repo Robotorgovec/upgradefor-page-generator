@@ -72,7 +72,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [ratingMin, setRatingMin] = useState<number | null>(4.0);
 
   useEffect(() => {
-    const updateViewport = () => setIsMobileViewport(window.innerWidth < 1024);
+    const updateViewport = () => setIsMobileViewport(window.innerWidth < 768);
     updateViewport();
     window.addEventListener("resize", updateViewport);
     return () => window.removeEventListener("resize", updateViewport);
