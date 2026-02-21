@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ComponentType, PropsWithChildren, SVGProps } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
 import {
   AccessoriesIcon,
@@ -28,10 +28,6 @@ type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
 type NavItem = { id: string; label: string; icon: IconComp };
 type CategoryItem = { id: string; label: string; icon: IconComp };
 
-/**
- * IMPORTANT:
- * Если у тебя главная страница спортпита по другому пути — поменяй MAIN_ROUTE.
- */
 const MAIN_ROUTE = "/sandbox/sportpit";
 const USA_ROUTE = "/catalog/usa";
 const PRICE_CAP = 5000;
@@ -62,6 +58,8 @@ const topMenu = [
   { label: "Контакты", target: "footer" },
 ];
 
+const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(v, max));
+
 export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -70,11 +68,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const isMainPage = pathname === MAIN_ROUTE;
   const isUsaCatalog = pathname === USA_ROUTE;
 
-  const origin = useMemo(() => searchParams.get("origin"), [searchParams]);
+  // ВАЖНО: useSearchParams() может давать новый объект часто.
+  // Поэтому берём "строку" — это стабилизирует эффекты и убирает “петли”.
+  const queryString = searchParams.toString();
+  const origin = searchParams.get("origin");
 
-  // Чекбокс USA должен быть "включен", если:
-  // - мы на /catalog/usa
-  // - или в URL явно origin=USA (например, пришли по ссылке)
   const isUsaChecked = isUsaCatalog || origin === "USA";
 
   const [cartCount, setCartCount] = useState(0);
@@ -103,9 +101,16 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     if (!isMobileViewport) setIsSidebarOpen(false);
   }, [isMobileViewport]);
 
-  // Синхронизация корзины
+  // Синхронизация корзины (защита от SecurityError)
   useEffect(() => {
-    const syncCart = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
+    const syncCart = () => {
+      try {
+        setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
+      } catch {
+        setCartCount(0);
+      }
+    };
+
     syncCart();
     window.addEventListener("storage", syncCart);
     window.addEventListener("sp-cart-changed", syncCart as EventListener);
@@ -115,13 +120,13 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     };
   }, []);
 
-  // Авто-скролл к #hash при переходах на главную (навигация с других страниц)
+  // Авто-скролл к #hash при переходах на главную
   useEffect(() => {
     if (!isMainPage) return;
-    const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
+
+    const hash = window.location.hash.replace("#", "");
     if (!hash) return;
 
-    // Даем DOM отрисоваться
     const t = window.setTimeout(() => {
       document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
       setActiveSection(hash);
@@ -130,16 +135,17 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     return () => window.clearTimeout(t);
   }, [isMainPage, pathname]);
 
-  // Подсветка активной секции на главной
+  // Подсветка активной секции на главной (защита, если IntersectionObserver недоступен)
   useEffect(() => {
     if (!isMainPage) return;
+    if (typeof window === "undefined") return;
+    if (!("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible?.target && (visible.target as HTMLElement).id) {
-          setActiveSection((visible.target as HTMLElement).id);
-        }
+        const id = (visible?.target as HTMLElement | undefined)?.id;
+        if (id) setActiveSection(id);
       },
       { threshold: 0.35 }
     );
@@ -159,27 +165,27 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     return () => clearTimeout(timer);
   }, [filterToast]);
 
-  // НОРМАЛИЗАЦИЯ USA:
-  // 1) Если на /catalog/usa, но origin не USA — добавляем origin=USA
-  // 2) Если НЕ на /catalog/usa, но origin=USA — уводим на /catalog/usa
+  /**
+   * НОРМАЛИЗАЦИЯ USA (без петли):
+   * - Если origin=USA и мы НЕ на /catalog/usa => уводим на /catalog/usa с тем же query
+   * - Если мы на /catalog/usa и origin != USA => проставляем origin=USA
+   */
   useEffect(() => {
-    const current = new URLSearchParams(searchParams.toString());
-    const currentOrigin = current.get("origin");
+    const params = new URLSearchParams(queryString);
+    const qOrigin = params.get("origin");
 
-    if (isUsaCatalog && currentOrigin !== "USA") {
-      current.set("origin", "USA");
-      if (!current.get("sort")) current.set("sort", "popular");
-      if (!current.get("page")) current.set("page", "1");
-      router.replace(`${USA_ROUTE}?${current.toString()}`);
-      return;
-    }
+    const mustGoUsa = qOrigin === "USA" && pathname !== USA_ROUTE;
+    const mustSetOrigin = pathname === USA_ROUTE && qOrigin !== "USA";
 
-    if (!isUsaCatalog && currentOrigin === "USA") {
-      if (!current.get("sort")) current.set("sort", "popular");
-      if (!current.get("page")) current.set("page", "1");
-      router.replace(`${USA_ROUTE}?${current.toString()}`);
-    }
-  }, [isUsaCatalog, searchParams, router]);
+    if (!mustGoUsa && !mustSetOrigin) return;
+
+    if (!params.get("sort")) params.set("sort", "popular");
+    if (!params.get("page")) params.set("page", "1");
+    if (mustSetOrigin) params.set("origin", "USA");
+
+    const next = `${USA_ROUTE}?${params.toString()}`;
+    router.replace(next);
+  }, [pathname, queryString, router]);
 
   const onBurgerClick = () => {
     if (isMobileViewport) {
@@ -204,11 +210,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   const onTypeClick = (id: string) => {
     setActiveTypeNav(id);
-    // Каталог находится на главной в секции #catalog
     goToSection("catalog");
   };
-
-  const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(v, max));
 
   const onPriceMinChange = (value: number) => {
     const nextMin = clamp(value, 0, Math.min(priceMax, PRICE_CAP));
@@ -223,24 +226,24 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   };
 
   const onUsaToggle = (enabled: boolean) => {
-    const query = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(queryString);
 
     if (enabled) {
-      query.set("origin", "USA");
-      if (!query.get("sort")) query.set("sort", "popular");
-      if (!query.get("page")) query.set("page", "1");
-      router.push(`${USA_ROUTE}?${query.toString()}`);
+      params.set("origin", "USA");
+      if (!params.get("sort")) params.set("sort", "popular");
+      if (!params.get("page")) params.set("page", "1");
+      router.push(`${USA_ROUTE}?${params.toString()}`);
       return;
     }
 
-    // Выключение USA делаем только если реально на USA-странице (или origin=USA)
-    if (isUsaCatalog || query.get("origin") === "USA") {
-      query.delete("origin");
-      query.delete("cat");
-      query.delete("sub");
-      query.delete("brand");
-      router.push(`${MAIN_ROUTE}${query.toString() ? `?${query.toString()}` : ""}`);
-    }
+    // Выключаем USA: чистим специфичные параметры и возвращаем на MAIN_ROUTE
+    params.delete("origin");
+    params.delete("cat");
+    params.delete("sub");
+    params.delete("brand");
+
+    const next = `${MAIN_ROUTE}${params.toString() ? `?${params.toString()}` : ""}`;
+    router.push(next);
   };
 
   return (
@@ -255,7 +258,15 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             type="button"
             className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
-            aria-label={isMobileViewport ? (isSidebarOpen ? "Закрыть меню" : "Открыть меню") : isCollapsed ? "Открыть меню" : "Свернуть меню"}
+            aria-label={
+              isMobileViewport
+                ? isSidebarOpen
+                  ? "Закрыть меню"
+                  : "Открыть меню"
+                : isCollapsed
+                  ? "Открыть меню"
+                  : "Свернуть меню"
+            }
             aria-controls="sportpit-sidebar"
             aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
           >
@@ -309,7 +320,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
         <aside
           id="sportpit-sidebar"
-          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
+          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${
+            isSidebarOpen ? styles.sidebarMobileOpen : ""
+          }`}
           aria-label="Основная навигация"
         >
           <div className={styles.sidebarTop}>
@@ -368,7 +381,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               </h4>
 
               <label>
-                <input type="checkbox" checked={isUsaChecked} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)
+                <input type="checkbox" checked={isUsaChecked} onChange={(e) => onUsaToggle(e.target.checked)} />{" "}
+                Американское спортивное питание (USA)
               </label>
 
               <select defaultValue="kz" aria-label="Выбор страны">
@@ -438,7 +452,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                     key={star}
                     type="button"
                     aria-label={`Рейтинг ${star}`}
-                    className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`}
+                    className={`${styles.starBtn} ${
+                      ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff
+                    }`}
                     onClick={() => setRatingMin((prev) => (prev === star ? null : star))}
                   >
                     ★
