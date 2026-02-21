@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ComponentType, PropsWithChildren, SVGProps } from "react";
 import { useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
@@ -56,7 +56,10 @@ const topMenu = [
 
 export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const isMainPage = pathname === "/sandbox/sportpit";
+  const isUsaCatalog = pathname === "/catalog/usa";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -145,6 +148,26 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     const nextMax = Math.max(priceMin, value);
     setPriceMax(nextMax);
     setPriceRange(nextMax);
+  };
+
+  const onUsaToggle = (enabled: boolean) => {
+    if (enabled) {
+      const query = new URLSearchParams(searchParams.toString());
+      query.set("origin", "USA");
+      if (!query.get("sort")) query.set("sort", "popular");
+      if (!query.get("page")) query.set("page", "1");
+      router.push(`/catalog/usa?${query.toString()}`);
+      return;
+    }
+
+    if (isUsaCatalog) {
+      const query = new URLSearchParams(searchParams.toString());
+      query.delete("origin");
+      query.delete("cat");
+      query.delete("sub");
+      query.delete("brand");
+      router.push(`/sandbox/sportpit${query.toString() ? `?${query.toString()}` : ""}`);
+    }
   };
 
   return (
@@ -253,6 +276,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Страна
               </h4>
+              <label><input type="checkbox" checked={isUsaCatalog} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)</label>
               <select defaultValue="kz">
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>

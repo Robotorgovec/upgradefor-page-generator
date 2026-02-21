@@ -1,0 +1,10 @@
+[
+  { "slug": "protein", "name_ru": "Протеин", "name_en": "Protein", "hint": "Сила и восстановление", "sort": 10 },
+  { "slug": "pre-workout", "name_ru": "Предтренировки", "name_en": "Pre-workout", "hint": "Энергия перед нагрузкой", "sort": 20 },
+  { "slug": "amino-acids", "name_ru": "Аминокислоты", "name_en": "Amino acids", "hint": "Поддержка выносливости", "sort": 30 },
+  { "slug": "creatine", "name_ru": "Креатин", "name_en": "Creatine", "hint": "Мощность и пик силы", "sort": 40 },
+  { "slug": "gainers-meal", "name_ru": "Гейнеры и заменители питания", "name_en": "Gainers & meal", "hint": "Калории и набор массы", "sort": 50 },
+  { "slug": "fat-burners", "name_ru": "Жиросжигатели и контроль веса", "name_en": "Fat burners", "hint": "Сушка и контроль аппетита", "sort": 60 },
+  { "slug": "vitamins-minerals", "name_ru": "Витамины и минералы", "name_en": "Vitamins & minerals", "hint": "Ежедневный фундамент", "sort": 70 },
+  { "slug": "drinks-hydration", "name_ru": "Напитки и гидрация", "name_en": "Drinks & hydration", "hint": "Баланс воды и электролитов", "sort": 80 }
+]
