@@ -69,7 +69,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [priceMin, setPriceMin] = useState(900);
   const [priceMax, setPriceMax] = useState(2600);
   const [priceRange, setPriceRange] = useState(2600);
-  const [ratingMin, setRatingMin] = useState<number | null>(4);
+  const [ratingMin, setRatingMin] = useState<number | null>(4.0);
 
   useEffect(() => {
     const updateViewport = () => setIsMobileViewport(window.innerWidth < 1024);
@@ -168,7 +168,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <span />
           </button>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
-            <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={148} height={48} priority />
+            <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
           </button>
         </div>
 
@@ -285,7 +285,20 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => setRatingMin((prev) => (prev === star ? null : star))}>★</button>
                 ))}
-                <span className={styles.ratingNote}>{ratingMin ? `${ratingMin}+` : "Любой"}</span>
+                <input
+                  className={styles.ratingSlider}
+                  type="range"
+                  min={0}
+                  max={5}
+                  step={0.5}
+                  value={ratingMin ?? 0}
+                  aria-label="Минимальный рейтинг"
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    setRatingMin(value === 0 ? null : value);
+                  }}
+                />
+                <span className={styles.ratingNote}>{ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}</span>
               </div>
             </div>
             <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>Показать</button>
@@ -298,7 +311,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </div>
 
       {filterToast && (
-        <div className={styles.toast}>Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin ? `${ratingMin}+` : "любой"}</div>
+        <div className={styles.toast}>Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin !== null ? ratingMin.toFixed(1) : "любой"}</div>
       )}
     </div>
   );
