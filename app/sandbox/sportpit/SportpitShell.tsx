@@ -346,7 +346,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         </aside>
 
         <main id="sportpit-main" className={styles.content}>
-          {children}
+          <div className={styles.contentInner}>{children}</div>
         </main>
       </div>
 

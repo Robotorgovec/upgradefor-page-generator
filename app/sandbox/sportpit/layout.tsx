@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Inter } from "next/font/google";
 import SportpitShell from "./SportpitShell";
+
+
+const sportpitInter = Inter({
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+  variable: "--font-sportpit",
+});
 
 export const metadata: Metadata = {
   title: "ActiveCode.kz — центр управления телом и мозгом",
@@ -9,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function SportpitLayout({ children }: { children: ReactNode }) {
-  return <SportpitShell>{children}</SportpitShell>;
+  return <div className={sportpitInter.variable}><SportpitShell>{children}</SportpitShell></div>;
 }
