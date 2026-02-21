@@ -66,17 +66,25 @@ header {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.burger-lines span:nth-child(1) { top: 3px; }
-.burger-lines span:nth-child(2) { top: 8px; }
-.burger-lines span:nth-child(3) { top: 13px; }
+.burger-lines span:nth-child(1) {
+  top: 3px;
+}
+.burger-lines span:nth-child(2) {
+  top: 8px;
+}
+.burger-lines span:nth-child(3) {
+  top: 13px;
+}
 
-.burger-lines.is-open span:nth-child(1) {
+.burger.open .burger-lines span:nth-child(1) {
   transform: translateY(5px) rotate(45deg);
 }
-.burger-lines.is-open span:nth-child(2) {
+
+.burger.open .burger-lines span:nth-child(2) {
   opacity: 0;
 }
-.burger-lines.is-open span:nth-child(3) {
+
+.burger.open .burger-lines span:nth-child(3) {
   transform: translateY(-5px) rotate(-45deg);
 }
 

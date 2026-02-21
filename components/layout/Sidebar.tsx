@@ -4,11 +4,12 @@ import Link from "next/link";
 
 type SidebarProps = {
   onClose: () => void;
+  isSidebarOpen: boolean;
 };
 
-export default function Sidebar({ onClose }: SidebarProps) {
+export default function Sidebar({ onClose, isSidebarOpen }: SidebarProps) {
   return (
-    <aside className="sidebar" aria-label="Основная навигация">
+    <aside className={`sidebar ${isSidebarOpen ? "" : "collapsed"}`} aria-label="Основная навигация">
       <div className="sidebar-inner">
         <div className="sidebar-section">
           <p className="sidebar-section-title">Навигация</p>

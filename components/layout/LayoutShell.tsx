@@ -43,7 +43,7 @@ export default function LayoutShell({ children }: LayoutShellProps) {
       <Header isSidebarOpen={isSidebarOpen} onToggleSidebar={toggleSidebar} />
 
       <div className="app-shell" data-sidebar-open={isSidebarOpen}>
-        <Sidebar onClose={closeSidebar} />
+        <Sidebar onClose={closeSidebar} isSidebarOpen={isSidebarOpen} />
         <main id="main-content" className="app-content">
           {children}
         </main>
