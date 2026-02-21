@@ -22,7 +22,7 @@ import {
   PriceIcon,
   ProteinIcon,
   VitIcon,
-} from "../../(sportpit)/sandbox/sportpit/ui/icons";
+} from "./ui/icons";
 
 type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
 type NavItem = { id: string; label: string; icon: IconComp };
@@ -54,17 +54,12 @@ const topMenu = [
   { label: "Контакты", target: "footer" },
 ];
 
-const MAIN_ROUTE = "/sandbox/sportpit";
-const USA_ROUTE = "/catalog/usa";
-
 export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const origin = searchParams.get("origin") || "";
-  const isMainPage = pathname === MAIN_ROUTE;
-  const isUsaCatalogPath = pathname === USA_ROUTE || pathname.startsWith(`${USA_ROUTE}/`);
-  const isUsaContext = isUsaCatalogPath || origin === "USA";
+  const isMainPage = pathname === "/sandbox/sportpit";
+  const isUsaCatalog = pathname === "/catalog/usa";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -78,7 +73,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [priceMax, setPriceMax] = useState(2600);
   const [priceRange, setPriceRange] = useState(2600);
   const [ratingMin, setRatingMin] = useState<number | null>(4.0);
-  const [country, setCountry] = useState<"kz" | "ru" | "us">("kz");
 
   useEffect(() => {
     const updateViewport = () => setIsMobileViewport(window.innerWidth < 768);
@@ -90,10 +84,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   useEffect(() => {
     if (isMainPage) setIsCollapsed(false);
   }, [isMainPage]);
-
-  useEffect(() => {
-    if (isUsaContext) setCountry("us");
-  }, [isUsaContext]);
 
   useEffect(() => {
     const syncCart = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
@@ -160,29 +150,25 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     setPriceRange(nextMax);
   };
 
-  const onCountryChange = (value: "kz" | "ru" | "us") => {
-    if (value === "us") {
+  const onUsaToggle = (enabled: boolean) => {
+    if (enabled) {
       const query = new URLSearchParams(searchParams.toString());
       query.set("origin", "USA");
       if (!query.get("sort")) query.set("sort", "popular");
       if (!query.get("page")) query.set("page", "1");
-      router.push(`${USA_ROUTE}?${query.toString()}`);
+      router.push(`/catalog/usa?${query.toString()}`);
       return;
     }
 
-    setCountry(value);
-
-    if (isUsaCatalogPath) {
+    if (isUsaCatalog) {
       const query = new URLSearchParams(searchParams.toString());
       query.delete("origin");
       query.delete("cat");
       query.delete("sub");
       query.delete("brand");
-      router.push(`${MAIN_ROUTE}${query.toString() ? `?${query.toString()}` : ""}`);
+      router.push(`/sandbox/sportpit${query.toString() ? `?${query.toString()}` : ""}`);
     }
   };
-
-  const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
 
   return (
     <div className={styles.page}>
@@ -194,11 +180,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         <div className={styles.headerLeft}>
           <button
             type="button"
-            className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+            className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
             aria-label="Открыть меню"
             aria-controls="sportpit-sidebar"
-            aria-expanded={isNavOpen}
+            aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
           >
             <span />
             <span />
@@ -290,11 +276,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Страна
               </h4>
-              <select
-                value={isUsaContext ? "us" : country}
-                onChange={(e) => onCountryChange(e.target.value as "kz" | "ru" | "us")}
-                aria-label="Страна"
-              >
+              <label><input type="checkbox" checked={isUsaCatalog} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)</label>
+              <select defaultValue="kz">
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>
                 <option value="us">США</option>
