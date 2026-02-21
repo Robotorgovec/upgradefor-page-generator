@@ -21,9 +21,9 @@
 }
 
 .badge { display: inline-flex; border-radius: 999px; border: 1px solid rgba(33, 255, 106, 0.56); color: #b8f7e2; padding: 6px 12px; font-size: var(--fs-small); }
-.hero h1 { margin: 12px 0; font-size: var(--fs-h1); line-height: var(--lh-tight); letter-spacing: var(--tracking-tight); max-width: 18ch; }
+.hero h1 { margin: 12px 0; font-size: clamp(1.75rem, 2.4vw, 2.55rem); line-height: var(--lh-tight); letter-spacing: var(--tracking-tight); max-width: 20ch; }
 .hero p,.muted { color: var(--muted); font-size: var(--fs-body); line-height: var(--lh-body); max-width: 64ch; }
-.heroButtons { margin-top: var(--space-4); display: flex; gap: 10px; }
+.heroButtons { margin-top: var(--space-4); margin-bottom: var(--space-6); display: flex; gap: 14px; }
 .heroVisual { display: flex; justify-content: center; gap: 12px; align-items: center; }
 
 .primaryBtn,
@@ -67,11 +67,11 @@
 .section { margin-top: 14px; padding: var(--space-6); }
 .section h2 { font-size: var(--fs-h2); line-height: var(--lh-tight); letter-spacing: var(--tracking-tight); margin: 0 0 var(--space-4); }
 .section p { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--muted); }
-.badges,.chips,.tabs,.protocolButtons,.qualityList,.markerList { display: flex; flex-wrap: wrap; gap: 8px; }
+.badges,.chips,.tabs,.protocolButtons,.qualityList,.markerList { display: flex; flex-wrap: wrap; gap: 12px; }
 .badges span,.tags span,.chips button,.tabs button { border: 1px solid rgba(184, 207, 238, 0.18); border-radius: 999px; padding: 6px 10px; }
 
 .missionGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.markerList span { background: rgba(255,255,255,0.03); }
+.markerList span { background: transparent; }
 .missionText { color: rgba(225,236,250,0.82); }
 
 .philosophyGrid,
@@ -106,6 +106,15 @@
 
 .goalActive { background: rgba(33, 255, 106, 0.14) !important; border-color: rgba(33, 255, 106, 0.8) !important; }
 .highlighted { border-color: rgba(33, 255, 106, 0.82) !important; }
+
+.protocolButtons { margin-bottom: var(--space-2); }
+.tabs { margin-bottom: var(--space-3); }
+.tabs button { margin-bottom: 12px; }
+
+.productCard { display: flex; flex-direction: column; }
+.productCard img { display: block; margin: 0 auto; }
+.productCard strong { margin-top: auto; text-align: right; }
+.productCard .secondaryBtn { align-self: flex-end; }
 
 .subscribe { display: flex; gap: 10px; }
 .subscribe input { flex: 1; min-height: var(--control-h); border-radius: 12px; border: 1px solid rgba(184, 207, 238, 0.18); background: #0d1722; color: #f1f5fb; padding: 10px; font: inherit; }
