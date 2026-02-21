@@ -191,7 +191,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <span />
           </button>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
-            <Image src="/sportpit/strong-logo.svg" alt="ActiveCode" width={148} height={48} priority />
+            <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode" width={148} height={48} priority />
           </button>
         </div>
 
