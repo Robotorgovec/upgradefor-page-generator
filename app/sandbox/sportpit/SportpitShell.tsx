@@ -171,7 +171,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
     setCountry(value);
 
-    if (pathname.startsWith(USA_ROUTE)) {
+    if (pathname.startsWith(USA_ROUTE) || origin === "USA") {
       const query = new URLSearchParams(searchParams.toString());
       query.delete("origin");
       query.delete("cat");
