@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ComponentType, PropsWithChildren, SVGProps } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./SportpitShell.module.css";
 import {
   AccessoriesIcon,
@@ -27,6 +27,14 @@ import {
 type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
 type NavItem = { id: string; label: string; icon: IconComp };
 type CategoryItem = { id: string; label: string; icon: IconComp };
+
+/**
+ * IMPORTANT:
+ * Если у тебя главная страница спортпита по другому пути — поменяй MAIN_ROUTE.
+ */
+const MAIN_ROUTE = "/sandbox/sportpit";
+const USA_ROUTE = "/catalog/usa";
+const PRICE_CAP = 5000;
 
 const navItems: NavItem[] = [
   { id: "top", label: "Главная", icon: HomeIcon },
@@ -58,8 +66,16 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const isMainPage = pathname === "/sandbox/sportpit";
-  const isUsaCatalog = pathname === "/catalog/usa";
+
+  const isMainPage = pathname === MAIN_ROUTE;
+  const isUsaCatalog = pathname === USA_ROUTE;
+
+  const origin = useMemo(() => searchParams.get("origin"), [searchParams]);
+
+  // Чекбокс USA должен быть "включен", если:
+  // - мы на /catalog/usa
+  // - или в URL явно origin=USA (например, пришли по ссылке)
+  const isUsaChecked = isUsaCatalog || origin === "USA";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -74,6 +90,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [priceRange, setPriceRange] = useState(2600);
   const [ratingMin, setRatingMin] = useState<number | null>(4.0);
 
+  // Viewport / mobile
   useEffect(() => {
     const updateViewport = () => setIsMobileViewport(window.innerWidth < 768);
     updateViewport();
@@ -81,10 +98,12 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     return () => window.removeEventListener("resize", updateViewport);
   }, []);
 
+  // Если ушли с мобилки на десктоп — закрываем мобильный оверлей
   useEffect(() => {
-    if (isMainPage) setIsCollapsed(false);
-  }, [isMainPage]);
+    if (!isMobileViewport) setIsSidebarOpen(false);
+  }, [isMobileViewport]);
 
+  // Синхронизация корзины
   useEffect(() => {
     const syncCart = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
     syncCart();
@@ -96,27 +115,71 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     };
   }, []);
 
+  // Авто-скролл к #hash при переходах на главную (навигация с других страниц)
   useEffect(() => {
     if (!isMainPage) return;
+    const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
+    if (!hash) return;
+
+    // Даем DOM отрисоваться
+    const t = window.setTimeout(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(hash);
+    }, 50);
+
+    return () => window.clearTimeout(t);
+  }, [isMainPage, pathname]);
+
+  // Подсветка активной секции на главной
+  useEffect(() => {
+    if (!isMainPage) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible?.target.id) setActiveSection(visible.target.id);
+        if (visible?.target && (visible.target as HTMLElement).id) {
+          setActiveSection((visible.target as HTMLElement).id);
+        }
       },
       { threshold: 0.35 }
     );
+
     navItems.forEach((item) => {
       const el = document.getElementById(item.id);
       if (el) observer.observe(el);
     });
+
     return () => observer.disconnect();
   }, [isMainPage]);
 
+  // Toast auto-hide
   useEffect(() => {
     if (!filterToast) return;
     const timer = setTimeout(() => setFilterToast(false), 1500);
     return () => clearTimeout(timer);
   }, [filterToast]);
+
+  // НОРМАЛИЗАЦИЯ USA:
+  // 1) Если на /catalog/usa, но origin не USA — добавляем origin=USA
+  // 2) Если НЕ на /catalog/usa, но origin=USA — уводим на /catalog/usa
+  useEffect(() => {
+    const current = new URLSearchParams(searchParams.toString());
+    const currentOrigin = current.get("origin");
+
+    if (isUsaCatalog && currentOrigin !== "USA") {
+      current.set("origin", "USA");
+      if (!current.get("sort")) current.set("sort", "popular");
+      if (!current.get("page")) current.set("page", "1");
+      router.replace(`${USA_ROUTE}?${current.toString()}`);
+      return;
+    }
+
+    if (!isUsaCatalog && currentOrigin === "USA") {
+      if (!current.get("sort")) current.set("sort", "popular");
+      if (!current.get("page")) current.set("page", "1");
+      router.replace(`${USA_ROUTE}?${current.toString()}`);
+    }
+  }, [isUsaCatalog, searchParams, router]);
 
   const onBurgerClick = () => {
     if (isMobileViewport) {
@@ -127,7 +190,13 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   };
 
   const goToSection = (id: string) => {
-    if (!isMainPage) return;
+    // Если мы не на главной — уводим на главную с hash
+    if (!isMainPage) {
+      router.push(`${MAIN_ROUTE}#${id}`);
+      setIsSidebarOpen(false);
+      return;
+    }
+
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
     setIsSidebarOpen(false);
@@ -135,38 +204,42 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   const onTypeClick = (id: string) => {
     setActiveTypeNav(id);
+    // Каталог находится на главной в секции #catalog
     goToSection("catalog");
   };
 
+  const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(v, max));
+
   const onPriceMinChange = (value: number) => {
-    const nextMin = Math.max(0, Math.min(value, priceMax));
+    const nextMin = clamp(value, 0, Math.min(priceMax, PRICE_CAP));
     setPriceMin(nextMin);
     if (priceRange < nextMin) setPriceRange(nextMin);
   };
 
   const onPriceMaxChange = (value: number) => {
-    const nextMax = Math.max(priceMin, value);
+    const nextMax = clamp(value, priceMin, PRICE_CAP);
     setPriceMax(nextMax);
     setPriceRange(nextMax);
   };
 
   const onUsaToggle = (enabled: boolean) => {
+    const query = new URLSearchParams(searchParams.toString());
+
     if (enabled) {
-      const query = new URLSearchParams(searchParams.toString());
       query.set("origin", "USA");
       if (!query.get("sort")) query.set("sort", "popular");
       if (!query.get("page")) query.set("page", "1");
-      router.push(`/catalog/usa?${query.toString()}`);
+      router.push(`${USA_ROUTE}?${query.toString()}`);
       return;
     }
 
-    if (isUsaCatalog) {
-      const query = new URLSearchParams(searchParams.toString());
+    // Выключение USA делаем только если реально на USA-странице (или origin=USA)
+    if (isUsaCatalog || query.get("origin") === "USA") {
       query.delete("origin");
       query.delete("cat");
       query.delete("sub");
       query.delete("brand");
-      router.push(`/sandbox/sportpit${query.toString() ? `?${query.toString()}` : ""}`);
+      router.push(`${MAIN_ROUTE}${query.toString() ? `?${query.toString()}` : ""}`);
     }
   };
 
@@ -182,7 +255,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             type="button"
             className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
-            aria-label="Открыть меню"
+            aria-label={isMobileViewport ? (isSidebarOpen ? "Закрыть меню" : "Открыть меню") : isCollapsed ? "Открыть меню" : "Свернуть меню"}
             aria-controls="sportpit-sidebar"
             aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
           >
@@ -190,7 +263,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <span />
             <span />
           </button>
-          <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
+
+          <button type="button" className={styles.logo} onClick={() => goToSection("top")} aria-label="На главную">
             <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
           </button>
         </div>
@@ -246,20 +320,35 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           <div className={styles.sidebarNav}>
             {navItems.map((item) => {
               const Icon = item.icon;
+              const active = activeSection === item.id && isMainPage;
               return (
-                <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
+                <button
+                  key={item.id}
+                  type="button"
+                  className={active ? styles.menuItemActive : ""}
+                  onClick={() => goToSection(item.id)}
+                  title={item.label}
+                >
                   <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
               );
             })}
           </div>
+
           <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
           <div className={styles.sidebarNav}>
             {categoryItems.map((item) => {
               const Icon = item.icon;
+              const active = activeTypeNav === item.id;
               return (
-                <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
+                <button
+                  key={item.id}
+                  type="button"
+                  className={active ? styles.menuItemActive : ""}
+                  onClick={() => onTypeClick(item.id)}
+                  title={item.label}
+                >
                   <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
@@ -272,42 +361,88 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <div className={styles.filterHead}>
               <FilterIcon className={styles.smallIcon} /> <span>Параметры</span>
             </div>
+
             <div className={styles.filterBlock}>
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Страна
               </h4>
-              <label><input type="checkbox" checked={isUsaCatalog} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)</label>
-              <select defaultValue="kz">
+
+              <label>
+                <input type="checkbox" checked={isUsaChecked} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)
+              </label>
+
+              <select defaultValue="kz" aria-label="Выбор страны">
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>
                 <option value="us">США</option>
               </select>
             </div>
+
             <div className={styles.filterBlock}>
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Форма
               </h4>
-              <label><input type="checkbox" defaultChecked /> Капсулы</label>
-              <label><input type="checkbox" /> Порошок</label>
-              <label><input type="checkbox" /> Жидкость</label>
+              <label>
+                <input type="checkbox" defaultChecked /> Капсулы
+              </label>
+              <label>
+                <input type="checkbox" /> Порошок
+              </label>
+              <label>
+                <input type="checkbox" /> Жидкость
+              </label>
             </div>
+
             <div className={styles.filterBlock}>
               <h4>
                 <PriceIcon className={styles.smallIcon} /> Цена
               </h4>
               <div className={styles.priceRow}>
-                <input className={styles.priceInput} type="number" value={priceMin} min={0} onChange={(e) => onPriceMinChange(Number(e.target.value || 0))} aria-label="Мин. цена" />
-                <input className={styles.priceInput} type="number" value={priceMax} min={priceMin} onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))} aria-label="Макс. цена" />
+                <input
+                  className={styles.priceInput}
+                  type="number"
+                  value={priceMin}
+                  min={0}
+                  max={Math.min(priceMax, PRICE_CAP)}
+                  onChange={(e) => onPriceMinChange(Number(e.target.value || 0))}
+                  aria-label="Мин. цена"
+                />
+                <input
+                  className={styles.priceInput}
+                  type="number"
+                  value={priceMax}
+                  min={priceMin}
+                  max={PRICE_CAP}
+                  onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))}
+                  aria-label="Макс. цена"
+                />
               </div>
-              <input className={styles.range} type="range" min={priceMin} max={5000} value={priceRange} onChange={(e) => onPriceMaxChange(Number(e.target.value))} aria-label="Слайдер цены" />
+              <input
+                className={styles.range}
+                type="range"
+                min={priceMin}
+                max={PRICE_CAP}
+                value={priceRange}
+                onChange={(e) => onPriceMaxChange(Number(e.target.value))}
+                aria-label="Слайдер цены"
+              />
             </div>
+
             <div className={styles.filterBlock}>
               <h4>
                 <LabIcon className={styles.smallIcon} /> Рейтинг
               </h4>
               <div className={styles.ratingRow}>
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => setRatingMin((prev) => (prev === star ? null : star))}>★</button>
+                  <button
+                    key={star}
+                    type="button"
+                    aria-label={`Рейтинг ${star}`}
+                    className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`}
+                    onClick={() => setRatingMin((prev) => (prev === star ? null : star))}
+                  >
+                    ★
+                  </button>
                 ))}
                 <input
                   className={styles.ratingSlider}
@@ -325,7 +460,10 @@ export default function SportpitShell({ children }: PropsWithChildren) {
                 <span className={styles.ratingNote}>{ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}</span>
               </div>
             </div>
-            <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>Показать</button>
+
+            <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>
+              Показать
+            </button>
           </div>
         </aside>
 
@@ -335,7 +473,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </div>
 
       {filterToast && (
-        <div className={styles.toast}>Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin !== null ? ratingMin.toFixed(1) : "любой"}</div>
+        <div className={styles.toast}>
+          Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin !== null ? ratingMin.toFixed(1) : "любой"}
+        </div>
       )}
     </div>
   );
