@@ -2,8 +2,8 @@
 /* z-index contract: header = var(--z-header), sidebar = var(--z-sidebar), overlay = var(--z-overlay). */
 
 :root {
---sidebar-width-open: 260px;
---sidebar-width-collapsed: 56px;
+  --sidebar-width-open: 260px;
+  --sidebar-width-collapsed: 56px;
 }
 
 header {
@@ -66,9 +66,15 @@ header {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.burger-lines span:nth-child(1) { top: 3px; }
-.burger-lines span:nth-child(2) { top: 8px; }
-.burger-lines span:nth-child(3) { top: 13px; }
+.burger-lines span:nth-child(1) {
+  top: 3px;
+}
+.burger-lines span:nth-child(2) {
+  top: 8px;
+}
+.burger-lines span:nth-child(3) {
+  top: 13px;
+}
 
 .burger.open .burger-lines span:nth-child(1) {
   transform: translateY(5px) rotate(45deg);
@@ -79,8 +85,6 @@ header {
 }
 
 .burger.open .burger-lines span:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
-}
   transform: translateY(-5px) rotate(-45deg);
 }
 
@@ -205,8 +209,6 @@ header {
 
 .app-shell[data-sidebar-open="false"] .sidebar-link span,
 .app-shell[data-sidebar-open="false"] .sidebar-link .label {
-  display: none;
-}
   display: none;
 }
 
