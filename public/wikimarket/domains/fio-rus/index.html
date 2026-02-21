@@ -576,6 +576,202 @@
         width: 100%;
       }
     }
+
+
+/* =========================
+   FIO-RUS: HERO ONLY overrides
+   (ТРОГАТЬ ТОЛЬКО ПЕРВЫЙ ЭКРАН)
+   ========================= */
+
+/* 1) Типографика заголовка "Моё ФИО" / user_name */
+.fio-rus-landing #hero-title{
+  font-size: clamp(32px, 5.2vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* 2) Локальные переменные темы ТОЛЬКО для этой страницы (на основе theme-colors.json) */
+body.fio-rus-landing{
+  /* default = cyan */
+  --fio-theme-primary-rgb: 18 175 240; /* #12AFF0 */
+}
+
+html[data-theme="red"] body.fio-rus-landing{    --fio-theme-primary-rgb: 239 68 68;  }  /* #EF4444 */
+html[data-theme="orange"] body.fio-rus-landing{ --fio-theme-primary-rgb: 249 115 22; }  /* #F97316 */
+html[data-theme="yellow"] body.fio-rus-landing{ --fio-theme-primary-rgb: 234 179 8;  }  /* #EAB308 */
+html[data-theme="green"] body.fio-rus-landing{  --fio-theme-primary-rgb: 34 197 94;  }  /* #22C55E */
+html[data-theme="cyan"] body.fio-rus-landing{   --fio-theme-primary-rgb: 18 175 240; }  /* #12AFF0 */
+html[data-theme="blue"] body.fio-rus-landing{   --fio-theme-primary-rgb: 37 99 235;  }  /* #2563EB */
+html[data-theme="violet"] body.fio-rus-landing{ --fio-theme-primary-rgb: 139 92 246; }  /* #8B5CF6 */
+
+/* 3) Правая карточка hero: подложка + frame под изображение */
+.fio-rus-landing .hero-art.hero-art--fio{
+  /* сохраняем характер hero-art из общей стилистики */
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+
+  /* layout внутри */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3);
+
+  /* высота чтобы справа реально было “место под изображение” */
+  min-height: 420px;
+
+  /* themed background */
+  background:
+    radial-gradient(1000px 500px at 80% -40%, rgb(var(--fio-theme-primary-rgb) / 0.18), transparent 60%),
+    radial-gradient(700px 420px at 0% 20%,  rgb(var(--fio-theme-primary-rgb) / 0.12), transparent 60%),
+    var(--surface);
+}
+
+/* Заголовочная зона справа */
+.fio-rus-landing .hero-art__tag{
+  display: inline-flex;
+  margin-bottom: var(--space-1);
+}
+.fio-rus-landing .hero-art__domain{
+  font-size: clamp(20px, 3.2vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.fio-rus-landing .hero-art__lead{
+  margin-top: 10px;
+  max-width: 46ch;
+}
+
+/* Frame (подложка внутри под изображение) */
+.fio-rus-landing .hero-art__media{
+  display: grid;
+  align-items: center;
+}
+.fio-rus-landing .hero-art__frame{
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+
+  display: grid;
+  place-items: center;
+
+  /* “полотно” — даёт ощущение картинки в рамке (как у персонажа) */
+  padding: clamp(16px, 2.2vw, 24px);
+  min-height: 280px;
+}
+
+/* Сам отпечаток */
+.fio-rus-landing .hero-art__img{
+  width: min(420px, 100%);
+  height: auto;
+  max-height: 360px;
+  display: block;
+}
+
+/* Адаптация под узкие экраны (hero становится в 1 колонку) */
+@media (max-width: 900px){
+  .fio-rus-landing .hero-art.hero-art--fio{
+    min-height: 380px;
+  }
+}
+@media (max-width: 520px){
+  .fio-rus-landing #hero-title{
+    font-size: clamp(30px, 8vw, 46px);
+  }
+  .fio-rus-landing .hero-art__img{
+    max-height: 300px;
+  }
+}
+
+
+/* === FIO HERO LAYOUT FIX === */
+.fio-rus-landing .wrap.hero{
+  display: grid !important;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+  text-align: left;
+}
+
+.fio-rus-landing .wrap.hero > *{
+  text-align: left;
+}
+
+.fio-rus-landing .hero-art{
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
+}
+
+@media (max-width: 1024px){
+  .fio-rus-landing .wrap.hero{
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+
+/* =========================================
+   FIO HERO — MOBILE FIX (≤768px)
+   Меняем только мобильную версию
+   ========================================= */
+
+@media (max-width: 768px){
+
+  /* 1. Центрируем сам hero-контейнер */
+  .fio-rus-landing .wrap.hero{
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* 2. Контентная колонка */
+  .fio-rus-landing .wrap.hero > div:first-child{
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* 3. Заголовок по центру */
+  .fio-rus-landing #hero-title{
+    text-align: center;
+  }
+
+  /* 4. Кнопка по центру */
+  .fio-rus-landing .cta{
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  /* 5. Визуальный блок (отпечаток пальца) */
+  .fio-rus-landing .hero-art{
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* 6. Если внутри есть изображение */
+  .fio-rus-landing .hero-art img,
+  .fio-rus-landing .hero-art svg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+}
+
   </style>
 </head>
 
@@ -610,6 +806,32 @@
               <div class="deadline-value" id="deadlineValue">24:00:00</div>
               <p class="deadline-note">После истечения ссылка станет недействительной</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-art hero-art--fio" aria-label="Визуальный блок домена">
+        <div class="hero-art__header">
+          <div class="tag hero-art__tag">Домен .РУС</div>
+
+          <div class="hero-art__domain">
+            <span data-user-domain>{{user_domain}}</span>
+          </div>
+
+          <p class="lead hero-art__lead">Персональная идентификация и защита вашего имени в сети.</p>
+        </div>
+
+        <div class="hero-art__media" aria-hidden="true">
+          <div class="hero-art__frame">
+            <img
+              class="hero-art__img"
+              src="assets/fingerprint-hero.svg"
+              width="560"
+              height="560"
+              alt=""
+              decoding="async"
+              loading="eager"
+            >
           </div>
         </div>
       </div>
