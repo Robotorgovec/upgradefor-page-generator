@@ -8,6 +8,6 @@
     </linearGradient>
   </defs>
   <rect x="1" y="1" width="318" height="86" rx="14" fill="#0F1724" stroke="rgba(184,207,238,0.20)"/>
-  <path d="M28 57L40 28h8l12 29h-7l-2.2-5.7H37.2L35 57h-7zm11.5-11h8.8L44 35.1 39.5 46z" fill="url(#a)"/>
-  <text x="72" y="54" fill="#E7EEF8" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">ActiveCode</text>
+  <text x="22" y="54" fill="url(#a)" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Active</text>
+  <text x="124" y="54" fill="#E7EEF8" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Code</text>
 </svg>

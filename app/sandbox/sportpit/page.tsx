@@ -62,7 +62,7 @@ export default function SportpitPreviewPage() {
           <p>Научно обоснованные модули для энергии, фокуса и восстановления — без инфо-шума.</p>
           <div className={styles.heroButtons}>
             <button type="button" className={styles.primaryBtn} onClick={() => scrollToSection("how")}>Подобрать протокол</button>
-            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("protocols")}>Смотреть модули</button>
+            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("popular")}>Смотреть модули</button>
           </div>
           <div className={styles.badges}><span>LAB TESTED</span><span>GMP</span><span>ISO</span><span>QUALITY SCREENED</span></div>
         </div>
@@ -96,32 +96,6 @@ export default function SportpitPreviewPage() {
           <article><h3>Осознанная продуктивность</h3><p>Фокус на устойчивом темпе, а не краткосрочных пиках.</p></article>
           <article><h3>Наука {">"} маркетинг</h3><p>Состав, дозировки и исследования важнее громких обещаний.</p></article>
           <article><h3>Сила без перегибов</h3><p>Протоколы адаптируются под ритм жизни, не ломая баланс.</p></article>
-        </div>
-      </section>
-
-      <section id="protocols" className={styles.section}>
-        <h2>Протоколы</h2>
-        <div className={styles.protocolRow}>
-          {protocols.map((item) => (
-            <article key={item.key} className={styles.protocolCard}>
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
-              <div className={styles.tags}>{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-              <a
-                href="#popular"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveProtocol(item.key);
-                  if (typeof window !== "undefined") {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set("goal", item.key);
-                    window.history.replaceState({}, "", url.toString());
-                  }
-                  scrollToSection("popular");
-                }}
-              >Открыть протокол</a>
-            </article>
-          ))}
         </div>
       </section>
 
@@ -213,7 +187,7 @@ export default function SportpitPreviewPage() {
       </section>
 
       <footer id="footer" className={styles.footer}>
-        <div>Протоколы</div><div>Доставка и оплата</div><div>Политика</div><div>Контакты</div>
+        <div>О платформе</div><div>Доставка и оплата</div><div>Политика</div><div>Контакты</div>
         <div className={styles.copy}>© ActiveCode, 2026</div>
       </footer>
 
