@@ -10,8 +10,8 @@ import {
   AminoIcon,
   CartIcon,
   CatalogIcon,
+  ChatIcon,
   FactoryIcon,
-  FatburnIcon,
   FilterIcon,
   FlameIcon,
   GainerIcon,
@@ -24,7 +24,6 @@ import {
   PriceIcon,
   ProteinIcon,
   TargetIcon,
-  ChatIcon,
   VitIcon,
 } from "./ui/icons";
 
@@ -34,19 +33,27 @@ type CategoryItem = { id: string; label: string; icon: IconComp };
 
 const navItems: NavItem[] = [
   { id: "top", label: "Главная", icon: HomeIcon },
+  { id: "protocols", label: "Протоколы", icon: TargetIcon },
   { id: "catalog", label: "Каталог", icon: CatalogIcon },
-  { id: "goals", label: "Подбор", icon: TargetIcon },
-  { id: "popular", label: "Бестселлеры", icon: FlameIcon },
-  { id: "about", label: "О нас", icon: LabIcon },
+  { id: "quality", label: "Качество", icon: LabIcon },
   { id: "reviews", label: "Отзывы", icon: ChatIcon },
-  { id: "blog", label: "Блог", icon: NewsIcon },
+  { id: "education", label: "База знаний", icon: NewsIcon },
+];
+
+const protocolItems: CategoryItem[] = [
+  { id: "energy", label: "ENERGY", icon: FlameIcon },
+  { id: "focus", label: "FOCUS", icon: TargetIcon },
+  { id: "recovery", label: "RECOVERY", icon: LabIcon },
+  { id: "hormone", label: "HORMONE", icon: HomeIcon },
+  { id: "longevity", label: "LONGEVITY", icon: GlobeIcon },
+  { id: "performance", label: "PERFORMANCE", icon: FactoryIcon },
 ];
 
 const categoryItems: CategoryItem[] = [
   { id: "protein", label: "Протеины", icon: ProteinIcon },
   { id: "amino", label: "Аминокислоты", icon: AminoIcon },
   { id: "gainer", label: "Гейнеры", icon: GainerIcon },
-  { id: "fatburn", label: "Жиросжигатели", icon: FatburnIcon },
+  { id: "fatburn", label: "Жиросжигатели", icon: FlameIcon },
   { id: "prebio", label: "Пребиотики", icon: PrebioIcon },
   { id: "vit", label: "Витамины", icon: VitIcon },
   { id: "joints", label: "Для суставов", icon: JointsIcon },
@@ -54,10 +61,13 @@ const categoryItems: CategoryItem[] = [
 ];
 
 const topMenu = [
+  { label: "Протоколы", target: "protocols" },
   { label: "Каталог", target: "catalog" },
-  { label: "Акции", target: "popular" },
+  { label: "Подбор", target: "how" },
+  { label: "Лаборатория", target: "quality" },
+  { label: "Блог", target: "education" },
   { label: "Доставка", target: "subscribe" },
-  { label: "Контакты", target: "subscribe" },
+  { label: "Контакты", target: "footer" },
 ];
 
 export default function SportpitShell({ children }: PropsWithChildren) {
@@ -66,13 +76,13 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
-  const [activeCategory, setActiveCategory] = useState("protein");
+  const [activeProtocolNav, setActiveProtocolNav] = useState("energy");
+  const [activeTypeNav, setActiveTypeNav] = useState("protein");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [filterToast, setFilterToast] = useState(false);
 
-  // Filters: price + rating (stars)
   const [priceMin, setPriceMin] = useState(900);
   const [priceMax, setPriceMax] = useState(2600);
   const [priceRange, setPriceRange] = useState(2600);
@@ -103,7 +113,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         const visible = entries.find((entry) => entry.isIntersecting);
         if (visible?.target.id) setActiveSection(visible.target.id);
       },
-      { threshold: 0.4 }
+      { threshold: 0.35 }
     );
     navItems.forEach((item) => {
       const el = document.getElementById(item.id);
@@ -133,15 +143,24 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     setIsSidebarOpen(false);
   };
 
-  const onCategoryClick = (id: string) => {
-    setActiveCategory(id);
+  const onProtocolClick = (id: string) => {
+    setActiveProtocolNav(id);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("goal", id);
+      window.history.replaceState({}, "", url.toString());
+    }
+    goToSection("protocols");
+  };
+
+  const onTypeClick = (id: string) => {
+    setActiveTypeNav(id);
     goToSection("catalog");
   };
 
   const onPriceMinChange = (value: number) => {
     const nextMin = Math.max(0, Math.min(value, priceMax));
     setPriceMin(nextMin);
-    // keep slider value inside new bounds
     if (priceRange < nextMin) setPriceRange(nextMin);
   };
 
@@ -149,10 +168,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     const nextMax = Math.max(priceMin, value);
     setPriceMax(nextMax);
     setPriceRange(nextMax);
-  };
-
-  const applyFilters = () => {
-    setFilterToast(true);
   };
 
   return (
@@ -176,11 +191,10 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             <span />
           </button>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
-            <Image src="/sportpit/strong-logo.svg" alt="Strong" width={148} height={48} priority />
+            <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode" width={148} height={48} priority />
           </button>
         </div>
 
-        {/* Top menu: NOT buttons — text links (Strong-like rows) */}
         <nav className={styles.topNav} aria-label="Верхнее меню">
           {topMenu.map((item) => (
             <a
@@ -199,16 +213,18 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
         <label className={styles.searchWrap}>
           <span className={styles.searchIcon}>⌕</span>
-          <input type="search" placeholder="Поиск протеинов, БАДов…" aria-label="Поиск товаров" />
+          <input type="search" placeholder="Поиск модулей и протоколов" aria-label="Поиск товаров" />
         </label>
 
         <div className={styles.headerActions}>
           <button type="button">RU</button>
+          <button type="button">KZ</button>
+          <button type="button" className={styles.protocolCta} onClick={() => goToSection("how")}>
+            Подобрать протокол
+          </button>
           <button type="button" className={styles.cartIcon} aria-label="Корзина">
             <CartIcon className={styles.headerIcon} /> <span>{cartCount}</span>
           </button>
-
-          {/* ВАЖНО: Вход/Регистрация удалены по ТЗ */}
         </div>
       </header>
 
@@ -226,7 +242,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           aria-label="Основная навигация"
         >
           <div className={styles.sidebarTop}>
-            <strong>Меню</strong>
+            <strong>Цели / протоколы</strong>
             <button
               type="button"
               className={styles.sidebarClose}
@@ -237,142 +253,87 @@ export default function SportpitShell({ children }: PropsWithChildren) {
             </button>
           </div>
 
-          <div className={styles.sidebarSectionLabel}>ФИЛЬТР ПОИСКА</div>
+          <div className={styles.sidebarSectionLabel}>Фильтры</div>
           <div className={styles.filterCard}>
             <div className={styles.filterHead}>
               <FilterIcon className={styles.smallIcon} /> <span>Параметры</span>
             </div>
-
             <div className={styles.filterBlock}>
               <h4>
-                <GlobeIcon className={styles.smallIcon} /> Страна
-              </h4>
-              <label>
-                <input type="checkbox" defaultChecked /> Америка
-              </label>
-              <label>
-                <input type="checkbox" /> Европа
-              </label>
-            </div>
-
-            <div className={styles.filterBlock}>
-              <h4>
-                <FactoryIcon className={styles.smallIcon} /> Производитель
+                <TargetIcon className={styles.smallIcon} /> Цель / Протокол
               </h4>
               <select defaultValue="">
-                <option value="" disabled>
-                  Выбрать
-                </option>
-                <option>Strong Labs</option>
-                <option>PowerFuel</option>
-                <option>Sport Origin</option>
+                <option value="" disabled>Выбрать цель</option>
+                {protocolItems.map((item) => (
+                  <option key={item.id} value={item.id}>{item.label}</option>
+                ))}
               </select>
             </div>
-
-            {/* Цена: два поля (min/max) + range */}
+            <div className={styles.filterBlock}>
+              <h4>
+                <GlobeIcon className={styles.smallIcon} /> Форма
+              </h4>
+              <label><input type="checkbox" defaultChecked /> Капсулы</label>
+              <label><input type="checkbox" /> Порошок</label>
+              <label><input type="checkbox" /> Жидкость</label>
+            </div>
             <div className={styles.filterBlock}>
               <h4>
                 <PriceIcon className={styles.smallIcon} /> Цена
               </h4>
               <div className={styles.priceRow}>
-                <input
-                  className={styles.priceInput}
-                  type="number"
-                  value={priceMin}
-                  min={0}
-                  onChange={(e) => onPriceMinChange(Number(e.target.value || 0))}
-                  aria-label="Мин. цена"
-                />
-                <input
-                  className={styles.priceInput}
-                  type="number"
-                  value={priceMax}
-                  min={priceMin}
-                  onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))}
-                  aria-label="Макс. цена"
-                />
+                <input className={styles.priceInput} type="number" value={priceMin} min={0} onChange={(e) => onPriceMinChange(Number(e.target.value || 0))} aria-label="Мин. цена" />
+                <input className={styles.priceInput} type="number" value={priceMax} min={priceMin} onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))} aria-label="Макс. цена" />
               </div>
-              <input
-                className={styles.range}
-                type="range"
-                min={priceMin}
-                max={5000}
-                value={priceRange}
-                onChange={(e) => onPriceMaxChange(Number(e.target.value))}
-                aria-label="Слайдер цены"
-              />
+              <input className={styles.range} type="range" min={priceMin} max={5000} value={priceRange} onChange={(e) => onPriceMaxChange(Number(e.target.value))} aria-label="Слайдер цены" />
             </div>
-
-            {/* Рейтинг: кликабельные звезды */}
             <div className={styles.filterBlock}>
               <h4>
-                <TargetIcon className={styles.smallIcon} /> Рейтинг
+                <FactoryIcon className={styles.smallIcon} /> Рейтинг
               </h4>
               <div className={styles.ratingRow}>
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    aria-label={`Рейтинг ${star}`}
-                    className={`${styles.starBtn} ${
-                      ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff
-                    }`}
-                    onClick={() => setRatingMin((prev) => (prev === star ? null : star))}
-                  >
-                    ★
-                  </button>
+                  <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => setRatingMin((prev) => (prev === star ? null : star))}>★</button>
                 ))}
                 <span className={styles.ratingNote}>{ratingMin ? `${ratingMin}+` : "Любой"}</span>
               </div>
             </div>
-
-            <button type="button" className={styles.showBtn} onClick={applyFilters}>
-              Показать
-            </button>
+            <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>Показать</button>
           </div>
 
-          {isCollapsed && (
-            <button type="button" className={styles.filterMini} title="Фильтр" onClick={applyFilters}>
-              <FilterIcon className={styles.smallIcon} />
-            </button>
-          )}
-
-          <div className={styles.sidebarSectionLabel}>НАВИГАЦИЯ</div>
+          <div className={styles.sidebarSectionLabel}>Навигация</div>
           <div className={styles.sidebarNav}>
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""}
-                  onClick={() => goToSection(item.id)}
-                  title={item.label}
-                >
-                  <span className={styles.iconCapsule}>
-                    <Icon className={styles.sidebarIcon} />
-                  </span>
+                <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
+                  <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
               );
             })}
           </div>
 
-          <div className={styles.sidebarSectionLabel}>КАТАЛОГ</div>
+          <div className={styles.sidebarSectionLabel}>Протоколы</div>
+          <div className={styles.sidebarNav}>
+            {protocolItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.id} type="button" className={activeProtocolNav === item.id ? styles.menuItemActive : ""} onClick={() => onProtocolClick(item.id)} title={item.label}>
+                  <Icon className={styles.sidebarIcon} />
+                  <em>{item.label}</em>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
           <div className={styles.sidebarNav}>
             {categoryItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={activeCategory === item.id ? styles.menuItemActive : ""}
-                  onClick={() => onCategoryClick(item.id)}
-                  title={item.label}
-                >
-                  <span className={styles.iconCapsule}>
-                    <Icon className={styles.sidebarIcon} />
-                  </span>
+                <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
+                  <Icon className={styles.sidebarIcon} />
                   <em>{item.label}</em>
                 </button>
               );
@@ -385,15 +346,12 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         </aside>
 
         <main id="sportpit-main" className={styles.content}>
-          <div className={styles.banner}>SportPit Sandbox · {pathname}</div>
-          {children}
+          <div className={styles.contentInner}>{children}</div>
         </main>
       </div>
 
       {filterToast && (
-        <div className={styles.toast}>
-          Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin ? `${ratingMin}+` : "любой"}
-        </div>
+        <div className={styles.toast}>Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin ? `${ratingMin}+` : "любой"}</div>
       )}
     </div>
   );

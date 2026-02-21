@@ -4,46 +4,46 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./SportpitPreview.module.css";
 
-type Goal = "mass" | "fat" | "energy" | "recovery";
-type ModalType = "video" | "article" | null;
+type Protocol = "energy" | "focus" | "recovery" | "hormone" | "longevity" | "performance";
+type ReviewTab = "Отзывы" | "Видео" | "Кейсы";
 
-type Product = {
-  id: number;
-  title: string;
-  price: string;
-  rating: number;
-  image: string;
-  tags: Goal[];
-};
-
-const products: Product[] = [
-  { id: 1, title: "Набор массы", price: "2 500 ₽", rating: 4.9, image: "/sportpit/whey.svg", tags: ["mass", "recovery"] },
-  { id: 2, title: "Сжигание жира", price: "1 490 ₽", rating: 4.8, image: "/sportpit/fat-burner.svg", tags: ["fat", "energy"] },
-  { id: 3, title: "Энергия", price: "1 390 ₽", rating: 4.7, image: "/sportpit/bcaa.svg", tags: ["energy", "mass"] },
-  { id: 4, title: "Восстановление", price: "990 ₽", rating: 4.9, image: "/sportpit/omega.svg", tags: ["recovery", "fat"] },
+const protocols: { key: Protocol; title: string; desc: string; tags: string[] }[] = [
+  { key: "energy", title: "ENERGY", desc: "Энергия и выносливость", tags: ["митохондрии", "метаболизм"] },
+  { key: "focus", title: "FOCUS", desc: "Концентрация и ноотропы", tags: ["нейромедиаторы", "внимание"] },
+  { key: "recovery", title: "RECOVERY", desc: "Восстановление и сон", tags: ["сон", "антистресс"] },
+  { key: "hormone", title: "HORMONE", desc: "Поддержка мужского здоровья", tags: ["тестостерон", "баланс"] },
+  { key: "longevity", title: "LONGEVITY", desc: "Долголетие и защита клеток", tags: ["антиоксиданты", "биомаркеры"] },
+  { key: "performance", title: "PERFORMANCE", desc: "Спортивная производительность", tags: ["сила", "выносливость"] },
 ];
 
-const goalLabels: Record<Goal, string> = {
-  mass: "Набор массы",
-  fat: "Сжигание жира",
-  energy: "Энергия",
-  recovery: "Восстановление",
-};
+const products = [
+  { id: 1, title: "ActiveCode Core Protein", price: "8 500 ₸", rating: 4.9, image: "/sportpit/whey.svg", tags: ["performance", "recovery"] },
+  { id: 2, title: "Neuro Focus Stack", price: "11 490 ₸", rating: 4.8, image: "/sportpit/bcaa.svg", tags: ["focus", "energy"] },
+  { id: 3, title: "Sleep Recovery Complex", price: "9 390 ₸", rating: 4.7, image: "/sportpit/omega.svg", tags: ["recovery", "longevity"] },
+  { id: 4, title: "Hormone Balance Formula", price: "12 990 ₸", rating: 4.9, image: "/sportpit/fat-burner.svg", tags: ["hormone", "performance"] },
+];
 
 export default function SportpitPreviewPage() {
-  const [activeGoal, setActiveGoal] = useState<Goal | null>(null);
+  const [activeProtocol, setActiveProtocol] = useState<Protocol | null>(null);
   const [toast, setToast] = useState<{ open: boolean; text: string }>({ open: false, text: "" });
-  const [modal, setModal] = useState<{ open: boolean; type: ModalType; payload?: string }>({ open: false, type: null });
-  const [addedId, setAddedId] = useState<number | null>(null);
+  const [reviewTab, setReviewTab] = useState<ReviewTab>("Отзывы");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const goal = new URLSearchParams(window.location.search).get("goal") as Protocol | null;
+    if (!goal) return;
+    const isKnown = protocols.some((item) => item.key === goal);
+    if (!isKnown) return;
+    setActiveProtocol(goal);
+    requestAnimationFrame(() => {
+      document.getElementById("popular")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   const orderedProducts = useMemo(() => {
-    if (!activeGoal) return products;
-    return [...products].sort((a, b) => Number(b.tags.includes(activeGoal)) - Number(a.tags.includes(activeGoal)));
-  }, [activeGoal]);
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+    if (!activeProtocol) return products;
+    return [...products].sort((a, b) => Number(b.tags.includes(activeProtocol)) - Number(a.tags.includes(activeProtocol)));
+  }, [activeProtocol]);
 
   useEffect(() => {
     if (!toast.open) return;
@@ -51,180 +51,173 @@ export default function SportpitPreviewPage() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const addToCart = (id: number) => {
-    const next = Number(window.sessionStorage.getItem("sp-cart-count") || "0") + 1;
-    window.sessionStorage.setItem("sp-cart-count", String(next));
-    window.dispatchEvent(new Event("sp-cart-changed"));
-
-    setAddedId(id);
-    setToast({ open: true, text: "Добавлено в корзину" });
-    setTimeout(() => setAddedId(null), 800);
-  };
+  const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <>
       <section id="top" className={styles.hero}>
         <div>
-          <p className={styles.badge}>Премиальное спортивное питание</p>
-          <h1>РЕЗУЛЬТАТ НАЧИНАЕТСЯ С ПРАВИЛЬНОГО ТОПЛИВА</h1>
-          <p>Протеины, аминокислоты и БАДы нового поколения для силы, выносливости и восстановления.</p>
+          <p className={styles.badge}>ACTIVE CODE / HUMAN UPGRADE SYSTEM</p>
+          <h1>Управляй своим биологическим кодом</h1>
+          <p>Научно обоснованные модули для энергии, фокуса и восстановления — без инфо-шума.</p>
           <div className={styles.heroButtons}>
-            <button type="button" className={styles.primaryBtn} onClick={() => scrollToSection("catalog")}>
-              Выбрать продукт
-            </button>
-            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("goals")}>
-              Пройти подбор
-            </button>
+            <button type="button" className={styles.primaryBtn} onClick={() => scrollToSection("how")}>Подобрать протокол</button>
+            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("protocols")}>Смотреть модули</button>
           </div>
-          <div className={styles.trust}>★ 4.9/5 · 10 000+ клиентов · GMP · ISO</div>
+          <div className={styles.badges}><span>LAB TESTED</span><span>GMP</span><span>ISO</span><span>QUALITY SCREENED</span></div>
         </div>
         <div className={styles.heroVisual}>
-<Image src="/sportpit/img/hero/protein.svg" alt="Банка протеина" width={250} height={320} />
-<Image src="/sportpit/img/hero/athlete.svg" alt="Атлет" width={250} height={320} />
+          <Image src="/sportpit/hero-can.svg" alt="Модуль ActiveCode" width={220} height={260} />
+          <Image src="/sportpit/lab-1.svg" alt="Лабораторный визуал" width={260} height={260} />
         </div>
       </section>
 
-      <section id="goals" className={styles.section}>
-        <h2>ПОДБЕРИТЕ ПОД СВОЮ ЦЕЛЬ</h2>
-        <div className={styles.goals}>
-          {(Object.keys(goalLabels) as Goal[]).map((goal) => (
-            <button
-              key={goal}
-              type="button"
-              className={activeGoal === goal ? styles.goalActive : ""}
-              onClick={() => {
-                setActiveGoal(goal);
-                scrollToSection("popular");
-              }}
-            >
-              {goalLabels[goal]}
-            </button>
+      <section className={styles.section}>
+        <h2>ActiveCode помогает управлять телом, мозгом и энергией</h2>
+        <div className={styles.missionGrid}>
+          <div className={styles.markerList}>
+            {[
+              "продуктивность",
+              "долголетие",
+              "физическая сила",
+              "ментальная ясность",
+              "устойчивость к стрессу",
+              "восстановление",
+            ].map((item) => <span key={item}>{item}</span>)}
+          </div>
+          <p className={styles.missionText}>Мы не продаём витамины. Мы даём инструменты управления ресурсом. Decode your limits.</p>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Философия</h2>
+        <div className={styles.philosophyGrid}>
+          <article><h3>Человек — система</h3><p>Решения строятся вокруг связки «сон, энергия, нагрузка, восстановление».</p></article>
+          <article><h3>Осознанная продуктивность</h3><p>Фокус на устойчивом темпе, а не краткосрочных пиках.</p></article>
+          <article><h3>Наука {">"} маркетинг</h3><p>Состав, дозировки и исследования важнее громких обещаний.</p></article>
+          <article><h3>Сила без перегибов</h3><p>Протоколы адаптируются под ритм жизни, не ломая баланс.</p></article>
+        </div>
+      </section>
+
+      <section id="protocols" className={styles.section}>
+        <h2>Протоколы</h2>
+        <div className={styles.protocolRow}>
+          {protocols.map((item) => (
+            <article key={item.key} className={styles.protocolCard}>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <div className={styles.tags}>{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              <a
+                href="#popular"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveProtocol(item.key);
+                  if (typeof window !== "undefined") {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("goal", item.key);
+                    window.history.replaceState({}, "", url.toString());
+                  }
+                  scrollToSection("popular");
+                }}
+              >Открыть протокол</a>
+            </article>
           ))}
         </div>
       </section>
 
+      <section id="how" className={styles.section}>
+        <h2>Как это работает</h2>
+        <div className={styles.steps}>
+          <div><strong>1</strong><p>Выбираете цель</p></div>
+          <div><strong>2</strong><p>Получаете протокол (модули + дозировки)</p></div>
+          <div><strong>3</strong><p>Отслеживаете эффект (энергия / сон / фокус)</p></div>
+        </div>
+        <button type="button" className={styles.primaryBtn}>Пройти подбор за 60 секунд</button>
+      </section>
+
+      <section id="quality" className={styles.section}>
+        <h2>Проверено лабораторией. Подтверждено результатом.</h2>
+        <ul className={styles.qualityList}>
+          <li>понятные дозировки</li>
+          <li>прозрачность состава</li>
+          <li>без инфо-шума</li>
+          <li>контроль качества</li>
+          <li>международные стандарты производства</li>
+        </ul>
+        <button type="button" className={styles.secondaryBtn} onClick={() => setToast({ open: true, text: "Сертификаты скоро" })}>Смотреть сертификаты</button>
+      </section>
+
       <section id="catalog" className={styles.section}>
-        <h2>КАТАЛОГ</h2>
-        <p className={styles.muted}>TODO: добавить полноценные категории каталога.</p>
+        <h2>Каталог модулей</h2>
+        <p className={styles.muted}>Каждый продукт — модуль кода. Собирайте систему под задачу.</p>
+        <div className={styles.chips}>{["Энергия", "Фокус", "Сон", "Антистресс", "Спорт", "Мужское здоровье"].map((chip) => <button key={chip} type="button">{chip}</button>)}</div>
       </section>
 
       <section id="popular" className={styles.section}>
-        <h2>ПОПУЛЯРНЫЕ ПРОДУКТЫ</h2>
-        <p className={styles.muted}>Карточки в стиле Strong Preview.</p>
-        {activeGoal && <p className={styles.muted}>Акцент по цели: {goalLabels[activeGoal]}</p>}
+        <h2>Популярные продукты</h2>
+        <div className={styles.protocolButtons}>{protocols.map((item) => <button key={item.key} type="button" className={activeProtocol === item.key ? styles.goalActive : ""} onClick={() => {
+              setActiveProtocol(item.key);
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.set("goal", item.key);
+                window.history.replaceState({}, "", url.toString());
+              }
+            }}>{item.title}</button>)}</div>
         <div className={styles.products}>
           {orderedProducts.map((product) => {
-            const highlighted = activeGoal && product.tags.includes(activeGoal);
+            const highlighted = activeProtocol && product.tags.includes(activeProtocol);
             return (
               <article key={product.id} className={`${styles.productCard} ${highlighted ? styles.highlighted : ""}`}>
-                <Image src={product.image} alt={product.title} width={220} height={160} />
+                <Image src={product.image} alt={product.title} width={180} height={130} />
                 <h3>{product.title}</h3>
                 <p>★ {product.rating}</p>
                 <strong>{product.price}</strong>
-                <button type="button" className={styles.primaryBtn} onClick={() => addToCart(product.id)}>
-                  {addedId === product.id ? "Добавлено ✓" : "В корзину"}
-                </button>
+                <button type="button" className={styles.secondaryBtn} onClick={() => setToast({ open: true, text: "Добавлено в корзину" })}>В корзину</button>
               </article>
             );
           })}
         </div>
       </section>
 
-      <section id="about" className={styles.section}>
-        <h2>ПРОВЕРЕНО ЛАБОРАТОРИЕЙ. ПОДТВЕРЖДЕНО РЕЗУЛЬТАТОМ.</h2>
-        <div className={styles.gallery}>
-          <Image src="/sportpit/lab-1.svg" alt="Лаборатория 1" width={280} height={160} />
-          <Image src="/sportpit/lab-2.svg" alt="Лаборатория 2" width={280} height={160} />
-          <Image src="/sportpit/lab-3.svg" alt="Лаборатория 3" width={280} height={160} />
-        </div>
-        <div className={styles.badges}>
-          <span>GMP</span>
-          <span>ISO</span>
-          <span>LAB TESTED</span>
-          <span>NO BANNED</span>
-          <span>SHIELD</span>
-        </div>
-      </section>
-
-      <section id="why" className={styles.section}>
-        <h2>ПОЧЕМУ МЫ</h2>
+      <section className={styles.section}>
+        <h2>Почему ActiveCode</h2>
         <div className={styles.whyGrid}>
-          <div>🧬 Чистый состав</div>
-          <div>🌍 Производство ЕС/США</div>
-          <div>🚚 Быстрая доставка</div>
-          <div>🛡️ Гарантия возврата</div>
+          <div>Чистая формуляция без перегруза добавками.</div>
+          <div>Фокус на измеримом результате и самочувствии.</div>
+          <div>Прозрачные спецификации компонентов.</div>
+          <div>Сервис под долгую стратегию здоровья.</div>
         </div>
       </section>
 
       <section id="reviews" className={styles.section}>
-        <h2>ОТЗЫВЫ</h2>
+        <h2>Отзывы</h2>
+        <div className={styles.tabs}>{(["Отзывы", "Видео", "Кейсы"] as ReviewTab[]).map((tab) => <button key={tab} type="button" className={reviewTab === tab ? styles.goalActive : ""} onClick={() => setReviewTab(tab)}>{tab}</button>)}</div>
         <div className={styles.reviews}>
-          <button type="button" className={styles.videoCard} onClick={() => setModal({ open: true, type: "video" })}>
-            ▶ Видео-отзыв
-          </button>
-          <article className={styles.reviewCard}>
-            <p>"Минус 6 кг за 2 месяца и отличное самочувствие."</p>
-            <strong>Ирина, ★★★★★</strong>
-          </article>
+          <article className={styles.reviewCard}><p>«Через 3 недели ENERGY + FOCUS вернули рабочий ритм без перегрузки.»</p><strong>Арман, продуктовый менеджер</strong></article>
+          <article className={styles.reviewCard}><p>«RECOVERY улучшил сон, восстановление после тренировок заметно быстрее.»</p><strong>Ержан, триатлет-любитель</strong></article>
+          <article className={styles.reviewCard}><p>«Прозрачный состав и внятные дозировки — главный плюс платформы.»</p><strong>Диана, предприниматель</strong></article>
         </div>
       </section>
 
-      <section id="blog" className={styles.section}>
-        <h2>СОВЕТЫ ЭКСПЕРТА / БЛОГ</h2>
-        <div className={styles.blogGrid}>
-          <Image src="/sportpit/expert.svg" alt="Эксперт" width={220} height={220} />
-          {["Как пить протеин", "BCAA до или после", "Омега-3 для восстановления"].map((article) => (
-            <button key={article} type="button" className={styles.secondaryBtn} onClick={() => setModal({ open: true, type: "article", payload: article })}>
-              {article}
-            </button>
-          ))}
-        </div>
+      <section id="education" className={styles.section}>
+        <h2>Education / База знаний</h2>
+        <p className={styles.muted}>Образовательная платформа о биомаркерах, протоколах и системном подходе. Upgrade your biology. Energy under control.</p>
       </section>
 
       <section id="subscribe" className={styles.section}>
-        <h2>-10% НА ПЕРВЫЙ ЗАКАЗ</h2>
-        <form
-          className={styles.subscribe}
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            const email = String(formData.get("email") || "");
-            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            if (!valid) {
-              setToast({ open: true, text: "Введите корректный email" });
-              return;
-            }
-            setToast({ open: true, text: "Готово!" });
-            e.currentTarget.reset();
-          }}
-        >
+        <h2>Персональные обновления протоколов</h2>
+        <form className={styles.subscribe} onSubmit={(e) => { e.preventDefault(); setToast({ open: true, text: "Готово" }); }}>
           <input type="email" name="email" placeholder="Ваш email" required />
-          <button type="submit" className={styles.primaryBtn}>
-            Подписаться
-          </button>
+          <button type="submit" className={styles.primaryBtn}>Подписаться</button>
         </form>
       </section>
 
-      <footer className={styles.footer}>
-        <div>Категории</div>
-        <div>Доставка и оплата</div>
-        <div>Политика</div>
-        <div>Контакты</div>
-        <div className={styles.copy}>© SportPit, 2026</div>
+      <footer id="footer" className={styles.footer}>
+        <div>Протоколы</div><div>Доставка и оплата</div><div>Политика</div><div>Контакты</div>
+        <div className={styles.copy}>© ActiveCode, 2026</div>
       </footer>
 
       {toast.open && <div className={styles.toast}>{toast.text}</div>}
-
-      {modal.open && (
-        <div className={styles.modalOverlay} onClick={() => setModal({ open: false, type: null })}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setModal({ open: false, type: null })}>
-              ✕
-            </button>
-            {modal.type === "video" ? <p>Фейковое видео-окно для демо.</p> : <p>{modal.payload}: краткое содержание статьи.</p>}
-          </div>
-        </div>
-      )}
     </>
   );
 }
