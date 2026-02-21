@@ -66,6 +66,7 @@
 
 .section { margin-top: 14px; padding: var(--space-6); }
 .section h2 { font-size: var(--fs-h2); line-height: var(--lh-tight); letter-spacing: var(--tracking-tight); margin: 0 0 var(--space-4); }
+.section p { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--muted); }
 .badges,.chips,.tabs,.protocolButtons,.qualityList,.markerList { display: flex; flex-wrap: wrap; gap: 8px; }
 .badges span,.tags span,.chips button,.tabs button { border: 1px solid rgba(184, 207, 238, 0.18); border-radius: 999px; padding: 6px 10px; }
 

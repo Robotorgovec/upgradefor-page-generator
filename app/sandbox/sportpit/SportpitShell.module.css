@@ -129,8 +129,8 @@
   padding: 14px;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-gutter: stable;
-  scrollbar-width: thin;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: auto;
   scrollbar-color: rgba(33, 255, 106, 0.65) rgba(255, 255, 255, 0.06);
   display: grid;
   gap: 10px;
@@ -138,7 +138,7 @@
 }
 .sidebarCollapsed { width: 84px; }
 
-.sidebar::-webkit-scrollbar { width: 10px; }
+.sidebar::-webkit-scrollbar { width: 12px; }
 .sidebar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 999px; }
 .sidebar::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(33, 255, 106, 0.92), rgba(33, 255, 106, 0.55)); border-radius: 999px; border: 2px solid rgba(12, 20, 32, 0.9); }
 .sidebar::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(33, 255, 106, 1), rgba(33, 255, 106, 0.7)); }
