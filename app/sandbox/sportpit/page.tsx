@@ -17,10 +17,10 @@ type Product = {
 };
 
 const products: Product[] = [
-  { id: 1, title: "Набор массы", price: "2 500 ₽", rating: 4.9, image: "/sportpit/whey.svg", tags: ["mass", "recovery"] },
-  { id: 2, title: "Сжигание жира", price: "1 490 ₽", rating: 4.8, image: "/sportpit/fat-burner.svg", tags: ["fat", "energy"] },
-  { id: 3, title: "Энергия", price: "1 390 ₽", rating: 4.7, image: "/sportpit/bcaa.svg", tags: ["energy", "mass"] },
-  { id: 4, title: "Восстановление", price: "990 ₽", rating: 4.9, image: "/sportpit/omega.svg", tags: ["recovery", "fat"] },
+  { id: 1, title: "Набор массы", price: "2 500 ₽", rating: 4.9, image: "https://images.pexels.com/photos/4397830/pexels-photo-4397830.jpeg?auto=compress&cs=tinysrgb&w=800", tags: ["mass", "recovery"] },
+  { id: 2, title: "Сжигание жира", price: "1 490 ₽", rating: 4.8, image: "https://images.pexels.com/photos/6551138/pexels-photo-6551138.jpeg?auto=compress&cs=tinysrgb&w=800", tags: ["fat", "energy"] },
+  { id: 3, title: "Энергия", price: "1 390 ₽", rating: 4.7, image: "https://images.pexels.com/photos/6551142/pexels-photo-6551142.jpeg?auto=compress&cs=tinysrgb&w=800", tags: ["energy", "mass"] },
+  { id: 4, title: "Восстановление", price: "990 ₽", rating: 4.9, image: "https://images.pexels.com/photos/3683056/pexels-photo-3683056.jpeg?auto=compress&cs=tinysrgb&w=800", tags: ["recovery", "fat"] },
 ];
 
 const goalLabels: Record<Goal, string> = {
@@ -79,8 +79,22 @@ export default function SportpitPreviewPage() {
           <div className={styles.trust}>★ 4.9/5 · 10 000+ клиентов · GMP · ISO</div>
         </div>
         <div className={styles.heroVisual}>
-<Image src="/sportpit/img/hero/protein.svg" alt="Банка протеина" width={250} height={320} />
-<Image src="/sportpit/img/hero/athlete.svg" alt="Атлет" width={250} height={320} />
+<img
+            className={styles.heroPhoto}
+            src="https://images.pexels.com/photos/4397830/pexels-photo-4397830.jpeg?auto=compress&cs=tinysrgb&w=800"
+            alt="Банка протеина на тёмном фоне"
+            width={250}
+            height={320}
+            loading="eager"
+          />
+          <img
+            className={styles.heroPhoto}
+            src="https://images.pexels.com/photos/5327536/pexels-photo-5327536.jpeg?auto=compress&cs=tinysrgb&w=800"
+            alt="Атлет на тренировке"
+            width={250}
+            height={320}
+            loading="eager"
+          />
         </div>
       </section>
 
@@ -117,7 +131,7 @@ export default function SportpitPreviewPage() {
             const highlighted = activeGoal && product.tags.includes(activeGoal);
             return (
               <article key={product.id} className={`${styles.productCard} ${highlighted ? styles.highlighted : ""}`}>
-                <Image src={product.image} alt={product.title} width={220} height={160} />
+                <img className={styles.cardPhoto} src={product.image} alt={`${product.title} фото`} width={220} height={160} loading="lazy" />
                 <h3>{product.title}</h3>
                 <p>★ {product.rating}</p>
                 <strong>{product.price}</strong>

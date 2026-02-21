@@ -69,7 +69,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [activeCategory, setActiveCategory] = useState("protein");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(() => (typeof window !== "undefined" ? window.innerWidth < 1024 : false));
   const [filterToast, setFilterToast] = useState(false);
 
   // Filters: price + rating (stars)
