@@ -1,20 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./SportpitPreview.module.css";
 
-type Protocol = "energy" | "focus" | "recovery" | "hormone" | "longevity" | "performance";
 type ReviewTab = "Отзывы" | "Видео" | "Кейсы";
-
-const protocols: { key: Protocol; title: string; desc: string; tags: string[] }[] = [
-  { key: "energy", title: "ENERGY", desc: "Энергия и выносливость", tags: ["митохондрии", "метаболизм"] },
-  { key: "focus", title: "FOCUS", desc: "Концентрация и ноотропы", tags: ["нейромедиаторы", "внимание"] },
-  { key: "recovery", title: "RECOVERY", desc: "Восстановление и сон", tags: ["сон", "антистресс"] },
-  { key: "hormone", title: "HORMONE", desc: "Поддержка мужского здоровья", tags: ["тестостерон", "баланс"] },
-  { key: "longevity", title: "LONGEVITY", desc: "Долголетие и защита клеток", tags: ["антиоксиданты", "биомаркеры"] },
-  { key: "performance", title: "PERFORMANCE", desc: "Спортивная производительность", tags: ["сила", "выносливость"] },
-];
 
 const products = [
   { id: 1, title: "ActiveCode Core Protein", price: "8 500 ₸", rating: 4.9, image: "/sportpit/whey.svg", tags: ["performance", "recovery"] },
@@ -24,26 +14,8 @@ const products = [
 ];
 
 export default function SportpitPreviewPage() {
-  const [activeProtocol, setActiveProtocol] = useState<Protocol | null>(null);
   const [toast, setToast] = useState<{ open: boolean; text: string }>({ open: false, text: "" });
   const [reviewTab, setReviewTab] = useState<ReviewTab>("Отзывы");
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const goal = new URLSearchParams(window.location.search).get("goal") as Protocol | null;
-    if (!goal) return;
-    const isKnown = protocols.some((item) => item.key === goal);
-    if (!isKnown) return;
-    setActiveProtocol(goal);
-    requestAnimationFrame(() => {
-      document.getElementById("popular")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }, []);
-
-  const orderedProducts = useMemo(() => {
-    if (!activeProtocol) return products;
-    return [...products].sort((a, b) => Number(b.tags.includes(activeProtocol)) - Number(a.tags.includes(activeProtocol)));
-  }, [activeProtocol]);
 
   useEffect(() => {
     if (!toast.open) return;
@@ -58,11 +30,11 @@ export default function SportpitPreviewPage() {
       <section id="top" className={styles.hero}>
         <div>
           <p className={styles.badge}>ACTIVE CODE / HUMAN UPGRADE SYSTEM</p>
-          <h1>Управляй своим биологическим кодом</h1>
-          <p>Научно обоснованные модули для энергии, фокуса и восстановления — без инфо-шума.</p>
+          <h1>РЕЗУЛЬТАТ НАЧИНАЕТСЯ С ПРАВИЛЬНОГО ТОПЛИВА</h1>
+          <p>Протеины, аминокислоты и БАДы нового поколения для силы, выносливости и восстановления.</p>
           <div className={styles.heroButtons}>
-            <button type="button" className={styles.primaryBtn} onClick={() => scrollToSection("how")}>Подобрать протокол</button>
-            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("popular")}>Смотреть модули</button>
+            <button type="button" className={styles.primaryBtn} onClick={() => scrollToSection("catalog")}>Выбрать продукт</button>
+            <button type="button" className={styles.secondaryBtn} onClick={() => scrollToSection("how")}>Пройти подбор</button>
           </div>
           <div className={styles.badges}><span>LAB TESTED</span><span>GMP</span><span>ISO</span><span>QUALITY SCREENED</span></div>
         </div>
@@ -95,7 +67,7 @@ export default function SportpitPreviewPage() {
           <article><h3>Человек — система</h3><p>Решения строятся вокруг связки «сон, энергия, нагрузка, восстановление».</p></article>
           <article><h3>Осознанная продуктивность</h3><p>Фокус на устойчивом темпе, а не краткосрочных пиках.</p></article>
           <article><h3>Наука {">"} маркетинг</h3><p>Состав, дозировки и исследования важнее громких обещаний.</p></article>
-          <article><h3>Сила без перегибов</h3><p>Протоколы адаптируются под ритм жизни, не ломая баланс.</p></article>
+          <article><h3>Сила без перегибов</h3><p>Продукты адаптируются под ритм жизни, не ломая баланс.</p></article>
         </div>
       </section>
 
@@ -103,7 +75,7 @@ export default function SportpitPreviewPage() {
         <h2>Как это работает</h2>
         <div className={styles.steps}>
           <div><strong>1</strong><p>Выбираете цель</p></div>
-          <div><strong>2</strong><p>Получаете протокол (модули + дозировки)</p></div>
+          <div><strong>2</strong><p>Получаете подбор продуктов и дозировок</p></div>
           <div><strong>3</strong><p>Отслеживаете эффект (энергия / сон / фокус)</p></div>
         </div>
         <button type="button" className={styles.primaryBtn}>Пройти подбор за 60 секунд</button>
@@ -122,26 +94,17 @@ export default function SportpitPreviewPage() {
       </section>
 
       <section id="catalog" className={styles.section}>
-        <h2>Каталог модулей</h2>
-        <p className={styles.muted}>Каждый продукт — модуль кода. Собирайте систему под задачу.</p>
+        <h2>Каталог продуктов</h2>
+        <p className={styles.muted}>Продукты для силы, выносливости и восстановления под разные цели.</p>
         <div className={styles.chips}>{["Энергия", "Фокус", "Сон", "Антистресс", "Спорт", "Мужское здоровье"].map((chip) => <button key={chip} type="button">{chip}</button>)}</div>
       </section>
 
       <section id="popular" className={styles.section}>
         <h2>Популярные продукты</h2>
-        <div className={styles.protocolButtons}>{protocols.map((item) => <button key={item.key} type="button" className={activeProtocol === item.key ? styles.goalActive : ""} onClick={() => {
-              setActiveProtocol(item.key);
-              if (typeof window !== "undefined") {
-                const url = new URL(window.location.href);
-                url.searchParams.set("goal", item.key);
-                window.history.replaceState({}, "", url.toString());
-              }
-            }}>{item.title}</button>)}</div>
         <div className={styles.products}>
-          {orderedProducts.map((product) => {
-            const highlighted = activeProtocol && product.tags.includes(activeProtocol);
+          {products.map((product) => {
             return (
-              <article key={product.id} className={`${styles.productCard} ${highlighted ? styles.highlighted : ""}`}>
+              <article key={product.id} className={styles.productCard}>
                 <Image src={product.image} alt={product.title} width={180} height={130} />
                 <h3>{product.title}</h3>
                 <p>★ {product.rating}</p>
@@ -175,11 +138,11 @@ export default function SportpitPreviewPage() {
 
       <section id="education" className={styles.section}>
         <h2>Education / База знаний</h2>
-        <p className={styles.muted}>Образовательная платформа о биомаркерах, протоколах и системном подходе. Upgrade your biology. Energy under control.</p>
+        <p className={styles.muted}>Образовательная платформа о биомаркерах и системном подходе. Upgrade your biology. Energy under control.</p>
       </section>
 
       <section id="subscribe" className={styles.section}>
-        <h2>Персональные обновления протоколов</h2>
+        <h2>Персональные обновления каталога</h2>
         <form className={styles.subscribe} onSubmit={(e) => { e.preventDefault(); setToast({ open: true, text: "Готово" }); }}>
           <input type="email" name="email" placeholder="Ваш email" required />
           <button type="submit" className={styles.primaryBtn}>Подписаться</button>

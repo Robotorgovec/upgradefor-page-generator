@@ -7,7 +7,6 @@
       <stop offset="100%" stop-color="#2ECF9A"/>
     </linearGradient>
   </defs>
-  <rect x="1" y="1" width="318" height="86" rx="14" fill="#0F1724" stroke="rgba(184,207,238,0.20)"/>
-  <text x="22" y="54" fill="url(#a)" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Active</text>
-  <text x="124" y="54" fill="#E7EEF8" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Code</text>
+  <text x="10" y="56" fill="url(#a)" font-size="34" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Active</text>
+  <text x="148" y="56" fill="#E7EEF8" font-size="34" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="0.3">Code</text>
 </svg>

@@ -79,6 +79,10 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
+    if (isMainPage) setIsCollapsed(false);
+  }, [isMainPage]);
+
+  useEffect(() => {
     const syncCart = () => setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
     syncCart();
     window.addEventListener("storage", syncCart);
@@ -186,7 +190,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
         <label className={styles.searchWrap}>
           <span className={styles.searchIcon}>⌕</span>
-          <input type="search" placeholder="Поиск модулей и протоколов" aria-label="Поиск товаров" />
+          <input type="search" placeholder="Поиск продуктов" aria-label="Поиск товаров" />
         </label>
 
         <div className={styles.headerActions}>
@@ -212,7 +216,32 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           aria-label="Основная навигация"
         >
           <div className={styles.sidebarTop}>
-            <strong>Цели / протоколы</strong>
+            <strong>Цели / продукты</strong>
+          </div>
+
+          <div className={styles.sidebarSectionLabel}>Навигация</div>
+          <div className={styles.sidebarNav}>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
+                  <Icon className={styles.sidebarIcon} />
+                  <em>{item.label}</em>
+                </button>
+              );
+            })}
+          </div>
+          <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
+          <div className={styles.sidebarNav}>
+            {categoryItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
+                  <Icon className={styles.sidebarIcon} />
+                  <em>{item.label}</em>
+                </button>
+              );
+            })}
           </div>
 
           <div className={styles.sidebarSectionLabel}>Фильтры</div>
@@ -227,8 +256,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               <select defaultValue="kz">
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>
-                <option value="kg">Кыргызстан</option>
-                <option value="uz">Узбекистан</option>
+                <option value="us">США</option>
               </select>
             </div>
             <div className={styles.filterBlock}>
@@ -261,31 +289,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               </div>
             </div>
             <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>Показать</button>
-          </div>
-
-          <div className={styles.sidebarSectionLabel}>Навигация</div>
-          <div className={styles.sidebarNav}>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
-          </div>
-          <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
-          <div className={styles.sidebarNav}>
-            {categoryItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
           </div>
         </aside>
 

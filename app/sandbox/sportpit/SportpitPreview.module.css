@@ -107,6 +107,15 @@
 .goalActive { background: rgba(33, 255, 106, 0.14) !important; border-color: rgba(33, 255, 106, 0.8) !important; }
 .highlighted { border-color: rgba(33, 255, 106, 0.82) !important; }
 
+.protocolButtons { margin-bottom: var(--space-2); }
+.tabs { margin-bottom: var(--space-3); }
+.tabs button { margin-bottom: 12px; }
+
+.productCard { display: flex; flex-direction: column; }
+.productCard img { display: block; margin: 0 auto; }
+.productCard strong { margin-top: auto; text-align: right; }
+.productCard .secondaryBtn { align-self: flex-end; }
+
 .subscribe { display: flex; gap: 10px; }
 .subscribe input { flex: 1; min-height: var(--control-h); border-radius: 12px; border: 1px solid rgba(184, 207, 238, 0.18); background: #0d1722; color: #f1f5fb; padding: 10px; font: inherit; }
 
