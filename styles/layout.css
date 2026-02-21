@@ -1,6 +1,11 @@
 /* Layout contract: header is always visible, sidebar is fixed and off-canvas on mobile. */
 /* z-index contract: header = var(--z-header), sidebar = var(--z-sidebar), overlay = var(--z-overlay). */
 
+:root {
+  --sidebar-width-open: 260px;
+  --sidebar-width-collapsed: 56px;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -35,27 +40,44 @@ header {
 }
 
 .burger {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
 }
 
 .burger-lines {
-  display: grid;
-  gap: 4px;
+  position: relative;
+  width: 20px;
+  height: 18px;
 }
 
 .burger-lines span {
-  width: 18px;
+  position: absolute;
+  left: 0;
+  width: 20px;
   height: 2px;
   background: var(--text);
   border-radius: 999px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.burger-lines span:nth-child(1) { top: 3px; }
+.burger-lines span:nth-child(2) { top: 8px; }
+.burger-lines span:nth-child(3) { top: 13px; }
+
+.burger-lines.is-open span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.burger-lines.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.burger-lines.is-open span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
 }
 
 .auth-actions {
@@ -81,7 +103,7 @@ header {
   position: fixed;
   top: var(--header-height);
   left: 0;
-  width: var(--sidebar-width);
+  width: var(--sidebar-width-open);
   height: calc(100vh - var(--header-height));
   background: var(--surface);
   border-right: 1px solid var(--line);
@@ -132,8 +154,16 @@ header {
 .app-content {
   flex: 1;
   padding: 32px 32px 64px;
-  margin-left: var(--sidebar-width);
+  margin-left: var(--sidebar-width-open);
   min-height: calc(100vh - var(--header-height));
+}
+
+.app-shell[data-sidebar-open="false"] .sidebar {
+  width: var(--sidebar-width-collapsed);
+}
+
+.app-shell[data-sidebar-open="false"] .app-content {
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 .sidebar-overlay {
@@ -147,6 +177,7 @@ header {
   pointer-events: none;
   transition: opacity 0.2s ease;
   z-index: var(--z-overlay);
+  display: none;
 }
 
 .app-shell[data-sidebar-open="true"] .sidebar {
@@ -158,7 +189,31 @@ header {
   pointer-events: auto;
 }
 
+.app-shell[data-sidebar-open="false"] .sidebar-inner {
+  padding: 12px 0;
+}
+
+.app-shell[data-sidebar-open="false"] .sidebar-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.app-shell[data-sidebar-open="false"] .sidebar-link span,
+.app-shell[data-sidebar-open="false"] .sidebar-link .label {
+  display: none;
+}
+
 @media (max-width: 1024px) {
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .app-shell[data-sidebar-open="true"] + .sidebar-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .app-content {
     margin-left: 0;
     padding: 24px 20px 48px;
