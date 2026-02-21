@@ -2,43 +2,42 @@
 
 import { usePathname } from "next/navigation";
 import type { ComponentType, PropsWithChildren, SVGProps } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import styles from "./SportpitShell.module.css";
 import {
   AccessoriesIcon,
   AminoIcon,
   CartIcon,
-  CatalogIcon,
   FactoryIcon,
   FatburnIcon,
   FilterIcon,
-  FlameIcon,
-  GainerIcon,
   GlobeIcon,
-  HomeIcon,
   JointsIcon,
-  LabIcon,
-  NewsIcon,
   PrebioIcon,
   PriceIcon,
   ProteinIcon,
   TargetIcon,
-  ChatIcon,
   VitIcon,
+  GainerIcon,
 } from "./ui/icons";
 
 type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
-type NavItem = { id: string; label: string; icon: IconComp };
+type NavItem = { id: string; label: string };
 type CategoryItem = { id: string; label: string; icon: IconComp };
 
+const MOBILE_BREAKPOINT = 768;
+
 const navItems: NavItem[] = [
-  { id: "top", label: "Главная", icon: HomeIcon },
-  { id: "catalog", label: "Каталог", icon: CatalogIcon },
-  { id: "goals", label: "Подбор", icon: TargetIcon },
-  { id: "popular", label: "Бестселлеры", icon: FlameIcon },
-  { id: "about", label: "О нас", icon: LabIcon },
-  { id: "reviews", label: "Отзывы", icon: ChatIcon },
-  { id: "blog", label: "Блог", icon: NewsIcon },
+  { id: "top", label: "Главная" },
+  { id: "catalog", label: "Каталог" },
+  { id: "goals", label: "Подбор" },
+  { id: "popular", label: "Бестселлеры" },
+  { id: "about", label: "О нас" },
+  { id: "reviews", label: "Отзывы" },
+  { id: "blog", label: "Блог" },
+  { id: "popular", label: "Акции" },
+  { id: "subscribe", label: "Доставка" },
+  { id: "subscribe", label: "Контакты" },
 ];
 
 const categoryItems: CategoryItem[] = [
@@ -52,13 +51,6 @@ const categoryItems: CategoryItem[] = [
   { id: "acc", label: "Аксессуары", icon: AccessoriesIcon },
 ];
 
-const topMenu = [
-  { label: "Каталог", target: "catalog" },
-  { label: "Акции", target: "popular" },
-  { label: "Доставка", target: "subscribe" },
-  { label: "Контакты", target: "subscribe" },
-];
-
 export default function SportpitShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const isMainPage = pathname === "/sandbox/sportpit";
@@ -66,22 +58,43 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [activeCategory, setActiveCategory] = useState("protein");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => (typeof window !== "undefined" ? window.innerWidth >= 1024 : true));
-  const [isMobileViewport, setIsMobileViewport] = useState(() => (typeof window !== "undefined" ? window.innerWidth < 1024 : false));
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < MOBILE_BREAKPOINT : false
+  );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= MOBILE_BREAKPOINT : true
+  );
   const [filterToast, setFilterToast] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  // Filters: price + rating (stars)
+  const searchWrapRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const prevIsMobileRef = useRef<boolean | null>(null);
+
   const [priceMin, setPriceMin] = useState(900);
   const [priceMax, setPriceMax] = useState(2600);
   const [priceRange, setPriceRange] = useState(2600);
   const [ratingMin, setRatingMin] = useState<number | null>(4);
 
+  const uniqueHeaderNav = useMemo(
+    () => navItems.filter((item, idx, arr) => arr.findIndex((x) => x.label === item.label) === idx),
+    []
+  );
+
   useEffect(() => {
     const updateViewport = () => {
-      const mobile = window.innerWidth < 1024;
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT;
       setIsMobileViewport(mobile);
-      setIsSidebarOpen(!mobile);
+
+      if (prevIsMobileRef.current === null) {
+        setIsSidebarOpen(!mobile);
+      } else if (prevIsMobileRef.current !== mobile) {
+        setIsSidebarOpen(!mobile);
+      }
+
+      prevIsMobileRef.current = mobile;
     };
+
     updateViewport();
     window.addEventListener("resize", updateViewport);
     return () => window.removeEventListener("resize", updateViewport);
@@ -107,8 +120,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       },
       { threshold: 0.4 }
     );
-    navItems.forEach((item) => {
-      const el = document.getElementById(item.id);
+    ["top", "catalog", "goals", "popular", "about", "reviews", "blog", "subscribe"].forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
@@ -120,15 +133,36 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     return () => clearTimeout(timer);
   }, [filterToast]);
 
-  const onBurgerClick = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
+  useEffect(() => {
+    if (!isSearchOpen) return;
+    searchInputRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsSearchOpen(false);
+    };
+
+    const onPointerDown = (event: MouseEvent) => {
+      if (!searchWrapRef.current?.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("mousedown", onPointerDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("mousedown", onPointerDown);
+    };
+  }, [isSearchOpen]);
+
+  const onBurgerClick = () => setIsSidebarOpen((prev) => !prev);
 
   const goToSection = (id: string) => {
     if (!isMainPage) return;
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveSection(id);
     if (isMobileViewport) setIsSidebarOpen(false);
+    setIsSearchOpen(false);
   };
 
   const onCategoryClick = (id: string) => {
@@ -139,7 +173,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const onPriceMinChange = (value: number) => {
     const nextMin = Math.max(0, Math.min(value, priceMax));
     setPriceMin(nextMin);
-    // keep slider value inside new bounds
     if (priceRange < nextMin) setPriceRange(nextMin);
   };
 
@@ -149,12 +182,17 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     setPriceRange(nextMax);
   };
 
-  const applyFilters = () => {
-    setFilterToast(true);
+  const applyFilters = () => setFilterToast(true);
+
+  const onStarClick = (star: number, event: MouseEvent<HTMLButtonElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const clickedHalf = event.clientX - rect.left < rect.width / 2;
+    const nextValue = clickedHalf ? star - 0.5 : star;
+    setRatingMin((prev) => (prev === nextValue ? null : nextValue));
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} data-sidebar-open={isSidebarOpen ? "true" : "false"}>
       <a className={styles.skip} href="#sportpit-main">
         К содержанию
       </a>
@@ -181,16 +219,15 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           </button>
         </div>
 
-        {/* Top menu: NOT buttons — text links (ActiveCode-like rows) */}
         <nav className={styles.topNav} aria-label="Верхнее меню">
-          {topMenu.map((item) => (
+          {uniqueHeaderNav.map((item) => (
             <a
-              key={item.label}
-              href={`#${item.target}`}
+              key={`${item.label}-${item.id}`}
+              href={`#${item.id}`}
               className={styles.topNavLink}
               onClick={(e) => {
                 e.preventDefault();
-                goToSection(item.target);
+                goToSection(item.id);
               }}
             >
               {item.label}
@@ -198,18 +235,28 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           ))}
         </nav>
 
-        <label className={styles.searchWrap}>
-          <span className={styles.searchIcon}>⌕</span>
-          <input type="search" placeholder="Поиск протеинов, БАДов…" aria-label="Поиск товаров" />
-        </label>
-
-        <div className={styles.headerActions}>
+        <div className={styles.headerActions} ref={searchWrapRef}>
+          <button
+            type="button"
+            className={styles.searchToggle}
+            onClick={() => setIsSearchOpen((prev) => !prev)}
+            aria-expanded={isSearchOpen}
+            aria-controls="sportpit-search-panel"
+            aria-label="Поиск"
+          >
+            ⌕
+          </button>
           <button type="button">RU</button>
           <button type="button" className={styles.cartIcon} aria-label="Корзина">
             <CartIcon className={styles.headerIcon} /> <span>{cartCount}</span>
           </button>
 
-          {/* ВАЖНО: Вход/Регистрация удалены по ТЗ */}
+          <div
+            id="sportpit-search-panel"
+            className={`${styles.searchPanel} ${isSearchOpen ? styles.searchPanelOpen : ""}`}
+          >
+            <input ref={searchInputRef} type="search" placeholder="Поиск протеинов, БАДов…" aria-label="Поиск товаров" />
+          </div>
         </div>
       </header>
 
@@ -224,18 +271,25 @@ export default function SportpitShell({ children }: PropsWithChildren) {
         <aside
           id="sportpit-sidebar"
           className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
-          aria-label="Основная навигация"
+          aria-label="Каталог и фильтр"
         >
-          <div className={styles.sidebarTop}>
-            <strong>Меню</strong>
-            <button
-              type="button"
-              className={styles.sidebarClose}
-              onClick={() => setIsSidebarOpen(false)}
-              aria-label="Закрыть меню"
-            >
-              ✕
-            </button>
+          <div className={styles.sidebarSectionLabel}>КАТАЛОГ</div>
+          <div className={styles.sidebarNav}>
+            {categoryItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={activeCategory === item.id ? styles.menuItemActive : ""}
+                  onClick={() => onCategoryClick(item.id)}
+                  title={item.label}
+                >
+                  <Icon className={styles.sidebarIcon} />
+                  <em>{item.label}</em>
+                </button>
+              );
+            })}
           </div>
 
           <div className={styles.sidebarSectionLabel}>ФИЛЬТР ПОИСКА</div>
@@ -270,7 +324,6 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               </select>
             </div>
 
-            {/* Цена: два поля (min/max) + range */}
             <div className={styles.filterBlock}>
               <h4>
                 <PriceIcon className={styles.smallIcon} /> Цена
@@ -304,70 +357,37 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               />
             </div>
 
-            {/* Рейтинг: кликабельные звезды */}
             <div className={styles.filterBlock}>
               <h4>
                 <TargetIcon className={styles.smallIcon} /> Рейтинг
               </h4>
               <div className={styles.ratingRow}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    aria-label={`Рейтинг ${star}`}
-                    className={`${styles.starBtn} ${
-                      ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff
-                    }`}
-                    onClick={() => setRatingMin((prev) => (prev === star ? null : star))}
-                  >
-                    ★
-                  </button>
-                ))}
-                <span className={styles.ratingNote}>{ratingMin ? `${ratingMin}+` : "Любой"}</span>
+                <div className={styles.starGroup}>
+                  {[1, 2, 3, 4, 5].map((star) => {
+                    const full = ratingMin !== null && ratingMin >= star;
+                    const half = ratingMin !== null && ratingMin === star - 0.5;
+                    return (
+                      <button
+                        key={star}
+                        type="button"
+                        aria-label={`Рейтинг ${star}`}
+                        className={`${styles.starBtn} ${full ? styles.starOn : ""} ${half ? styles.starHalf : ""} ${
+                          !full && !half ? styles.starOff : ""
+                        }`}
+                        onClick={(event) => onStarClick(star, event)}
+                      >
+                        ★
+                      </button>
+                    );
+                  })}
+                </div>
+                <span className={styles.ratingNote}>{ratingMin === null ? "Любой" : ratingMin.toFixed(1)}</span>
               </div>
             </div>
 
             <button type="button" className={styles.showBtn} onClick={applyFilters}>
               Показать
             </button>
-          </div>
-
-          <div className={styles.sidebarSectionLabel}>НАВИГАЦИЯ</div>
-          <div className={styles.sidebarNav}>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""}
-                  onClick={() => goToSection(item.id)}
-                  title={item.label}
-                >
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className={styles.sidebarSectionLabel}>КАТАЛОГ</div>
-          <div className={styles.sidebarNav}>
-            {categoryItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={activeCategory === item.id ? styles.menuItemActive : ""}
-                  onClick={() => onCategoryClick(item.id)}
-                  title={item.label}
-                >
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
           </div>
         </aside>
 
@@ -379,7 +399,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
       {filterToast && (
         <div className={styles.toast}>
-          Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin ? `${ratingMin}+` : "любой"}
+          Фильтр применён: {priceMin}–{priceMax} ₽, рейтинг {ratingMin === null ? "любой" : ratingMin.toFixed(1)}
         </div>
       )}
     </div>
