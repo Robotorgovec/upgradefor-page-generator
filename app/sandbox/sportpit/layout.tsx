@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Suspense } from "react";
-iimport SportpitShell from "./SportpitShell";
+import SportpitShell from "./SportpitShell";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
