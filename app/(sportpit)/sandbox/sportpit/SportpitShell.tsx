@@ -59,7 +59,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isMainPage = pathname === "/sandbox/sportpit";
-  const isUsaCatalog = pathname === "/catalog/usa";
+  const isUsaContext = pathname.startsWith("/catalog/usa") || searchParams.get("origin") === "USA";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -68,6 +68,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [filterToast, setFilterToast] = useState(false);
+  const [country, setCountry] = useState("kz");
 
   const [priceMin, setPriceMin] = useState(900);
   const [priceMax, setPriceMax] = useState(2600);
@@ -150,8 +151,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     setPriceRange(nextMax);
   };
 
-  const onUsaToggle = (enabled: boolean) => {
-    if (enabled) {
+  const onCountryChange = (value: string) => {
+    if (value === "us") {
       const query = new URLSearchParams(searchParams.toString());
       query.set("origin", "USA");
       if (!query.get("sort")) query.set("sort", "popular");
@@ -160,15 +161,22 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       return;
     }
 
-    if (isUsaCatalog) {
+    if (isUsaContext) {
       const query = new URLSearchParams(searchParams.toString());
       query.delete("origin");
       query.delete("cat");
       query.delete("sub");
       query.delete("brand");
       router.push(`/sandbox/sportpit${query.toString() ? `?${query.toString()}` : ""}`);
+      setCountry(value);
+      return;
     }
+
+    setCountry(value);
   };
+
+  const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
+  const isCollapsedDesktop = !isMobileViewport && isCollapsed;
 
   return (
     <div className={styles.page}>
@@ -177,19 +185,21 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </a>
 
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
+        <div className={`${styles.headerLeft} ${isCollapsedDesktop ? styles.headerLeftCollapsed : ""}`}>
+          <div className={styles.burgerWrap}>
           <button
             type="button"
-            className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
+            className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
             onClick={onBurgerClick}
             aria-label="Открыть меню"
             aria-controls="sportpit-sidebar"
-            aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
+            aria-expanded={isNavOpen}
           >
             <span />
             <span />
             <span />
           </button>
+          </div>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
             <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
           </button>
@@ -276,8 +286,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               <h4>
                 <GlobeIcon className={styles.smallIcon} /> Страна
               </h4>
-              <label><input type="checkbox" checked={isUsaCatalog} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)</label>
-              <select defaultValue="kz">
+              <select value={isUsaContext ? "us" : country} onChange={(e) => onCountryChange(e.target.value)}>
                 <option value="kz">Казахстан</option>
                 <option value="ru">Россия</option>
                 <option value="us">США</option>

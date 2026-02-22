@@ -64,6 +64,9 @@
 }
 
 .headerLeft { display: flex; align-items: center; gap: 10px; }
+.headerLeftCollapsed { width: 50px; justify-content: center; }
+.headerLeftCollapsed .logo { display: none; }
+.burgerWrap { display: flex; align-items: center; justify-content: center; }
 .logo { border: 0; background: transparent; display: inline-flex; cursor: pointer; padding: 0; }
 
 .topNav { display: flex; gap: 16px; align-items: center; }
@@ -112,10 +115,11 @@
 .burger:hover,
 .burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; }
 .burger span { width: 17px; height: 2px; border-radius: 0; background: #fff; border: none; display: block; transition: transform 0.2s ease, opacity 0.2s ease; }
-.burger span + span { margin-top: 1px; }
-.burgerOpen span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.burger:focus-visible { outline: none; box-shadow: none; }
+.burger span + span { margin-top: 0; }
+.burgerOpen span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
 .burgerOpen span:nth-child(2) { opacity: 0; }
-.burgerOpen span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+.burgerOpen span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
 
 .appShell { display: block; }
 .sidebarOverlay { position: fixed; inset: 0; z-index: 19; background: rgba(0, 0, 0, 0.58); border: 0; opacity: 0; pointer-events: none; }
@@ -207,7 +211,17 @@
 .sidebarCollapsed .filterCard,
 .sidebarCollapsed button em,
 .sidebarCollapsed .sidebarTop strong { display: none; }
-.sidebarCollapsed .sidebarNav button { justify-content: center; padding-left: 2px; padding-right: 2px; }
+.sidebarCollapsed .sidebarNav button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+.sidebarCollapsed .sidebarNav button::before { display: none; }
+.sidebarCollapsed .sidebarNav button svg { margin: 0; }
 
 .content { margin-left: 288px; min-height: calc(100vh - 74px); padding: var(--space-4); }
 .contentInner { max-width: 1200px; margin: 0 auto; }
