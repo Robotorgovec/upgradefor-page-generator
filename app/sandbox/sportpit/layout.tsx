@@ -1,8 +1,14 @@
 import type { ReactNode } from "react";
+import { Suspense } from "react";
+iimport SportpitShell from "./SportpitShell";
 
-export default function SportpitSegmentLayout({ children }: { children: ReactNode }) {
-import type { ReactNode } from "react";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export default function SportpitSegmentLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+export default function SportpitLayout({ children }: { children: ReactNode }) {
+  return (
+    <SportpitShell>
+      <Suspense fallback={null}>{children}</Suspense>
+    </SportpitShell>
+  );
 }
