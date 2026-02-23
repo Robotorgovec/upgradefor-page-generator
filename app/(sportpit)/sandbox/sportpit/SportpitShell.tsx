@@ -2,49 +2,13 @@
 
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { ComponentType, PropsWithChildren, SVGProps } from "react";
+import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
-import {
-  AccessoriesIcon,
-  AminoIcon,
-  CartIcon,
-  ChatIcon,
-  FilterIcon,
-  FlameIcon,
-  GainerIcon,
-  GlobeIcon,
-  HomeIcon,
-  JointsIcon,
-  LabIcon,
-  NewsIcon,
-  PrebioIcon,
-  PriceIcon,
-  ProteinIcon,
-  VitIcon,
-} from "./ui/icons";
+import { CartIcon } from "./ui/icons";
+import { SportpitMenu } from "./SportpitMenu";
 
-type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
-type NavItem = { id: string; label: string; icon: IconComp };
-type CategoryItem = { id: string; label: string; icon: IconComp };
-
-const navItems: NavItem[] = [
-  { id: "top", label: "Главная", icon: HomeIcon },
-  { id: "quality", label: "Качество", icon: LabIcon },
-  { id: "reviews", label: "Отзывы", icon: ChatIcon },
-  { id: "education", label: "База знаний", icon: NewsIcon },
-];
-
-const categoryItems: CategoryItem[] = [
-  { id: "protein", label: "Протеины", icon: ProteinIcon },
-  { id: "amino", label: "Аминокислоты", icon: AminoIcon },
-  { id: "gainer", label: "Гейнеры", icon: GainerIcon },
-  { id: "fatburn", label: "Жиросжигатели", icon: FlameIcon },
-  { id: "prebio", label: "Пребиотики", icon: PrebioIcon },
-  { id: "vit", label: "Витамины", icon: VitIcon },
-  { id: "joints", label: "Для суставов", icon: JointsIcon },
-  { id: "acc", label: "Аксессуары", icon: AccessoriesIcon },
-];
+const navSectionIds = ["top", "quality", "reviews", "education"] as const;
 
 const topMenu = [
   { label: "Подбор", target: "how" },
@@ -59,7 +23,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isMainPage = pathname === "/sandbox/sportpit";
-  const isUsaCatalog = pathname === "/catalog/usa";
+  const isUsaContext = pathname.startsWith("/catalog/usa") || searchParams.get("origin") === "USA";
 
   const [cartCount, setCartCount] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -69,9 +33,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [filterToast, setFilterToast] = useState(false);
 
+  const [country, setCountry] = useState<"kz" | "ru">("kz");
   const [priceMin, setPriceMin] = useState(900);
   const [priceMax, setPriceMax] = useState(2600);
-  const [priceRange, setPriceRange] = useState(2600);
   const [ratingMin, setRatingMin] = useState<number | null>(4.0);
 
   useEffect(() => {
@@ -105,8 +69,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       },
       { threshold: 0.35 }
     );
-    navItems.forEach((item) => {
-      const el = document.getElementById(item.id);
+    navSectionIds.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
@@ -126,6 +90,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
     setIsCollapsed((prev) => !prev);
   };
 
+  const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
+
   const goToSection = (id: string) => {
     if (!isMainPage) return;
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -141,17 +107,15 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   const onPriceMinChange = (value: number) => {
     const nextMin = Math.max(0, Math.min(value, priceMax));
     setPriceMin(nextMin);
-    if (priceRange < nextMin) setPriceRange(nextMin);
   };
 
   const onPriceMaxChange = (value: number) => {
     const nextMax = Math.max(priceMin, value);
     setPriceMax(nextMax);
-    setPriceRange(nextMax);
   };
 
-  const onUsaToggle = (enabled: boolean) => {
-    if (enabled) {
+  const onCountryChange = (value: "kz" | "ru" | "us") => {
+    if (value === "us") {
       const query = new URLSearchParams(searchParams.toString());
       query.set("origin", "USA");
       if (!query.get("sort")) query.set("sort", "popular");
@@ -160,7 +124,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       return;
     }
 
-    if (isUsaCatalog) {
+    setCountry(value);
+
+    if (isUsaContext) {
       const query = new URLSearchParams(searchParams.toString());
       query.delete("origin");
       query.delete("cat");
@@ -178,18 +144,20 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <button
-            type="button"
-            className={`${styles.burger} ${isSidebarOpen ? styles.burgerOpen : ""}`}
-            onClick={onBurgerClick}
-            aria-label="Открыть меню"
-            aria-controls="sportpit-sidebar"
-            aria-expanded={isMobileViewport ? isSidebarOpen : !isCollapsed}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+          <div className={styles.burgerWrap}>
+            <button
+              type="button"
+              className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+              onClick={onBurgerClick}
+              aria-label="Открыть меню"
+              aria-controls="sportpit-sidebar"
+              aria-expanded={isNavOpen}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
             <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
           </button>
@@ -226,108 +194,25 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </header>
 
       <div className={styles.appShell}>
-        <button
-          type="button"
-          className={`${styles.sidebarOverlay} ${isSidebarOpen ? styles.sidebarOverlayVisible : ""}`}
-          aria-label="Закрыть меню"
-          onClick={() => setIsSidebarOpen(false)}
+        <SportpitMenu
+          isCollapsed={isCollapsed}
+          isSidebarOpen={isSidebarOpen}
+          isMainPage={isMainPage}
+          country={isUsaContext ? "us" : country}
+          activeSection={activeSection}
+          activeTypeNav={activeTypeNav}
+          priceMin={priceMin}
+          priceMax={priceMax}
+          ratingMin={ratingMin}
+          onCloseSidebar={() => setIsSidebarOpen(false)}
+          goToSection={goToSection}
+          onTypeClick={onTypeClick}
+          onCountryChange={onCountryChange}
+          onPriceMinChange={onPriceMinChange}
+          onPriceMaxChange={onPriceMaxChange}
+          onRatingChange={setRatingMin}
+          onShowFilters={() => setFilterToast(true)}
         />
-
-        <aside
-          id="sportpit-sidebar"
-          className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
-          aria-label="Основная навигация"
-        >
-          <div className={styles.sidebarTop}>
-            <strong>Цели / продукты</strong>
-          </div>
-
-          <div className={styles.sidebarSectionLabel}>Навигация</div>
-          <div className={styles.sidebarNav}>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
-          </div>
-          <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
-          <div className={styles.sidebarNav}>
-            {categoryItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
-                  <Icon className={styles.sidebarIcon} />
-                  <em>{item.label}</em>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className={styles.sidebarSectionLabel}>Фильтры</div>
-          <div className={styles.filterCard}>
-            <div className={styles.filterHead}>
-              <FilterIcon className={styles.smallIcon} /> <span>Параметры</span>
-            </div>
-            <div className={styles.filterBlock}>
-              <h4>
-                <GlobeIcon className={styles.smallIcon} /> Страна
-              </h4>
-              <label><input type="checkbox" checked={isUsaCatalog} onChange={(e) => onUsaToggle(e.target.checked)} /> Американское спортивное питание (USA)</label>
-              <select defaultValue="kz">
-                <option value="kz">Казахстан</option>
-                <option value="ru">Россия</option>
-                <option value="us">США</option>
-              </select>
-            </div>
-            <div className={styles.filterBlock}>
-              <h4>
-                <GlobeIcon className={styles.smallIcon} /> Форма
-              </h4>
-              <label><input type="checkbox" defaultChecked /> Капсулы</label>
-              <label><input type="checkbox" /> Порошок</label>
-              <label><input type="checkbox" /> Жидкость</label>
-            </div>
-            <div className={styles.filterBlock}>
-              <h4>
-                <PriceIcon className={styles.smallIcon} /> Цена
-              </h4>
-              <div className={styles.priceRow}>
-                <input className={styles.priceInput} type="number" value={priceMin} min={0} onChange={(e) => onPriceMinChange(Number(e.target.value || 0))} aria-label="Мин. цена" />
-                <input className={styles.priceInput} type="number" value={priceMax} min={priceMin} onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))} aria-label="Макс. цена" />
-              </div>
-              <input className={styles.range} type="range" min={priceMin} max={5000} value={priceRange} onChange={(e) => onPriceMaxChange(Number(e.target.value))} aria-label="Слайдер цены" />
-            </div>
-            <div className={styles.filterBlock}>
-              <h4>
-                <LabIcon className={styles.smallIcon} /> Рейтинг
-              </h4>
-              <div className={styles.ratingRow}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => setRatingMin((prev) => (prev === star ? null : star))}>★</button>
-                ))}
-                <input
-                  className={styles.ratingSlider}
-                  type="range"
-                  min={0}
-                  max={5}
-                  step={0.5}
-                  value={ratingMin ?? 0}
-                  aria-label="Минимальный рейтинг"
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    setRatingMin(value === 0 ? null : value);
-                  }}
-                />
-                <span className={styles.ratingNote}>{ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}</span>
-              </div>
-            </div>
-            <button type="button" className={styles.showBtn} onClick={() => setFilterToast(true)}>Показать</button>
-          </div>
-        </aside>
 
         <main id="sportpit-main" className={styles.content}>
           <div className={styles.contentInner}>{children}</div>
