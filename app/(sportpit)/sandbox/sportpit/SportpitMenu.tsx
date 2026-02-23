@@ -167,7 +167,9 @@ export function SportpitMenu({
             {/* ВАЖНО: USA-чекбокс УДАЛЁН. Только select. */}
             <select
               value={country}
-              onChange={(e) => onCountryChange(e.target.value as "kz" | "ru" | "us")}
+              onChange={(e) =>
+                onCountryChange(e.target.value as "kz" | "ru" | "us")
+              }
             >
               <option value="kz">Казахстан</option>
               <option value="ru">Россия</option>
@@ -194,6 +196,7 @@ export function SportpitMenu({
             <h4>
               <PriceIcon className={styles.smallIcon} /> Цена
             </h4>
+
             <div className={styles.priceRow}>
               <input
                 className={styles.priceInput}
@@ -215,7 +218,7 @@ export function SportpitMenu({
               />
             </div>
 
-            {/* Слайдер цены оставлен */}
+            {/* Слайдер цены */}
             <input
               className={styles.range}
               type="range"

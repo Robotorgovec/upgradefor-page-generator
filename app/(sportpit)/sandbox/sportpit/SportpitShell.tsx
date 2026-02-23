@@ -162,7 +162,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           <div className={styles.burgerWrap}>
             <button
               type="button"
-              className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+              className={`${styles.burger} ${
+                isNavOpen ? styles.burgerOpen : ""
+              }`}
               onClick={onBurgerClick}
               aria-label="Открыть меню"
               aria-controls="sportpit-sidebar"

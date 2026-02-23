@@ -98,7 +98,7 @@
 }
 .headerActions button:focus-visible,
 .showBtn:focus-visible,
-.sidebarNav button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sidebarNav button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 8px; }
 
 .headerIcon { width: 18px; height: 18px; }
 .cartIcon { display: inline-flex; align-items: center; gap: 4px; }
@@ -142,10 +142,11 @@
   margin: 2px 0; /* линии ближе */
   border-radius: 0;
   border: none;
+  transform-origin: center;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* крестик */
+/* крестик — симметричный */
 .burgerOpen span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
 .burgerOpen span:nth-child(2) { opacity: 0; }
 .burgerOpen span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
