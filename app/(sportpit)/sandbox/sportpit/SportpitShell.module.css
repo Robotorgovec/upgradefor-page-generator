@@ -100,22 +100,39 @@
 .cartIcon { display: inline-flex; align-items: center; gap: 4px; }
 .cartIcon span { color: var(--accent); font-weight: 700; }
 
+.burgerWrap {
+  width: 56px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
 .burger {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  background: transparent;
+  background: none;
   border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 48px;
+  width: auto;
 }
 .burger:hover,
-.burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; }
-.burger span { width: 17px; height: 2px; border-radius: 0; background: #fff; border: none; display: block; transition: transform 0.2s ease, opacity 0.2s ease; }
-.burger span + span { margin-top: 1px; }
-.burgerOpen span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; outline: none; }
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  margin: 3px 0;
+  border-radius: 0;
+  border: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.burgerOpen span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .burgerOpen span:nth-child(2) { opacity: 0; }
-.burgerOpen span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+.burgerOpen span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 .appShell { display: block; }
 .sidebarOverlay { position: fixed; inset: 0; z-index: 19; background: rgba(0, 0, 0, 0.58); border: 0; opacity: 0; pointer-events: none; }
@@ -207,7 +224,20 @@
 .sidebarCollapsed .filterCard,
 .sidebarCollapsed button em,
 .sidebarCollapsed .sidebarTop strong { display: none; }
-.sidebarCollapsed .sidebarNav button { justify-content: center; padding-left: 2px; padding-right: 2px; }
+.sidebarCollapsed .sidebarNav {
+  padding-left: 0;
+  padding-right: 0;
+}
+.sidebarCollapsed .sidebarNav button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+}
+.sidebarCollapsed .sidebarNav button em { display: none; }
+.sidebarCollapsed .sidebarNav button svg { margin: 0; }
+
 
 .content { margin-left: 288px; min-height: calc(100vh - 74px); padding: var(--space-4); }
 .contentInner { max-width: 1200px; margin: 0 auto; }
