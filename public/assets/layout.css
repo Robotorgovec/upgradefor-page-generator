@@ -1262,3 +1262,55 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
     overflow-x: clip;
   }
 }
+
+/* fio-rus mobile: unify gutters & prevent narrowing (canonical: /wikimarket/domains/fio-rus) */
+@media (max-width: 768px) {
+  .fio-rus-landing{
+    --fio-gutter: 15px;
+    --fio-gutters-v4: 1;
+  }
+
+  .app-content .fio-rus-landing #search-preview,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap{
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+    padding-left: var(--fio-gutter);
+    padding-right: var(--fio-gutter);
+  }
+
+  .app-content .fio-rus-landing #search-preview .search-preview-grid,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .grid,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .cards-3,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .cards-6{
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .app-content .fio-rus-landing #search-preview .card,
+  .app-content .fio-rus-landing #search-preview .search-preview-section,
+  .app-content .fio-rus-landing #search-preview .search-mock,
+  .app-content .fio-rus-landing #search-preview details.card,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .card,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .search-preview-section,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap .search-mock,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap details.card{
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .app-content .fio-rus-landing #search-preview > *,
+  .app-content .fio-rus-landing #search-preview ~ section.wrap > *{
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .app-content .fio-rus-landing{ overflow-x: clip; }
+}
