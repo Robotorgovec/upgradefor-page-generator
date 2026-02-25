@@ -259,7 +259,11 @@ export function SportpitMenu({
             </div>
           </div>
 
-          <button type="button" className={styles.showBtn} onClick={onShowFilters}>
+          <button
+            type="button"
+            className={styles.showBtn}
+            onClick={onShowFilters}
+          >
             Показать
           </button>
         </div>
