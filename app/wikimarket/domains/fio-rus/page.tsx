@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function FioRusDomainPage() {
   return (
-    <>
+    <div className="fio-rus-landing">
       {template.styles.map((style, index) => (
         <style
           key={`fio-rus-style-${index}`}
@@ -31,6 +31,6 @@ export default function FioRusDomainPage() {
           {script}
         </Script>
       ))}
-    </>
+    </div>
   );
 }
