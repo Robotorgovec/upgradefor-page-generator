@@ -200,8 +200,9 @@
   border: none;
   padding: 8px;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
   min-height: 48px;
   width: auto;
@@ -216,27 +217,35 @@
   outline: none;
 }
 
-.burger span {
-  display: block;
-  width: 24px;
+.burgerLine {
+  position: absolute;
+  left: 50%;
+  width: 20px;
   height: 2px;
   background-color: currentColor;
-  margin: 2px 0; /* линии ближе */
-  border-radius: 0;
+  border-radius: 999px;
   border: none;
   transform-origin: center;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform: translateX(-50%);
+  transition: transform 160ms ease-out, opacity 160ms ease-out;
 }
 
+.burgerLine:nth-child(1) { top: calc(50% - 6px); }
+.burgerLine:nth-child(2) { top: 50%; }
+.burgerLine:nth-child(3) { top: calc(50% + 6px); }
+
 /* крестик — симметричный */
-.burgerOpen span:nth-child(1) {
-  transform: translateY(4px) rotate(45deg);
+.burgerOpen .burgerLine:nth-child(1) {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
 }
-.burgerOpen span:nth-child(2) {
+.burgerOpen .burgerLine:nth-child(2) {
   opacity: 0;
+  transform: translateX(-50%) scaleX(0.6);
 }
-.burgerOpen span:nth-child(3) {
-  transform: translateY(-4px) rotate(-45deg);
+.burgerOpen .burgerLine:nth-child(3) {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /* ===== LAYOUT ===== */

@@ -166,9 +166,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               aria-controls="sportpit-sidebar"
               aria-expanded={isNavOpen}
             >
-              <span />
-              <span />
-              <span />
+              <span className={styles.burgerLine} />
+              <span className={styles.burgerLine} />
+              <span className={styles.burgerLine} />
             </button>
           </div>
 
