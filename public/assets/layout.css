@@ -1228,37 +1228,34 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   }
 }
 
-/* fio-rus mobile gutters fix: from #search-preview and below */
-@media (max-width: 768px){
-  .fio-rus-landing{
+/* fio-rus mobile: unify gutters below hero (canonical: /wikimarket/domains/fio-rus) */
+@media (max-width: 768px) {
+  .fio-rus-landing {
     --fio-gutter: 15px;
+    --fio-gutters-v3: 1;
   }
 
-  .fio-rus-landing #search-preview,
-  .fio-rus-landing #search-preview ~ section.wrap{
+  .fio-rus-landing .app-content section.wrap:not(.fio-rus-hero) {
     width: 100%;
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
+    box-sizing: border-box;
     padding-left: var(--fio-gutter);
     padding-right: var(--fio-gutter);
-    box-sizing: border-box;
   }
 
-  .fio-rus-landing #search-preview > *,
-  .fio-rus-landing #search-preview ~ section.wrap > *{
+  .fio-rus-landing .app-content section.wrap:not(.fio-rus-hero) > * {
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
   }
 
-  .fio-rus-landing #search-preview .search-preview-grid{
+  .fio-rus-landing #search-preview .search-preview-grid {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
   }
 
-  .fio-rus-landing .app-content{
-    overflow-x: clip;
-  }
+  .fio-rus-landing .app-content { overflow-x: clip; }
 }
