@@ -1,5 +1,6 @@
 import Script from "next/script";
 
+import BodyClass from "../../../../components/layout/BodyClass";
 import { loadHtmlTemplate } from "../../../../lib/html-template";
 
 const template = loadHtmlTemplate("wikimarket/domains/fio-rus/index.html");
@@ -13,14 +14,9 @@ export const metadata = {
 export default function FioRusDomainPage() {
   return (
     <>
-      {template.styles.map((style, index) => (
-        <style
-          key={`fio-rus-style-${index}`}
-          dangerouslySetInnerHTML={{ __html: style }}
-        />
-      ))}
+      <BodyClass className="fio-rus-landing" />
 
-      <div dangerouslySetInnerHTML={{ __html: template.mainHtml }} />
+      <div className="fio-rus-landing" dangerouslySetInnerHTML={{ __html: template.mainHtml }} />
 
       {template.inlineScripts.map((script, index) => (
         <Script
