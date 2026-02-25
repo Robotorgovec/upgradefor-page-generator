@@ -44,20 +44,6 @@ type SportpitMenuProps = {
   isCollapsed: boolean;
   isSidebarOpen: boolean;
   isMainPage: boolean;
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-  country: "kz" | "ru" | "us";
-  activeSection: string;
-  activeTypeNav: string;
-  priceMin: number;
-  priceMax: number;
-  ratingMin: number | null;
-  onCloseSidebar: () => void;
-  goToSection: (id: string) => void;
-  onTypeClick: (id: string) => void;
-  onCountryChange: (value: "kz" | "ru" | "us") => void;
-  onPriceMinChange: (value: number) => void;
-  onPriceMaxChange: (value: number) => void;
-=======
 
   // Страна: уже существующий select (НЕ добавлять новый)
   country: "kz" | "ru" | "us";
@@ -79,7 +65,6 @@ type SportpitMenuProps = {
   onPriceMinChange: (value: number) => void;
   onPriceMaxChange: (value: number) => void;
 
->>>>>>> sandbox/sportpit-preview
   onRatingChange: (value: number | null) => void;
   onShowFilters: () => void;
 };
@@ -93,10 +78,7 @@ export function SportpitMenu({
   activeTypeNav,
   priceMin,
   priceMax,
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-=======
   priceRange,
->>>>>>> sandbox/sportpit-preview
   ratingMin,
   onCloseSidebar,
   goToSection,
@@ -111,26 +93,18 @@ export function SportpitMenu({
     <>
       <button
         type="button"
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-        className={`${styles.sidebarOverlay} ${isSidebarOpen ? styles.sidebarOverlayVisible : ""}`}
-=======
         className={`${styles.sidebarOverlay} ${
           isSidebarOpen ? styles.sidebarOverlayVisible : ""
         }`}
->>>>>>> sandbox/sportpit-preview
         aria-label="Закрыть меню"
         onClick={onCloseSidebar}
       />
 
       <aside
         id="sportpit-sidebar"
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-        className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
-=======
         className={`${styles.sidebar} ${
           isCollapsed ? styles.sidebarCollapsed : ""
         } ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
->>>>>>> sandbox/sportpit-preview
         aria-label="Основная навигация"
       >
         <div className={styles.sidebarTop}>
@@ -142,9 +116,6 @@ export function SportpitMenu({
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-              <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => goToSection(item.id)} title={item.label}>
-=======
               <button
                 key={item.id}
                 type="button"
@@ -156,25 +127,18 @@ export function SportpitMenu({
                 onClick={() => goToSection(item.id)}
                 title={item.label}
               >
->>>>>>> sandbox/sportpit-preview
                 <Icon className={styles.sidebarIcon} />
                 <em>{item.label}</em>
               </button>
             );
           })}
         </div>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-=======
 
->>>>>>> sandbox/sportpit-preview
         <div className={styles.sidebarSectionLabel}>Каталог (типы)</div>
         <div className={styles.sidebarNav}>
           {categoryItems.map((item) => {
             const Icon = item.icon;
             return (
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-              <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
-=======
               <button
                 key={item.id}
                 type="button"
@@ -182,7 +146,6 @@ export function SportpitMenu({
                 onClick={() => onTypeClick(item.id)}
                 title={item.label}
               >
->>>>>>> sandbox/sportpit-preview
                 <Icon className={styles.sidebarIcon} />
                 <em>{item.label}</em>
               </button>
@@ -195,17 +158,11 @@ export function SportpitMenu({
           <div className={styles.filterHead}>
             <FilterIcon className={styles.smallIcon} /> <span>Параметры</span>
           </div>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-=======
 
->>>>>>> sandbox/sportpit-preview
           <div className={styles.filterBlock}>
             <h4>
               <GlobeIcon className={styles.smallIcon} /> Страна
             </h4>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-            <select value={country} onChange={(e) => onCountryChange(e.target.value as "kz" | "ru" | "us")}>
-=======
 
             {/* ВАЖНО: USA-чекбокс УДАЛЁН. Только select. */}
             <select
@@ -214,26 +171,16 @@ export function SportpitMenu({
                 onCountryChange(e.target.value as "kz" | "ru" | "us")
               }
             >
->>>>>>> sandbox/sportpit-preview
               <option value="kz">Казахстан</option>
               <option value="ru">Россия</option>
               <option value="us">США</option>
             </select>
           </div>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-=======
 
->>>>>>> sandbox/sportpit-preview
           <div className={styles.filterBlock}>
             <h4>
               <GlobeIcon className={styles.smallIcon} /> Форма
             </h4>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-            <label><input type="checkbox" defaultChecked /> Капсулы</label>
-            <label><input type="checkbox" /> Порошок</label>
-            <label><input type="checkbox" /> Жидкость</label>
-          </div>
-=======
             <label>
               <input type="checkbox" defaultChecked /> Капсулы
             </label>
@@ -245,18 +192,10 @@ export function SportpitMenu({
             </label>
           </div>
 
->>>>>>> sandbox/sportpit-preview
           <div className={styles.filterBlock}>
             <h4>
               <PriceIcon className={styles.smallIcon} /> Цена
             </h4>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-            <div className={styles.priceRow}>
-              <input className={styles.priceInput} type="number" value={priceMin} min={0} onChange={(e) => onPriceMinChange(Number(e.target.value || 0))} aria-label="Мин. цена" />
-              <input className={styles.priceInput} type="number" value={priceMax} min={priceMin} onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))} aria-label="Макс. цена" />
-            </div>
-          </div>
-=======
 
             <div className={styles.priceRow}>
               <input
@@ -291,21 +230,10 @@ export function SportpitMenu({
             />
           </div>
 
->>>>>>> sandbox/sportpit-preview
           <div className={styles.filterBlock}>
             <h4>
               <LabIcon className={styles.smallIcon} /> Рейтинг
             </h4>
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
-            <div className={styles.ratingRow}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => onRatingChange(ratingMin === star ? null : star)}>★</button>
-              ))}
-              <span className={styles.ratingNote}>{ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}</span>
-            </div>
-          </div>
-          <button type="button" className={styles.showBtn} onClick={onShowFilters}>Показать</button>
-=======
 
             <div className={styles.ratingRow}>
               {[1, 2, 3, 4, 5].map((star) => (
@@ -325,7 +253,6 @@ export function SportpitMenu({
               ))}
 
               {/* Рейтинг-ползунок УДАЛЁН по требованию */}
-
               <span className={styles.ratingNote}>
                 {ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}
               </span>
@@ -335,13 +262,8 @@ export function SportpitMenu({
           <button type="button" className={styles.showBtn} onClick={onShowFilters}>
             Показать
           </button>
->>>>>>> sandbox/sportpit-preview
         </div>
       </aside>
     </>
   );
-<<<<<<< codex/refactor-sportpit-sidebar-menu-component-hz4ji3
 }
-=======
-}
->>>>>>> sandbox/sportpit-preview
