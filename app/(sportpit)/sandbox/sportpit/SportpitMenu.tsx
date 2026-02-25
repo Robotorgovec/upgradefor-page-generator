@@ -253,14 +253,17 @@ export function SportpitMenu({
               ))}
 
               {/* Рейтинг-ползунок УДАЛЁН по требованию */}
-
               <span className={styles.ratingNote}>
                 {ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}
               </span>
             </div>
           </div>
 
-          <button type="button" className={styles.showBtn} onClick={onShowFilters}>
+          <button
+            type="button"
+            className={styles.showBtn}
+            onClick={onShowFilters}
+          >
             Показать
           </button>
         </div>

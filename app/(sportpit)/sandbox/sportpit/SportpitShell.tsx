@@ -56,9 +56,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const syncCart = () =>
-      setCartCount(
-        Number(window.sessionStorage.getItem("sp-cart-count") || "0")
-      );
+      setCartCount(Number(window.sessionStorage.getItem("sp-cart-count") || "0"));
     syncCart();
     window.addEventListener("storage", syncCart);
     window.addEventListener("sp-cart-changed", syncCart as EventListener);
@@ -162,9 +160,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           <div className={styles.burgerWrap}>
             <button
               type="button"
-              className={`${styles.burger} ${
-                isNavOpen ? styles.burgerOpen : ""
-              }`}
+              className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
               onClick={onBurgerClick}
               aria-label="Открыть меню"
               aria-controls="sportpit-sidebar"
