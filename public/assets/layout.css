@@ -1314,3 +1314,25 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 
   .app-content .fio-rus-landing{ overflow-x: clip; }
 }
+
+@media (max-width: 768px) {
+  body.fio-rus-landing .fio-actions,
+  body.fio-rus-landing #fio-share-output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  body.fio-rus-landing .fio-actions .btn,
+  body.fio-rus-landing #fio-share-output .btn,
+  body.fio-rus-landing .search-preview-text > a.btn[data-cta-link="search-preview"] {
+    display: block;
+    width: 100%;
+    max-width: 560px; /* ок, на mobile будет ограничено контейнером */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+}
