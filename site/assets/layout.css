@@ -970,7 +970,7 @@ header .nav {
     padding-left: var(--space-2);
   }
 }
-/* fio-rus: buttons-only (mobile). DO NOT style other sections here */
+/* fio-rus: buttons-only mobile fix */
   .fio-actions,
   #fio-share-output {
   #fio-apply-btn,

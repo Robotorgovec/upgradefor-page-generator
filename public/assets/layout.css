@@ -1315,7 +1315,7 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   .app-content .fio-rus-landing{ overflow-x: clip; }
 }
 
-/* fio-rus: buttons-only (mobile). DO NOT style other sections here */
+/* fio-rus: buttons-only mobile fix */
   .fio-actions,
   #fio-share-output {
     text-align: center;
