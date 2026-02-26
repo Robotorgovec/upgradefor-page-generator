@@ -453,6 +453,161 @@
   .upgr-hx .hero-art-desktop{display:none}
 }
 
+@media (max-width: 768px){
+  .upgr-hx .hero{
+    padding: 10px 0 20px;
+  }
+
+  .upgr-hx .hero-main{
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .upgr-hx .hero-main .kicker{
+    margin: 0 auto;
+  }
+
+  .upgr-hx h1{
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(28px, 7.8vw, 31px);
+    line-height: 1.12;
+    letter-spacing: normal;
+    max-width: 21ch;
+    text-align: center;
+  }
+
+  .upgr-hx .lead{
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+    max-width: 38ch;
+  }
+
+  .upgr-hx .cta-row{
+    margin-top: 14px;
+    justify-content: center;
+  }
+
+  .upgr-hx .cta-row .btn{
+    width: 100%;
+    max-width: 400px;
+    min-height: 46px;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1 1 100%;
+  }
+
+  .upgr-hx .hero-phone{
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .upgr-hx .hero-art-mobile{
+    max-width: min(350px, 100%);
+    width: 100%;
+    margin-top: 14px;
+    margin-bottom: 0;
+  }
+
+  .upgr-hx .hero-figure{
+    width: 100%;
+    height: auto;
+  }
+
+  .upgr-hx h2{
+    font-size: clamp(20px, 5.7vw, 22px);
+    line-height: 1.24;
+    margin-bottom: 12px;
+  }
+
+  .upgr-hx h3{
+    font-size: clamp(16px, 4.9vw, 18px);
+    line-height: 1.3;
+  }
+
+  .upgr-hx p,
+  .upgr-hx li,
+  .upgr-hx td,
+  .upgr-hx th,
+  .upgr-hx summary,
+  .upgr-hx .muted{
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .upgr-hx p{ margin-bottom: 10px; }
+  .upgr-hx .section{ padding: 30px 0; }
+  .upgr-hx .grid,
+  .upgr-hx .form-grid,
+  .upgr-hx .contact-actions,
+  .upgr-hx .sticky-actions,
+  .upgr-hx .grid-2,
+  .upgr-hx .grid-3,
+  .upgr-hx .grid-4{ gap: 14px; grid-template-columns: 1fr; }
+
+  .upgr-hx .card,
+  .upgr-hx .feature,
+  .upgr-hx .type-card,
+  .upgr-hx .price-item,
+  .upgr-hx details,
+  .upgr-hx .geo-item,
+  .upgr-hx .form{
+    padding: 14px;
+  }
+
+  .upgr-hx .type-card .type-cta,
+  .upgr-hx .trust-cta,
+  .upgr-hx .contact-actions,
+  .upgr-hx .cta-row{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .upgr-hx .type-card .type-cta .btn,
+  .upgr-hx .trust-cta .btn,
+  .upgr-hx .contact-actions .btn,
+  .upgr-hx .form .btn,
+  .upgr-hx .sticky-actions .btn{
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .upgr-hx label{
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .upgr-hx input,
+  .upgr-hx select,
+  .upgr-hx textarea{
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .upgr-hx textarea{ min-height: 110px; }
+
+  .upgr-hx .form-grid{ gap: 10px; }
+
+  .upgr-hx .w-15,
+  .upgr-hx .w-30,
+  .upgr-hx .w-55,
+  .upgr-hx .filters-grid,
+  .upgr-hx .faq-grid{
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* Replaced inline style helpers */
 .upgr-hx .pad-16{padding:16px}
 .upgr-hx .ai-start{align-items:start}
