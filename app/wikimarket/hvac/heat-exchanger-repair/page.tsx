@@ -8,10 +8,10 @@ const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<
 
 const heroFrameMarkup = `
           <div class="hero-art hero-art-mobile" aria-hidden="true">
-            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.svg" alt="Теплообменник" />
+            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.png" alt="Теплообменники — ремонт и обслуживание" />
           </div>
           <div class="hero-art hero-art-desktop" aria-hidden="true">
-            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.svg" alt="Теплообменник" />
+            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.png" alt="Теплообменники — ремонт и обслуживание" />
           </div>
         </div>
       </section>`;
