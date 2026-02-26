@@ -1316,23 +1316,24 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 }
 
 @media (max-width: 768px) {
-  body.fio-rus-landing .fio-actions,
-  body.fio-rus-landing #fio-share-output {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  body.fio-rus-landing .app-content #fio-share-output {
     gap: 14px;
     text-align: center;
   }
 
-  body.fio-rus-landing .fio-actions .btn,
-  body.fio-rus-landing #fio-share-output .btn,
-  body.fio-rus-landing .search-preview-text > a.btn[data-cta-link="search-preview"] {
-    display: block;
-    width: 100%;
-    max-width: 560px; /* ок, на mobile будет ограничено контейнером */
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
+  body.fio-rus-landing .app-content .search-preview-text > a.btn[data-cta-link="search-preview"] {
   }
-}
+  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile { display: block; }
+  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-desktop { display: none; }
+  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile {
+  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile .hero-figure {
+  body.fio-rus-landing .app-content .fio-hero-title {
+  body.fio-rus-landing .app-content .fio-rus-hero .cta {
+  body.fio-rus-landing .app-content [data-cta-link="seo"] {
+  body.fio-rus-landing .app-content section[aria-labelledby="seo-advantage-title"] > .cta + .lead {
+  body.fio-rus-landing .app-content #form > .lead:first-of-type {
+  body.fio-rus-landing .app-content #benefits-title {
+  body.fio-rus-landing .app-content #reputation .card:last-child {
+  body.fio-rus-landing .app-content #seo-advantage-title {
+  body.fio-rus-landing .app-content #final-cta .card {
+  body.fio-rus-landing .app-content #faq-title {
