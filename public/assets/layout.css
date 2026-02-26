@@ -1315,34 +1315,16 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   .app-content .fio-rus-landing{ overflow-x: clip; }
 }
 
-@media (max-width: 768px) {
-  .fio-rus-landing .fio-actions,
-  .fio-rus-landing #fio-share-output {
+/* fio-rus: buttons-only (mobile). DO NOT style other sections here */
+  .fio-actions,
+  #fio-share-output {
     text-align: center;
   }
 
-  .fio-rus-landing #fio-apply-btn,
-  .fio-rus-landing #fio-share-btn,
-  .fio-rus-landing #fio-share-output .btn,
-  .fio-rus-landing .search-preview-text > a.btn[data-cta-link="search-preview"] {
-  .fio-rus-landing .fio-rus-hero .hero-art-mobile { display: block; }
-  .fio-rus-landing .fio-rus-hero .hero-art-desktop { display: none; }
-  .fio-rus-landing .fio-rus-hero .hero-art-mobile {
-  .fio-rus-landing .fio-rus-hero .hero-art-mobile .hero-figure {
-  .fio-rus-landing .fio-hero-title {
-  .fio-rus-landing .fio-rus-hero .cta {
-  .fio-rus-landing .fio-rus-hero .cta .btn,
-  .fio-rus-landing #final-cta .btn,
-  .fio-rus-landing #form button[type="submit"],
-  .fio-rus-landing #reputation .card:last-child .btn,
-  .fio-rus-landing [data-cta-link="seo"] {
-  .fio-rus-landing .fio-rus-hero #domain-cta-status,
-  .fio-rus-landing section[aria-labelledby="seo-advantage-title"] > .cta + .lead {
-  .fio-rus-landing #form-title,
-  .fio-rus-landing #form > .lead:first-of-type {
-  .fio-rus-landing #benefits-title {
-  .fio-rus-landing #reputation .card:last-child {
-  .fio-rus-landing #seo-advantage-title {
-  .fio-rus-landing section[aria-labelledby="seo-advantage-title"] > .cta,
-  .fio-rus-landing #final-cta .card {
-  .fio-rus-landing #faq-title {
+  #fio-apply-btn,
+  #fio-share-btn,
+  #fio-share-output .btn,
+  a.btn[data-cta-link="search-preview"] {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;

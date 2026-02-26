@@ -1,3 +1,8 @@
 export default function Head() {
-  return <link rel="stylesheet" href="/assets/layout.css?v=fio-rus-mobile-fix-1" />;
+  return (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="/assets/layout.css?v=fio-rus-buttons-fix-3" />
+    </>
+  );
 }
