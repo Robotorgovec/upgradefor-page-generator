@@ -417,6 +417,28 @@
       word-break: break-word;
     }
 
+    @media (max-width: 768px) {
+      .fio-rus-landing .fio-actions,
+      .fio-rus-landing .fio-share-output {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        text-align: center;
+      }
+
+      .fio-rus-landing .fio-actions .btn,
+      .fio-rus-landing .fio-share-output .btn,
+      .fio-rus-landing .search-preview-text > .btn[data-cta-link="search-preview"] {
+        display: block;
+        width: 100%;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+      }
+    }
+
 
     [data-user-domain],
     [data-fio-token="domain"],
