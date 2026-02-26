@@ -18,6 +18,7 @@
       --brand-soft:#e6f7ff;
       --ok:#16a34a;
       --warn:#f59e0b;
+      --hero-bg: var(--color-bg-accent);
 
       --shadow:0 14px 34px rgba(2,6,23,.08);
       --r-1:14px;
@@ -261,27 +262,6 @@
     .upgr-hx .hero-phone{
       margin-top: 10px;
       font-weight: 700;
-    }
-
-    .upgr-hx .hero-visual{
-      padding: clamp(12px, 2.4vw, 18px);
-      background: linear-gradient(180deg, rgba(226,232,240,.6), rgba(255,255,255,0));
-      border: 1px solid var(--line);
-      border-radius: var(--r-2);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height: clamp(180px, 30vw, 320px);
-    }
-
-    .upgr-hx .hero-visual svg{
-      width: 100%;
-      height: auto;
-      max-height: 250px;
-    }
-
-    @media (min-width: 980px){
-      .upgr-hx .hero-visual svg{ max-height: 320px; }
     }
 
     .upgr-hx .types-trust{

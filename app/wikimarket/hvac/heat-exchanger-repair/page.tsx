@@ -8,52 +8,10 @@ const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<
 
 const heroFrameMarkup = `
           <div class="hero-art hero-art-mobile" aria-hidden="true">
-            <svg class="hero-figure" viewBox="0 0 300 200" role="img" aria-label="Схема теплообменника">
-              <rect x="26" y="46" width="248" height="108" rx="16" fill="#E5E7EB" />
-              <rect x="40" y="62" width="220" height="76" rx="12" fill="#F8FAFC" />
-              <g>
-                <rect x="50" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="70" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="90" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="110" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="130" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="150" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="170" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="190" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="210" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="230" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-              </g>
-              <rect x="20" y="86" width="18" height="28" rx="6" fill="#CBD5E1" />
-              <rect x="262" y="86" width="18" height="28" rx="6" fill="#CBD5E1" />
-              <line x1="40" y1="62" x2="260" y2="62" stroke="#E2E8F0" stroke-width="2" />
-              <line x1="40" y1="138" x2="260" y2="138" stroke="#E2E8F0" stroke-width="2" />
-              <line x1="56" y1="54" x2="56" y2="146" stroke="#E5E7EB" stroke-width="1" />
-              <line x1="244" y1="54" x2="244" y2="146" stroke="#E5E7EB" stroke-width="1" />
-            </svg>
+            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.svg" alt="Теплообменник" />
           </div>
           <div class="hero-art hero-art-desktop" aria-hidden="true">
-            <svg class="hero-figure" viewBox="0 0 300 200" role="img" aria-label="Схема теплообменника">
-              <rect x="26" y="46" width="248" height="108" rx="16" fill="#E5E7EB" />
-              <rect x="40" y="62" width="220" height="76" rx="12" fill="#F8FAFC" />
-              <g>
-                <rect x="50" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="70" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="90" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="110" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="130" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="150" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="170" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="190" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-                <rect x="210" y="72" width="14" height="56" rx="4" fill="#C46A2A" />
-                <rect x="230" y="72" width="14" height="56" rx="4" fill="#E07A3F" />
-              </g>
-              <rect x="20" y="86" width="18" height="28" rx="6" fill="#CBD5E1" />
-              <rect x="262" y="86" width="18" height="28" rx="6" fill="#CBD5E1" />
-              <line x1="40" y1="62" x2="260" y2="62" stroke="#E2E8F0" stroke-width="2" />
-              <line x1="40" y1="138" x2="260" y2="138" stroke="#E2E8F0" stroke-width="2" />
-              <line x1="56" y1="54" x2="56" y2="146" stroke="#E5E7EB" stroke-width="1" />
-              <line x1="244" y1="54" x2="244" y2="146" stroke="#E5E7EB" stroke-width="1" />
-            </svg>
+            <img class="hero-figure" src="/assets/media/heat-exchanger-hero.svg" alt="Теплообменник" />
           </div>
         </div>
       </section>`;
