@@ -970,19 +970,30 @@ header .nav {
     padding-left: var(--space-2);
   }
 }
-  body.fio-rus-landing .app-content #fio-share-output {
-  body.fio-rus-landing .app-content .search-preview-text > a.btn[data-cta-link="search-preview"] {
-  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile { display: block; }
-  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-desktop { display: none; }
-  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile {
-  body.fio-rus-landing .app-content .fio-rus-hero .hero-art-mobile .hero-figure {
-  body.fio-rus-landing .app-content .fio-hero-title {
-  body.fio-rus-landing .app-content .fio-rus-hero .cta {
-  body.fio-rus-landing .app-content [data-cta-link="seo"] {
-  body.fio-rus-landing .app-content section[aria-labelledby="seo-advantage-title"] > .cta + .lead {
-  body.fio-rus-landing .app-content #form > .lead:first-of-type {
-  body.fio-rus-landing .app-content #benefits-title {
-  body.fio-rus-landing .app-content #reputation .card:last-child {
-  body.fio-rus-landing .app-content #seo-advantage-title {
-  body.fio-rus-landing .app-content #final-cta .card {
-  body.fio-rus-landing .app-content #faq-title {
+  .fio-rus-landing .fio-actions,
+  .fio-rus-landing #fio-share-output {
+  .fio-rus-landing #fio-apply-btn,
+  .fio-rus-landing #fio-share-btn,
+  .fio-rus-landing #fio-share-output .btn,
+  .fio-rus-landing .search-preview-text > a.btn[data-cta-link="search-preview"] {
+  .fio-rus-landing .fio-rus-hero .hero-art-mobile { display: block; }
+  .fio-rus-landing .fio-rus-hero .hero-art-desktop { display: none; }
+  .fio-rus-landing .fio-rus-hero .hero-art-mobile {
+  .fio-rus-landing .fio-rus-hero .hero-art-mobile .hero-figure {
+  .fio-rus-landing .fio-hero-title {
+  .fio-rus-landing .fio-rus-hero .cta {
+  .fio-rus-landing .fio-rus-hero .cta .btn,
+  .fio-rus-landing #final-cta .btn,
+  .fio-rus-landing #form button[type="submit"],
+  .fio-rus-landing #reputation .card:last-child .btn,
+  .fio-rus-landing [data-cta-link="seo"] {
+  .fio-rus-landing .fio-rus-hero #domain-cta-status,
+  .fio-rus-landing section[aria-labelledby="seo-advantage-title"] > .cta + .lead {
+  .fio-rus-landing #form-title,
+  .fio-rus-landing #form > .lead:first-of-type {
+  .fio-rus-landing #benefits-title {
+  .fio-rus-landing #reputation .card:last-child {
+  .fio-rus-landing #seo-advantage-title {
+  .fio-rus-landing section[aria-labelledby="seo-advantage-title"] > .cta,
+  .fio-rus-landing #final-cta .card {
+  .fio-rus-landing #faq-title {
