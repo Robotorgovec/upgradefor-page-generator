@@ -16,6 +16,11 @@
       --brand:#0ea5e9;
       --brand-700:#0369a1;
       --brand-soft:#e6f7ff;
+      --hx-accent: var(--btn-primary-bg, var(--color-primary, var(--brand)));
+      --hx-accent-hover: var(--btn-primary-bg-hover, var(--color-primary-strong, color-mix(in srgb, var(--hx-accent) 86%, #0f172a)));
+      --hx-accent-soft: var(--primary-50, var(--color-soft, var(--brand-soft)));
+      --hx-accent-border: var(--tag-border, color-mix(in srgb, var(--hx-accent) 45%, var(--line)));
+      --hx-accent-contrast: var(--btn-primary-text, #ffffff);
       --ok:#16a34a;
       --warn:#f59e0b;
       --hero-bg: var(--color-bg-accent);
@@ -75,10 +80,10 @@
     .upgr-hx .kicker{
       display:inline-flex;align-items:center;gap:10px;
       padding:8px 12px;
-      background: var(--brand-soft);
-      border:1px solid color-mix(in srgb, var(--brand) 22%, white);
+      background: var(--hx-accent-soft);
+      border:1px solid var(--hx-accent-border);
       border-radius: 999px;
-      color: var(--brand-700);
+      color: var(--hx-accent);
       font-weight: 700;
       font-size: 13px;
     }
@@ -99,8 +104,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background: rgba(14,165,233,.08);
-      border:1px solid color-mix(in srgb, var(--brand) 20%, var(--line));
+      background: color-mix(in srgb, var(--hx-accent) 8%, transparent);
+      border:1px solid color-mix(in srgb, var(--hx-accent) 20%, var(--line));
       font-size: 18px;
       flex: 0 0 auto;
     }
@@ -120,26 +125,45 @@
       padding: 0 16px;
       border-radius: 14px;
       border:1px solid transparent;
-      background: var(--brand);
-      color: #fff;
+      background: var(--hx-accent);
+      color: var(--hx-accent-contrast);
       font-weight: 800;
       letter-spacing:.1px;
-      box-shadow: 0 10px 24px rgba(14,165,233,.18);
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--hx-accent) 30%, transparent);
       cursor:pointer;
       white-space:nowrap;
       text-decoration:none;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
-    .upgr-hx .btn:hover{ background: var(--brand-700); text-decoration:none; }
+    .upgr-hx .btn:hover{ background: var(--hx-accent-hover); border-color: var(--hx-accent-hover); text-decoration:none; }
 
     .upgr-hx .btn-outline{
       background: transparent;
-      color: var(--text);
-      border-color: color-mix(in srgb, var(--text) 14%, var(--line));
+      color: var(--hx-accent);
+      border-color: var(--hx-accent-border);
       box-shadow:none;
     }
-    .upgr-hx .btn-outline:hover{ border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); background: rgba(14,165,233,.06); }
+    .upgr-hx .btn-outline:hover{ border-color: var(--hx-accent); background: var(--hx-accent-soft); }
+
+    .upgr-hx .btn:focus-visible,
+    .upgr-hx .btn-outline:focus-visible,
+    .upgr-hx a:focus-visible{
+      outline: 2px solid var(--hx-accent);
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--hx-accent) 22%, transparent);
+    }
+
+    .upgr-hx .btn:disabled,
+    .upgr-hx .btn[aria-disabled="true"],
+    .upgr-hx .btn-outline:disabled,
+    .upgr-hx .btn-outline[aria-disabled="true"]{
+      background: #e5e7eb;
+      border-color: #d1d5db;
+      color: #6b7280;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
 
     .upgr-hx .btn-soft{
       background: rgba(15,23,42,.04);
@@ -206,7 +230,7 @@
       font-weight: 700;
       font-size: 13px;
     }
-    .upgr-hx .chip-link:hover{ border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); color: var(--text); text-decoration:none; }
+    .upgr-hx .chip-link:hover{ border-color: var(--hx-accent-border); color: var(--hx-accent); text-decoration:none; }
 
     /* Right contact card */
     .upgr-hx .hero-side{ padding: clamp(16px, 2.6vw, 20px); }
@@ -228,8 +252,8 @@
       display:grid;
       place-items:center;
       
-      background: radial-gradient(circle at 30% 30%, rgba(14,165,233,.22), rgba(3,105,161,.10));
-      color: var(--brand-700);
+      background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--hx-accent) 22%, transparent), color-mix(in srgb, var(--hx-accent) 10%, transparent));
+      color: var(--hx-accent);
       font-weight: 900;
     }
 
@@ -317,8 +341,8 @@
     .upgr-hx textarea{ min-height: 110px; resize: vertical; }
 
     .upgr-hx input:focus, .upgr-hx select:focus, .upgr-hx textarea:focus{
-      border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
-      box-shadow: 0 0 0 4px rgba(14,165,233,.12);
+      border-color: var(--hx-accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--hx-accent) 20%, transparent);
     }
 
     .upgr-hx .form{
@@ -360,9 +384,9 @@
     .upgr-hx .price-pill{
       padding: 6px 10px;
       border-radius: 999px;
-      border:1px solid color-mix(in srgb, var(--brand) 25%, var(--line));
-      background: var(--brand-soft);
-      color: var(--brand-700);
+      border:1px solid var(--hx-accent-border);
+      background: var(--hx-accent-soft);
+      color: var(--hx-accent);
       font-weight: 700;
       font-size: 12px;
     }
@@ -378,8 +402,19 @@
     .upgr-hx .geo-list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
     .upgr-hx .geo-item{ display:flex; justify-content:space-between; gap:10px; align-items:center; padding: 12px; border:1px solid var(--line); border-radius: 16px; background:#fff; }
     .upgr-hx .geo-item a{ font-weight: 900; color: var(--text); }
-    .upgr-hx .geo-item a:hover{ text-decoration: underline; }
-    .upgr-hx .geo-phone{ font-weight: 900; color: var(--brand-700); }
+    .upgr-hx .geo-item a:hover{ color: var(--hx-accent-hover); text-decoration: underline; text-decoration-color: var(--hx-accent-border); }
+    .upgr-hx .geo-phone{ font-weight: 900; color: var(--hx-accent); }
+
+    .upgr-hx .hero-phone a,
+    .upgr-hx .note a{
+      color: var(--hx-accent);
+      text-decoration-color: var(--hx-accent-border);
+    }
+    .upgr-hx .hero-phone a:hover,
+    .upgr-hx .note a:hover{
+      color: var(--hx-accent-hover);
+      text-decoration-color: var(--hx-accent-hover);
+    }
 
     /* Sticky mobile CTA bar */
     .upgr-hx .sticky-bar{
