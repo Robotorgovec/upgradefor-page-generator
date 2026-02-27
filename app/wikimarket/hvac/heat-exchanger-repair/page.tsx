@@ -21,7 +21,7 @@ const heroFrameMarkup = `
 
 const pageHtml = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
-  .replace(heroH1RemovePattern, '$1<!-- HX-H1-REMOVED test-1 -->')
+.replace(heroH1RemovePattern, '$1<!-- HX-H1-REMOVED test-1 -->')
   .replaceAll(' style="padding:16px"', ' class="pad-16"')
   .replaceAll(' class="card" class="pad-16"', ' class="card pad-16"')
   .replaceAll(' class="plain-card" class="pad-16"', ' class="plain-card pad-16"')
