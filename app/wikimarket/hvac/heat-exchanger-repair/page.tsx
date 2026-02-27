@@ -46,10 +46,7 @@ export const metadata = {
 export default function HeatExchangerRepairPage() {
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-1"
-      />
+      <link rel="stylesheet" href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-1" />
       {template.jsonLd.map((data, index) => (
         <Script
           key={`heat-exchanger-repair-jsonld-${index}`}
