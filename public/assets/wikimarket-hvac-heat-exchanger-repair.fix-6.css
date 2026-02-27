@@ -485,8 +485,12 @@
 .upgr-hx .hero-figure{width:100%;height:auto;display:block}
 @media (max-width:768px){
   .upgr-hx .hero-grid{
-    grid-template-columns: 1fr;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 18px;
+    justify-items: stretch !important;
+    justify-content: stretch !important;
+    align-items: start !important;
   }
 
   .upgr-hx .hero-main{
@@ -512,6 +516,18 @@
   .upgr-hx .hero .lead{
     font-size: 15px;
     line-height: 1.45;
+    max-width: 100%;
+  }
+
+  .upgr-hx .hero .kicker,
+  .upgr-hx .hero .lead{
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: manual;
+  }
+
+  .upgr-hx .wrap{
+    width: 100%;
     max-width: 100%;
   }
 
