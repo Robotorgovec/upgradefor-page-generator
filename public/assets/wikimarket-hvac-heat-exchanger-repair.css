@@ -484,6 +484,56 @@
 }
 .upgr-hx .hero-figure{width:100%;height:auto;display:block}
 @media (max-width:768px){
+  .upgr-hx .hero-grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .upgr-hx .hero-main{
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 12px 0 0;
+  }
+
+  .upgr-hx .kicker{
+    display: block;
+    width: 100%;
+    white-space: normal;
+    line-height: 1.35;
+    font-size: 12.5px;
+  }
+
+  .upgr-hx .hero h1{
+    font-size: clamp(24px, 8vw, 32px);
+    line-height: 1.15;
+  }
+
+  .upgr-hx .hero .lead{
+    font-size: 15px;
+    line-height: 1.45;
+    max-width: 100%;
+  }
+
+  .upgr-hx .cta-row{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .upgr-hx .cta-row .btn{
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  .upgr-hx .hero-figure{
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 100%;
+  }
+
   .upgr-hx .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
   .upgr-hx .hero-art-desktop{display:none}
 }
