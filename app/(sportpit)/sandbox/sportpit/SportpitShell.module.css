@@ -24,6 +24,12 @@
   --accent-2: #ff8a00;
   --border: rgba(180, 205, 238, 0.14);
   --focus: rgba(33, 255, 106, 0.55);
+  --sportpit-rail-w: 52px;
+  --sportpit-rail-shift-x: 0px;
+  --burger-line-w: 19px;
+  --burger-line-h: 2px;
+  --burger-icon-h: 12px;
+  --burger-radius: 2px;
   --radius: 16px;
   --control-h: 42px;
   --shadow-lg: 0 18px 60px rgba(0, 0, 0, 0.45);
@@ -76,6 +82,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.headerLeftCollapsed {
+  width: var(--sportpit-rail-w);
+  justify-content: center;
+}
+
+.logoDesktopCollapsed {
+  display: none;
 }
 
 .logo {
@@ -143,7 +158,6 @@
 }
 
 .headerActions button,
-.burger,
 .showBtn {
   min-height: var(--control-h);
   border: 1px solid var(--border);
@@ -156,8 +170,7 @@
 }
 
 .headerActions button:hover,
-.showBtn:hover,
-.burger:hover {
+.showBtn:hover {
   border-color: rgba(33, 255, 106, 0.55);
   box-shadow: 0 0 24px rgba(33, 255, 106, 0.15);
   transform: translateY(-1px);
@@ -186,57 +199,84 @@
   font-weight: 700;
 }
 
-/* ===== BURGER ===== */
+/* ===== BURGER V2 ===== */
 
-.burgerWrap {
-  width: 56px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
+.burgerV2Wrap {
+  width: var(--sportpit-rail-w);
+  display: grid;
+  place-items: center;
 }
 
-.burger {
-  background: none;
+.headerLeftCollapsed .burgerV2Wrap {
+  transform: translateX(var(--sportpit-rail-shift-x));
+}
+
+.burgerV2Btn {
+  width: 46px;
+  height: 46px;
   border: none;
-  padding: 8px;
+  background: transparent;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 48px;
-  width: auto;
+  padding: 0;
+  display: grid;
+  place-items: center;
 }
 
-/* убрать некрасивую подсветку/обводку только у бургера */
-.burger:hover,
-.burger:focus-visible {
+.burgerV2Btn:hover {
   background: transparent;
   box-shadow: none;
   border-color: transparent;
-  outline: none;
 }
 
-.burger span {
+.burgerV2Btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.burgerIcon {
+  position: relative;
+  width: var(--burger-line-w);
+  height: var(--burger-icon-h);
   display: block;
-  width: 24px;
-  height: 2px;
-  background-color: currentColor;
-  margin: 2px 0; /* линии ближе */
-  border-radius: 0;
-  border: none;
-  transform-origin: center;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* крестик — симметричный */
-.burgerOpen span:nth-child(1) {
-  transform: translateY(4px) rotate(45deg);
+.burgerV2Line {
+  position: absolute;
+  left: 0;
+  width: var(--burger-line-w);
+  height: var(--burger-line-h);
+  border-radius: var(--burger-radius);
+  background: rgba(234, 242, 255, 0.92);
+  transition: transform 180ms ease, opacity 180ms ease, top 180ms ease;
+  transform-origin: center;
 }
-.burgerOpen span:nth-child(2) {
+
+.burgerV2LineTop {
+  top: 0;
+}
+
+.burgerV2LineMid {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.burgerV2LineBot {
+  bottom: 0;
+}
+
+.burgerV2Open .burgerV2LineTop {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.burgerV2Open .burgerV2LineMid {
   opacity: 0;
 }
-.burgerOpen span:nth-child(3) {
-  transform: translateY(-4px) rotate(-45deg);
+
+.burgerV2Open .burgerV2LineBot {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 /* ===== LAYOUT ===== */
@@ -280,7 +320,7 @@
   box-sizing: border-box;
 }
 .sidebarCollapsed {
-  width: 50px;
+  width: var(--sportpit-rail-w);
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 0;
@@ -569,7 +609,7 @@
 /* ВНИМАНИЕ: это сработает только если .content является соседним sibling для .sidebar.
    Если DOM-структура другая — правим в JSX (добавим класс на wrapper) */
 .sidebarCollapsed ~ .content {
-  margin-left: 50px;
+  margin-left: var(--sportpit-rail-w);
 }
 
 .toast {
@@ -623,14 +663,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .headerActions button,
-  .burger,
+  .burgerV2Line,
   .showBtn,
   .sidebarNav button {
     transition: none;
   }
   .headerActions button:hover,
-  .showBtn:hover,
-  .burger:hover {
+  .showBtn:hover {
     transform: none;
   }
 }

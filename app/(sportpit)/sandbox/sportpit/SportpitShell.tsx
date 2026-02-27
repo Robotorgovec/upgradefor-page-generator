@@ -6,6 +6,7 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 import styles from "./SportpitShell.module.css";
 import { CartIcon } from "./ui/icons";
+import { SportpitBurgerV2 } from "./SportpitBurgerV2";
 import { SportpitMenu } from "./SportpitMenu";
 
 const navSectionIds = ["top", "quality", "reviews", "education"] as const;
@@ -101,6 +102,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   // Открытость для крестика/бургера: mobile = sidebarOpen, desktop = !collapsed
   const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
+  const collapsedDesktop = isCollapsed && !isMobileViewport;
 
   const goToSection = (id: string) => {
     if (!isMainPage) return;
@@ -156,25 +158,20 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </a>
 
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <div className={styles.burgerWrap}>
-            <button
-              type="button"
-              className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
-              onClick={onBurgerClick}
-              aria-label="Открыть меню"
-              aria-controls="sportpit-sidebar"
-              aria-expanded={isNavOpen}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
+        <div
+          className={`${styles.headerLeft} ${collapsedDesktop ? styles.headerLeftCollapsed : ""}`}
+        >
+          <div className={styles.burgerV2Wrap}>
+            <SportpitBurgerV2
+              isOpen={isNavOpen}
+              onToggle={onBurgerClick}
+              controlsId="sportpit-sidebar"
+            />
           </div>
 
           <button
             type="button"
-            className={styles.logo}
+            className={`${styles.logo} ${collapsedDesktop ? styles.logoDesktopCollapsed : ""}`}
             onClick={() => goToSection("top")}
           >
             <Image
