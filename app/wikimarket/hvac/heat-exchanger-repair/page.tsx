@@ -18,6 +18,13 @@ const heroFrameMarkup = `
 
 const pageHtml = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
+  .replace(
+    /<h1>\s*Ремонт теплообменников всех типов\s*<\/h1>/i,
+    "<h1 class=\"hx-hero-title\" data-hx-h1=\"fix-6\">" +
+      "<span class=\"hx-h1-line\">Ремонт теплообменников</span>" +
+      "<span class=\"hx-h1-line hx-h1-line--second\">всех типов</span>" +
+    "</h1>"
+  )
   .replaceAll(' style="padding:16px"', ' class="pad-16"')
   .replaceAll(' class="card" class="pad-16"', ' class="card pad-16"')
   .replaceAll(' class="plain-card" class="pad-16"', ' class="plain-card pad-16"')
@@ -48,7 +55,7 @@ export default function HeatExchangerRepairPage() {
     <>
       <link
         rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-2"
+        href="/assets/wikimarket-hvac-heat-exchanger-repair.fix-6.css"
       />
       {template.jsonLd.map((data, index) => (
         <Script
