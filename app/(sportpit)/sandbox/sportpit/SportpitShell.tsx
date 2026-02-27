@@ -103,7 +103,8 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   };
 
   // Открытость для крестика/бургера: mobile = sidebarOpen, desktop = !collapsed
-  const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
+  const isDesktopExpanded = !isMobileViewport && !isCollapsed;
+  const isNavOpen = isMobileViewport ? isSidebarOpen : isDesktopExpanded;
   const collapsedDesktop = isCollapsed && !isMobileViewport;
 
   const goToSection = (id: string) => {
@@ -175,9 +176,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
           <button
             type="button"
-            className={`${styles.logo} ${
-              collapsedDesktop ? styles.logoDesktopCollapsed : ""
-            }`}
+            className={styles.logo}
             onClick={() => goToSection("top")}
           >
             <Image
@@ -227,7 +226,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       <div className={styles.appShell}>
         <SportpitMenu
           isCollapsed={isCollapsed}
-          isSidebarOpen={isSidebarOpen}
+          isSidebarOpen={isMobileViewport ? isSidebarOpen : isDesktopExpanded}
           isMainPage={isMainPage}
           country={isUsaContext ? "us" : country}
           activeSection={activeSection}
@@ -236,7 +235,13 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           priceMax={priceMax}
           priceRange={priceMax}
           ratingMin={ratingMin}
-          onCloseSidebar={() => setIsSidebarOpen(false)}
+          onCloseSidebar={() => {
+            if (isMobileViewport) {
+              setIsSidebarOpen(false);
+              return;
+            }
+            setIsCollapsed(true);
+          }}
           goToSection={goToSection}
           onTypeClick={onTypeClick}
           onCountryChange={onCountryChange}

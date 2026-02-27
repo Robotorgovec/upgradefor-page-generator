@@ -24,7 +24,15 @@
   --accent-2: #ff8a00;
   --border: rgba(180, 205, 238, 0.14);
   --focus: rgba(33, 255, 106, 0.55);
-  --sportpit-rail-w: 52px;
+  --sportpit-rail-w: 50px;
+  --sportpit-sidebar-w: 280px;
+  --sportpit-header-h: 74px;
+  --sportpit-header-left-w: var(--sportpit-sidebar-w);
+  --sportpit-rail-shift-x: 0px;
+  --burger-line-w: 19px;
+  --burger-line-h: 2px;
+  --burger-icon-h: 12px;
+  --burger-radius: 2px;
   --radius: 16px;
   --control-h: 42px;
   --shadow-lg: 0 18px 60px rgba(0, 0, 0, 0.45);
@@ -62,26 +70,29 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  height: 74px;
+  height: var(--sportpit-header-h);
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   background: rgba(9, 13, 20, 0.9);
   backdrop-filter: blur(12px);
   display: grid;
-  grid-template-columns: auto 1fr minmax(220px, 340px) auto;
+  grid-template-columns: var(--sportpit-header-left-w) 1fr minmax(220px, 340px) auto;
   gap: 12px;
   align-items: center;
 }
 
 .headerLeft {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.logoDesktopCollapsed {
-  display: none;
+.headerLeftCollapsed {
+  justify-content: flex-start;
 }
+
 
 .logo {
   border: 0;
@@ -193,6 +204,7 @@
 
 .burgerV2Wrap {
   width: var(--sportpit-rail-w);
+  flex: 0 0 var(--sportpit-rail-w);
   display: grid;
   place-items: center;
 }
@@ -206,73 +218,96 @@
   padding: 0;
   display: grid;
   place-items: center;
-  gap: 6px;
+}
+
+.burgerIcon {
+  position: relative;
+  width: var(--burger-line-w);
+  height: var(--burger-icon-h);
+  display: block;
 }
 
 .burgerV2Btn:hover {
   background: transparent;
   box-shadow: none;
-  border-color: transparent;
 }
 
 .burgerV2Btn:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+  background: transparent;
 }
 
 .burgerV2Line {
-  width: 22px;
-  height: 2px;
-  border-radius: 2px;
-  background: currentColor;
-  transition: transform 180ms ease, opacity 180ms ease;
+  position: absolute;
+  left: 0;
+  width: var(--burger-line-w);
+  height: var(--burger-line-h);
+  border-radius: var(--burger-radius);
+  background: rgba(234, 242, 255, 0.92);
+  transition: transform 180ms ease, opacity 180ms ease, top 180ms ease;
   transform-origin: center;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+.burgerV2LineTop {
+  top: 0;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(2) {
+.burgerV2LineMid {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.burgerV2LineBot {
+  bottom: 0;
+}
+
+.burgerV2Open .burgerV2LineTop {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.burgerV2Open .burgerV2LineMid {
   opacity: 0;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.burgerV2Open .burgerV2LineBot {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 /* ===== LAYOUT ===== */
 
 .appShell {
+  position: relative;
   display: block;
 }
 
 .sidebarOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 19;
-  background: rgba(0, 0, 0, 0.58);
+  display: none;
   border: 0;
-  opacity: 0;
-  pointer-events: none;
 }
+
 .sidebarOverlayVisible {
-  opacity: 1;
-  pointer-events: auto;
+  display: block;
+  position: fixed;
+  inset: var(--sportpit-header-h) 0 0 0;
+  z-index: 14;
+  background: transparent;
 }
 
 .sidebar {
   position: fixed;
-  top: 74px;
+  top: var(--sportpit-header-h);
   left: 0;
-  bottom: 0;
-  width: 288px;
-  z-index: 20;
+  height: calc(100vh - var(--sportpit-header-h));
+  width: var(--sportpit-sidebar-w, 280px);
+  z-index: 30;
   border-right: 1px solid var(--border);
   background: rgba(11, 18, 28, 0.96);
   padding: 14px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   scrollbar-gutter: stable both-edges;
   scrollbar-width: auto;
   scrollbar-color: rgba(33, 255, 106, 0.65) rgba(255, 255, 255, 0.06);
@@ -280,9 +315,10 @@
   gap: 10px;
   padding-right: 10px;
   box-sizing: border-box;
+  transition: width 180ms ease;
 }
 .sidebarCollapsed {
-  width: var(--sportpit-rail-w);
+  width: var(--sportpit-rail-w, 50px);
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 0;
@@ -293,6 +329,10 @@
   overflow-x: hidden;
   scrollbar-gutter: auto;
   scrollbar-width: none;
+}
+
+.headerLeftCollapsed .burgerV2Wrap {
+  transform: translateX(var(--sportpit-rail-shift-x));
 }
 
 .sidebarCollapsed::-webkit-scrollbar {
@@ -558,9 +598,9 @@
 }
 
 .content {
-  margin-left: 288px;
-  min-height: calc(100vh - 74px);
+  min-height: calc(100vh - var(--sportpit-header-h));
   padding: var(--space-4);
+  padding-left: var(--sportpit-rail-w, 50px);
 }
 
 .contentInner {
@@ -568,11 +608,6 @@
   margin: 0 auto;
 }
 
-/* ВНИМАНИЕ: это сработает только если .content является соседним sibling для .sidebar.
-   Если DOM-структура другая — правим в JSX (добавим класс на wrapper) */
-.sidebarCollapsed ~ .content {
-  margin-left: var(--sportpit-rail-w);
-}
 
 .toast {
   position: fixed;
@@ -586,6 +621,16 @@
   padding: 10px 12px;
 }
 
+@media (min-width: 768px) {
+  :global(html) {
+    scrollbar-gutter: stable;
+  }
+
+  :global(body) {
+    overflow-y: scroll;
+  }
+}
+
 @media (max-width: 1280px) {
   .topNav {
     display: none;
@@ -594,7 +639,7 @@
 
 @media (max-width: 1120px) {
   .header {
-    grid-template-columns: auto minmax(180px, 1fr) auto;
+    grid-template-columns: var(--sportpit-header-left-w) minmax(180px, 1fr) auto;
   }
   .searchWrap {
     display: none;
@@ -610,9 +655,8 @@
   .sidebarMobileOpen {
     transform: translateX(0);
   }
-  .content,
-  .sidebarCollapsed ~ .content {
-    margin-left: 0;
+  .content {
+    padding-left: var(--space-4);
   }
 }
 
