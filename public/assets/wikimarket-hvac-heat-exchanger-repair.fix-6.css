@@ -596,12 +596,15 @@
 
 /* HX-MOBILE-PRUNE remove-1 (TEMP) */
 @media (max-width: 768px) {
-  /* временно убираем весь hero-первый экран (там сейчас всё “плывет”) */
-  .upgr-hx .hero,
-  /* убираем чипы-якоря, если они разваливаются */
   .upgr-hx .nav-chips,
-  /* убираем нижнюю липкую панель, если она мешает */
   .upgr-hx .sticky-bar {
     display: none !important;
+  }
+}
+
+/* HX-HERO-RESTORE mobile (must show hero) */
+@media (max-width: 768px) {
+  .upgr-hx .hero {
+    display: block !important;
   }
 }
