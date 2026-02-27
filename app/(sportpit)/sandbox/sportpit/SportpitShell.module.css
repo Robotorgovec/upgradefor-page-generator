@@ -307,8 +307,8 @@
   top: var(--sportpit-header-h);
   left: 0;
   height: calc(100vh - var(--sportpit-header-h));
-  width: var(--sportpit-sidebar-w);
-  z-index: 20;
+  width: var(--sportpit-sidebar-w, 280px);
+  z-index: 30;
   border-right: 1px solid var(--border);
   background: rgba(11, 18, 28, 0.96);
   padding: 14px;
@@ -323,7 +323,7 @@
   transition: width 180ms ease;
 }
 .sidebarCollapsed {
-  width: var(--sportpit-rail-w);
+  width: var(--sportpit-rail-w, 50px);
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 0;
@@ -605,7 +605,7 @@
 .content {
   min-height: calc(100vh - var(--sportpit-header-h));
   padding: var(--space-4);
-  padding-left: calc(var(--space-4) + var(--sportpit-rail-w));
+  padding-left: var(--sportpit-rail-w, 50px);
 }
 
 .contentInner {
@@ -624,6 +624,16 @@
   background: #10251f;
   color: #effff1;
   padding: 10px 12px;
+}
+
+@media (min-width: 768px) {
+  :global(html) {
+    scrollbar-gutter: stable;
+  }
+
+  :global(body) {
+    overflow-y: scroll;
+  }
 }
 
 @media (max-width: 1280px) {
