@@ -553,3 +553,16 @@
 .upgr-hx .w-15{width:15%}
 .upgr-hx .w-30{width:30%}
 .upgr-hx .w-55{width:55%}
+
+/* HX-H1-MOBILE-WRAP fix-1 */
+@media (max-width: 768px) {
+  .upgr-hx .hero h1 {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
+    font-size: clamp(22px, 6vw, 32px);
+    line-height: 1.15;
+  }
+}
