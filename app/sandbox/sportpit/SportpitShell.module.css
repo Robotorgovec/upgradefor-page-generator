@@ -1,4 +1,5 @@
 .page {
+  --sportpit-rail-width: 50px;
   --fs-h1: clamp(2.1rem, 3.2vw, 3.3rem);
   --fs-h2: clamp(1.35rem, 1.8vw, 1.8rem);
   --fs-h3: 1.05rem;
@@ -64,6 +65,8 @@
 }
 
 .headerLeft { display: flex; align-items: center; gap: 10px; }
+.headerLeftCollapsed { width: var(--sportpit-rail-width); justify-content: center; }
+.headerLeftCollapsed .logo { display: none; }
 .logo { border: 0; background: transparent; display: inline-flex; cursor: pointer; padding: 0; }
 
 .topNav { display: flex; gap: 16px; align-items: center; }
@@ -112,13 +115,12 @@
 /* ===== BURGER ===== */
 
 .burgerWrap {
-  width: 56px;
+  width: var(--sportpit-rail-width);
   margin: 0 auto;
   display: flex;
   justify-content: center;
 }
 
-.burgerWrapHidden { visibility: hidden; }
 
 .burger {
   background: none;
@@ -205,7 +207,7 @@
 
 /* collapsed: фикс ширина и убираем боковые паддинги, чтобы центр был реальным центром */
 .sidebarCollapsed {
-  width: 50px;
+  width: var(--sportpit-rail-width);
   padding-left: 0;
   padding-right: 0;
 }
@@ -305,7 +307,7 @@
 
 .content { margin-left: 288px; min-height: calc(100vh - 74px); padding: var(--space-4); }
 .contentInner { max-width: 1200px; margin: 0 auto; }
-.sidebarCollapsed ~ .content { margin-left: 50px; }
+.sidebarCollapsed ~ .content { margin-left: var(--sportpit-rail-width); }
 
 .toast { position: fixed; right: 16px; bottom: 16px; z-index: 40; border-radius: 10px; border: 1px solid rgba(33, 255, 106, 0.7); background: #10251f; color: #effff1; padding: 10px 12px; }
 

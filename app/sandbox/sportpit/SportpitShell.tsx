@@ -134,13 +134,17 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       <a className={styles.skip} href="#sportpit-main">К содержанию</a>
 
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <div className={`${styles.burgerWrap} ${!isMobileViewport && isCollapsed ? styles.burgerWrapHidden : ""}`}>
+        <div
+          className={`${styles.headerLeft} ${
+            !isMobileViewport && isCollapsed ? styles.headerLeftCollapsed : ""
+          }`}
+        >
+          <div className={styles.burgerWrap}>
             <button
               type="button"
               className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
               onClick={onBurgerClick}
-              aria-label="Открыть меню"
+              aria-label={isNavOpen ? "Свернуть меню" : "Развернуть меню"}
               aria-controls="sportpit-sidebar"
               aria-expanded={isNavOpen}
             >
