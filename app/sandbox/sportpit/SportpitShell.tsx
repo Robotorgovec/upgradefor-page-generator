@@ -135,7 +135,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <div className={styles.burgerWrap}>
+          <div className={`${styles.burgerWrap} ${!isMobileViewport && isCollapsed ? styles.burgerWrapHidden : ""}`}>
             <button
               type="button"
               className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
@@ -144,9 +144,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
               aria-controls="sportpit-sidebar"
               aria-expanded={isNavOpen}
             >
-              <span />
-              <span />
-              <span />
+              <span className={styles.burgerGlyph} />
             </button>
           </div>
 
@@ -204,6 +202,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           onPriceMaxChange={(value) => setPriceMax(Math.max(priceMin, value))}
           onRatingChange={setRatingMin}
           onShowFilters={() => setFilterToast(true)}
+          isMobileViewport={isMobileViewport}
+          isNavOpen={isNavOpen}
+          onToggleNav={onBurgerClick}
         />
 
         <main id="sportpit-main" className={styles.content}>

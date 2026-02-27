@@ -58,6 +58,9 @@ type SidebarProps = {
   onPriceMaxChange: (value: number) => void;
   onRatingChange: (value: number | null) => void;
   onShowFilters: () => void;
+  isMobileViewport: boolean;
+  isNavOpen: boolean;
+  onToggleNav: () => void;
 };
 
 export function Sidebar({
@@ -78,6 +81,9 @@ export function Sidebar({
   onPriceMaxChange,
   onRatingChange,
   onShowFilters,
+  isMobileViewport,
+  isNavOpen,
+  onToggleNav,
 }: SidebarProps) {
   return (
     <>
@@ -94,6 +100,20 @@ export function Sidebar({
         aria-label="Основная навигация"
       >
         <div className={styles.sidebarTop}>
+          {!isMobileViewport && isCollapsed && (
+            <div className={styles.sidebarCollapsedToggle}>
+              <button
+                type="button"
+                className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+                onClick={onToggleNav}
+                aria-label="Открыть меню"
+                aria-controls="sportpit-sidebar"
+                aria-expanded={isNavOpen}
+              >
+                <span className={styles.burgerGlyph} />
+              </button>
+            </div>
+          )}
           <strong>Цели / продукты</strong>
         </div>
 

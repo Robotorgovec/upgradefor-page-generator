@@ -118,6 +118,8 @@
   justify-content: center;
 }
 
+.burgerWrapHidden { visibility: hidden; }
+
 .burger {
   background: none;
   border: none;
@@ -134,22 +136,45 @@
 .burger:hover,
 .burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; outline: none; }
 
-.burger span {
+.burgerGlyph {
+  position: relative;
   display: block;
   width: 24px;
-  height: 2px;
-  background-color: currentColor;
-  margin: 2px 0;             /* плотнее линии */
-  border-radius: 0;
-  border: none;
-  transform-origin: center;  /* симметрия крестика */
-  transition: transform 200ms ease, opacity 200ms ease;
+  height: 24px;
 }
 
-/* крестик — симметричный */
-.burgerOpen span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
-.burgerOpen span:nth-child(2) { opacity: 0; }
-.burgerOpen span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+.burgerGlyph::before,
+.burgerGlyph::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  width: 18px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 999px;
+  transform-origin: center;
+  transition: transform 200ms ease;
+}
+
+.burgerGlyph::before {
+  top: 7px;
+  transform: rotate(0deg);
+}
+
+.burgerGlyph::after {
+  top: 15px;
+  transform: rotate(0deg);
+}
+
+.burgerOpen .burgerGlyph::before {
+  top: 11px;
+  transform: rotate(45deg);
+}
+
+.burgerOpen .burgerGlyph::after {
+  top: 11px;
+  transform: rotate(-45deg);
+}
 
 /* ===== LAYOUT ===== */
 
@@ -191,6 +216,12 @@
 .sidebar::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(33, 255, 106, 1), rgba(33, 255, 106, 0.7)); }
 
 .sidebarTop { display: flex; align-items: center; justify-content: space-between; }
+.sidebarCollapsedToggle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .sidebarSectionLabel { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
 .filterCard { border: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); border-radius: var(--radius); padding: 10px; display: grid; gap: 10px; }
