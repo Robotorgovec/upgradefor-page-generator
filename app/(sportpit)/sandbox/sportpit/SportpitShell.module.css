@@ -266,7 +266,6 @@
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
 }
-
 .burgerV2Open .burgerV2LineMid {
   opacity: 0;
 }
