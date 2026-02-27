@@ -644,15 +644,31 @@
     width: 100% !important;
     max-width: 100% !important;
     white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* отключаем агрессивные переносы для lead, чтобы не было вертикальных букв */
+  .upgr-hx .hero .lead {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* переносы “anywhere” оставляем только для H1 */
+  .upgr-hx .hero h1 {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
+}
 
-  /* переносы “anywhere” оставляем точечно для H1/lead, а не для всего .upgr-hx */
-  .upgr-hx .hero h1,
+@media (max-width: 768px) {
+  .upgr-hx .kicker,
+  .upgr-hx .hero .kicker,
+  .upgr-hx .lead,
   .upgr-hx .hero .lead {
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
   }
 }
 
