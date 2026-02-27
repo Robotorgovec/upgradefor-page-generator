@@ -6,6 +6,9 @@ const template = loadHtmlTemplate("wikimarket/hvac/heat-exchanger-repair/index.h
 
 const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/i;
 
+const heroH1RemovePattern =
+  /(<section class="hero"[\s\S]*?<div class="hero-main"[\s\S]*?)<h1[^>]*>[\s\S]*?<\/h1>/i;
+
 const heroFrameMarkup = `
           <div class="hero-art hero-art-mobile" aria-hidden="true">
             <img class="hero-figure" src="/assets/media/heat-exchanger-hero.png" alt="Теплообменники — ремонт и обслуживание" />
@@ -18,6 +21,7 @@ const heroFrameMarkup = `
 
 const pageHtml = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
+  .replace(heroH1RemovePattern, '$1<!-- HX-H1-REMOVED test-1 -->')
   .replaceAll(' style="padding:16px"', ' class="pad-16"')
   .replaceAll(' class="card" class="pad-16"', ' class="card pad-16"')
   .replaceAll(' class="plain-card" class="pad-16"', ' class="plain-card pad-16"')
@@ -48,7 +52,7 @@ export default function HeatExchangerRepairPage() {
     <>
       <link
         rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-2"
+        href="/assets/wikimarket-hvac-heat-exchanger-repair.fix-6.css"
       />
       {template.jsonLd.map((data, index) => (
         <Script
