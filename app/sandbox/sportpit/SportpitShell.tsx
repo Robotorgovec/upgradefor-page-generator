@@ -95,6 +95,21 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
   const isNavOpen = isMobileViewport ? isSidebarOpen : !isCollapsed;
 
+  const menuToggleButton = (
+    <button
+      type="button"
+      className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+      onClick={onBurgerClick}
+      aria-label="Открыть меню"
+      aria-controls="sportpit-sidebar"
+      aria-expanded={isNavOpen}
+    >
+      <span />
+      <span />
+      <span />
+    </button>
+  );
+
   const goToSection = (id: string) => {
     if (!isMainPage) return;
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -135,20 +150,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <div className={styles.burgerWrap}>
-            <button
-              type="button"
-              className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
-              onClick={onBurgerClick}
-              aria-label="Открыть меню"
-              aria-controls="sportpit-sidebar"
-              aria-expanded={isNavOpen}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
-          </div>
+          {!isCollapsed && <div className={styles.burgerWrap}>{menuToggleButton}</div>}
 
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
             <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
@@ -204,6 +206,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           onPriceMaxChange={(value) => setPriceMax(Math.max(priceMin, value))}
           onRatingChange={setRatingMin}
           onShowFilters={() => setFilterToast(true)}
+          sidebarToggle={isCollapsed ? menuToggleButton : null}
         />
 
         <main id="sportpit-main" className={styles.content}>

@@ -1,4 +1,4 @@
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType, ReactNode, SVGProps } from "react";
 import styles from "../SportpitShell.module.css";
 import {
   AccessoriesIcon,
@@ -58,6 +58,7 @@ type SidebarProps = {
   onPriceMaxChange: (value: number) => void;
   onRatingChange: (value: number | null) => void;
   onShowFilters: () => void;
+  sidebarToggle: ReactNode;
 };
 
 export function Sidebar({
@@ -78,6 +79,7 @@ export function Sidebar({
   onPriceMaxChange,
   onRatingChange,
   onShowFilters,
+  sidebarToggle,
 }: SidebarProps) {
   return (
     <>
@@ -94,6 +96,7 @@ export function Sidebar({
         aria-label="Основная навигация"
       >
         <div className={styles.sidebarTop}>
+          {isCollapsed && <div className={styles.sidebarToggleWrap}>{sidebarToggle}</div>}
           <strong>Цели / продукты</strong>
         </div>
 
