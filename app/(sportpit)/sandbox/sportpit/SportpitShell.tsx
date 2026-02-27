@@ -176,9 +176,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
           <button
             type="button"
-            className={`${styles.logo} ${
-              collapsedDesktop ? styles.logoDesktopCollapsed : ""
-            }`}
+            className={styles.logo}
             onClick={() => goToSection("top")}
           >
             <Image

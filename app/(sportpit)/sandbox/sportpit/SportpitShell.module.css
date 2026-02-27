@@ -93,11 +93,6 @@
   justify-content: flex-start;
 }
 
-.logoDesktopCollapsed {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
 
 .logo {
   border: 0;
@@ -271,7 +266,6 @@
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
 }
-
 .burgerV2Open .burgerV2LineMid {
   opacity: 0;
 }
