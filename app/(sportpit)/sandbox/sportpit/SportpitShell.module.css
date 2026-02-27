@@ -24,7 +24,12 @@
   --accent-2: #ff8a00;
   --border: rgba(180, 205, 238, 0.14);
   --focus: rgba(33, 255, 106, 0.55);
-  --sportpit-rail-w: 52px;
+  --sportpit-rail-w: 50px;
+  --sportpit-rail-shift-x: 0px;
+  --burger-line-w: 19px;
+  --burger-line-h: 2px;
+  --burger-icon-h: 12px;
+  --burger-radius: 2px;
   --radius: 16px;
   --control-h: 42px;
   --shadow-lg: 0 18px 60px rgba(0, 0, 0, 0.45);
@@ -77,6 +82,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.headerLeftCollapsed {
+  width: var(--sportpit-rail-w);
+  justify-content: center;
 }
 
 .logoDesktopCollapsed {
@@ -206,39 +216,63 @@
   padding: 0;
   display: grid;
   place-items: center;
-  gap: 6px;
+}
+
+.burgerIcon {
+  position: relative;
+  width: var(--burger-line-w);
+  height: var(--burger-icon-h);
+  display: block;
 }
 
 .burgerV2Btn:hover {
   background: transparent;
   box-shadow: none;
-  border-color: transparent;
 }
 
 .burgerV2Btn:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+  background: transparent;
 }
 
 .burgerV2Line {
-  width: 22px;
-  height: 2px;
-  border-radius: 2px;
-  background: currentColor;
-  transition: transform 180ms ease, opacity 180ms ease;
+  position: absolute;
+  left: 0;
+  width: var(--burger-line-w);
+  height: var(--burger-line-h);
+  border-radius: var(--burger-radius);
+  background: rgba(234, 242, 255, 0.92);
+  transition: transform 180ms ease, opacity 180ms ease, top 180ms ease;
   transform-origin: center;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+.burgerV2LineTop {
+  top: 0;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(2) {
+.burgerV2LineMid {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.burgerV2LineBot {
+  bottom: 0;
+}
+
+.burgerV2Open .burgerV2LineTop {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.burgerV2Open .burgerV2LineMid {
   opacity: 0;
 }
 
-.burgerV2Open .burgerV2Line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.burgerV2Open .burgerV2LineBot {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 /* ===== LAYOUT ===== */
@@ -293,6 +327,10 @@
   overflow-x: hidden;
   scrollbar-gutter: auto;
   scrollbar-width: none;
+}
+
+.headerLeftCollapsed .burgerV2Wrap {
+  transform: translateX(var(--sportpit-rail-shift-x));
 }
 
 .sidebarCollapsed::-webkit-scrollbar {

@@ -21,9 +21,11 @@ export function SportpitBurgerV2({
       aria-controls={controlsId}
       aria-expanded={isOpen}
     >
-      <span className={styles.burgerV2Line} />
-      <span className={styles.burgerV2Line} />
-      <span className={styles.burgerV2Line} />
+      <span className={styles.burgerIcon} aria-hidden="true">
+        <span className={`${styles.burgerV2Line} ${styles.burgerV2LineTop}`} />
+        <span className={`${styles.burgerV2Line} ${styles.burgerV2LineMid}`} />
+        <span className={`${styles.burgerV2Line} ${styles.burgerV2LineBot}`} />
+      </span>
     </button>
   );
 }
