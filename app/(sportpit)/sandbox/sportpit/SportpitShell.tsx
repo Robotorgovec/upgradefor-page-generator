@@ -4,10 +4,11 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
+
 import styles from "./SportpitShell.module.css";
-import { CartIcon } from "./ui/icons";
 import { SportpitBurgerV2 } from "./SportpitBurgerV2";
 import { SportpitMenu } from "./SportpitMenu";
+import { CartIcon } from "./ui/icons";
 
 const navSectionIds = ["top", "quality", "reviews", "education"] as const;
 
@@ -52,6 +53,7 @@ export default function SportpitShell({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
+    // На главной (landing) не держим “rail” режим: оставляем меню развёрнутым на desktop
     if (isMainPage) setIsCollapsed(false);
   }, [isMainPage]);
 
@@ -158,7 +160,11 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </a>
 
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
+        <div
+          className={`${styles.headerLeft} ${
+            collapsedDesktop ? styles.headerLeftCollapsed : ""
+          }`}
+        >
           <div className={styles.burgerV2Wrap}>
             <SportpitBurgerV2
               isOpen={isNavOpen}
@@ -169,7 +175,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
           <button
             type="button"
-            className={`${styles.logo} ${collapsedDesktop ? styles.logoDesktopCollapsed : ""}`}
+            className={`${styles.logo} ${
+              collapsedDesktop ? styles.logoDesktopCollapsed : ""
+            }`}
             onClick={() => goToSection("top")}
           >
             <Image
