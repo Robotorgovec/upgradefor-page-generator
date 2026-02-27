@@ -48,7 +48,7 @@ export default function HeatExchangerRepairPage() {
     <>
       <link
         rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-1"
+        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-2"
       />
       {template.jsonLd.map((data, index) => (
         <Script
@@ -60,7 +60,7 @@ export default function HeatExchangerRepairPage() {
           {data}
         </Script>
       ))}
-      <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
+      <div className="upgr-hx" dangerouslySetInnerHTML={{ __html: pageHtml }} />
       {template.inlineScripts.map((script, index) => (
         <Script
           key={`heat-exchanger-repair-inline-${index}`}
