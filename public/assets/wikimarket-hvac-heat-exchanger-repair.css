@@ -484,6 +484,8 @@
 }
 .upgr-hx .hero-figure{width:100%;height:auto;display:block}
 @media (max-width:768px){
+  .upgr-hx h1,
+  .hero .hero-main > h1{max-width:21ch;margin:0 auto 10px;text-align:center;font-size:clamp(28px,7.5vw,32px);line-height:1.13}
   .upgr-hx .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
   .upgr-hx .hero-art-desktop{display:none}
 }
