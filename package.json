@@ -8,7 +8,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "test:layout": "node scripts/layout.test.mjs",
-    "check:layout": "node scripts/verify-layout.mjs"
+    "check:layout": "node scripts/verify-layout.mjs",
+    "check:sportpit": "node scripts/check-sportpit-boundaries.js"
   },
   "dependencies": {
     "next": "^16.1.4",

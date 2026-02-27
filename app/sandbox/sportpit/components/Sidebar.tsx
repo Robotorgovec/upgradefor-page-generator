@@ -16,7 +16,7 @@ import {
   PriceIcon,
   ProteinIcon,
   VitIcon,
-} from "../../../(sportpit)/sandbox/sportpit/ui/icons";
+} from "../_components/icons";
 
 type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
 type NavItem = { id: string; label: string; icon: IconComp };
