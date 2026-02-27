@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
+import theme from "./_styles/theme.module.css";
 
 export default function SportpitSegmentLayout({ children }: { children: ReactNode }) {
-import type { ReactNode } from "react";
-
-export default function SportpitSegmentLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return <div className={theme.root}>{children}</div>;
 }

@@ -281,6 +281,21 @@
 }
 .sidebarCollapsed {
   width: 50px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 0;
+  padding-right: 0;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  overflow-x: hidden;
+  scrollbar-gutter: auto;
+  scrollbar-width: none;
+}
+
+.sidebarCollapsed::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -441,6 +456,22 @@
   cursor: pointer;
 }
 
+.navItem {
+  width: 100%;
+}
+
+.navIcon {
+  display: inline-grid;
+  place-items: center;
+}
+
+.navLabel {
+  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .sidebarNav button::before {
   content: "";
   position: absolute;
@@ -473,13 +504,6 @@
   height: 17px;
 }
 
-.sidebarNav button em {
-  font-style: normal;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* ===== COLLAPSED CENTERING ===== */
 
 .sidebarCollapsed .sidebarSectionLabel,
@@ -490,13 +514,16 @@
 }
 
 .sidebarCollapsed .sidebarNav {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
+  margin: 0;
+  justify-items: center;
 }
 
 .sidebarCollapsed .sidebarNav button {
   width: 100%;
-  padding: 0;
+  min-height: 44px;
+  padding-left: 0;
+  padding-right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -507,8 +534,20 @@
   display: none;
 }
 
-.sidebarCollapsed .sidebarNav button em {
-  display: none;
+.sidebarCollapsed .navIcon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+}
+
+.sidebarCollapsed .navLabel {
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .sidebarCollapsed .sidebarNav button svg,

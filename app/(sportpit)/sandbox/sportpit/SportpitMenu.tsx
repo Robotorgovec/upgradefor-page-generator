@@ -119,16 +119,19 @@ export function SportpitMenu({
               <button
                 key={item.id}
                 type="button"
+                aria-label={item.label}
                 className={
-                  activeSection === item.id && isMainPage
-                    ? styles.menuItemActive
-                    : ""
+                  `${styles.navItem} ${
+                    activeSection === item.id && isMainPage ? styles.menuItemActive : ""
+                  }`
                 }
                 onClick={() => goToSection(item.id)}
                 title={item.label}
               >
-                <Icon className={styles.sidebarIcon} />
-                <em>{item.label}</em>
+                <span className={styles.navIcon}>
+                  <Icon className={styles.sidebarIcon} />
+                </span>
+                <em className={styles.navLabel}>{item.label}</em>
               </button>
             );
           })}
@@ -142,12 +145,17 @@ export function SportpitMenu({
               <button
                 key={item.id}
                 type="button"
-                className={activeTypeNav === item.id ? styles.menuItemActive : ""}
+                aria-label={item.label}
+                className={`${styles.navItem} ${
+                  activeTypeNav === item.id ? styles.menuItemActive : ""
+                }`}
                 onClick={() => onTypeClick(item.id)}
                 title={item.label}
               >
-                <Icon className={styles.sidebarIcon} />
-                <em>{item.label}</em>
+                <span className={styles.navIcon}>
+                  <Icon className={styles.sidebarIcon} />
+                </span>
+                <em className={styles.navLabel}>{item.label}</em>
               </button>
             );
           })}

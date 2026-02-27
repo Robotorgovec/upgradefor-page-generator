@@ -1,0 +1,10 @@
+.root {
+  --sportpit-bg: #090f18;
+  --sportpit-panel: #0b121c;
+  --sportpit-text: #f1f5fb;
+  --sportpit-muted: #8a96a8;
+  --sportpit-accent: #21ff6a;
+  background: var(--sportpit-bg);
+  color: var(--sportpit-text);
+  min-height: 100%;
+}
