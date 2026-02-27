@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode, SVGProps } from "react";
+import type { ComponentType, SVGProps } from "react";
 import styles from "../SportpitShell.module.css";
 import {
   AccessoriesIcon,
@@ -58,7 +58,11 @@ type SidebarProps = {
   onPriceMaxChange: (value: number) => void;
   onRatingChange: (value: number | null) => void;
   onShowFilters: () => void;
-  sidebarToggle: ReactNode;
+
+  // toggle API (из sandbox/sportpit-preview)
+  isMobileViewport: boolean;
+  isNavOpen: boolean;
+  onToggleNav: () => void;
 };
 
 export function Sidebar({
@@ -79,7 +83,9 @@ export function Sidebar({
   onPriceMaxChange,
   onRatingChange,
   onShowFilters,
-  sidebarToggle,
+  isMobileViewport,
+  isNavOpen,
+  onToggleNav,
 }: SidebarProps) {
   return (
     <>
@@ -92,11 +98,27 @@ export function Sidebar({
 
       <aside
         id="sportpit-sidebar"
-        className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${isSidebarOpen ? styles.sidebarMobileOpen : ""}`}
+        className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""} ${
+          isSidebarOpen ? styles.sidebarMobileOpen : ""
+        }`}
         aria-label="Основная навигация"
       >
         <div className={styles.sidebarTop}>
-          {isCollapsed && <div className={styles.sidebarToggleWrap}>{sidebarToggle}</div>}
+          {!isMobileViewport && isCollapsed && (
+            <div className={styles.sidebarCollapsedToggle}>
+              <button
+                type="button"
+                className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+                onClick={onToggleNav}
+                aria-label={isNavOpen ? "Закрыть меню" : "Открыть меню"}
+                aria-controls="sportpit-sidebar"
+                aria-expanded={isNavOpen}
+              >
+                <span className={styles.burgerGlyph} />
+              </button>
+            </div>
+          )}
+
           <strong>Цели / продукты</strong>
         </div>
 
@@ -105,7 +127,13 @@ export function Sidebar({
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-              <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => onGoToSection(item.id)} title={item.label}>
+              <button
+                key={item.id}
+                type="button"
+                className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""}
+                onClick={() => onGoToSection(item.id)}
+                title={item.label}
+              >
                 <Icon className={styles.sidebarIcon} />
                 <em>{item.label}</em>
               </button>
@@ -118,7 +146,13 @@ export function Sidebar({
           {categoryItems.map((item) => {
             const Icon = item.icon;
             return (
-              <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
+              <button
+                key={item.id}
+                type="button"
+                className={activeTypeNav === item.id ? styles.menuItemActive : ""}
+                onClick={() => onTypeClick(item.id)}
+                title={item.label}
+              >
                 <Icon className={styles.sidebarIcon} />
                 <em>{item.label}</em>
               </button>
@@ -131,6 +165,7 @@ export function Sidebar({
           <div className={styles.filterHead}>
             <FilterIcon className={styles.smallIcon} /> <span>Параметры</span>
           </div>
+
           <div className={styles.filterBlock}>
             <h4>
               <GlobeIcon className={styles.smallIcon} /> Страна
@@ -141,35 +176,73 @@ export function Sidebar({
               <option value="us">США</option>
             </select>
           </div>
+
           <div className={styles.filterBlock}>
             <h4>
               <GlobeIcon className={styles.smallIcon} /> Форма
             </h4>
-            <label><input type="checkbox" defaultChecked /> Капсулы</label>
-            <label><input type="checkbox" /> Порошок</label>
-            <label><input type="checkbox" /> Жидкость</label>
+            <label>
+              <input type="checkbox" defaultChecked /> Капсулы
+            </label>
+            <label>
+              <input type="checkbox" /> Порошок
+            </label>
+            <label>
+              <input type="checkbox" /> Жидкость
+            </label>
           </div>
+
           <div className={styles.filterBlock}>
             <h4>
               <PriceIcon className={styles.smallIcon} /> Цена
             </h4>
             <div className={styles.priceRow}>
-              <input className={styles.priceInput} type="number" value={priceMin} min={0} onChange={(e) => onPriceMinChange(Number(e.target.value || 0))} aria-label="Мин. цена" />
-              <input className={styles.priceInput} type="number" value={priceMax} min={priceMin} onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))} aria-label="Макс. цена" />
+              <input
+                className={styles.priceInput}
+                type="number"
+                value={priceMin}
+                min={0}
+                onChange={(e) => onPriceMinChange(Number(e.target.value || 0))}
+                aria-label="Мин. цена"
+              />
+              <input
+                className={styles.priceInput}
+                type="number"
+                value={priceMax}
+                min={priceMin}
+                onChange={(e) => onPriceMaxChange(Number(e.target.value || priceMin))}
+                aria-label="Макс. цена"
+              />
             </div>
           </div>
+
           <div className={styles.filterBlock}>
             <h4>
               <LabIcon className={styles.smallIcon} /> Рейтинг
             </h4>
             <div className={styles.ratingRow}>
               {[1, 2, 3, 4, 5].map((star) => (
-                <button key={star} type="button" aria-label={`Рейтинг ${star}`} className={`${styles.starBtn} ${ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff}`} onClick={() => onRatingChange(ratingMin === star ? null : star)}>★</button>
+                <button
+                  key={star}
+                  type="button"
+                  aria-label={`Рейтинг ${star}`}
+                  className={`${styles.starBtn} ${
+                    ratingMin !== null && star <= ratingMin ? styles.starOn : styles.starOff
+                  }`}
+                  onClick={() => onRatingChange(ratingMin === star ? null : star)}
+                >
+                  ★
+                </button>
               ))}
-              <span className={styles.ratingNote}>{ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}</span>
+              <span className={styles.ratingNote}>
+                {ratingMin !== null ? ratingMin.toFixed(1) : "Любой"}
+              </span>
             </div>
           </div>
-          <button type="button" className={styles.showBtn} onClick={onShowFilters}>Показать</button>
+
+          <button type="button" className={styles.showBtn} onClick={onShowFilters}>
+            Показать
+          </button>
         </div>
       </aside>
     </>

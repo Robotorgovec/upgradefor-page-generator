@@ -118,6 +118,8 @@
   justify-content: center;
 }
 
+.burgerWrapHidden { visibility: hidden; }
+
 .burger {
   background: none;
   border: none;
@@ -133,12 +135,26 @@
 .burger:hover,
 .burger:focus-visible { background: transparent; box-shadow: none; border-color: transparent; outline: none; }
 
-.burger span {
+.burger span:not(.burgerGlyph) {
   position: absolute;
   left: 50%;
   top: 50%;
+}
+
+.burgerGlyph {
+  position: relative;
+}
   display: block;
   width: 24px;
+  height: 24px;
+}
+
+.burgerGlyph::before,
+.burgerGlyph::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  width: 18px;
   height: 2px;
   background-color: currentColor;
   border-radius: 1px;
@@ -146,13 +162,26 @@
   transition: transform 200ms ease, opacity 200ms ease;
 }
 
-.burger span:nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
-.burger span:nth-child(2) { transform: translate(-50%, -50%); }
-.burger span:nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
+/* 3-span burger mode */
+.burger span:not(.burgerGlyph):nth-child(1) { transform: translate(-50%, calc(-50% - 6px)); }
+.burger span:not(.burgerGlyph):nth-child(2) { transform: translate(-50%, -50%); }
+.burger span:not(.burgerGlyph):nth-child(3) { transform: translate(-50%, calc(-50% + 6px)); }
 
-.burgerOpen span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
-.burgerOpen span:nth-child(2) { opacity: 0; transform: translate(-50%, -50%) scaleX(0); }
-.burgerOpen span:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
+.burgerOpen span:not(.burgerGlyph):nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+.burgerOpen span:not(.burgerGlyph):nth-child(2) { opacity: 0; transform: translate(-50%, -50%) scaleX(0); }
+.burgerOpen span:not(.burgerGlyph):nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* burgerGlyph mode */
+.burgerGlyph {
+  background: linear-gradient(currentColor, currentColor) center / 18px 2px no-repeat;
+}
+
+.burgerGlyph::before { top: 7px; transform: rotate(0deg); }
+.burgerGlyph::after  { top: 15px; transform: rotate(0deg); }
+
+.burgerOpen .burgerGlyph { background: none; }
+.burgerOpen .burgerGlyph::before { top: 11px; transform: rotate(45deg); }
+.burgerOpen .burgerGlyph::after  { top: 11px; transform: rotate(-45deg); }
 
 /* ===== LAYOUT ===== */
 
@@ -194,13 +223,15 @@
 .sidebar::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, rgba(33, 255, 106, 1), rgba(33, 255, 106, 0.7)); }
 
 .sidebarTop { display: flex; align-items: center; justify-content: space-between; }
-.sidebarToggleWrap {
+.sidebarToggleWrap,
+.sidebarCollapsedToggle {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
+}
 }
 .sidebarSectionLabel { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; }
 

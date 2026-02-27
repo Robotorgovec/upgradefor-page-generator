@@ -150,7 +150,22 @@ export default function SportpitShell({ children }: PropsWithChildren) {
 
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          {!isCollapsed && <div className={styles.burgerWrap}>{menuToggleButton}</div>}
+<div
+  className={`${styles.burgerWrap} ${
+    !isMobileViewport && isCollapsed ? styles.burgerWrapHidden : ""
+  }`}
+>
+  <button
+    type="button"
+    className={`${styles.burger} ${isNavOpen ? styles.burgerOpen : ""}`}
+    onClick={onBurgerClick}
+    aria-label={isNavOpen ? "Закрыть меню" : "Открыть меню"}
+    aria-controls="sportpit-sidebar"
+    aria-expanded={isNavOpen}
+  >
+    <span className={styles.burgerGlyph} />
+  </button>
+</div>
 
           <button type="button" className={styles.logo} onClick={() => goToSection("top")}>
             <Image src="/sportpit/activecode-logo.svg" alt="ActiveCode logo" width={208} height={64} priority />
@@ -206,7 +221,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
           onPriceMaxChange={(value) => setPriceMax(Math.max(priceMin, value))}
           onRatingChange={setRatingMin}
           onShowFilters={() => setFilterToast(true)}
-          sidebarToggle={isCollapsed ? menuToggleButton : null}
+isMobileViewport={isMobileViewport}
+isNavOpen={isNavOpen}
+onToggleNav={onBurgerClick}
         />
 
         <main id="sportpit-main" className={styles.content}>
