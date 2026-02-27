@@ -2,9 +2,12 @@ import Script from "next/script";
 
 import { loadHtmlTemplate } from "../../../../lib/html-template";
 
-const template = loadHtmlTemplate("wikimarket/hvac/heat-exchanger-repair/index.html");
+const template = loadHtmlTemplate(
+  "wikimarket/hvac/heat-exchanger-repair/index.html"
+);
 
-const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/i;
+const heroVisualPattern =
+  /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/i;
 
 const heroH1RemovePattern =
   /(<section class="hero"[\s\S]*?<div class="hero-main"[\s\S]*?)<h1[^>]*>[\s\S]*?<\/h1>/i;
@@ -21,13 +24,16 @@ const heroFrameMarkup = `
 
 const pageHtml = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
-  .replace(heroH1RemovePattern, '$1<!-- HX-H1-REMOVED test-1 -->')
+  .replace(heroH1RemovePattern, "$1<!-- HX-H1-REMOVED test-1 -->")
   .replaceAll(' style="padding:16px"', ' class="pad-16"')
   .replaceAll(' class="card" class="pad-16"', ' class="card pad-16"')
   .replaceAll(' class="plain-card" class="pad-16"', ' class="plain-card pad-16"')
   .replaceAll('style="align-items:start"', 'class="ai-start"')
   .replaceAll('style="gap:12px"', 'class="gap-12"')
-  .replaceAll('style="gap:10px; margin-top:12px; max-width: 720px;"', 'class="filters-grid"')
+  .replaceAll(
+    'style="gap:10px; margin-top:12px; max-width: 720px;"',
+    'class="filters-grid"'
+  )
   .replaceAll('style="gap:10px; max-width: 920px"', 'class="faq-grid"')
   .replaceAll('style="margin-top:14px; align-items:start"', 'class="mt-14 ai-start"')
   .replaceAll('style="margin-top:14px"', 'class="mt-14"')
@@ -44,7 +50,7 @@ const pageHtml = template.mainHtml
 export const metadata = {
   title: "Ремонт и обслуживание теплообменников всех типов | UPGR Upgrade Innovations",
   description:
-    "Сервис теплообменников всех типов: пластинчатые, кожухотрубные, ребристо‑трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные и др. Диагностика, чистка, герметичность, восстановление, замена.",
+    "Сервис теплообменников всех типов: пластинчатые, кожухотрубные, ребристо-трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные и др. Диагностика, чистка, герметичность, восстановление, замена.",
 };
 
 export default function HeatExchangerRepairPage() {
