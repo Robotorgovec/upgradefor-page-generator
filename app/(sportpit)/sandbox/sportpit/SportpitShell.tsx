@@ -158,9 +158,9 @@ export default function SportpitShell({ children }: PropsWithChildren) {
       </a>
 
       <header className={styles.header}>
-        <div
-          className={`${styles.headerLeft} ${collapsedDesktop ? styles.headerLeftCollapsed : ""}`}
-        >
+<div
+  className={`${styles.headerLeft} ${collapsedDesktop ? styles.headerLeftCollapsed : ""}`}
+/>
           <div className={styles.burgerV2Wrap}>
             <SportpitBurgerV2
               isOpen={isNavOpen}

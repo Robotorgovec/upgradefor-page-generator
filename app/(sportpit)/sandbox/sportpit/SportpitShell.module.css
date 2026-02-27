@@ -25,11 +25,11 @@
   --border: rgba(180, 205, 238, 0.14);
   --focus: rgba(33, 255, 106, 0.55);
   --sportpit-rail-w: 52px;
-  --sportpit-rail-shift-x: 0px;
-  --burger-line-w: 19px;
-  --burger-line-h: 2px;
-  --burger-icon-h: 12px;
-  --burger-radius: 2px;
+--sportpit-rail-shift-x: 0px;
+--burger-line-w: 19px;
+--burger-line-h: 2px;
+--burger-icon-h: 12px;
+--burger-radius: 2px;
   --radius: 16px;
   --control-h: 42px;
   --shadow-lg: 0 18px 60px rgba(0, 0, 0, 0.45);
@@ -88,7 +88,6 @@
   width: var(--sportpit-rail-w);
   justify-content: center;
 }
-
 .logoDesktopCollapsed {
   display: none;
 }
@@ -210,7 +209,6 @@
 .headerLeftCollapsed .burgerV2Wrap {
   transform: translateX(var(--sportpit-rail-shift-x));
 }
-
 .burgerV2Btn {
   width: 46px;
   height: 46px;
@@ -220,6 +218,7 @@
   padding: 0;
   display: grid;
   place-items: center;
+gap: 6px;
 }
 
 .burgerV2Btn:hover {
@@ -277,6 +276,7 @@
   top: 50%;
   bottom: auto;
   transform: translateY(-50%) rotate(-45deg);
+}
 }
 
 /* ===== LAYOUT ===== */
