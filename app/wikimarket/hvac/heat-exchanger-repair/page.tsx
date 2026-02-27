@@ -48,7 +48,7 @@ export default function HeatExchangerRepairPage() {
     <>
       <link
         rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-2"
+        href="/assets/wikimarket-hvac-heat-exchanger-repair.css?v=mobile-fix-4"
       />
       {template.jsonLd.map((data, index) => (
         <Script
