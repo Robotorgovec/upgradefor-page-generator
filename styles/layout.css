@@ -32,6 +32,7 @@ header {
   display: flex;
   align-items: center;
   gap: 12px;
+
 }
 
 .burger {
@@ -64,40 +65,14 @@ header {
 }
 
 .auth-actions a {
+ 
   padding: 8px 14px;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--surface);
   font-weight: 600;
 }
-/* UPGRADEFIX: adjust .upgr-hx hero for mobile */
-.upgr-hx {
-  overflow-wrap: normal;
-  word-break: normal;
-}
-
-@media (max-width: 768px) {
-  .upgr-hx .hero {
-    display: block;
-  }
-  .upgr-hx .hero-grid,
-  .upgr-hx .hero-main {
-    min-width: 0;
-    max-width: 100%;
-    width: 100%;
-  }
-  .upgr-hx .kicker,
-  .upgr-hx .lead {
-    white-space: normal;
-    overflow-wrap: normal;
-    word-break: normal;
-  }
-  .upgr-hx .hero h1 {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-}
-
+/ 
 
 .auth-actions a.primary {
   background: var(--btn-primary-bg);
@@ -129,6 +104,7 @@ header {
 .sidebar-section {
   margin-bottom: 20px;
 }
+
 
 .sidebar-section-title {
   font-size: 12px;
