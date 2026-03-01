@@ -72,7 +72,6 @@ header {
   background: var(--surface);
   font-weight: 600;
 }
-/ 
 
 .auth-actions a.primary {
   background: var(--btn-primary-bg);
@@ -184,5 +183,32 @@ header {
 
   .sidebar {
     width: min(85vw, 320px);
+  }
+}
+
+
+/* Home page H1 stability */
+.home-main-hero h1 {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .home-main-hero h1 {
+    text-align: center;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: auto;
+    max-width: 100%;
+  }
+
+  .home-main-hero h1 .nowrap-brand {
+    display: inline-block;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    hyphens: none;
   }
 }
