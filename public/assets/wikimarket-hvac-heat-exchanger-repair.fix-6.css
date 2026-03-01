@@ -32,7 +32,7 @@
 
           --w:clamp(320px, 92vw, 1320px);
       --pad:clamp(14px, 3.5vw, 22px);
-      --gap:clamp(12px, 2.6vw, 20px);
+      --gap:clamp(12px,normal2.6vw, 20px);
 
       /* typography */
       --fs-0: clamp(14px, 1.2vw, 16px);
@@ -57,8 +57,8 @@
     .upgr-hx{
       width:100%;
       overflow-x: clip;
-      overflow-wrap:anywhere;
-      word-break: break-word;
+overflow-wrap: normal;
+wormal;normal;
       hyphens:auto;
     }
 
@@ -630,3 +630,9 @@
     word-break: break-word;
   }
 }
+/* HX-HX-OVERRIDE fix-3 */
+.upgr-hx {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
