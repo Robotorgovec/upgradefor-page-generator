@@ -183,6 +183,9 @@
 .sidebarOverlayVisible { opacity: 1; pointer-events: auto; }
 
 .sidebar {
+  --sp-nav-left-pad: 14px;
+  --sp-icon-col-w: 17px;
+  --sp-nav-gap: 8px;
   position: fixed;
   top: 74px;
   left: 0;
@@ -248,13 +251,13 @@
 .sidebarNav { display: grid; gap: 8px; }
 .sidebarNav button {
   height: 42px;
-  padding: 8px 10px 8px 14px;
+  padding: 8px 10px 8px var(--sp-nav-left-pad);
   border: 0;
   background: transparent;
   color: var(--text);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-nav-gap);
   position: relative;
   text-align: left;
   cursor: pointer;
@@ -274,8 +277,22 @@
 .menuItemActive::before { background: var(--accent); box-shadow: 0 0 10px rgba(33, 255, 106, 0.32); }
 .menuItemActive { color: #fff; background: rgba(33, 255, 106, 0.08) !important; }
 
+.navIconCol {
+  width: var(--sp-icon-col-w);
+  min-width: var(--sp-icon-col-w);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sidebarIcon { width: 17px; height: 17px; }
-.sidebarNav button em { font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.navLabel {
+  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ===== COLLAPSED CENTERING ===== */
 .sidebarCollapsed .sidebarSectionLabel,
@@ -292,12 +309,17 @@
   width: 100%;
   padding: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  gap: 0;
 }
 
 /* убрать полоску ::before, чтобы не смещала визуально */
 .sidebarCollapsed .sidebarNav button::before { display: none; }
+
+.sidebarCollapsed .navIconCol {
+  margin-left: var(--sp-nav-left-pad);
+}
 
 .sidebarCollapsed .sidebarNav button em { display: none; }
 .sidebarCollapsed .sidebarNav button svg { margin: 0; }
