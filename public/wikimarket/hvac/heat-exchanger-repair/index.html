@@ -527,6 +527,57 @@
       .upgr-hx .nav-chips{ overflow-x:auto; -webkit-overflow-scrolling: touch; }
       .upgr-hx .nav-chips::-webkit-scrollbar{ display:none; }
     }
+
+
+    /* HX-MOBILE-HERO-STABILITY fix-7 (prevent narrow shrink + vertical text) */
+    @media (max-width: 768px) {
+      .upgr-hx,
+      .upgr-hx .bottom-safe,
+      .upgr-hx .hero,
+      .upgr-hx .wrap,
+      .upgr-hx .hero-grid,
+      .upgr-hx .hero-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .upgr-hx .wrap {
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .upgr-hx .hero-grid {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        justify-items: stretch !important;
+        justify-content: stretch !important;
+        align-items: start !important;
+      }
+
+      .upgr-hx .kicker,
+      .upgr-hx .hero h1,
+      .upgr-hx .hero .lead,
+      .upgr-hx .hero-phone {
+        writing-mode: horizontal-tb !important;
+        text-orientation: mixed !important;
+
+        white-space: normal !important;
+        overflow-wrap: normal !important;
+        word-break: normal !important;
+        hyphens: auto;
+        max-width: 100% !important;
+      }
+
+      .upgr-hx .hero h1 {
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+      }
+    }
+
+    /* DEPLOY-MARK: HX-MOBILE-HERO-STABILITY fix-7 */
+
   </style>
 
   <!-- Structured data (минимум; детали лучше подставлять генератором под конкретный URL/язык) -->
