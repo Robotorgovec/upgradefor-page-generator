@@ -123,7 +123,7 @@ export function Sidebar({
             const Icon = item.icon;
             return (
               <button key={item.id} type="button" className={activeSection === item.id && isMainPage ? styles.menuItemActive : ""} onClick={() => onGoToSection(item.id)} title={item.label}>
-                <Icon className={styles.sidebarIcon} />
+                <span className={styles.navIconCol} data-sp-icon-wrap><Icon className={styles.sidebarIcon} /></span>
                 <em>{item.label}</em>
               </button>
             );
@@ -136,7 +136,7 @@ export function Sidebar({
             const Icon = item.icon;
             return (
               <button key={item.id} type="button" className={activeTypeNav === item.id ? styles.menuItemActive : ""} onClick={() => onTypeClick(item.id)} title={item.label}>
-                <Icon className={styles.sidebarIcon} />
+                <span className={styles.navIconCol} data-sp-icon-wrap><Icon className={styles.sidebarIcon} /></span>
                 <em>{item.label}</em>
               </button>
             );

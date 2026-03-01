@@ -183,6 +183,7 @@
 .sidebarOverlayVisible { opacity: 1; pointer-events: auto; }
 
 .sidebar {
+  --sp-nav-left-pad: 14px;
   position: fixed;
   top: 74px;
   left: 0;
@@ -248,7 +249,7 @@
 .sidebarNav { display: grid; gap: 8px; }
 .sidebarNav button {
   height: 42px;
-  padding: 8px 10px 8px 14px;
+  padding: 8px 10px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -262,7 +263,7 @@
 .sidebarNav button::before {
   content: "";
   position: absolute;
-  left: 3px;
+  left: calc(-1 * var(--sp-nav-left-pad) + 3px);
   top: 9px;
   bottom: 9px;
   width: 2px;
@@ -275,6 +276,7 @@
 .menuItemActive { color: #fff; background: rgba(33, 255, 106, 0.08) !important; }
 
 .sidebarIcon { width: 17px; height: 17px; }
+.navIconCol { display: flex; align-items: center; justify-content: center; }
 .sidebarNav button em { font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ===== COLLAPSED CENTERING ===== */
