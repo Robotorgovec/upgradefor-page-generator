@@ -50,8 +50,11 @@
 
 .usecaseLink { text-decoration: none; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; background: #fff; }
 
-label { display: grid; gap: 6px; font-weight: 600; }
-input, textarea {
+/* FIX: CSS Modules требует “pure selectors” — теги только через локальный класс */
+.form label { display: grid; gap: 6px; font-weight: 600; }
+
+.form input,
+.form textarea {
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 10px;
