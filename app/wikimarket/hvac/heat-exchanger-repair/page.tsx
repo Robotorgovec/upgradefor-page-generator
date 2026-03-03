@@ -1,10 +1,13 @@
+import { renderToStaticMarkup } from "react-dom/server";
 import Script from "next/script";
 
+import ContactsCountryBlock from "../../../../components/wikimarket/hvac/shared/ContactsCountryBlock";
 import { loadHtmlTemplate } from "../../../../lib/html-template";
 
 const template = loadHtmlTemplate("wikimarket/hvac/heat-exchanger-repair/index.html");
 
 const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/i;
+const contactsSectionPattern = /<!-- CONTACTS -->[\s\S]*?<\/section>/i;
 
 const heroFrameMarkup = `
           <div class="hero-art hero-art-mobile" aria-hidden="true">
@@ -16,8 +19,11 @@ const heroFrameMarkup = `
         </div>
       </section>`;
 
+const contactsBlockMarkup = renderToStaticMarkup(<ContactsCountryBlock />);
+
 const pageHtml = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
+  .replace(contactsSectionPattern, contactsBlockMarkup)
   .replace(
     /<h1>\s*Ремонт теплообменников всех типов\s*<\/h1>/i,
     "<h1 class=\"hx-hero-title\" data-hx-h1=\"fix-6\">" +

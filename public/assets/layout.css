@@ -735,6 +735,21 @@ body.menu-open .sidebar{width: var(--sidebar-expanded-width)}
 }
 .menu-item:hover .menu-icon,
 .menu-item.active .menu-icon{color: var(--sidebar-accent-strong)}
+
+.menu-icon--cu-al{
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  color: var(--sidebar-accent);
+  background-color: currentColor;
+  -webkit-mask: url("/assets/icons/cu-al-coil.svg") no-repeat center / contain;
+  mask: url("/assets/icons/cu-al-coil.svg") no-repeat center / contain;
+}
+
+.menu-submenu{
+  margin-left: 12px;
+}
+
 .is-home .menu-item[data-path="/"] .menu-icon{color: var(--sidebar-accent-strong)}
 
 .menu-label{
