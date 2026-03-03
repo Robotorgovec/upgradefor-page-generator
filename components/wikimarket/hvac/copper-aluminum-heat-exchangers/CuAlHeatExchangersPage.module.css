@@ -1,0 +1,280 @@
+.page {
+  --bg: #f7fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #e2e8f0;
+  --hx-accent: var(--btn-primary-bg, var(--color-primary, #0ea5e9));
+  --hx-accent-hover: var(--btn-primary-bg-hover, var(--color-primary-strong, color-mix(in srgb, var(--hx-accent) 86%, #0f172a)));
+  --hx-accent-soft: var(--primary-50, var(--color-soft, #e6f7ff));
+  --hx-accent-border: var(--tag-border, color-mix(in srgb, var(--hx-accent) 45%, var(--line)));
+  --hx-accent-contrast: var(--btn-primary-text, #ffffff);
+  --shadow: 0 14px 34px rgba(2, 6, 23, 0.08);
+
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: grid;
+  gap: 20px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+  scroll-margin-top: 84px;
+}
+
+.hero,
+.threeCards,
+.splitSection,
+.productGrid,
+.usecaseGrid,
+.detailsGrid,
+.formGrid,
+.contactsGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.hero {
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.heroVisual img {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+}
+
+.kicker {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--hx-accent-soft);
+  font-weight: 700;
+}
+
+.lead {
+  color: var(--muted);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btnPrimary {
+  background: var(--hx-accent);
+  color: var(--hx-accent-contrast);
+  border-color: var(--hx-accent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hx-accent) 30%, transparent);
+}
+
+.btnPrimary:hover {
+  background: var(--hx-accent-hover);
+  border-color: var(--hx-accent-hover);
+}
+
+.btnOutline {
+  background: transparent;
+  color: var(--hx-accent);
+  border-color: var(--hx-accent-border);
+}
+
+.btnOutline:hover {
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chips a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+.twoColumns {
+  columns: 1;
+}
+
+.hiddenTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.usecaseLink {
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--surface);
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.input,
+.textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  font: inherit;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--line);
+  text-align: left;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.contactLine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--hx-accent-soft) 45%, white);
+}
+
+.contactIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--hx-accent-border);
+}
+
+.contactActions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.separator {
+  height: 1px;
+  margin: 12px 0;
+  background: var(--line);
+}
+
+.geoList {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.geoItem {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.geoPhone {
+  color: var(--muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .threeCards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .splitSection,
+  .detailsGrid,
+  .contactsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .productGrid,
+  .usecaseGrid,
+  .formGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .twoColumns {
+    columns: 2;
+  }
+
+  .contactActions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1280px) {
+  .productGrid,
+  .usecaseGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
