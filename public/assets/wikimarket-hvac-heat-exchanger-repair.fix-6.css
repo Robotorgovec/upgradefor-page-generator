@@ -751,3 +751,72 @@ wormal;normal;
 }
 
 /* DEPLOY-MARK: HX-MOBILE-HERO-H1-FIX v1 */
+
+/* HX-MOBILE-HERO-LAYOUT-FIX v2 (force single column + prevent shrink) */
+@media (max-width: 900px) {
+  /* 1) Жёстко делаем hero в 1 колонку на mobile */
+  .upgr-hx .hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "main"
+      "media" !important;
+    justify-content: stretch !important;
+    justify-items: stretch !important;
+    align-items: start !important;
+    gap: 16px !important;
+  }
+
+  /* 2) Привязываем зоны (если grid areas где-то заданы/используются) */
+  .upgr-hx .hero-main { 
+    grid-area: main !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .upgr-hx .hero-art,
+  .upgr-hx .hero-art-mobile,
+  .upgr-hx .hero-art-desktop {
+    grid-area: media !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    justify-self: stretch !important;
+  }
+
+  /* 3) КРИТИЧНО: убираем любые ограничения ширины, которые могут “держать” вторую колонку */
+  .upgr-hx .hero-art {
+    max-width: min(560px, 100%) !important; /* картинка не шире блока */
+  }
+
+  /* 4) Запрещаем shrink-to-fit на ключевых контейнерах */
+  .upgr-hx,
+  .upgr-hx .bottom-safe,
+  .upgr-hx .hero,
+  .upgr-hx .wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* 5) Защита от “вертикального текста” и переносов по буквам */
+  .upgr-hx .kicker,
+  .upgr-hx .hero h1,
+  .upgr-hx .hero .lead {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    white-space: normal !important;
+    hyphens: auto !important;
+  }
+
+  /* 6) Для H1 допускаем более гибкий перенос, но НЕ делаем буква-под-буквой */
+  .upgr-hx .hero h1 {
+    line-break: auto !important;
+  }
+}
+
+/* DEPLOY-MARK: HX-MOBILE-HERO-LAYOUT-FIX v2 */
