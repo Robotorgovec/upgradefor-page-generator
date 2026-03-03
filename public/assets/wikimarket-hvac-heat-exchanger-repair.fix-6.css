@@ -684,3 +684,70 @@ wormal;normal;
 /* DEPLOY-MARK: HX-MOBILE-HERO-STABILITY fix-7 */
 }
 
+
+/* HX-MOBILE-HERO-H1-FIX v1 */
+@media (max-width: 768px) {
+  /* 1) Жёстко фиксируем горизонтальный режим текста (защита от любых странных глобальных стилей) */
+  .upgr-hx .hero,
+  .upgr-hx .hero * {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+  }
+
+  /* 2) Убираем “схлопывание” ширины контейнеров hero */
+  .upgr-hx,
+  .upgr-hx .bottom-safe,
+  .upgr-hx .hero,
+  .upgr-hx .wrap,
+  .upgr-hx .wrap.hero-grid,
+  .upgr-hx .hero-grid,
+  .upgr-hx .hero-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* 3) Гарантируем 1 колонку на mobile и растяжение контента */
+  .upgr-hx .hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: stretch !important;
+    justify-content: stretch !important;
+    align-items: start !important;
+  }
+
+  /* 4) Kicker: перенос ТОЛЬКО по словам, без разбиения по буквам */
+  .upgr-hx .kicker {
+    display: inline-flex !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: manual !important;
+    line-break: auto !important;
+  }
+
+  /* 5) Lead: перенос по словам, без “вертикали” */
+  .upgr-hx .hero .lead {
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    line-break: auto !important;
+    max-width: 100% !important;
+  }
+
+  /* 6) H1: перенос читабельно (слова/переносы), но без letter-splitting */
+  .upgr-hx .hero h1,
+  .upgr-hx .hx-hero-title {
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    line-break: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* DEPLOY-MARK: HX-MOBILE-HERO-H1-FIX v1 */
