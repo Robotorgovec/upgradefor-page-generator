@@ -1,10 +1,12 @@
 import Script from "next/script";
 
+import ContactsCountryBlock from "../../../../components/wikimarket/hvac/shared/ContactsCountryBlock";
 import { loadHtmlTemplate } from "../../../../lib/html-template";
 
 const template = loadHtmlTemplate("wikimarket/hvac/heat-exchanger-repair/index.html");
 
 const heroVisualPattern = /<div class="hero-visual"[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/i;
+const contactsSectionPattern = /<!-- CONTACTS -->[\s\S]*?<\/section>/i;
 
 const heroFrameMarkup = `
           <div class="hero-art hero-art-mobile" aria-hidden="true">
@@ -16,14 +18,17 @@ const heroFrameMarkup = `
         </div>
       </section>`;
 
-const pageHtml = template.mainHtml
+const CONTACTS_MARKER = "<!--__HX_CONTACTS_BLOCK__-->";
+
+const pageHtmlWithMarker = template.mainHtml
   .replace(heroVisualPattern, heroFrameMarkup)
+  .replace(contactsSectionPattern, CONTACTS_MARKER)
   .replace(
     /<h1>\s*Ремонт теплообменников всех типов\s*<\/h1>/i,
     "<h1 class=\"hx-hero-title\" data-hx-h1=\"fix-6\">" +
       "<span class=\"hx-h1-line\">Ремонт теплообменников</span>" +
       "<span class=\"hx-h1-line hx-h1-line--second\">всех типов</span>" +
-    "</h1>"
+    "</h1>",
   )
   .replaceAll(' style="padding:16px"', ' class="pad-16"')
   .replaceAll(' class="card" class="pad-16"', ' class="card pad-16"')
@@ -44,19 +49,22 @@ const pageHtml = template.mainHtml
   .replaceAll('style="width:55%"', 'class="w-55"')
   .replace(/class="([^"]*)"\s+class="([^"]*)"/g, 'class="$1 $2"');
 
+const hasContactsMarker = pageHtmlWithMarker.includes(CONTACTS_MARKER);
+const parts = hasContactsMarker ? pageHtmlWithMarker.split(CONTACTS_MARKER) : [pageHtmlWithMarker];
+const pageHtmlBefore = parts[0] ?? pageHtmlWithMarker;
+const pageHtmlAfter = parts[1] ?? "";
+
 export const metadata = {
   title: "Ремонт и обслуживание теплообменников всех типов | UPGR Upgrade Innovations",
   description:
-    "Сервис теплообменников всех типов: пластинчатые, кожухотрубные, ребристо‑трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные и др. Диагностика, чистка, герметичность, восстановление, замена.",
+    "Сервис теплообменников всех типов: пластинчатые, кожухотрубные, ребристо-трубные (калориферы/радиаторы), испарители/конденсаторы, микроканальные и др. Диагностика, чистка, герметичность, восстановление, замена.",
 };
 
 export default function HeatExchangerRepairPage() {
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="/assets/wikimarket-hvac-heat-exchanger-repair.fix-6.css"
-      />
+      <link rel="stylesheet" href="/assets/wikimarket-hvac-heat-exchanger-repair.fix-6.css" />
+
       {template.jsonLd.map((data, index) => (
         <Script
           key={`heat-exchanger-repair-jsonld-${index}`}
@@ -67,7 +75,13 @@ export default function HeatExchangerRepairPage() {
           {data}
         </Script>
       ))}
-      <div className="upgr-hx" dangerouslySetInnerHTML={{ __html: pageHtml }} />
+
+      <div className="upgr-hx">
+        <div dangerouslySetInnerHTML={{ __html: pageHtmlBefore }} />
+        {hasContactsMarker ? <ContactsCountryBlock /> : null}
+        {hasContactsMarker && pageHtmlAfter ? <div dangerouslySetInnerHTML={{ __html: pageHtmlAfter }} /> : null}
+      </div>
+
       {template.inlineScripts.map((script, index) => (
         <Script
           key={`heat-exchanger-repair-inline-${index}`}

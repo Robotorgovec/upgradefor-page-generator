@@ -278,3 +278,79 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+.sharedContacts :global(.wrap) {
+  max-width: 100%;
+  padding: 0;
+}
+
+.sharedContacts :global(.grid) {
+  display: grid;
+  gap: 12px;
+}
+
+.sharedContacts :global(.grid-2) {
+  grid-template-columns: 1fr;
+}
+
+.sharedContacts :global(.card) {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.sharedContacts :global(.btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.sharedContacts :global(.btn:hover) {
+  text-decoration: none;
+}
+
+.sharedContacts :global(.btn:not(.btn-outline)) {
+  background: var(--hx-accent);
+  color: var(--hx-accent-contrast);
+  border-color: var(--hx-accent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hx-accent) 30%, transparent);
+}
+
+.sharedContacts :global(.btn:not(.btn-outline):hover) {
+  background: var(--hx-accent-hover);
+  border-color: var(--hx-accent-hover);
+}
+
+.sharedContacts :global(.btn.btn-outline) {
+  background: transparent;
+  color: var(--hx-accent);
+  border-color: var(--hx-accent-border);
+  box-shadow: none;
+}
+
+.sharedContacts :global(.btn.btn-outline:hover) {
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
+}
+
+.sharedContacts :global(.contact-actions) {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .sharedContacts :global(.grid-2) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sharedContacts :global(.contact-actions) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

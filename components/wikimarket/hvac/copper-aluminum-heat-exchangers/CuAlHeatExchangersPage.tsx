@@ -2,6 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 
+import ContactsCountryBlock from "../shared/ContactsCountryBlock";
 import styles from "./CuAlHeatExchangersPage.module.css";
 import { faqItems, heroChips, productItems, useCases } from "./data";
 
@@ -32,9 +33,10 @@ export default function CuAlHeatExchangersPage() {
           <p className={styles.kicker}>HVAC / Cu-Al finned coils</p>
           <h1>Проектирование, производство и поставка медно-алюминиевых теплообменников</h1>
           <p className={styles.lead}>
-            Cu-Al оребрённые секции под вашу задачу: расчёт по воздуху/воде/хладагенту,
-            производство/OEM и поставка с документами.
+            Cu-Al оребрённые секции под вашу задачу: расчёт по воздуху/воде/хладагенту, производство/OEM и
+            поставка с документами.
           </p>
+
           <div className={styles.actions}>
             <a className={`${styles.btn} ${styles.btnPrimary}`} href="#request">
               Рассчитать и подобрать
@@ -43,6 +45,7 @@ export default function CuAlHeatExchangersPage() {
               Запросить КП / тендерный пакет
             </a>
           </div>
+
           <nav className={styles.chips}>
             {heroChips.map((chip) => (
               <a key={chip.href} href={chip.href}>
@@ -51,6 +54,7 @@ export default function CuAlHeatExchangersPage() {
             ))}
           </nav>
         </div>
+
         <div className={styles.heroVisual}>
           <img
             src="/assets/media/heat-exchanger-hero.png"
@@ -70,6 +74,7 @@ export default function CuAlHeatExchangersPage() {
             <li>Замена импортных секций/аналогов по образцу/шильдику</li>
           </ul>
         </article>
+
         <article className={styles.card}>
           <h2>Какие изделия (синонимы)</h2>
           <ul className={styles.twoColumns}>
@@ -83,6 +88,7 @@ export default function CuAlHeatExchangersPage() {
             <li>Секции для руфтопов / ККБ / кондиционеров / тепловых насосов</li>
           </ul>
         </article>
+
         <article className={styles.card}>
           <h2>Почему доверяют</h2>
           <ul>
@@ -107,6 +113,7 @@ export default function CuAlHeatExchangersPage() {
             <li>Риск обмерзания / конденсации, дренаж, каплеуловители (если нужно)</li>
           </ul>
         </article>
+
         <article className={styles.card}>
           <h2 className={styles.hiddenTitle}>Частые ошибки</h2>
           <h3>Частые ошибки</h3>
@@ -122,17 +129,20 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="products" className={styles.section}>
         <h2>Изделия (по назначению)</h2>
+
         <div className={styles.productGrid}>
           {productItems.map((item) => (
             <article key={item.slug} className={styles.card}>
               <h3>{item.title}</h3>
               <p>{item.whereUsed}</p>
               <p>{item.whereUsedExtra}</p>
+
               <ul>
                 {item.bullets.map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
+
               <div className={styles.actions}>
                 <a className={`${styles.btn} ${styles.btnOutline}`} href={`#product-${item.slug}`}>
                   Подробнее
@@ -154,6 +164,7 @@ export default function CuAlHeatExchangersPage() {
         <section key={item.slug} id={`product-${item.slug}`} className={styles.section}>
           <article className={styles.card}>
             <h2>{item.title}</h2>
+
             <div className={styles.detailsGrid}>
               <div>
                 <h3>Где применяется</h3>
@@ -172,11 +183,8 @@ export default function CuAlHeatExchangersPage() {
                 <ul>{item.inputData.map((point) => <li key={point}>{point}</li>)}</ul>
               </div>
             </div>
-            <a
-              className={`${styles.btn} ${styles.btnPrimary}`}
-              href="#request"
-              onClick={() => setProduct(item.slug)}
-            >
+
+            <a className={`${styles.btn} ${styles.btnPrimary}`} href="#request" onClick={() => setProduct(item.slug)}>
               Перейти к заявке по этому изделию
             </a>
           </article>
@@ -185,6 +193,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="usecases" className={styles.section}>
         <h2>Где применяются</h2>
+
         <div className={styles.usecaseGrid}>
           {useCaseSlugs.map((item) => (
             <a
@@ -201,6 +210,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="materials" className={styles.section}>
         <h2>Материалы и покрытия</h2>
+
         <div className={styles.splitSection}>
           <article className={styles.card}>
             <h3>Базовая конструкция Cu-Al</h3>
@@ -211,6 +221,7 @@ export default function CuAlHeatExchangersPage() {
               <li>Рама/корпус: оцинкованная сталь / нерж / алюминий (по среде)</li>
             </ul>
           </article>
+
           <article className={styles.card}>
             <h3>Покрытия/защита (актуально для HVAC)</h3>
             <ul>
@@ -226,6 +237,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="tech" className={styles.section}>
         <h2>Технические параметры, которые мы конфигурируем</h2>
+
         <article className={styles.card}>
           <ul className={styles.twoColumns}>
             <li>Габарит (ширина/высота/глубина), посадочные размеры</li>
@@ -242,6 +254,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="inputs" className={styles.section}>
         <h2>Данные для расчёта — и зачем</h2>
+
         <div className={styles.productGrid}>
           {[
             ["Воздушный расход (м3/ч) и допустимый ΔP по воздуху", "Чтобы не “задушить” вентилятор"],
@@ -262,10 +275,12 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="request" className={styles.section}>
         <h2>Заявка на расчёт / КП</h2>
+
         <form className={`${styles.card} ${styles.form}`} onSubmit={handleSubmit}>
           <input type="hidden" name="service" value="cu-al-design-production-supply" />
           <input type="hidden" name="product" value={product} />
           <input type="hidden" name="usecase" value={usecase} />
+
           <div className={styles.formGrid}>
             <label className={styles.field}>
               <span>Имя</span>
@@ -284,13 +299,16 @@ export default function CuAlHeatExchangersPage() {
               <input className={styles.input} name="email" type="email" required />
             </label>
           </div>
+
           <label className={styles.field}>
             <span>Коротко задача</span>
             <textarea className={styles.textarea} name="task" rows={4} required />
           </label>
+
           <p className={styles.note}>
             Можно прикрепить фото/чертёж/шильдик — если upload недоступен, пришлите материалы в WhatsApp.
           </p>
+
           <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit">
             Отправить заявку
           </button>
@@ -299,6 +317,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section className={styles.section}>
         <h2>Ориентиры цен (аккуратно)</h2>
+
         <div className={styles.card}>
           <table className={styles.table}>
             <thead>
@@ -321,6 +340,7 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="faq" className={styles.section}>
         <h2>FAQ</h2>
+
         <div className={styles.productGrid}>
           {faqItems.map(([question, answer]) => (
             <article key={question} className={styles.card}>
@@ -331,67 +351,8 @@ export default function CuAlHeatExchangersPage() {
         </div>
       </section>
 
-      <section id="contacts" className={styles.section}>
-        <h2>Контакты и выбор страны</h2>
-        <div className={styles.contactsGrid}>
-          <article className={styles.card}>
-            <h3>Связь с инженерной группой</h3>
-            <p className={styles.note}>Подбор Cu-Al секции, расчёт режимов и подготовка КП/тендерного пакета.</p>
+      <ContactsCountryBlock sectionClassName={styles.sharedContacts} />
 
-            <div className={styles.contactLine}>
-              <div className={styles.contactIcon} aria-hidden="true">☎</div>
-              <div>
-                <b>+971 58 889 4263</b>
-                <div className={styles.note}>Локальный номер для выбранной страны</div>
-              </div>
-            </div>
-
-            <div className={styles.contactActions}>
-              <a className={`${styles.btn} ${styles.btnPrimary}`} href="tel:+971588894263">Позвонить</a>
-              <a className={`${styles.btn} ${styles.btnOutline}`} href="https://wa.me/971588894263" rel="nofollow">WhatsApp</a>
-            </div>
-
-            <div className={styles.separator} />
-            <div className={styles.note}>Email: <a href="mailto:info@upgradefor.com">info@upgradefor.com</a></div>
-          </article>
-
-          <article className={styles.card}>
-            <h3>Выберите страну (локальные контакты)</h3>
-            <p className={styles.note}>На локальной странице будут: местный номер, валюта, язык и примеры кейсов по региону.</p>
-            <ul className={styles.geoList}>
-              <li className={styles.geoItem}>
-                <div>
-                  <a href="#contacts">UAE • Dubai</a>
-                  <div className={styles.note}>Английский/Арабский</div>
-                </div>
-                <div className={styles.geoPhone}>+971 58 889 4263</div>
-              </li>
-              <li className={styles.geoItem}>
-                <div>
-                  <a href="#contacts">Türkiye</a>
-                  <div className={styles.note}>Турецкий/Английский</div>
-                </div>
-                <div className={styles.geoPhone}>по запросу</div>
-              </li>
-              <li className={styles.geoItem}>
-                <div>
-                  <a href="#contacts">EU</a>
-                  <div className={styles.note}>English</div>
-                </div>
-                <div className={styles.geoPhone}>по запросу</div>
-              </li>
-              <li className={styles.geoItem}>
-                <div>
-                  <a href="#contacts">CIS</a>
-                  <div className={styles.note}>Русский</div>
-                </div>
-                <div className={styles.geoPhone}>по запросу</div>
-              </li>
-            </ul>
-            <div className={styles.note}>*Номера/ссылки подставляются генератором в зависимости от страны и города.</div>
-          </article>
-        </div>
-      </section>
     </main>
   );
 }
