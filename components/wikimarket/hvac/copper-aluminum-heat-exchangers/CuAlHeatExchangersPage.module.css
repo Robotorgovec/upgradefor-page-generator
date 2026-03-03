@@ -1,0 +1,82 @@
+.page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: grid;
+  gap: 20px;
+}
+
+.section { display: grid; gap: 12px; scroll-margin-top: 84px; }
+
+.hero, .threeCards, .splitSection, .productGrid, .usecaseGrid, .detailsGrid, .formGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.hero { grid-template-columns: 1fr; align-items: center; }
+.heroVisual img { width: 100%; border-radius: 18px; border: 1px solid #e2e8f0; }
+
+.kicker { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: #e6f7ff; font-weight: 700; }
+.lead { color: #475569; }
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.06);
+  padding: 16px;
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.actions a, .btnPrimary, .btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.btnPrimary { background: #0ea5e9; color: #fff; border-color: #0ea5e9; cursor: pointer; }
+.btnSecondary { background: #fff; color: #0f172a; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chips a { border: 1px solid #cbd5e1; border-radius: 999px; padding: 6px 10px; text-decoration: none; }
+
+.twoColumns { columns: 1; }
+.hiddenTitle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+.usecaseLink { text-decoration: none; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; background: #fff; }
+
+/* FIX (Turbopack CSS Modules): no "global" tag selectors in module.css */
+.form label { display: grid; gap: 6px; font-weight: 600; }
+.form input,
+.form textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  font: inherit;
+}
+
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th, .table td { border: 1px solid #e2e8f0; text-align: left; padding: 8px; vertical-align: top; }
+
+.note { color: #475569; font-size: 14px; }
+
+@media (min-width: 768px) {
+  .hero { grid-template-columns: 1.2fr 1fr; }
+  .threeCards { grid-template-columns: repeat(3, 1fr); }
+  .splitSection { grid-template-columns: repeat(2, 1fr); }
+  .productGrid { grid-template-columns: repeat(2, 1fr); }
+  .detailsGrid { grid-template-columns: repeat(2, 1fr); }
+  .usecaseGrid { grid-template-columns: repeat(2, 1fr); }
+  .formGrid { grid-template-columns: repeat(2, 1fr); }
+  .twoColumns { columns: 2; }
+}
+
+@media (min-width: 1280px) {
+  .productGrid { grid-template-columns: repeat(3, 1fr); }
+  .usecaseGrid { grid-template-columns: repeat(3, 1fr); }
+}
