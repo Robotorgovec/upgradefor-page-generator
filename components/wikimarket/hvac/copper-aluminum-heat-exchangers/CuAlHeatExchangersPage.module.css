@@ -278,7 +278,6 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 .sharedContacts :global(.wrap) {
   max-width: 100%;
   padding: 0;

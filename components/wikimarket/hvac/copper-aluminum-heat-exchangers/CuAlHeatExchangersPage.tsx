@@ -333,6 +333,3 @@ export default function CuAlHeatExchangersPage() {
       </section>
 
       <ContactsCountryBlock sectionClassName={styles.sharedContacts} />
-    </main>
-  );
-}
