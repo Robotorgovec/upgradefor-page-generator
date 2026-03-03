@@ -44,8 +44,12 @@ export default function CuAlHeatExchangersPage() {
             производство/OEM и поставка с документами.
           </p>
           <div className={styles.actions}>
-            <a className={styles.btnPrimary} href="#request">Рассчитать и подобрать</a>
-            <a className={styles.btnSecondary} href="#request">Запросить КП / тендерный пакет</a>
+            <a className={styles.btnPrimary} href="#request">
+              Рассчитать и подобрать
+            </a>
+            <a className={styles.btnSecondary} href="#request">
+              Запросить КП / тендерный пакет
+            </a>
           </div>
           <nav className={styles.chips}>
             {heroChips.map((chip) => (
@@ -170,7 +174,11 @@ export default function CuAlHeatExchangersPage() {
                 <ul>{item.inputData.map((point) => <li key={point}>{point}</li>)}</ul>
               </div>
             </div>
-            <a className={styles.btnPrimary} href="#request" onClick={() => handleProductLink(item.slug)}>
+            <a
+              className={styles.btnPrimary}
+              href="#request"
+              onClick={() => handleProductLink(item.slug)}
+            >
               Перейти к заявке по этому изделию
             </a>
           </article>
@@ -181,7 +189,12 @@ export default function CuAlHeatExchangersPage() {
         <h2>Где применяются</h2>
         <div className={styles.usecaseGrid}>
           {useCaseSlugs.map((item) => (
-            <a key={item.slug} href="#request" className={styles.usecaseLink} onClick={() => handleUseCaseLink(item.slug)}>
+            <a
+              key={item.slug}
+              href="#request"
+              className={styles.usecaseLink}
+              onClick={() => handleUseCaseLink(item.slug)}
+            >
               {item.label}
             </a>
           ))}
@@ -208,9 +221,7 @@ export default function CuAlHeatExchangersPage() {
               <li>Прибрежное/морское исполнение (усиленная защита, по запросу)</li>
               <li>Антибактериальные/спецпокрытия (по запросу)</li>
             </ul>
-            <p>
-              Подбор покрытия зависит от среды, расположения и уровня агрессивности.
-            </p>
+            <p>Подбор покрытия зависит от среды, расположения и уровня агрессивности.</p>
           </article>
         </div>
       </section>
@@ -253,22 +264,44 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="request" className={styles.section}>
         <h2>Заявка на расчёт / КП</h2>
-        <form className={styles.card} onSubmit={handleSubmit}>
+
+        {/* ВАЖНО: добавлен styles.form для CSS Modules (.form input/label/textarea) */}
+        <form className={`${styles.card} ${styles.form}`} onSubmit={handleSubmit}>
           <input type="hidden" name="service" value="cu-al-design-production-supply" />
           <input type="hidden" name="product" value={product} />
           <input type="hidden" name="usecase" value={usecase} />
+
           <div className={styles.formGrid}>
-            <label>Имя<input name="name" type="text" required /></label>
-            <label>Компания<input name="company" type="text" /></label>
-            <label>Телефон/WhatsApp<input name="phone" type="text" required /></label>
-            <label>Email<input name="email" type="email" required /></label>
+            <label>
+              Имя
+              <input name="name" type="text" required />
+            </label>
+            <label>
+              Компания
+              <input name="company" type="text" />
+            </label>
+            <label>
+              Телефон/WhatsApp
+              <input name="phone" type="text" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" required />
+            </label>
           </div>
+
           <label>
             Коротко задача
             <textarea name="task" rows={4} required />
           </label>
-          <p className={styles.note}>Можно прикрепить фото/чертёж/шильдик — если upload недоступен, пришлите материалы в WhatsApp.</p>
-          <button className={styles.btnPrimary} type="submit">Отправить заявку</button>
+
+          <p className={styles.note}>
+            Можно прикрепить фото/чертёж/шильдик — если upload недоступен, пришлите материалы в WhatsApp.
+          </p>
+
+          <button className={styles.btnPrimary} type="submit">
+            Отправить заявку
+          </button>
         </form>
       </section>
 
@@ -277,11 +310,19 @@ export default function CuAlHeatExchangersPage() {
         <div className={styles.card}>
           <table className={styles.table}>
             <thead>
-              <tr><th>Изделие</th><th>На что влияет цена</th></tr>
+              <tr>
+                <th>Изделие</th>
+                <th>На что влияет цена</th>
+              </tr>
             </thead>
             <tbody>
               {productItems.map((item) => (
-                <tr key={item.slug}><td>{item.title}</td><td>Рядность + площадь, шаг ламели/покрытие, материалы рамы, срочность, документы/испытания.</td></tr>
+                <tr key={item.slug}>
+                  <td>{item.title}</td>
+                  <td>
+                    Рядность + площадь, шаг ламели/покрытие, материалы рамы, срочность, документы/испытания.
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -303,7 +344,9 @@ export default function CuAlHeatExchangersPage() {
       <section id="contacts" className={styles.section}>
         <h2>Контакты</h2>
         <article className={styles.card}>
-          <p><b>UPGR Upgrade Innovations</b></p>
+          <p>
+            <b>UPGR Upgrade Innovations</b>
+          </p>
           <p>Свяжитесь с инженерной командой для подбора Cu-Al секций и подготовки КП/тендерного пакета.</p>
           <div className={styles.actions}>
             <a href="tel:+971588894263">+971 58 889 4263</a>
