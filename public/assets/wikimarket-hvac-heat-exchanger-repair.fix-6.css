@@ -820,3 +820,36 @@ wormal;normal;
 }
 
 /* DEPLOY-MARK: HX-MOBILE-HERO-LAYOUT-FIX v2 */
+
+/* HX-TYPE-CARD-CTA-BOTTOM v1 */
+.upgr-hx .type-card{
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;       /* чтобы все карточки тянулись по высоте ряда */
+  min-height: 100% !important;
+}
+
+.upgr-hx .type-card .tags{
+  margin-bottom: 10px;           /* аккуратный отступ перед CTA */
+}
+
+.upgr-hx .type-card .type-cta{
+  margin-top: auto !important;   /* ключ: прижимаем кнопки вниз */
+  display: flex !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;    /* на мобильных можно переносить кнопки */
+  padding-top: 12px !important;
+}
+
+.upgr-hx .type-card .type-cta .btn{
+  margin: 0 !important;
+}
+
+/* на узких экранах кнопки — на всю ширину (или 2 строки), чтобы выглядело ровно */
+@media (max-width: 520px){
+  .upgr-hx .type-card .type-cta .btn{
+    flex: 1 1 100% !important;
+  }
+}
+
+/* DEPLOY-MARK: HX-TYPE-CARD-CTA-BOTTOM v1 */
