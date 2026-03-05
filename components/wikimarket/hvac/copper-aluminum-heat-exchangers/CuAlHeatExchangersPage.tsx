@@ -31,7 +31,10 @@ export default function CuAlHeatExchangersPage() {
       <section className={styles.hero}>
         <div className={styles.heroText}>
           <p className={styles.kicker}>HVAC / Cu-Al finned coils</p>
-          <h1>Проектирование, производство и поставка медно-алюминиевых теплообменников</h1>
+          <h1>
+            <span className={styles.h1Line1}>Медно-алюминиевые теплообменники</span>
+            <span className={styles.h1Line2}>Проектирование, производство и поставка</span>
+          </h1>
           <p className={styles.lead}>
             Cu-Al оребрённые секции под вашу задачу: расчёт по воздуху/воде/хладагенту, производство/OEM и
             поставка с документами.

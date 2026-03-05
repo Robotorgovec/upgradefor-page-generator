@@ -13,9 +13,9 @@
 
   max-width: 1320px;
   margin: 0 auto;
-  padding: 24px 16px 48px;
+  padding: 20px 16px 40px;
   display: grid;
-  gap: 20px;
+  gap: 28px;
   background: var(--bg);
   color: var(--text);
 }
@@ -26,6 +26,39 @@
   scroll-margin-top: 84px;
 }
 
+.page h1 {
+  margin: 0;
+  font-size: clamp(28px, 2.6vw, 44px);
+  line-height: 1.12;
+  font-weight: 800;
+}
+
+.h1Line1,
+.h1Line2 {
+  display: block;
+}
+
+.h1Line2 {
+  font-size: 0.86em;
+  margin-top: 8px;
+}
+
+.page h2,
+.page h3,
+.page p,
+.page ul {
+  margin: 0;
+}
+
+.page ul {
+  padding-left: 20px;
+}
+
+.page li + li {
+  margin-top: 6px;
+}
+
+.heroText,
 .hero,
 .threeCards,
 .splitSection,
@@ -62,11 +95,13 @@
 }
 
 .card {
+  display: grid;
+  gap: 12px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow);
-  padding: 16px;
+  padding: 14px;
 }
 
 .actions {
@@ -74,7 +109,7 @@
   flex-wrap: wrap;
   align-items: stretch;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .btn {
@@ -119,7 +154,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .chips a {
@@ -243,6 +278,11 @@
 }
 
 @media (min-width: 768px) {
+  .page {
+    gap: 36px;
+    padding: 24px 20px 44px;
+  }
+
   .hero {
     grid-template-columns: 1.2fr 1fr;
   }
