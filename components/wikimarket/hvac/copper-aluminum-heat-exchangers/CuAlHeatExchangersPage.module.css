@@ -385,6 +385,75 @@
   gap: 10px;
 }
 
+@media (max-width: 520px) {
+  .page {
+    padding: 12px 14px 28px;
+    gap: 22px;
+  }
+
+  .hero {
+    padding-top: 0;
+    gap: 14px;
+  }
+
+  .heroText,
+  .section,
+  .threeCards,
+  .splitSection,
+  .productGrid,
+  .usecaseGrid,
+  .detailsGrid,
+  .formGrid,
+  .contactsGrid {
+    gap: 14px;
+  }
+
+  .card {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .actions {
+    justify-content: center;
+    row-gap: 10px;
+  }
+
+  .btn,
+  .sharedContacts :global(.btn) {
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .card > .btn {
+    justify-self: center;
+  }
+
+  .page h1,
+  .page h2,
+  .page h3,
+  .page p,
+  .page ul {
+    margin: 0;
+  }
+
+  .sharedContacts :global(h2),
+  .sharedContacts :global(h3),
+  .sharedContacts :global(p),
+  .sharedContacts :global(ul) {
+    margin: 0;
+  }
+
+  .sharedContacts :global(.grid),
+  .sharedContacts :global(.contact-actions) {
+    gap: 14px;
+  }
+
+  .sharedContacts :global(.card) {
+    padding: 12px;
+  }
+}
 @media (min-width: 768px) {
   .sharedContacts :global(.grid-2) {
     grid-template-columns: 1fr 1fr;
