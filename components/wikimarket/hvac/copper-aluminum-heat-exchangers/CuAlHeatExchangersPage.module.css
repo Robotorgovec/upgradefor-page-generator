@@ -184,6 +184,147 @@
   background: var(--surface);
 }
 
+.sectionHeadingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.showAllLink {
+  color: var(--hx-accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.showAllLink:hover {
+  text-decoration: underline;
+}
+
+.manufacturerGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.manufacturerCard {
+  gap: 14px;
+}
+
+.manufacturerImageWrap {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.manufacturerImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.manufacturerContent {
+  display: grid;
+  gap: 10px;
+}
+
+.manufacturerBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+}
+
+.badgeRole {
+  color: var(--text);
+  background: color-mix(in srgb, var(--hx-accent-soft) 30%, white);
+}
+
+.badgeTrust {
+  color: #0f5132;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.manufacturerTitle {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.manufacturerTitle a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.manufacturerTitle a:hover {
+  text-decoration: underline;
+}
+
+.manufacturerDescription {
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.manufacturerRelevance {
+  color: color-mix(in srgb, var(--muted) 80%, var(--hx-accent));
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.manufacturerRating {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.manufacturerRatingRated {
+  color: var(--text);
+}
+
+.manufacturerGeo {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.manufacturerCapabilities,
+.manufacturerFacts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.manufacturerCapabilities li,
+.manufacturerFacts li {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.manufacturerCapabilities li {
+  background: color-mix(in srgb, var(--hx-accent-soft) 35%, white);
+}
+
+.manufacturerFacts li {
+  background: color-mix(in srgb, var(--hx-accent-soft) 20%, white);
+  color: var(--muted);
+}
+
 .form {
   display: grid;
   gap: 12px;
@@ -299,6 +440,7 @@
 
   .productGrid,
   .usecaseGrid,
+  .manufacturerGrid,
   .formGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -314,7 +456,8 @@
 
 @media (min-width: 1280px) {
   .productGrid,
-  .usecaseGrid {
+  .usecaseGrid,
+  .manufacturerGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -475,3 +618,6 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+

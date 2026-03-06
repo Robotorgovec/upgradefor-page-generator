@@ -5,6 +5,17 @@ import { FormEvent, useMemo, useState } from "react";
 import ContactsCountryBlock from "../shared/ContactsCountryBlock";
 import styles from "./CuAlHeatExchangersPage.module.css";
 import { faqItems, heroChips, productItems, useCases } from "./data";
+import {
+  cuAlManufacturerCards,
+  getCardMiniFacts,
+  getCompanyImage,
+  getCompanyImageAlt,
+  getCompanyLocationLabel,
+  getCompanyRoleLabel,
+  getDisplayCapabilities,
+  getRatingLabel,
+  hasRatedReviews,
+} from "./manufacturers";
 
 export default function CuAlHeatExchangersPage() {
   const [product, setProduct] = useState("");
@@ -19,6 +30,11 @@ export default function CuAlHeatExchangersPage() {
           .replace(/[^a-zа-я0-9]+/gi, "-")
           .replace(/(^-|-$)/g, ""),
       })),
+    [],
+  );
+
+  const navigationChips = useMemo(
+    () => [...heroChips, { href: "#manufacturers", label: "Производители" }],
     [],
   );
 
@@ -50,7 +66,7 @@ export default function CuAlHeatExchangersPage() {
           </div>
 
           <nav className={styles.chips}>
-            {heroChips.map((chip) => (
+            {navigationChips.map((chip) => (
               <a key={chip.href} href={chip.href}>
                 {chip.label}
               </a>
@@ -66,6 +82,76 @@ export default function CuAlHeatExchangersPage() {
         </div>
       </section>
 
+      <section id="manufacturers" className={styles.section}>
+        <div className={styles.sectionHeadingRow}>
+          <h2>Производители для Cu-Al / HVAC</h2>
+          <a className={styles.showAllLink} href="/wikimarket/hvac/copper-aluminum-heat-exchangers/manufacturers">
+            Все производители
+          </a>
+        </div>
+
+        <div className={styles.manufacturerGrid}>
+          {cuAlManufacturerCards.map((company) => {
+            const capabilities = getDisplayCapabilities(company);
+            const miniFacts = getCardMiniFacts(company);
+            const hasRatedState = hasRatedReviews(company);
+
+            return (
+              <article key={company.id} className={`${styles.card} ${styles.manufacturerCard}`}>
+                <a className={styles.manufacturerImageWrap} href={company.profileUrl}>
+                  <img
+                    className={styles.manufacturerImage}
+                    src={getCompanyImage(company)}
+                    alt={getCompanyImageAlt(company)}
+                  />
+                </a>
+
+                <div className={styles.manufacturerContent}>
+                  <div className={styles.manufacturerBadges}>
+                    <span className={`${styles.badge} ${styles.badgeRole}`}>
+                      {getCompanyRoleLabel(company.companyRole)}
+                    </span>
+                    {company.isVerified ? (
+                      <span className={`${styles.badge} ${styles.badgeTrust}`}>Проверен</span>
+                    ) : null}
+                  </div>
+
+                  <h3 className={styles.manufacturerTitle}>
+                    <a href={company.profileUrl}>{company.cardTitle}</a>
+                  </h3>
+
+                  <p className={styles.manufacturerDescription}>{company.shortDescription}</p>
+                  <p className={styles.manufacturerRelevance}>{company.categoryRelevanceLabel}</p>
+                  <p className={`${styles.manufacturerRating} ${hasRatedState ? styles.manufacturerRatingRated : ""}`}>
+                    {getRatingLabel(company)}
+                  </p>
+                  <p className={styles.manufacturerGeo}>{getCompanyLocationLabel(company)}</p>
+
+                  <ul className={styles.manufacturerCapabilities}>
+                    {capabilities.map((capability) => (
+                      <li key={`${company.id}-${capability}`}>{capability}</li>
+                    ))}
+                  </ul>
+
+                  {miniFacts.length > 0 ? (
+                    <ul className={styles.manufacturerFacts}>
+                      {miniFacts.map((fact) => (
+                        <li key={`${company.id}-fact-${fact}`}>{fact}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  <div className={styles.actions}>
+                    <a className={`${styles.btn} ${styles.btnPrimary}`} href={company.primaryCtaUrl}>
+                      {company.primaryCtaLabel}
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
       <section className={styles.threeCards}>
         <article className={styles.card}>
           <h2>Что поставляем/делаем</h2>
@@ -359,3 +445,4 @@ export default function CuAlHeatExchangersPage() {
     </main>
   );
 }
+
