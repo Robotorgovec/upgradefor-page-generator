@@ -1,15 +1,15 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import ContactsCountryBlock from "../shared/ContactsCountryBlock";
 import styles from "./CuAlHeatExchangersPage.module.css";
 import { faqItems, heroChips, productItems, useCases } from "./data";
 import {
+  DEFAULT_MANUFACTURER_CARD_IMAGE,
+  DEFAULT_MANUFACTURER_CARD_IMAGE_ALT,
   cuAlManufacturerCards,
   getCardMiniFacts,
-  getCompanyImage,
-  getCompanyImageAlt,
   getCompanyLocationLabel,
   getCompanyRoleLabel,
   getDisplayCapabilities,
@@ -37,6 +37,51 @@ export default function CuAlHeatExchangersPage() {
     () => [...heroChips, { href: "#manufacturers", label: "Производители" }],
     [],
   );
+
+  const manufacturerTrackRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const updateManufacturerControls = useCallback(() => {
+    const track = manufacturerTrackRef.current;
+    if (!track) return;
+
+    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    setCanScrollPrev(track.scrollLeft > 4);
+    setCanScrollNext(track.scrollLeft < maxScrollLeft - 4);
+  }, []);
+
+  const scrollManufacturers = useCallback(
+    (direction: 1 | -1) => {
+      const track = manufacturerTrackRef.current;
+      if (!track) return;
+
+      const firstCard = track.querySelector<HTMLElement>("[data-manufacturer-card='true']");
+      const style = window.getComputedStyle(track);
+      const gap = Number.parseFloat(style.columnGap || style.gap || "0");
+      const step = (firstCard?.getBoundingClientRect().width ?? track.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
+
+      track.scrollBy({
+        left: direction * step,
+        behavior: "smooth",
+      });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const track = manufacturerTrackRef.current;
+    if (!track) return;
+
+    updateManufacturerControls();
+    track.addEventListener("scroll", updateManufacturerControls, { passive: true });
+    window.addEventListener("resize", updateManufacturerControls);
+
+    return () => {
+      track.removeEventListener("scroll", updateManufacturerControls);
+      window.removeEventListener("resize", updateManufacturerControls);
+    };
+  }, [updateManufacturerControls]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,76 +127,6 @@ export default function CuAlHeatExchangersPage() {
         </div>
       </section>
 
-      <section id="manufacturers" className={styles.section}>
-        <div className={styles.sectionHeadingRow}>
-          <h2>Производители для Cu-Al / HVAC</h2>
-          <a className={styles.showAllLink} href="/wikimarket/hvac/copper-aluminum-heat-exchangers/manufacturers">
-            Все производители
-          </a>
-        </div>
-
-        <div className={styles.manufacturerGrid}>
-          {cuAlManufacturerCards.map((company) => {
-            const capabilities = getDisplayCapabilities(company);
-            const miniFacts = getCardMiniFacts(company);
-            const hasRatedState = hasRatedReviews(company);
-
-            return (
-              <article key={company.id} className={`${styles.card} ${styles.manufacturerCard}`}>
-                <a className={styles.manufacturerImageWrap} href={company.profileUrl}>
-                  <img
-                    className={styles.manufacturerImage}
-                    src={getCompanyImage(company)}
-                    alt={getCompanyImageAlt(company)}
-                  />
-                </a>
-
-                <div className={styles.manufacturerContent}>
-                  <div className={styles.manufacturerBadges}>
-                    <span className={`${styles.badge} ${styles.badgeRole}`}>
-                      {getCompanyRoleLabel(company.companyRole)}
-                    </span>
-                    {company.isVerified ? (
-                      <span className={`${styles.badge} ${styles.badgeTrust}`}>Проверен</span>
-                    ) : null}
-                  </div>
-
-                  <h3 className={styles.manufacturerTitle}>
-                    <a href={company.profileUrl}>{company.cardTitle}</a>
-                  </h3>
-
-                  <p className={styles.manufacturerDescription}>{company.shortDescription}</p>
-                  <p className={styles.manufacturerRelevance}>{company.categoryRelevanceLabel}</p>
-                  <p className={`${styles.manufacturerRating} ${hasRatedState ? styles.manufacturerRatingRated : ""}`}>
-                    {getRatingLabel(company)}
-                  </p>
-                  <p className={styles.manufacturerGeo}>{getCompanyLocationLabel(company)}</p>
-
-                  <ul className={styles.manufacturerCapabilities}>
-                    {capabilities.map((capability) => (
-                      <li key={`${company.id}-${capability}`}>{capability}</li>
-                    ))}
-                  </ul>
-
-                  {miniFacts.length > 0 ? (
-                    <ul className={styles.manufacturerFacts}>
-                      {miniFacts.map((fact) => (
-                        <li key={`${company.id}-fact-${fact}`}>{fact}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-
-                  <div className={styles.actions}>
-                    <a className={`${styles.btn} ${styles.btnPrimary}`} href={company.primaryCtaUrl}>
-                      {company.primaryCtaLabel}
-                    </a>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
       <section className={styles.threeCards}>
         <article className={styles.card}>
           <h2>Что поставляем/делаем</h2>
@@ -216,6 +191,106 @@ export default function CuAlHeatExchangersPage() {
         </article>
       </section>
 
+      <section id="manufacturers" className={styles.section}>
+        <div className={styles.sectionHeadingRow}>
+          <h2>Производители для Cu-Al / HVAC</h2>
+
+          <div className={styles.manufacturerHeaderActions}>
+            <div className={styles.manufacturerControls} role="group" aria-label="Управление списком производителей">
+              <button
+                type="button"
+                className={`${styles.manufacturerArrow} ${!canScrollPrev ? styles.manufacturerArrowDisabled : ""}`}
+                aria-label="Предыдущие производители"
+                onClick={() => scrollManufacturers(-1)}
+                disabled={!canScrollPrev}
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                className={`${styles.manufacturerArrow} ${!canScrollNext ? styles.manufacturerArrowDisabled : ""}`}
+                aria-label="Следующие производители"
+                onClick={() => scrollManufacturers(1)}
+                disabled={!canScrollNext}
+              >
+                →
+              </button>
+            </div>
+
+            <a className={styles.showAllLink} href="/wikimarket/hvac/copper-aluminum-heat-exchangers/manufacturers">
+              Посмотреть всех
+            </a>
+          </div>
+        </div>
+
+        <div className={styles.manufacturerViewport}>
+          <div className={styles.manufacturerTrack} ref={manufacturerTrackRef}>
+            {cuAlManufacturerCards.map((company) => {
+              const capabilities = getDisplayCapabilities(company);
+              const miniFacts = getCardMiniFacts(company);
+              const hasRatedState = hasRatedReviews(company);
+
+              return (
+                <article
+                  key={company.id}
+                  data-manufacturer-card="true"
+                  className={`${styles.card} ${styles.manufacturerCard} ${styles.manufacturerSlide}`}
+                >
+                  <a className={styles.manufacturerImageWrap} href={company.profileUrl}>
+                    <img
+                      className={styles.manufacturerImage}
+                      src={DEFAULT_MANUFACTURER_CARD_IMAGE}
+                      alt={DEFAULT_MANUFACTURER_CARD_IMAGE_ALT}
+                    />
+                  </a>
+
+                  <div className={styles.manufacturerContent}>
+                    <div className={styles.manufacturerBadges}>
+                      <span className={`${styles.badge} ${styles.badgeRole}`}>
+                        {getCompanyRoleLabel(company.companyRole)}
+                      </span>
+                      {company.isVerified ? (
+                        <span className={`${styles.badge} ${styles.badgeTrust}`}>Проверен</span>
+                      ) : null}
+                    </div>
+
+                    <h3 className={styles.manufacturerTitle}>
+                      <a href={company.profileUrl}>{company.cardTitle}</a>
+                    </h3>
+
+                    <p className={styles.manufacturerDescription}>{company.shortDescription}</p>
+                    <p className={styles.manufacturerRelevance}>{company.categoryRelevanceLabel}</p>
+                    <p className={`${styles.manufacturerRating} ${hasRatedState ? styles.manufacturerRatingRated : ""}`}>
+                      {getRatingLabel(company)}
+                    </p>
+                    <p className={styles.manufacturerGeo}>{getCompanyLocationLabel(company)}</p>
+
+                    <ul className={styles.manufacturerCapabilities}>
+                      {capabilities.map((capability) => (
+                        <li key={`${company.id}-${capability}`}>{capability}</li>
+                      ))}
+                    </ul>
+
+                    {miniFacts.length > 0 ? (
+                      <ul className={styles.manufacturerFacts}>
+                        {miniFacts.map((fact) => (
+                          <li key={`${company.id}-fact-${fact}`}>{fact}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+
+                    <div className={styles.actions}>
+                      <a className={`${styles.btn} ${styles.btnPrimary}`} href={company.primaryCtaUrl}>
+                        {company.primaryCtaLabel}
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
       <section id="products" className={styles.section}>
         <h2>Изделия (по назначению)</h2>
 
@@ -445,4 +520,3 @@ export default function CuAlHeatExchangersPage() {
     </main>
   );
 }
-

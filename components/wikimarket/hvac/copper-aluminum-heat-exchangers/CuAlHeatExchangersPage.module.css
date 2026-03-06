@@ -192,23 +192,92 @@
   gap: 10px;
 }
 
+.manufacturerHeaderActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .showAllLink {
   color: var(--hx-accent);
   font-weight: 700;
   text-decoration: none;
+  border: 1px solid var(--hx-accent-border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
 }
 
 .showAllLink:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
 }
 
-.manufacturerGrid {
-  display: grid;
+.manufacturerControls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.manufacturerArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.manufacturerArrow:focus-visible {
+  outline: 2px solid var(--hx-accent);
+  outline-offset: 2px;
+}
+
+.manufacturerArrowDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.manufacturerViewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.manufacturerViewport::-webkit-scrollbar {
+  display: none;
+}
+
+.manufacturerTrack {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
   gap: 12px;
+  min-width: 100%;
+}
+
+.manufacturerSlide {
+  flex: 0 0 86%;
+  min-width: 0;
+  scroll-snap-align: start;
 }
 
 .manufacturerCard {
   gap: 14px;
+  height: 100%;
+  grid-template-rows: auto 1fr;
 }
 
 .manufacturerImageWrap {
@@ -225,8 +294,10 @@
 }
 
 .manufacturerContent {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  height: 100%;
 }
 
 .manufacturerBadges {
@@ -259,6 +330,10 @@
 .manufacturerTitle {
   margin: 0;
   line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .manufacturerTitle a {
@@ -323,6 +398,10 @@
 .manufacturerFacts li {
   background: color-mix(in srgb, var(--hx-accent-soft) 20%, white);
   color: var(--muted);
+}
+
+.manufacturerCard .actions {
+  margin-top: auto;
 }
 
 .form {
@@ -440,9 +519,12 @@
 
   .productGrid,
   .usecaseGrid,
-  .manufacturerGrid,
   .formGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .manufacturerSlide {
+    flex-basis: calc((100% - 12px) / 2);
   }
 
   .twoColumns {
@@ -456,11 +538,15 @@
 
 @media (min-width: 1280px) {
   .productGrid,
-  .usecaseGrid,
-  .manufacturerGrid {
+  .usecaseGrid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .manufacturerSlide {
+    flex-basis: calc((100% - 24px) / 3);
+  }
 }
+
 .sharedContacts :global(.wrap) {
   max-width: 100%;
   padding: 0;
@@ -568,6 +654,15 @@
     padding: 10px;
   }
 
+  .manufacturerHeaderActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .manufacturerSlide {
+    flex-basis: 92%;
+  }
+
   .actions {
     justify-content: center;
     row-gap: 8px;
@@ -618,6 +713,3 @@
     grid-template-columns: 1fr 1fr;
   }
 }
-
-
-

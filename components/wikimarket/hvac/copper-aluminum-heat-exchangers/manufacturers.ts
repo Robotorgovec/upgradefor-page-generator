@@ -237,6 +237,10 @@ export interface ManufacturerAdminFields {
 
 export const CU_AL_CATEGORY_SLUG = "hvac/copper-aluminum-heat-exchangers";
 
+export const DEFAULT_MANUFACTURER_CARD_IMAGE = "/assets/media/heat-exchanger-hero.png";
+
+export const DEFAULT_MANUFACTURER_CARD_IMAGE_ALT = "Медно-алюминиевый теплообменник";
+
 export const CU_AL_CAPABILITY_WHITELIST = [
   "Cu-Al coils",
   "AHU coils",
