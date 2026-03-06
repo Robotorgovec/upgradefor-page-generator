@@ -387,7 +387,7 @@
 
 @media (max-width: 520px) {
   .page {
-    padding: 12px 14px 28px;
+    padding: 12px 10px 28px;
     gap: 22px;
   }
 
@@ -406,6 +406,18 @@
   .formGrid,
   .contactsGrid {
     gap: 14px;
+  }
+
+  .section,
+  .hero,
+  .threeCards,
+  .splitSection,
+  .productGrid,
+  .usecaseGrid,
+  .detailsGrid,
+  .formGrid,
+  .contactsGrid {
+    max-width: 100%;
   }
 
   .card {
