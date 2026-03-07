@@ -9,6 +9,7 @@ import {
   CLIENT_TYPE_OPTIONS,
   CONNECTION_ORIENTATION_OPTIONS,
   CONNECTION_TYPE_OPTIONS,
+  DEADLINE_PRESET_OPTIONS,
   DEFAULT_ESTIMATE_TEXT,
   FILE_CATEGORY_OPTIONS,
   HEADER_POSITION_OPTIONS,
@@ -27,14 +28,13 @@ import {
   SCENARIO_OPTIONS,
   STEP_TITLES,
   TASK_NEED_OPTIONS,
-  URGENCY_OPTIONS,
   createInitialState,
   detectCountryFromLocale,
 } from "./rfq/config";
 import { calculateEstimate } from "./rfq/estimator";
 import { buildRfqPayload, validateSubmitMinimum } from "./rfq/payload";
 import { buildHistorySnapshot, clearDraft, loadDraft, pushHistorySnapshot, saveDraft } from "./rfq/storage";
-import { FileCategory, RfqFileItem, RfqFormState, RfqScenario } from "./rfq/types";
+import { DeadlinePreset, FileCategory, RfqFileItem, RfqFormState, RfqScenario } from "./rfq/types";
 import { clampStep, formatCurrency, numberFromInput, selectListValue, toId } from "./rfq/utils";
 
 const MAX_STEP_INDEX = STEP_TITLES.length - 1;
@@ -104,6 +104,43 @@ function slugToReadableText(slug: string): string {
     .trim();
 }
 
+function includeListValue(list: string[], value: string): string[] {
+  if (list.includes(value)) return list;
+  return [...list, value];
+}
+
+function presetLabel(preset: DeadlinePreset | ""): string {
+  return DEADLINE_PRESET_OPTIONS.find((item) => item.value === preset)?.label ?? "";
+}
+
+function formatDateLabel(value: string): string {
+  if (!value) return "-";
+  const parsed = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleDateString("ru-RU");
+}
+
+function deadlineSummaryLabel(form: RfqFormState): string {
+  if (form.deadlineMode === "asap") return "ближайший возможный";
+
+  if (form.deadlineMode === "exact_date") {
+    return form.deadlineDate ? `до ${formatDateLabel(form.deadlineDate)}` : "-";
+  }
+
+  if (form.deadlineMode === "days_from_now") {
+    if (typeof form.deadlineDays === "number" && form.deadlineDays > 0) {
+      return `через ${form.deadlineDays} дней`;
+    }
+    return "-";
+  }
+
+  if (form.deadlinePreset) {
+    const label = presetLabel(form.deadlinePreset);
+    return label ? `через ${label}` : "-";
+  }
+
+  return "-";
+}
 export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecaseSlug }: CuAlRfqConfiguratorProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [step, setStep] = useState(0);
@@ -113,6 +150,8 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
   const [dragActive, setDragActive] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>({ status: "idle" });
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
+  const [scenarioLockedByQuickEntry, setScenarioLockedByQuickEntry] = useState(false);
+  const [showScenarioEditor, setShowScenarioEditor] = useState(false);
 
   const locale = useMemo(() => {
     if (typeof navigator === "undefined") return "ru-RU";
@@ -211,6 +250,21 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
 
   const showCollectorsStep = form.scenario !== "quick";
   const completionText = completionLabel(estimate.completion);
+  const deadlineText = deadlineSummaryLabel(form);
+
+  const knowsDimensions = form.knownData.includes("Габариты");
+  const knowsPower = form.knownData.includes("Мощность");
+  const knowsThermal = form.knownData.includes("Температуры / расход");
+  const knowsConnections = form.knownData.includes("Данные по подключениям");
+  const hasFileKnownData = form.knownData.includes("Есть чертеж / фото / шильдик");
+
+  const showDimensionFields =
+    form.scenario === "dimensions" || form.scenario === "replacement" || form.scenario === "engineering" || knowsDimensions;
+  const showPowerFields = form.scenario === "power" || form.scenario === "engineering" || knowsPower;
+  const showThermalFields = form.scenario === "power" || form.scenario === "engineering" || knowsThermal;
+  const replacementNeedsExactAnalog = form.scenario === "replacement" && form.replacementNeed === "full-analog";
+  const collectorsPriority =
+    form.scenario === "replacement" || replacementNeedsExactAnalog || form.keepConnectionLayoutExact || knowsConnections;
 
   const setField = <K extends keyof RfqFormState>(key: K, value: RfqFormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -229,10 +283,46 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
     }));
   };
 
-  const toggleListField = (field: "knownData" | "preserveWhat" | "oemRequirements" | "selectedManufacturers", value: string) => {
+  const toggleListField = (field: "preserveWhat" | "oemRequirements" | "selectedManufacturers", value: string) => {
     setForm((prev) => ({
       ...prev,
       [field]: selectListValue(prev[field], value),
+    }));
+  };
+
+  const toggleKnownDataOption = (option: string) => {
+    const enablingEngineerHelp = option === "Нужна помощь инженера" && !form.knownData.includes(option);
+    if (enablingEngineerHelp) {
+      trackRfqEvent("engineer_help_click", { source: "step-2" });
+    }
+
+    setForm((prev) => {
+      const nextKnownData = selectListValue(prev.knownData, option);
+      return {
+        ...prev,
+        knownData: nextKnownData,
+        engineerHelp: nextKnownData.includes("Нужна помощь инженера"),
+      };
+    });
+  };
+
+  const setDeadlinePreset = (preset: DeadlinePreset) => {
+    setForm((prev) => ({
+      ...prev,
+      deadlineMode: "preset",
+      deadlinePreset: preset,
+      deadlineDate: "",
+      deadlineDays: "",
+    }));
+  };
+
+  const setDeadlineAsap = () => {
+    setForm((prev) => ({
+      ...prev,
+      deadlineMode: "asap",
+      deadlinePreset: "",
+      deadlineDate: "",
+      deadlineDays: "",
     }));
   };
 
@@ -315,16 +405,23 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
     if (!chip) return;
 
     setForm((prev) => {
-      const nextKnownData = chip.id === "have-files" ? selectListValue(prev.knownData, "Чертеж") : prev.knownData;
+      const withFilesHint =
+        chip.id === "have-files" ? includeListValue(prev.knownData, "Есть чертеж / фото / шильдик") : prev.knownData;
+      const withEngineerHelp = chip.engineerHelp ? includeListValue(withFilesHint, "Нужна помощь инженера") : withFilesHint;
+      const replacementNeed = chip.id === "analog-no-rework" ? "full-analog" : prev.replacementNeed;
+
       return {
         ...prev,
         scenario: chip.scenario,
         engineerHelp: chip.engineerHelp ? true : prev.engineerHelp,
-        knownData: nextKnownData,
+        knownData: withEngineerHelp,
+        replacementNeed,
         keepConnectionLayoutExact: chip.highlightConnections ? true : prev.keepConnectionLayoutExact,
       };
     });
 
+    setScenarioLockedByQuickEntry(true);
+    setShowScenarioEditor(false);
     setStep(0);
     setErrors([]);
     trackRfqEvent("quick_chip_click", { chipId, scenario: chip.scenario });
@@ -341,6 +438,8 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
 
   const handleScenarioChange = (scenario: RfqScenario) => {
     setForm((prev) => ({ ...prev, scenario }));
+    setScenarioLockedByQuickEntry(false);
+    setShowScenarioEditor(false);
     trackRfqEvent("scenario_select", { scenario });
     if (scenario === "replacement") trackRfqEvent("replacement_mode_enter", { source: "scenario-select" });
     if (scenario === "oem") trackRfqEvent("oem_mode_enter", { source: "scenario-select" });
@@ -547,24 +646,42 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
             </select>
           </label>
 
-          <div className={styles.field}>
-            <span>Главный сценарий</span>
-            <div className={styles.radioGrid} role="radiogroup" aria-label="Выбор сценария">
-              {SCENARIO_OPTIONS.map((scenario) => (
-                <button
-                  key={scenario.value}
-                  type="button"
-                  className={`${styles.radioCard} ${form.scenario === scenario.value ? styles.radioCardActive : ""}`}
-                  onClick={() => handleScenarioChange(scenario.value)}
-                  role="radio"
-                  aria-checked={form.scenario === scenario.value}
-                >
-                  <strong>{scenario.label}</strong>
-                  <small>{scenario.description}</small>
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Главный сценарий</h4>
+            {scenarioLockedByQuickEntry && !showScenarioEditor ? (
+              <div className={styles.scenarioSummaryCard}>
+                <p>
+                  Выбран сценарий: <strong>{scenarioLabel(form.scenario)}</strong>
+                </p>
+                <button type="button" className={styles.secondaryButton} onClick={() => setShowScenarioEditor(true)}>
+                  Изменить сценарий
                 </button>
-              ))}
-            </div>
-          </div>
+              </div>
+            ) : (
+              <>
+                <div className={styles.radioGrid} role="radiogroup" aria-label="Выбор сценария">
+                  {SCENARIO_OPTIONS.map((scenario) => (
+                    <button
+                      key={scenario.value}
+                      type="button"
+                      className={`${styles.radioCard} ${form.scenario === scenario.value ? styles.radioCardActive : ""}`}
+                      onClick={() => handleScenarioChange(scenario.value)}
+                      role="radio"
+                      aria-checked={form.scenario === scenario.value}
+                    >
+                      <strong>{scenario.label}</strong>
+                      <small>{scenario.description}</small>
+                    </button>
+                  ))}
+                </div>
+                {scenarioLockedByQuickEntry ? (
+                  <p className={styles.microHelp}>
+                    Сценарий можно изменить, если быстрый вход выбран не для вашего текущего кейса.
+                  </p>
+                 ) : null}
+              </>
+            )}
+          </section>
 
           <label className={styles.field}>
             <span>Область применения</span>
@@ -597,43 +714,25 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
       return (
         <section className={styles.stepSection} aria-labelledby="rfq-step-2">
           <h3 id="rfq-step-2">Шаг 2. Какие данные у вас есть</h3>
+          <p className={styles.microHelp}>Этот шаг управляет тем, какие поля будут раскрыты на следующем шаге.</p>
 
           <div className={styles.checkGrid}>
             {KNOWN_DATA_OPTIONS.map((option) => {
               const checked = form.knownData.includes(option);
               return (
                 <label key={option} className={styles.checkboxItem}>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => toggleListField("knownData", option)}
-                  />
+                  <input type="checkbox" checked={checked} onChange={() => toggleKnownDataOption(option)} />
                   <span>{option}</span>
                 </label>
               );
             })}
           </div>
 
-          <label className={styles.checkboxLine}>
-            <input
-              type="checkbox"
-              checked={form.engineerHelp}
-              onChange={(event) => {
-                const checked = event.target.checked;
-                setField("engineerHelp", checked);
-                if (checked) {
-                  trackRfqEvent("engineer_help_click", { source: "step-2" });
-                }
-              }}
-            />
-            <span>Нужна помощь инженера</span>
-          </label>
-
           {form.engineerHelp ? (
             <p className={styles.helperNotice}>
-              Отправьте то, что знаете. Чем больше данных, тем точнее estimate и быстрее подбор.
+              Отправьте то, что знаете. Чем больше данных, тем точнее ориентировочная оценка и быстрее подбор.
             </p>
-          ) : null}
+           ) : null}
         </section>
       );
     }
@@ -643,83 +742,226 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
         <section className={styles.stepSection} aria-labelledby="rfq-step-3">
           <h3 id="rfq-step-3">Шаг 3. Основные параметры</h3>
 
-          <div className={styles.fieldGrid2}>
-            <label className={styles.field}>
-              <span>Рабочая среда</span>
-              <select value={form.medium} onChange={(event) => setField("medium", event.target.value as RfqFormState["medium"])}>
-                <option value="">Выберите среду</option>
-                {MEDIUM_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Тепловые параметры</h4>
+            <div className={styles.fieldGrid2}>
+              <label className={styles.field}>
+                <span>Рабочая среда</span>
+                <select value={form.medium} onChange={(event) => setField("medium", event.target.value as RfqFormState["medium"])}>
+                  <option value="">Выберите среду</option>
+                  {MEDIUM_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className={styles.field}>
+                <span>Режим</span>
+                <select value={form.mode} onChange={(event) => setField("mode", event.target.value as RfqFormState["mode"])}>
+                  <option value="">Выберите режим</option>
+                  {MODE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {showPowerFields ? (
+                <label className={styles.field}>
+                  <span>Требуемая мощность, кВт</span>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    value={form.powerKw}
+                    min={0}
+                    onChange={(event) => setField("powerKw", numberFromInput(event.target.value))}
+                    placeholder="Например: 72"
+                  />
+                </label>
+               ) : null}
+
+              {showThermalFields || showPowerFields ? (
+                <label className={styles.field}>
+                  <span>Расход воздуха, м3/ч</span>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    value={form.airflowM3h}
+                    min={0}
+                    onChange={(event) => setField("airflowM3h", numberFromInput(event.target.value))}
+                  />
+                </label>
+               ) : null}
+
+              <label className={styles.field}>
+                <span>Количество изделий</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={form.quantity}
+                  min={1}
+                  onChange={(event) => setField("quantity", numberFromInput(event.target.value))}
+                />
+              </label>
+            </div>
+
+            {showThermalFields ? (
+              <div className={styles.fieldGrid3}>
+                <label className={styles.field}>
+                  <span>Температура воздуха на входе, C</span>
+                  <input type="number" value={form.airInC} onChange={(event) => setField("airInC", numberFromInput(event.target.value))} />
+                </label>
+                <label className={styles.field}>
+                  <span>Температура воздуха на выходе, C</span>
+                  <input type="number" value={form.airOutC} onChange={(event) => setField("airOutC", numberFromInput(event.target.value))} />
+                </label>
+                <label className={styles.field}>
+                  <span>Температура среды на входе, C</span>
+                  <input
+                    type="number"
+                    value={form.mediumInC}
+                    onChange={(event) => setField("mediumInC", numberFromInput(event.target.value))}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Температура среды на выходе, C</span>
+                  <input
+                    type="number"
+                    value={form.mediumOutC}
+                    onChange={(event) => setField("mediumOutC", numberFromInput(event.target.value))}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Рабочее давление, bar</span>
+                  <input
+                    type="number"
+                    value={form.workingPressureBar}
+                    min={0}
+                    step="0.1"
+                    onChange={(event) => setField("workingPressureBar", numberFromInput(event.target.value))}
+                  />
+                </label>
+                <label className={styles.field}>
+                  <span>Допустимое падение давления, kPa</span>
+                  <input
+                    type="number"
+                    value={form.pressureDropLimitKpa}
+                    min={0}
+                    step="0.1"
+                    onChange={(event) => setField("pressureDropLimitKpa", numberFromInput(event.target.value))}
+                  />
+                </label>
+              </div>
+             ) : null}
+
+            <div className={styles.deadlineBlock}>
+              <h5 className={styles.deadlineTitle}>Срок нужен к</h5>
+              <div className={styles.chipGrid}>
+                {DEADLINE_PRESET_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`${styles.inlineChip} ${
+                      form.deadlineMode === "preset" && form.deadlinePreset === option.value ? styles.inlineChipActive : ""
+                    }`}
+                    onClick={() => setDeadlinePreset(option.value)}
+                  >
                     {option.label}
-                  </option>
+                  </button>
                 ))}
-              </select>
-            </label>
+                <button
+                  type="button"
+                  className={`${styles.inlineChip} ${form.deadlineMode === "asap" ? styles.inlineChipActive : ""}`}
+                  onClick={setDeadlineAsap}
+                >
+                  Ближайший возможный срок
+                </button>
+              </div>
 
-            <label className={styles.field}>
-              <span>Режим</span>
-              <select value={form.mode} onChange={(event) => setField("mode", event.target.value as RfqFormState["mode"])}>
-                <option value="">Выберите режим</option>
-                {MODE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+              <div className={styles.deadlineModeRow}>
+                <button
+                  type="button"
+                  className={`${styles.secondaryButton} ${
+                    form.deadlineMode === "exact_date" ? styles.deadlineModeButtonActive : styles.deadlineModeButton
+                  }`}
+                  onClick={() =>
+                    setForm((prev) => ({
+                      ...prev,
+                      deadlineMode: "exact_date",
+                      deadlinePreset: "",
+                      deadlineDays: "",
+                    }))
+                  }
+                >
+                  Указать точную дату
+                </button>
 
-            <label className={styles.field}>
-              <span>Требуемая мощность, кВт</span>
-              <input
-                type="number"
-                inputMode="decimal"
-                value={form.powerKw}
-                min={0}
-                onChange={(event) => setField("powerKw", numberFromInput(event.target.value))}
-                placeholder="Например: 72"
-              />
-            </label>
+                <button
+                  type="button"
+                  className={`${styles.secondaryButton} ${
+                    form.deadlineMode === "days_from_now" ? styles.deadlineModeButtonActive : styles.deadlineModeButton
+                  }`}
+                  onClick={() =>
+                    setForm((prev) => ({
+                      ...prev,
+                      deadlineMode: "days_from_now",
+                      deadlinePreset: "",
+                      deadlineDate: "",
+                    }))
+                  }
+                >
+                  Указать через N дней
+                </button>
+              </div>
 
-            <label className={styles.field}>
-              <span>Расход воздуха, м3/ч</span>
-              <input
-                type="number"
-                inputMode="decimal"
-                value={form.airflowM3h}
-                min={0}
-                onChange={(event) => setField("airflowM3h", numberFromInput(event.target.value))}
-              />
-            </label>
+              {form.deadlineMode === "exact_date" ? (
+                <label className={styles.field}>
+                  <span>Дата</span>
+                  <input
+                    type="date"
+                    value={form.deadlineDate}
+                    onChange={(event) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        deadlineMode: "exact_date",
+                        deadlineDate: event.target.value,
+                        deadlinePreset: "",
+                        deadlineDays: "",
+                      }))
+                    }
+                  />
+                </label>
+               ) : null}
 
-            <label className={styles.field}>
-              <span>Количество изделий</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                value={form.quantity}
-                min={1}
-                onChange={(event) => setField("quantity", numberFromInput(event.target.value))}
-              />
-            </label>
+              {form.deadlineMode === "days_from_now" ? (
+                <label className={styles.field}>
+                  <span>Через сколько дней</span>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    value={form.deadlineDays}
+                    onChange={(event) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        deadlineMode: "days_from_now",
+                        deadlineDays: numberFromInput(event.target.value),
+                        deadlinePreset: "",
+                        deadlineDate: "",
+                      }))
+                    }
+                  />
+                </label>
+               ) : null}
+            </div>
+          </section>
 
-            <label className={styles.field}>
-              <span>Срочность</span>
-              <select
-                value={form.contact.urgency}
-                onChange={(event) => setContactField("urgency", event.target.value as RfqFormState["contact"]["urgency"])}
-              >
-                <option value="">Выберите срочность</option>
-                {URGENCY_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          {(form.scenario === "dimensions" || form.scenario === "replacement" || form.scenario === "engineering") && (
-            <>
-              <h4 className={styles.subheading}>Габариты и геометрия</h4>
+          {showDimensionFields ? (
+            <section className={styles.groupBlock}>
+              <h4 className={styles.groupTitle}>Габариты</h4>
               <div className={styles.fieldGrid3}>
                 <label className={styles.field}>
                   <span>A - длина, мм</span>
@@ -753,12 +995,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 </label>
                 <label className={styles.field}>
                   <span>Рядность</span>
-                  <input
-                    type="number"
-                    value={form.rows}
-                    min={1}
-                    onChange={(event) => setField("rows", numberFromInput(event.target.value))}
-                  />
+                  <input type="number" value={form.rows} min={1} onChange={(event) => setField("rows", numberFromInput(event.target.value))} />
                 </label>
                 <label className={styles.field}>
                   <span>Диаметр трубок, мм</span>
@@ -810,101 +1047,25 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                   />
                 </label>
               </div>
-            </>
-          )}
+            </section>
+           ) : null}
 
-          {(form.scenario === "power" || form.scenario === "engineering") && (
-            <>
-              <h4 className={styles.subheading}>Тепловой режим</h4>
-              <div className={styles.fieldGrid3}>
-                <label className={styles.field}>
-                  <span>Температура воздуха на входе, C</span>
-                  <input
-                    type="number"
-                    value={form.airInC}
-                    onChange={(event) => setField("airInC", numberFromInput(event.target.value))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Температура воздуха на выходе, C</span>
-                  <input
-                    type="number"
-                    value={form.airOutC}
-                    onChange={(event) => setField("airOutC", numberFromInput(event.target.value))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Температура среды на входе, C</span>
-                  <input
-                    type="number"
-                    value={form.mediumInC}
-                    onChange={(event) => setField("mediumInC", numberFromInput(event.target.value))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Температура среды на выходе, C</span>
-                  <input
-                    type="number"
-                    value={form.mediumOutC}
-                    onChange={(event) => setField("mediumOutC", numberFromInput(event.target.value))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Рабочее давление, bar</span>
-                  <input
-                    type="number"
-                    value={form.workingPressureBar}
-                    min={0}
-                    step="0.1"
-                    onChange={(event) => setField("workingPressureBar", numberFromInput(event.target.value))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Допустимое падение давления, kPa</span>
-                  <input
-                    type="number"
-                    value={form.pressureDropLimitKpa}
-                    min={0}
-                    step="0.1"
-                    onChange={(event) => setField("pressureDropLimitKpa", numberFromInput(event.target.value))}
-                  />
-                </label>
-              </div>
-            </>
-          )}
-
-          {form.scenario === "replacement" && (
-            <>
-              <h4 className={styles.subheading}>Замена существующего</h4>
-              <label className={styles.field}>
-                <span>Марка / модель / обозначение старого изделия</span>
-                <input
-                  type="text"
-                  value={form.oldModel}
-                  onChange={(event) => setField("oldModel", event.target.value)}
-                />
-              </label>
-
-              <div className={styles.checkGrid}>
-                {PRESERVE_OPTIONS.map((item) => (
-                  <label key={item} className={styles.checkboxItem}>
-                    <input
-                      type="checkbox"
-                      checked={form.preserveWhat.includes(item)}
-                      onChange={() => toggleListField("preserveWhat", item)}
-                    />
-                    <span>{item}</span>
-                  </label>
-                ))}
-              </div>
+          {form.scenario === "replacement" ? (
+            <section className={styles.groupBlock}>
+              <h4 className={styles.groupTitle}>Замена существующего</h4>
 
               <label className={styles.field}>
-                <span>Нужно</span>
+                <span>Нужен ли аналог без переделки установки?</span>
                 <select
                   value={form.replacementNeed}
-                  onChange={(event) =>
-                    setField("replacementNeed", event.target.value as RfqFormState["replacementNeed"])
-                  }
+                  onChange={(event) => {
+                    const value = event.target.value as RfqFormState["replacementNeed"];
+                    setForm((prev) => ({
+                      ...prev,
+                      replacementNeed: value,
+                      keepConnectionLayoutExact: value === "full-analog" ? true : prev.keepConnectionLayoutExact,
+                    }));
+                  }}
                 >
                   <option value="">Выберите режим</option>
                   {REPLACEMENT_NEED_OPTIONS.map((option) => (
@@ -914,20 +1075,37 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                   ))}
                 </select>
               </label>
-            </>
-          )}
 
-          {(form.scenario === "oem" || form.scenario === "engineering") && (
-            <>
-              <h4 className={styles.subheading}>OEM / серия</h4>
+              {replacementNeedsExactAnalog ? (
+                <p className={styles.highlightNotice}>
+                  Для точного аналога без переделок желательно указать габариты, подключения, коллекторы и приложить
+                  фото/шильдик/чертеж.
+                </p>
+               ) : null}
+
+              <label className={styles.field}>
+                <span>Марка / модель / обозначение старого изделия</span>
+                <input type="text" value={form.oldModel} onChange={(event) => setField("oldModel", event.target.value)} />
+              </label>
+
+              <div className={styles.checkGrid}>
+                {PRESERVE_OPTIONS.map((item) => (
+                  <label key={item} className={styles.checkboxItem}>
+                    <input type="checkbox" checked={form.preserveWhat.includes(item)} onChange={() => toggleListField("preserveWhat", item)} />
+                    <span>{item}</span>
+                  </label>
+                ))}
+              </div>
+            </section>
+           ) : null}
+
+          {(form.scenario === "oem" || form.scenario === "engineering") ? (
+            <section className={styles.groupBlock}>
+              <h4 className={styles.groupTitle}>OEM / серия</h4>
               <div className={styles.fieldGrid2}>
                 <label className={styles.field}>
                   <span>Тип вашего оборудования</span>
-                  <input
-                    type="text"
-                    value={form.oemEquipmentType}
-                    onChange={(event) => setField("oemEquipmentType", event.target.value)}
-                  />
+                  <input type="text" value={form.oemEquipmentType} onChange={(event) => setField("oemEquipmentType", event.target.value)} />
                 </label>
                 <label className={styles.field}>
                   <span>Нужен образец или серия</span>
@@ -960,21 +1138,13 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
 
               <label className={styles.field}>
                 <span>Новый проект или аналог текущего решения</span>
-                <input
-                  type="text"
-                  value={form.oemProjectType}
-                  onChange={(event) => setField("oemProjectType", event.target.value)}
-                />
+                <input type="text" value={form.oemProjectType} onChange={(event) => setField("oemProjectType", event.target.value)} />
               </label>
 
               <div className={styles.checkGrid}>
                 {OEM_REQUIREMENT_OPTIONS.map((item) => (
                   <label key={item} className={styles.checkboxItem}>
-                    <input
-                      type="checkbox"
-                      checked={form.oemRequirements.includes(item)}
-                      onChange={() => toggleListField("oemRequirements", item)}
-                    />
+                    <input type="checkbox" checked={form.oemRequirements.includes(item)} onChange={() => toggleListField("oemRequirements", item)} />
                     <span>{item}</span>
                   </label>
                 ))}
@@ -982,11 +1152,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
 
               <div className={styles.inlineChecks}>
                 <label className={styles.checkboxLine}>
-                  <input
-                    type="checkbox"
-                    checked={form.oemNeedSerialCalc}
-                    onChange={(event) => setField("oemNeedSerialCalc", event.target.checked)}
-                  />
+                  <input type="checkbox" checked={form.oemNeedSerialCalc} onChange={(event) => setField("oemNeedSerialCalc", event.target.checked)} />
                   <span>Нужен расчет под серийное производство</span>
                 </label>
                 <label className={styles.checkboxLine}>
@@ -998,12 +1164,12 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                   <span>Нужен аналог текущему поставщику</span>
                 </label>
               </div>
-            </>
-          )}
+            </section>
+           ) : null}
 
-          {form.scenario === "engineering" && (
-            <>
-              <h4 className={styles.subheading}>Полное инженерное ТЗ</h4>
+          {form.scenario === "engineering" ? (
+            <section className={styles.groupBlock}>
+              <h4 className={styles.groupTitle}>Полное инженерное ТЗ</h4>
               <div className={styles.fieldGrid2}>
                 <label className={styles.field}>
                   <span>Материал труб</span>
@@ -1028,29 +1194,17 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 </label>
                 <label className={styles.field}>
                   <span>Схема циркуляции</span>
-                  <input
-                    type="text"
-                    value={form.circulationScheme}
-                    onChange={(event) => setField("circulationScheme", event.target.value)}
-                  />
+                  <input type="text" value={form.circulationScheme} onChange={(event) => setField("circulationScheme", event.target.value)} />
                 </label>
                 <label className={styles.field}>
                   <span>Монтажное исполнение</span>
-                  <input
-                    type="text"
-                    value={form.mountingExecution}
-                    onChange={(event) => setField("mountingExecution", event.target.value)}
-                  />
+                  <input type="text" value={form.mountingExecution} onChange={(event) => setField("mountingExecution", event.target.value)} />
                 </label>
               </div>
 
               <label className={styles.field}>
                 <span>Требования к коррозионной стойкости</span>
-                <textarea
-                  value={form.corrosionRequirement}
-                  onChange={(event) => setField("corrosionRequirement", event.target.value)}
-                  rows={2}
-                />
+                <textarea value={form.corrosionRequirement} onChange={(event) => setField("corrosionRequirement", event.target.value)} rows={2} />
               </label>
 
               <label className={styles.field}>
@@ -1064,14 +1218,10 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
 
               <label className={styles.field}>
                 <span>Требования к документам / маркировке / спецификации</span>
-                <textarea
-                  value={form.documentsRequirement}
-                  onChange={(event) => setField("documentsRequirement", event.target.value)}
-                  rows={2}
-                />
+                <textarea value={form.documentsRequirement} onChange={(event) => setField("documentsRequirement", event.target.value)} rows={2} />
               </label>
-            </>
-          )}
+            </section>
+           ) : null}
         </section>
       );
     }
@@ -1092,13 +1242,16 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
         <section className={styles.stepSection} aria-labelledby="rfq-step-4">
           <h3 id="rfq-step-4">Шаг 4. Конструкция, коллекторы, подключения</h3>
 
-          {(form.scenario === "replacement" || form.keepConnectionLayoutExact) && (
+          {collectorsPriority && (
             <p className={styles.highlightNotice}>
               Для replacement и сценария "аналог без переделки" этот блок критичен: укажите подключения максимально точно.
             </p>
           )}
 
-          <div className={styles.helperWrap}>
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Коллекторы и подключения</h4>
+
+            <div className={styles.helperWrap}>
             <details className={styles.helperDetails} open>
               <summary>Схема габаритов (A, B, C)</summary>
               <svg viewBox="0 0 340 160" role="img" aria-label="Схема размеров теплообменника" className={styles.diagram}>
@@ -1253,6 +1406,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
             </label>
           </div>
         </section>
+      </section>
       );
     }
 
@@ -1260,6 +1414,15 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
       return (
         <section className={styles.stepSection} aria-labelledby="rfq-step-5">
           <h3 id="rfq-step-5">Шаг 5. Файлы и комментарии</h3>
+
+          {hasFileKnownData ? (
+            <p className={styles.helperNotice}>
+              Вы отметили сценарий с файлами. Добавьте чертеж, фото шильдика или фото старого изделия, чтобы ускорить подбор.
+            </p>
+            ) : null}
+
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Файлы</h4>
 
           <div
             className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ""}`}
@@ -1323,7 +1486,12 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 </li>
               ))}
             </ul>
-          ) : null}
+           ) : null}
+
+          </section>
+
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Комментарии</h4>
 
           <label className={styles.field}>
             <span>Комментарии и ограничения</span>
@@ -1334,6 +1502,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
               placeholder="Опишите задачу, ограничения по срокам, геометрии, подключению и документации"
             />
           </label>
+          </section>
         </section>
       );
     }
@@ -1342,6 +1511,9 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
       return (
         <section className={styles.stepSection} aria-labelledby="rfq-step-6">
           <h3 id="rfq-step-6">Шаг 6. Контакты и отправка</h3>
+
+          <section className={styles.groupBlock}>
+            <h4 className={styles.groupTitle}>Контакты</h4>
 
           <div className={styles.fieldGrid2}>
             <label className={styles.field}>
@@ -1460,6 +1632,8 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
             />
           </label>
 
+          </section>
+
           <div className={styles.routingBlock}>
             <h4>Сценарий RFQ-routing</h4>
             <div className={styles.radioStack}>
@@ -1492,7 +1666,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                   </label>
                 ))}
               </div>
-            ) : null}
+             ) : null}
 
             <p className={styles.microHelp}>
               После отправки заявка будет направлена по выбранному сценарию обработки.
@@ -1514,6 +1688,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
               <li>Назначение: {form.purpose || "Не указано"}</li>
               <li>Среда: {form.medium || "Не указана"}</li>
               <li>Режим: {form.mode || "Не указан"}</li>
+              <li>Срок: {deadlineText}</li>
               <li>
                 Габариты: {form.lengthMm || "-"} x {form.heightMm || "-"} x {form.depthMm || "-"} мм
               </li>
@@ -1609,7 +1784,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 <p key={error}>{error}</p>
               ))}
             </div>
-          ) : null}
+           ) : null}
 
           <div className={styles.stepActions}>
             <button type="button" className={styles.secondaryButton} onClick={goBack} disabled={step === 0}>
@@ -1641,16 +1816,16 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                   Stop-condition: в текущем проекте нет готового backend endpoint для production RFQ-routing. Подготовлены
                   UI, estimate, payload contract и structured history capture layer.
                 </p>
-              ) : null}
+               ) : null}
             </div>
-          ) : null}
+           ) : null}
 
           {submitState.status === "error" ? (
             <div className={styles.errorState} role="alert">
               <h4>Ошибка отправки</h4>
               <p>{submitState.message}</p>
             </div>
-          ) : null}
+           ) : null}
         </div>
 
         <aside className={styles.summaryColumn}>
@@ -1671,6 +1846,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 <li>Назначение: {form.purpose || "-"}</li>
                 <li>Среда: {form.medium || "-"}</li>
                 <li>Режим: {form.mode || "-"}</li>
+                <li>Срок: {deadlineText}</li>
                 <li>
                   Габариты: {form.lengthMm || "-"} x {form.heightMm || "-"} x {form.depthMm || "-"} мм
                 </li>
@@ -1678,19 +1854,20 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 <li>Мощность: {form.powerKw || "-"} кВт</li>
                 <li>Файлы: {form.files.length > 0 ? `Да (${form.files.length})` : "Нет"}</li>
                 <li>Тип клиента: {form.clientType || "-"}</li>
-                <li>Срочность: {form.contact.urgency || "-"}</li>
+
                 <li>Статус полноты: {completionText}</li>
               </ul>
             </article>
 
             <article className={styles.estimateCard} data-event="estimate_view">
-              <h3>Preliminary estimate</h3>
+              <h3>Ориентировочная стоимость</h3>
+              <p className={styles.estimateCaption}>Диапазон оценки</p>
               <p className={styles.estimateRange}>
                 {formatCurrency(estimate.low)} - {formatCurrency(estimate.high)}
               </p>
-              <p className={styles.estimateMid}>Базовая оценка: {formatCurrency(estimate.mid)}</p>
+              <p className={styles.estimateMid}>Средняя оценка: {formatCurrency(estimate.mid)}</p>
               <p>
-                Точность: <strong>{confidenceLabel(estimate.confidence)}</strong>
+                Точность оценки: <strong>{confidenceLabel(estimate.confidence)}</strong>
               </p>
               <p className={styles.estimateHint}>{DEFAULT_ESTIMATE_TEXT.disclaimer}</p>
               <p className={styles.estimateHint}>{DEFAULT_ESTIMATE_TEXT.precisionHint}</p>
@@ -1704,7 +1881,7 @@ export default function CuAlRfqConfigurator({ prefillProductSlug, prefillUsecase
                 <li>Replacement exact-fit: x{estimate.factors.replacementExactFitFactor.toFixed(2)}</li>
                 <li>OEM serial factor: x{estimate.factors.oemSerialFactor.toFixed(2)}</li>
                 <li>Custom connection: x{estimate.factors.customConnectionFactor.toFixed(2)}</li>
-                <li>Urgency factor: x{estimate.factors.urgencyFactor.toFixed(2)}</li>
+                <li>Deadline factor: x{estimate.factors.deadlineFactor.toFixed(2)}</li>
                 <li>Quantity factor: x{estimate.factors.quantityFactor.toFixed(2)}</li>
                 <li>Uncertainty: x{estimate.factors.uncertaintyFactor.toFixed(2)}</li>
               </ul>

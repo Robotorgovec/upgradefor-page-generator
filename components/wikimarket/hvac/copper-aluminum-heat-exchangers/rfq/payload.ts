@@ -82,6 +82,14 @@ export function validateSubmitMinimum(form: RfqFormState): string[] {
     errors.push("Укажите корректный email");
   }
 
+  if (form.deadlineMode === "exact_date" && !form.deadlineDate) {
+    errors.push("Укажите дату, к которой нужен результат");
+  }
+
+  if (form.deadlineMode === "days_from_now" && !(typeof form.deadlineDays === "number" && form.deadlineDays > 0)) {
+    errors.push("Укажите срок в днях больше 0");
+  }
+
   return errors;
 }
 
@@ -102,6 +110,12 @@ export function buildRfqPayload(
     application: form.applicationArea,
     medium: form.medium,
     mode: form.mode,
+    deadline: {
+      mode: form.deadlineMode,
+      date: form.deadlineDate,
+      days: normalized.deadlineDays,
+      preset: form.deadlinePreset,
+    },
     geometry: {
       lengthMm: normalized.lengthMm,
       heightMm: normalized.heightMm,

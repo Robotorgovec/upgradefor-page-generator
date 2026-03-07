@@ -1,5 +1,4 @@
-﻿import { Urgency } from "./types";
-import { EstimateResult, NormalizedRfqInput, RfqFormState } from "./types";
+﻿import { DeadlineMode, DeadlinePreset, EstimateResult, NormalizedRfqInput, RfqFormState } from "./types";
 
 export interface EstimateReferenceConfig {
   copperPriceRef: number;
@@ -36,17 +35,68 @@ function cleanPositive(value: number | "", fallback = 0): number {
   return n;
 }
 
-function normalizeUrgency(value: Urgency | ""): number {
-  switch (value) {
-    case "priority":
-      return 1.08;
-    case "urgent":
+function deriveDaysFromDate(dateString: string): number {
+  if (!dateString) return 0;
+
+  const target = new Date(`${dateString}T00:00:00`);
+  if (Number.isNaN(target.getTime())) return 0;
+
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffDays = Math.ceil((target.getTime() - startOfToday.getTime()) / 86_400_000);
+
+  return Math.max(1, diffDays);
+}
+
+function resolveDeadlineDays(
+  mode: DeadlineMode,
+  preset: DeadlinePreset | "",
+  deadlineDays: number | "",
+  deadlineDate: string,
+): number {
+  if (mode === "days_from_now") return cleanPositive(deadlineDays);
+  if (mode === "exact_date") return deriveDaysFromDate(deadlineDate);
+
+  if (mode === "preset") {
+    switch (preset) {
+      case "7_days":
+        return 7;
+      case "14_days":
+        return 14;
+      case "30_days":
+        return 30;
+      case "45_plus":
+        return 45;
+      default:
+        return 14;
+    }
+  }
+
+  return 0;
+}
+
+function normalizeDeadlineFactor(mode: DeadlineMode, preset: DeadlinePreset | "", days: number): number {
+  if (mode === "asap") return 1.18;
+
+  if (mode === "exact_date" || mode === "days_from_now") {
+    if (days <= 7) return 1.16;
+    if (days <= 14) return 1.1;
+    if (days <= 30) return 1.04;
+    if (days <= 45) return 1.01;
+    return 1;
+  }
+
+  switch (preset) {
+    case "7_days":
       return 1.16;
-    case "critical":
-      return 1.24;
-    case "standard":
-    default:
+    case "14_days":
+      return 1.1;
+    case "30_days":
+      return 1.04;
+    case "45_plus":
       return 1;
+    default:
+      return 1.05;
   }
 }
 
@@ -87,6 +137,7 @@ export function normalizeRfqInputs(form: RfqFormState): NormalizedRfqInput {
   const hasDrawingOrNameplate = form.files.some(
     (file) => file.category === "drawing" || file.category === "nameplate",
   );
+  const deadlineDays = resolveDeadlineDays(form.deadlineMode, form.deadlinePreset, form.deadlineDays, form.deadlineDate);
 
   return {
     scenario: form.scenario,
@@ -94,9 +145,13 @@ export function normalizeRfqInputs(form: RfqFormState): NormalizedRfqInput {
     purpose: form.purpose,
     applicationArea: form.applicationArea.trim(),
     knownData: [...form.knownData],
-    engineerHelp: Boolean(form.engineerHelp || knownDataSet.has("Ничего из этого, нужна помощь инженера")),
+    engineerHelp: Boolean(form.engineerHelp || knownDataSet.has("Нужна помощь инженера")),
     medium: form.medium,
     mode: form.mode,
+    deadlineMode: form.deadlineMode,
+    deadlineDate: form.deadlineDate,
+    deadlineDays,
+    deadlinePreset: form.deadlinePreset,
     powerKw: cleanPositive(form.powerKw),
     airflowM3h: cleanPositive(form.airflowM3h),
     airInC: numberOr(form.airInC, 0),
@@ -201,7 +256,7 @@ export function calculateEstimate(
       ? 1.08
       : 1;
   const coatingFactor = form.corrosionRequirement.trim().length > 0 || form.oemRequirements.includes("Покрытие") ? 1.05 : 1;
-  const urgencyFactor = normalizeUrgency(form.contact.urgency);
+  const deadlineFactor = normalizeDeadlineFactor(normalized.deadlineMode, normalized.deadlinePreset, normalized.deadlineDays);
   const quantityFactorValue = quantityFactor(quantity);
 
   const knownSignals = [
@@ -231,7 +286,7 @@ export function calculateEstimate(
     oemSerialFactor *
     customConnectionFactor *
     coatingFactor *
-    urgencyFactor *
+    deadlineFactor *
     quantityFactorValue *
     config.countryFactor *
     config.manufacturerFactor;
@@ -278,7 +333,7 @@ export function calculateEstimate(
       oemSerialFactor,
       customConnectionFactor,
       coatingFactor,
-      urgencyFactor,
+      deadlineFactor,
       quantityFactor: quantityFactorValue,
       countryFactor: config.countryFactor,
       manufacturerFactor: config.manufacturerFactor,

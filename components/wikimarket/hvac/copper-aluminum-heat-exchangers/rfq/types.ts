@@ -14,7 +14,9 @@ export type MediumType = "freon" | "water" | "glycol" | "oil" | "steam" | "other
 
 export type OperationMode = "cold" | "heat" | "universal";
 
-export type Urgency = "standard" | "priority" | "urgent" | "critical";
+export type DeadlineMode = "preset" | "exact_date" | "days_from_now" | "asap";
+
+export type DeadlinePreset = "7_days" | "14_days" | "30_days" | "45_plus";
 
 export type ReplacementNeed = "full-analog" | "engineering-recalc" | "adaptive";
 
@@ -65,7 +67,6 @@ export interface RfqContactBlock {
   telegram: string;
   preferredContact: PreferredContact | "";
   preferredTime: string;
-  urgency: Urgency | "";
   onsiteNeed: OnsiteNeed | "";
   cityObject: string;
   comment: string;
@@ -80,6 +81,10 @@ export interface RfqFormState {
   engineerHelp: boolean;
   medium: MediumType | "";
   mode: OperationMode | "";
+  deadlineMode: DeadlineMode;
+  deadlineDate: string;
+  deadlineDays: number | "";
+  deadlinePreset: DeadlinePreset | "";
   powerKw: number | "";
   airflowM3h: number | "";
   airInC: number | "";
@@ -148,6 +153,10 @@ export interface NormalizedRfqInput {
   engineerHelp: boolean;
   medium: MediumType | "";
   mode: OperationMode | "";
+  deadlineMode: DeadlineMode;
+  deadlineDate: string;
+  deadlineDays: number;
+  deadlinePreset: DeadlinePreset | "";
   powerKw: number;
   airflowM3h: number;
   airInC: number;
@@ -187,7 +196,7 @@ export interface EstimateFactorsSnapshot {
   oemSerialFactor: number;
   customConnectionFactor: number;
   coatingFactor: number;
-  urgencyFactor: number;
+  deadlineFactor: number;
   quantityFactor: number;
   countryFactor: number;
   manufacturerFactor: number;
@@ -247,6 +256,12 @@ export interface RfqPayload {
   application: string;
   medium: MediumType | "";
   mode: OperationMode | "";
+  deadline: {
+    mode: DeadlineMode;
+    date: string;
+    days: number;
+    preset: DeadlinePreset | "";
+  };
   geometry: {
     lengthMm: number;
     heightMm: number;

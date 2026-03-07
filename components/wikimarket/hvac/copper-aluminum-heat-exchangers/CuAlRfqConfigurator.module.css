@@ -682,3 +682,68 @@
     grid-template-columns: 1fr;
   }
 }
+.groupBlock {
+  border: 1px solid var(--rfq-line);
+  border-radius: 12px;
+  background: #fbfdff;
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.groupTitle {
+  margin: 0;
+  font-size: 15px;
+}
+
+.scenarioSummaryCard {
+  display: grid;
+  gap: 10px;
+}
+
+.scenarioSummaryCard p {
+  margin: 0;
+  color: var(--rfq-text);
+}
+
+.deadlineBlock {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px;
+}
+
+.deadlineTitle {
+  margin: 0;
+  font-size: 14px;
+}
+
+.deadlineModeRow {
+  display: grid;
+  gap: 8px;
+}
+
+.deadlineModeButton,
+.deadlineModeButtonActive {
+  min-height: 38px;
+}
+
+.deadlineModeButtonActive {
+  border-color: var(--rfq-accent);
+  background: var(--rfq-accent-soft);
+  color: var(--rfq-accent-strong);
+}
+
+.estimateCaption {
+  margin: 8px 0 0;
+  color: var(--rfq-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .deadlineModeRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

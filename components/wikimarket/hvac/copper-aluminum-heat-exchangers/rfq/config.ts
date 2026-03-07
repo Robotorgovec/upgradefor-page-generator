@@ -2,6 +2,8 @@
   ClientType,
   ConnectionOrientation,
   ConnectionType,
+  DeadlineMode,
+  DeadlinePreset,
   FileCategory,
   HeaderPosition,
   MediumType,
@@ -14,7 +16,6 @@
   RfqScenario,
   RoutingPreference,
   TaskNeed,
-  Urgency,
 } from "./types";
 
 export const RFQ_CANONICAL_URL = "https://upgradefor.com/wikimarket/hvac/copper-aluminum-heat-exchangers" as const;
@@ -53,12 +54,12 @@ export const SCENARIO_OPTIONS: Array<{ value: RfqScenario; label: string; descri
   {
     value: "quick",
     label: "Быстрый запрос",
-    description: "Подходит, если у вас только часть параметров или нужны рекомендации инженера.",
+    description: "Подходит, если у вас только часть параметров или нужна помощь инженера.",
   },
   {
     value: "dimensions",
     label: "По размерам",
-    description: "Подбор по габаритам, рядности, трубкам, ламелям и посадочным ограничениям.",
+    description: "Подбор по габаритам, рядности, трубкам и ламелям.",
   },
   {
     value: "power",
@@ -115,21 +116,11 @@ export const APPLICATION_CHIPS = [
 export const KNOWN_DATA_OPTIONS = [
   "Габариты",
   "Мощность",
-  "Температура воздуха",
-  "Температура среды",
-  "Расход воздуха",
-  "Диаметр трубок",
-  "Шаг ламелей",
-  "Толщина ламелей",
-  "Толщина корпуса",
-  "Модель старого изделия",
-  "Чертеж",
-  "Фото",
-  "Фото шильдика",
-  "Данные по коллекторам",
+  "Температуры / расход",
   "Данные по подключениям",
-  "Ничего из этого, нужна помощь инженера",
-];
+  "Есть чертеж / фото / шильдик",
+  "Нужна помощь инженера",
+] as const;
 
 export const MEDIUM_OPTIONS: Array<{ value: MediumType; label: string }> = [
   { value: "freon", label: "Фреон" },
@@ -146,15 +137,22 @@ export const MODE_OPTIONS: Array<{ value: OperationMode; label: string }> = [
   { value: "universal", label: "Универсальный" },
 ];
 
-export const URGENCY_OPTIONS: Array<{ value: Urgency; label: string }> = [
-  { value: "standard", label: "Стандартно" },
-  { value: "priority", label: "Приоритетно" },
-  { value: "urgent", label: "Срочно" },
-  { value: "critical", label: "Критично" },
+export const DEADLINE_MODE_OPTIONS: Array<{ value: DeadlineMode; label: string }> = [
+  { value: "preset", label: "Быстрый пресет" },
+  { value: "exact_date", label: "Конкретная дата" },
+  { value: "days_from_now", label: "Через N дней" },
+  { value: "asap", label: "Ближайший возможный" },
+];
+
+export const DEADLINE_PRESET_OPTIONS: Array<{ value: DeadlinePreset; label: string; days: number | null }> = [
+  { value: "7_days", label: "7 дней", days: 7 },
+  { value: "14_days", label: "14 дней", days: 14 },
+  { value: "30_days", label: "30 дней", days: 30 },
+  { value: "45_plus", label: "45+ дней", days: 45 },
 ];
 
 export const REPLACEMENT_NEED_OPTIONS: Array<{ value: ReplacementNeed; label: string }> = [
-  { value: "full-analog", label: "Полный аналог без переделок" },
+  { value: "full-analog", label: "Да, нужен полный аналог без переделок" },
   { value: "engineering-recalc", label: "Допустим инженерный перерасчет" },
   { value: "adaptive", label: "Допустима адаптация конструкции" },
 ];
@@ -286,7 +284,6 @@ const emptyContact = {
   telegram: "",
   preferredContact: "" as const,
   preferredTime: "",
-  urgency: "" as const,
   onsiteNeed: "" as const,
   cityObject: "",
   comment: "",
@@ -301,6 +298,10 @@ export const INITIAL_RFQ_STATE: RfqFormState = {
   engineerHelp: false,
   medium: "",
   mode: "",
+  deadlineMode: "preset",
+  deadlineDate: "",
+  deadlineDays: "",
+  deadlinePreset: "14_days",
   powerKw: "",
   airflowM3h: "",
   airInC: "",
