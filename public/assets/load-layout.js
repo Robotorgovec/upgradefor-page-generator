@@ -435,8 +435,59 @@
     updateNav();
     mediaQuery.addEventListener("change", updateNav);
   }
+  function normalizePath(pathname) {
+    if (!pathname) return "/";
+    const pathOnly = pathname.split("?")[0].split("#")[0] || "/";
+    if (pathOnly === "/") return "/";
+    return pathOnly.replace(/\/+$/, "") || "/";
+  }
 
+  function pathMatches(currentPath, candidatePath) {
+    if (!candidatePath) return false;
+    if (candidatePath === "/") return currentPath === "/";
+    return currentPath === candidatePath || currentPath.startsWith(`${candidatePath}/`);
+  }
 
+  function initPathAwareNavigation() {
+    const currentPath = normalizePath(window.location.pathname);
+    const interactiveNodes = Array.from(
+      document.querySelectorAll(".menu-item[data-path], .icon-btn[data-path]")
+    );
+
+    if (!interactiveNodes.length) return;
+
+    const matchingNodes = interactiveNodes
+      .map((node) => {
+        const rawPath = node.getAttribute("data-path");
+        if (!rawPath) return null;
+        const normalized = normalizePath(rawPath);
+        if (!pathMatches(currentPath, normalized)) return null;
+        return {
+          node,
+          score: normalized.length,
+          exact: currentPath === normalized,
+        };
+      })
+      .filter(Boolean);
+
+    if (!matchingNodes.length) return;
+
+    const bestScore = matchingNodes.reduce((max, item) => Math.max(max, item.score), 0);
+    const activeNodes = matchingNodes.filter((item) => item.score === bestScore);
+    const hasExact = activeNodes.some((item) => item.exact);
+    const finalActiveNodes = hasExact ? activeNodes.filter((item) => item.exact) : activeNodes;
+
+    finalActiveNodes.forEach(({ node }) => {
+      node.classList.add("active");
+      node.setAttribute("aria-current", "page");
+
+      let parent = node.closest("details.menu-group");
+      while (parent) {
+        parent.open = true;
+        parent = parent.parentElement?.closest?.("details.menu-group");
+      }
+    });
+  }
   function initNotifications() {
     const STORAGE_KEY = 'upgr.notifications.v1';
     const trigger = qs('[data-notifications-trigger="true"]');
@@ -627,6 +678,7 @@
       console.log("[layout] header loaded");
       await fetchAndInsert("/includes/menu.html", ".sidebar");
       console.log("[layout] sidebar loaded");
+      initPathAwareNavigation();
 
       // Theme switcher — строго после вставки header.html
       await initThemeSwitcher();
