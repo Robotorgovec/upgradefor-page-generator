@@ -1,5 +1,4 @@
 ﻿import type { ReactNode } from "react";
-import Script from "next/script";
 
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
@@ -15,8 +14,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
         />
-        <Script src="/assets/theme/theme-system.js?v=20260310-1" strategy="beforeInteractive" />
         <link rel="stylesheet" href="/assets/layout.css?v=20260310-1" />
+        <script src="/assets/theme/theme-system.js?v=20260310-1" />
       </head>
       <body>
         <a className="skip" href="#main">
@@ -28,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <MobileBottomNav />
-        <Script src="/assets/load-layout.js?v=20260310-1" strategy="afterInteractive" />
+        <script src="/assets/load-layout.js?v=20260310-1" defer />
       </body>
     </html>
   );
