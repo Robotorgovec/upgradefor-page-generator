@@ -45,32 +45,51 @@
     return window.UPGR_THEME_SYSTEM || null;
   }
 
-  function isThemeDebugSource(state) {
-    return state.source === "debug-date" || state.source === "debug-weekday";
-  }
-
-  function formatThemeSwitchTitle(state) {
-    const suffix = isThemeDebugSource(state) ? " (тест)" : "";
-    return `Тема дня • ${state.weekdayLabelRu} • ${state.dateStamp}${suffix}`;
+  function formatThemeSwitchTitle() {
+    return "Тема дня";
   }
 
   function formatThemeOptionLabel(theme) {
-    return `${theme.weekdayLabelRu} • ${theme.label}`;
+    return theme.weekdayLabelRu;
   }
 
   function formatAutoThemeLabel(state) {
-    return `Авто • ${state.weekdayLabelRu} • ${state.theme.label}`;
+    return `Авто • ${state.weekdayLabelRu}`;
+  }
+
+  function getThemeSwitchItemState(itemTheme, state, themeOptions) {
+    if (itemTheme === "auto") {
+      return {
+        label: formatAutoThemeLabel(state),
+        swatchColor: state.theme.primary,
+      };
+    }
+
+    const themeMeta = themeOptions[itemTheme] || state.theme;
+    return {
+      label: formatThemeOptionLabel(themeMeta),
+      swatchColor: themeMeta.primary || state.theme.primary,
+    };
+  }
+
+  function getThemeSwitchItemMarkup(label) {
+    return `<span class="theme-switch-item-content"><span class="theme-switch-item-swatch" aria-hidden="true"></span><span class="theme-switch-item-label">${label}</span></span>`;
   }
 
   function renderThemeSwitchItems(switcher, themeSystem, state) {
     const optionsRoot = switcher.querySelector("[data-theme-switch-options]");
     if (!optionsRoot) return;
 
+    const themeOptions = themeSystem.getThemeOptions().reduce((acc, theme) => {
+      acc[theme.key] = theme;
+      return acc;
+    }, {});
+
     const itemsMarkup = themeSystem
       .getSelectableModes()
       .map((mode) => {
-        const label = mode.key === "auto" ? formatAutoThemeLabel(state) : formatThemeOptionLabel(mode);
-        return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false">${label}</button>`;
+        const itemState = getThemeSwitchItemState(mode.key, state, themeOptions);
+        return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false" aria-label="${itemState.label}">${getThemeSwitchItemMarkup(itemState.label)}</button>`;
       })
       .join("");
 
@@ -86,7 +105,16 @@
 
     switchers.forEach((switcher) => {
       const title = switcher.querySelector(".theme-switch-title");
-      if (title) title.textContent = formatThemeSwitchTitle(state);
+      if (title) title.textContent = formatThemeSwitchTitle();
+
+      const trigger = switcher.querySelector(".theme-switch-trigger");
+      if (trigger) trigger.setAttribute("aria-label", `Тема дня. Сейчас ${state.weekdayLabelRu}`);
+
+      const triggerLabel = switcher.querySelector(".theme-switch-label");
+      if (triggerLabel) triggerLabel.textContent = "Тема дня";
+
+      const menu = switcher.querySelector(".theme-switch-menu");
+      if (menu) menu.setAttribute("aria-label", "Тема дня");
 
       const dot = switcher.querySelector(".theme-dot");
       if (dot) {
@@ -96,8 +124,14 @@
 
       switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
         const itemTheme = item.dataset.theme || "auto";
-        const themeMeta = themeOptions[itemTheme];
-        item.textContent = itemTheme === "auto" ? formatAutoThemeLabel(state) : themeMeta ? formatThemeOptionLabel(themeMeta) : itemTheme;
+        const itemState = getThemeSwitchItemState(itemTheme, state, themeOptions);
+        const itemLabel = item.querySelector(".theme-switch-item-label");
+        if (itemLabel) itemLabel.textContent = itemState.label;
+
+        const itemSwatch = item.querySelector(".theme-switch-item-swatch");
+        if (itemSwatch) itemSwatch.style.setProperty("--theme-switch-swatch", itemState.swatchColor);
+
+        item.setAttribute("aria-label", itemState.label);
 
         const isActive = state.mode === "auto" ? itemTheme === "auto" : itemTheme === state.themeKey;
         item.setAttribute("aria-checked", isActive ? "true" : "false");

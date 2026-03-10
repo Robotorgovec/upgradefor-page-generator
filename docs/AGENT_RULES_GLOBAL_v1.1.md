@@ -28,7 +28,9 @@ This document describes the global rules for all UpgradeFor AI agents. These rul
 - The entire site always uses the global weekday accent theme system for accent UI layers.
 - All new pages, sections, and modern shared UI must read accent colors from the global theme token layer, not from page-local hardcoded accent hex values.
 - Stable neutral tokens must control base typography and shell readability: body text, headings, menu labels, sidebar labels, and neutral layout surfaces stay on neutral tokens.
-- Dynamic weekday tokens must control accent UI only: primary buttons, CTA blocks, chips, badges, selected states, focus rings, subtle section tints, accent borders, sticky CTA surfaces, and link accents where appropriate.
+- Menu and sidebar labels must always remain neutral and readable; only icons, active indicators, and subtle active backgrounds may use the weekday accent.
+- Dynamic weekday tokens must control accent UI only: primary buttons, CTA blocks, chips, badges, selected states, focus rings, subtle section tints, accent borders, sticky CTA surfaces, link accents where appropriate, and menu/sidebar icons.
+- Menu and sidebar icons use the weekday accent by default, then shift to neutral near-black on hover and on active/current states.
 - New theme-aware pages must use the global `--theme-*` token layer instead of introducing local accent color systems.
 - Local accent hardcodes are not allowed for new pages unless the color is a documented stable neutral token.
 - Thursday must use the current logo blue hue as its base accent; the stable brand source is the logo blue used by the site identity.
@@ -39,7 +41,7 @@ This document describes the global rules for all UpgradeFor AI agents. These rul
   - Wednesday = green
   - Thursday = current logo blue
   - Friday = blue / indigo
-  - Saturday = violet
+  - Saturday = purple
 
 ---
 

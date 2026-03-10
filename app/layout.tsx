@@ -14,8 +14,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0"
         />
-        <link rel="stylesheet" href="/assets/layout.css?v=20260311-1" />
-        <script src="/assets/theme/theme-system.js?v=20260311-1" />
+        <link rel="stylesheet" href="/assets/layout.css?v=20260311-2" />
+        <script src="/assets/theme/theme-system.js?v=20260311-2" />
       </head>
       <body>
         <a className="skip" href="#main">
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <MobileBottomNav />
-        <script src="/assets/load-layout.js?v=20260311-1" defer />
+        <script src="/assets/load-layout.js?v=20260311-2" defer />
       </body>
     </html>
   );

@@ -29,8 +29,8 @@
       weekdayLabel: "Sunday",
       weekdayLabelRu: "Воскресенье",
       label: "Пастельный красный",
-      primary: "#E8A1A8",
-      contrast: "#2C1620",
+      primary: "#E77A72",
+      contrast: "#311412",
     },
     {
       key: "orange",
@@ -39,8 +39,8 @@
       weekdayLabel: "Monday",
       weekdayLabelRu: "Понедельник",
       label: "Пастельный оранжевый",
-      primary: "#F2B07C",
-      contrast: "#2F1A0A",
+      primary: "#F2A65E",
+      contrast: "#36200C",
     },
     {
       key: "yellow",
@@ -49,8 +49,8 @@
       weekdayLabel: "Tuesday",
       weekdayLabelRu: "Вторник",
       label: "Пастельный жёлтый",
-      primary: "#E6CC78",
-      contrast: "#332706",
+      primary: "#E6C85C",
+      contrast: "#352807",
     },
     {
       key: "green",
@@ -59,8 +59,8 @@
       weekdayLabel: "Wednesday",
       weekdayLabelRu: "Среда",
       label: "Пастельный зелёный",
-      primary: "#93C9AA",
-      contrast: "#173226",
+      primary: "#79C98F",
+      contrast: "#153021",
     },
     {
       key: "brand-blue",
@@ -79,7 +79,7 @@
       weekdayLabel: "Friday",
       weekdayLabelRu: "Пятница",
       label: "Пастельный индиго",
-      primary: "#8DA0EA",
+      primary: "#7F95EE",
       contrast: "#16223B",
     },
     {
@@ -89,8 +89,8 @@
       weekdayLabel: "Saturday",
       weekdayLabelRu: "Суббота",
       label: "Пастельный лиловый",
-      primary: "#BDA5E8",
-      contrast: "#25183B",
+      primary: "#A78BDE",
+      contrast: "#24153B",
     },
   ];
 
