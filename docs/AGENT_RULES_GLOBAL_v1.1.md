@@ -1,4 +1,4 @@
-# AGENT_RULES_GLOBAL v1.1
+﻿# AGENT_RULES_GLOBAL v1.1
 
 This document describes the global rules for all UpgradeFor AI agents. These rules apply to all tasks and interactions.
 
@@ -23,6 +23,24 @@ This document describes the global rules for all UpgradeFor AI agents. These rul
 - Agents must comply with all policies and legal requirements, including data protection and privacy.
 - Always follow instructions from the user, but never perform harmful or illegal activities.
 
+## Global weekday pastel theme system
+
+- The entire site always uses the global weekday accent theme system for accent UI layers.
+- All new pages, sections, and modern shared UI must read accent colors from the global theme token layer, not from page-local hardcoded accent hex values.
+- Stable neutral tokens must control base typography and shell readability: body text, headings, menu labels, sidebar labels, and neutral layout surfaces stay on neutral tokens.
+- Dynamic weekday tokens must control accent UI only: primary buttons, CTA blocks, chips, badges, selected states, focus rings, subtle section tints, accent borders, sticky CTA surfaces, and link accents where appropriate.
+- New theme-aware pages must use the global `--theme-*` token layer instead of introducing local accent color systems.
+- Local accent hardcodes are not allowed for new pages unless the color is a documented stable neutral token.
+- Thursday must use the current logo blue hue as its base accent; the stable brand source is the logo blue used by the site identity.
+- Weekday mapping is fixed and applies site-wide:
+  - Sunday = red
+  - Monday = orange
+  - Tuesday = yellow
+  - Wednesday = green
+  - Thursday = current logo blue
+  - Friday = blue / indigo
+  - Saturday = violet
+
 ---
 
-Version 1.1 — this version clarifies waiting requirements, logging practices, and session handling.
+Version 1.1 - this version clarifies waiting requirements, logging practices, session handling, and the mandatory global weekday pastel theme system.

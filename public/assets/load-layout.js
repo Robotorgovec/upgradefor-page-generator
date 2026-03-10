@@ -21,7 +21,7 @@
       }
       container.innerHTML = html;
     } catch (err) {
-      console.error("[UPGR] Error loading", url, err);
+      console.error("[UPGR] error loading", url, err);
     }
   }
 
@@ -45,13 +45,21 @@
     return window.UPGR_THEME_SYSTEM || null;
   }
 
+  function isThemeDebugSource(state) {
+    return state.source === "debug-date" || state.source === "debug-weekday";
+  }
+
   function formatThemeSwitchTitle(state) {
-    const suffix = state.source === "debug-date" ? " (тест)" : "";
-    return `Тема дня • ${state.dateStamp}${suffix}`;
+    const suffix = isThemeDebugSource(state) ? " (тест)" : "";
+    return `Тема дня • ${state.weekdayLabelRu} • ${state.dateStamp}${suffix}`;
+  }
+
+  function formatThemeOptionLabel(theme) {
+    return `${theme.weekdayLabelRu} • ${theme.label}`;
   }
 
   function formatAutoThemeLabel(state) {
-    return `Авто (${state.theme.label} сегодня)`;
+    return `Авто • ${state.weekdayLabelRu} • ${state.theme.label}`;
   }
 
   function renderThemeSwitchItems(switcher, themeSystem, state) {
@@ -61,7 +69,7 @@
     const itemsMarkup = themeSystem
       .getSelectableModes()
       .map((mode) => {
-        const label = mode.key === "auto" ? formatAutoThemeLabel(state) : mode.label;
+        const label = mode.key === "auto" ? formatAutoThemeLabel(state) : formatThemeOptionLabel(mode);
         return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false">${label}</button>`;
       })
       .join("");
@@ -71,8 +79,8 @@
 
   function syncThemeSwitchers(themeSystem, switchers) {
     const state = themeSystem.getState();
-    const themeLabels = themeSystem.getThemeOptions().reduce((acc, theme) => {
-      acc[theme.key] = theme.label;
+    const themeOptions = themeSystem.getThemeOptions().reduce((acc, theme) => {
+      acc[theme.key] = theme;
       return acc;
     }, {});
 
@@ -88,7 +96,8 @@
 
       switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
         const itemTheme = item.dataset.theme || "auto";
-        item.textContent = itemTheme === "auto" ? formatAutoThemeLabel(state) : themeLabels[itemTheme] || itemTheme;
+        const themeMeta = themeOptions[itemTheme];
+        item.textContent = itemTheme === "auto" ? formatAutoThemeLabel(state) : themeMeta ? formatThemeOptionLabel(themeMeta) : itemTheme;
 
         const isActive = state.mode === "auto" ? itemTheme === "auto" : itemTheme === state.themeKey;
         item.setAttribute("aria-checked", isActive ? "true" : "false");
@@ -163,7 +172,6 @@
           <img
             class="upgr-logo__base"
             src="/assets/logo/logo-black-only.png"
-
             alt="UPGRADE Innovations"
             loading="lazy"
             decoding="async"
@@ -238,7 +246,6 @@
     });
   }
 
-
   async function getSessionSafe() {
     try {
       const res = await fetch("/api/auth/session", { credentials: "include" });
@@ -252,7 +259,7 @@
 
   function applyAuthVisibility(session) {
     const isAuthenticated = Boolean(session?.user);
-    const privateNodes = document.querySelectorAll("[data-auth=\"private\"]");
+    const privateNodes = document.querySelectorAll('[data-auth="private"]');
     privateNodes.forEach((node) => {
       if (isAuthenticated) node.removeAttribute("hidden");
       else node.setAttribute("hidden", "true");
@@ -279,7 +286,7 @@
     const title = createEl("div", "sidebar-footer-title");
     title.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">account_circle</span>' +
-      "<span>РђРєРєР°СѓРЅС‚</span>";
+      "<span>Аккаунт</span>";
     footer.appendChild(title);
 
     const actions = createEl("div", "sidebar-footer-actions");
@@ -287,14 +294,14 @@
     const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
     account.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
-      '<span class="menu-label">РњРѕР№ Р°РєРєР°СѓРЅС‚</span>';
+      '<span class="menu-label">Мой аккаунт</span>';
 
     const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
       type: "button",
     });
     logout.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
-      '<span class="menu-label">Р’С‹Р№С‚Рё</span>';
+      '<span class="menu-label">Выйти</span>';
 
     logout.addEventListener("click", () => {
       window.location.href = "/api/auth/signout?callbackUrl=/";
@@ -323,14 +330,13 @@
 
       getSessionSafe().then((session) => {
         applyAuthVisibility(session);
-        const sidebar2 = qs(".sidebar");
-        const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-        if (!sidebar2 || !inner2) return;
-        const footer2 = ensureSidebarFooter(sidebar2);
-        renderFooter(footer2, session);
+        const sidebarNode = qs(".sidebar");
+        const innerNode = sidebarNode ? qs(".sidebar-inner", sidebarNode) : null;
+        if (!sidebarNode || !innerNode) return;
+        const footerNode = ensureSidebarFooter(sidebarNode);
+        renderFooter(footerNode, session);
       });
 
-      console.log("[layout] footer initialized");
       return true;
     };
 
@@ -373,7 +379,7 @@
   function ensureBottomNavContainer() {
     let nav = qs(".mobile-bottom-nav");
     if (!nav) {
-      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "РќРёР¶РЅСЏСЏ РЅР°РІРёРіР°С†РёСЏ" });
+      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "Нижняя навигация" });
       document.body.appendChild(nav);
     }
     return nav;
@@ -435,22 +441,21 @@
     mediaQuery.addEventListener("change", updateNav);
   }
 
-
   function initNotifications() {
-    const STORAGE_KEY = 'upgr.notifications.v1';
+    const STORAGE_KEY = "upgr.notifications.v1";
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
 
-    const appContent = qs('.app-content');
+    const appContent = qs(".app-content");
     if (!appContent) return;
 
-    const badge = trigger.querySelector('[data-notification-badge]');
+    const badge = trigger.querySelector("[data-notification-badge]");
 
     const getSeedNotifications = () => [
       {
-        id: 'beta-announce',
-        title: 'BETA',
-        text: 'РќРѕРІС‹Р№ СЃРµСЂРІРёСЃ. РџСѓР±Р»РёРєСѓРµРј СЃС‚Р°С‚СѓСЃ СЂР°Р·РґРµР»РѕРІ, РїР»Р°РЅ СЂР°Р·РІРёС‚РёСЏ Рё Р¶СѓСЂРЅР°Р» РёР·РјРµРЅРµРЅРёР№ вЂ” РІР°С€Рё РёРґРµРё РїРѕРјРѕРіР°СЋС‚ СЂР°СЃСЃС‚Р°РІР»СЏС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚С‹.',
+        id: "beta-announce",
+        title: "BETA",
+        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
         dismissed: false,
         createdAtIso: new Date().toISOString(),
       },
@@ -458,9 +463,9 @@
 
     const loadNotifications = () => {
       try {
-        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.filter((item) => item && typeof item.id === 'string');
+          return parsed.filter((item) => item && typeof item.id === "string");
         }
       } catch {
         // ignore invalid storage payload
@@ -477,31 +482,31 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
     };
 
-    let panel = document.querySelector('[data-notifications-panel]');
+    let panel = document.querySelector("[data-notifications-panel]");
     if (!panel) {
-      panel = createEl('section', 'notifications-overlay', {
-        'data-notifications-panel': 'true',
-        'aria-label': 'РЈРІРµРґРѕРјР»РµРЅРёСЏ',
-        hidden: 'true',
+      panel = createEl("section", "notifications-overlay", {
+        "data-notifications-panel": "true",
+        "aria-label": "Уведомления",
+        hidden: "true",
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>РЈРІРµРґРѕРјР»РµРЅРёСЏ</strong><button class="notifications-close" type="button" aria-label="Р—Р°РєСЂС‹С‚СЊ СѓРІРµРґРѕРјР»РµРЅРёСЏ">Г—</button></div><div data-notifications-list></div></div></div>';
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>Уведомления</strong><button class="notifications-close" type="button" aria-label="Закрыть уведомления">×</button></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
-    panel.style.pointerEvents = 'none';
+    panel.style.pointerEvents = "none";
 
-    const listEl = panel.querySelector('[data-notifications-list]');
+    const listEl = panel.querySelector("[data-notifications-list]");
 
     const getVisible = () => notifications.filter((item) => !item.dismissed);
     const getActiveCount = () => getVisible().length;
 
     const closePanel = () => {
-      panel.setAttribute('hidden', 'true');
-      panel.style.pointerEvents = 'none';
-      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute("hidden", "true");
+      panel.style.pointerEvents = "none";
+      trigger.setAttribute("aria-expanded", "false");
     };
 
-        const dismissNotification = (id) => {
+    const dismissNotification = (id) => {
       notifications = notifications.map((item) =>
         item.id === id ? { ...item, dismissed: true } : item
       );
@@ -514,18 +519,18 @@
 
       if (badge) {
         badge.hidden = activeCount === 0;
-        badge.textContent = '';
+        badge.textContent = "";
       }
 
       trigger.setAttribute(
-        'aria-label',
-        activeCount > 0 ? `РЈРІРµРґРѕРјР»РµРЅРёСЏ: ${activeCount}` : 'РЈРІРµРґРѕРјР»РµРЅРёСЏ'
+        "aria-label",
+        activeCount > 0 ? `Уведомления: ${activeCount}` : "Уведомления"
       );
 
       if (!listEl) return;
 
       if (visible.length === 0) {
-        listEl.innerHTML = '<div class="notification-empty">РќРµС‚ РЅРѕРІС‹С… СѓРІРµРґРѕРјР»РµРЅРёР№</div>';
+        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
         return;
       }
 
@@ -540,19 +545,19 @@
                 </div>
                 <p class="notice__text">${item.text}</p>
               </div>
-              <button class="notice__close" type="button" aria-label="РЎРєСЂС‹С‚СЊ СѓРІРµРґРѕРјР»РµРЅРёРµ" data-dismiss-id="${item.id}">Г—</button>
+              <button class="notice__close" type="button" aria-label="Скрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
-        .join('');
+        .join("");
     };
 
-    trigger.addEventListener('click', (event) => {
+    trigger.addEventListener("click", (event) => {
       event.preventDefault();
-      const isHidden = panel.hasAttribute('hidden');
+      const isHidden = panel.hasAttribute("hidden");
       if (isHidden) {
-        panel.removeAttribute('hidden');
-        panel.style.pointerEvents = 'auto';
-        trigger.setAttribute('aria-expanded', 'true');
+        panel.removeAttribute("hidden");
+        panel.style.pointerEvents = "auto";
+        trigger.setAttribute("aria-expanded", "true");
         render();
         return;
       }
@@ -560,10 +565,10 @@
       closePanel();
     });
 
-    panel.addEventListener('click', (event) => {
-      const dismissBtn = event.target.closest('[data-dismiss-id]');
+    panel.addEventListener("click", (event) => {
+      const dismissBtn = event.target.closest("[data-dismiss-id]");
       if (dismissBtn) {
-        const id = dismissBtn.getAttribute('data-dismiss-id');
+        const id = dismissBtn.getAttribute("data-dismiss-id");
         if (id) {
           dismissNotification(id);
           render();
@@ -571,16 +576,16 @@
         return;
       }
 
-      if (event.target.closest('.notifications-close')) {
+      if (event.target.closest(".notifications-close")) {
         closePanel();
       }
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.hasAttribute("hidden")) closePanel();
     });
 
-    window.addEventListener('storage', (event) => {
+    window.addEventListener("storage", (event) => {
       if (event.key !== STORAGE_KEY) return;
       notifications = loadNotifications();
       render();
@@ -589,22 +594,21 @@
     render();
   }
 
-
   async function initNotificationsRuntime() {
     try {
-      const notificationsModule = await import('/assets/notifications/index.js');
+      const notificationsModule = await import("/assets/notifications/index.js");
       const initNotificationsModule = notificationsModule?.initNotificationsModule;
 
-      if (typeof initNotificationsModule === 'function') {
+      if (typeof initNotificationsModule === "function") {
         initNotificationsModule();
         return;
       }
 
-      console.warn('[UPGR] notifications module loaded without initNotificationsModule export');
+      console.warn("[UPGR] notifications module loaded without initNotificationsModule export");
       return;
     } catch (error) {
-      console.error('[UPGR] notifications module import failed, using fallback', error);
-      if (typeof initNotifications === 'function') {
+      console.error("[UPGR] notifications module import failed, using fallback", error);
+      if (typeof initNotifications === "function") {
         initNotifications();
       }
     }
@@ -621,14 +625,10 @@
 
   async function loadLayout() {
     try {
-      // РљР РРўРР§РќРћ: СЌС‚Рё 2 СЃС‚СЂРѕРєРё РІСЃС‚Р°РІР»СЏСЋС‚ header Рё menu
       await fetchAndInsert("/includes/header.html", "header");
-      console.log("[layout] header loaded");
       await fetchAndInsert("/includes/menu.html", ".sidebar");
-      console.log("[layout] sidebar loaded");
 
-      // Theme switcher вЂ” СЃС‚СЂРѕРіРѕ РїРѕСЃР»Рµ РІСЃС‚Р°РІРєРё header.html
-      await initThemeSwitcher();
+      initThemeSwitcher();
       await initNotificationsRuntime();
 
       document.dispatchEvent(new Event("layout:ready"));
@@ -641,15 +641,16 @@
       }
       enableChameleonOnNavigation();
 
-      // --- burger toggling Рё РІС‹СЃРѕС‚Р° header ---
       const body = document.body;
       const root = document.documentElement;
-      const headerNode = qs('[data-site-header="true"]') || qs("header.site-header") || qs("body > header") || qs("header");
+      const headerNode =
+        qs('[data-site-header="true"]') ||
+        qs("header.site-header") ||
+        qs("body > header") ||
+        qs("header");
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
-      // Р’РђР–РќРћ: Сѓ С‚РµР±СЏ РІ header СЃРµР№С‡Р°СЃ РєРЅРѕРїРєР° РЅРµ РѕР±СЏР·Р°РЅР° РёРјРµС‚СЊ id="burgerBtn"
-      // РїРѕСЌС‚РѕРјСѓ Р±РµСЂС‘Рј РїРѕ data-burger РёР»Рё .burger, Р° id РѕСЃС‚Р°РІР»СЏРµРј РєР°Рє fallback.
       const burger =
         document.querySelector("[data-burger]") ||
         document.querySelector(".burger") ||
@@ -679,7 +680,7 @@
             ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
           `;
         } catch (err) {
-          console.error("[UPGR] Error loading auth session", err);
+          console.error("[UPGR] error loading auth session", err);
         }
       }
 
@@ -696,6 +697,7 @@
       function getCollapsedPreference() {
         return localStorage.getItem(collapsedStorageKey) === "true";
       }
+
       function setCollapsedPreference(isCollapsed) {
         localStorage.setItem(collapsedStorageKey, String(isCollapsed));
       }
@@ -747,8 +749,6 @@
       syncMenuState();
 
       await updateAuthButtons();
-
-      // Footer вЂ” СЃС‚СЂРѕРіРѕ РїРѕСЃР»Рµ РІСЃС‚Р°РІРєРё menu.html
       initStickyFooter();
       initMobileBottomNav();
     } catch (e) {
