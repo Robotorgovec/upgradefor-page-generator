@@ -277,7 +277,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Если нужен спокойный премиальный вид и надежная фиксация.",
       ctaLabel: "Смотреть сценарии",
       ctaHref: "#personal-scenarios",
-      tags: ["medium", "long", "veil-yes", "classic", "structured", "early"],
+      tags: ["medium", "long", "veil-yes", "classic", "structured", "early", "oval", "home", "trial-yes"],
     },
     {
       id: "textured-updo",
@@ -287,7 +287,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Когда нужен акцентный образ и баланс между стойкостью и мягкостью.",
       ctaLabel: "Сравнить с пучком",
       ctaHref: "#guided-selection",
-      tags: ["medium", "long", "romantic", "structured", "evening"],
+      tags: ["medium", "long", "romantic", "structured", "evening", "angular", "studio", "trial-yes"],
     },
     {
       id: "hollywood-wave",
@@ -297,7 +297,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Если приоритет — выразительный образ и контролируемый климат локации.",
       ctaLabel: "Проверить стойкость",
       ctaHref: "#pricing",
-      tags: ["medium", "long", "minimal", "soft", "evening"],
+      tags: ["medium", "long", "minimal", "soft", "evening", "oval", "studio", "trial-no"],
     },
     {
       id: "romantic-curls",
@@ -307,7 +307,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Когда важна мягкость образа и возможность легкой коррекции по ходу дня.",
       ctaLabel: "Что учесть в жару",
       ctaHref: "#faq",
-      tags: ["short", "medium", "long", "romantic", "soft", "day"],
+      tags: ["short", "medium", "long", "romantic", "soft", "day", "round", "venue", "trial-no"],
     },
     {
       id: "braid-architecture",
@@ -317,7 +317,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Если нужен контролируемый образ на весь день и вечер.",
       ctaLabel: "Сравнить исполнителей",
       ctaHref: "#performers",
-      tags: ["long", "balanced", "structured", "early", "day"],
+      tags: ["long", "balanced", "structured", "early", "day", "angular", "venue", "trial-yes"],
     },
     {
       id: "short-hair-styling",
@@ -327,7 +327,7 @@ export const weddingHairstylesPageData = {
       whenToChoose: "Когда нужен выразительный образ при минимальном весе конструкции.",
       ctaLabel: "Подобрать параметры",
       ctaHref: "#guided-selection",
-      tags: ["short", "veil-yes", "veil-no", "minimal", "classic"],
+      tags: ["short", "veil-yes", "veil-no", "minimal", "classic", "round", "home", "trial-no"],
     },
   ] satisfies RecommendationCard[],
   scenarios: [
@@ -700,3 +700,4 @@ export const weddingHairstylesPageData = {
 } as const;
 
 export type WeddingHairstylesPageData = typeof weddingHairstylesPageData;
+
