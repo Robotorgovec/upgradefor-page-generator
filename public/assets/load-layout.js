@@ -1,4 +1,4 @@
-(async function () {
+﻿(async function () {
   "use strict";
 
   async function fetchAndInsert(url, selector) {
@@ -41,43 +41,114 @@
     return el;
   }
 
-  const themeStorageKey = "userTheme";
-  const themeConfigUrl = "/assets/theme/theme-colors.json";
-  let cachedThemeConfig = null;
-
-  async function loadThemeConfig() {
-    if (cachedThemeConfig) return cachedThemeConfig;
-    try {
-      const res = await fetch(themeConfigUrl, { credentials: "include" });
-      if (!res.ok) throw new Error("Theme config not available");
-      cachedThemeConfig = await res.json();
-      return cachedThemeConfig;
-    } catch (err) {
-      console.error("[UPGR] theme config error", err);
-      return null;
-    }
+  function getThemeSystem() {
+    return window.UPGR_THEME_SYSTEM || null;
   }
 
-  // Sunday=0 ... Saturday=6
-  function getAutoThemeName(config) {
-    if (!config) return "cyan";
-
-    if (config.weekCycle) {
-      const dayIndex = new Date().getDay();
-      return config.weekCycle[String(dayIndex)] || "cyan";
-    }
-
-    if (Array.isArray(config.cycle)) {
-      const dayIndex = new Date().getDay();
-      return config.cycle[dayIndex] || "cyan";
-    }
-
-    return "cyan";
+  function formatThemeSwitchTitle(state) {
+    const suffix = state.source === "debug-date" ? " (тест)" : "";
+    return `Тема дня • ${state.dateStamp}${suffix}`;
   }
 
-  function applyThemeName(name) {
-    if (!name) return;
-    document.documentElement.setAttribute("data-theme", name);
+  function formatAutoThemeLabel(state) {
+    return `Авто (${state.theme.label} сегодня)`;
+  }
+
+  function renderThemeSwitchItems(switcher, themeSystem, state) {
+    const optionsRoot = switcher.querySelector("[data-theme-switch-options]");
+    if (!optionsRoot) return;
+
+    const itemsMarkup = themeSystem
+      .getSelectableModes()
+      .map((mode) => {
+        const label = mode.key === "auto" ? formatAutoThemeLabel(state) : mode.label;
+        return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false">${label}</button>`;
+      })
+      .join("");
+
+    optionsRoot.innerHTML = itemsMarkup;
+  }
+
+  function syncThemeSwitchers(themeSystem, switchers) {
+    const state = themeSystem.getState();
+    const themeLabels = themeSystem.getThemeOptions().reduce((acc, theme) => {
+      acc[theme.key] = theme.label;
+      return acc;
+    }, {});
+
+    switchers.forEach((switcher) => {
+      const title = switcher.querySelector(".theme-switch-title");
+      if (title) title.textContent = formatThemeSwitchTitle(state);
+
+      const dot = switcher.querySelector(".theme-dot");
+      if (dot) {
+        dot.style.background = state.theme.primary;
+        dot.style.boxShadow = `0 0 0 2px ${state.tokens["--theme-focus-ring"]}`;
+      }
+
+      switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
+        const itemTheme = item.dataset.theme || "auto";
+        item.textContent = itemTheme === "auto" ? formatAutoThemeLabel(state) : themeLabels[itemTheme] || itemTheme;
+
+        const isActive = state.mode === "auto" ? itemTheme === "auto" : itemTheme === state.themeKey;
+        item.setAttribute("aria-checked", isActive ? "true" : "false");
+      });
+    });
+  }
+
+  function initThemeSwitcher() {
+    const themeSystem = getThemeSystem();
+    if (!themeSystem) return;
+
+    themeSystem.reapply();
+
+    const switchers = Array.from(document.querySelectorAll("[data-theme-switch]"));
+    if (!switchers.length) return;
+
+    const renderAllItems = () => {
+      const state = themeSystem.getState();
+      switchers.forEach((switcher) => renderThemeSwitchItems(switcher, themeSystem, state));
+    };
+
+    const syncUi = () => {
+      syncThemeSwitchers(themeSystem, switchers);
+    };
+
+    renderAllItems();
+    syncUi();
+
+    const closeMenus = () => {
+      switchers.forEach((switcher) => {
+        switcher.classList.remove("is-open");
+        const trigger = switcher.querySelector(".theme-switch-trigger");
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    switchers.forEach((switcher) => {
+      const trigger = switcher.querySelector(".theme-switch-trigger");
+      if (!trigger) return;
+
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = switcher.classList.toggle("is-open");
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          themeSystem.setThemeMode(item.dataset.theme || "auto");
+          syncUi();
+          closeMenus();
+        });
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!switchers.some((switcher) => switcher.contains(event.target))) closeMenus();
+    });
+
+    window.addEventListener("upgr:theme-change", syncUi);
   }
 
   let upgradeLogoRendered = false;
@@ -104,78 +175,6 @@
     } catch (err) {
       console.error("[UPGR] logo render error", err);
     }
-  }
-
-  async function applyTheme(mode, config, elements) {
-    const autoTheme = getAutoThemeName(config);
-
-    // mode может быть "auto" или именем темы ("red", "cyan", ...)
-    const themeName = mode === "auto" ? autoTheme : mode;
-    const themeColors = config?.colors?.[themeName];
-
-    const resolvedTheme = themeColors ? themeName : "cyan";
-    applyThemeName(resolvedTheme);
-
-    if (elements?.items) {
-      elements.items.forEach((item) => {
-        const itemTheme = item.dataset.theme || "";
-        const isActive = mode === "auto" ? itemTheme === "auto" : itemTheme === themeName;
-        item.setAttribute("aria-checked", isActive ? "true" : "false");
-      });
-    }
-  }
-
-  async function initThemeSwitcher() {
-    const config = await loadThemeConfig();
-    if (!config) return;
-
-    // Поддержка нескольких переключателей (например: header + sidebar mobile)
-    const switchers = Array.from(document.querySelectorAll("[data-theme-switch]"));
-    const allItems = switchers.flatMap((switcher) =>
-      Array.from(switcher.querySelectorAll(".theme-switch-item"))
-    );
-
-    const storedTheme = localStorage.getItem(themeStorageKey);
-    const initialMode =
-      storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
-
-    await applyTheme(initialMode, config, { items: allItems });
-
-    if (!switchers.length) return;
-
-    const closeMenus = () => {
-      switchers.forEach((switcher) => {
-        switcher.classList.remove("is-open");
-        const trigger = switcher.querySelector(".theme-switch-trigger");
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-      });
-    };
-
-    switchers.forEach((switcher) => {
-      const trigger = switcher.querySelector(".theme-switch-trigger");
-      if (!trigger) return;
-
-      trigger.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const isOpen = switcher.classList.toggle("is-open");
-        trigger.setAttribute("aria-expanded", String(isOpen));
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!switchers.some((switcher) => switcher.contains(event.target))) closeMenus();
-    });
-
-    allItems.forEach((item) => {
-      item.addEventListener("click", async () => {
-        const selected = item.dataset.theme || "auto";
-        if (selected === "auto") localStorage.removeItem(themeStorageKey);
-        else localStorage.setItem(themeStorageKey, selected);
-
-        await applyTheme(selected, config, { items: allItems });
-        closeMenus();
-      });
-    });
   }
 
   function runChameleonIntro(opts = {}) {
@@ -280,7 +279,7 @@
     const title = createEl("div", "sidebar-footer-title");
     title.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">account_circle</span>' +
-      "<span>Аккаунт</span>";
+      "<span>РђРєРєР°СѓРЅС‚</span>";
     footer.appendChild(title);
 
     const actions = createEl("div", "sidebar-footer-actions");
@@ -288,14 +287,14 @@
     const account = createEl("a", "menu-item sidebar-footer-item", { href: "/account" });
     account.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">person</span>' +
-      '<span class="menu-label">Мой аккаунт</span>';
+      '<span class="menu-label">РњРѕР№ Р°РєРєР°СѓРЅС‚</span>';
 
     const logout = createEl("button", "menu-item sidebar-footer-item sidebar-footer-logout", {
       type: "button",
     });
     logout.innerHTML =
       '<span class="material-symbols-outlined menu-icon" aria-hidden="true">logout</span>' +
-      '<span class="menu-label">Выйти</span>';
+      '<span class="menu-label">Р’С‹Р№С‚Рё</span>';
 
     logout.addEventListener("click", () => {
       window.location.href = "/api/auth/signout?callbackUrl=/";
@@ -374,7 +373,7 @@
   function ensureBottomNavContainer() {
     let nav = qs(".mobile-bottom-nav");
     if (!nav) {
-      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "Нижняя навигация" });
+      nav = createEl("nav", "mobile-bottom-nav", { "aria-label": "РќРёР¶РЅСЏСЏ РЅР°РІРёРіР°С†РёСЏ" });
       document.body.appendChild(nav);
     }
     return nav;
@@ -451,7 +450,7 @@
       {
         id: 'beta-announce',
         title: 'BETA',
-        text: 'Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.',
+        text: 'РќРѕРІС‹Р№ СЃРµСЂРІРёСЃ. РџСѓР±Р»РёРєСѓРµРј СЃС‚Р°С‚СѓСЃ СЂР°Р·РґРµР»РѕРІ, РїР»Р°РЅ СЂР°Р·РІРёС‚РёСЏ Рё Р¶СѓСЂРЅР°Р» РёР·РјРµРЅРµРЅРёР№ вЂ” РІР°С€Рё РёРґРµРё РїРѕРјРѕРіР°СЋС‚ СЂР°СЃСЃС‚Р°РІР»СЏС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚С‹.',
         dismissed: false,
         createdAtIso: new Date().toISOString(),
       },
@@ -482,10 +481,10 @@
     if (!panel) {
       panel = createEl('section', 'notifications-overlay', {
         'data-notifications-panel': 'true',
-        'aria-label': 'Уведомления',
+        'aria-label': 'РЈРІРµРґРѕРјР»РµРЅРёСЏ',
         hidden: 'true',
       });
-      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>Уведомления</strong><button class="notifications-close" type="button" aria-label="Закрыть уведомления">×</button></div><div data-notifications-list></div></div></div>';
+      panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>РЈРІРµРґРѕРјР»РµРЅРёСЏ</strong><button class="notifications-close" type="button" aria-label="Р—Р°РєСЂС‹С‚СЊ СѓРІРµРґРѕРјР»РµРЅРёСЏ">Г—</button></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
@@ -520,13 +519,13 @@
 
       trigger.setAttribute(
         'aria-label',
-        activeCount > 0 ? `Уведомления: ${activeCount}` : 'Уведомления'
+        activeCount > 0 ? `РЈРІРµРґРѕРјР»РµРЅРёСЏ: ${activeCount}` : 'РЈРІРµРґРѕРјР»РµРЅРёСЏ'
       );
 
       if (!listEl) return;
 
       if (visible.length === 0) {
-        listEl.innerHTML = '<div class="notification-empty">Нет новых уведомлений</div>';
+        listEl.innerHTML = '<div class="notification-empty">РќРµС‚ РЅРѕРІС‹С… СѓРІРµРґРѕРјР»РµРЅРёР№</div>';
         return;
       }
 
@@ -541,7 +540,7 @@
                 </div>
                 <p class="notice__text">${item.text}</p>
               </div>
-              <button class="notice__close" type="button" aria-label="Скрыть уведомление" data-dismiss-id="${item.id}">×</button>
+              <button class="notice__close" type="button" aria-label="РЎРєСЂС‹С‚СЊ СѓРІРµРґРѕРјР»РµРЅРёРµ" data-dismiss-id="${item.id}">Г—</button>
             </article>`
         )
         .join('');
@@ -622,13 +621,13 @@
 
   async function loadLayout() {
     try {
-      // КРИТИЧНО: эти 2 строки вставляют header и menu
+      // РљР РРўРР§РќРћ: СЌС‚Рё 2 СЃС‚СЂРѕРєРё РІСЃС‚Р°РІР»СЏСЋС‚ header Рё menu
       await fetchAndInsert("/includes/header.html", "header");
       console.log("[layout] header loaded");
       await fetchAndInsert("/includes/menu.html", ".sidebar");
       console.log("[layout] sidebar loaded");
 
-      // Theme switcher — строго после вставки header.html
+      // Theme switcher вЂ” СЃС‚СЂРѕРіРѕ РїРѕСЃР»Рµ РІСЃС‚Р°РІРєРё header.html
       await initThemeSwitcher();
       await initNotificationsRuntime();
 
@@ -642,15 +641,15 @@
       }
       enableChameleonOnNavigation();
 
-      // --- burger toggling и высота header ---
+      // --- burger toggling Рё РІС‹СЃРѕС‚Р° header ---
       const body = document.body;
       const root = document.documentElement;
       const headerNode = qs('[data-site-header="true"]') || qs("header.site-header") || qs("body > header") || qs("header");
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
-      // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
-      // поэтому берём по data-burger или .burger, а id оставляем как fallback.
+      // Р’РђР–РќРћ: Сѓ С‚РµР±СЏ РІ header СЃРµР№С‡Р°СЃ РєРЅРѕРїРєР° РЅРµ РѕР±СЏР·Р°РЅР° РёРјРµС‚СЊ id="burgerBtn"
+      // РїРѕСЌС‚РѕРјСѓ Р±РµСЂС‘Рј РїРѕ data-burger РёР»Рё .burger, Р° id РѕСЃС‚Р°РІР»СЏРµРј РєР°Рє fallback.
       const burger =
         document.querySelector("[data-burger]") ||
         document.querySelector(".burger") ||
@@ -749,7 +748,7 @@
 
       await updateAuthButtons();
 
-      // Footer — строго после вставки menu.html
+      // Footer вЂ” СЃС‚СЂРѕРіРѕ РїРѕСЃР»Рµ РІСЃС‚Р°РІРєРё menu.html
       initStickyFooter();
       initMobileBottomNav();
     } catch (e) {
