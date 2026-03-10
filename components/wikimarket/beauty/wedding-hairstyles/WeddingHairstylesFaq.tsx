@@ -1,4 +1,4 @@
-import styles from "./WeddingHairstylesPage.module.css";
+﻿import styles from "./WeddingHairstylesPage.module.css";
 import type { FaqItem } from "./data";
 
 type WeddingHairstylesFaqProps = {
@@ -9,17 +9,21 @@ export default function WeddingHairstylesFaq({ items }: WeddingHairstylesFaqProp
   return (
     <section id="faq" className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h2>FAQ</h2>
-        <p>Частые вопросы по выбору свадебной прически и организации работы с мастером.</p>
+        <h2>FAQ по свадебным прическам</h2>
+        <p>Самые частые вопросы невест перед бронированием мастера и выбором формата образа.</p>
       </div>
 
       <div className={styles.faqList}>
-        {items.map((item) => (
-          <details key={item.question} className={styles.faqItem}>
-            <summary>{item.question}</summary>
-            <p>{item.answer}</p>
-          </details>
-        ))}
+        {items.map((item, index) => {
+          const panelId = `wedding-hairstyles-faq-panel-${index + 1}`;
+
+          return (
+            <details key={item.question} className={styles.faqItem}>
+              <summary aria-controls={panelId}>{item.question}</summary>
+              <p id={panelId}>{item.answer}</p>
+            </details>
+          );
+        })}
       </div>
     </section>
   );

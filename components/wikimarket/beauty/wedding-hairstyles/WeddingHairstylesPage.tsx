@@ -1,7 +1,9 @@
-import WeddingHairstylesCta from "./WeddingHairstylesCta";
+﻿import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
+import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
 import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
+import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
 import styles from "./WeddingHairstylesPage.module.css";
@@ -10,8 +12,40 @@ import { weddingHairstylesPageData } from "./data";
 export default function WeddingHairstylesPage() {
   const data = weddingHairstylesPageData;
 
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Свадебные прически",
+    serviceType: "Подбор свадебной прически и исполнителя",
+    category: "BeautyService",
+    description:
+      "Подбор стиля свадебной прически, сравнение исполнителей и оформление заявки через WikiMarket.",
+    provider: {
+      "@type": "Organization",
+      name: "WikiMarket",
+      url: "https://upgradefor.com/wikimarket/categories",
+    },
+    areaServed: "RU",
+    url: `https://upgradefor.com${data.pageMeta.canonicalPath}`,
+  };
+
+  const performerListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Исполнители свадебных причесок",
+    itemListElement: data.performersSection.performers.map((performer, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: performer.displayName,
+      url: `https://upgradefor.com${data.pageMeta.canonicalPath}#${performer.id}`,
+    })),
+  };
+
   return (
     <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(performerListJsonLd) }} />
+
       <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
         <ol>
           {data.breadcrumbs.map((crumb, index) => {
@@ -31,10 +65,9 @@ export default function WeddingHairstylesPage() {
       <section id="summary" className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>{data.quickAnswer.title}</h2>
-          <p>{data.quickAnswer.text}</p>
         </div>
         <ul className={styles.quickAnswerList}>
-          {data.quickAnswer.priorities.map((item) => (
+          {data.quickAnswer.bullets.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
@@ -42,98 +75,164 @@ export default function WeddingHairstylesPage() {
 
       <WeddingHairstylesToc items={[...data.toc]} />
 
+      <WeddingHairstylesGuidedSelector selector={data.selector} recommendations={[...data.popularStyles]} />
+
       <section id="popular-styles" className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>Популярные стили свадебных причесок</h2>
-          <p>Сравните основные форматы по задаче дня, длине волос и характеру образа.</p>
+          <p>
+            Карточки помогают сравнить стиль по задаче дня, ожидаемому эффекту и моменту выбора перед
+            бронированием.
+          </p>
         </div>
         <WeddingHairstylesStylesGrid items={[...data.popularStyles]} />
       </section>
 
-      <section id="selection" className={styles.section}>
+      <WeddingHairstylesScenarios items={[...data.scenarios]} />
+
+      <WeddingHairstylesCta
+        id="cta-after-selection"
+        title={data.ctaAfterSelection.title}
+        text={data.ctaAfterSelection.text}
+        buttonLabel={data.ctaAfterSelection.buttonLabel}
+        href={data.ctaAfterSelection.href}
+        tone="neutral"
+      />
+
+      <WeddingHairstylesPerformerGrid section={data.performersSection} />
+
+      <WeddingHairstylesCta
+        id="cta-after-performers"
+        title={data.ctaAfterPerformers.title}
+        text={data.ctaAfterPerformers.text}
+        buttonLabel={data.ctaAfterPerformers.buttonLabel}
+        href={data.ctaAfterPerformers.href}
+        tone="secondary"
+      />
+
+      <section id="master-checklist" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>Подбор прически по параметрам</h2>
-          <p>Выбор удобно делать по четырем блокам: длина, аксессуары, стиль свадьбы и практичность.</p>
+          <h2>{data.chooseMasterChecklist.title}</h2>
+          <p>{data.chooseMasterChecklist.subtitle}</p>
         </div>
 
-        <div className={styles.selectionGrid}>
-          {data.selectionGroups.map((group) => (
-            <article key={group.id} className={styles.selectionCard}>
-              <h3 id={group.anchorId}>{group.title}</h3>
+        <div className={styles.checklistGrid}>
+          <article className={styles.checklistCard}>
+            <h3>Как выбрать мастера</h3>
+            <ul>
+              {data.chooseMasterChecklist.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+
+          <article className={styles.checklistCard}>
+            <h3>{data.bookingQuestions.title}</h3>
+            <ul>
+              {data.bookingQuestions.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+
+          <article className={styles.checklistCard}>
+            <h3>{data.photoChecklist.title}</h3>
+            <ul>
+              {data.photoChecklist.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+
+          <article className={styles.checklistCard}>
+            <h3>{data.trialChecklist.title}</h3>
+            <ul>
+              {data.trialChecklist.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="pricing" className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2>{data.pricingSection.title}</h2>
+          <p>{data.pricingSection.subtitle}</p>
+        </div>
+
+        <div className={styles.pricingGrid}>
+          {data.pricingSection.columns.map((column) => (
+            <article key={column.title} className={styles.pricingCard}>
+              <h3>{column.title}</h3>
               <ul>
-                {group.items.map((item) => (
+                {column.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </article>
           ))}
         </div>
-      </section>
 
-      <WeddingHairstylesPerformerGrid section={data.performersSection} />
-
-      <section id="how-to-choose" className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>Как выбрать мастера</h2>
-          <p>Практический чек-лист, который помогает отфильтровать неподходящие варианты до бронирования.</p>
-        </div>
-
-        <ol className={styles.numberedList}>
-          {data.chooseMasterChecklist.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ol>
-      </section>
-
-      <section id="pricing" className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>От чего зависит стоимость</h2>
-          <p>Стоимость зависит от набора факторов задачи и условий работы мастера.</p>
-        </div>
-
-        <ul className={styles.quickAnswerList}>
-          {data.pricingFactors.map((item) => (
-            <li key={item}>{item}</li>
+        <ul className={styles.pricingNotes}>
+          {data.pricingSection.notes.map((note) => (
+            <li key={note}>{note}</li>
           ))}
         </ul>
       </section>
 
-      <section id="prep-checklist" className={styles.section}>
+      <section id="process" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>Чек-лист подготовки</h2>
-          <p>Что сделать заранее, чтобы в день свадьбы укладка проходила спокойно и по таймингу.</p>
+          <h2>Как проходит заказ</h2>
+          <p>Пять шагов от первого брифа до подтверждения исполнителя.</p>
         </div>
 
-        <ol className={styles.numberedList}>
-          {data.prepChecklist.map((item) => (
-            <li key={item}>{item}</li>
+        <ol className={styles.processList}>
+          {data.processSteps.map((step) => (
+            <li key={step.title}>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
           ))}
         </ol>
+      </section>
+
+      <section id="prep" className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2>{data.prepChecklist.title}</h2>
+          <p>Соберите материалы заранее, чтобы выбор стиля и исполнителя прошел без потери времени.</p>
+        </div>
+
+        <ul className={styles.prepList}>
+          {data.prepChecklist.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </section>
 
       <WeddingHairstylesFaq items={[...data.faq]} />
 
       <WeddingHairstylesCta
         id="request"
-        title={data.ctaBride.title}
-        text={data.ctaBride.text}
-        buttonLabel={data.ctaBride.buttonLabel}
-        href={data.ctaBride.href}
+        title={data.finalCta.title}
+        text={data.finalCta.text}
+        buttonLabel={data.finalCta.buttonLabel}
+        href={data.finalCta.href}
       />
 
       <WeddingHairstylesCta
         id="performer-cta"
-        title={data.ctaPerformer.title}
-        text={data.ctaPerformer.text}
-        buttonLabel={data.ctaPerformer.buttonLabel}
-        href={data.ctaPerformer.href}
+        title={data.performerCta.title}
+        text={data.performerCta.text}
+        buttonLabel={data.performerCta.buttonLabel}
+        href={data.performerCta.href}
         tone="secondary"
       />
 
       <section id="related-pages" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>Related pages / related intents</h2>
-          <p>Блок подготовлен как основа будущего beauty-кластера в том же namespace WikiMarket.</p>
+          <h2>Related intents</h2>
+          <p>Внутренние переходы для расширенного bridal-сценария внутри beauty-кластера WikiMarket.</p>
         </div>
 
         <div className={styles.relatedGrid}>
@@ -148,6 +247,12 @@ export default function WeddingHairstylesPage() {
           ))}
         </div>
       </section>
+
+      <div className={styles.stickyMobileCta}>
+        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="Оставить заявку">
+          Оставить заявку
+        </a>
+      </div>
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import styles from "./WeddingHairstylesPage.module.css";
+﻿import styles from "./WeddingHairstylesPage.module.css";
 
 type WeddingHairstylesCtaProps = {
   id: string;
@@ -6,7 +6,7 @@ type WeddingHairstylesCtaProps = {
   text: string;
   buttonLabel: string;
   href: string;
-  tone?: "primary" | "secondary";
+  tone?: "primary" | "secondary" | "neutral";
 };
 
 export default function WeddingHairstylesCta({
@@ -17,7 +17,8 @@ export default function WeddingHairstylesCta({
   href,
   tone = "primary",
 }: WeddingHairstylesCtaProps) {
-  const toneClass = tone === "secondary" ? styles.ctaSecondary : styles.ctaPrimary;
+  const toneClass =
+    tone === "secondary" ? styles.ctaSecondary : tone === "neutral" ? styles.ctaNeutral : styles.ctaPrimary;
 
   return (
     <section id={id} className={`${styles.cta} ${toneClass}`}>

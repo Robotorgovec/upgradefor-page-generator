@@ -1,79 +1,118 @@
+﻿"use client";
+
+import { useMemo, useState } from "react";
+
 import styles from "./WeddingHairstylesPage.module.css";
-import type { PerformerCard, WeddingHairstylesPageData } from "./data";
+import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesPerformerGridProps = {
   section: WeddingHairstylesPageData["performersSection"];
 };
 
-const formatPrice = (value: number) => new Intl.NumberFormat("ru-RU").format(value);
-
-function PerformerItem({ performer }: { performer: PerformerCard }) {
-  return (
-    <article className={styles.performerCard}>
-      <div className={styles.performerTop}>
-        <span className={styles.placeholderIcon} aria-hidden="true">
-          <span className="material-symbols-outlined">styler</span>
-        </span>
-        <div>
-          <h3 className={styles.performerName}>{performer.displayName}</h3>
-          <p className={styles.performerMeta}>
-            {performer.performerType} • {performer.city}
-          </p>
-        </div>
-      </div>
-
-      <p className={styles.performerNote}>{performer.shortNote}</p>
-
-      <ul className={styles.performerFacts}>
-        <li>
-          <span>Специализация:</span> {performer.specialization.join(", ")}
-        </li>
-        <li>
-          <span>Длина волос:</span> {performer.hairLengths.join(", ")}
-        </li>
-        <li>
-          <span>Формат работы:</span> {performer.serviceModes.join(", ")}
-        </li>
-        <li>
-          <span>Опыт:</span> {performer.experienceYears} лет
-        </li>
-        <li>
-          <span>Диапазон:</span> от {formatPrice(performer.priceFrom)} до {formatPrice(performer.priceTo)} ₽
-        </li>
-        <li>
-          <span>Пробная прическа:</span> {performer.trialAvailable ? "Да" : "Нет"}
-        </li>
-      </ul>
-
-      <p className={styles.performerMetaBottom}>
-        Портфолио: {performer.portfolioCount} работ • Языки: {performer.languages.join(", ")} • Состояние профиля: {performer.profileState}
-      </p>
-
-      <a className={`${styles.btn} ${styles.btnPrimary}`} href={performer.ctaHref}>
-        Оставить заявку
-      </a>
-    </article>
-  );
-}
-
 export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairstylesPerformerGridProps) {
+  const [activeFilter, setActiveFilter] = useState<WeddingHairstylesPageData["performersSection"]["filters"][number]["id"]>(
+    "all",
+  );
+
+  const filteredPerformers = useMemo(() => {
+    if (activeFilter === "all") return section.performers;
+    return section.performers.filter((performer) => performer.tags.includes(activeFilter));
+  }, [activeFilter, section.performers]);
+
   return (
     <section id="performers" className={styles.section}>
       <div className={styles.sectionHeader}>
-        <p className={styles.betaBadge}>{section.betaLabel}</p>
         <h2>{section.title}</h2>
         <p>{section.subtitle}</p>
       </div>
 
+      <p className={styles.performerDisclaimer}>{section.disclaimer}</p>
+
+      <nav className={styles.filterBar} aria-label="Фильтры исполнителей">
+        {section.filters.map((filter) => {
+          const isActive = activeFilter === filter.id;
+
+          return (
+            <button
+              key={filter.id}
+              type="button"
+              className={`${styles.filterChip} ${isActive ? styles.filterChipActive : ""}`}
+              aria-pressed={isActive}
+              onClick={() => setActiveFilter(filter.id)}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
+      </nav>
+
       <div className={styles.performerGrid}>
-        {section.performers.map((performer) => (
-          <PerformerItem key={performer.id} performer={performer} />
+        {filteredPerformers.map((performer) => (
+          <article key={performer.id} className={styles.performerCard} id={performer.id}>
+            <header className={styles.performerHeader}>
+              <span className={styles.placeholderIcon} aria-hidden="true">
+                <span className="material-symbols-outlined">styler</span>
+              </span>
+              <div>
+                <h3 className={styles.performerName}>{performer.displayName}</h3>
+                <p className={styles.performerMeta}>{performer.cityLabel}</p>
+              </div>
+              {performer.premiumLabel ? <p className={styles.premiumBadge}>{performer.premiumLabel}</p> : null}
+            </header>
+
+            <ul className={styles.performerFacts}>
+              <li>
+                <span>Формат:</span> {performer.workFormat}
+              </li>
+              <li>
+                <span>Специализация:</span> {performer.specialization}
+              </li>
+              <li>
+                <span>Выезд / студия:</span> {performer.serviceModes}
+              </li>
+              <li>
+                <span>Репетиция:</span> {performer.trialLabel}
+              </li>
+              <li>
+                <span>Цена:</span> {performer.priceFromLabel}
+              </li>
+              <li>
+                <span>Ответ:</span> {performer.responseTimeLabel}
+              </li>
+              <li>
+                <span>Доступность:</span> {performer.availabilityLabel}
+              </li>
+            </ul>
+
+            <div className={styles.performerStrengths}>
+              <h4>Сильные стороны</h4>
+              <ul>
+                {performer.strengths.map((strength) => (
+                  <li key={strength}>{strength}</li>
+                ))}
+              </ul>
+            </div>
+
+            <a className={`${styles.btn} ${styles.btnPrimary}`} href={performer.ctaHref}>
+              {performer.ctaLabel}
+            </a>
+          </article>
         ))}
       </div>
 
-      <a className={`${styles.btn} ${styles.btnSecondary}`} href={section.becomeFirstCta.href}>
-        {section.becomeFirstCta.label}
-      </a>
+      {filteredPerformers.length === 0 ? (
+        <p className={styles.emptyFilterState}>
+          По выбранному фильтру карточки пока не показаны. Оставьте заявку, чтобы получить подбор под ваши параметры.
+        </p>
+      ) : null}
+
+      <div className={styles.inlineCta}>
+        <h3>{section.compareCta.title}</h3>
+        <p>{section.compareCta.text}</p>
+        <a className={`${styles.btn} ${styles.btnSecondary}`} href={section.compareCta.href}>
+          {section.compareCta.buttonLabel}
+        </a>
+      </div>
     </section>
   );
 }
