@@ -1,4 +1,4 @@
-(async function () {
+﻿(async function () {
   "use strict";
 
   async function fetchAndInsert(url, selector) {
@@ -21,7 +21,7 @@
       }
       container.innerHTML = html;
     } catch (err) {
-      console.error("[UPGR] Error loading", url, err);
+      console.error("[UPGR] error loading", url, err);
     }
   }
 
@@ -41,107 +41,113 @@
     return el;
   }
 
-  const themeStorageKey = "userTheme";
-  const themeConfigUrl = "/assets/theme/theme-colors.json";
-  let cachedThemeConfig = null;
-
-  async function loadThemeConfig() {
-    if (cachedThemeConfig) return cachedThemeConfig;
-    try {
-      const res = await fetch(themeConfigUrl, { credentials: "include" });
-      if (!res.ok) throw new Error("Theme config not available");
-      cachedThemeConfig = await res.json();
-      return cachedThemeConfig;
-    } catch (err) {
-      console.error("[UPGR] theme config error", err);
-      return null;
-    }
+  function getThemeSystem() {
+    return window.UPGR_THEME_SYSTEM || null;
   }
 
-  // Sunday=0 ... Saturday=6
-  function getAutoThemeName(config) {
-    if (!config) return "cyan";
-
-    if (config.weekCycle) {
-      const dayIndex = new Date().getDay();
-      return config.weekCycle[String(dayIndex)] || "cyan";
-    }
-
-    if (Array.isArray(config.cycle)) {
-      const dayIndex = new Date().getDay();
-      return config.cycle[dayIndex] || "cyan";
-    }
-
-    return "cyan";
+  function formatThemeSwitchTitle() {
+    return "Тема дня";
   }
 
-  function applyThemeName(name) {
-    if (!name) return;
-    document.documentElement.setAttribute("data-theme", name);
+  function formatThemeOptionLabel(theme) {
+    return theme.weekdayLabelRu;
   }
 
-  let upgradeLogoRendered = false;
-
-  async function renderUpgradeLogo() {
-    const slot = document.getElementById("upgr-logo-slot");
-    if (!slot || upgradeLogoRendered) return;
-
-    try {
-      slot.innerHTML = `
-        <span class="upgr-logo" aria-label="UPGRADE Innovations">
-          <img
-            class="upgr-logo__base"
-            src="/assets/logo/logo-black-only.png"
-
-            alt="UPGRADE Innovations"
-            loading="lazy"
-            decoding="async"
-          />
-          <span class="upgr-logo__accent" aria-hidden="true"></span>
-        </span>
-      `;
-      upgradeLogoRendered = true;
-    } catch (err) {
-      console.error("[UPGR] logo render error", err);
-    }
+  function getThemeSwitchItemState(itemTheme, state, themeOptions) {
+    const themeMeta = themeOptions[itemTheme] || state.theme;
+    return {
+      label: formatThemeOptionLabel(themeMeta),
+      swatchColor: themeMeta.primary || state.theme.primary,
+    };
   }
 
-  async function applyTheme(mode, config, elements) {
-    const autoTheme = getAutoThemeName(config);
+  function getThemeSwitchItemMarkup(label) {
+    return `<span class="theme-switch-item-content"><span class="theme-switch-item-swatch" aria-hidden="true"></span><span class="theme-switch-item-label">${label}</span></span>`;
+  }
 
-    // mode может быть "auto" или именем темы ("red", "cyan", ...)
-    const themeName = mode === "auto" ? autoTheme : mode;
-    const themeColors = config?.colors?.[themeName];
+  function renderThemeSwitchItems(switcher, themeSystem, state) {
+    const optionsRoot = switcher.querySelector("[data-theme-switch-options]");
+    if (!optionsRoot) return;
 
-    const resolvedTheme = themeColors ? themeName : "cyan";
-    applyThemeName(resolvedTheme);
+    const themeOptions = themeSystem.getThemeOptions().reduce((acc, theme) => {
+      acc[theme.key] = theme;
+      return acc;
+    }, {});
 
-    if (elements?.items) {
-      elements.items.forEach((item) => {
-        const itemTheme = item.dataset.theme || "";
-        const isActive = mode === "auto" ? itemTheme === "auto" : itemTheme === themeName;
+    const itemsMarkup = themeSystem
+      .getThemeOptions()
+      .map((mode) => {
+        const itemState = getThemeSwitchItemState(mode.key, state, themeOptions);
+        return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false" aria-label="${itemState.label}">${getThemeSwitchItemMarkup(itemState.label)}</button>`;
+      })
+      .join("");
+
+    optionsRoot.innerHTML = itemsMarkup;
+  }
+
+  function syncThemeSwitchers(themeSystem, switchers) {
+    const state = themeSystem.getState();
+    const themeOptions = themeSystem.getThemeOptions().reduce((acc, theme) => {
+      acc[theme.key] = theme;
+      return acc;
+    }, {});
+
+    switchers.forEach((switcher) => {
+      const title = switcher.querySelector(".theme-switch-title");
+      if (title) title.textContent = formatThemeSwitchTitle();
+
+      const trigger = switcher.querySelector(".theme-switch-trigger");
+      if (trigger) trigger.setAttribute("aria-label", `Тема дня. Сейчас ${state.weekdayLabelRu}`);
+
+      const triggerLabel = switcher.querySelector(".theme-switch-label");
+      if (triggerLabel) triggerLabel.textContent = "Тема дня";
+
+      const menu = switcher.querySelector(".theme-switch-menu");
+      if (menu) menu.setAttribute("aria-label", "Тема дня");
+
+      const dot = switcher.querySelector(".theme-dot");
+      if (dot) {
+        dot.style.background = state.theme.primary;
+        dot.style.boxShadow = `0 0 0 2px ${state.tokens["--theme-focus-ring"]}`;
+      }
+
+      switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
+        const itemTheme = item.dataset.theme || state.themeKey;
+        const itemState = getThemeSwitchItemState(itemTheme, state, themeOptions);
+        const itemLabel = item.querySelector(".theme-switch-item-label");
+        if (itemLabel) itemLabel.textContent = itemState.label;
+
+        const itemSwatch = item.querySelector(".theme-switch-item-swatch");
+        if (itemSwatch) itemSwatch.style.setProperty("--theme-switch-swatch", itemState.swatchColor);
+
+        item.setAttribute("aria-label", itemState.label);
+
+        const isActive = itemTheme === state.themeKey;
         item.setAttribute("aria-checked", isActive ? "true" : "false");
       });
-    }
+    });
   }
 
-  async function initThemeSwitcher() {
-    const config = await loadThemeConfig();
-    if (!config) return;
+  function initThemeSwitcher() {
+    const themeSystem = getThemeSystem();
+    if (!themeSystem) return;
 
-    // Поддержка нескольких переключателей (например: header + sidebar mobile)
+    themeSystem.reapply();
+
     const switchers = Array.from(document.querySelectorAll("[data-theme-switch]"));
-    const allItems = switchers.flatMap((switcher) =>
-      Array.from(switcher.querySelectorAll(".theme-switch-item"))
-    );
-
-    const storedTheme = localStorage.getItem(themeStorageKey);
-    const initialMode =
-      storedTheme && config.colors && config.colors[storedTheme] ? storedTheme : "auto";
-
-    await applyTheme(initialMode, config, { items: allItems });
-
     if (!switchers.length) return;
+
+    const renderAllItems = () => {
+      const state = themeSystem.getState();
+      switchers.forEach((switcher) => renderThemeSwitchItems(switcher, themeSystem, state));
+    };
+
+    const syncUi = () => {
+      syncThemeSwitchers(themeSystem, switchers);
+    };
+
+    renderAllItems();
+    syncUi();
 
     const closeMenus = () => {
       switchers.forEach((switcher) => {
@@ -160,22 +166,54 @@
         const isOpen = switcher.classList.toggle("is-open");
         trigger.setAttribute("aria-expanded", String(isOpen));
       });
+
+      switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          const currentState = themeSystem.getState();
+          const selectedTheme = item.dataset.theme || currentState.themeKey;
+          const autoState = themeSystem.resolveThemeState({
+            mode: "auto",
+            debugDate: currentState.debugDate,
+            debugWeekday: currentState.debugWeekday,
+          });
+
+          themeSystem.setThemeMode(selectedTheme === autoState.themeKey ? "auto" : selectedTheme);
+          syncUi();
+          closeMenus();
+        });
+      });
     });
 
     document.addEventListener("click", (event) => {
       if (!switchers.some((switcher) => switcher.contains(event.target))) closeMenus();
     });
 
-    allItems.forEach((item) => {
-      item.addEventListener("click", async () => {
-        const selected = item.dataset.theme || "auto";
-        if (selected === "auto") localStorage.removeItem(themeStorageKey);
-        else localStorage.setItem(themeStorageKey, selected);
+    window.addEventListener("upgr:theme-change", syncUi);
+  }
 
-        await applyTheme(selected, config, { items: allItems });
-        closeMenus();
-      });
-    });
+  let upgradeLogoRendered = false;
+
+  async function renderUpgradeLogo() {
+    const slot = document.getElementById("upgr-logo-slot");
+    if (!slot || upgradeLogoRendered) return;
+
+    try {
+      slot.innerHTML = `
+        <span class="upgr-logo" aria-label="UPGRADE Innovations">
+          <img
+            class="upgr-logo__base"
+            src="/assets/logo/logo-black-only.png"
+            alt="UPGRADE Innovations"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="upgr-logo__accent" aria-hidden="true"></span>
+        </span>
+      `;
+      upgradeLogoRendered = true;
+    } catch (err) {
+      console.error("[UPGR] logo render error", err);
+    }
   }
 
   function runChameleonIntro(opts = {}) {
@@ -239,7 +277,6 @@
     });
   }
 
-
   async function getSessionSafe() {
     try {
       const res = await fetch("/api/auth/session", { credentials: "include" });
@@ -253,7 +290,7 @@
 
   function applyAuthVisibility(session) {
     const isAuthenticated = Boolean(session?.user);
-    const privateNodes = document.querySelectorAll("[data-auth=\"private\"]");
+    const privateNodes = document.querySelectorAll('[data-auth="private"]');
     privateNodes.forEach((node) => {
       if (isAuthenticated) node.removeAttribute("hidden");
       else node.setAttribute("hidden", "true");
@@ -324,14 +361,13 @@
 
       getSessionSafe().then((session) => {
         applyAuthVisibility(session);
-        const sidebar2 = qs(".sidebar");
-        const inner2 = sidebar2 ? qs(".sidebar-inner", sidebar2) : null;
-        if (!sidebar2 || !inner2) return;
-        const footer2 = ensureSidebarFooter(sidebar2);
-        renderFooter(footer2, session);
+        const sidebarNode = qs(".sidebar");
+        const innerNode = sidebarNode ? qs(".sidebar-inner", sidebarNode) : null;
+        if (!sidebarNode || !innerNode) return;
+        const footerNode = ensureSidebarFooter(sidebarNode);
+        renderFooter(footerNode, session);
       });
 
-      console.log("[layout] footer initialized");
       return true;
     };
 
@@ -436,22 +472,58 @@
     mediaQuery.addEventListener("change", updateNav);
   }
 
+  function initSidebarActiveState() {
+    const currentPath = window.location.pathname;
+    const items = Array.from(document.querySelectorAll(".sidebar [data-path]"));
+
+    items.forEach((item) => {
+      item.classList.remove("active");
+      item.removeAttribute("aria-current");
+    });
+
+    const bestMatch = items.reduce((best, item) => {
+      const candidatePath = (item.getAttribute("data-path") || "").trim();
+      if (!candidatePath) return best;
+
+      const isMatch =
+        candidatePath === "/"
+          ? currentPath === "/"
+          : currentPath === candidatePath || currentPath.startsWith(candidatePath + "/");
+
+      if (!isMatch) return best;
+      if (!best || candidatePath.length > best.path.length) {
+        return { element: item, path: candidatePath };
+      }
+      return best;
+    }, null);
+
+    if (!bestMatch) return;
+
+    bestMatch.element.classList.add("active");
+    bestMatch.element.setAttribute("aria-current", "page");
+
+    let parent = bestMatch.element.parentElement;
+    while (parent) {
+      if (parent.tagName === "DETAILS") parent.open = true;
+      parent = parent.parentElement;
+    }
+  }
 
   function initNotifications() {
-    const STORAGE_KEY = 'upgr.notifications.v1';
+    const STORAGE_KEY = "upgr.notifications.v1";
     const trigger = qs('[data-notifications-trigger="true"]');
     if (!trigger) return;
 
-    const appContent = qs('.app-content');
+    const appContent = qs(".app-content");
     if (!appContent) return;
 
-    const badge = trigger.querySelector('[data-notification-badge]');
+    const badge = trigger.querySelector("[data-notification-badge]");
 
     const getSeedNotifications = () => [
       {
-        id: 'beta-announce',
-        title: 'BETA',
-        text: 'Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.',
+        id: "beta-announce",
+        title: "BETA",
+        text: "Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.",
         dismissed: false,
         createdAtIso: new Date().toISOString(),
       },
@@ -459,9 +531,9 @@
 
     const loadNotifications = () => {
       try {
-        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.filter((item) => item && typeof item.id === 'string');
+          return parsed.filter((item) => item && typeof item.id === "string");
         }
       } catch {
         // ignore invalid storage payload
@@ -478,31 +550,31 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
     };
 
-    let panel = document.querySelector('[data-notifications-panel]');
+    let panel = document.querySelector("[data-notifications-panel]");
     if (!panel) {
-      panel = createEl('section', 'notifications-overlay', {
-        'data-notifications-panel': 'true',
-        'aria-label': 'Уведомления',
-        hidden: 'true',
+      panel = createEl("section", "notifications-overlay", {
+        "data-notifications-panel": "true",
+        "aria-label": "Уведомления",
+        hidden: "true",
       });
       panel.innerHTML = '<div class="notifications-sheet"><div class="notifications-panel wrap"><div class="notifications-popover-head"><strong>Уведомления</strong><button class="notifications-close" type="button" aria-label="Закрыть уведомления">×</button></div><div data-notifications-list></div></div></div>';
       appContent.insertBefore(panel, appContent.firstChild);
     }
 
-    panel.style.pointerEvents = 'none';
+    panel.style.pointerEvents = "none";
 
-    const listEl = panel.querySelector('[data-notifications-list]');
+    const listEl = panel.querySelector("[data-notifications-list]");
 
     const getVisible = () => notifications.filter((item) => !item.dismissed);
     const getActiveCount = () => getVisible().length;
 
     const closePanel = () => {
-      panel.setAttribute('hidden', 'true');
-      panel.style.pointerEvents = 'none';
-      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute("hidden", "true");
+      panel.style.pointerEvents = "none";
+      trigger.setAttribute("aria-expanded", "false");
     };
 
-        const dismissNotification = (id) => {
+    const dismissNotification = (id) => {
       notifications = notifications.map((item) =>
         item.id === id ? { ...item, dismissed: true } : item
       );
@@ -515,12 +587,12 @@
 
       if (badge) {
         badge.hidden = activeCount === 0;
-        badge.textContent = '';
+        badge.textContent = "";
       }
 
       trigger.setAttribute(
-        'aria-label',
-        activeCount > 0 ? `Уведомления: ${activeCount}` : 'Уведомления'
+        "aria-label",
+        activeCount > 0 ? `Уведомления: ${activeCount}` : "Уведомления"
       );
 
       if (!listEl) return;
@@ -544,16 +616,16 @@
               <button class="notice__close" type="button" aria-label="Скрыть уведомление" data-dismiss-id="${item.id}">×</button>
             </article>`
         )
-        .join('');
+        .join("");
     };
 
-    trigger.addEventListener('click', (event) => {
+    trigger.addEventListener("click", (event) => {
       event.preventDefault();
-      const isHidden = panel.hasAttribute('hidden');
+      const isHidden = panel.hasAttribute("hidden");
       if (isHidden) {
-        panel.removeAttribute('hidden');
-        panel.style.pointerEvents = 'auto';
-        trigger.setAttribute('aria-expanded', 'true');
+        panel.removeAttribute("hidden");
+        panel.style.pointerEvents = "auto";
+        trigger.setAttribute("aria-expanded", "true");
         render();
         return;
       }
@@ -561,10 +633,10 @@
       closePanel();
     });
 
-    panel.addEventListener('click', (event) => {
-      const dismissBtn = event.target.closest('[data-dismiss-id]');
+    panel.addEventListener("click", (event) => {
+      const dismissBtn = event.target.closest("[data-dismiss-id]");
       if (dismissBtn) {
-        const id = dismissBtn.getAttribute('data-dismiss-id');
+        const id = dismissBtn.getAttribute("data-dismiss-id");
         if (id) {
           dismissNotification(id);
           render();
@@ -572,16 +644,16 @@
         return;
       }
 
-      if (event.target.closest('.notifications-close')) {
+      if (event.target.closest(".notifications-close")) {
         closePanel();
       }
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hasAttribute('hidden')) closePanel();
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.hasAttribute("hidden")) closePanel();
     });
 
-    window.addEventListener('storage', (event) => {
+    window.addEventListener("storage", (event) => {
       if (event.key !== STORAGE_KEY) return;
       notifications = loadNotifications();
       render();
@@ -590,22 +662,21 @@
     render();
   }
 
-
   async function initNotificationsRuntime() {
     try {
-      const notificationsModule = await import('/assets/notifications/index.js');
+      const notificationsModule = await import("/assets/notifications/index.js");
       const initNotificationsModule = notificationsModule?.initNotificationsModule;
 
-      if (typeof initNotificationsModule === 'function') {
+      if (typeof initNotificationsModule === "function") {
         initNotificationsModule();
         return;
       }
 
-      console.warn('[UPGR] notifications module loaded without initNotificationsModule export');
+      console.warn("[UPGR] notifications module loaded without initNotificationsModule export");
       return;
     } catch (error) {
-      console.error('[UPGR] notifications module import failed, using fallback', error);
-      if (typeof initNotifications === 'function') {
+      console.error("[UPGR] notifications module import failed, using fallback", error);
+      if (typeof initNotifications === "function") {
         initNotifications();
       }
     }
@@ -622,14 +693,11 @@
 
   async function loadLayout() {
     try {
-      // КРИТИЧНО: эти 2 строки вставляют header и menu
       await fetchAndInsert("/includes/header.html", "header");
-      console.log("[layout] header loaded");
       await fetchAndInsert("/includes/menu.html", ".sidebar");
-      console.log("[layout] sidebar loaded");
 
-      // Theme switcher — строго после вставки header.html
-      await initThemeSwitcher();
+      initSidebarActiveState();
+      initThemeSwitcher();
       await initNotificationsRuntime();
 
       document.dispatchEvent(new Event("layout:ready"));
@@ -642,15 +710,16 @@
       }
       enableChameleonOnNavigation();
 
-      // --- burger toggling и высота header ---
       const body = document.body;
       const root = document.documentElement;
-      const headerNode = qs('[data-site-header="true"]') || qs("header.site-header") || qs("body > header") || qs("header");
+      const headerNode =
+        qs('[data-site-header="true"]') ||
+        qs("header.site-header") ||
+        qs("body > header") ||
+        qs("header");
 
       const authButtonsEl = headerNode?.querySelector(".auth-buttons") ?? null;
 
-      // ВАЖНО: у тебя в header сейчас кнопка не обязана иметь id="burgerBtn"
-      // поэтому берём по data-burger или .burger, а id оставляем как fallback.
       const burger =
         document.querySelector("[data-burger]") ||
         document.querySelector(".burger") ||
@@ -680,7 +749,7 @@
             ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
           `;
         } catch (err) {
-          console.error("[UPGR] Error loading auth session", err);
+          console.error("[UPGR] error loading auth session", err);
         }
       }
 
@@ -697,6 +766,7 @@
       function getCollapsedPreference() {
         return localStorage.getItem(collapsedStorageKey) === "true";
       }
+
       function setCollapsedPreference(isCollapsed) {
         localStorage.setItem(collapsedStorageKey, String(isCollapsed));
       }
@@ -748,8 +818,6 @@
       syncMenuState();
 
       await updateAuthButtons();
-
-      // Footer — строго после вставки menu.html
       initStickyFooter();
       initMobileBottomNav();
     } catch (e) {

@@ -49,11 +49,8 @@
   gap: 16px;
   border-radius: 24px;
   padding: 28px;
-  border: 1px solid rgba(109, 73, 72, 0.16);
-  background:
-    radial-gradient(circle at 8% 8%, rgba(179, 94, 109, 0.18), transparent 50%),
-    radial-gradient(circle at 88% 16%, rgba(220, 164, 121, 0.2), transparent 42%),
-    linear-gradient(142deg, #fff8f9 0%, #fff7f1 48%, #fffdf8 100%);
+  border: 1px solid var(--theme-hero-border);
+  background: var(--theme-hero-bg);
 }
 
 .heroContent {
@@ -66,7 +63,7 @@
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #7a5155;
+  color: var(--theme-chip-text);
   font-weight: 600;
 }
 
@@ -74,7 +71,7 @@
   margin: 0;
   font-size: clamp(34px, 5vw, 56px);
   line-height: 1.02;
-  color: #40282b;
+  color: var(--theme-page-title);
   text-wrap: balance;
 }
 
@@ -82,7 +79,7 @@
   margin: 0;
   font-size: clamp(16px, 2vw, 20px);
   line-height: 1.45;
-  color: #5a3f43;
+  color: var(--theme-page-copy);
   max-width: 64ch;
 }
 
@@ -96,11 +93,11 @@
 }
 
 .heroBadges li {
-  border: 1px solid rgba(142, 77, 88, 0.28);
+  border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.72);
-  color: #5b363b;
+  background: var(--theme-surface-soft);
+  color: var(--theme-chip-text);
   font-size: 13px;
   line-height: 1.2;
   font-weight: 600;
@@ -119,22 +116,22 @@
 }
 
 .heroPointCard {
-  border: 1px solid rgba(137, 88, 89, 0.18);
+  border: 1px solid var(--theme-border);
   border-radius: 14px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.76);
+  background: var(--theme-surface-muted);
 }
 
 .heroPointCard h2 {
   margin: 0 0 6px;
   font-size: 16px;
   line-height: 1.2;
-  color: #55353a;
+  color: var(--theme-page-title);
 }
 
 .heroPointCard p {
   margin: 0;
-  color: #6b4a4f;
+  color: var(--theme-page-copy);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -148,9 +145,8 @@
   position: relative;
   min-height: 180px;
   border-radius: 18px;
-  border: 1px solid rgba(132, 80, 87, 0.2);
-  background:
-    linear-gradient(130deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 241, 242, 0.96) 48%, rgba(250, 238, 230, 0.92) 100%);
+  border: 1px solid var(--theme-border);
+  background: var(--theme-hero-visual-bg);
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -162,7 +158,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #6a3d46;
+  color: var(--theme-secondary-accent);
 }
 
 .heroVisualOrb {
@@ -170,7 +166,7 @@
   width: 170px;
   height: 170px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(191, 100, 121, 0.24), rgba(191, 100, 121, 0));
+  background: var(--theme-hero-orb);
   top: -26px;
   left: -24px;
 }
@@ -179,17 +175,17 @@
   position: absolute;
   inset: 14px;
   border-radius: 14px;
-  border: 1px dashed rgba(140, 86, 94, 0.26);
+  border: 1px dashed var(--theme-card-accent);
   background:
-    linear-gradient(90deg, rgba(140, 86, 94, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(140, 86, 94, 0.08) 1px, transparent 1px);
+    linear-gradient(90deg, var(--theme-hero-grid) 1px, transparent 1px),
+    linear-gradient(var(--theme-hero-grid) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 .heroSupportCard {
-  border: 1px solid rgba(134, 83, 90, 0.2);
+  border: 1px solid var(--theme-border);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--theme-surface-strong);
   padding: 16px;
   display: grid;
   gap: 10px;
@@ -199,12 +195,12 @@
   margin: 0;
   font-size: 22px;
   line-height: 1.15;
-  color: #4f3136;
+  color: var(--theme-page-title);
 }
 
 .heroSupportCard p {
   margin: 0;
-  color: #65474b;
+  color: var(--theme-page-copy);
   font-size: 15px;
   line-height: 1.45;
 }
@@ -219,11 +215,11 @@
 }
 
 .heroTrustStrip li {
-  border: 1px solid rgba(139, 90, 96, 0.14);
-  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--theme-card-accent);
+  background: var(--theme-surface-soft);
   border-radius: 12px;
   padding: 10px;
-  color: #5f4549;
+  color: var(--theme-page-copy);
   font-size: 13px;
   line-height: 1.4;
 }
@@ -231,9 +227,9 @@
 .section,
 .toc,
 .cta {
-  border: 1px solid rgba(132, 86, 88, 0.16);
+  border: 1px solid var(--theme-border);
   border-radius: 18px;
-  background: var(--bg-base);
+  background: var(--surface);
   padding: 24px;
 }
 
@@ -252,7 +248,7 @@
 
 .sectionHeader p {
   margin: 0;
-  color: var(--neutral-700);
+  color: var(--theme-page-muted);
   line-height: 1.5;
 }
 
@@ -267,13 +263,13 @@
 .quickAnswerList li {
   border-radius: 12px;
   padding: 10px 12px;
-  background: rgba(255, 247, 246, 0.84);
-  border: 1px solid rgba(142, 92, 98, 0.12);
+  background: var(--theme-soft-bg);
+  border: 1px solid var(--theme-border);
   line-height: 1.5;
 }
 
 .toc {
-  background: linear-gradient(140deg, rgba(255, 243, 247, 0.95), rgba(255, 248, 238, 0.88));
+  background: var(--theme-section-tint);
 }
 
 .tocTitle {
@@ -292,12 +288,13 @@
 
 .tocList a,
 .inlineLink {
-  color: #8d3f53;
+  color: var(--theme-link);
   text-decoration: none;
 }
 
 .tocList a:hover,
 .inlineLink:hover {
+  color: var(--theme-link-hover);
   text-decoration: underline;
 }
 
@@ -314,7 +311,7 @@
 
 .selectorGroup {
   margin: 0;
-  border: 1px solid rgba(140, 89, 93, 0.15);
+  border: 1px solid var(--theme-border);
   border-radius: 14px;
   padding: 12px;
 }
@@ -322,7 +319,7 @@
 .selectorGroup legend {
   font-weight: 700;
   padding: 0 6px;
-  color: #56343a;
+  color: var(--theme-page-title);
 }
 
 .selectorChips {
@@ -333,32 +330,32 @@
 
 .selectorChip,
 .filterChip {
-  border: 1px solid rgba(141, 79, 90, 0.26);
+  border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #5a373d;
+  background: var(--theme-surface-soft);
+  color: var(--theme-chip-text);
   font-size: 14px;
   cursor: pointer;
 }
 
 .selectorChip:hover,
 .filterChip:hover {
-  background: rgba(255, 241, 243, 0.95);
+  background: var(--theme-soft-bg-strong);
 }
 
 .selectorChipActive,
 .filterChipActive {
-  background: #8f3f4f;
-  border-color: #8f3f4f;
-  color: #fff;
+  background: var(--theme-primary);
+  border-color: var(--theme-primary);
+  color: var(--theme-primary-contrast);
 }
 
 .selectorSummary {
-  border: 1px solid rgba(138, 85, 92, 0.19);
+  border: 1px solid var(--theme-border);
   border-radius: 14px;
   padding: 14px;
-  background: rgba(255, 247, 245, 0.9);
+  background: var(--theme-soft-bg);
   align-self: start;
 }
 
@@ -376,14 +373,14 @@
 }
 
 .selectorSummary li {
-  color: #664b4f;
+  color: var(--theme-page-copy);
   font-size: 14px;
   line-height: 1.45;
 }
 
 .selectorSummary span {
   font-weight: 700;
-  color: #58373d;
+  color: var(--theme-secondary-accent);
 }
 
 .recommendationGrid,
@@ -405,10 +402,10 @@
 .relatedCard,
 .checklistCard,
 .pricingCard {
-  border: 1px solid rgba(138, 89, 94, 0.14);
+  border: 1px solid var(--theme-card-accent);
   border-radius: 14px;
   padding: 14px;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--theme-surface-strong);
   display: grid;
   gap: 10px;
 }
@@ -421,8 +418,8 @@
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 700;
-  color: #6b3b44;
-  background: rgba(246, 220, 225, 0.8);
+  color: var(--theme-link);
+  background: var(--theme-chip-bg);
 }
 
 .recommendationCard h3,
@@ -454,14 +451,14 @@
   margin: 0;
   min-height: 124px;
   border-radius: 12px;
-  border: 1px dashed rgba(143, 90, 96, 0.24);
+  border: 1px dashed var(--theme-chip-border);
   background:
-    radial-gradient(circle at 20% 20%, rgba(190, 108, 122, 0.2), transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(216, 166, 124, 0.2), transparent 48%),
-    #fff8f7;
+    radial-gradient(circle at 20% 20%, var(--theme-hero-grid), transparent 45%),
+    radial-gradient(circle at 80% 80%, var(--theme-hero-grid), transparent 48%),
+    var(--theme-soft-bg);
   display: grid;
   place-items: center;
-  color: #69474d;
+  color: var(--theme-page-copy);
 }
 
 .styleImageSlot span {
@@ -477,10 +474,10 @@
 
 .inlineCta {
   margin-top: 12px;
-  border: 1px solid rgba(141, 86, 92, 0.18);
+  border: 1px solid var(--theme-border);
   border-radius: 14px;
   padding: 14px;
-  background: rgba(255, 248, 246, 0.9);
+  background: var(--theme-soft-bg);
   display: grid;
   gap: 8px;
 }
@@ -526,8 +523,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(187, 108, 123, 0.18);
-  color: #6f3d48;
+  background: var(--theme-soft-bg-strong);
+  color: var(--theme-secondary-accent);
 }
 
 .premiumBadge {
@@ -562,13 +559,13 @@
 
 .performerFacts span {
   font-weight: 700;
-  color: #5a343b;
+  color: var(--theme-secondary-accent);
 }
 
 .performerStrengths {
   border-radius: 12px;
-  border: 1px solid rgba(139, 90, 95, 0.14);
-  background: rgba(255, 247, 245, 0.88);
+  border: 1px solid var(--theme-border);
+  background: var(--theme-soft-bg);
   padding: 10px;
 }
 
@@ -590,10 +587,10 @@
 
 .emptyFilterState {
   margin: 12px 0 0;
-  border: 1px dashed rgba(140, 88, 94, 0.26);
+  border: 1px dashed var(--theme-border-strong);
   border-radius: 12px;
   padding: 12px;
-  color: #65494d;
+  color: var(--theme-page-copy);
 }
 
 .checklistCard ul {
@@ -610,9 +607,9 @@
 }
 
 .processList li {
-  border: 1px solid rgba(136, 85, 91, 0.16);
+  border: 1px solid var(--theme-border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--theme-surface-strong);
   padding: 12px;
   display: grid;
   gap: 6px;
@@ -627,8 +624,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #8c3d4d;
-  color: #fff;
+  background: var(--theme-primary);
+  color: var(--theme-primary-contrast);
   font-weight: 700;
   font-size: 13px;
 }
@@ -648,9 +645,9 @@
 }
 
 .faqItem {
-  border: 1px solid rgba(136, 85, 90, 0.16);
+  border: 1px solid var(--theme-border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--theme-surface-strong);
   padding: 12px;
 }
 
@@ -677,15 +674,15 @@
 }
 
 .ctaPrimary {
-  background: linear-gradient(136deg, rgba(255, 238, 242, 0.96) 0%, rgba(255, 244, 233, 0.94) 100%);
+  background: var(--theme-section-tint-strong);
 }
 
 .ctaSecondary {
-  background: linear-gradient(136deg, rgba(253, 241, 246, 0.95) 0%, rgba(255, 249, 242, 0.92) 100%);
+  background: var(--theme-section-tint);
 }
 
 .ctaNeutral {
-  background: linear-gradient(136deg, rgba(255, 248, 249, 0.95) 0%, rgba(255, 252, 248, 0.95) 100%);
+  background: linear-gradient(136deg, rgba(248, 250, 252, 0.94) 0%, var(--theme-soft-bg) 100%);
 }
 
 .btn {
@@ -699,25 +696,38 @@
   padding: 10px 14px;
   border: 1px solid transparent;
   width: fit-content;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 5px var(--theme-focus-ring);
 }
 
 .btnPrimary {
-  background: #8f3f4f;
-  color: #fff;
+  background: var(--theme-primary);
+  border-color: var(--theme-primary);
+  color: var(--theme-primary-contrast);
 }
 
 .btnPrimary:hover {
-  background: #733040;
+  background: var(--theme-primary-hover);
+  border-color: var(--theme-primary-hover);
+}
+
+.btnPrimary:active {
+  background: var(--theme-primary-active);
+  border-color: var(--theme-primary-active);
 }
 
 .btnSecondary {
-  background: rgba(255, 255, 255, 0.92);
-  color: #5a373d;
-  border-color: rgba(138, 86, 92, 0.24);
+  background: var(--theme-surface-strong);
+  color: var(--theme-link);
+  border-color: var(--theme-chip-border);
 }
 
 .btnSecondary:hover {
-  background: rgba(255, 240, 242, 0.96);
+  background: var(--theme-soft-bg);
 }
 
 .stickyMobileCta {
@@ -726,8 +736,8 @@
   right: 0;
   bottom: 0;
   padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(137, 85, 90, 0.18);
-  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid var(--theme-border);
+  background: var(--theme-sticky-surface);
   backdrop-filter: blur(6px);
   display: none;
   z-index: 35;
@@ -825,6 +835,3 @@
     min-height: 150px;
   }
 }
-
-
-

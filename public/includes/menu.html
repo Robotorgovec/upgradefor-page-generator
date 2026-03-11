@@ -1,333 +1,289 @@
-   <div class="sidebar-inner">
-      <!-- ТЕМА -->
-      <div class="sidebar-section-label">Тема</div>
-      <div class="theme-switch theme-switch--sidebar" data-theme-switch>
-        <button class="theme-switch-trigger" type="button" aria-haspopup="true" aria-expanded="false">
-          <svg class="theme-switch-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path fill="currentColor" d="M12 3a9 9 0 0 0-1 17.94c.6.12 1.24-.2 1.48-.77.23-.53.03-1.15-.44-1.5l-.4-.3c-.68-.52-.34-1.6.5-1.6h2.2c2.76 0 5-2.24 5-5 0-4.42-3.58-8-8-8Zm-4 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3-3.5a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm4 0a1.5 1.5 0 1 1 .01-3 1.5 1.5 0 0 1-.01 3Zm3 3.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/>
-          </svg>
-          <span class="theme-dot" aria-hidden="true"></span>
-          <span class="theme-switch-label">Цвет</span>
-        </button>
-        <div class="theme-switch-menu" role="menu" aria-label="Цвет сайта">
-          <div class="theme-switch-title">🎨 Цвет сайта</div>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="auto" aria-checked="false">
-            Авто (по дню)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="red" aria-checked="false">
-            Красный (Воскресенье)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="orange" aria-checked="false">
-            Оранжевый (Понедельник)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="yellow" aria-checked="false">
-            Жёлтый (Вторник)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="green" aria-checked="false">
-            Зелёный (Среда)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="cyan" aria-checked="false">
-            Голубой (Четверг)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="blue" aria-checked="false">
-            Синий (Пятница)
-          </button>
-          <button type="button" class="theme-switch-item" role="menuitemradio" data-theme="violet" aria-checked="false">
-            Фиолетовый (Суббота)
-          </button>
-        </div>
-      </div>
+﻿<div class="sidebar-inner">
+  <!-- НАВИГАЦИЯ / ЛЕНТА -->
+  <div class="sidebar-section-label">Навигация</div>
 
-      <div class="menu-separator" data-auth="private"></div>
+  <a class="menu-item" href="/" data-path="/" title="Главная страница (дашборд, обзор)">
+    <span class="menu-icon material-symbols-outlined">space_dashboard</span>
+    <span class="menu-label">Главная</span>
+  </a>
+  <div class="menu-item" data-path="/feed" title="Публикации пользователей, ИИ-рекомендации">
+    <span class="menu-icon material-symbols-outlined">dynamic_feed</span>
+    <span class="menu-label">Лента</span>
+  </div>
+  <div class="menu-item" data-path="/feed/trending" title="Топ записи всех пользователей">
+    <span class="menu-icon material-symbols-outlined">auto_graph</span>
+    <span class="menu-label">Популярное</span>
+  </div>
+  <div class="menu-item" data-path="/feed/subscribed" title="Посты отслеживаемых пользователей">
+    <span class="menu-icon material-symbols-outlined">subscriptions</span>
+    <span class="menu-label">Подписки</span>
+  </div>
 
-      <!-- НАВИГАЦИЯ / ЛЕНТА -->
-      <div class="sidebar-section-label">Навигация</div>
+  <div class="menu-separator"></div>
 
-      <a class="menu-item" href="/" data-path="/" title="Главная страница (дашборд, обзор)">
-        <span class="menu-icon material-symbols-outlined">space_dashboard</span>
-        <span class="menu-label">Главная</span>
+  <!-- КОММУНИКАЦИИ -->
+  <div class="sidebar-section-label">Коммуникации</div>
+
+  <div class="menu-item" data-path="/assistant" title="Умный ИИ-помощник, мозг платформы">
+    <span class="menu-icon material-symbols-outlined">neurology</span>
+    <span class="menu-label">ИИ-ассистент</span>
+  </div>
+  <div class="menu-item" data-path="/messages" title="Общая входящая по сообщениям и диалогам">
+    <span class="menu-icon material-symbols-outlined">mark_unread_chat_alt</span>
+    <span class="menu-label">Сообщения</span>
+  </div>
+  <div class="menu-item" data-path="/messages/chats" title="Личные и групповые переписки">
+    <span class="menu-icon material-symbols-outlined">forum</span>
+    <span class="menu-label">Чаты</span>
+  </div>
+  <div class="menu-item" data-path="/messages/calls" title="Аудио и видеосвязь">
+    <span class="menu-icon material-symbols-outlined">phone_in_talk</span>
+    <span class="menu-label">Звонки</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- ПРОФИЛЬ -->
+  <div class="sidebar-section-label" data-auth="private">Профиль</div>
+
+  <div class="menu-item" data-auth="private" data-path="/profile" title="Личная страница и настройки пользователя">
+    <span class="menu-icon material-symbols-outlined">person</span>
+    <span class="menu-label">Профиль</span>
+  </div>
+  <div class="menu-item" data-auth="private" data-path="/profile/achievements" title="Награды, уровни и бейджи">
+    <span class="menu-icon material-symbols-outlined">emoji_events</span>
+    <span class="menu-label">Достижения</span>
+  </div>
+  <div class="menu-item" data-auth="private" data-path="/profile/tokens" title="Внутренняя валюта и баллы">
+    <span class="menu-icon material-symbols-outlined">token</span>
+    <span class="menu-label">Токены</span>
+  </div>
+
+  <div class="menu-separator" data-auth="private"></div>
+
+  <!-- WIKIMARKET -->
+  <div class="sidebar-section-label">WikiMarket</div>
+
+  <details class="menu-group">
+    <summary class="menu-item" aria-label="WikiMarket">
+      <span class="menu-icon material-symbols-outlined">shopping_bag</span>
+      <span class="menu-label">WikiMarket</span>
+    </summary>
+    <div style="margin-left:12px">
+      <a class="menu-item" href="/wikimarket/categories" data-path="/wikimarket/categories" title="Разделы каталога товаров">
+        <span class="menu-icon material-symbols-outlined">category</span>
+        <span class="menu-label">Категории</span>
       </a>
-      <div class="menu-item" data-path="/feed" title="Публикации пользователей, ИИ-рекомендации">
-        <span class="menu-icon material-symbols-outlined">dynamic_feed</span>
-        <span class="menu-label">Лента</span>
-      </div>
-      <div class="menu-item" data-path="/feed/trending" title="Топ записи всех пользователей">
-        <span class="menu-icon material-symbols-outlined">auto_graph</span>
-        <span class="menu-label">Популярное</span>
-      </div>
-      <div class="menu-item" data-path="/feed/subscribed" title="Посты отслеживаемых пользователей">
-        <span class="menu-icon material-symbols-outlined">subscriptions</span>
-        <span class="menu-label">Подписки</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- КОММУНИКАЦИИ -->
-      <div class="sidebar-section-label">Коммуникации</div>
-
-      <div class="menu-item" data-path="/assistant" title="Умный ИИ‑помощник, мозг платформы">
-        <span class="menu-icon material-symbols-outlined">neurology</span>
-        <span class="menu-label">ИИ-ассистент</span>
-      </div>
-      <div class="menu-item" data-path="/messages" title="Общая входящая по сообщениям и диалогам">
-        <span class="menu-icon material-symbols-outlined">mark_unread_chat_alt</span>
-        <span class="menu-label">Сообщения</span>
-      </div>
-      <div class="menu-item" data-path="/messages/chats" title="Личные и групповые переписки">
-        <span class="menu-icon material-symbols-outlined">forum</span>
-        <span class="menu-label">Чаты</span>
-      </div>
-      <div class="menu-item" data-path="/messages/calls" title="Аудио и видеосвязь">
-        <span class="menu-icon material-symbols-outlined">phone_in_talk</span>
-        <span class="menu-label">Звонки</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- ПРОФИЛЬ -->
-      <div class="sidebar-section-label" data-auth="private">Профиль</div>
-
-      <div class="menu-item" data-auth="private" data-path="/profile" title="Личная страница и настройки пользователя">
-        <span class="menu-icon material-symbols-outlined">person</span>
-        <span class="menu-label">Профиль</span>
-      </div>
-      <div class="menu-item" data-auth="private" data-path="/profile/achievements" title="Награды, уровни и бейджи">
-        <span class="menu-icon material-symbols-outlined">emoji_events</span>
-        <span class="menu-label">Достижения</span>
-      </div>
-      <div class="menu-item" data-auth="private" data-path="/profile/tokens" title="Внутренняя валюта и баллы">
-        <span class="menu-icon material-symbols-outlined">token</span>
-        <span class="menu-label">Токены</span>
-      </div>
-
-      <div class="menu-separator" data-auth="private"></div>
-
-      <!-- WIKIMARKET -->
-      <div class="sidebar-section-label">WikiMarket</div>
-
       <details class="menu-group">
-        <summary class="menu-item" aria-label="WikiMarket">
-          <span class="menu-icon material-symbols-outlined">shopping_bag</span>
-          <span class="menu-label">WikiMarket</span>
+        <summary class="menu-item" aria-label="Домены">
+          <span class="menu-icon material-symbols-outlined">domain</span>
+          <span class="menu-label">Домены</span>
         </summary>
         <div style="margin-left:12px">
-          <a class="menu-item" href="/wikimarket/categories" data-path="/wikimarket/categories" title="Разделы каталога товаров">
-            <span class="menu-icon material-symbols-outlined">category</span>
-            <span class="menu-label">Категории</span>
+          <a class="menu-item" href="/wikimarket/domains/fio-rus" data-path="/wikimarket/domains/fio-rus" title="Именной домен .РУС (ФИО)">
+            <span class="menu-icon material-symbols-outlined">badge</span>
+            <span class="menu-label">Именной домен .РУС (ФИО)</span>
           </a>
-          <details class="menu-group">
-            <summary class="menu-item" aria-label="Домены">
-              <span class="menu-icon material-symbols-outlined">domain</span>
-              <span class="menu-label">Домены</span>
-            </summary>
-            <div style="margin-left:12px">
-              <a class="menu-item" href="/wikimarket/domains/fio-rus" data-path="/wikimarket/domains/fio-rus" title="Именной домен .РУС (ФИО)">
-                <span class="menu-icon material-symbols-outlined">badge</span>
-                <span class="menu-label">Именной домен .РУС (ФИО)</span>
-              </a>
-            </div>
-          </details>
-          <details class="menu-group">
-            <summary class="menu-item" aria-label="Красота" data-path="/wikimarket/beauty" title="Beauty-услуги и подбор исполнителей в WikiMarket">
-              <span class="menu-icon material-symbols-outlined">face_retouching_natural</span>
-              <span class="menu-label">Красота</span>
-            </summary>
-            <div style="margin-left:12px">
-              <a
-                class="menu-item"
-                href="/wikimarket/beauty/wedding-hairstyles"
-                data-path="/wikimarket/beauty/wedding-hairstyles"
-                title="Свадебные прически: выбор стиля, подбор мастера и анкеты исполнителей"
-              >
-                <span class="menu-icon material-symbols-outlined">content_cut</span>
-                <span class="menu-label">Свадебные прически</span>
-              </a>
-              <a
-                class="menu-item"
-                href="/wikimarket/beauty/bridal-makeup"
-                data-path="/wikimarket/beauty/bridal-makeup"
-                title="Свадебный макияж: подбор образа, визажиста и формата услуги"
-              >
-                <span class="menu-icon material-symbols-outlined">face</span>
-                <span class="menu-label">Свадебный макияж</span>
-              </a>
-            </div>
-          </details>
         </div>
       </details>
-
-      <div class="menu-separator" data-auth="private"></div>
-
-      <!-- КЛИМАТИЧЕСКИЕ СИСТЕМЫ (ОВК) -->
-      <div class="sidebar-section-label">Климатические системы (ОВК)</div>
-
-      <div class="menu-item" data-path="/wikimarket/hvac/design" title="Проектирование климатических систем и ОВК">
-        <span class="menu-icon material-symbols-outlined">architecture</span>
-        <span class="menu-label">Проектирование</span>
-      </div>
-
-      <div class="menu-item" data-path="/wikimarket/hvac/installation" title="Монтаж климатических систем и оборудования">
-        <span class="menu-icon material-symbols-outlined">build</span>
-        <span class="menu-label">Монтаж</span>
-      </div>
-
-      <div class="menu-item" data-path="/wikimarket/hvac/maintenance" title="Сервисное обслуживание и поддержка ОВК">
-        <span class="menu-icon material-symbols-outlined">settings_suggest</span>
-        <span class="menu-label">Обслуживание</span>
-      </div>
-
-      <div class="menu-item" data-path="/wikimarket/hvac/diagnostics" title="Диагностика, аудит и проверка ОВК‑систем">
-        <span class="menu-icon material-symbols-outlined">analytics</span>
-        <span class="menu-label">Диагностика</span>
-      </div>
-
-      <div class="menu-item" data-path="/wikimarket/hvac/repair" title="Ремонт и восстановление систем ОВК">
-        <span class="menu-icon material-symbols-outlined">handyman</span>
-        <span class="menu-label">Ремонт</span>
-      </div>
-
       <details class="menu-group">
-        <summary class="menu-item" aria-label="Каталог теплообменников" data-path="/wikimarket/hvac/heat-exchangers" title="Каталог теплообменников для разных типов систем">
-          <span class="menu-icon material-symbols-outlined">heat_pump</span>
-          <span class="menu-label">Каталог теплообменников</span>
+        <summary class="menu-item" aria-label="Красота" data-path="/wikimarket/beauty" title="Beauty-услуги и подбор исполнителей в WikiMarket">
+          <span class="menu-icon material-symbols-outlined">face_retouching_natural</span>
+          <span class="menu-label">Красота</span>
         </summary>
-        <div class="menu-submenu">
-          <a class="menu-item" href="/wikimarket/hvac/copper-aluminum-heat-exchangers" data-path="/wikimarket/hvac/copper-aluminum-heat-exchangers" title="Проектирование, производство и поставка медно-алюминиевых теплообменников">
-            <span class="menu-icon menu-icon--cu-al" aria-hidden="true"></span>
-            <span class="menu-label">Медно-алюминиевые теплообменники (Cu-Al)</span>
+        <div style="margin-left:12px">
+          <a
+            class="menu-item"
+            href="/wikimarket/beauty/wedding-hairstyles"
+            data-path="/wikimarket/beauty/wedding-hairstyles"
+            title="Свадебные прически: выбор стиля, подбор мастера и анкеты исполнителей"
+          >
+            <span class="menu-icon material-symbols-outlined">content_cut</span>
+            <span class="menu-label">Свадебные прически</span>
+          </a>
+          <a
+            class="menu-item"
+            href="/wikimarket/beauty/bridal-makeup"
+            data-path="/wikimarket/beauty/bridal-makeup"
+            title="Свадебный макияж: подбор образа, визажиста и формата услуги"
+          >
+            <span class="menu-icon material-symbols-outlined">face</span>
+            <span class="menu-label">Свадебный макияж</span>
           </a>
         </div>
       </details>
-
-      <a class="menu-item"
-   href="/wikimarket/hvac/heat-exchanger-repair"
-   title="Ремонт теплообменников по типам и задачам">
-  <span class="menu-icon material-symbols-outlined">plumbing</span>
-  <span class="menu-label">Ремонт теплообменников</span>
-</a>
-
-      <div class="menu-separator"></div>
-
-      <!-- РЕШЕНИЯ ДЛЯ НЕДВИЖИМОСТИ -->
-      <div class="sidebar-section-label">Решения для недвижимости</div>
-
-      <div class="menu-item" data-path="/wikimarket/real-estate" title="Витрина решений для рынка недвижимости">
-        <span class="menu-icon material-symbols-outlined">maps_home_work</span>
-        <span class="menu-label">Решения для недвижимости</span>
-      </div>
-      <div class="menu-item" data-path="/wikimarket/real-estate/proptech" title="PropTech и технологии для недвижимости">
-        <span class="menu-icon material-symbols-outlined">hub</span>
-        <span class="menu-label">PropTech</span>
-      </div>
-      <div class="menu-item" data-path="/wikimarket/real-estate/commercial" title="Коммерческая недвижимость и премиальные объекты">
-        <span class="menu-icon material-symbols-outlined">apartment</span>
-        <span class="menu-label">Коммерческая недвижимость</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- ИГРЫ И ОБУЧЕНИЕ -->
-      <div class="sidebar-section-label">Игры и обучение</div>
-
-      <div class="menu-item" data-path="/wikimarket/education-games" title="Игры обучающие и симуляторы (EdTech)">
-        <span class="menu-icon material-symbols-outlined">sports_esports</span>
-        <span class="menu-label">Игры обучающие</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- КОШЕЛЁК / ФИНАНСЫ -->
-      <div class="sidebar-section-label" data-auth="private">Кошелёк</div>
-
-      <div class="menu-item" data-auth="private" data-path="/wallet" title="Финансы пользователя (счета и платежи)">
-        <span class="menu-icon material-symbols-outlined">account_balance_wallet</span>
-        <span class="menu-label">Кошелёк</span>
-      </div>
-      <div class="menu-item" data-auth="private" data-path="/wallet/balance" title="Текущий баланс средств и токенов">
-        <span class="menu-icon material-symbols-outlined">savings</span>
-        <span class="menu-label">Баланс</span>
-      </div>
-      <div class="menu-item" data-auth="private" data-path="/wallet/history" title="Список транзакций и покупок">
-        <span class="menu-icon material-symbols-outlined">receipt_long</span>
-        <span class="menu-label">История</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- ОРГАНАЙЗЕР -->
-      <div class="sidebar-section-label">Органайзер</div>
-
-      <div class="menu-item" data-path="/organizer" title="Планирование, проекты, CRM-инструменты">
-        <span class="menu-icon material-symbols-outlined">view_kanban</span>
-        <span class="menu-label">Органайзер</span>
-      </div>
-      <div class="menu-item" data-path="/organizer/calendar" title="Расписание событий и встреч">
-        <span class="menu-icon material-symbols-outlined">event</span>
-        <span class="menu-label">Календарь</span>
-      </div>
-      <div class="menu-item" data-path="/organizer/tasks" title="Управление списком задач">
-        <span class="menu-icon material-symbols-outlined">task_alt</span>
-        <span class="menu-label">Задачи</span>
-      </div>
-      <div class="menu-item" data-path="/organizer/crm" title="Управление клиентами и продажами">
-        <span class="menu-icon material-symbols-outlined">stacked_bar_chart</span>
-        <span class="menu-label">CRM-модули</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- БИЗНЕС -->
-      <div class="sidebar-section-label">Бизнес</div>
-
-      <div class="menu-item" data-path="/business" title="Компании и B2B-возможности">
-        <span class="menu-icon material-symbols-outlined">business_center</span>
-        <span class="menu-label">Бизнес</span>
-      </div>
-      <div class="menu-item" data-path="/business/companies" title="Профили и страницы компаний">
-        <span class="menu-icon material-symbols-outlined">apartment</span>
-        <span class="menu-label">Компании</span>
-      </div>
-      <div class="menu-item" data-path="/business/b2b" title="Инструменты для корпоративных клиентов">
-        <span class="menu-icon material-symbols-outlined">diversity_3</span>
-        <span class="menu-label">B2B-портал</span>
-      </div>
-
-      <div class="menu-separator"></div>
-
-      <!-- СЕРВИСЫ / ЖИЗНЬ / РАЗВИТИЕ -->
-      <div class="sidebar-section-label">Сервисы и развитие</div>
-
-      <div class="menu-item" data-path="/health" title="Здоровье и фитнес (медицинские сервисы)">
-        <span class="menu-icon material-symbols-outlined">monitor_heart</span>
-        <span class="menu-label">Здоровье</span>
-      </div>
-      <div class="menu-item" data-path="/logistics" title="Доставки и транспортные сервисы">
-        <span class="menu-icon material-symbols-outlined">local_shipping</span>
-        <span class="menu-label">Логистика</span>
-      </div>
-      <div class="menu-item" data-path="/education" title="Обучение и профессиональное развитие">
-        <span class="menu-icon material-symbols-outlined">menu_book</span>
-        <span class="menu-label">Образование</span>
-      </div>
-      <div class="menu-item" data-path="/education/courses" title="Онлайн-обучение и тренинги">
-        <span class="menu-icon material-symbols-outlined">school</span>
-        <span class="menu-label">Курсы</span>
-      </div>
-      <div class="menu-item" data-path="/education/careers" title="Вакансии и карьерные возможности">
-        <span class="menu-icon material-symbols-outlined">work_outline</span>
-        <span class="menu-label">Профессии</span>
-      </div>
-      <div class="menu-item" data-path="/entertainment" title="Игры, контент, события">
-        <span class="menu-icon material-symbols-outlined">theater_comedy</span>
-        <span class="menu-label">Развлечения</span>
-      </div>
-      <div class="menu-item" data-path="/entertainment/games" title="Игровые сервисы, мини-игры">
-        <span class="menu-icon material-symbols-outlined">sports_esports</span>
-        <span class="menu-label">Игры</span>
-      </div>
-      <div class="menu-item" data-path="/entertainment/creative" title="Проекты для самореализации и творчества">
-        <span class="menu-icon material-symbols-outlined">brush</span>
-        <span class="menu-label">Творчество</span>
-      </div>
     </div>
-  </aside>
+  </details>
+
+  <div class="menu-separator" data-auth="private"></div>
+
+  <!-- КЛИМАТИЧЕСКИЕ СИСТЕМЫ (ОВК) -->
+  <div class="sidebar-section-label">Климатические системы (ОВК)</div>
+
+  <div class="menu-item" data-path="/wikimarket/hvac/design" title="Проектирование климатических систем и ОВК">
+    <span class="menu-icon material-symbols-outlined">architecture</span>
+    <span class="menu-label">Проектирование</span>
+  </div>
+
+  <div class="menu-item" data-path="/wikimarket/hvac/installation" title="Монтаж климатических систем и оборудования">
+    <span class="menu-icon material-symbols-outlined">build</span>
+    <span class="menu-label">Монтаж</span>
+  </div>
+
+  <div class="menu-item" data-path="/wikimarket/hvac/maintenance" title="Сервисное обслуживание и поддержка ОВК">
+    <span class="menu-icon material-symbols-outlined">settings_suggest</span>
+    <span class="menu-label">Обслуживание</span>
+  </div>
+
+  <div class="menu-item" data-path="/wikimarket/hvac/diagnostics" title="Диагностика, аудит и проверка ОВК-систем">
+    <span class="menu-icon material-symbols-outlined">analytics</span>
+    <span class="menu-label">Диагностика</span>
+  </div>
+
+  <div class="menu-item" data-path="/wikimarket/hvac/repair" title="Ремонт и восстановление систем ОВК">
+    <span class="menu-icon material-symbols-outlined">handyman</span>
+    <span class="menu-label">Ремонт</span>
+  </div>
+
+  <details class="menu-group">
+    <summary class="menu-item" aria-label="Каталог теплообменников" data-path="/wikimarket/hvac/heat-exchangers" title="Каталог теплообменников для разных типов систем">
+      <span class="menu-icon material-symbols-outlined">heat_pump</span>
+      <span class="menu-label">Каталог теплообменников</span>
+    </summary>
+    <div class="menu-submenu">
+      <a class="menu-item" href="/wikimarket/hvac/copper-aluminum-heat-exchangers" data-path="/wikimarket/hvac/copper-aluminum-heat-exchangers" title="Проектирование, производство и поставка медно-алюминиевых теплообменников">
+        <span class="menu-icon menu-icon--cu-al" aria-hidden="true"></span>
+        <span class="menu-label">Медно-алюминиевые теплообменники (Cu-Al)</span>
+      </a>
+    </div>
+  </details>
+
+  <a class="menu-item" href="/wikimarket/hvac/heat-exchanger-repair" title="Ремонт теплообменников по типам и задачам">
+    <span class="menu-icon material-symbols-outlined">plumbing</span>
+    <span class="menu-label">Ремонт теплообменников</span>
+  </a>
+
+  <div class="menu-separator"></div>
+
+  <!-- РЕШЕНИЯ ДЛЯ НЕДВИЖИМОСТИ -->
+  <div class="sidebar-section-label">Решения для недвижимости</div>
+
+  <div class="menu-item" data-path="/wikimarket/real-estate" title="Витрина решений для рынка недвижимости">
+    <span class="menu-icon material-symbols-outlined">maps_home_work</span>
+    <span class="menu-label">Решения для недвижимости</span>
+  </div>
+  <div class="menu-item" data-path="/wikimarket/real-estate/proptech" title="PropTech и технологии для недвижимости">
+    <span class="menu-icon material-symbols-outlined">hub</span>
+    <span class="menu-label">PropTech</span>
+  </div>
+  <div class="menu-item" data-path="/wikimarket/real-estate/commercial" title="Коммерческая недвижимость и премиальные объекты">
+    <span class="menu-icon material-symbols-outlined">apartment</span>
+    <span class="menu-label">Коммерческая недвижимость</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- ИГРЫ И ОБУЧЕНИЕ -->
+  <div class="sidebar-section-label">Игры и обучение</div>
+
+  <div class="menu-item" data-path="/wikimarket/education-games" title="Игры обучающие и симуляторы (EdTech)">
+    <span class="menu-icon material-symbols-outlined">sports_esports</span>
+    <span class="menu-label">Игры обучающие</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- КОШЕЛЁК / ФИНАНСЫ -->
+  <div class="sidebar-section-label" data-auth="private">Кошелёк</div>
+
+  <div class="menu-item" data-auth="private" data-path="/wallet" title="Финансы пользователя (счета и платежи)">
+    <span class="menu-icon material-symbols-outlined">account_balance_wallet</span>
+    <span class="menu-label">Кошелёк</span>
+  </div>
+  <div class="menu-item" data-auth="private" data-path="/wallet/balance" title="Текущий баланс средств и токенов">
+    <span class="menu-icon material-symbols-outlined">savings</span>
+    <span class="menu-label">Баланс</span>
+  </div>
+  <div class="menu-item" data-auth="private" data-path="/wallet/history" title="Список транзакций и покупок">
+    <span class="menu-icon material-symbols-outlined">receipt_long</span>
+    <span class="menu-label">История</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- ОРГАНАЙЗЕР -->
+  <div class="sidebar-section-label">Органайзер</div>
+
+  <div class="menu-item" data-path="/organizer" title="Планирование, проекты, CRM-инструменты">
+    <span class="menu-icon material-symbols-outlined">view_kanban</span>
+    <span class="menu-label">Органайзер</span>
+  </div>
+  <div class="menu-item" data-path="/organizer/calendar" title="Расписание событий и встреч">
+    <span class="menu-icon material-symbols-outlined">event</span>
+    <span class="menu-label">Календарь</span>
+  </div>
+  <div class="menu-item" data-path="/organizer/tasks" title="Управление списком задач">
+    <span class="menu-icon material-symbols-outlined">task_alt</span>
+    <span class="menu-label">Задачи</span>
+  </div>
+  <div class="menu-item" data-path="/organizer/crm" title="Управление клиентами и продажами">
+    <span class="menu-icon material-symbols-outlined">stacked_bar_chart</span>
+    <span class="menu-label">CRM-модули</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- БИЗНЕС -->
+  <div class="sidebar-section-label">Бизнес</div>
+
+  <div class="menu-item" data-path="/business" title="Компании и B2B-возможности">
+    <span class="menu-icon material-symbols-outlined">business_center</span>
+    <span class="menu-label">Бизнес</span>
+  </div>
+  <div class="menu-item" data-path="/business/companies" title="Профили и страницы компаний">
+    <span class="menu-icon material-symbols-outlined">apartment</span>
+    <span class="menu-label">Компании</span>
+  </div>
+  <div class="menu-item" data-path="/business/b2b" title="Инструменты для корпоративных клиентов">
+    <span class="menu-icon material-symbols-outlined">diversity_3</span>
+    <span class="menu-label">B2B-портал</span>
+  </div>
+
+  <div class="menu-separator"></div>
+
+  <!-- СЕРВИСЫ И РАЗВИТИЕ -->
+  <div class="sidebar-section-label">Сервисы и развитие</div>
+
+  <div class="menu-item" data-path="/health" title="Здоровье и фитнес (медицинские сервисы)">
+    <span class="menu-icon material-symbols-outlined">monitor_heart</span>
+    <span class="menu-label">Здоровье</span>
+  </div>
+  <div class="menu-item" data-path="/logistics" title="Доставки и транспортные сервисы">
+    <span class="menu-icon material-symbols-outlined">local_shipping</span>
+    <span class="menu-label">Логистика</span>
+  </div>
+  <div class="menu-item" data-path="/education" title="Обучение и профессиональное развитие">
+    <span class="menu-icon material-symbols-outlined">menu_book</span>
+    <span class="menu-label">Образование</span>
+  </div>
+  <div class="menu-item" data-path="/education/courses" title="Онлайн-обучение и тренинги">
+    <span class="menu-icon material-symbols-outlined">school</span>
+    <span class="menu-label">Курсы</span>
+  </div>
+  <div class="menu-item" data-path="/education/careers" title="Вакансии и карьерные возможности">
+    <span class="menu-icon material-symbols-outlined">work_outline</span>
+    <span class="menu-label">Профессии</span>
+  </div>
+  <div class="menu-item" data-path="/entertainment" title="Игры, контент, события">
+    <span class="menu-icon material-symbols-outlined">theater_comedy</span>
+    <span class="menu-label">Развлечения</span>
+  </div>
+  <div class="menu-item" data-path="/entertainment/games" title="Игровые сервисы, мини-игры">
+    <span class="menu-icon material-symbols-outlined">sports_esports</span>
+    <span class="menu-label">Игры</span>
+  </div>
+  <div class="menu-item" data-path="/entertainment/creative" title="Проекты для самореализации и творчества">
+    <span class="menu-icon material-symbols-outlined">brush</span>
+    <span class="menu-label">Творчество</span>
+  </div>
+</div>
