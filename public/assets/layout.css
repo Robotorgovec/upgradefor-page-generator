@@ -53,9 +53,9 @@
   --neutral-900: #0f172a;
 
   /* ===== Stable shell/layout neutrals ===== */
-  --shell-bg: var(--neutral-75);
+  --shell-bg: #fbfcfe;
   --shell-surface: var(--neutral-0);
-  --shell-surface-soft: var(--neutral-100);
+  --shell-surface-soft: #f6f9fd;
   --shell-text: var(--neutral-900);
   --shell-copy: var(--neutral-700);
   --shell-muted: var(--neutral-600);
@@ -149,8 +149,8 @@
   --sidebar-collapsed-width: 46px;
   --sidebar-expanded-width: 260px;
   --header-height: 56px;
-  --bg-sidebar: var(--neutral-50);
-  --bg-sidebar-hover: rgba(15, 23, 42, 0.04);
+  --bg-sidebar: #fcfdff;
+  --bg-sidebar-hover: rgba(15, 23, 42, 0.03);
   --border-color-soft: var(--shell-border);
   --sidebar-text: var(--neutral-800);
   --sidebar-text-strong: var(--neutral-900);
@@ -802,6 +802,21 @@ body.menu-open .sidebar{width: var(--sidebar-expanded-width)}
 body:not(.menu-open) .menu-item{justify-content: center; padding-inline: 0; margin-inline: 0}
 body:not(.menu-open) .menu-label,
 body:not(.menu-open) .sidebar-section-label{display: none}
+body:not(.menu-open) .theme-switch--sidebar{
+  width: auto;
+  margin: 8px auto 6px;
+}
+body:not(.menu-open) .theme-switch--sidebar .theme-switch-trigger{
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  padding: 0;
+  border-radius: 10px;
+}
+body:not(.menu-open) .theme-switch--sidebar .theme-switch-label,
+body:not(.menu-open) .theme-switch--sidebar .theme-dot{
+  display: none;
+}
 
 .menu-separator{
   margin: 6px 10px;
