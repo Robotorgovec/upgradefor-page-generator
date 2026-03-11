@@ -835,3 +835,21 @@
     min-height: 150px;
   }
 }
+
+.heroAside {
+  align-content: start;
+}
+
+.heroVisual {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  display: block;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
