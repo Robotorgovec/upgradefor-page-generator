@@ -53,18 +53,7 @@
     return theme.weekdayLabelRu;
   }
 
-  function formatAutoThemeLabel(state) {
-    return `Авто • ${state.weekdayLabelRu}`;
-  }
-
   function getThemeSwitchItemState(itemTheme, state, themeOptions) {
-    if (itemTheme === "auto") {
-      return {
-        label: formatAutoThemeLabel(state),
-        swatchColor: state.theme.primary,
-      };
-    }
-
     const themeMeta = themeOptions[itemTheme] || state.theme;
     return {
       label: formatThemeOptionLabel(themeMeta),
@@ -86,7 +75,7 @@
     }, {});
 
     const itemsMarkup = themeSystem
-      .getSelectableModes()
+      .getThemeOptions()
       .map((mode) => {
         const itemState = getThemeSwitchItemState(mode.key, state, themeOptions);
         return `<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="${mode.key}" aria-checked="false" aria-label="${itemState.label}">${getThemeSwitchItemMarkup(itemState.label)}</button>`;
@@ -123,7 +112,7 @@
       }
 
       switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
-        const itemTheme = item.dataset.theme || "auto";
+        const itemTheme = item.dataset.theme || state.themeKey;
         const itemState = getThemeSwitchItemState(itemTheme, state, themeOptions);
         const itemLabel = item.querySelector(".theme-switch-item-label");
         if (itemLabel) itemLabel.textContent = itemState.label;
@@ -133,7 +122,7 @@
 
         item.setAttribute("aria-label", itemState.label);
 
-        const isActive = state.mode === "auto" ? itemTheme === "auto" : itemTheme === state.themeKey;
+        const isActive = itemTheme === state.themeKey;
         item.setAttribute("aria-checked", isActive ? "true" : "false");
       });
     });
@@ -180,7 +169,15 @@
 
       switcher.querySelectorAll(".theme-switch-item").forEach((item) => {
         item.addEventListener("click", () => {
-          themeSystem.setThemeMode(item.dataset.theme || "auto");
+          const currentState = themeSystem.getState();
+          const selectedTheme = item.dataset.theme || currentState.themeKey;
+          const autoState = themeSystem.resolveThemeState({
+            mode: "auto",
+            debugDate: currentState.debugDate,
+            debugWeekday: currentState.debugWeekday,
+          });
+
+          themeSystem.setThemeMode(selectedTheme === autoState.themeKey ? "auto" : selectedTheme);
           syncUi();
           closeMenus();
         });
@@ -475,6 +472,43 @@
     mediaQuery.addEventListener("change", updateNav);
   }
 
+  function initSidebarActiveState() {
+    const currentPath = window.location.pathname;
+    const items = Array.from(document.querySelectorAll(".sidebar [data-path]"));
+
+    items.forEach((item) => {
+      item.classList.remove("active");
+      item.removeAttribute("aria-current");
+    });
+
+    const bestMatch = items.reduce((best, item) => {
+      const candidatePath = (item.getAttribute("data-path") || "").trim();
+      if (!candidatePath) return best;
+
+      const isMatch =
+        candidatePath === "/"
+          ? currentPath === "/"
+          : currentPath === candidatePath || currentPath.startsWith(candidatePath + "/");
+
+      if (!isMatch) return best;
+      if (!best || candidatePath.length > best.path.length) {
+        return { element: item, path: candidatePath };
+      }
+      return best;
+    }, null);
+
+    if (!bestMatch) return;
+
+    bestMatch.element.classList.add("active");
+    bestMatch.element.setAttribute("aria-current", "page");
+
+    let parent = bestMatch.element.parentElement;
+    while (parent) {
+      if (parent.tagName === "DETAILS") parent.open = true;
+      parent = parent.parentElement;
+    }
+  }
+
   function initNotifications() {
     const STORAGE_KEY = "upgr.notifications.v1";
     const trigger = qs('[data-notifications-trigger="true"]');
@@ -662,6 +696,7 @@
       await fetchAndInsert("/includes/header.html", "header");
       await fetchAndInsert("/includes/menu.html", ".sidebar");
 
+      initSidebarActiveState();
       initThemeSwitcher();
       await initNotificationsRuntime();
 

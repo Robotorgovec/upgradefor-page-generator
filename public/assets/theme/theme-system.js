@@ -8,8 +8,14 @@
   const DEBUG_DATE_COOKIE = "upgr_theme_debug_date";
   const DEBUG_WEEKDAY_COOKIE = "upgr_theme_debug_weekday";
   const SITE_TIME_ZONE = "Europe/Moscow";
+  // Source of truth for Thursday brand hue: current site logo blue.
   const BRAND_LOGO_BLUE = "#12AFF0";
   const FALLBACK_THEME_KEY = "brand-blue";
+  const THEME_MODE_ALIASES = {
+    cyan: "brand-blue",
+    blue: "indigo",
+    violet: "purple",
+  };
 
   const WEEKDAY_META = [
     { index: 0, key: "sunday", label: "Sunday", labelRu: "Воскресенье" },
@@ -28,8 +34,8 @@
       weekdayKey: "sunday",
       weekdayLabel: "Sunday",
       weekdayLabelRu: "Воскресенье",
-      label: "Пастельный красный",
-      primary: "#E77A72",
+      label: "Platform red",
+      primary: "#F25F6B",
       contrast: "#311412",
     },
     {
@@ -38,8 +44,8 @@
       weekdayKey: "monday",
       weekdayLabel: "Monday",
       weekdayLabelRu: "Понедельник",
-      label: "Пастельный оранжевый",
-      primary: "#F2A65E",
+      label: "Platform orange",
+      primary: "#F4A259",
       contrast: "#36200C",
     },
     {
@@ -48,8 +54,8 @@
       weekdayKey: "tuesday",
       weekdayLabel: "Tuesday",
       weekdayLabelRu: "Вторник",
-      label: "Пастельный жёлтый",
-      primary: "#E6C85C",
+      label: "Platform yellow",
+      primary: "#E6C95A",
       contrast: "#352807",
     },
     {
@@ -58,8 +64,8 @@
       weekdayKey: "wednesday",
       weekdayLabel: "Wednesday",
       weekdayLabelRu: "Среда",
-      label: "Пастельный зелёный",
-      primary: "#79C98F",
+      label: "Platform green",
+      primary: "#63CA84",
       contrast: "#153021",
     },
     {
@@ -68,7 +74,7 @@
       weekdayKey: "thursday",
       weekdayLabel: "Thursday",
       weekdayLabelRu: "Четверг",
-      label: "Голубой логотипа",
+      label: "Logo blue",
       primary: BRAND_LOGO_BLUE,
       contrast: "#05283A",
     },
@@ -78,18 +84,18 @@
       weekdayKey: "friday",
       weekdayLabel: "Friday",
       weekdayLabelRu: "Пятница",
-      label: "Пастельный индиго",
-      primary: "#7F95EE",
+      label: "Platform indigo",
+      primary: "#7187E8",
       contrast: "#16223B",
     },
     {
-      key: "violet",
+      key: "purple",
       weekdayIndex: 6,
       weekdayKey: "saturday",
       weekdayLabel: "Saturday",
       weekdayLabelRu: "Суббота",
-      label: "Пастельный лиловый",
-      primary: "#A78BDE",
+      label: "Platform purple",
+      primary: "#8C79E8",
       contrast: "#24153B",
     },
   ];
@@ -302,7 +308,8 @@
 
   function readThemeMode() {
     const stored = getStoredValue(STORAGE_KEY);
-    return stored && THEME_INDEX[stored] ? stored : "auto";
+    const normalized = THEME_MODE_ALIASES[stored] || stored;
+    return normalized && THEME_INDEX[normalized] ? normalized : "auto";
   }
 
   function readDebugDate() {
@@ -365,7 +372,8 @@
   }
 
   function resolveThemeState(options = {}) {
-    const requestedMode = options.mode && THEME_INDEX[options.mode] ? options.mode : "auto";
+    const requestedModeInput = THEME_MODE_ALIASES[options.mode] || options.mode;
+    const requestedMode = requestedModeInput && THEME_INDEX[requestedModeInput] ? requestedModeInput : "auto";
     const debugDate = isValidDateStamp(options.debugDate) ? options.debugDate : null;
     const debugWeekday = normalizeWeekday(options.debugWeekday);
     const activeDate = debugDate || getZonedDateStamp(new Date(), SITE_TIME_ZONE);
@@ -476,7 +484,13 @@
   }
 
   function setThemeMode(mode) {
-    const nextMode = mode === "auto" ? "auto" : THEME_INDEX[mode] ? mode : "auto";
+    const normalizedMode = THEME_MODE_ALIASES[mode] || mode;
+    const nextMode =
+      normalizedMode === "auto"
+        ? "auto"
+        : THEME_INDEX[normalizedMode]
+          ? normalizedMode
+          : "auto";
 
     if (nextMode === "auto") {
       clearStoredValue(STORAGE_KEY);
@@ -541,7 +555,7 @@
   }
 
   function getSelectableModes() {
-    return [{ key: "auto", label: "Авто (по дню недели)", primary: null, contrast: null }].concat(getThemeOptions());
+    return getThemeOptions();
   }
 
   function getState() {
