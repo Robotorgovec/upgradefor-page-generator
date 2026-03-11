@@ -5,6 +5,9 @@ type WeddingHairstylesHeroProps = {
   hero: WeddingHairstylesPageData["hero"];
 };
 
+const HERO_IMAGE_SRC =
+  "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstyles-hero-editorial-bride.webp";
+
 export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroProps) {
   return (
     <section className={styles.heroWrap}>
@@ -40,10 +43,17 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
         </div>
 
         <aside className={styles.heroAside}>
-          <div className={styles.heroVisual} aria-hidden="true" data-wm-hero-image>
-            <div className={styles.heroVisualOrb} />
-            <div className={styles.heroVisualGrid} />
-            <p>Bridal styling map</p>
+          <div className={styles.heroVisual} data-wm-hero-image>
+            <img
+              className={styles.heroImage}
+              src={HERO_IMAGE_SRC}
+              alt="Premium wedding hairstyle for bride"
+              width={1600}
+              height={1600}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+            />
           </div>
 
           <article className={styles.heroSupportCard}>
