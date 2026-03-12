@@ -39,6 +39,7 @@ export type SelectorCategory = {
 
 export type RecommendationCard = {
   id: string;
+  sourceTypeId?: string;
   title: string;
   suitedFor: string;
   effect: string;
@@ -109,11 +110,90 @@ export type ProcessStep = {
   text: string;
 };
 
+export type TaxonomyGroupId =
+  | "buns"
+  | "updos"
+  | "half-up-half-down"
+  | "waves-curls"
+  | "ponytails"
+  | "braids";
+
+export type TaxonomyModifierId =
+  | "with-veil"
+  | "with-pearls"
+  | "with-tiara"
+  | "boho"
+  | "classic"
+  | "modern"
+  | "for-long-hair"
+  | "for-medium-hair"
+  | "for-short-hair";
+
+export type TaxonomyModifier = {
+  id: TaxonomyModifierId;
+  slug: string;
+  label: string;
+  description: string;
+  category: "accessories" | "style-direction" | "hair-length";
+};
+
+export type TaxonomyModifierGroup = {
+  id: string;
+  title: string;
+  description: string;
+  modifierIds: TaxonomyModifierId[];
+};
+
+export type TaxonomyType = {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string;
+  primaryGroup: TaxonomyGroupId;
+  modifiers: TaxonomyModifierId[];
+  searchTerms: string[];
+};
+
+export type TaxonomyGroup = {
+  id: TaxonomyGroupId;
+  slug: string;
+  anchorId: string;
+  title: string;
+  shortDescription: string;
+  seoIntent: string;
+  types: TaxonomyType[];
+};
+
+export type SectionCopy = {
+  title: string;
+  subtitle: string;
+};
+
+export type AnchoredSectionCopy = SectionCopy & {
+  id: string;
+};
+
+export type TaxonomyOverviewSectionCopy = AnchoredSectionCopy & {
+  jumpLabel: string;
+  representativeLabel: string;
+  seoIntentLabel: string;
+};
+
+export type TaxonomyCatalogSectionCopy = AnchoredSectionCopy & {
+  intentLabel: string;
+  modifiersLabel: string;
+  backToGroupsLabel: string;
+};
+
+export type ModifierGuideSectionCopy = AnchoredSectionCopy & {
+  note: string;
+};
+
 export const weddingHairstylesPageData = {
   pageMeta: {
-    title: "Свадебные прически — подбор стиля и мастера | WikiMarket",
+    title: "Свадебные прически — 6 групп, 30 типов и подбор мастера | WikiMarket",
     description:
-      "Свадебные прически на WikiMarket: быстро выберите стиль по параметрам, сравните исполнителей и оставьте заявку на подбор образа под платье и фату.",
+      "Свадебные прически на WikiMarket: 6 главных bridal-групп, 30 типовых решений, modifiers для фаты и аксессуаров, подбор стиля и исполнителя в одной SEO-структуре.",
     canonicalPath: "/wikimarket/beauty/wedding-hairstyles",
     h1: "Свадебные прически",
   },
@@ -124,71 +204,567 @@ export const weddingHairstylesPageData = {
     { label: "Свадебные прически" },
   ] satisfies BreadcrumbItem[],
   hero: {
+    kicker: "WikiMarket / Красота",
     title: "Свадебные прически",
     subtitle:
-      "Подбор стиля, выбор мастера, выезд, репетиция и заявка через WikiMarket в одном сценарии.",
+      "Подбор стиля, выбор мастера, taxonomy из 6 главных групп и заявка через WikiMarket в одном сценарии.",
+    imageAlt: "Premium wedding hairstyle for bride",
     badges: [
-      { label: "Выезд" },
-      { label: "Репетиция" },
-      { label: "На дом / в студии" },
-      { label: "По образу / по параметрам" },
+      { label: "6 primary groups" },
+      { label: "30 structured types" },
+      { label: "Выезд / репетиция" },
+      { label: "SEO + marketplace logic" },
     ] satisfies HeroBadge[],
     points: [
       {
-        title: "Выбор за 5 минут",
-        text: "Сначала параметры, потом конкретные решения и исполнители.",
+        title: "Сначала структура",
+        text: "Начните с основной категории: buns, updos, half-up half-down, waves & curls, ponytails или braids.",
       },
       {
-        title: "Под платье и фату",
-        text: "Сравнивайте стили по совместимости с вырезом, аксессуарами и погодой.",
+        title: "Потом modifiers",
+        text: "Фата, pearls, tiara, стиль свадьбы и длина волос уточняют выбор, а не подменяют его.",
       },
       {
         title: "Упор на стойкость",
-        text: "Отдельно оценивайте ранний выезд, жару, влажность и длинный тайминг дня.",
+        text: "Собранные формы и контролируемый объем чаще выигрывают при длинном свадебном дне.",
       },
       {
         title: "Прозрачный бриф",
-        text: "Фиксируйте, что нужно уточнить до бронирования, без хаоса в чате.",
+        text: "Фиксируйте платье, аксессуары, тайминг и ожидания по стойкости до бронирования мастера.",
       },
     ] satisfies HeroPoint[],
     trustStrip: [
       { label: "Без неподтвержденных рейтингов и отзывов" },
-      { label: "Карточки готовы под live-данные платформы" },
-      { label: "SEO-индексируемая структура без скрытых JS-меню" },
+      { label: "HTML-структура читается без скрытых JS-фильтров" },
+      { label: "Подготовлено под будущие subtype pages и фильтры" },
     ] satisfies HeroTrustItem[],
     supportCard: {
-      title: "Поможем подобрать стиль и мастера",
-      text: "С учетом длины волос, фаты, платья и тайминга свадьбы.",
+      title: "Поможем выбрать группу, тип и мастера",
+      text: "С учетом длины волос, фаты, платья, тайминга и желаемой посадки образа.",
       microCtaLabel: "Начать подбор",
       microCtaHref: "#guided-selection",
     },
     primaryCta: { label: "Подобрать стиль", href: "#guided-selection" } satisfies HeroCta,
-    secondaryCta: { label: "Найти мастера", href: "#performers" } satisfies HeroCta,
+    secondaryCta: { label: "Открыть 6 групп", href: "#taxonomy-groups" } satisfies HeroCta,
   },
   quickAnswer: {
     title: "Короткий ответ за 15 секунд",
     bullets: [
-      "Сначала выберите конструкцию под длину волос и фату, потом декор.",
-      "Для длинного дня чаще выигрывают собранные формы и контролируемый объем.",
-      "Репетиция особенно важна при раннем выезде и сложном тайминге церемонии.",
-      "Для лета и влажности заранее проверьте сценарий коррекции в течение дня.",
-      "Лучший выбор мастера начинается с брифа, а не с одной референс-картинки.",
-      "Фото платья, аксессуаров и сборов ускоряют согласование в 2-3 раза по ощущениям команды.",
+      "Сначала выберите primary category: buns, updos, half-up half-down, waves & curls, ponytails или braids.",
+      "With veil, pearls, tiara, boho/classic/modern и hair length работают как modifiers, а не как главные категории.",
+      "Для длинного дня чаще выигрывают собранные формы и контролируемый объем у лица.",
+      "Half-up и waves удобны, когда важно сохранить длину на фото и мягкое движение по спине.",
+      "Репетиция особенно нужна, если критичны крепление фаты, ранний выезд или сложная конструкция формы.",
+      "Фото платья, аксессуаров и сборов ускоряют согласование и помогают точнее сравнивать мастеров.",
     ],
   },
-  toc: [
-    { href: "#guided-selection", label: "Подобрать прическу" },
-    { href: "#popular-styles", label: "Популярные стили" },
-    { href: "#personal-scenarios", label: "Что выбрать именно вам" },
-    { href: "#performers", label: "Исполнители" },
-    { href: "#pricing", label: "Цена и условия" },
-    { href: "#process", label: "Как проходит заказ" },
-    { href: "#prep", label: "Что подготовить заранее" },
-    { href: "#faq", label: "FAQ" },
-  ] satisfies TocItem[],
+  toc: {
+    title: "Содержание",
+    items: [
+      { href: "#taxonomy-groups", label: "6 SEO-групп" },
+      { href: "#guided-selection", label: "Подобрать прическу" },
+      { href: "#popular-styles", label: "Featured styles" },
+      { href: "#hairstyle-catalog", label: "Каталог 30 типов" },
+      { href: "#selection-modifiers", label: "Modifiers" },
+      { href: "#personal-scenarios", label: "Что выбрать именно вам" },
+      { href: "#performers", label: "Исполнители" },
+      { href: "#pricing", label: "Цена и условия" },
+      { href: "#process", label: "Как проходит заказ" },
+      { href: "#prep", label: "Что подготовить заранее" },
+      { href: "#faq", label: "FAQ" },
+    ] satisfies TocItem[],
+  },
+  taxonomyOverviewSection: {
+    id: "taxonomy-groups",
+    title: "6 главных SEO-групп свадебных причесок",
+    subtitle:
+      "Это верхний taxonomy layer страницы: сначала выбирайте основную конструкцию, затем уточняйте образ через modifiers вроде veil, pearls, tiara, boho/classic/modern и длины волос.",
+    jumpLabel: "Перейти к группе в каталоге",
+    representativeLabel: "Representative types",
+    seoIntentLabel: "Когда эту группу выбирают:",
+  } satisfies TaxonomyOverviewSectionCopy,
+  taxonomyCatalogSection: {
+    id: "hairstyle-catalog",
+    title: "30 типов свадебных причесок, сгруппированных по 6 кластерам",
+    subtitle:
+      "Каталог построен от primary categories к modifiers: так проще выбрать основу, а затем уточнить аксессуары, стиль свадьбы и технические ограничения по волосам.",
+    intentLabel: "Частый сценарий выбора:",
+    modifiersLabel: "Подходящие modifiers:",
+    backToGroupsLabel: "Назад к 6 группам",
+  } satisfies TaxonomyCatalogSectionCopy,
+  modifierGuideSection: {
+    id: "selection-modifiers",
+    title: "Modifiers: что уточняет выбор, но не заменяет главную категорию",
+    subtitle:
+      "Фата, pearls, tiara, boho/classic/modern и длина волос работают как уточняющие атрибуты. Они помогают сузить shortlist внутри buns, updos, half-up half-down, waves & curls, ponytails и braids.",
+    note:
+      "Рабочая логика для этой страницы и будущих verticals такая: сначала главная конструкция, потом аксессуары и стилистические атрибуты. Это дает понятную HTML-структуру и не прячет ключевой контент за фильтрами.",
+  } satisfies ModifierGuideSectionCopy,
+  modifierLibrary: {
+    items: [
+      {
+        id: "with-veil",
+        slug: "with-veil",
+        label: "With veil / С фатой",
+        description: "Нужно заранее проверить точку крепления и баланс объема вокруг гребня или шпильки.",
+        category: "accessories",
+      },
+      {
+        id: "with-pearls",
+        slug: "with-pearls",
+        label: "With pearls / С жемчугом",
+        description: "Добавляет мягкий декоративный акцент и работает лучше на чисто читаемой форме.",
+        category: "accessories",
+      },
+      {
+        id: "with-tiara",
+        slug: "with-tiara",
+        label: "With tiara / С тиарой",
+        description: "Требует контролируемой высоты в зоне макушки и понятной опорной линии.",
+        category: "accessories",
+      },
+      {
+        id: "boho",
+        slug: "boho",
+        label: "Boho",
+        description: "Больше текстуры, движения и расслабленного bridal-настроения без тяжеловесности.",
+        category: "style-direction",
+      },
+      {
+        id: "classic",
+        slug: "classic",
+        label: "Classic / Классика",
+        description: "Чистая форма, спокойный контур и timeless bridal look для церемоний с традиционным силуэтом.",
+        category: "style-direction",
+      },
+      {
+        id: "modern",
+        slug: "modern",
+        label: "Modern / Современный",
+        description: "Гладкость, более графичные линии и editorial-feel для минималистичных образов.",
+        category: "style-direction",
+      },
+      {
+        id: "for-long-hair",
+        slug: "for-long-hair",
+        label: "For long hair / Для длинных волос",
+        description: "Подходит, когда важно сохранить длину, объем и детали по спине или в пучке.",
+        category: "hair-length",
+      },
+      {
+        id: "for-medium-hair",
+        slug: "for-medium-hair",
+        label: "For medium hair / Для средней длины",
+        description: "Самый гибкий диапазон для большинства bridal-конструкций и комбинированных форм.",
+        category: "hair-length",
+      },
+      {
+        id: "for-short-hair",
+        slug: "for-short-hair",
+        label: "For short hair / Для коротких волос",
+        description: "Нужно раньше тестировать форму, направление локона и место крепления аксессуаров.",
+        category: "hair-length",
+      },
+    ] satisfies TaxonomyModifier[],
+    groups: [
+      {
+        id: "modifier-accessories",
+        title: "Accessories / Аксессуары",
+        description: "Уточняют крепление, высоту и чистоту формы, но не заменяют основную конструкцию.",
+        modifierIds: ["with-veil", "with-pearls", "with-tiara"],
+      },
+      {
+        id: "modifier-style-direction",
+        title: "Style direction / Стилистика",
+        description: "Помогает согласовать прическу с платьем, декором и общим тоном церемонии.",
+        modifierIds: ["boho", "classic", "modern"],
+      },
+      {
+        id: "modifier-hair-length",
+        title: "Hair length / Длина волос",
+        description: "Нужна для realistic shortlist без иллюзий по объему, длине и времени на укладку.",
+        modifierIds: ["for-long-hair", "for-medium-hair", "for-short-hair"],
+      },
+    ] satisfies TaxonomyModifierGroup[],
+  },
+  taxonomyGroups: [
+    {
+      id: "buns",
+      slug: "buns",
+      anchorId: "bridal-buns",
+      title: "Buns / Пучки",
+      shortDescription:
+        "Пучки нужны, когда важны чистый силуэт, устойчивость на длинный день и удобная работа с фатой или открытой спиной.",
+      seoIntent:
+        "Когда нужен аккуратный bridal bun для церемонии, фотосессии, фаты и длинного свадебного тайминга.",
+      types: [
+        {
+          id: "low-bun",
+          slug: "low-bun",
+          name: "Low Bun",
+          shortDescription:
+            "Универсальный bridal bun для классической церемонии, спокойного профиля и комфортного крепления фаты.",
+          primaryGroup: "buns",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["low bun wedding hairstyle", "bridal low bun", "низкий пучок невесты"],
+        },
+        {
+          id: "sleek-low-bun",
+          slug: "sleek-low-bun",
+          name: "Sleek Low Bun",
+          shortDescription:
+            "Гладкая версия low bun для минималистичного платья, чистой линии затылка и editorial-финиша.",
+          primaryGroup: "buns",
+          modifiers: ["with-veil", "modern", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["sleek low bun bridal", "smooth bridal bun", "гладкий низкий пучок"],
+        },
+        {
+          id: "messy-bun",
+          slug: "messy-bun",
+          name: "Messy Bun",
+          shortDescription:
+            "Мягкий текстурный bun для романтичного образа, когда нужен relaxed luxury без ощущения тяжести.",
+          primaryGroup: "buns",
+          modifiers: ["boho", "with-pearls", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["messy bun wedding hair", "textured bridal bun", "небрежный свадебный пучок"],
+        },
+        {
+          id: "high-bun",
+          slug: "high-bun",
+          name: "High Bun",
+          shortDescription:
+            "Высокая посадка открывает шею и серьги, помогает держать форму при плотном тайминге дня.",
+          primaryGroup: "buns",
+          modifiers: ["with-tiara", "modern", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["high bun bridal", "elegant high bun wedding", "высокий свадебный пучок"],
+        },
+        {
+          id: "braided-bun",
+          slug: "braided-bun",
+          name: "Braided Bun",
+          shortDescription:
+            "Комбинирует texture от braid и стабильность bun, когда нужна деталь без потери собранности.",
+          primaryGroup: "buns",
+          modifiers: ["with-veil", "boho", "with-pearls", "for-long-hair"],
+          searchTerms: ["braided bun wedding", "bridal braided bun", "пучок с плетением невеста"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+    {
+      id: "updos",
+      slug: "updos",
+      anchorId: "bridal-updos",
+      title: "Updos / Собранные прически",
+      shortDescription:
+        "Собранные прически нужны, когда невесте важны controlled volume, заметная архитектура и надежная фиксация на церемонию и банкет.",
+      seoIntent:
+        "Когда нужен structured updo для раннего выезда, длинного дня и аккуратной работы с платьем и аксессуарами.",
+      types: [
+        {
+          id: "classic-chignon",
+          slug: "classic-chignon",
+          name: "Classic Chignon",
+          shortDescription:
+            "Традиционная свадебная форма для спокойного силуэта, строгой посадки и timeless bridal-ощущения.",
+          primaryGroup: "updos",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["classic chignon wedding", "bridal chignon", "классический шиньон невесты"],
+        },
+        {
+          id: "romantic-updo",
+          slug: "romantic-updo",
+          name: "Romantic Updo",
+          shortDescription:
+            "Мягкая собранная форма с деликатным объемом у лица для романтичного и светлого bridal-образа.",
+          primaryGroup: "updos",
+          modifiers: ["with-pearls", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["romantic bridal updo", "soft wedding updo", "романтичная собранная прическа"],
+        },
+        {
+          id: "textured-updo",
+          slug: "textured-updo",
+          name: "Textured Updo",
+          shortDescription:
+            "Форма с заметной текстурой и объемом у макушки, когда нужен акцент без тяжелого глянца.",
+          primaryGroup: "updos",
+          modifiers: ["modern", "boho", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["textured updo wedding", "bridal textured updo", "текстурная собранная прическа"],
+        },
+        {
+          id: "twisted-updo",
+          slug: "twisted-updo",
+          name: "Twisted Updo",
+          shortDescription:
+            "Собранная форма на скрутках для чистой детализации и более сложного, но аккуратного рисунка.",
+          primaryGroup: "updos",
+          modifiers: ["with-tiara", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["twisted updo bridal", "twist wedding hairstyle", "собранная прическа со скрутками"],
+        },
+        {
+          id: "loose-updo",
+          slug: "loose-updo",
+          name: "Loose Updo",
+          shortDescription:
+            "Более свободный updo для мягкого контура у лица и баланса между собранностью и движением.",
+          primaryGroup: "updos",
+          modifiers: ["boho", "with-veil", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["loose updo wedding", "soft loose bridal updo", "свободная собранная прическа"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+    {
+      id: "half-up-half-down",
+      slug: "half-up-half-down",
+      anchorId: "bridal-half-up-half-down",
+      title: "Half-Up Half-Down / Полусобранные",
+      shortDescription:
+        "Полусобранные формы подходят, когда важно сохранить длину на фото, но при этом открыть лицо и удержать верхнюю зону.",
+      seoIntent:
+        "Когда невесте нужна мягкая длина по спине, совместимость с фатой и более романтичный силуэт без полного updo.",
+      types: [
+        {
+          id: "classic-half-up-half-down",
+          slug: "classic-half-up-half-down",
+          name: "Classic Half-Up Half-Down",
+          shortDescription:
+            "Базовая полусобранная форма для мягкого bridal-силуэта и контролируемой линии у лица.",
+          primaryGroup: "half-up-half-down",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["classic half up half down wedding", "bridal half up hair", "классическая полусобранная прическа"],
+        },
+        {
+          id: "half-up-with-curls",
+          slug: "half-up-with-curls",
+          name: "Half-Up with Curls",
+          shortDescription:
+            "Полусобранная база с мягкими локонами для романтичного эффекта и читаемой длины на фото.",
+          primaryGroup: "half-up-half-down",
+          modifiers: ["with-pearls", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["half up curls wedding hair", "curly half up bridal", "полусобранные локоны невесты"],
+        },
+        {
+          id: "half-up-with-braid",
+          slug: "half-up-with-braid",
+          name: "Half-Up with Braid",
+          shortDescription:
+            "Добавляет текстурную braid-деталь в верхнюю зону, не убирая длину и мягкость по спине.",
+          primaryGroup: "half-up-half-down",
+          modifiers: ["boho", "with-veil", "for-long-hair"],
+          searchTerms: ["half up braid wedding", "braided half up bridal", "полусобранная прическа с косой"],
+        },
+        {
+          id: "half-up-with-volume",
+          slug: "half-up-with-volume",
+          name: "Half-Up with Volume",
+          shortDescription:
+            "Подходит, когда нужна более заметная линия макушки и balancing effect для фаты или тиары.",
+          primaryGroup: "half-up-half-down",
+          modifiers: ["with-tiara", "modern", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["half up volume wedding", "voluminous half up bridal", "полусобранная прическа с объемом"],
+        },
+        {
+          id: "veil-ready-half-up-style",
+          slug: "veil-ready-half-up-style",
+          name: "Veil-Ready Half-Up Style",
+          shortDescription:
+            "Сделан под заранее понятную точку крепления фаты, чтобы длина оставалась открытой и удобной.",
+          primaryGroup: "half-up-half-down",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["veil ready half up bridal", "half up hairstyle with veil", "полусобранная свадебная прическа с фатой"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+    {
+      id: "waves-curls",
+      slug: "waves-curls",
+      anchorId: "bridal-waves-curls",
+      title: "Waves & Curls / Волны и локоны",
+      shortDescription:
+        "Волны и локоны нужны, когда хочется сохранить движение, блеск и видимую длину без жесткой архитектуры.",
+      seoIntent:
+        "Когда приоритетом становятся мягкость, фотогеничность длины и более relaxed либо glamorous bridal-настроение.",
+      types: [
+        {
+          id: "hollywood-waves",
+          slug: "hollywood-waves",
+          name: "Hollywood Waves",
+          shortDescription:
+            "Гладкая глянцевая волна для вечернего bridal-образа, выразительной линии у лица и фотогеничного блеска.",
+          primaryGroup: "waves-curls",
+          modifiers: ["modern", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["hollywood waves wedding", "bridal hollywood waves", "голливудская волна невесты"],
+        },
+        {
+          id: "soft-bridal-curls",
+          slug: "soft-bridal-curls",
+          name: "Soft Bridal Curls",
+          shortDescription:
+            "Мягкие локоны для деликатного объема и романтичного образа на средней или даже укороченной длине.",
+          primaryGroup: "waves-curls",
+          modifiers: ["with-pearls", "classic", "for-medium-hair", "for-short-hair"],
+          searchTerms: ["soft bridal curls", "soft curls wedding hair", "мягкие локоны невесты"],
+        },
+        {
+          id: "loose-curls",
+          slug: "loose-curls",
+          name: "Loose Curls",
+          shortDescription:
+            "Более свободный вариант для boho-настроения, живого движения и relaxed silhouette без перегруза.",
+          primaryGroup: "waves-curls",
+          modifiers: ["boho", "modern", "for-medium-hair", "for-short-hair"],
+          searchTerms: ["loose curls wedding hairstyle", "bridal loose curls", "свободные локоны на свадьбу"],
+        },
+        {
+          id: "beach-waves",
+          slug: "beach-waves",
+          name: "Beach Waves",
+          shortDescription:
+            "Небрежная волна с текстурой для outdoor-свадьбы, boho-декора и более расслабленной эстетики.",
+          primaryGroup: "waves-curls",
+          modifiers: ["boho", "modern", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["beach waves bridal", "wedding beach waves", "пляжные волны невесты"],
+        },
+        {
+          id: "side-swept-waves",
+          slug: "side-swept-waves",
+          name: "Side-Swept Waves",
+          shortDescription:
+            "Убирает длину на одну сторону, красиво работает с открытым плечом и заметным украшением.",
+          primaryGroup: "waves-curls",
+          modifiers: ["with-tiara", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["side swept waves wedding", "bridal side waves", "волны на одну сторону невеста"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+    {
+      id: "ponytails",
+      slug: "ponytails",
+      anchorId: "bridal-ponytails",
+      title: "Ponytails / Хвосты",
+      shortDescription:
+        "Свадебные хвосты подходят для современного bridal-образа, открытой шеи и сценариев, где нужен быстрый refresh формы.",
+      seoIntent:
+        "Когда нужен modern ponytail для чистой линии, заметной длины и более свежего editorial-настроения.",
+      types: [
+        {
+          id: "low-ponytail",
+          slug: "low-ponytail",
+          name: "Low Ponytail",
+          shortDescription:
+            "Низкий хвост для лаконичного силуэта, аккуратной спины платья и controlled finish без жесткости.",
+          primaryGroup: "ponytails",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["low ponytail wedding hair", "bridal low ponytail", "низкий свадебный хвост"],
+        },
+        {
+          id: "sleek-ponytail",
+          slug: "sleek-ponytail",
+          name: "Sleek Ponytail",
+          shortDescription:
+            "Гладкий хвост для minimal bride, четкой линии лица и современной подаче без лишнего декора.",
+          primaryGroup: "ponytails",
+          modifiers: ["modern", "with-tiara", "for-medium-hair", "for-short-hair"],
+          searchTerms: ["sleek ponytail bridal", "smooth ponytail wedding", "гладкий свадебный хвост"],
+        },
+        {
+          id: "high-ponytail",
+          slug: "high-ponytail",
+          name: "High Ponytail",
+          shortDescription:
+            "Высокий хвост дает lifting effect, открывает лицо и помогает сохранить свежий вид до вечера.",
+          primaryGroup: "ponytails",
+          modifiers: ["modern", "with-tiara", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["high ponytail wedding", "bridal high ponytail", "высокий свадебный хвост"],
+        },
+        {
+          id: "wavy-ponytail",
+          slug: "wavy-ponytail",
+          name: "Wavy Ponytail",
+          shortDescription:
+            "Сочетает controlled base и мягкую длину, когда хочется хвост без ощущения строгости.",
+          primaryGroup: "ponytails",
+          modifiers: ["with-pearls", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["wavy ponytail bridal", "wedding ponytail waves", "волнистый хвост невесты"],
+        },
+        {
+          id: "ponytail-with-crown-volume",
+          slug: "ponytail-with-crown-volume",
+          name: "Ponytail with Crown Volume",
+          shortDescription:
+            "Добавляет высоту у макушки и работает, когда платью нужен более собранный верхний силуэт.",
+          primaryGroup: "ponytails",
+          modifiers: ["modern", "with-tiara", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["ponytail with crown volume wedding", "volume bridal ponytail", "свадебный хвост с объемом у макушки"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+    {
+      id: "braids",
+      slug: "braids",
+      anchorId: "bridal-braids",
+      title: "Braids / Косы и плетения",
+      shortDescription:
+        "Плетения помогают добавить texture, boho-движение и более заметную ручную работу без декоративного перегруза.",
+      seoIntent:
+        "Когда невесте нужна braid-based форма для outdoor-свадьбы, текстуры, аксессуаров и мягкого движения на фото.",
+      types: [
+        {
+          id: "french-braid",
+          slug: "french-braid",
+          name: "French Braid",
+          shortDescription:
+            "Базовое структурное плетение для аккуратной фиксации и контролируемого направления волос.",
+          primaryGroup: "braids",
+          modifiers: ["boho", "for-medium-hair", "for-long-hair", "with-veil"],
+          searchTerms: ["french braid wedding hairstyle", "bridal french braid", "французская коса невесты"],
+        },
+        {
+          id: "fishtail-braid",
+          slug: "fishtail-braid",
+          name: "Fishtail Braid",
+          shortDescription:
+            "Дает более заметную фактуру и смотрится богато на длинных волосах и в живом свете.",
+          primaryGroup: "braids",
+          modifiers: ["boho", "with-pearls", "for-long-hair"],
+          searchTerms: ["fishtail braid wedding", "bridal fishtail braid", "рыбий хвост свадебная прическа"],
+        },
+        {
+          id: "crown-braid",
+          slug: "crown-braid",
+          name: "Crown Braid",
+          shortDescription:
+            "Плетение по кругу для выразительной верхней линии и более собранного boho-classic баланса.",
+          primaryGroup: "braids",
+          modifiers: ["with-veil", "classic", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["crown braid wedding hair", "bridal crown braid", "корона из кос на свадьбу"],
+        },
+        {
+          id: "side-braid",
+          slug: "side-braid",
+          name: "Side Braid",
+          shortDescription:
+            "Уводит объем на одну сторону и хорошо сочетается с открытым плечом или асимметричным платьем.",
+          primaryGroup: "braids",
+          modifiers: ["boho", "with-pearls", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["side braid bridal", "wedding side braid", "боковая коса невесты"],
+        },
+        {
+          id: "waterfall-braid",
+          slug: "waterfall-braid",
+          name: "Waterfall Braid",
+          shortDescription:
+            "Оставляет длину видимой и добавляет декоративную braid-линию для мягкого романтичного образа.",
+          primaryGroup: "braids",
+          modifiers: ["boho", "with-pearls", "for-medium-hair", "for-long-hair"],
+          searchTerms: ["waterfall braid wedding", "bridal waterfall braid", "водопад коса свадебная прическа"],
+        },
+      ] satisfies TaxonomyType[],
+    },
+  ] satisfies TaxonomyGroup[],
   selector: {
     title: "Подобрать прическу",
     text: "Отметьте параметры и получите приоритетные стили для вашего сценария.",
+    summaryTitle: "Ваш текущий набор параметров",
     categories: [
       {
         id: "hair-length",
@@ -262,146 +838,161 @@ export const weddingHairstylesPageData = {
       },
     ] satisfies SelectorCategory[],
     cta: {
-      title: "Нужен подбор под платье и фату?",
-      text: "Отправьте параметры, и мы соберем shortlist исполнителей под ваш сценарий дня.",
+      title: "Нужен подбор под платье, фату и тайминг дня?",
+      text: "Отправьте параметры, и мы соберем shortlist исполнителей под вашу primary category и набор modifiers.",
       buttonLabel: "Подобрать образ под платье и фату",
       href: "/account/register?intent=wedding-hairstyles",
     },
   },
+  popularStylesSection: {
+    title: "Featured styles до полного каталога",
+    subtitle:
+      "Это не случайная россыпь карточек, а быстрый вход в самые частые bridal-направления перед просмотром всех 30 типов.",
+  } satisfies SectionCopy,
   popularStyles: [
     {
       id: "low-bun",
-      title: "Низкий пучок",
+      sourceTypeId: "low-bun",
+      title: "Low Bun",
       suitedFor: "Фата, открытая спина, классические и минималистичные образы.",
       effect: "Собранный силуэт, чистый контур, устойчивость на длинный день.",
       whenToChoose: "Если нужен спокойный премиальный вид и надежная фиксация.",
-      ctaLabel: "Смотреть сценарии",
-      ctaHref: "#personal-scenarios",
+      ctaLabel: "Открыть тип в каталоге",
+      ctaHref: "#low-bun",
       tags: ["medium", "long", "veil-yes", "classic", "structured", "early", "oval", "home", "trial-yes"],
     },
     {
       id: "hollywood-waves",
-      title: "Голливудская волна",
+      sourceTypeId: "hollywood-waves",
+      title: "Hollywood Waves",
       suitedFor: "Средняя/длинная длина, вечерний сценарий, лаконичное платье.",
       effect: "Блеск и графичная линия у лица, сильный фотогеничный эффект.",
       whenToChoose: "Если приоритет - выразительный образ и контролируемый климат локации.",
-      ctaLabel: "Проверить стойкость",
-      ctaHref: "#pricing",
+      ctaLabel: "Открыть тип в каталоге",
+      ctaHref: "#hollywood-waves",
       tags: ["medium", "long", "minimal", "soft", "evening", "oval", "studio", "trial-no"],
     },
     {
       id: "textured-updo",
-      title: "Текстурная собранная прическа",
+      sourceTypeId: "textured-updo",
+      title: "Textured Updo",
       suitedFor: "Средняя и длинная длина, платье со сложной фактурой, вечерняя церемония.",
       effect: "Выразительная форма без тяжелого глянца, визуальный объем в зоне макушки.",
       whenToChoose: "Когда нужен акцентный образ и баланс между стойкостью и мягкостью.",
-      ctaLabel: "Сравнить с пучком",
-      ctaHref: "#guided-selection",
+      ctaLabel: "Открыть тип в каталоге",
+      ctaHref: "#textured-updo",
       tags: ["medium", "long", "romantic", "structured", "evening", "angular", "studio", "trial-yes"],
     },
     {
       id: "high-bun",
-      title: "Высокий пучок",
+      sourceTypeId: "high-bun",
+      title: "High Bun",
       suitedFor: "Платье с чистой линией плеч, выразительные серьги и церемония в плотном тайминге.",
       effect: "Лифтинг-силуэт, открытая шея и собранный премиальный контур.",
       whenToChoose: "Когда нужен элегантный образ с высокой посадкой и устойчивой фиксацией.",
-      ctaLabel: "Проверить совместимость",
-      ctaHref: "#guided-selection",
+      ctaLabel: "Открыть тип в каталоге",
+      ctaHref: "#high-bun",
       tags: ["medium", "long", "classic", "minimal", "structured", "early", "evening", "oval", "studio", "trial-yes"],
     },
     {
       id: "boho-braid",
-      title: "Бохо-коса",
+      sourceTypeId: "waterfall-braid",
+      title: "Boho Braid",
       suitedFor: "Длинные волосы, outdoor-церемония, романтичный образ и живой декор.",
       effect: "Текстурный объем, мягкая динамика и заметная прическа без тяжести.",
       whenToChoose:
         "Если нужен расслабленный bridal-настрой с хорошей читаемостью на фото и в движении.",
-      ctaLabel: "Сравнить с локонами",
-      ctaHref: "#guided-selection",
+      ctaLabel: "Открыть плетения в каталоге",
+      ctaHref: "#bridal-braids",
       tags: ["long", "veil-no", "romantic", "balanced", "day", "round", "venue", "trial-yes"],
     },
     {
       id: "half-up-half-down-curls",
-      title: "Half-up half-down локоны",
+      sourceTypeId: "half-up-with-curls",
+      title: "Half-Up with Curls",
       suitedFor: "Средняя и длинная длина, украшение-гребень, мягкий bridal-образ и фата.",
       effect: "Открывает лицо, сохраняет длину и дает мягкий объем без жесткой архитектуры.",
       whenToChoose:
         "Когда нужен баланс между собранной линией у лица и свободной длиной по спине.",
-      ctaLabel: "Сценарий под фату",
-      ctaHref: "#personal-scenarios",
+      ctaLabel: "Открыть тип в каталоге",
+      ctaHref: "#half-up-with-curls",
       tags: ["medium", "long", "veil-yes", "romantic", "soft", "day", "oval", "home", "trial-no"],
     },
   ] satisfies RecommendationCard[],
+  scenariosSection: {
+    title: "Что выбрать именно вам?",
+    subtitle: "Короткие сценарии, которые помогают быстро сузить выбор перед брифом мастеру.",
+  } satisfies SectionCopy,
   scenarios: [
     {
       id: "short",
       title: "Короткие волосы",
-      note: "Выбирайте текстуру и фиксируйте точку крепления аксессуаров заранее.",
-      ctaLabel: "Сценарий для короткой длины",
-      ctaHref: "#guided-selection",
+      note: "Смотрите waves & curls, sleek ponytail и заранее проверяйте, как крепятся аксессуары.",
+      ctaLabel: "Открыть modifiers по длине",
+      ctaHref: "#selection-modifiers",
     },
     {
       id: "medium",
       title: "Средняя длина",
-      note: "Самый гибкий диапазон: и собранные формы, и мягкие волны.",
-      ctaLabel: "Сценарий для средней длины",
-      ctaHref: "#guided-selection",
+      note: "Самый гибкий диапазон: доступны buns, updos, half-up и мягкие волны.",
+      ctaLabel: "Смотреть каталог 30 типов",
+      ctaHref: "#hairstyle-catalog",
     },
     {
       id: "long",
       title: "Длинные волосы",
-      note: "Добавьте запас по времени на проработку формы и фиксацию.",
-      ctaLabel: "Сценарий для длинных волос",
-      ctaHref: "#guided-selection",
+      note: "Добавьте запас по времени на проработку формы, объема и финальную фиксацию.",
+      ctaLabel: "Открыть buns и braids",
+      ctaHref: "#bridal-buns",
     },
     {
       id: "veil",
       title: "Если будет фата",
-      note: "Ключевой вопрос — место крепления и баланс с объемом прически.",
-      ctaLabel: "Проверить совместимость",
-      ctaHref: "#popular-styles",
+      note: "Ключевой вопрос - точка крепления и баланс с высотой или объемом прически.",
+      ctaLabel: "Открыть modifiers",
+      ctaHref: "#selection-modifiers",
     },
     {
       id: "open-back",
       title: "Открытая спина / плечи",
-      note: "Собранные силуэты чаще подчеркивают линию шеи и верх платья.",
-      ctaLabel: "Смотреть собранные формы",
-      ctaHref: "#popular-styles",
+      note: "Собранные силуэты и чистые ponytails чаще лучше подчеркивают линию шеи.",
+      ctaLabel: "Открыть buns и ponytails",
+      ctaHref: "#bridal-ponytails",
     },
     {
       id: "summer",
       title: "Летняя жара",
-      note: "Ставьте приоритет на стойкость, а не на максимальный объем.",
+      note: "Ставьте приоритет на стойкость, а не на максимальный распущенный объем.",
       ctaLabel: "Что влияет на стойкость",
       ctaHref: "#pricing",
     },
     {
       id: "evening",
       title: "Вечерняя церемония",
-      note: "Можно позволить более графичный или сияющий финиш.",
-      ctaLabel: "Сценарий для вечера",
-      ctaHref: "#guided-selection",
+      note: "Можно позволить более графичный или сияющий финиш: waves, sleek bun, polished ponytail.",
+      ctaLabel: "Открыть evening-friendly типы",
+      ctaHref: "#hollywood-waves",
     },
     {
       id: "all-day",
       title: "Нужна стойкость на весь день",
-      note: "Проверяйте резервный план корректировки перед банкетом.",
+      note: "Проверяйте резервный план коррекции перед банкетом и устойчивость к смене локаций.",
       ctaLabel: "Что спросить мастера",
       ctaHref: "#master-checklist",
     },
     {
       id: "romantic",
       title: "Мягкий романтичный образ",
-      note: "Работают волны, легкие плетения и мягкий контур у лица.",
-      ctaLabel: "Подобрать романтичный стиль",
-      ctaHref: "#popular-styles",
+      note: "Чаще работают curls, half-up with curls, loose updo и waterfall braid.",
+      ctaLabel: "Открыть мягкие типы",
+      ctaHref: "#half-up-with-curls",
     },
     {
       id: "strict",
       title: "Собранный строгий образ",
-      note: "Четкая архитектура формы помогает держать вид в плотном тайминге.",
-      ctaLabel: "Подобрать строгий стиль",
-      ctaHref: "#popular-styles",
+      note: "Четкая архитектура формы помогает держать вид в плотном свадебном тайминге.",
+      ctaLabel: "Открыть structured группы",
+      ctaHref: "#bridal-updos",
     },
   ] satisfies ScenarioItem[],
   performersSection: {
@@ -410,6 +1001,10 @@ export const weddingHairstylesPageData = {
       "Marketplace-структура с готовыми полями под бренд, город, формат работы и условия бронирования.",
     disclaimer:
       "Ниже демо-структура карточек: без неподтвержденных рейтингов, отзывов и счетчиков заказов. Live-данные подключаются из платформы.",
+    filtersAriaLabel: "Фильтры исполнителей",
+    strengthsTitle: "Сильные стороны",
+    emptyState:
+      "По выбранному фильтру карточки пока не показаны. Оставьте заявку, чтобы получить подбор под ваши параметры.",
     filters: [
       { id: "all", label: "Все" },
       { id: "visit", label: "По выезду" },
@@ -446,7 +1041,7 @@ export const weddingHairstylesPageData = {
         displayName: "Профиль исполнителя B",
         cityLabel: "Город: указывается в анкете",
         workFormat: "Формат работы: студия",
-        specialization: "Специализация: волны, гладкие формы, вечерный bridal",
+        specialization: "Специализация: волны, гладкие формы, вечерний bridal",
         serviceModes: "Выезд / студия: студия + выезд по договоренности",
         trialLabel: "Пробный образ: обязательно перед бронированием",
         priceFromLabel: "Ориентир по цене «от»: отображается после подключения данных",
@@ -531,7 +1126,7 @@ export const weddingHairstylesPageData = {
   pricingSection: {
     title: "Цена, состав услуги и факторы выбора",
     subtitle:
-      "Вместо абстрактного списка — структура, которая помогает заранее понять бюджет и риски.",
+      "Вместо абстрактного списка - структура, которая помогает заранее понять бюджет и риски.",
     columns: [
       {
         title: "Что влияет на цену",
@@ -567,6 +1162,10 @@ export const weddingHairstylesPageData = {
       "На стойкость влияют не только средства фиксации, но и стартовое состояние волос.",
     ],
   },
+  processSection: {
+    title: "Как проходит заказ",
+    subtitle: "Пять шагов от первого брифа до подтверждения исполнителя.",
+  } satisfies SectionCopy,
   processSteps: [
     {
       title: "Вы описываете образ, дату, город и время",
@@ -591,6 +1190,7 @@ export const weddingHairstylesPageData = {
   ] satisfies ProcessStep[],
   prepChecklist: {
     title: "Что подготовить заранее",
+    subtitle: "Соберите материалы заранее, чтобы выбор стиля и исполнителя прошел без потери времени.",
     items: [
       "Фото платья и выреза",
       "Желаемые референсы (2-4 варианта)",
@@ -615,7 +1215,7 @@ export const weddingHairstylesPageData = {
     {
       question: "Что лучше для фаты?",
       answer:
-        "Чаще выбирают собранные формы или устойчивые полусобранные варианты: проще контролировать крепление и комфорт в течение дня.",
+        "Чаще выбирают buns, updos или устойчивые half-up варианты: так проще контролировать крепление и комфорт в течение дня.",
     },
     {
       question: "Как выбрать прическу под платье?",
@@ -677,30 +1277,32 @@ export const weddingHairstylesPageData = {
     buttonLabel: "Стать исполнителем",
     href: "/account/register?role=performer",
   },
+  relatedPagesSection: {
+    title: "Related paths",
+    subtitle: "Без ссылок на несуществующие subtype pages: только рабочие переходы внутри текущего bridal-сценария.",
+  } satisfies SectionCopy,
   relatedPages: [
     {
       title: "Свадебный макияж",
       href: "/wikimarket/beauty/bridal-makeup",
-      note: "Интент для комплексного bridal-образа в одной воронке выбора.",
+      note: "Существующий beauty-intent для комплексного bridal-образа в одной воронке выбора.",
     },
     {
-      title: "Репетиция свадебного образа",
-      href: "/wikimarket/beauty/wedding-hair-trial",
-      note: "Отдельный сценарий про цели и формат пробного образа.",
+      title: "6 главных bridal-групп",
+      href: "#taxonomy-groups",
+      note: "Быстрый возврат к верхнему taxonomy layer этой страницы без лишней прокрутки.",
     },
     {
-      title: "Прически с фатой",
-      href: "/wikimarket/beauty/hairstyles-with-veil",
-      note: "Фокус на крепление фаты и устойчивость конструкции.",
+      title: "Каталог 30 типов",
+      href: "#hairstyle-catalog",
+      note: "Переход к сгруппированному каталогу, где все типы уже разложены по кластерам.",
     },
     {
-      title: "Прически на короткие волосы",
-      href: "/wikimarket/beauty/short-hair-wedding-hairstyles",
-      note: "Специализированный интент для короткой длины и аксессуаров.",
+      title: "Modifiers guide",
+      href: "#selection-modifiers",
+      note: "Уточнить фату, аксессуары, стиль свадьбы и длину волос без отдельного filter-engine.",
     },
   ] satisfies RelatedPage[],
 } as const;
 
 export type WeddingHairstylesPageData = typeof weddingHairstylesPageData;
-
-

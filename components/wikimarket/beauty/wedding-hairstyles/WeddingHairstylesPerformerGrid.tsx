@@ -46,7 +46,7 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
 
       <p className={styles.performerDisclaimer}>{section.disclaimer}</p>
 
-      <nav className={styles.filterBar} aria-label="Фильтры исполнителей">
+      <nav className={styles.filterBar} aria-label={section.filtersAriaLabel}>
         {section.filters.map((filter) => {
           const isActive = activeFilter === filter.id;
 
@@ -115,7 +115,7 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
               </ul>
 
               <div className={styles.performerStrengths}>
-                <h4>Сильные стороны</h4>
+                <h4>{section.strengthsTitle}</h4>
                 <ul>
                   {performer.strengths.map((strength) => (
                     <li key={strength}>{strength}</li>
@@ -131,11 +131,7 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
         })}
       </div>
 
-      {filteredPerformers.length === 0 ? (
-        <p className={styles.emptyFilterState}>
-          По выбранному фильтру карточки пока не показаны. Оставьте заявку, чтобы получить подбор под ваши параметры.
-        </p>
-      ) : null}
+      {filteredPerformers.length === 0 ? <p className={styles.emptyFilterState}>{section.emptyState}</p> : null}
 
       <div className={styles.inlineCta}>
         <h3>{section.compareCta.title}</h3>

@@ -92,7 +92,7 @@ export default function WeddingHairstylesGuidedSelector({
         </div>
 
         <aside className={styles.selectorSummary} aria-live="polite">
-          <h3>Ваш текущий набор параметров</h3>
+          <h3>{selector.summaryTitle}</h3>
           <ul>
             {selectedLabels.map((item) => (
               <li key={item.category}>

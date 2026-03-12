@@ -1,16 +1,20 @@
 ﻿import styles from "./WeddingHairstylesPage.module.css";
-import type { ScenarioItem } from "./data";
+import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesScenariosProps = {
-  items: ScenarioItem[];
+  section: WeddingHairstylesPageData["scenariosSection"];
+  items: WeddingHairstylesPageData["scenarios"];
 };
 
-export default function WeddingHairstylesScenarios({ items }: WeddingHairstylesScenariosProps) {
+export default function WeddingHairstylesScenarios({
+  section,
+  items,
+}: WeddingHairstylesScenariosProps) {
   return (
     <section id="personal-scenarios" className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h2>Что выбрать именно вам?</h2>
-        <p>Короткие сценарии, которые помогают быстро сузить выбор перед брифом мастеру.</p>
+        <h2>{section.title}</h2>
+        <p>{section.subtitle}</p>
       </div>
 
       <div className={styles.scenarioGrid}>
