@@ -929,3 +929,220 @@
   border-radius: inherit;
 }
 
+
+.section,
+.toc,
+.cta,
+.catalogGroupSection,
+.catalogTypeCard {
+  scroll-margin-top: 88px;
+}
+
+.taxonomyGroupGrid,
+.catalogTypeGrid,
+.modifierGroupGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.taxonomyGroupGrid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.taxonomyGroupCard,
+.catalogGroupSection,
+.catalogTypeCard,
+.modifierGroupCard {
+  border: 1px solid var(--theme-card-accent);
+  border-radius: 16px;
+  background: var(--theme-surface-strong);
+}
+
+.taxonomyGroupCard,
+.modifierGroupCard {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.taxonomyGroupHeader,
+.catalogGroupTitleWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.taxonomyGroupSlug,
+.catalogGroupSlug {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-page-muted);
+}
+
+.taxonomyGroupCard h3,
+.catalogGroupHeader h3,
+.modifierGroupCard h3 {
+  margin: 0;
+  line-height: 1.15;
+  color: var(--theme-page-title);
+}
+
+.taxonomyGroupCard h3,
+.modifierGroupCard h3 {
+  font-size: 22px;
+}
+
+.taxonomyGroupDescription,
+.catalogGroupDescription,
+.catalogGroupIntent,
+.modifierGroupCard p,
+.catalogTypeCard p,
+.modifierGuideNote {
+  margin: 0;
+  color: var(--neutral-700);
+  line-height: 1.55;
+}
+
+.taxonomyGroupIntent,
+.catalogGroupIntent,
+.modifierGuideNote {
+  border: 1px solid var(--theme-border);
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--theme-soft-bg);
+}
+
+.taxonomyRepresentativeBlock,
+.catalogTypeMeta {
+  display: grid;
+  gap: 8px;
+}
+
+.taxonomyRepresentativeTitle,
+.catalogTypeMetaTitle {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-page-muted);
+}
+
+.taxonomyRepresentativeList,
+.catalogTypeModifierList,
+.modifierList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taxonomyRepresentativeList,
+.catalogTypeModifierList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.taxonomyRepresentativeList li,
+.catalogTypeModifierList li {
+  border: 1px solid var(--theme-chip-border);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: var(--theme-surface-soft);
+  color: var(--theme-chip-text);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.catalogGroupStack {
+  display: grid;
+  gap: 14px;
+}
+
+.catalogGroupSection {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.catalogGroupHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.catalogGroupHeader h3 {
+  font-size: clamp(24px, 3vw, 30px);
+}
+
+.catalogTypeGrid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.catalogTypeCard {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  background: var(--surface);
+}
+
+.catalogTypeCard h4 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--theme-page-title);
+}
+
+.modifierGuideNote {
+  margin-bottom: 14px;
+}
+
+.modifierGroupGrid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.modifierList {
+  display: grid;
+  gap: 10px;
+}
+
+.modifierList li {
+  border: 1px solid var(--theme-border);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.modifierList strong {
+  color: var(--theme-page-title);
+}
+
+.modifierList span {
+  color: var(--neutral-700);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .taxonomyGroupCard,
+  .catalogGroupSection,
+  .catalogTypeCard,
+  .modifierGroupCard {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .catalogGroupHeader {
+    display: grid;
+  }
+
+  .taxonomyGroupGrid,
+  .catalogTypeGrid,
+  .modifierGroupGrid {
+    grid-template-columns: 1fr;
+  }
+}

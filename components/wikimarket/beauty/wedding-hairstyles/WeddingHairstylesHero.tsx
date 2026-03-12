@@ -13,7 +13,7 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
     <section className={styles.heroWrap}>
       <div className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>WikiMarket / Красота</p>
+          <p className={styles.kicker}>{hero.kicker}</p>
           <h1 className={styles.heroTitle}>{hero.title}</h1>
           <p className={styles.heroLead}>{hero.subtitle}</p>
 
@@ -47,7 +47,7 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
             <img
               className={styles.heroImage}
               src={HERO_IMAGE_SRC}
-              alt="Premium wedding hairstyle for bride"
+              alt={hero.imageAlt}
               width={1600}
               height={1600}
               loading="eager"
