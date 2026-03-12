@@ -1,9 +1,13 @@
-﻿.page {
+.page {
   width: min(1160px, 100% - 32px);
   margin: 0 auto;
-  padding: 20px 0 calc(88px + env(safe-area-inset-bottom));
+  padding: 8px 0 calc(88px + env(safe-area-inset-bottom));
   display: grid;
-  gap: 18px;
+  gap: 14px;
+}
+
+.breadcrumbs {
+  margin-bottom: -12px;
 }
 
 .breadcrumbs ol {
@@ -40,15 +44,15 @@
 
 .heroWrap {
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: 16px;
+  gap: 18px;
   border-radius: 24px;
-  padding: 28px;
+  padding: 26px;
   border: 1px solid var(--theme-hero-border);
   background: var(--theme-hero-bg);
 }
@@ -89,24 +93,29 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .heroBadges li {
   border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
-  padding: 6px 12px;
+  min-height: 38px;
+  padding: 8px 14px;
   background: var(--theme-surface-soft);
   color: var(--theme-chip-text);
   font-size: 13px;
   line-height: 1.2;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroActions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  row-gap: 10px;
 }
 
 .heroPoints {
@@ -186,9 +195,9 @@
   border: 1px solid var(--theme-border);
   border-radius: 18px;
   background: var(--theme-surface-strong);
-  padding: 16px;
+  padding: 18px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .heroSupportCard h2 {
@@ -301,19 +310,19 @@
 .selectorLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 .selectorControls {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .selectorGroup {
   margin: 0;
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 12px;
+  padding: 14px;
 }
 
 .selectorGroup legend {
@@ -325,18 +334,24 @@
 .selectorChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .selectorChip,
 .filterChip {
   border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
-  padding: 8px 12px;
+  min-height: 38px;
+  padding: 8px 14px;
   background: var(--theme-surface-soft);
   color: var(--theme-chip-text);
   font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .selectorChip:hover,
@@ -354,7 +369,7 @@
 .selectorSummary {
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
   background: var(--theme-soft-bg);
   align-self: start;
 }
@@ -395,6 +410,14 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.recommendationGrid {
+  margin-top: 16px;
+}
+
+.performerGrid {
+  align-items: stretch;
+}
+
 .recommendationCard,
 .styleCard,
 .scenarioCard,
@@ -410,14 +433,22 @@
   gap: 10px;
 }
 
+.recommendationCard {
+  align-content: start;
+  gap: 10px;
+  padding: 20px 18px 18px;
+}
+
 .recommendationScore {
   margin: 0;
   display: inline-flex;
   width: fit-content;
   border-radius: 999px;
-  padding: 4px 10px;
+  min-height: 32px;
+  padding: 7px 12px;
   font-size: 12px;
   font-weight: 700;
+  align-items: center;
   color: var(--theme-link);
   background: var(--theme-chip-bg);
 }
@@ -447,6 +478,10 @@
   line-height: 1.5;
 }
 
+.recommendationCard .inlineLink {
+  margin-top: 2px;
+}
+
 .styleImageSlot {
   margin: 0;
   aspect-ratio: 4 / 3;
@@ -467,10 +502,10 @@
   margin-top: 12px;
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
   background: var(--theme-soft-bg);
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .inlineCta h3,
@@ -492,16 +527,22 @@
 .filterBar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
 .performerCard {
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+  gap: 12px;
+  height: 100%;
+  padding: 18px;
 }
 
 .performerImageSlot {
-  margin: 0 0 14px;
+  margin: 0;
   aspect-ratio: 4 / 5;
   border-radius: 12px;
   overflow: hidden;
@@ -561,7 +602,7 @@
   margin: 0;
   padding-left: 18px;
   display: grid;
-  gap: 6px;
+  gap: 7px;
 }
 
 .performerFacts span {
@@ -573,11 +614,13 @@
   border-radius: 12px;
   border: 1px solid var(--theme-border);
   background: var(--theme-soft-bg);
-  padding: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
 }
 
 .performerStrengths h4 {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 15px;
 }
 
@@ -590,6 +633,10 @@
   padding-left: 18px;
   display: grid;
   gap: 7px;
+}
+
+.performerCard > .btn {
+  margin-top: auto;
 }
 
 .emptyFilterState {
@@ -697,12 +744,14 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  border-radius: 10px;
+  min-height: 44px;
+  border-radius: 12px;
   text-decoration: none;
   font-weight: 700;
-  padding: 10px 14px;
+  padding: 11px 18px;
   border: 1px solid transparent;
   width: fit-content;
+  line-height: 1.2;
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
 
@@ -774,8 +823,12 @@
 @media (max-width: 768px) {
   .page {
     width: min(1160px, 100% - 16px);
-    padding-top: 12px;
-    gap: 14px;
+    padding-top: 8px;
+    gap: 12px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: -6px;
   }
 
   .hero,
@@ -794,10 +847,21 @@
     font-size: 15px;
   }
 
+  .recommendationCard {
+    padding: 16px;
+  }
+
   .heroBadges li,
   .selectorChip,
   .filterChip {
     font-size: 13px;
+    min-height: 36px;
+    padding-inline: 12px;
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .tocList,
@@ -822,6 +886,7 @@
 
   .btn {
     width: 100%;
+    padding-inline: 16px;
   }
 
   .stickyMobileCta {
