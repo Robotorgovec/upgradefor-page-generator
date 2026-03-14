@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
 import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesPerformerGridProps = {
@@ -25,6 +26,15 @@ const PERFORMER_IMAGES: Record<
     src: "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstylist-mobile-bridal-service.webp",
     alt: "Mobile bridal hairstylist service",
   },
+};
+
+const PERFORMER_TITLE_ICONS: Record<
+  WeddingHairstylesPageData["performersSection"]["performers"][number]["id"],
+  WeddingHairstylesIconName
+> = {
+  "performer-template-a": "private-master",
+  "performer-template-b": "premium-salon",
+  "performer-template-c": "mobile-service",
 };
 
 export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairstylesPerformerGridProps) {
@@ -67,6 +77,7 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
       <div className={styles.performerGrid}>
         {filteredPerformers.map((performer) => {
           const image = PERFORMER_IMAGES[performer.id];
+          const titleIcon = PERFORMER_TITLE_ICONS[performer.id];
 
           return (
             <article key={performer.id} className={styles.performerCard} id={performer.id}>
@@ -84,7 +95,10 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
 
               <header className={styles.performerHeader}>
                 <div>
-                  <h3 className={styles.performerName}>{performer.displayName}</h3>
+                  <h3 className={`${styles.performerName} ${styles.headingIconLabel}`}>
+                    <WeddingHairstylesIcon name={titleIcon} size="inline" />
+                    <span className={styles.iconLabelText}>{performer.displayName}</span>
+                  </h3>
                   <p className={styles.performerMeta}>{performer.cityLabel}</p>
                 </div>
                 {performer.premiumLabel ? <p className={styles.premiumBadge}>{performer.premiumLabel}</p> : null}

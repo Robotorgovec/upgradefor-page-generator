@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
 import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import type { RecommendationCard, WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesGuidedSelectorProps = {
@@ -11,6 +12,14 @@ type WeddingHairstylesGuidedSelectorProps = {
 };
 
 type SelectedMap = Record<string, string>;
+
+const SELECTOR_ICONS: Partial<
+  Record<WeddingHairstylesPageData["selector"]["categories"][number]["id"], WeddingHairstylesIconName>
+> = {
+  "face-shape": "face-shape",
+  "hair-length": "hair-length",
+  veil: "veil-accessory",
+};
 
 export default function WeddingHairstylesGuidedSelector({
   selector,
@@ -62,33 +71,40 @@ export default function WeddingHairstylesGuidedSelector({
 
       <div className={styles.selectorLayout}>
         <div className={styles.selectorControls}>
-          {selector.categories.map((category) => (
-            <fieldset key={category.id} className={styles.selectorGroup}>
-              <legend>{category.title}</legend>
-              <div className={styles.selectorChips}>
-                {category.options.map((option) => {
-                  const isActive = selected[category.id] === option.id;
+          {selector.categories.map((category) => {
+            const iconName = SELECTOR_ICONS[category.id];
 
-                  return (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
-                      aria-pressed={isActive}
-                      onClick={() =>
-                        setSelected((current) => ({
-                          ...current,
-                          [category.id]: option.id,
-                        }))
-                      }
-                    >
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </fieldset>
-          ))}
+            return (
+              <fieldset key={category.id} className={styles.selectorGroup}>
+                <legend className={iconName ? styles.inlineIconLabel : undefined}>
+                  {iconName ? <WeddingHairstylesIcon name={iconName} size="inline" /> : null}
+                  <span className={styles.iconLabelText}>{category.title}</span>
+                </legend>
+                <div className={styles.selectorChips}>
+                  {category.options.map((option) => {
+                    const isActive = selected[category.id] === option.id;
+
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
+                        aria-pressed={isActive}
+                        onClick={() =>
+                          setSelected((current) => ({
+                            ...current,
+                            [category.id]: option.id,
+                          }))
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            );
+          })}
         </div>
 
         <aside className={styles.selectorSummary} aria-live="polite">

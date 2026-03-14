@@ -1,4 +1,5 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon from "./WeddingHairstylesIcon";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesHeroProps = {
@@ -13,7 +14,10 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
     <section className={styles.heroWrap}>
       <div className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>WikiMarket / Красота</p>
+          <p className={styles.kicker}>
+            <WeddingHairstylesIcon name="bridal-guide" size="pill" />
+            <span className={styles.iconLabelText}>{hero.kicker}</span>
+          </p>
           <h1 className={styles.heroTitle}>{hero.title}</h1>
           <p className={styles.heroLead}>{hero.subtitle}</p>
 

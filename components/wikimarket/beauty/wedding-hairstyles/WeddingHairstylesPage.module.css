@@ -69,6 +69,78 @@
   text-transform: uppercase;
   color: var(--theme-chip-text);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+}
+
+.pageIcon {
+  --wedding-hairstyles-icon-mask: none;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+  background-color: currentColor;
+  line-height: 1;
+  -webkit-mask-image: var(--wedding-hairstyles-icon-mask);
+  mask-image: var(--wedding-hairstyles-icon-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.pageIconSection {
+  width: 24px;
+  height: 24px;
+}
+
+.pageIconInline {
+  width: 20px;
+  height: 20px;
+}
+
+.pageIconPill {
+  width: 16px;
+  height: 16px;
+}
+
+.inlineIconLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.headingIconLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.headingIconText {
+  min-width: 0;
+  text-wrap: balance;
+}
+
+.iconLabelText {
+  min-width: 0;
+}
+
+.listIconLabel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.listIconLabel .pageIcon {
+  margin-top: 2px;
 }
 
 .heroTitle {
@@ -841,6 +913,16 @@
 
   .heroTitle {
     font-size: clamp(30px, 9vw, 40px);
+  }
+
+  .pageIconSection {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pageIconInline {
+    width: 18px;
+    height: 18px;
   }
 
   .heroLead {
