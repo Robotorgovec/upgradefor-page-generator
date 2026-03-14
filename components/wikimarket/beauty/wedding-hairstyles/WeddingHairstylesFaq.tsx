@@ -1,4 +1,5 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon from "./WeddingHairstylesIcon";
 import type { FaqItem } from "./data";
 
 type WeddingHairstylesFaqProps = {
@@ -9,7 +10,10 @@ export default function WeddingHairstylesFaq({ items }: WeddingHairstylesFaqProp
   return (
     <section id="faq" className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h2>FAQ по свадебным прическам</h2>
+        <h2 className={styles.headingIconLabel}>
+          <WeddingHairstylesIcon name="faq-help" size="section" />
+          <span className={styles.headingIconText}>FAQ по свадебным прическам</span>
+        </h2>
         <p>Самые частые вопросы невест перед бронированием мастера и выбором формата образа.</p>
       </div>
 

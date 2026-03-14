@@ -1,4 +1,4 @@
-﻿import WeddingHairstylesCta from "./WeddingHairstylesCta";
+import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
 import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
@@ -6,8 +6,18 @@ import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
+import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
+
+const QUICK_ANSWER_ICONS: Record<string, WeddingHairstylesIconName> = {
+  "Репетиция особенно нужна, если критичны крепление фаты, ранний выезд или сложная конструкция формы.":
+    "trial-session",
+};
+
+const PREP_ROW_ICONS: Record<string, WeddingHairstylesIconName> = {
+  "Длина и текущее состояние волос": "hair-prep",
+};
 
 export default function WeddingHairstylesPage() {
   const data = weddingHairstylesPageData;
@@ -67,9 +77,22 @@ export default function WeddingHairstylesPage() {
           <h2>{data.quickAnswer.title}</h2>
         </div>
         <ul className={styles.quickAnswerList}>
-          {data.quickAnswer.bullets.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
+          {data.quickAnswer.bullets.map((item) => {
+            const iconName = QUICK_ANSWER_ICONS[item];
+
+            return (
+              <li key={item}>
+                {iconName ? (
+                  <span className={styles.listIconLabel}>
+                    <WeddingHairstylesIcon name={iconName} size="inline" />
+                    <span className={styles.iconLabelText}>{item}</span>
+                  </span>
+                ) : (
+                  item
+                )}
+              </li>
+            );
+          })}
         </ul>
       </section>
 
@@ -79,7 +102,10 @@ export default function WeddingHairstylesPage() {
 
       <section id="popular-styles" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>Популярные стили свадебных причесок</h2>
+          <h2 className={styles.headingIconLabel}>
+            <WeddingHairstylesIcon name="style-catalog" size="section" />
+            <span className={styles.headingIconText}>Популярные стили свадебных причесок</span>
+          </h2>
           <p>
             Карточки помогают сравнить стиль по задаче дня, ожидаемому эффекту и моменту выбора перед
             бронированием.
@@ -127,7 +153,10 @@ export default function WeddingHairstylesPage() {
           </article>
 
           <article className={styles.checklistCard}>
-            <h3>{data.bookingQuestions.title}</h3>
+            <h3 className={styles.headingIconLabel}>
+              <WeddingHairstylesIcon name="consultation" size="inline" />
+              <span className={styles.iconLabelText}>{data.bookingQuestions.title}</span>
+            </h3>
             <ul>
               {data.bookingQuestions.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -136,7 +165,10 @@ export default function WeddingHairstylesPage() {
           </article>
 
           <article className={styles.checklistCard}>
-            <h3>{data.photoChecklist.title}</h3>
+            <h3 className={styles.headingIconLabel}>
+              <WeddingHairstylesIcon name="reference-photo" size="inline" />
+              <span className={styles.iconLabelText}>{data.photoChecklist.title}</span>
+            </h3>
             <ul>
               {data.photoChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -157,7 +189,10 @@ export default function WeddingHairstylesPage() {
 
       <section id="pricing" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>{data.pricingSection.title}</h2>
+          <h2 className={styles.headingIconLabel}>
+            <WeddingHairstylesIcon name="price-guide" size="section" />
+            <span className={styles.headingIconText}>{data.pricingSection.title}</span>
+          </h2>
           <p>{data.pricingSection.subtitle}</p>
         </div>
 
@@ -199,14 +234,30 @@ export default function WeddingHairstylesPage() {
 
       <section id="prep" className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>{data.prepChecklist.title}</h2>
+          <h2 className={styles.headingIconLabel}>
+            <WeddingHairstylesIcon name="preparation-checklist" size="section" />
+            <span className={styles.headingIconText}>{data.prepChecklist.title}</span>
+          </h2>
           <p>Соберите материалы заранее, чтобы выбор стиля и исполнителя прошел без потери времени.</p>
         </div>
 
         <ul className={styles.prepList}>
-          {data.prepChecklist.items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
+          {data.prepChecklist.items.map((item) => {
+            const iconName = PREP_ROW_ICONS[item];
+
+            return (
+              <li key={item}>
+                {iconName ? (
+                  <span className={styles.listIconLabel}>
+                    <WeddingHairstylesIcon name={iconName} size="inline" />
+                    <span className={styles.iconLabelText}>{item}</span>
+                  </span>
+                ) : (
+                  item
+                )}
+              </li>
+            );
+          })}
         </ul>
       </section>
 
