@@ -1,4 +1,4 @@
-import styles from "./WeddingHairstylesPage.module.css";
+﻿import styles from "./WeddingHairstylesPage.module.css";
 import WeddingHairstylesIcon from "./WeddingHairstylesIcon";
 import type { WeddingHairstylesPageData } from "./data";
 
@@ -6,18 +6,14 @@ type WeddingHairstylesHeroProps = {
   hero: WeddingHairstylesPageData["hero"];
 };
 
-const HERO_IMAGE_SRC =
-  "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstyles-hero-editorial-bride.webp";
-const HERO_KICKER = "\u0413\u0438\u0434 \u043f\u043e \u0432\u044b\u0431\u043e\u0440\u0443";
-
 export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroProps) {
   return (
     <section className={styles.heroWrap}>
       <div className={styles.hero}>
         <div className={styles.heroContent}>
           <p className={styles.kicker}>
-            <WeddingHairstylesIcon name="bridal-guide" size="pill" />
-            <span className={styles.iconLabelText}>{HERO_KICKER}</span>
+            <WeddingHairstylesIcon name="bridal-guide" className={styles.kickerIcon} />
+            <span>WikiMarket / Красота</span>
           </p>
           <h1 className={styles.heroTitle}>{hero.title}</h1>
           <p className={styles.heroLead}>{hero.subtitle}</p>
@@ -48,17 +44,10 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
         </div>
 
         <aside className={styles.heroAside}>
-          <div className={styles.heroVisual} data-wm-hero-image>
-            <img
-              className={styles.heroImage}
-              src={HERO_IMAGE_SRC}
-              alt="Premium wedding hairstyle for bride"
-              width={1600}
-              height={1600}
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-            />
+          <div className={styles.heroVisual} aria-hidden="true" data-wm-hero-image>
+            <div className={styles.heroVisualOrb} />
+            <div className={styles.heroVisualGrid} />
+            <p>Bridal styling map</p>
           </div>
 
           <article className={styles.heroSupportCard}>

@@ -1,13 +1,9 @@
 .page {
   width: min(1160px, 100% - 32px);
   margin: 0 auto;
-  padding: 8px 0 calc(88px + env(safe-area-inset-bottom));
+  padding: 20px 0 calc(88px + env(safe-area-inset-bottom));
   display: grid;
-  gap: 14px;
-}
-
-.breadcrumbs {
-  margin-bottom: -12px;
+  gap: 18px;
 }
 
 .breadcrumbs ol {
@@ -44,15 +40,15 @@
 
 .heroWrap {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: 18px;
+  gap: 16px;
   border-radius: 24px;
-  padding: 26px;
+  padding: 28px;
   border: 1px solid var(--theme-hero-border);
   background: var(--theme-hero-bg);
 }
@@ -64,88 +60,33 @@
 
 .kicker {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--theme-chip-text);
   font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
 }
 
-.pageIcon {
-  --wedding-hairstyles-icon-mask: none;
-  display: inline-block;
-  flex: 0 0 auto;
+.kickerIcon,
+.selectorLabelIcon {
   width: 20px;
   height: 20px;
-  color: currentColor;
-  background-color: currentColor;
-  line-height: 1;
-  -webkit-mask-image: var(--wedding-hairstyles-icon-mask);
-  mask-image: var(--wedding-hairstyles-icon-mask);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-.pageIconSvg {
+  flex-shrink: 0;
   display: block;
-  flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
-  color: currentColor;
-  overflow: hidden;
-}
-
-.pageIconSection {
-  width: 24px;
-  height: 24px;
-}
-
-.pageIconInline {
-  width: 20px;
-  height: 20px;
-}
-
-.pageIconPill {
-  width: 20px;
-  height: 20px;
-}
-
-.inlineIconLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.selectorLegend {
-  display: inline-grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  max-width: 100%;
 }
 
 .headingIconLabel {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
-.headingIconText {
-  min-width: 0;
-  text-wrap: balance;
-}
-
+.headingIconText,
 .iconLabelText {
   min-width: 0;
 }
@@ -153,12 +94,8 @@
 .listIconLabel {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px;
   align-items: start;
-}
-
-.listIconLabel .pageIcon {
-  margin-top: 2px;
+  gap: 8px;
 }
 
 .heroTitle {
@@ -183,29 +120,24 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .heroBadges li {
   border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
-  min-height: 38px;
-  padding: 8px 14px;
+  padding: 6px 12px;
   background: var(--theme-surface-soft);
   color: var(--theme-chip-text);
   font-size: 13px;
   line-height: 1.2;
   font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .heroActions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  row-gap: 10px;
+  gap: 10px;
 }
 
 .heroPoints {
@@ -285,9 +217,9 @@
   border: 1px solid var(--theme-border);
   border-radius: 18px;
   background: var(--theme-surface-strong);
-  padding: 18px;
+  padding: 16px;
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .heroSupportCard h2 {
@@ -400,19 +332,19 @@
 .selectorLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
-  gap: 14px;
+  gap: 12px;
 }
 
 .selectorControls {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .selectorGroup {
   margin: 0;
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 14px;
+  padding: 12px;
 }
 
 .selectorGroup legend {
@@ -421,32 +353,28 @@
   color: var(--theme-page-title);
 }
 
-.selectorLegend .pageIcon,
-.selectorLegend .pageIconSvg {
-  margin-top: 0;
+.selectorLegend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.2;
 }
 
 .selectorChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .selectorChip,
 .filterChip {
   border: 1px solid var(--theme-chip-border);
   border-radius: 999px;
-  min-height: 38px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   background: var(--theme-surface-soft);
   color: var(--theme-chip-text);
   font-size: 14px;
-  line-height: 1.2;
-  font-weight: 600;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .selectorChip:hover,
@@ -464,7 +392,7 @@
 .selectorSummary {
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 16px;
+  padding: 14px;
   background: var(--theme-soft-bg);
   align-self: start;
 }
@@ -505,14 +433,6 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.recommendationGrid {
-  margin-top: 16px;
-}
-
-.performerGrid {
-  align-items: stretch;
-}
-
 .recommendationCard,
 .styleCard,
 .scenarioCard,
@@ -528,22 +448,14 @@
   gap: 10px;
 }
 
-.recommendationCard {
-  align-content: start;
-  gap: 10px;
-  padding: 20px 18px 18px;
-}
-
 .recommendationScore {
   margin: 0;
   display: inline-flex;
   width: fit-content;
   border-radius: 999px;
-  min-height: 32px;
-  padding: 7px 12px;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: 700;
-  align-items: center;
   color: var(--theme-link);
   background: var(--theme-chip-bg);
 }
@@ -573,10 +485,6 @@
   line-height: 1.5;
 }
 
-.recommendationCard .inlineLink {
-  margin-top: 2px;
-}
-
 .styleImageSlot {
   margin: 0;
   aspect-ratio: 4 / 3;
@@ -585,7 +493,8 @@
   background: var(--theme-soft-bg);
 }
 
-.styleImage {
+.styleImage,
+.styleImageSlot img {
   display: block;
   width: 100%;
   height: 100%;
@@ -597,10 +506,10 @@
   margin-top: 12px;
   border: 1px solid var(--theme-border);
   border-radius: 14px;
-  padding: 16px;
+  padding: 14px;
   background: var(--theme-soft-bg);
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .inlineCta h3,
@@ -622,18 +531,12 @@
 .filterBar {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 14px;
 }
 
 .performerCard {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  align-content: stretch;
-  gap: 12px;
-  height: 100%;
-  padding: 18px;
+  align-content: start;
 }
 
 .performerImageSlot {
@@ -644,7 +547,8 @@
   background: var(--theme-soft-bg);
 }
 
-.performerImage {
+.performerImage,
+.performerImageSlot img {
   display: block;
   width: 100%;
   height: 100%;
@@ -654,7 +558,7 @@
 
 .performerHeader {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto 1fr auto;
   gap: 10px;
   align-items: start;
 }
@@ -697,7 +601,7 @@
   margin: 0;
   padding-left: 18px;
   display: grid;
-  gap: 7px;
+  gap: 6px;
 }
 
 .performerFacts span {
@@ -709,13 +613,11 @@
   border-radius: 12px;
   border: 1px solid var(--theme-border);
   background: var(--theme-soft-bg);
-  padding: 12px;
-  display: grid;
-  gap: 8px;
+  padding: 10px;
 }
 
 .performerStrengths h4 {
-  margin: 0;
+  margin: 0 0 8px;
   font-size: 15px;
 }
 
@@ -728,10 +630,6 @@
   padding-left: 18px;
   display: grid;
   gap: 7px;
-}
-
-.performerCard > .btn {
-  margin-top: auto;
 }
 
 .emptyFilterState {
@@ -839,14 +737,12 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 44px;
-  border-radius: 12px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 700;
-  padding: 11px 18px;
+  padding: 10px 14px;
   border: 1px solid transparent;
   width: fit-content;
-  line-height: 1.2;
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
 
@@ -918,12 +814,8 @@
 @media (max-width: 768px) {
   .page {
     width: min(1160px, 100% - 16px);
-    padding-top: 8px;
-    gap: 12px;
-  }
-
-  .breadcrumbs {
-    margin-bottom: -6px;
+    padding-top: 12px;
+    gap: 14px;
   }
 
   .hero,
@@ -938,40 +830,20 @@
     font-size: clamp(30px, 9vw, 40px);
   }
 
-  .pageIconSection {
-    width: 20px;
-    height: 20px;
-  }
-
-  .pageIconInline {
-    width: 18px;
-    height: 18px;
-  }
-
-  .pageIconPill {
-    width: 18px;
-    height: 18px;
-  }
-
   .heroLead {
     font-size: 15px;
-  }
-
-  .recommendationCard {
-    padding: 16px;
   }
 
   .heroBadges li,
   .selectorChip,
   .filterChip {
     font-size: 13px;
-    min-height: 36px;
-    padding-inline: 12px;
   }
 
-  .heroActions {
-    display: grid;
-    grid-template-columns: 1fr;
+  .kickerIcon,
+  .selectorLabelIcon {
+    width: 18px;
+    height: 18px;
   }
 
   .tocList,
@@ -986,7 +858,7 @@
   }
 
   .performerHeader {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto 1fr;
   }
 
   .premiumBadge {
@@ -996,7 +868,6 @@
 
   .btn {
     width: 100%;
-    padding-inline: 16px;
   }
 
   .stickyMobileCta {
@@ -1016,25 +887,4 @@
   .heroVisual {
     min-height: 150px;
   }
-}
-
-.heroAside {
-  align-content: start;
-}
-
-.heroVisual {
-  aspect-ratio: 1 / 1;
-  min-height: 0;
-  display: block;
-  border: none;
-  background: transparent;
-}
-
-.heroImage {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: inherit;
 }
