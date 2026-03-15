@@ -8,6 +8,7 @@ type WeddingHairstylesHeroProps = {
 
 const HERO_IMAGE_SRC =
   "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstyles-hero-editorial-bride.webp";
+const HERO_KICKER = "\u0413\u0438\u0434 \u043f\u043e \u0432\u044b\u0431\u043e\u0440\u0443";
 
 export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroProps) {
   return (
@@ -16,7 +17,7 @@ export default function WeddingHairstylesHero({ hero }: WeddingHairstylesHeroPro
         <div className={styles.heroContent}>
           <p className={styles.kicker}>
             <WeddingHairstylesIcon name="bridal-guide" size="pill" />
-            <span className={styles.iconLabelText}>{hero.kicker}</span>
+            <span className={styles.iconLabelText}>{HERO_KICKER}</span>
           </p>
           <h1 className={styles.heroTitle}>{hero.title}</h1>
           <p className={styles.heroLead}>{hero.subtitle}</p>

@@ -94,6 +94,15 @@
   mask-size: contain;
 }
 
+.pageIconSvg {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: currentColor;
+  overflow: hidden;
+}
+
 .pageIconSection {
   width: 24px;
   height: 24px;
@@ -105,8 +114,8 @@
 }
 
 .pageIconPill {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 .inlineIconLabel {
@@ -114,6 +123,15 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
+}
+
+.selectorLegend {
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .headingIconLabel {
@@ -401,6 +419,11 @@
   font-weight: 700;
   padding: 0 6px;
   color: var(--theme-page-title);
+}
+
+.selectorLegend .pageIcon,
+.selectorLegend .pageIconSvg {
+  margin-top: 0;
 }
 
 .selectorChips {
@@ -925,6 +948,11 @@
     height: 18px;
   }
 
+  .pageIconPill {
+    width: 18px;
+    height: 18px;
+  }
+
   .heroLead {
     font-size: 15px;
   }
@@ -1010,4 +1038,3 @@
   object-position: center;
   border-radius: inherit;
 }
-

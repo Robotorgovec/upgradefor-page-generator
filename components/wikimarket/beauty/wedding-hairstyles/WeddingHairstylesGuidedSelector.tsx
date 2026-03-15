@@ -11,15 +11,25 @@ type WeddingHairstylesGuidedSelectorProps = {
   recommendations: RecommendationCard[];
 };
 
+type SelectorCategory = WeddingHairstylesPageData["selector"]["categories"][number];
+
 type SelectedMap = Record<string, string>;
 
-const SELECTOR_ICONS: Partial<
-  Record<WeddingHairstylesPageData["selector"]["categories"][number]["id"], WeddingHairstylesIconName>
-> = {
+const SELECTOR_ICONS: Partial<Record<SelectorCategory["id"], WeddingHairstylesIconName>> = {
   "face-shape": "face-shape",
   "hair-length": "hair-length",
+  volume: "hair-density",
+  "dress-style": "neckline-dress",
   veil: "veil-accessory",
 };
+
+const SELECTOR_TITLE_OVERRIDES: Partial<Record<SelectorCategory["id"], string>> = {
+  volume: "\u0413\u0443\u0441\u0442\u043e\u0442\u0430 / \u043e\u0431\u044a\u0435\u043c",
+  "dress-style": "\u0412\u044b\u0440\u0435\u0437 \u043f\u043b\u0430\u0442\u044c\u044f",
+  veil: "\u0424\u0430\u0442\u0430 / \u0430\u043a\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044b",
+};
+
+const getCategoryTitle = (category: SelectorCategory) => SELECTOR_TITLE_OVERRIDES[category.id] ?? category.title;
 
 export default function WeddingHairstylesGuidedSelector({
   selector,
@@ -56,7 +66,7 @@ export default function WeddingHairstylesGuidedSelector({
       const selectedId = selected[category.id];
       const selectedOption = category.options.find((option) => option.id === selectedId);
       return {
-        category: category.title,
+        category: getCategoryTitle(category),
         label: selectedOption?.label ?? "Не выбрано",
       };
     });
@@ -76,9 +86,9 @@ export default function WeddingHairstylesGuidedSelector({
 
             return (
               <fieldset key={category.id} className={styles.selectorGroup}>
-                <legend className={iconName ? styles.inlineIconLabel : undefined}>
+                <legend className={iconName ? styles.selectorLegend : undefined}>
                   {iconName ? <WeddingHairstylesIcon name={iconName} size="inline" /> : null}
-                  <span className={styles.iconLabelText}>{category.title}</span>
+                  <span className={styles.iconLabelText}>{getCategoryTitle(category)}</span>
                 </legend>
                 <div className={styles.selectorChips}>
                   {category.options.map((option) => {
