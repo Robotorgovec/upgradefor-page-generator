@@ -1,4 +1,4 @@
-﻿.page {
+.page {
   width: min(1160px, 100% - 32px);
   margin: 0 auto;
   padding: 20px 0 calc(88px + env(safe-area-inset-bottom));
@@ -77,6 +77,25 @@
   height: 20px;
   flex-shrink: 0;
   display: block;
+}
+
+.headingIconLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.headingIconText,
+.iconLabelText {
+  min-width: 0;
+}
+
+.listIconLabel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
 }
 
 .heroTitle {
@@ -468,27 +487,19 @@
 
 .styleImageSlot {
   margin: 0;
-  min-height: 124px;
+  aspect-ratio: 4 / 3;
   border-radius: 12px;
-  border: 1px dashed var(--theme-chip-border);
-  background:
-    radial-gradient(circle at 20% 20%, var(--theme-hero-grid), transparent 45%),
-    radial-gradient(circle at 80% 80%, var(--theme-hero-grid), transparent 48%),
-    var(--theme-soft-bg);
-  display: grid;
-  place-items: center;
-  color: var(--theme-page-copy);
+  overflow: hidden;
+  background: var(--theme-soft-bg);
 }
 
-.styleImageSlot span {
-  font-size: 28px;
-}
-
-.styleImageSlot figcaption {
-  margin-top: 4px;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.styleImage,
+.styleImageSlot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .inlineCta {
@@ -526,6 +537,23 @@
 
 .performerCard {
   align-content: start;
+}
+
+.performerImageSlot {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--theme-soft-bg);
+}
+
+.performerImage,
+.performerImageSlot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .performerHeader {
@@ -860,4 +888,3 @@
     min-height: 150px;
   }
 }
-

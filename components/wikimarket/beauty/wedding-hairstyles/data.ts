@@ -280,6 +280,16 @@ export const weddingHairstylesPageData = {
       tags: ["medium", "long", "veil-yes", "classic", "structured", "early", "oval", "home", "trial-yes"],
     },
     {
+      id: "hollywood-waves",
+      title: "Голливудская волна",
+      suitedFor: "Средняя/длинная длина, вечерний сценарий, лаконичное платье.",
+      effect: "Блеск и графичная линия у лица, сильный фотогеничный эффект.",
+      whenToChoose: "Если приоритет - выразительный образ и контролируемый климат локации.",
+      ctaLabel: "Проверить стойкость",
+      ctaHref: "#pricing",
+      tags: ["medium", "long", "minimal", "soft", "evening", "oval", "studio", "trial-no"],
+    },
+    {
       id: "textured-updo",
       title: "Текстурная собранная прическа",
       suitedFor: "Средняя и длинная длина, платье со сложной фактурой, вечерняя церемония.",
@@ -290,44 +300,36 @@ export const weddingHairstylesPageData = {
       tags: ["medium", "long", "romantic", "structured", "evening", "angular", "studio", "trial-yes"],
     },
     {
-      id: "hollywood-wave",
-      title: "Голливудская волна",
-      suitedFor: "Средняя/длинная длина, вечерний сценарий, лаконичное платье.",
-      effect: "Блеск и графичная линия у лица, сильный фотогеничный эффект.",
-      whenToChoose: "Если приоритет — выразительный образ и контролируемый климат локации.",
-      ctaLabel: "Проверить стойкость",
-      ctaHref: "#pricing",
-      tags: ["medium", "long", "minimal", "soft", "evening", "oval", "studio", "trial-no"],
-    },
-    {
-      id: "romantic-curls",
-      title: "Романтичные локоны",
-      suitedFor: "Мягкий образ, открытые плечи, дневная или outdoor-церемония.",
-      effect: "Легкая воздушность и естественная пластика формы.",
-      whenToChoose: "Когда важна мягкость образа и возможность легкой коррекции по ходу дня.",
-      ctaLabel: "Что учесть в жару",
-      ctaHref: "#faq",
-      tags: ["short", "medium", "long", "romantic", "soft", "day", "round", "venue", "trial-no"],
-    },
-    {
-      id: "braid-architecture",
-      title: "Плетение и архитектурные косы",
-      suitedFor: "Длинные волосы, динамичный тайминг, смена локаций.",
-      effect: "Управляемый объем и высокая стойкость при активной программе.",
-      whenToChoose: "Если нужен контролируемый образ на весь день и вечер.",
-      ctaLabel: "Сравнить исполнителей",
-      ctaHref: "#performers",
-      tags: ["long", "balanced", "structured", "early", "day", "angular", "venue", "trial-yes"],
-    },
-    {
-      id: "short-hair-styling",
-      title: "Короткая длина: текстурная укладка",
-      suitedFor: "Короткие волосы, фата/вуаль, акцент на чертах лица.",
-      effect: "Чистая геометрия или мягкая текстура без перегруза аксессуарами.",
-      whenToChoose: "Когда нужен выразительный образ при минимальном весе конструкции.",
-      ctaLabel: "Подобрать параметры",
+      id: "high-bun",
+      title: "Высокий пучок",
+      suitedFor: "Платье с чистой линией плеч, выразительные серьги и церемония в плотном тайминге.",
+      effect: "Лифтинг-силуэт, открытая шея и собранный премиальный контур.",
+      whenToChoose: "Когда нужен элегантный образ с высокой посадкой и устойчивой фиксацией.",
+      ctaLabel: "Проверить совместимость",
       ctaHref: "#guided-selection",
-      tags: ["short", "veil-yes", "veil-no", "minimal", "classic", "round", "home", "trial-no"],
+      tags: ["medium", "long", "classic", "minimal", "structured", "early", "evening", "oval", "studio", "trial-yes"],
+    },
+    {
+      id: "boho-braid",
+      title: "Бохо-коса",
+      suitedFor: "Длинные волосы, outdoor-церемония, романтичный образ и живой декор.",
+      effect: "Текстурный объем, мягкая динамика и заметная прическа без тяжести.",
+      whenToChoose:
+        "Если нужен расслабленный bridal-настрой с хорошей читаемостью на фото и в движении.",
+      ctaLabel: "Сравнить с локонами",
+      ctaHref: "#guided-selection",
+      tags: ["long", "veil-no", "romantic", "balanced", "day", "round", "venue", "trial-yes"],
+    },
+    {
+      id: "half-up-half-down-curls",
+      title: "Half-up half-down локоны",
+      suitedFor: "Средняя и длинная длина, украшение-гребень, мягкий bridal-образ и фата.",
+      effect: "Открывает лицо, сохраняет длину и дает мягкий объем без жесткой архитектуры.",
+      whenToChoose:
+        "Когда нужен баланс между собранной линией у лица и свободной длиной по спине.",
+      ctaLabel: "Сценарий под фату",
+      ctaHref: "#personal-scenarios",
+      tags: ["medium", "long", "veil-yes", "romantic", "soft", "day", "oval", "home", "trial-no"],
     },
   ] satisfies RecommendationCard[],
   scenarios: [
@@ -700,4 +702,5 @@ export const weddingHairstylesPageData = {
 } as const;
 
 export type WeddingHairstylesPageData = typeof weddingHairstylesPageData;
+
 

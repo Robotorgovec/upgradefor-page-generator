@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import CuAlRfqConfigurator from "./CuAlRfqConfigurator";
 import ContactsCountryBlock from "../shared/ContactsCountryBlock";
 import styles from "./CuAlHeatExchangersPage.module.css";
 import { faqItems, heroChips, productItems, useCases } from "./data";
@@ -83,10 +84,6 @@ export default function CuAlHeatExchangersPage() {
     };
   }, [updateManufacturerControls]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
@@ -126,6 +123,8 @@ export default function CuAlHeatExchangersPage() {
           />
         </div>
       </section>
+
+      <CuAlRfqConfigurator prefillProductSlug={product} prefillUsecaseSlug={usecase} />
 
       <section className={styles.threeCards}>
         <article className={styles.card}>
@@ -437,48 +436,6 @@ export default function CuAlHeatExchangersPage() {
         </div>
       </section>
 
-      <section id="request" className={styles.section}>
-        <h2>Заявка на расчёт / КП</h2>
-
-        <form className={`${styles.card} ${styles.form}`} onSubmit={handleSubmit}>
-          <input type="hidden" name="service" value="cu-al-design-production-supply" />
-          <input type="hidden" name="product" value={product} />
-          <input type="hidden" name="usecase" value={usecase} />
-
-          <div className={styles.formGrid}>
-            <label className={styles.field}>
-              <span>Имя</span>
-              <input className={styles.input} name="name" type="text" required />
-            </label>
-            <label className={styles.field}>
-              <span>Компания</span>
-              <input className={styles.input} name="company" type="text" />
-            </label>
-            <label className={styles.field}>
-              <span>Телефон/WhatsApp</span>
-              <input className={styles.input} name="phone" type="text" required />
-            </label>
-            <label className={styles.field}>
-              <span>Email</span>
-              <input className={styles.input} name="email" type="email" required />
-            </label>
-          </div>
-
-          <label className={styles.field}>
-            <span>Коротко задача</span>
-            <textarea className={styles.textarea} name="task" rows={4} required />
-          </label>
-
-          <p className={styles.note}>
-            Можно прикрепить фото/чертёж/шильдик — если upload недоступен, пришлите материалы в WhatsApp.
-          </p>
-
-          <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit">
-            Отправить заявку
-          </button>
-        </form>
-      </section>
-
       <section className={styles.section}>
         <h2>Ориентиры цен (аккуратно)</h2>
 
@@ -520,3 +477,4 @@ export default function CuAlHeatExchangersPage() {
     </main>
   );
 }
+

@@ -1,12 +1,40 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
 import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesPerformerGridProps = {
   section: WeddingHairstylesPageData["performersSection"];
+};
+
+const PERFORMER_IMAGES: Record<
+  WeddingHairstylesPageData["performersSection"]["performers"][number]["id"],
+  { src: string; alt: string }
+> = {
+  "performer-template-a": {
+    src: "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstylist-private-master-portrait.webp",
+    alt: "Private bridal hairstylist portrait",
+  },
+  "performer-template-b": {
+    src: "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstylist-premium-salon-portrait.webp",
+    alt: "Premium salon bridal hairstylist",
+  },
+  "performer-template-c": {
+    src: "/assets/media/wikimarket/beauty/wedding-hairstyles/upgr-wedding-hairstylist-mobile-bridal-service.webp",
+    alt: "Mobile bridal hairstylist service",
+  },
+};
+
+const PERFORMER_TITLE_ICONS: Record<
+  WeddingHairstylesPageData["performersSection"]["performers"][number]["id"],
+  WeddingHairstylesIconName
+> = {
+  "performer-template-a": "private-master",
+  "performer-template-b": "premium-salon",
+  "performer-template-c": "mobile-service",
 };
 
 export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairstylesPerformerGridProps) {
@@ -47,57 +75,74 @@ export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairs
       </nav>
 
       <div className={styles.performerGrid}>
-        {filteredPerformers.map((performer) => (
-          <article key={performer.id} className={styles.performerCard} id={performer.id}>
-            <header className={styles.performerHeader}>
-              <span className={styles.placeholderIcon} aria-hidden="true">
-                <span className="material-symbols-outlined">styler</span>
-              </span>
-              <div>
-                <h3 className={styles.performerName}>{performer.displayName}</h3>
-                <p className={styles.performerMeta}>{performer.cityLabel}</p>
-              </div>
-              {performer.premiumLabel ? <p className={styles.premiumBadge}>{performer.premiumLabel}</p> : null}
-            </header>
+        {filteredPerformers.map((performer) => {
+          const image = PERFORMER_IMAGES[performer.id];
+          const titleIcon = PERFORMER_TITLE_ICONS[performer.id];
 
-            <ul className={styles.performerFacts}>
-              <li>
-                <span>Формат:</span> {performer.workFormat}
-              </li>
-              <li>
-                <span>Специализация:</span> {performer.specialization}
-              </li>
-              <li>
-                <span>Выезд / студия:</span> {performer.serviceModes}
-              </li>
-              <li>
-                <span>Репетиция:</span> {performer.trialLabel}
-              </li>
-              <li>
-                <span>Цена:</span> {performer.priceFromLabel}
-              </li>
-              <li>
-                <span>Ответ:</span> {performer.responseTimeLabel}
-              </li>
-              <li>
-                <span>Доступность:</span> {performer.availabilityLabel}
-              </li>
-            </ul>
+          return (
+            <article key={performer.id} className={styles.performerCard} id={performer.id}>
+              <figure className={styles.performerImageSlot}>
+                <img
+                  className={styles.performerImage}
+                  src={image.src}
+                  alt={image.alt}
+                  width={1200}
+                  height={1500}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
 
-            <div className={styles.performerStrengths}>
-              <h4>Сильные стороны</h4>
-              <ul>
-                {performer.strengths.map((strength) => (
-                  <li key={strength}>{strength}</li>
-                ))}
+              <header className={styles.performerHeader}>
+                <div>
+                  <h3 className={`${styles.performerName} ${styles.headingIconLabel}`}>
+                    <WeddingHairstylesIcon name={titleIcon} size="inline" />
+                    <span className={styles.iconLabelText}>{performer.displayName}</span>
+                  </h3>
+                  <p className={styles.performerMeta}>{performer.cityLabel}</p>
+                </div>
+                {performer.premiumLabel ? <p className={styles.premiumBadge}>{performer.premiumLabel}</p> : null}
+              </header>
+
+              <ul className={styles.performerFacts}>
+                <li>
+                  <span>Формат:</span> {performer.workFormat}
+                </li>
+                <li>
+                  <span>Специализация:</span> {performer.specialization}
+                </li>
+                <li>
+                  <span>Выезд / студия:</span> {performer.serviceModes}
+                </li>
+                <li>
+                  <span>Репетиция:</span> {performer.trialLabel}
+                </li>
+                <li>
+                  <span>Цена:</span> {performer.priceFromLabel}
+                </li>
+                <li>
+                  <span>Ответ:</span> {performer.responseTimeLabel}
+                </li>
+                <li>
+                  <span>Доступность:</span> {performer.availabilityLabel}
+                </li>
               </ul>
-            </div>
 
-            <a className={`${styles.btn} ${styles.btnPrimary}`} href={performer.ctaHref}>
-              {performer.ctaLabel}
-            </a>
-          </article>
-        ))}
+              <div className={styles.performerStrengths}>
+                <h4>Сильные стороны</h4>
+                <ul>
+                  {performer.strengths.map((strength) => (
+                    <li key={strength}>{strength}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <a className={`${styles.btn} ${styles.btnPrimary}`} href={performer.ctaHref}>
+                {performer.ctaLabel}
+              </a>
+            </article>
+          );
+        })}
       </div>
 
       {filteredPerformers.length === 0 ? (
