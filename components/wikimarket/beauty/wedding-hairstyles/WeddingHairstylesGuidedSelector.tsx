@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import styles from "./WeddingHairstylesPage.module.css";
+import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import type { RecommendationCard, WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesGuidedSelectorProps = {
@@ -11,6 +12,23 @@ type WeddingHairstylesGuidedSelectorProps = {
 };
 
 type SelectedMap = Record<string, string>;
+
+function getSelectorIconName(categoryId: string): WeddingHairstylesIconName | undefined {
+  switch (categoryId) {
+    case "hair-length":
+      return "hair-length";
+    case "face-shape":
+      return "face-shape";
+    case "volume":
+      return "hair-density";
+    case "dress-style":
+      return "neckline-dress";
+    case "veil":
+      return "veil-accessory";
+    default:
+      return undefined;
+  }
+}
 
 export default function WeddingHairstylesGuidedSelector({
   selector,
@@ -62,33 +80,44 @@ export default function WeddingHairstylesGuidedSelector({
 
       <div className={styles.selectorLayout}>
         <div className={styles.selectorControls}>
-          {selector.categories.map((category) => (
-            <fieldset key={category.id} className={styles.selectorGroup}>
-              <legend>{category.title}</legend>
-              <div className={styles.selectorChips}>
-                {category.options.map((option) => {
-                  const isActive = selected[category.id] === option.id;
+          {selector.categories.map((category) => {
+            const iconName = getSelectorIconName(category.id);
 
-                  return (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
-                      aria-pressed={isActive}
-                      onClick={() =>
-                        setSelected((current) => ({
-                          ...current,
-                          [category.id]: option.id,
-                        }))
-                      }
-                    >
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </fieldset>
-          ))}
+            return (
+              <fieldset key={category.id} className={styles.selectorGroup}>
+                <legend>
+                  <span className={styles.selectorLegend}>
+                    {iconName ? (
+                      <WeddingHairstylesIcon name={iconName} className={styles.selectorLabelIcon} />
+                    ) : null}
+                    <span>{category.title}</span>
+                  </span>
+                </legend>
+                <div className={styles.selectorChips}>
+                  {category.options.map((option) => {
+                    const isActive = selected[category.id] === option.id;
+
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
+                        aria-pressed={isActive}
+                        onClick={() =>
+                          setSelected((current) => ({
+                            ...current,
+                            [category.id]: option.id,
+                          }))
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            );
+          })}
         </div>
 
         <aside className={styles.selectorSummary} aria-live="polite">
