@@ -728,7 +728,14 @@ body.menu-open > footer{
   margin-left: var(--sidebar-expanded-width);
 }
 body.menu-open > .app-content{
+  box-sizing: border-box;
   width: calc(100% - var(--sidebar-expanded-width));
+}
+body.menu-open > .app-content img[src*="/assets/media/wikimarket/beauty/wedding-hairstyles/"]{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
 }
 
 /* Sidebar */
@@ -995,7 +1002,14 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
     margin-left: var(--sidebar-expanded-width);
   }
   body.menu-open > .app-content{
+    box-sizing: border-box;
     width: calc(100% - var(--sidebar-expanded-width));
+  }
+  body.menu-open > .app-content img[src*="/assets/media/wikimarket/beauty/wedding-hairstyles/"]{
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:auto;
   }
   body.menu-open .sidebar{
     width: var(--sidebar-expanded-width);

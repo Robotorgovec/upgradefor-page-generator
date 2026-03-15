@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 
@@ -12,6 +12,15 @@ type WeddingHairstylesGuidedSelectorProps = {
 };
 
 type SelectedMap = Record<string, string>;
+
+const SELECTOR_SUMMARY_TITLE =
+  "\u0412\u0430\u0448 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u043d\u0430\u0431\u043e\u0440 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432";
+const SELECTED_FALLBACK = "\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d\u043e";
+const MATCH_LABEL =
+  "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432";
+const SUITED_FOR_LABEL = "\u041a\u043e\u043c\u0443 \u043f\u043e\u0434\u0445\u043e\u0434\u0438\u0442";
+const EFFECT_LABEL = "\u041a\u043b\u044e\u0447\u0435\u0432\u043e\u0439 \u044d\u0444\u0444\u0435\u043a\u0442";
+const WHEN_TO_CHOOSE_LABEL = "\u041a\u043e\u0433\u0434\u0430 \u0432\u044b\u0431\u0438\u0440\u0430\u0442\u044c";
 
 function getSelectorIconName(categoryId: string): WeddingHairstylesIconName | undefined {
   switch (categoryId) {
@@ -66,7 +75,7 @@ export default function WeddingHairstylesGuidedSelector({
       const selectedOption = category.options.find((option) => option.id === selectedId);
       return {
         category: category.title,
-        label: selectedOption?.label ?? "Не выбрано",
+        label: selectedOption?.label ?? SELECTED_FALLBACK,
       };
     });
   }, [selector.categories, selected]);
@@ -85,35 +94,33 @@ export default function WeddingHairstylesGuidedSelector({
 
             return (
               <fieldset key={category.id} className={styles.selectorGroup}>
-                <legend>
-                  <span className={styles.selectorLegend}>
-                    {iconName ? (
-                      <WeddingHairstylesIcon name={iconName} className={styles.selectorLabelIcon} />
-                    ) : null}
-                    <span>{category.title}</span>
-                  </span>
+                <legend className={styles.selectorGroupHeading}>
+                  <span className={styles.selectorLegend}>{category.title}</span>
                 </legend>
-                <div className={styles.selectorChips}>
-                  {category.options.map((option) => {
-                    const isActive = selected[category.id] === option.id;
+                <div className={iconName ? styles.selectorControlRowWithIcon : styles.selectorControlRowPlain}>
+                  {iconName ? <WeddingHairstylesIcon name={iconName} className={styles.selectorBlockIcon} /> : null}
+                  <div className={styles.selectorChips}>
+                    {category.options.map((option) => {
+                      const isActive = selected[category.id] === option.id;
 
-                    return (
-                      <button
-                        key={option.id}
-                        type="button"
-                        className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
-                        aria-pressed={isActive}
-                        onClick={() =>
-                          setSelected((current) => ({
-                            ...current,
-                            [category.id]: option.id,
-                          }))
-                        }
-                      >
-                        {option.label}
-                      </button>
-                    );
-                  })}
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={`${styles.selectorChip} ${isActive ? styles.selectorChipActive : ""}`}
+                          aria-pressed={isActive}
+                          onClick={() =>
+                            setSelected((current) => ({
+                              ...current,
+                              [category.id]: option.id,
+                            }))
+                          }
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </fieldset>
             );
@@ -121,7 +128,7 @@ export default function WeddingHairstylesGuidedSelector({
         </div>
 
         <aside className={styles.selectorSummary} aria-live="polite">
-          <h3>Ваш текущий набор параметров</h3>
+          <h3>{SELECTOR_SUMMARY_TITLE}</h3>
           <ul>
             {selectedLabels.map((item) => (
               <li key={item.category}>
@@ -135,16 +142,18 @@ export default function WeddingHairstylesGuidedSelector({
       <div className={styles.recommendationGrid}>
         {ranked.map(({ item, score }) => (
           <article key={item.id} className={styles.recommendationCard}>
-            <p className={styles.recommendationScore}>Совпадение параметров: {score}</p>
+            <p className={styles.recommendationScore}>
+              {MATCH_LABEL}: {score}
+            </p>
             <h3>{item.title}</h3>
             <p>
-              <strong>Кому подходит:</strong> {item.suitedFor}
+              <strong>{SUITED_FOR_LABEL}:</strong> {item.suitedFor}
             </p>
             <p>
-              <strong>Ключевой эффект:</strong> {item.effect}
+              <strong>{EFFECT_LABEL}:</strong> {item.effect}
             </p>
             <p>
-              <strong>Когда выбирать:</strong> {item.whenToChoose}
+              <strong>{WHEN_TO_CHOOSE_LABEL}:</strong> {item.whenToChoose}
             </p>
             <a className={styles.inlineLink} href={item.ctaHref}>
               {item.ctaLabel}
