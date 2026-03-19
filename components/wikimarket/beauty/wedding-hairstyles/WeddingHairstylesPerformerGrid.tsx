@@ -58,20 +58,22 @@ export default function WeddingHairstylesPerformerGrid({
   const activeHairstyle = useMemo(() => resolveHairstyleFilter(initialHairstyleKey), [initialHairstyleKey]);
 
   const filteredPerformers = useMemo(() => {
-    const filterMatchedPerformers =
-      activeFilter === "all"
-        ? section.performers
-        : section.performers.filter((performer) => performer.tags.includes(activeFilter));
+    const selectedFilter = activeFilter === "all" ? null : activeFilter;
+
+    const filterMatchedPerformers = !selectedFilter
+      ? section.performers
+      : section.performers.filter((performer) => performer.tags.some((tag) => tag === selectedFilter));
 
     if (!activeHairstyle) {
       return filterMatchedPerformers;
     }
 
-    return filterMatchedPerformers.filter(
-      (performer) =>
-        performer.hairstyleKeys?.includes(activeHairstyle.mastersFilterKey) ||
-        performer.hairstyleCategories?.includes(activeHairstyle.category),
-    );
+    return filterMatchedPerformers.filter((performer) => {
+      const matchesExplicitKey = (performer.hairstyleKeys ?? []).some((key) => key === activeHairstyle.mastersFilterKey);
+      const matchesCategory = (performer.hairstyleCategories ?? []).some((category) => category === activeHairstyle.category);
+
+      return matchesExplicitKey || matchesCategory;
+    });
   }, [activeFilter, activeHairstyle, section.performers]);
 
   return (

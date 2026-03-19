@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import type { ResolvedWeddingHairstyleRecord } from "./weddingHairstylesTop100Data";
 import WeddingHairstyleCard from "./WeddingHairstyleCard";
@@ -20,7 +20,7 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(items.length > 1);
 
-  const refreshControls = useEffectEvent(() => {
+  const refreshControls = useCallback(() => {
     const viewport = viewportRef.current;
 
     if (!viewport) {
@@ -29,7 +29,7 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
 
     setCanScrollPrev(viewport.scrollLeft > 8);
     setCanScrollNext(viewport.scrollLeft + viewport.clientWidth < viewport.scrollWidth - 8);
-  });
+  }, []);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -127,7 +127,3 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
     </div>
   );
 }
-
-
-
-
