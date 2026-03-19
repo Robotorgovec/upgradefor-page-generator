@@ -5,9 +5,11 @@ import { useMemo, useState } from "react";
 import styles from "./WeddingHairstylesPage.module.css";
 import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import type { WeddingHairstylesPageData } from "./data";
+import { getWeddingHairstyleByFilterKey, getWeddingHairstyleBySlug } from "./weddingHairstylesTop100Data";
 
 type WeddingHairstylesPerformerGridProps = {
   section: WeddingHairstylesPageData["performersSection"];
+  initialHairstyleKey?: string;
 };
 
 const PERFORMER_IMAGES: Record<
@@ -37,24 +39,67 @@ const PERFORMER_TITLE_ICONS: Record<
   "performer-template-c": "mobile-service",
 };
 
-export default function WeddingHairstylesPerformerGrid({ section }: WeddingHairstylesPerformerGridProps) {
+function resolveHairstyleFilter(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return getWeddingHairstyleByFilterKey(value) ?? getWeddingHairstyleBySlug(value) ?? null;
+}
+
+export default function WeddingHairstylesPerformerGrid({
+  section,
+  initialHairstyleKey,
+}: WeddingHairstylesPerformerGridProps) {
   const [activeFilter, setActiveFilter] = useState<WeddingHairstylesPageData["performersSection"]["filters"][number]["id"]>(
     "all",
   );
 
+  const activeHairstyle = useMemo(() => resolveHairstyleFilter(initialHairstyleKey), [initialHairstyleKey]);
+
   const filteredPerformers = useMemo(() => {
-    if (activeFilter === "all") return section.performers;
-    return section.performers.filter((performer) => performer.tags.includes(activeFilter));
-  }, [activeFilter, section.performers]);
+    const filterMatchedPerformers =
+      activeFilter === "all"
+        ? section.performers
+        : section.performers.filter((performer) => performer.tags.includes(activeFilter));
+
+    if (!activeHairstyle) {
+      return filterMatchedPerformers;
+    }
+
+    return filterMatchedPerformers.filter(
+      (performer) =>
+        performer.hairstyleKeys?.includes(activeHairstyle.mastersFilterKey) ||
+        performer.hairstyleCategories?.includes(activeHairstyle.category),
+    );
+  }, [activeFilter, activeHairstyle, section.performers]);
 
   return (
     <section id="performers" className={styles.section}>
+      <div id="wedding-hairstyle-masters" className={styles.anchorTarget} aria-hidden="true" />
+
       <div className={styles.sectionHeader}>
         <h2>{section.title}</h2>
         <p>{section.subtitle}</p>
       </div>
 
       <p className={styles.performerDisclaimer}>{section.disclaimer}</p>
+
+      {activeHairstyle ? (
+        <div className={styles.performerFilterSummary}>
+          <div>
+            <p className={styles.performerFilterEyebrow}>Masters filter contract</p>
+            <h3>{activeHairstyle.title}</h3>
+            <p>
+              Query param <code>hairstyle={activeHairstyle.mastersFilterKey}</code> now drives this section and can be reused by cards,
+              detail pages, and future live portfolio filters.
+            </p>
+          </div>
+          <a className={styles.inlineLink} href="/wikimarket/beauty/wedding-hairstyles#wedding-hairstyle-masters">
+            Сбросить фильтр по стилю
+          </a>
+        </div>
+      ) : null}
 
       <nav className={styles.filterBar} aria-label="Фильтры исполнителей">
         {section.filters.map((filter) => {
