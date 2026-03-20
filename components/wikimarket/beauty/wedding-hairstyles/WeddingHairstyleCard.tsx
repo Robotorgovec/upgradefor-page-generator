@@ -1,13 +1,14 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { buildWeddingHairstyleMastersHref, type ResolvedWeddingHairstyleRecord } from "./weddingHairstylesTop100Data";
 import styles from "./WeddingHairstylesTop100Section.module.css";
 
 type WeddingHairstyleCardProps = {
   hairstyle: ResolvedWeddingHairstyleRecord;
+  priority?: boolean;
 };
 
-export default function WeddingHairstyleCard({ hairstyle }: WeddingHairstyleCardProps) {
+export default function WeddingHairstyleCard({ hairstyle, priority = false }: WeddingHairstyleCardProps) {
   if (!hairstyle.liveImageSrc) {
     return null;
   }
@@ -22,8 +23,9 @@ export default function WeddingHairstyleCard({ hairstyle }: WeddingHairstyleCard
             alt={hairstyle.imageAlt}
             width={1200}
             height={1500}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
             decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
           />
         </figure>
 
@@ -47,4 +49,3 @@ export default function WeddingHairstyleCard({ hairstyle }: WeddingHairstyleCard
     </article>
   );
 }
-

@@ -1,20 +1,30 @@
-﻿# Wedding Hairstyles Top 100 Asset Contract
+# Wedding Hairstyles Top 100 Approved Asset Contract
 
-Canonical production filenames must follow this exact pattern:
+Approved production PNG files live in:
 
-- `<slug>.png`
-- folder: `public/assets/media/wikimarket/beauty/wedding-hairstyles/top-100/`
+- `public/assets/media/wikimarket/beauty/wedding-hairstyles/top-100/`
+
+Canonical slugs remain the source of truth for:
+
+- detail routes
+- internal links
+- masters filter keys
+- taxonomy and SEO bindings
+
+Approved filenames are connected through a dedicated asset mapping layer in code.
 
 Rules:
 
-- Keep the slug exactly aligned with the central registry.
-- Do not add `-closeup` variants to the main Top 100 rail.
-- Optional alternates and closeups can be added later, but they should not replace the canonical main-card asset.
-- The page and detail routes will automatically pick up new files dropped into this folder without a code refactor.
-- Temporary local `.webp` placeholders are supported for development only; the final asset drop should still provide canonical `.png` files.
+- do not rename canonical slug routes to match asset filenames
+- do not replace the mapping layer with filename-derived routes
+- keep one approved image connected to each canonical record
+- keep approved `-closeup` variants in the mapped Top 100 set when they are part of the provided asset pack
+- dropping updated PNGs into this folder later should not require a route or filter refactor
 
 Examples:
 
-- `smooth-low-bun-wedding-hairstyle.png`
-- `hollywood-waves-wedding-hairstyle.png`
-- `half-up-locs-bridal-wedding-hairstyle.png`
+- canonical slug: `smooth-low-bun-wedding-hairstyle`
+- mapped asset filename: `smooth-low-bun-wedding-hairstyle.png`
+
+- canonical slug: `pearl-low-bun-wedding-hairstyle`
+- mapped asset filename: `shell-bun-wedding-hairstyle-closeup.png`

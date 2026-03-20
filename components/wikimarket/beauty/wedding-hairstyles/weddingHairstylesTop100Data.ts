@@ -34,6 +34,9 @@ export type WeddingHairstyleRecord = {
   title: string;
   imageSrc: string;
   imageAlt: string;
+  assetFilename: string;
+  variant?: "closeup";
+  isApproved: true;
   detailHref: string;
   mastersFilterKey: string;
   category: WeddingHairstyleCategory;
@@ -390,6 +393,16 @@ const TOP_100_SEED: WeddingHairstyleSeed[] = [
   { slug: "afro-textured-side-part-wedding-hairstyle", category: "curls", hairTextureGroup: "curly-to-coily" },
 ];
 
+const APPROVED_ASSET_MAPPING_BY_SLUG = new Map(
+  weddingHairstylesTop100ApprovedAssetMappings.map((item) => [item.slug, item] as const),
+);
+
+if (APPROVED_ASSET_MAPPING_BY_SLUG.size !== TOP_100_SEED.length) {
+  throw new Error(
+    `Top 100 wedding hairstyle asset mapping coverage mismatch: ${APPROVED_ASSET_MAPPING_BY_SLUG.size}/${TOP_100_SEED.length}.`,
+  );
+}
+
 function toTitleCase(word: string) {
   const normalizedWord = WORD_OVERRIDES[word] ?? word;
   return normalizedWord
@@ -437,13 +450,21 @@ function buildRecord(seed: WeddingHairstyleSeed, index: number): WeddingHairstyl
   const categoryMeta = CATEGORY_META[seed.category];
   const title = getDisplayTitle(seed.slug);
   const mastersFilterKey = getMastersFilterKey(seed.slug);
+  const approvedAsset = APPROVED_ASSET_MAPPING_BY_SLUG.get(seed.slug);
+
+  if (!approvedAsset) {
+    throw new Error(`Missing approved wedding hairstyle asset mapping for slug "${seed.slug}".`);
+  }
 
   return {
     id: `wedding-hairstyle-top100-${index + 1}`,
     slug: seed.slug,
     title,
-    imageSrc: `${TOP_100_ASSET_BASE_PATH}/${seed.slug}.png`,
+    imageSrc: `${TOP_100_ASSET_BASE_PATH}/${approvedAsset.assetFilename}`,
     imageAlt: getImageAlt(title, index),
+    assetFilename: approvedAsset.assetFilename,
+    variant: approvedAsset.variant,
+    isApproved: approvedAsset.isApproved,
     detailHref: buildDetailHref(seed.slug),
     mastersFilterKey,
     category: seed.category,
@@ -464,8 +485,12 @@ export const weddingHairstylesTop100Registry = TOP_100_SEED.map(buildRecord);
 
 export const weddingHairstylesTop100CanonicalSlugs = weddingHairstylesTop100Registry.map((item) => item.slug);
 
+export const weddingHairstylesTop100ApprovedAssetFilenames = weddingHairstylesTop100Registry.map(
+  (item) => item.assetFilename,
+);
+
 export const weddingHairstylesTop100ExpectedPngFiles = weddingHairstylesTop100Registry.map(
-  (item) => `${item.slug}.png`,
+  (item) => item.assetFilename,
 );
 
 export const weddingHairstylesTop100CategoryOrder: WeddingHairstyleCategory[] = [
@@ -500,3 +525,4 @@ export function getWeddingHairstylesGroupedByCategory() {
 export function buildWeddingHairstyleMastersHref(filterKey: string) {
   return buildMastersHref(filterKey);
 }
+import { weddingHairstylesTop100ApprovedAssetMappings } from "./weddingHairstylesTop100AssetMapping";
