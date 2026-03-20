@@ -1,4 +1,6 @@
-﻿export type BreadcrumbItem = {
+import type { WeddingHairstyleCategory } from "./weddingHairstylesTop100Data";
+
+export type BreadcrumbItem = {
   label: string;
   href?: string;
 };
@@ -87,6 +89,8 @@ export type PerformerCard = {
   ctaHref: string;
   tags: PerformerTag[];
   premiumLabel?: string;
+  hairstyleKeys?: string[];
+  hairstyleCategories?: WeddingHairstyleCategory[];
 };
 
 export type FaqItem = {
@@ -266,6 +270,7 @@ export const weddingHairstylesPageData = {
       { href: "#popular-styles", label: "Featured styles" },
       { href: "#hairstyle-catalog", label: "Каталог 30 типов" },
       { href: "#selection-modifiers", label: "Modifiers" },
+      { href: "#top-100-hairstyles", label: "Top 100" },
       { href: "#personal-scenarios", label: "Что выбрать именно вам" },
       { href: "#performers", label: "Исполнители" },
       { href: "#pricing", label: "Цена и условия" },
@@ -1035,6 +1040,14 @@ export const weddingHairstylesPageData = {
         ctaLabel: "Открыть профиль",
         ctaHref: "/account/register?intent=wedding-hairstyles",
         tags: ["visit", "trial", "early", "veil", "long-hair"],
+        hairstyleCategories: ["bun", "updo", "half-up"],
+        hairstyleKeys: [
+          "smooth-low-bun",
+          "classic-low-bun",
+          "textured-updo",
+          "elegant-high-bun",
+          "half-up-half-down-curls",
+        ],
       },
       {
         id: "performer-template-b",
@@ -1056,6 +1069,14 @@ export const weddingHairstylesPageData = {
         ctaHref: "/account/register?intent=wedding-hairstyles",
         tags: ["trial", "premium", "budget"],
         premiumLabel: "Премиум-сегмент",
+        hairstyleCategories: ["waves", "ponytail", "short-style"],
+        hairstyleKeys: [
+          "hollywood-waves",
+          "boho-beach-waves",
+          "sleek-low-ponytail",
+          "soft-curled-ponytail",
+          "sleek-bridal-bob",
+        ],
       },
       {
         id: "performer-template-c",
@@ -1076,6 +1097,14 @@ export const weddingHairstylesPageData = {
         ctaLabel: "Открыть профиль",
         ctaHref: "/account/register?intent=wedding-hairstyles",
         tags: ["visit", "early", "long-hair", "veil"],
+        hairstyleCategories: ["braid", "locs", "protective", "curls"],
+        hairstyleKeys: [
+          "boho-braid",
+          "half-up-locs",
+          "goddess-braids",
+          "defined-coils-updo",
+          "twist-crown",
+        ],
       },
     ] satisfies PerformerCard[],
     compareCta: {

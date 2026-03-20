@@ -1,4 +1,4 @@
-﻿import WeddingHairstylesCta from "./WeddingHairstylesCta";
+import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
 import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
@@ -8,11 +8,12 @@ import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
 import WeddingHairstylesTaxonomyGroups from "./WeddingHairstylesTaxonomyGroups";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
+import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
 import WeddingHairstylesTypeCatalog from "./WeddingHairstylesTypeCatalog";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
 
-export default function WeddingHairstylesPage() {
+export default function WeddingHairstylesPage({ initialHairstyleKey }: { initialHairstyleKey?: string }) {
   const data = weddingHairstylesPageData;
 
   const serviceJsonLd = {
@@ -101,6 +102,8 @@ export default function WeddingHairstylesPage() {
 
       <WeddingHairstylesModifiers section={data.modifierGuideSection} library={data.modifierLibrary} />
 
+      <WeddingHairstylesTop100Section />
+
       <WeddingHairstylesScenarios section={data.scenariosSection} items={data.scenarios} />
 
       <WeddingHairstylesCta
@@ -112,7 +115,7 @@ export default function WeddingHairstylesPage() {
         tone="neutral"
       />
 
-      <WeddingHairstylesPerformerGrid section={data.performersSection} />
+      <WeddingHairstylesPerformerGrid section={data.performersSection} initialHairstyleKey={initialHairstyleKey} />
 
       <WeddingHairstylesCta
         id="cta-after-performers"

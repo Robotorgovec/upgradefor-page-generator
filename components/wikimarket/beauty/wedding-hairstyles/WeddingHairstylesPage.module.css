@@ -531,6 +531,42 @@
   margin-bottom: 14px;
 }
 
+.anchorTarget {
+  height: 0;
+  scroll-margin-top: 88px;
+}
+
+.performerFilterSummary {
+  margin: 0 0 14px;
+  border: 1px solid rgba(179, 138, 58, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 249, 238, 0.92);
+  display: grid;
+  gap: 10px;
+}
+
+.performerFilterSummary h3,
+.performerFilterSummary p {
+  margin: 0;
+}
+
+.performerFilterEyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a5f25;
+}
+
+.performerFilterSummary code {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(110, 75, 18, 0.08);
+  color: #6a4d12;
+  font-family: "Consolas", "SFMono-Regular", monospace;
+}
+
 .performerCard {
   display: flex;
   flex-direction: column;

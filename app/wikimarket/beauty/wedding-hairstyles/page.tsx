@@ -3,6 +3,7 @@ import Script from "next/script";
 
 import WeddingHairstylesPage from "../../../../components/wikimarket/beauty/wedding-hairstyles/WeddingHairstylesPage";
 import { weddingHairstylesPageData } from "../../../../components/wikimarket/beauty/wedding-hairstyles/data";
+import { weddingHairstylesTop100Registry } from "../../../../components/wikimarket/beauty/wedding-hairstyles/weddingHairstylesTop100Data";
 
 const SITE_URL = "https://upgradefor.com";
 
@@ -34,7 +35,7 @@ const breadcrumbJsonLd = {
     {
       "@type": "ListItem",
       position: 4,
-      name: "Свадебные прически",
+      name: weddingHairstylesPageData.pageMeta.h1,
       item: canonicalUrl,
     },
   ],
@@ -53,6 +54,19 @@ const faqJsonLd = {
   })),
 };
 
+const top100ItemListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Top 100 Wedding Hairstyles",
+  numberOfItems: weddingHairstylesTop100Registry.length,
+  itemListElement: weddingHairstylesTop100Registry.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.title,
+    url: `${SITE_URL}${item.detailHref}`,
+  })),
+};
+
 export const metadata: Metadata = {
   title: weddingHairstylesPageData.pageMeta.title,
   description: weddingHairstylesPageData.pageMeta.description,
@@ -61,7 +75,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: { hairstyle?: string | string[] };
+}) {
+  const activeHairstyleKey = Array.isArray(searchParams?.hairstyle)
+    ? searchParams.hairstyle[0]
+    : searchParams?.hairstyle;
+
   return (
     <>
       <Script id="wedding-hairstyles-breadcrumb-jsonld" type="application/ld+json" strategy="beforeInteractive">
@@ -70,7 +92,10 @@ export default function Page() {
       <Script id="wedding-hairstyles-faq-jsonld" type="application/ld+json" strategy="beforeInteractive">
         {JSON.stringify(faqJsonLd)}
       </Script>
-      <WeddingHairstylesPage />
+      <Script id="wedding-hairstyles-top100-itemlist-jsonld" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(top100ItemListJsonLd)}
+      </Script>
+      <WeddingHairstylesPage initialHairstyleKey={activeHairstyleKey} />
     </>
   );
 }
