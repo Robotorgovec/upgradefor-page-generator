@@ -446,6 +446,7 @@
   background: var(--theme-surface-strong);
   display: grid;
   gap: 10px;
+  min-width: 0;
 }
 
 .recommendationScore {
@@ -487,6 +488,7 @@
 
 .styleImageSlot {
   margin: 0;
+  width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 12px;
   overflow: hidden;
@@ -497,6 +499,7 @@
 .styleImageSlot img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
@@ -541,6 +544,7 @@
 
 .performerImageSlot {
   margin: 0;
+  width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: 12px;
   overflow: hidden;
@@ -551,6 +555,7 @@
 .performerImageSlot img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;

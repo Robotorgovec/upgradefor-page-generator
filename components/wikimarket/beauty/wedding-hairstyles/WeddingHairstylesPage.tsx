@@ -6,6 +6,7 @@ import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
+import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
 import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
@@ -113,6 +114,8 @@ export default function WeddingHairstylesPage() {
         </div>
         <WeddingHairstylesStylesGrid items={[...data.popularStyles]} />
       </section>
+
+      <WeddingHairstylesTop100Section />
 
       <WeddingHairstylesScenarios items={[...data.scenarios]} />
 
