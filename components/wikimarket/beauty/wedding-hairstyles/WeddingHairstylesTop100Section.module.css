@@ -1,4 +1,4 @@
-﻿.section {
+.section {
   border: 1px solid var(--theme-border);
   border-radius: 22px;
   padding: 24px;
@@ -41,11 +41,11 @@
   margin: 0;
   color: var(--theme-page-muted);
   line-height: 1.6;
-  max-width: 72ch;
+  max-width: 74ch;
 }
 
 .liveCounter {
-  min-width: 144px;
+  min-width: 164px;
   border: 1px solid rgba(179, 138, 58, 0.22);
   border-radius: 18px;
   padding: 14px 16px;
@@ -141,6 +141,25 @@
   line-height: 1.55;
 }
 
+.railMeta {
+  display: inline-grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.railProgress {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--theme-chip-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--theme-page-title);
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .railControls {
   display: inline-flex;
   gap: 8px;
@@ -160,7 +179,7 @@
 }
 
 .railButton {
-  width: 44px;
+  width: 46px;
   border: 1px solid var(--theme-chip-border);
   background: rgba(255, 255, 255, 0.94);
   color: var(--theme-page-title);
@@ -182,7 +201,14 @@
   overflow-x: auto;
   padding-bottom: 6px;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .viewport:focus-visible {
@@ -192,26 +218,41 @@
 }
 
 .track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(250px, 26vw);
-  gap: 14px;
+  --top100-track-gap: 14px;
+  display: flex;
+  align-items: stretch;
+  gap: var(--top100-track-gap);
+}
+
+.slide {
+  flex: 0 0 clamp(250px, 28vw, 322px);
+  display: flex;
+  min-height: 100%;
+  scroll-snap-align: start;
+}
+
+.sentinel {
+  flex: 0 0 1px;
+  width: 1px;
 }
 
 .card {
-  scroll-snap-align: start;
+  width: 100%;
+  height: 100%;
   border: 1px solid var(--theme-card-accent);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.96);
   overflow: hidden;
-  display: grid;
-  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardSurface {
   color: inherit;
   text-decoration: none;
-  display: grid;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
 }
 
 .cardSurface:hover .cardTitle {
@@ -234,7 +275,9 @@
 }
 
 .cardBody {
-  display: grid;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   gap: 10px;
   padding: 16px;
 }
@@ -263,6 +306,7 @@
 }
 
 .cardActions {
+  margin-top: auto;
   display: grid;
   gap: 8px;
   padding: 0 16px 16px;
@@ -351,8 +395,8 @@
     min-width: 0;
   }
 
-  .track {
-    grid-auto-columns: minmax(242px, 62vw);
+  .slide {
+    flex-basis: min(60vw, 304px);
   }
 }
 
@@ -362,16 +406,16 @@
     border-radius: 16px;
   }
 
-  .track {
-    grid-auto-columns: minmax(240px, 86vw);
+  .railMeta {
+    width: 100%;
+    justify-items: start;
   }
 
   .railControls {
-    width: 100%;
+    display: none;
   }
 
-  .railButton {
-    flex: 1 1 0;
-    width: auto;
+  .slide {
+    flex-basis: min(84vw, 292px);
   }
 }

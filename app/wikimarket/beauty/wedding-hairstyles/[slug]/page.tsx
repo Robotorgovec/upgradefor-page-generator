@@ -124,8 +124,8 @@ export default async function WeddingHairstyleDetailPage({
           ) : (
             <div className={styles.placeholder}>
               <strong>Asset pending</strong>
-              <p>The detail page is live now and will pick up the image automatically once the contract file lands.</p>
-              <code>{`${hairstyle.slug}.png`}</code>
+              <p>The detail page is live now and will pick up the approved mapped file automatically once it lands locally.</p>
+              <code>{hairstyle.assetFilename}</code>
             </div>
           )}
         </div>
@@ -174,8 +174,8 @@ export default async function WeddingHairstyleDetailPage({
           <article className={styles.noteCard}>
             <h3>Stable slug contract</h3>
             <p>
-              The route, internal links, and future asset filename all use the same canonical slug, so the catalog can grow without
-              another refactor.
+              The route, internal links, and masters filter all stay tied to the canonical slug, while the asset mapping layer keeps
+              approved filenames separate.
             </p>
           </article>
           <article className={styles.noteCard}>

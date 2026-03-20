@@ -1,8 +1,8 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { getResolvedWeddingHairstylesTop100Registry, getWeddingHairstyleAssetAudit } from "./WeddingHairstylesTop100Assets.server";
 import WeddingHairstylesSliderRail from "./WeddingHairstylesSliderRail";
-import { getWeddingHairstylesGroupedByCategory } from "./weddingHairstylesTop100Data";
+import { getWeddingHairstylesGroupedByCategory, weddingHairstylesTop100CanonicalSlugs } from "./weddingHairstylesTop100Data";
 import styles from "./WeddingHairstylesTop100Section.module.css";
 
 export default function WeddingHairstylesTop100Section() {
@@ -15,38 +15,39 @@ export default function WeddingHairstylesTop100Section() {
     <section id="top-100-hairstyles" className={styles.section}>
       <div className={styles.header}>
         <div className={styles.headerCopy}>
-          <p className={styles.kicker}>Top 100 / Bridal Catalog</p>
+          <p className={styles.kicker}>Top 100 / Bridal Rail</p>
           <h2>Top 100 Wedding Hairstyles</h2>
           <p>
-            One slug-based registry now powers the cards rail, slug detail routes, and the masters filter contract.
-            The main page only renders cards that already have a local image file, so the page never shows broken media.
+            Canonical slugs, detail routes, filters, and taxonomy bindings stay frozen. The approved PNG pack now connects through a
+            dedicated asset mapping layer, while the rail appends cards in lightweight 12-card chunks.
           </p>
         </div>
 
         <div className={styles.liveCounter}>
           <strong>{liveCards.length}</strong>
-          <span>live cards now</span>
+          <span>cards live in the rail</span>
         </div>
       </div>
 
       <div className={styles.stats}>
         <article className={styles.statCard}>
-          <strong>100</strong>
-          <span>indexed detail URLs generated from the central registry</span>
+          <strong>{weddingHairstylesTop100CanonicalSlugs.length}</strong>
+          <span>canonical slugs and detail URLs remain untouched</span>
         </article>
         <article className={styles.statCard}>
-          <strong>{liveCards.length}</strong>
-          <span>cards already lighting up from local media files</span>
+          <strong>{assetAudit.approvedAssetCount}</strong>
+          <span>approved PNG files are mapped to the registry without changing the route IDs</span>
         </article>
         <article className={styles.statCard}>
-          <strong>{assetAudit.missingPngFilenames.length}</strong>
-          <span>canonical PNG contract files still expected in the final asset drop</span>
+          <strong>{assetAudit.mappingCoverageCount}</strong>
+          <span>cards are connected to the rail and keep the same masters filter contract</span>
         </article>
       </div>
 
       <p className={styles.contractNote}>
-        Canonical drop target: <code>public/assets/media/wikimarket/beauty/wedding-hairstyles/top-100/&lt;slug&gt;.png</code>.
-        Temporary local <code>.webp</code> placeholders are supported, but the final production drop can land later without any code refactor.
+        Approved image contract lives in <code>public/assets/media/wikimarket/beauty/wedding-hairstyles/top-100/</code>. If a
+        filename differs from the canonical slug, the route stays stable and the asset mapping layer handles the connection. The two
+        approved closeup variants are kept inside this same rail.
       </p>
 
       {liveCards.length > 0 ? (
@@ -55,8 +56,8 @@ export default function WeddingHairstylesTop100Section() {
         <div className={styles.emptyState}>
           <h3>No local card images yet</h3>
           <p>
-            The route and SEO architecture are already live. As soon as files land in <code>top-100</code>, matching cards will
-            appear here automatically and keep the same stable slug URLs.
+            The slug pages and masters CTA contract are already wired. As soon as approved files land in <code>top-100</code>, the
+            rail will pick them up without breaking links or layout.
           </p>
         </div>
       )}
@@ -65,8 +66,8 @@ export default function WeddingHairstylesTop100Section() {
         <div>
           <h3>All 100 detail links</h3>
           <p>
-            Every approved slug already has a crawlable detail page and a masters CTA. This index keeps the whole catalog linked even
-            while the remaining binaries are still pending.
+            Every slug keeps its own crawlable detail page even while the rail uses progressive card loading. That preserves internal
+            linking and keeps the full catalog discoverable.
           </p>
         </div>
 

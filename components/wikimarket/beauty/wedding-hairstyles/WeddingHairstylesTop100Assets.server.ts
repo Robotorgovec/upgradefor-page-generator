@@ -1,10 +1,10 @@
-﻿import fs from "node:fs";
+import fs from "node:fs";
 import path from "node:path";
 
 import {
   type ResolvedWeddingHairstyleRecord,
   getWeddingHairstyleBySlug,
-  weddingHairstylesTop100ExpectedPngFiles,
+  weddingHairstylesTop100ApprovedAssetFilenames,
   weddingHairstylesTop100Registry,
 } from "./weddingHairstylesTop100Data";
 
@@ -20,25 +20,35 @@ const TOP_100_ASSET_DIRECTORY = path.join(
 );
 
 const PUBLIC_ASSET_BASE = "/assets/media/wikimarket/beauty/wedding-hairstyles/top-100";
-const LIVE_EXTENSION_ORDER = [".png", ".webp", ".jpg", ".jpeg", ".avif"];
+const LIVE_EXTENSION_ORDER = [".png", ".webp", ".jpg", ".jpeg", ".avif"] as const;
 
 type WeddingHairstyleAssetAudit = {
+  approvedAssetCount: number;
+  mappingCoverageCount: number;
   liveAssetCount: number;
   liveAssetFilenames: string[];
   expectedPngFilenames: string[];
   missingPngFilenames: string[];
 };
 
-function resolveLiveImageSource(slug: string) {
-  for (const extension of LIVE_EXTENSION_ORDER) {
-    const filename = `${slug}${extension}`;
+function resolveLiveImageSource(record: { slug: string; assetFilename: string }) {
+  const parsedAsset = path.parse(record.assetFilename);
+  const candidateFilenames = [
+    record.assetFilename,
+    ...LIVE_EXTENSION_ORDER.filter((extension) => extension !== parsedAsset.ext).map(
+      (extension) => `${parsedAsset.name}${extension}`,
+    ),
+    ...LIVE_EXTENSION_ORDER.map((extension) => `${record.slug}${extension}`),
+  ];
+
+  for (const filename of candidateFilenames) {
     const absolutePath = path.join(TOP_100_ASSET_DIRECTORY, filename);
 
     if (fs.existsSync(absolutePath)) {
       return {
         hasLiveImage: true,
         liveImageSrc: `${PUBLIC_ASSET_BASE}/${filename}`,
-        liveImageExtension: extension,
+        liveImageExtension: path.extname(filename),
       };
     }
   }
@@ -53,7 +63,7 @@ function resolveLiveImageSource(slug: string) {
 export function getResolvedWeddingHairstylesTop100Registry(): ResolvedWeddingHairstyleRecord[] {
   return weddingHairstylesTop100Registry.map((item) => ({
     ...item,
-    ...resolveLiveImageSource(item.slug),
+    ...resolveLiveImageSource(item),
   }));
 }
 
@@ -66,7 +76,7 @@ export function getResolvedWeddingHairstyleBySlug(slug: string): ResolvedWedding
 
   return {
     ...baseRecord,
-    ...resolveLiveImageSource(slug),
+    ...resolveLiveImageSource(baseRecord),
   };
 }
 
@@ -74,12 +84,14 @@ export function getWeddingHairstyleAssetAudit(): WeddingHairstyleAssetAudit {
   const resolvedRegistry = getResolvedWeddingHairstylesTop100Registry();
 
   return {
+    approvedAssetCount: weddingHairstylesTop100ApprovedAssetFilenames.length,
+    mappingCoverageCount: weddingHairstylesTop100Registry.length,
     liveAssetCount: resolvedRegistry.filter((item) => item.hasLiveImage).length,
     liveAssetFilenames: resolvedRegistry
       .filter((item) => item.hasLiveImage && item.liveImageExtension)
-      .map((item) => `${item.slug}${item.liveImageExtension}`),
-    expectedPngFilenames: [...weddingHairstylesTop100ExpectedPngFiles],
-    missingPngFilenames: weddingHairstylesTop100ExpectedPngFiles.filter(
+      .map((item) => item.assetFilename),
+    expectedPngFilenames: [...weddingHairstylesTop100ApprovedAssetFilenames],
+    missingPngFilenames: weddingHairstylesTop100ApprovedAssetFilenames.filter(
       (filename) => !fs.existsSync(path.join(TOP_100_ASSET_DIRECTORY, filename)),
     ),
   };
