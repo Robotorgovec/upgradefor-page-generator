@@ -6,6 +6,7 @@ import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
+import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
 import WeddingHairstylesIcon, { type WeddingHairstylesIconName } from "./WeddingHairstylesIcon";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
@@ -19,7 +20,7 @@ const PREP_ROW_ICONS: Record<string, WeddingHairstylesIconName> = {
   "Длина и текущее состояние волос": "hair-prep",
 };
 
-export default function WeddingHairstylesPage() {
+export default function WeddingHairstylesPage({ initialHairstyleKey }: { initialHairstyleKey?: string }) {
   const data = weddingHairstylesPageData;
 
   const serviceJsonLd = {
@@ -114,6 +115,8 @@ export default function WeddingHairstylesPage() {
         <WeddingHairstylesStylesGrid items={[...data.popularStyles]} />
       </section>
 
+      <WeddingHairstylesTop100Section />
+
       <WeddingHairstylesScenarios items={[...data.scenarios]} />
 
       <WeddingHairstylesCta
@@ -125,7 +128,7 @@ export default function WeddingHairstylesPage() {
         tone="neutral"
       />
 
-      <WeddingHairstylesPerformerGrid section={data.performersSection} />
+      <WeddingHairstylesPerformerGrid section={data.performersSection} initialHairstyleKey={initialHairstyleKey} />
 
       <WeddingHairstylesCta
         id="cta-after-performers"
