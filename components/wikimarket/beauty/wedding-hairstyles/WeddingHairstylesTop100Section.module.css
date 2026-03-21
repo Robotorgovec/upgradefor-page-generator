@@ -1,4 +1,4 @@
-﻿.section {
+.section {
   border: 1px solid var(--theme-border);
   border-radius: 22px;
   padding: 24px;
@@ -109,15 +109,11 @@
   background: rgba(110, 75, 18, 0.08);
   color: #6a4d12;
   font-family: "Consolas", "SFMono-Regular", monospace;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .railShell {
   display: grid;
   gap: 12px;
-  min-width: 0;
 }
 
 .railHeader {
@@ -183,9 +179,6 @@
 }
 
 .viewport {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
   overflow-x: auto;
   padding-bottom: 6px;
   scroll-snap-type: x mandatory;
@@ -203,7 +196,6 @@
   grid-auto-flow: column;
   grid-auto-columns: minmax(250px, 26vw);
   gap: 14px;
-  min-width: 100%;
 }
 
 .card {
@@ -366,17 +358,58 @@
 
 @media (max-width: 768px) {
   .section {
+    grid-template-columns: minmax(0, 1fr);
     padding: 16px;
     border-radius: 16px;
   }
 
-  .viewport {
-    width: 100%;
-    max-width: 100%;
+  .headerCopy,
+  .liveCounter,
+  .railShell,
+  .card,
+  .cardSurface,
+  .cardBody,
+  .cardActions,
+  .emptyState,
+  .indexBlock,
+  .indexGroup,
+  .indexList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section > *,
+  .header > *,
+  .headerCopy > *,
+  .stats > *,
+  .railHeader > *,
+  .card > *,
+  .cardSurface > *,
+  .cardBody > *,
+  .cardActions > *,
+  .emptyState > *,
+  .indexBlock > *,
+  .indexGrid > *,
+  .indexGroup > *,
+  .indexList > * {
+    min-width: 0;
+  }
+
+  .stats,
+  .indexGrid {
+    grid-template-columns: 1fr;
   }
 
   .track {
     grid-auto-columns: minmax(240px, 86vw);
+  }
+
+  .contractNote,
+  .contractNote code,
+  .emptyState,
+  .emptyState code,
+  .indexLink {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .railControls {

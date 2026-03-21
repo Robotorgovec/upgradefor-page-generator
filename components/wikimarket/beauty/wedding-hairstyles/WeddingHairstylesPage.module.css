@@ -446,7 +446,6 @@
   background: var(--theme-surface-strong);
   display: grid;
   gap: 10px;
-  min-width: 0;
 }
 
 .recommendationScore {
@@ -488,7 +487,6 @@
 
 .styleImageSlot {
   margin: 0;
-  width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 12px;
   overflow: hidden;
@@ -499,7 +497,6 @@
 .styleImageSlot img {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
@@ -544,7 +541,6 @@
 
 .performerImageSlot {
   margin: 0;
-  width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: 12px;
   overflow: hidden;
@@ -555,7 +551,6 @@
 .performerImageSlot img {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
@@ -819,8 +814,73 @@
 @media (max-width: 768px) {
   .page {
     width: min(1160px, 100% - 16px);
+    grid-template-columns: minmax(0, 1fr);
     padding-top: 12px;
     gap: 14px;
+  }
+
+  .heroWrap,
+  .heroContent,
+  .heroAside,
+  .sectionHeader,
+  .quickAnswerList,
+  .selectorControls,
+  .selectorSummary ul,
+  .recommendationCard,
+  .styleCard,
+  .scenarioCard,
+  .performerCard,
+  .relatedCard,
+  .checklistCard,
+  .pricingCard,
+  .inlineCta,
+  .performerFacts,
+  .processList,
+  .processList li,
+  .faqList,
+  .cta,
+  .performerFilterSummary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page > *,
+  .page :is(
+      .heroWrap,
+      .hero,
+      .heroContent,
+      .heroAside,
+      .section,
+      .toc,
+      .cta,
+      .sectionHeader,
+      .selectorLayout,
+      .selectorControls,
+      .selectorGroup,
+      .selectorSummary,
+      .recommendationGrid,
+      .stylesGrid,
+      .scenarioGrid,
+      .performerGrid,
+      .relatedGrid,
+      .checklistGrid,
+      .pricingGrid,
+      .recommendationCard,
+      .styleCard,
+      .scenarioCard,
+      .performerCard,
+      .relatedCard,
+      .checklistCard,
+      .pricingCard,
+      .inlineCta,
+      .performerHeader,
+      .performerFacts,
+      .processList,
+      .processList li,
+      .faqList,
+      .faqItem,
+      .performerFilterSummary
+    ) {
+    min-width: 0;
   }
 
   .hero,
@@ -892,4 +952,41 @@
   .heroVisual {
     min-height: 150px;
   }
+}
+
+.anchorTarget {
+  position: relative;
+  top: -12px;
+  scroll-margin-top: 16px;
+}
+
+.performerFilterSummary {
+  margin: 0 0 14px;
+  border: 1px solid rgba(179, 138, 58, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 249, 238, 0.92);
+  display: grid;
+  gap: 10px;
+}
+
+.performerFilterSummary h3,
+.performerFilterSummary p {
+  margin: 0;
+}
+
+.performerFilterEyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a5f25;
+}
+
+.performerFilterSummary code {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(110, 75, 18, 0.08);
+  color: #6a4d12;
+  font-family: "Consolas", "SFMono-Regular", monospace;
 }

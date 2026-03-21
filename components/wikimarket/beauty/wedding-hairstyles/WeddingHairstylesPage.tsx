@@ -20,7 +20,7 @@ const PREP_ROW_ICONS: Record<string, WeddingHairstylesIconName> = {
   "Длина и текущее состояние волос": "hair-prep",
 };
 
-export default function WeddingHairstylesPage() {
+export default function WeddingHairstylesPage({ initialHairstyleKey }: { initialHairstyleKey?: string }) {
   const data = weddingHairstylesPageData;
 
   const serviceJsonLd = {
@@ -128,7 +128,7 @@ export default function WeddingHairstylesPage() {
         tone="neutral"
       />
 
-      <WeddingHairstylesPerformerGrid section={data.performersSection} />
+      <WeddingHairstylesPerformerGrid section={data.performersSection} initialHairstyleKey={initialHairstyleKey} />
 
       <WeddingHairstylesCta
         id="cta-after-performers"
