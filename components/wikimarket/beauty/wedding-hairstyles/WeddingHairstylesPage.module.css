@@ -814,8 +814,73 @@
 @media (max-width: 768px) {
   .page {
     width: min(1160px, 100% - 16px);
+    grid-template-columns: minmax(0, 1fr);
     padding-top: 12px;
     gap: 14px;
+  }
+
+  .heroWrap,
+  .heroContent,
+  .heroAside,
+  .sectionHeader,
+  .quickAnswerList,
+  .selectorControls,
+  .selectorSummary ul,
+  .recommendationCard,
+  .styleCard,
+  .scenarioCard,
+  .performerCard,
+  .relatedCard,
+  .checklistCard,
+  .pricingCard,
+  .inlineCta,
+  .performerFacts,
+  .processList,
+  .processList li,
+  .faqList,
+  .cta,
+  .performerFilterSummary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page > *,
+  .page :is(
+      .heroWrap,
+      .hero,
+      .heroContent,
+      .heroAside,
+      .section,
+      .toc,
+      .cta,
+      .sectionHeader,
+      .selectorLayout,
+      .selectorControls,
+      .selectorGroup,
+      .selectorSummary,
+      .recommendationGrid,
+      .stylesGrid,
+      .scenarioGrid,
+      .performerGrid,
+      .relatedGrid,
+      .checklistGrid,
+      .pricingGrid,
+      .recommendationCard,
+      .styleCard,
+      .scenarioCard,
+      .performerCard,
+      .relatedCard,
+      .checklistCard,
+      .pricingCard,
+      .inlineCta,
+      .performerHeader,
+      .performerFacts,
+      .processList,
+      .processList li,
+      .faqList,
+      .faqItem,
+      .performerFilterSummary
+    ) {
+    min-width: 0;
   }
 
   .hero,

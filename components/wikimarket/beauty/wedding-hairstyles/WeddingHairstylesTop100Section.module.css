@@ -1,4 +1,4 @@
-﻿.section {
+.section {
   border: 1px solid var(--theme-border);
   border-radius: 22px;
   padding: 24px;
@@ -358,12 +358,58 @@
 
 @media (max-width: 768px) {
   .section {
+    grid-template-columns: minmax(0, 1fr);
     padding: 16px;
     border-radius: 16px;
   }
 
+  .headerCopy,
+  .liveCounter,
+  .railShell,
+  .card,
+  .cardSurface,
+  .cardBody,
+  .cardActions,
+  .emptyState,
+  .indexBlock,
+  .indexGroup,
+  .indexList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section > *,
+  .header > *,
+  .headerCopy > *,
+  .stats > *,
+  .railHeader > *,
+  .card > *,
+  .cardSurface > *,
+  .cardBody > *,
+  .cardActions > *,
+  .emptyState > *,
+  .indexBlock > *,
+  .indexGrid > *,
+  .indexGroup > *,
+  .indexList > * {
+    min-width: 0;
+  }
+
+  .stats,
+  .indexGrid {
+    grid-template-columns: 1fr;
+  }
+
   .track {
     grid-auto-columns: minmax(240px, 86vw);
+  }
+
+  .contractNote,
+  .contractNote code,
+  .emptyState,
+  .emptyState code,
+  .indexLink {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .railControls {
