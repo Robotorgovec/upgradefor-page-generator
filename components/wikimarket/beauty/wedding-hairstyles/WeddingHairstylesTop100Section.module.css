@@ -449,3 +449,127 @@
   }
 }
 
+
+.appliedFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.appliedFiltersList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.appliedFilterChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--theme-chip-border);
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--theme-page-title);
+  font-size: 13px;
+}
+
+.appliedFilterChip span {
+  font-weight: 700;
+  color: var(--theme-secondary-accent);
+}
+
+.clearAction {
+  cursor: pointer;
+}
+
+.cardFacts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.cardFacts li {
+  margin: 0;
+  color: var(--theme-page-copy);
+  line-height: 1.45;
+}
+
+.cardFacts span {
+  font-weight: 700;
+  color: var(--theme-secondary-accent);
+}
+
+.bridgeCard {
+  border: 1px solid var(--theme-card-accent);
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.bridgeCard h3,
+.bridgeCard p {
+  margin: 0;
+}
+
+.bridgeCard h3 {
+  color: var(--theme-page-title);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.bridgeCard p {
+  color: var(--theme-page-copy);
+  line-height: 1.55;
+  max-width: 70ch;
+}
+
+.indexDisclosure {
+  border: 1px solid var(--theme-card-accent);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 14px;
+}
+
+.indexSummary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--theme-page-title);
+}
+
+.indexDisclosure[open] {
+  display: grid;
+  gap: 14px;
+}
+
+@media (max-width: 960px) {
+  .appliedFilters,
+  .bridgeCard {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  .appliedFilterChip {
+    min-height: 36px;
+    font-size: 12px;
+    padding-inline: 12px;
+  }
+
+  .bridgeCard {
+    display: grid;
+  }
+}

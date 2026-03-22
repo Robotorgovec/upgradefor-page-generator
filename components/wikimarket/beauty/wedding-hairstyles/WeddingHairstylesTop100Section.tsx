@@ -1,92 +1,119 @@
+﻿"use client";
+
 import Link from "next/link";
 
-import { getResolvedWeddingHairstylesTop100Registry, getWeddingHairstyleAssetAudit } from "./WeddingHairstylesTop100Assets.server";
+import type { ResolvedWeddingHairstyleRecord } from "./weddingHairstylesTop100Data";
+import { getWeddingHairstylesGroupedByCategory } from "./weddingHairstylesTop100Data";
 import WeddingHairstylesSliderRail from "./WeddingHairstylesSliderRail";
-import { getWeddingHairstylesGroupedByCategory, weddingHairstylesTop100CanonicalSlugs } from "./weddingHairstylesTop100Data";
 import styles from "./WeddingHairstylesTop100Section.module.css";
 
-export default function WeddingHairstylesTop100Section() {
-  const resolvedRegistry = getResolvedWeddingHairstylesTop100Registry();
-  const liveCards = resolvedRegistry.filter((item) => item.hasLiveImage);
-  const assetAudit = getWeddingHairstyleAssetAudit();
+type AppliedFilter = {
+  id: string;
+  category: string;
+  label: string;
+};
+
+type WeddingHairstylesTop100SectionProps = {
+  items: ResolvedWeddingHairstyleRecord[];
+  totalCount: number;
+  appliedFilters: AppliedFilter[];
+  onClearFilters: () => void;
+  bridgeTitle: string;
+  bridgeText: string;
+  bridgeHref: string;
+};
+
+export default function WeddingHairstylesTop100Section({
+  items,
+  totalCount,
+  appliedFilters,
+  onClearFilters,
+  bridgeTitle,
+  bridgeText,
+  bridgeHref,
+}: WeddingHairstylesTop100SectionProps) {
   const groupedRegistry = getWeddingHairstylesGroupedByCategory();
+  const hasFilters = appliedFilters.length > 0;
 
   return (
     <section id="top-100-hairstyles" className={styles.section}>
       <div className={styles.header}>
         <div className={styles.headerCopy}>
-          <p className={styles.kicker}>Top 100 / Bridal Rail</p>
-          <h2>Top 100 Wedding Hairstyles</h2>
+          <p className={styles.kicker}>Главная витрина</p>
+          <h2>Top 100 свадебных причесок</h2>
           <p>
-            Canonical slugs, detail routes, filters, and taxonomy bindings stay frozen. The approved PNG pack now connects through a
-            dedicated asset mapping layer, while the rail appends cards in lightweight 12-card chunks.
+            Здесь находятся карточки, которые нужно смотреть сразу после фильтра: сначала результаты, потом переход к
+            мастерам, а уже затем подробная taxonomy и справочник типов.
           </p>
         </div>
 
         <div className={styles.liveCounter}>
-          <strong>{liveCards.length}</strong>
-          <span>cards live in the rail</span>
+          <strong>{items.length}</strong>
+          <span>{hasFilters ? `подходящих карточек из ${totalCount}` : `карточек в подборке из ${totalCount}`}</span>
         </div>
       </div>
 
-      <div className={styles.stats}>
-        <article className={styles.statCard}>
-          <strong>{weddingHairstylesTop100CanonicalSlugs.length}</strong>
-          <span>canonical slugs and detail URLs remain untouched</span>
-        </article>
-        <article className={styles.statCard}>
-          <strong>{assetAudit.approvedAssetCount}</strong>
-          <span>approved PNG files are mapped to the registry without changing the route IDs</span>
-        </article>
-        <article className={styles.statCard}>
-          <strong>{assetAudit.mappingCoverageCount}</strong>
-          <span>cards are connected to the rail and keep the same masters filter contract</span>
-        </article>
-      </div>
+      {hasFilters ? (
+        <div className={styles.appliedFilters} aria-live="polite">
+          <ul className={styles.appliedFiltersList}>
+            {appliedFilters.map((filter) => (
+              <li key={filter.id} className={styles.appliedFilterChip}>
+                <span>{filter.category}:</span> {filter.label}
+              </li>
+            ))}
+          </ul>
 
-      <p className={styles.contractNote}>
-        Approved image contract lives in <code>public/assets/media/wikimarket/beauty/wedding-hairstyles/top-100/</code>. If a
-        filename differs from the canonical slug, the route stays stable and the asset mapping layer handles the connection. The two
-        approved closeup variants are kept inside this same rail.
-      </p>
+          <button type="button" className={`${styles.ctaSecondary} ${styles.clearAction}`} onClick={onClearFilters}>
+            Сбросить фильтры
+          </button>
+        </div>
+      ) : null}
 
-      {liveCards.length > 0 ? (
-        <WeddingHairstylesSliderRail items={liveCards} />
+      {items.length > 0 ? (
+        <WeddingHairstylesSliderRail items={items} />
       ) : (
         <div className={styles.emptyState}>
-          <h3>No local card images yet</h3>
-          <p>
-            The slug pages and masters CTA contract are already wired. As soon as approved files land in <code>top-100</code>, the
-            rail will pick them up without breaking links or layout.
-          </p>
+          <h3>Подходящих карточек пока нет</h3>
+          <p>Попробуйте ослабить фильтр или открыть быстрый пресет с более широким сценарием.</p>
         </div>
       )}
 
+      <div className={styles.bridgeCard}>
+        <div>
+          <h3>{bridgeTitle}</h3>
+          <p>{bridgeText}</p>
+        </div>
+        <a className={styles.ctaPrimary} href={bridgeHref}>
+          Показать мастеров
+        </a>
+      </div>
+
       <div className={styles.indexBlock}>
         <div>
-          <h3>All 100 detail links</h3>
-          <p>
-            Every slug keeps its own crawlable detail page even while the rail uses progressive card loading. That preserves internal
-            linking and keeps the full catalog discoverable.
-          </p>
+          <h3>Все 100 detail-page ссылок</h3>
+          <p>Полный индекс стилей остается доступным, но теперь не отвлекает от основного сценария выбора.</p>
         </div>
 
-        <div className={styles.indexGrid}>
-          {groupedRegistry.map((group) => (
-            <section key={group.category} className={styles.indexGroup} aria-label={`${group.label} wedding hairstyles`}>
-              <h4>{group.label}</h4>
-              <ul className={styles.indexList}>
-                {group.items.map((item) => (
-                  <li key={item.slug}>
-                    <Link className={styles.indexLink} href={item.detailHref} prefetch={false}>
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
+        <details className={styles.indexDisclosure}>
+          <summary className={styles.indexSummary}>Открыть полный список стилей</summary>
+
+          <div className={styles.indexGrid}>
+            {groupedRegistry.map((group) => (
+              <section key={group.category} className={styles.indexGroup} aria-label={`${group.label} wedding hairstyles`}>
+                <h4>{group.label}</h4>
+                <ul className={styles.indexList}>
+                  {group.items.map((item) => (
+                    <li key={item.slug}>
+                      <Link className={styles.indexLink} href={item.detailHref} prefetch={false}>
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </details>
       </div>
     </section>
   );

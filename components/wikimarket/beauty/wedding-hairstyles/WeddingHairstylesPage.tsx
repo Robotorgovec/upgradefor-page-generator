@@ -1,20 +1,19 @@
-import WeddingHairstylesCta from "./WeddingHairstylesCta";
+﻿import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
-import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
 import WeddingHairstylesModifiers from "./WeddingHairstylesModifiers";
-import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
-import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
+import WeddingHairstylesSelectionExperience from "./WeddingHairstylesSelectionExperience";
 import WeddingHairstylesTaxonomyGroups from "./WeddingHairstylesTaxonomyGroups";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
-import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
 import WeddingHairstylesTypeCatalog from "./WeddingHairstylesTypeCatalog";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
+import { getResolvedWeddingHairstylesTop100Registry } from "./WeddingHairstylesTop100Assets.server";
 
 export default function WeddingHairstylesPage({ initialHairstyleKey }: { initialHairstyleKey?: string }) {
   const data = weddingHairstylesPageData;
+  const resolvedTop100Registry = getResolvedWeddingHairstylesTop100Registry();
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -66,6 +65,14 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesHero hero={data.hero} />
 
+      <WeddingHairstylesSelectionExperience
+        selector={data.selector}
+        recommendations={[...data.popularStyles]}
+        performersSection={data.performersSection}
+        top100Items={resolvedTop100Registry}
+        initialHairstyleKey={initialHairstyleKey}
+      />
+
       <section id="summary" className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>{data.quickAnswer.title}</h2>
@@ -84,16 +91,6 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         groups={data.taxonomyGroups}
       />
 
-      <WeddingHairstylesGuidedSelector selector={data.selector} recommendations={[...data.popularStyles]} />
-
-      <section id="popular-styles" className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>{data.popularStylesSection.title}</h2>
-          <p>{data.popularStylesSection.subtitle}</p>
-        </div>
-        <WeddingHairstylesStylesGrid items={[...data.popularStyles]} />
-      </section>
-
       <WeddingHairstylesTypeCatalog
         section={data.taxonomyCatalogSection}
         groups={data.taxonomyGroups}
@@ -102,29 +99,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesModifiers section={data.modifierGuideSection} library={data.modifierLibrary} />
 
-      <WeddingHairstylesTop100Section />
-
       <WeddingHairstylesScenarios section={data.scenariosSection} items={data.scenarios} />
-
-      <WeddingHairstylesCta
-        id="cta-after-selection"
-        title={data.ctaAfterSelection.title}
-        text={data.ctaAfterSelection.text}
-        buttonLabel={data.ctaAfterSelection.buttonLabel}
-        href={data.ctaAfterSelection.href}
-        tone="neutral"
-      />
-
-      <WeddingHairstylesPerformerGrid section={data.performersSection} initialHairstyleKey={initialHairstyleKey} />
-
-      <WeddingHairstylesCta
-        id="cta-after-performers"
-        title={data.ctaAfterPerformers.title}
-        text={data.ctaAfterPerformers.text}
-        buttonLabel={data.ctaAfterPerformers.buttonLabel}
-        href={data.ctaAfterPerformers.href}
-        tone="secondary"
-      />
 
       <section id="master-checklist" className={styles.section}>
         <div className={styles.sectionHeader}>

@@ -211,68 +211,62 @@ export const weddingHairstylesPageData = {
     kicker: "WikiMarket / Красота",
     title: "Свадебные прически",
     subtitle:
-      "Подбор стиля, выбор мастера, taxonomy из 6 главных групп и заявка через WikiMarket в одном сценарии.",
+      "Top 100 вариантов, подбор по вашим параметрам и мастера под дату, формат сборов и аксессуары в одном сценарии.",
     imageAlt: "Premium wedding hairstyle for bride",
     badges: [
-      { label: "6 primary groups" },
-      { label: "30 structured types" },
-      { label: "Выезд / репетиция" },
-      { label: "SEO + marketplace logic" },
+      { label: "Top 100 + фильтр" },
+      { label: "Мастера под стиль" },
+      { label: "6 групп и 30 типов" },
     ] satisfies HeroBadge[],
     points: [
       {
-        title: "Сначала структура",
-        text: "Начните с основной категории: buns, updos, half-up half-down, waves & curls, ponytails или braids.",
+        title: "Сначала быстрый выбор",
+        text: "Откройте Top 100 сразу после фильтра и смотрите стили, которые ближе всего к вашему сценарию.",
       },
       {
-        title: "Потом modifiers",
-        text: "Фата, pearls, tiara, стиль свадьбы и длина волос уточняют выбор, а не подменяют его.",
+        title: "Потом мастера",
+        text: "Ниже уже можно сравнить исполнителей под направление, дату, пробный образ и формат сборов.",
       },
       {
-        title: "Упор на стойкость",
-        text: "Собранные формы и контролируемый объем чаще выигрывают при длинном свадебном дне.",
-      },
-      {
-        title: "Прозрачный бриф",
-        text: "Фиксируйте платье, аксессуары, тайминг и ожидания по стойкости до бронирования мастера.",
+        title: "Справочник остается ниже",
+        text: "Taxonomy, каталог типов и modifiers остаются под рукой как второй этаж, а не мешают первому выбору.",
       },
     ] satisfies HeroPoint[],
     trustStrip: [
       { label: "Без неподтвержденных рейтингов и отзывов" },
-      { label: "HTML-структура читается без скрытых JS-фильтров" },
-      { label: "Подготовлено под будущие subtype pages и фильтры" },
+      { label: "Стили, фильтр и мастера связаны в одном потоке" },
+      { label: "Top 100 и detail pages остаются доступными для поиска" },
     ] satisfies HeroTrustItem[],
     supportCard: {
-      title: "Поможем выбрать группу, тип и мастера",
-      text: "С учетом длины волос, фаты, платья, тайминга и желаемой посадки образа.",
-      microCtaLabel: "Начать подбор",
-      microCtaHref: "#guided-selection",
+      title: "Три быстрых входа в страницу",
+      text: "Открыть Top 100, подобрать по параметрам или сразу перейти к мастерам под выбранный стиль.",
+      microCtaLabel: "Сравнить мастеров",
+      microCtaHref: "#wedding-hairstyle-masters",
     },
-    primaryCta: { label: "Подобрать стиль", href: "#guided-selection" } satisfies HeroCta,
-    secondaryCta: { label: "Открыть 6 групп", href: "#taxonomy-groups" } satisfies HeroCta,
+    primaryCta: { label: "Открыть Top 100", href: "#top-100-hairstyles" } satisfies HeroCta,
+    secondaryCta: { label: "Подобрать по параметрам", href: "#guided-selection" } satisfies HeroCta,
   },
   quickAnswer: {
-    title: "Короткий ответ за 15 секунд",
+    title: "Как выбирать без перегруза",
     bullets: [
-      "Сначала выберите primary category: buns, updos, half-up half-down, waves & curls, ponytails или braids.",
-      "With veil, pearls, tiara, boho/classic/modern и hair length работают как modifiers, а не как главные категории.",
-      "Для длинного дня чаще выигрывают собранные формы и контролируемый объем у лица.",
+      "Сначала отметьте 3-5 параметров и посмотрите, как меняется Top 100.",
+      "Если нужен длинный тайминг, чаще выигрывают собранные формы и контролируемый объем у лица.",
       "Half-up и waves удобны, когда важно сохранить длину на фото и мягкое движение по спине.",
-      "Репетиция особенно нужна, если критичны крепление фаты, ранний выезд или сложная конструкция формы.",
-      "Фото платья, аксессуаров и сборов ускоряют согласование и помогают точнее сравнивать мастеров.",
+      "Фату, аксессуары и платье лучше согласовывать одновременно со стилем, а не после финального выбора.",
+      "Пробный образ особенно важен, если критичны крепление фаты, ранний выезд или сложная конструкция формы.",
     ],
   },
   toc: {
     title: "Содержание",
     items: [
-      { href: "#taxonomy-groups", label: "6 SEO-групп" },
       { href: "#guided-selection", label: "Подобрать прическу" },
-      { href: "#popular-styles", label: "Featured styles" },
+      { href: "#top-100-hairstyles", label: "Top 100" },
+      { href: "#performers", label: "Исполнители" },
+      { href: "#summary", label: "Как выбирать" },
+      { href: "#taxonomy-groups", label: "6 SEO-групп" },
       { href: "#hairstyle-catalog", label: "Каталог 30 типов" },
       { href: "#selection-modifiers", label: "Modifiers" },
-      { href: "#top-100-hairstyles", label: "Top 100" },
-      { href: "#personal-scenarios", label: "Что выбрать именно вам" },
-      { href: "#performers", label: "Исполнители" },
+      { href: "#personal-scenarios", label: "Сценарии выбора" },
       { href: "#pricing", label: "Цена и условия" },
       { href: "#process", label: "Как проходит заказ" },
       { href: "#prep", label: "Что подготовить заранее" },
@@ -283,7 +277,7 @@ export const weddingHairstylesPageData = {
     id: "taxonomy-groups",
     title: "6 главных SEO-групп свадебных причесок",
     subtitle:
-      "Это верхний taxonomy layer страницы: сначала выбирайте основную конструкцию, затем уточняйте образ через modifiers вроде veil, pearls, tiara, boho/classic/modern и длины волос.",
+      "Это верхний слой навигации по стилям: здесь удобно сверить семейство формы, а затем уже углубляться в конкретные типы и modifiers.",
     jumpLabel: "Перейти к группе в каталоге",
     representativeLabel: "Representative types",
     seoIntentLabel: "Когда эту группу выбирают:",
@@ -292,18 +286,18 @@ export const weddingHairstylesPageData = {
     id: "hairstyle-catalog",
     title: "30 типов свадебных причесок, сгруппированных по 6 кластерам",
     subtitle:
-      "Каталог построен от primary categories к modifiers: так проще выбрать основу, а затем уточнить аксессуары, стиль свадьбы и технические ограничения по волосам.",
+      "Каталог нужен как справочник после первого выбора: здесь удобно сравнивать близкие варианты внутри уже понятной группы.",
     intentLabel: "Частый сценарий выбора:",
     modifiersLabel: "Подходящие modifiers:",
     backToGroupsLabel: "Назад к 6 группам",
   } satisfies TaxonomyCatalogSectionCopy,
   modifierGuideSection: {
     id: "selection-modifiers",
-    title: "Modifiers: что уточняет выбор, но не заменяет главную категорию",
+    title: "Modifiers: что уточнять после выбора формы",
     subtitle:
-      "Фата, pearls, tiara, boho/classic/modern и длина волос работают как уточняющие атрибуты. Они помогают сузить shortlist внутри buns, updos, half-up half-down, waves & curls, ponytails и braids.",
+      "Фата, pearls, tiara, boho/classic/modern и длина волос работают как уточняющие атрибуты. Их удобнее сверять после того, как вы уже выбрали близкое направление в Top 100 или taxonomy.",
     note:
-      "Рабочая логика для этой страницы и будущих verticals такая: сначала главная конструкция, потом аксессуары и стилистические атрибуты. Это дает понятную HTML-структуру и не прячет ключевой контент за фильтрами.",
+      "Смотрите на modifiers как на практический чек-лист: где крепится аксессуар, сколько нужно мягкости у лица и как меняется силуэт по длине волос.",
   } satisfies ModifierGuideSectionCopy,
   modifierLibrary: {
     items: [
@@ -768,7 +762,7 @@ export const weddingHairstylesPageData = {
   ] satisfies TaxonomyGroup[],
   selector: {
     title: "Подобрать прическу",
-    text: "Отметьте параметры и получите приоритетные стили для вашего сценария.",
+    text: "Отметьте 3-5 параметров, и мы поднимем в Top 100 стили, которые ближе к вашему сценарию.",
     summaryTitle: "Ваш текущий набор параметров",
     categories: [
       {
@@ -843,9 +837,9 @@ export const weddingHairstylesPageData = {
       },
     ] satisfies SelectorCategory[],
     cta: {
-      title: "Нужен подбор под платье, фату и тайминг дня?",
-      text: "Отправьте параметры, и мы соберем shortlist исполнителей под вашу primary category и набор modifiers.",
-      buttonLabel: "Подобрать образ под платье и фату",
+      title: "Нужен короткий бриф под платье, фату и тайминг дня?",
+      text: "Отправьте параметры, и мы соберем shortlist мастеров под выбранный стиль и формат сборов.",
+      buttonLabel: "Получить подбор мастеров",
       href: "/account/register?intent=wedding-hairstyles",
     },
   },
@@ -1003,9 +997,9 @@ export const weddingHairstylesPageData = {
   performersSection: {
     title: "Исполнители свадебных причесок",
     subtitle:
-      "Marketplace-структура с готовыми полями под бренд, город, формат работы и условия бронирования.",
+      "Ниже можно сразу сравнить мастеров под выбранный стиль, формат сборов, пробный образ и условия бронирования.",
     disclaimer:
-      "Ниже демо-структура карточек: без неподтвержденных рейтингов, отзывов и счетчиков заказов. Live-данные подключаются из платформы.",
+      "Карточки показывают, как будет выглядеть сравнение исполнителей: без шумных рейтингов, с упором на специализацию, выезд и подготовку к свадебному дню.",
     filtersAriaLabel: "Фильтры исполнителей",
     strengthsTitle: "Сильные стороны",
     emptyState:
@@ -1308,7 +1302,7 @@ export const weddingHairstylesPageData = {
   },
   relatedPagesSection: {
     title: "Related paths",
-    subtitle: "Без ссылок на несуществующие subtype pages: только рабочие переходы внутри текущего bridal-сценария.",
+    subtitle: "Рабочие переходы внутри bridal-сценария: к смежным разделам, справочнику групп и каталогу типов.",
   } satisfies SectionCopy,
   relatedPages: [
     {
