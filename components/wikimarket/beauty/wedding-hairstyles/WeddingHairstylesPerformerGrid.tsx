@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 
@@ -8,7 +8,7 @@ import { getWeddingHairstyleByFilterKey, getWeddingHairstyleBySlug } from "./wed
 
 type WeddingHairstylesPerformerGridProps = {
   section: WeddingHairstylesPageData["performersSection"];
-  initialHairstyleKey?: string;
+  hairstyleKey?: string;
 };
 
 const PERFORMER_IMAGES: Record<
@@ -39,13 +39,13 @@ function resolveHairstyleFilter(value?: string | null) {
 
 export default function WeddingHairstylesPerformerGrid({
   section,
-  initialHairstyleKey,
+  hairstyleKey,
 }: WeddingHairstylesPerformerGridProps) {
   const [activeFilter, setActiveFilter] = useState<WeddingHairstylesPageData["performersSection"]["filters"][number]["id"]>(
     "all",
   );
 
-  const activeHairstyle = useMemo(() => resolveHairstyleFilter(initialHairstyleKey), [initialHairstyleKey]);
+  const activeHairstyle = useMemo(() => resolveHairstyleFilter(hairstyleKey), [hairstyleKey]);
 
   const filteredPerformers = useMemo(() => {
     const filterMatchedPerformers =
@@ -79,15 +79,15 @@ export default function WeddingHairstylesPerformerGrid({
       {activeHairstyle ? (
         <div className={styles.performerFilterSummary}>
           <div>
-            <p className={styles.performerFilterEyebrow}>Masters filter contract</p>
+            <p className={styles.performerFilterEyebrow}>Подобрано под стиль</p>
             <h3>{activeHairstyle.title}</h3>
             <p>
-              Query param <code>hairstyle={activeHairstyle.mastersFilterKey}</code> now drives this section and can be reused by
-              cards, detail pages, and future live portfolio filters.
+              Сейчас показаны мастера, которые чаще работают с этим направлением или его ближайшей категорией. Ниже можно
+              дополнительно отфильтровать их по выезду, пробному образу и времени сборов.
             </p>
           </div>
-          <a className={styles.inlineLink} href="/wikimarket/beauty/wedding-hairstyles#wedding-hairstyle-masters">
-            Сбросить фильтр по стилю
+          <a className={styles.inlineLink} href="#top-100-hairstyles">
+            Сменить стиль
           </a>
         </div>
       ) : null}
@@ -147,7 +147,7 @@ export default function WeddingHairstylesPerformerGrid({
                   <span>Выезд / студия:</span> {performer.serviceModes}
                 </li>
                 <li>
-                  <span>Репетиция:</span> {performer.trialLabel}
+                  <span>Пробный образ:</span> {performer.trialLabel}
                 </li>
                 <li>
                   <span>Цена:</span> {performer.priceFromLabel}

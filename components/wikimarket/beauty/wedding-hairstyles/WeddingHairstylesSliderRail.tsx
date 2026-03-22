@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
@@ -154,13 +154,13 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
     <div className={styles.railShell}>
       <div className={styles.railHeader}>
         <div>
-          <h3>One horizontal Top 100 rail</h3>
-          <p>All approved cards live in one swipeable feed and append in 12-card chunks as the user moves through the rail.</p>
+          <h3>Стили в выдаче</h3>
+          <p>Листайте карточки, чтобы сравнить форму, эффект и сразу перейти к мастерам под выбранное направление.</p>
         </div>
 
         <div className={styles.railMeta}>
           <span className={styles.railProgress}>
-            {renderedItems.length} / {items.length} loaded
+            {renderedItems.length} / {items.length} в выдаче
           </span>
 
           <div className={styles.railControls}>

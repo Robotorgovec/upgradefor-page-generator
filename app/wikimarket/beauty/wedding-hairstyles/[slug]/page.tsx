@@ -123,9 +123,8 @@ export default async function WeddingHairstyleDetailPage({
             </figure>
           ) : (
             <div className={styles.placeholder}>
-              <strong>Asset pending</strong>
-              <p>The detail page is live now and will pick up the approved mapped file automatically once it lands locally.</p>
-              <code>{hairstyle.assetFilename}</code>
+              <strong>Изображение обновляется</strong>
+              <p>Карточка стиля уже доступна. Одобренное изображение появится здесь автоматически после публикации.</p>
             </div>
           )}
         </div>
@@ -149,54 +148,49 @@ export default async function WeddingHairstyleDetailPage({
 
           <div className={styles.factGrid}>
             <article className={styles.factCard}>
-              <p className={styles.factLabel}>Style family</p>
+              <p className={styles.factLabel}>Семья стиля</p>
               <p className={styles.factValue}>{hairstyle.categoryLabel}</p>
             </article>
             <article className={styles.factCard}>
-              <p className={styles.factLabel}>Best for length</p>
+              <p className={styles.factLabel}>Лучше для длины</p>
               <p className={styles.factValue}>{hairstyle.hairLengthNote}</p>
             </article>
             <article className={styles.factCard}>
-              <p className={styles.factLabel}>Texture note</p>
+              <p className={styles.factLabel}>Фактура и подготовка</p>
               <p className={styles.factValue}>{hairstyle.textureNote}</p>
             </article>
             <article className={styles.factCard}>
-              <p className={styles.factLabel}>Masters filter key</p>
-              <p className={styles.factValue}>{hairstyle.mastersFilterKey}</p>
+              <p className={styles.factLabel}>Что сказать мастеру</p>
+              <p className={styles.factValue}>
+                Укажите стиль {hairstyle.title}, желаемую стойкость и покажите ракурс, где прическа должна читаться лучше всего.
+              </p>
             </article>
           </div>
         </div>
       </section>
 
       <section className={styles.section}>
-        <h2>Why this page exists</h2>
+        <h2>На что обратить внимание</h2>
         <div className={styles.noteGrid}>
           <article className={styles.noteCard}>
-            <h3>Stable slug contract</h3>
-            <p>
-              The route, internal links, and masters filter all stay tied to the canonical slug, while the asset mapping layer keeps
-              approved filenames separate.
-            </p>
+            <h3>Фата и аксессуары</h3>
+            <p>Заранее проверьте точку крепления и не перегружайте верх украшениями, чтобы сама прическа оставалась главным объектом.</p>
           </article>
           <article className={styles.noteCard}>
-            <h3>SEO-safe structure</h3>
-            <p>
-              The title, metadata, detail copy, and internal links are rendered as plain HTML instead of depending on client-only slider UI.
-            </p>
+            <h3>Стойкость по таймингу</h3>
+            <p>Если день длинный, заранее обсудите запас по фиксации, влажность локации и момент, когда образ должен выглядеть идеально.</p>
           </article>
           <article className={styles.noteCard}>
-            <h3>Filter-ready CTA</h3>
-            <p>
-              The masters CTA points to a reusable <code>hairstyle</code> filter contract on the main page and keeps the anchor behavior intact.
-            </p>
+            <h3>Фото и лучший ракурс</h3>
+            <p>Попросите мастера показать стиль в полуоборота или semi-side ракурсе, где видны конструкция, объем и линия у шеи.</p>
           </article>
         </div>
       </section>
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2>Related styles</h2>
-          <p>Nearby internal links stay within the same style family and help search engines discover the rest of the registry.</p>
+          <h2>Похожие стили</h2>
+          <p>Соседние варианты внутри той же семьи помогают сравнить силуэт, степень гладкости и работу с аксессуарами.</p>
         </div>
 
         <div className={styles.relatedGrid}>
@@ -205,7 +199,7 @@ export default async function WeddingHairstyleDetailPage({
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <Link href={item.detailHref} prefetch={false}>
-                Open detail page
+                Открыть карточку
               </Link>
             </article>
           ))}
@@ -229,5 +223,3 @@ export default async function WeddingHairstyleDetailPage({
     </main>
   );
 }
-
-

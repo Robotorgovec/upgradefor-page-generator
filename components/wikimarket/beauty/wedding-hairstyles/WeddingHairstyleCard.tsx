@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { buildWeddingHairstyleMastersHref, type ResolvedWeddingHairstyleRecord } from "./weddingHairstylesTop100Data";
 import styles from "./WeddingHairstylesTop100Section.module.css";
@@ -34,7 +34,17 @@ export default function WeddingHairstyleCard({ hairstyle, priority = false }: We
             {hairstyle.categoryLabel} / {hairstyle.vibeLabel}
           </p>
           <h3 className={styles.cardTitle}>{hairstyle.title}</h3>
-          <p className={styles.cardSummary}>{hairstyle.description}</p>
+          <ul className={styles.cardFacts}>
+            <li>
+              <span>Подходит:</span> {hairstyle.hairLengthNote}
+            </li>
+            <li>
+              <span>Эффект:</span> {hairstyle.description}
+            </li>
+            <li>
+              <span>На что смотреть:</span> {hairstyle.textureNote}
+            </li>
+          </ul>
         </div>
       </Link>
 
@@ -43,7 +53,7 @@ export default function WeddingHairstyleCard({ hairstyle, priority = false }: We
           Подробнее
         </Link>
         <a className={styles.ctaSecondary} href={buildWeddingHairstyleMastersHref(hairstyle.mastersFilterKey)}>
-          Посмотреть мастеров
+          Мастера под этот стиль
         </a>
       </div>
     </article>

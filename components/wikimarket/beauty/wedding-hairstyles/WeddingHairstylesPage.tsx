@@ -1,29 +1,28 @@
 import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
-import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
 import WeddingHairstylesModifiers from "./WeddingHairstylesModifiers";
-import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
-import WeddingHairstylesStylesGrid from "./WeddingHairstylesStylesGrid";
+import WeddingHairstylesSelectionExperience from "./WeddingHairstylesSelectionExperience";
 import WeddingHairstylesTaxonomyGroups from "./WeddingHairstylesTaxonomyGroups";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
-import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
 import WeddingHairstylesTypeCatalog from "./WeddingHairstylesTypeCatalog";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
+import { getResolvedWeddingHairstylesTop100Registry } from "./WeddingHairstylesTop100Assets.server";
 
 export default function WeddingHairstylesPage({ initialHairstyleKey }: { initialHairstyleKey?: string }) {
   const data = weddingHairstylesPageData;
+  const resolvedTop100Registry = getResolvedWeddingHairstylesTop100Registry();
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Свадебные прически",
-    serviceType: "Подбор свадебной прически и исполнителя",
+    name: "��������� ��������",
+    serviceType: "������ ��������� �������� � �����������",
     category: "BeautyService",
     description:
-      "Подбор стиля свадебной прически, сравнение исполнителей и оформление заявки через WikiMarket.",
+      "������ ����� ��������� ��������, ��������� ������������ � ���������� ������ ����� WikiMarket.",
     provider: {
       "@type": "Organization",
       name: "WikiMarket",
@@ -36,7 +35,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
   const performerListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Исполнители свадебных причесок",
+    name: "����������� ��������� ��������",
     itemListElement: data.performersSection.performers.map((performer, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -50,7 +49,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(performerListJsonLd) }} />
 
-      <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
+      <nav className={styles.breadcrumbs} aria-label="������� ������">
         <ol>
           {data.breadcrumbs.map((crumb, index) => {
             const isLast = index === data.breadcrumbs.length - 1;
@@ -65,6 +64,14 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
       </nav>
 
       <WeddingHairstylesHero hero={data.hero} />
+
+      <WeddingHairstylesSelectionExperience
+        selector={data.selector}
+        recommendations={[...data.popularStyles]}
+        performersSection={data.performersSection}
+        top100Items={resolvedTop100Registry}
+        initialHairstyleKey={initialHairstyleKey}
+      />
 
       <section id="summary" className={styles.section}>
         <div className={styles.sectionHeader}>
@@ -84,16 +91,6 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         groups={data.taxonomyGroups}
       />
 
-      <WeddingHairstylesGuidedSelector selector={data.selector} recommendations={[...data.popularStyles]} />
-
-      <section id="popular-styles" className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2>{data.popularStylesSection.title}</h2>
-          <p>{data.popularStylesSection.subtitle}</p>
-        </div>
-        <WeddingHairstylesStylesGrid items={[...data.popularStyles]} />
-      </section>
-
       <WeddingHairstylesTypeCatalog
         section={data.taxonomyCatalogSection}
         groups={data.taxonomyGroups}
@@ -102,29 +99,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesModifiers section={data.modifierGuideSection} library={data.modifierLibrary} />
 
-      <WeddingHairstylesTop100Section />
-
       <WeddingHairstylesScenarios section={data.scenariosSection} items={data.scenarios} />
-
-      <WeddingHairstylesCta
-        id="cta-after-selection"
-        title={data.ctaAfterSelection.title}
-        text={data.ctaAfterSelection.text}
-        buttonLabel={data.ctaAfterSelection.buttonLabel}
-        href={data.ctaAfterSelection.href}
-        tone="neutral"
-      />
-
-      <WeddingHairstylesPerformerGrid section={data.performersSection} initialHairstyleKey={initialHairstyleKey} />
-
-      <WeddingHairstylesCta
-        id="cta-after-performers"
-        title={data.ctaAfterPerformers.title}
-        text={data.ctaAfterPerformers.text}
-        buttonLabel={data.ctaAfterPerformers.buttonLabel}
-        href={data.ctaAfterPerformers.href}
-        tone="secondary"
-      />
 
       <section id="master-checklist" className={styles.section}>
         <div className={styles.sectionHeader}>
@@ -134,7 +109,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
         <div className={styles.checklistGrid}>
           <article className={styles.checklistCard}>
-            <h3>Как выбрать мастера</h3>
+            <h3>��� ������� �������</h3>
             <ul>
               {data.chooseMasterChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -236,15 +211,6 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         href={data.finalCta.href}
       />
 
-      <WeddingHairstylesCta
-        id="performer-cta"
-        title={data.performerCta.title}
-        text={data.performerCta.text}
-        buttonLabel={data.performerCta.buttonLabel}
-        href={data.performerCta.href}
-        tone="secondary"
-      />
-
       <section id="related-pages" className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>{data.relatedPagesSection.title}</h2>
@@ -257,16 +223,28 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
               <h3>{page.title}</h3>
               <p>{page.note}</p>
               <a className={styles.inlineLink} href={page.href}>
-                Открыть переход
+                ������� �������
               </a>
             </article>
           ))}
         </div>
       </section>
 
+      <WeddingHairstylesCta
+        id="performer-cta"
+        title={data.performerCta.title}
+        text={data.performerCta.text}
+        buttonLabel={data.performerCta.buttonLabel}
+        href={data.performerCta.href}
+        tone="neutral"
+        buttonTone="secondary"
+        eyebrow={"\u0414\u043b\u044f \u043c\u0430\u0441\u0442\u0435\u0440\u043e\u0432 \u0438 \u0441\u0442\u0443\u0434\u0438\u0439"}
+        compact
+      />
+
       <div className={styles.stickyMobileCta}>
-        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="Оставить заявку">
-          Оставить заявку
+        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="�������� ������">
+          �������� ������
         </a>
       </div>
     </main>
