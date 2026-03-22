@@ -238,7 +238,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         href={data.performerCta.href}
         tone="neutral"
         buttonTone="secondary"
-        eyebrow="��� �������� � ������"
+        eyebrow={"\u0414\u043b\u044f \u043c\u0430\u0441\u0442\u0435\u0440\u043e\u0432 \u0438 \u0441\u0442\u0443\u0434\u0438\u0439"}
         compact
       />
 
