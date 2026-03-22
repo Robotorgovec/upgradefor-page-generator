@@ -406,6 +406,28 @@
     border-radius: 16px;
   }
 
+  .section,
+  .section > *,
+  .header,
+  .headerCopy,
+  .stats,
+  .statCard,
+  .railShell,
+  .railHeader,
+  .railMeta,
+  .indexBlock,
+  .indexGrid,
+  .indexGroup,
+  .indexList,
+  .emptyState {
+    min-width: 0;
+  }
+
+  .stats,
+  .indexGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .railMeta {
     width: 100%;
     justify-items: start;
@@ -415,7 +437,15 @@
     display: none;
   }
 
+  .contractNote code,
+  .emptyState code,
+  .indexLink {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   .slide {
     flex-basis: min(84vw, 292px);
   }
 }
+

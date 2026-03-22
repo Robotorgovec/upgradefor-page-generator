@@ -861,6 +861,61 @@
     width: min(1160px, 100% - 16px);
     padding-top: 8px;
     gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page > *,
+  .breadcrumbs,
+  .breadcrumbs ol,
+  .heroWrap,
+  .hero,
+  .heroContent,
+  .heroAside,
+  .heroBadges,
+  .heroActions,
+  .heroPoints,
+  .heroTrustStrip,
+  .sectionHeader,
+  .quickAnswerList,
+  .tocList,
+  .selectorLayout,
+  .selectorControls,
+  .selectorSummary,
+  .selectorChips,
+  .recommendationGrid,
+  .stylesGrid,
+  .scenarioGrid,
+  .performerGrid,
+  .relatedGrid,
+  .checklistGrid,
+  .pricingGrid,
+  .performerFilterSummary,
+  .performerCard,
+  .performerHeader,
+  .performerFacts,
+  .performerStrengths,
+  .processList,
+  .processList li,
+  .faqList,
+  .cta,
+  .inlineCta,
+  .taxonomyGroupGrid,
+  .taxonomyGroupCard,
+  .taxonomyGroupHeader,
+  .taxonomyRepresentativeBlock,
+  .taxonomyRepresentativeList,
+  .catalogGroupStack,
+  .catalogGroupSection,
+  .catalogGroupHeader,
+  .catalogTypeGrid,
+  .catalogTypeCard,
+  .catalogTypeMeta,
+  .catalogTypeModifierList,
+  .modifierGroupGrid,
+  .modifierGroupCard,
+  .modifierList,
+  .prepList,
+  .pricingNotes {
+    min-width: 0;
   }
 
   .breadcrumbs {
@@ -923,6 +978,15 @@
   .btn {
     width: 100%;
     padding-inline: 16px;
+  }
+  .breadcrumbs li,
+  .breadcrumbs a,
+  .breadcrumbs span,
+  .performerFilterSummary code,
+  .taxonomyGroupSlug,
+  .catalogGroupSlug {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .stickyMobileCta {
@@ -1179,6 +1243,7 @@
   .taxonomyGroupGrid,
   .catalogTypeGrid,
   .modifierGroupGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
+
