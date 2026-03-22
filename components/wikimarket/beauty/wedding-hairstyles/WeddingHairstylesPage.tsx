@@ -1,4 +1,4 @@
-﻿import WeddingHairstylesCta from "./WeddingHairstylesCta";
+import WeddingHairstylesCta from "./WeddingHairstylesCta";
 import WeddingHairstylesFaq from "./WeddingHairstylesFaq";
 import WeddingHairstylesHero from "./WeddingHairstylesHero";
 import WeddingHairstylesModifiers from "./WeddingHairstylesModifiers";
@@ -18,11 +18,11 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Свадебные прически",
-    serviceType: "Подбор свадебной прически и исполнителя",
+    name: "��������� ��������",
+    serviceType: "������ ��������� �������� � �����������",
     category: "BeautyService",
     description:
-      "Подбор стиля свадебной прически, сравнение исполнителей и оформление заявки через WikiMarket.",
+      "������ ����� ��������� ��������, ��������� ������������ � ���������� ������ ����� WikiMarket.",
     provider: {
       "@type": "Organization",
       name: "WikiMarket",
@@ -35,7 +35,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
   const performerListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Исполнители свадебных причесок",
+    name: "����������� ��������� ��������",
     itemListElement: data.performersSection.performers.map((performer, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -49,7 +49,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(performerListJsonLd) }} />
 
-      <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
+      <nav className={styles.breadcrumbs} aria-label="������� ������">
         <ol>
           {data.breadcrumbs.map((crumb, index) => {
             const isLast = index === data.breadcrumbs.length - 1;
@@ -109,7 +109,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
         <div className={styles.checklistGrid}>
           <article className={styles.checklistCard}>
-            <h3>Как выбрать мастера</h3>
+            <h3>��� ������� �������</h3>
             <ul>
               {data.chooseMasterChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -211,15 +211,6 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         href={data.finalCta.href}
       />
 
-      <WeddingHairstylesCta
-        id="performer-cta"
-        title={data.performerCta.title}
-        text={data.performerCta.text}
-        buttonLabel={data.performerCta.buttonLabel}
-        href={data.performerCta.href}
-        tone="secondary"
-      />
-
       <section id="related-pages" className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2>{data.relatedPagesSection.title}</h2>
@@ -232,16 +223,28 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
               <h3>{page.title}</h3>
               <p>{page.note}</p>
               <a className={styles.inlineLink} href={page.href}>
-                Открыть переход
+                ������� �������
               </a>
             </article>
           ))}
         </div>
       </section>
 
+      <WeddingHairstylesCta
+        id="performer-cta"
+        title={data.performerCta.title}
+        text={data.performerCta.text}
+        buttonLabel={data.performerCta.buttonLabel}
+        href={data.performerCta.href}
+        tone="neutral"
+        buttonTone="secondary"
+        eyebrow="��� �������� � ������"
+        compact
+      />
+
       <div className={styles.stickyMobileCta}>
-        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="Оставить заявку">
-          Оставить заявку
+        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="�������� ������">
+          �������� ������
         </a>
       </div>
     </main>

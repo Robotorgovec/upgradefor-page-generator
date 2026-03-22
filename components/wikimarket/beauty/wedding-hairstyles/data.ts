@@ -1295,14 +1295,14 @@ export const weddingHairstylesPageData = {
     href: "/account/register?intent=wedding-hairstyles",
   },
   performerCta: {
-    title: "Вы мастер свадебных причесок?",
-    text: "Подключите профиль и получайте целевые брифы от невест в формате WikiMarket.",
-    buttonLabel: "Стать исполнителем",
+    title: "Подключайте профиль мастера",
+    text: "Получайте запросы от невест под даты, выезд, пробный образ и формат сборов без лишнего холодного трафика.",
+    buttonLabel: "Подключить профиль",
     href: "/account/register?role=performer",
   },
   relatedPagesSection: {
-    title: "Related paths",
-    subtitle: "Рабочие переходы внутри bridal-сценария: к смежным разделам, справочнику групп и каталогу типов.",
+    title: "Что посмотреть дальше",
+    subtitle: "Смежные разделы помогут собрать образ целиком и сравнить соседние категории WikiMarket без лишнего поиска.",
   } satisfies SectionCopy,
   relatedPages: [
     {

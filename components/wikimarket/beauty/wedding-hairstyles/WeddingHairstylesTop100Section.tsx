@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 
@@ -39,17 +39,17 @@ export default function WeddingHairstylesTop100Section({
     <section id="top-100-hairstyles" className={styles.section}>
       <div className={styles.header}>
         <div className={styles.headerCopy}>
-          <p className={styles.kicker}>Главная витрина</p>
-          <h2>Top 100 свадебных причесок</h2>
+          <p className={styles.kicker}>������� �������</p>
+          <h2>Top 100 ��������� ��������</h2>
           <p>
-            Здесь находятся карточки, которые нужно смотреть сразу после фильтра: сначала результаты, потом переход к
-            мастерам, а уже затем подробная taxonomy и справочник типов.
+            ������� ����� ����� �������������� ��������� ������, ����� ���� ������ �������� ������, �����, ���������� �
+            ��������� � ����� ��� ������������ � ����� ��������.
           </p>
         </div>
 
         <div className={styles.liveCounter}>
           <strong>{items.length}</strong>
-          <span>{hasFilters ? `подходящих карточек из ${totalCount}` : `карточек в подборке из ${totalCount}`}</span>
+          <span>{hasFilters ? `���������� �������� �� ${totalCount}` : `�������� � �������� �� ${totalCount}`}</span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function WeddingHairstylesTop100Section({
           </ul>
 
           <button type="button" className={`${styles.ctaSecondary} ${styles.clearAction}`} onClick={onClearFilters}>
-            Сбросить фильтры
+            �������� �������
           </button>
         </div>
       ) : null}
@@ -73,8 +73,8 @@ export default function WeddingHairstylesTop100Section({
         <WeddingHairstylesSliderRail items={items} />
       ) : (
         <div className={styles.emptyState}>
-          <h3>Подходящих карточек пока нет</h3>
-          <p>Попробуйте ослабить фильтр или открыть быстрый пресет с более широким сценарием.</p>
+          <h3>���������� �������� ���� ���</h3>
+          <p>���������� �������� ������ ��� ������� ������� ������ � ����� ������� ���������.</p>
         </div>
       )}
 
@@ -84,18 +84,18 @@ export default function WeddingHairstylesTop100Section({
           <p>{bridgeText}</p>
         </div>
         <a className={styles.ctaPrimary} href={bridgeHref}>
-          Показать мастеров
+          �������� ��������
         </a>
       </div>
 
       <div className={styles.indexBlock}>
         <div>
-          <h3>Все 100 detail-page ссылок</h3>
-          <p>Полный индекс стилей остается доступным, но теперь не отвлекает от основного сценария выбора.</p>
+          <h3>������ ������ ���� 100 ������</h3>
+          <p>���� ������ ����������� ������� �� ���������, �������� ������ ���� � ���������� ����� � ������ ��������.</p>
         </div>
 
         <details className={styles.indexDisclosure}>
-          <summary className={styles.indexSummary}>Открыть полный список стилей</summary>
+          <summary className={styles.indexSummary}>������� ������ ������ ������</summary>
 
           <div className={styles.indexGrid}>
             {groupedRegistry.map((group) => (
