@@ -195,7 +195,7 @@ export type ModifierGuideSectionCopy = AnchoredSectionCopy & {
 
 export const weddingHairstylesPageData = {
   pageMeta: {
-    title: "Свадебные прически — 6 групп, 30 типов и подбор мастера | WikiMarket",
+    title: "\u0421\u0432\u0430\u0434\u0435\u0431\u043d\u044b\u0435 \u043f\u0440\u0438\u0447\u0435\u0441\u043a\u0438: Top 100 \u0438 \u043f\u043e\u0434\u0431\u043e\u0440 \u043c\u0430\u0441\u0442\u0435\u0440\u0430 | WikiMarket",
     description:
       "Свадебные прически на WikiMarket: 6 главных bridal-групп, 30 типовых решений, modifiers для фаты и аксессуаров, подбор стиля и исполнителя в одной SEO-структуре.",
     canonicalPath: "/wikimarket/beauty/wedding-hairstyles",

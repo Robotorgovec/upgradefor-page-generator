@@ -23,6 +23,7 @@ type AppliedFilter = {
 type RankedRecommendation = {
   item: RecommendationCard;
   score: number;
+  sourceIndex: number;
 };
 
 type RecommendationHint = {
@@ -110,30 +111,45 @@ function buildSelectionFromPreset(
   }, {});
 }
 
+function resolvePresetTopTypeKey(preset: RecommendationCard): string | null {
+  if (preset.sourceTypeId && getWeddingHairstyleByFilterKey(preset.sourceTypeId)) {
+    return preset.sourceTypeId;
+  }
+
+  return RECOMMENDATION_HINTS[preset.id]?.exactKeys[0] ?? null;
+}
+
 function rankRecommendations(recommendations: RecommendationCard[], selectedValues: string[]): RankedRecommendation[] {
   return recommendations
-    .map((item) => {
+    .map((item, sourceIndex) => {
       const score = item.tags.reduce((total, tag) => total + (selectedValues.includes(tag) ? 1 : 0), 0);
-      return { item, score };
+      return { item, score, sourceIndex };
     })
     .sort((a, b) => {
       if (b.score !== a.score) {
         return b.score - a.score;
       }
 
-      return a.item.title.localeCompare(b.item.title, "ru");
+      return a.sourceIndex - b.sourceIndex;
     });
 }
 
 function rankTop100Items(
   items: ResolvedWeddingHairstyleRecord[],
   rankedRecommendations: RankedRecommendation[],
+  hasActiveSelection: boolean,
+  preferredTopTypeKey?: string | null,
 ): ResolvedWeddingHairstyleRecord[] {
   const liveItems = items.filter((item) => item.hasLiveImage);
+
+  if (!hasActiveSelection) {
+    return liveItems;
+  }
+
   const positiveRecommendations = rankedRecommendations.filter((entry) => entry.score > 0).slice(0, 3);
 
   if (positiveRecommendations.length === 0) {
-    return liveItems;
+    return [];
   }
 
   const scoredItems = liveItems.map((item, index) => {
@@ -151,13 +167,15 @@ function rankTop100Items(
       return total + categoryMatch + exactMatch;
     }, 0);
 
-    return { item, score, index };
+    const preferredTopTypeBoost = preferredTopTypeKey === item.mastersFilterKey ? 80 : 0;
+
+    return { item, score: score + preferredTopTypeBoost, index };
   });
 
   const positiveItems = scoredItems.filter((entry) => entry.score > 0);
 
   if (positiveItems.length === 0) {
-    return liveItems;
+    return [];
   }
 
   return positiveItems
@@ -179,6 +197,8 @@ export default function WeddingHairstylesSelectionExperience({
   initialHairstyleKey,
 }: WeddingHairstylesSelectionExperienceProps) {
   const [selected, setSelected] = useState<SelectedMap>(() => buildEmptySelection(selector.categories));
+  const [preferredTopTypeKey, setPreferredTopTypeKey] = useState<string | null>(() => initialHairstyleKey ?? null);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
   const appliedFilters = useMemo(
     () => buildAppliedFilters(selector.categories, selected),
@@ -186,6 +206,7 @@ export default function WeddingHairstylesSelectionExperience({
   );
 
   const selectedValues = useMemo(() => Object.values(selected).filter(Boolean), [selected]);
+  const hasActiveSelection = selectedValues.length > 0;
 
   const rankedRecommendations = useMemo(
     () => rankRecommendations(recommendations, selectedValues),
@@ -193,23 +214,33 @@ export default function WeddingHairstylesSelectionExperience({
   );
 
   const previewRecommendations = useMemo(() => {
-    const positiveMatches = rankedRecommendations.filter((entry) => entry.score > 0);
-    const source = positiveMatches.length > 0 ? positiveMatches : rankedRecommendations;
-    return source.slice(0, 3);
-  }, [rankedRecommendations]);
+    if (!hasActiveSelection) {
+      return recommendations.slice(0, 3).map((item, sourceIndex) => ({ item, score: 0, sourceIndex }));
+    }
+
+    return rankedRecommendations.filter((entry) => entry.score > 0).slice(0, 3);
+  }, [hasActiveSelection, rankedRecommendations, recommendations]);
 
   const rankedTop100Items = useMemo(
-    () => rankTop100Items(top100Items, rankedRecommendations),
-    [top100Items, rankedRecommendations],
+    () => rankTop100Items(top100Items, rankedRecommendations, hasActiveSelection, preferredTopTypeKey),
+    [top100Items, rankedRecommendations, hasActiveSelection, preferredTopTypeKey],
   );
 
   const contextualHairstyleKey = useMemo(() => {
-    if (appliedFilters.length > 0) {
+    if (preferredTopTypeKey && (hasActiveSelection || !hasUserInteracted)) {
+      return preferredTopTypeKey;
+    }
+
+    if (hasActiveSelection) {
       return rankedTop100Items[0]?.mastersFilterKey;
     }
 
-    return initialHairstyleKey;
-  }, [appliedFilters.length, initialHairstyleKey, rankedTop100Items]);
+    if (!hasUserInteracted) {
+      return initialHairstyleKey;
+    }
+
+    return undefined;
+  }, [preferredTopTypeKey, hasActiveSelection, hasUserInteracted, initialHairstyleKey, rankedTop100Items]);
 
   const contextualHairstyle = useMemo(
     () => (contextualHairstyleKey ? getWeddingHairstyleByFilterKey(contextualHairstyleKey) : null),
@@ -217,10 +248,14 @@ export default function WeddingHairstylesSelectionExperience({
   );
 
   const handleClear = () => {
+    setHasUserInteracted(true);
+    setPreferredTopTypeKey(null);
     setSelected(buildEmptySelection(selector.categories));
   };
 
   const handleToggleOption = (categoryId: string, optionId: string) => {
+    setHasUserInteracted(true);
+    setPreferredTopTypeKey(null);
     setSelected((current) => ({
       ...current,
       [categoryId]: current[categoryId] === optionId ? "" : optionId,
@@ -228,6 +263,8 @@ export default function WeddingHairstylesSelectionExperience({
   };
 
   const handleApplyPreset = (preset: RecommendationCard) => {
+    setHasUserInteracted(true);
+    setPreferredTopTypeKey(resolvePresetTopTypeKey(preset));
     setSelected(buildSelectionFromPreset(selector.categories, preset));
   };
 
