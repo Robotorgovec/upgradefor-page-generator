@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { RecommendationCard, WeddingHairstylesPageData } from "./data";
 import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
@@ -65,6 +65,14 @@ const RECOMMENDATION_HINTS: Record<string, RecommendationHint> = {
     exactKeys: ["half-up-half-down-curls", "half-up-soft-waves", "half-up-volume-curls"],
   },
 };
+
+function resolveInitialHairstyleKey(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return getWeddingHairstyleByFilterKey(value)?.mastersFilterKey ?? null;
+}
 
 function buildEmptySelection(categories: WeddingHairstylesPageData["selector"]["categories"]): SelectedMap {
   return categories.reduce<SelectedMap>((acc, category) => {
@@ -197,8 +205,29 @@ export default function WeddingHairstylesSelectionExperience({
   initialHairstyleKey,
 }: WeddingHairstylesSelectionExperienceProps) {
   const [selected, setSelected] = useState<SelectedMap>(() => buildEmptySelection(selector.categories));
-  const [preferredTopTypeKey, setPreferredTopTypeKey] = useState<string | null>(() => initialHairstyleKey ?? null);
+  const [queryHairstyleKey, setQueryHairstyleKey] = useState<string | null>(null);
+  const [preferredTopTypeKey, setPreferredTopTypeKey] = useState<string | null>(() =>
+    resolveInitialHairstyleKey(initialHairstyleKey),
+  );
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
+
+  const initialContextHairstyleKey = useMemo(
+    () => queryHairstyleKey ?? resolveInitialHairstyleKey(initialHairstyleKey),
+    [queryHairstyleKey, initialHairstyleKey],
+  );
+
+  useEffect(() => {
+    const initialQueryValue = new URLSearchParams(window.location.search).get("hairstyle");
+    setQueryHairstyleKey(resolveInitialHairstyleKey(initialQueryValue));
+  }, []);
+
+  useEffect(() => {
+    if (hasUserInteracted) {
+      return;
+    }
+
+    setPreferredTopTypeKey(initialContextHairstyleKey);
+  }, [hasUserInteracted, initialContextHairstyleKey]);
 
   const appliedFilters = useMemo(
     () => buildAppliedFilters(selector.categories, selected),
@@ -236,11 +265,11 @@ export default function WeddingHairstylesSelectionExperience({
     }
 
     if (!hasUserInteracted) {
-      return initialHairstyleKey;
+      return initialContextHairstyleKey ?? undefined;
     }
 
     return undefined;
-  }, [preferredTopTypeKey, hasActiveSelection, hasUserInteracted, initialHairstyleKey, rankedTop100Items]);
+  }, [preferredTopTypeKey, hasActiveSelection, hasUserInteracted, initialContextHairstyleKey, rankedTop100Items]);
 
   const contextualHairstyle = useMemo(
     () => (contextualHairstyleKey ? getWeddingHairstyleByFilterKey(contextualHairstyleKey) : null),
@@ -302,3 +331,4 @@ export default function WeddingHairstylesSelectionExperience({
     </>
   );
 }
+
