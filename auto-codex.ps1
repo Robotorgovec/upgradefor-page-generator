@@ -14,7 +14,13 @@ $forbidden = @(
 Write-Host ">>> Pre-checks..."
 
 # 1) Чистота git (никаких незакоммиченных изменений)
-$gitStatus = (git status --porcelain).Trim()
+$gitStatusRaw = git status --porcelain 2>$null
+
+$gitStatus = ""
+if ($null -ne $gitStatusRaw) {
+  $gitStatus = ($gitStatusRaw | Out-String).Trim()
+}
+
 if (-not [string]::IsNullOrWhiteSpace($gitStatus)) {
   Write-Host "❌ Repo dirty. Сначала закоммить изменения."
   git status
@@ -52,7 +58,15 @@ if ($output -match "error|failed") {
 }
 
 # 4) Проверка запрещённых путей (по изменённым файлам)
-$changed = git status --porcelain | ForEach-Object { $_.Substring(3) }
+$changedRaw = git status --porcelain 2>$null
+$changed = @()
+
+if ($null -ne $changedRaw) {
+  $changed = $changedRaw | ForEach-Object {
+    if ($_.Length -ge 4) { $_.Substring(3) }
+  }
+}
+
 foreach ($f in $changed) {
   foreach ($rule in $forbidden) {
     if ($f -like "*$rule*") {
@@ -64,8 +78,14 @@ foreach ($f in $changed) {
 
 # ===== COMMIT =====
 # 5) Авто-коммит (только если есть изменения)
-$gitStatusAfter = git status --porcelain
-if ($gitStatusAfter -ne "") {
+$gitStatusAfterRaw = git status --porcelain 2>$null
+$gitStatusAfter = ""
+
+if ($null -ne $gitStatusAfterRaw) {
+  $gitStatusAfter = ($gitStatusAfterRaw | Out-String).Trim()
+}
+
+if (-not [string]::IsNullOrWhiteSpace($gitStatusAfter)) {
   git add .
   $msg = "codex: " + ($task.Substring(0, [Math]::Min(80, $task.Length)))
   git commit -m $msg
