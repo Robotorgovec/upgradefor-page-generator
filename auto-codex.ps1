@@ -14,8 +14,8 @@ $forbidden = @(
 Write-Host ">>> Pre-checks..."
 
 # 1) Чистота git (никаких незакоммиченных изменений)
-$gitStatus = git status --porcelain
-if ($gitStatus -ne "") {
+$gitStatus = (git status --porcelain).Trim()
+if (-not [string]::IsNullOrWhiteSpace($gitStatus)) {
   Write-Host "❌ Repo dirty. Сначала закоммить изменения."
   git status
   exit 1
