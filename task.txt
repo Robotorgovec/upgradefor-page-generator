@@ -1,1 +1,19 @@
-создай файл orchestrator-test.txt и запиши туда OK
+Задача: создать файл docs/codex-run-check.md.
+
+Scope:
+- Разрешено менять только:
+  - docs/codex-run-check.md
+
+Требования:
+1. Создай файл docs/codex-run-check.md
+2. Добавь заголовок "Codex Run Check"
+3. Добавь строку "This file confirms the local Codex orchestrator is working."
+4. Добавь строку "Project: upgradefor-page-generator"
+5. Не изменяй другие файлы.
+
+Проверка:
+- файл существует
+- содержимое соответствует ТЗ
+
+После выполнения:
+- Остановись.
