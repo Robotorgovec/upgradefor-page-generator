@@ -1,9 +1,10 @@
-Создай файл docs/architecture.md.
+Добавь новый блок в docs/architecture.md.
 
-Опиши:
-- структуру проекта upgradefor-page-generator
-- папки app, components, pages
-- как работает генерация страниц
-
-Не изменяй другие файлы.
-После выполнения остановись.
+Требования:
+1. Добавь раздел "Page Generation Flow"
+2. Опиши:
+   - pages.json → create-pages.js → WordPress API
+   - app router → components → metadata
+3. Не изменяй другие файлы
+4. Не удаляй существующий текст
+5. После выполнения остановись
