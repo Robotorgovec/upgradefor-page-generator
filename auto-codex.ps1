@@ -41,18 +41,32 @@ if ([string]::IsNullOrWhiteSpace($task)) {
 
 # ===== EXEC =====
 Write-Host ">>> Codex exec..."
-$output = codex exec `
+
+$wrappedTask = @"
+You are working inside the repository upgradefor-page-generator.
+
+Mandatory rules:
+1. Complete only the requested task.
+2. Do not modify forbidden/global files.
+3. Keep changes minimal and scoped.
+4. If the task is already satisfied, do not make unnecessary edits.
+5. Stop after completion. Do not continue expanding scope.
+
+Task:
+$task
+"@
+
+$output = $wrappedTask | codex exec `
   --model gpt-5.4 `
   -c 'model_reasoning_effort="medium"' `
   -c 'approval_policy="never"' `
-  -c 'sandbox_mode="workspace-write"' `
-  $task
+  -c 'sandbox_mode="workspace-write"'
 
 Write-Host $output
 
 # ===== POST-CHECKS =====
 # 3) Ошибки в выводе
-if ($output -match "error|failed") {
+if ($output -match "error|failed|unexpected argument") {
   Write-Host "❌ Ошибка в выполнении — остановка"
   exit 1
 }
@@ -63,7 +77,7 @@ $changed = @()
 
 if ($null -ne $changedRaw) {
   $changed = $changedRaw | ForEach-Object {
-    if ($_.Length -ge 4) { $_.Substring(3) }
+    if ($_.Length -ge 4) { $_.Substring(3).Trim() }
   }
 }
 
