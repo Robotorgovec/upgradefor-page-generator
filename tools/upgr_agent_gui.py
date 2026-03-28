@@ -169,12 +169,22 @@ class UpgrAgentGui:
         self._append_log(f">>> Starting {self.script_file.name}\n")
         self._set_running_state(True)
 
+        script_path = str(self.script_file).replace("'", "''")
         command = [
             "powershell",
             "-ExecutionPolicy",
             "Bypass",
-            "-File",
-            str(self.script_file),
+            "-Command",
+            (
+                "$ErrorActionPreference = 'Stop'\n"
+                "Write-Host '>>> Preparing GUI task commit...'\n"
+                "git add -- task.txt\n"
+                "if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\n"
+                "git commit --allow-empty -m 'task: from GUI'\n"
+                "if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\n"
+                f"& '{script_path}'\n"
+                "exit $LASTEXITCODE\n"
+            ),
         ]
         try:
             self.process = subprocess.Popen(
