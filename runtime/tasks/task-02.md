@@ -7,7 +7,7 @@ Goal:
 - удобное копирование и очистку
 - улучшение UX интерфейса
 
-Current step: 1/6 - Улучшить GUI локального AI-агента до удобного ежедневного использования.
+Current step: 2/6 - Добавить:.
 
 Requirements:
 - Complete only this step.
