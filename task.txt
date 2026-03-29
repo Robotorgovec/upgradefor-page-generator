@@ -7,7 +7,7 @@ Goal:
 - удобное копирование и очистку
 - улучшение UX интерфейса
 
-Current step: 2/6 - Добавить:.
+Current step: 3/6 - кнопки управления task и log.
 
 Requirements:
 - Complete only this step.
