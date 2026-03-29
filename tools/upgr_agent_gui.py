@@ -32,6 +32,10 @@ class UpgrAgentGui:
         self.status_message = tk.StringVar(value="Idle")
         self.git_message = tk.StringVar(value="Checking git status...")
         self.task_status_message = tk.StringVar(value="")
+        self.session_message = tk.StringVar(
+            value="Autosave: 500 ms after edit | Logs: .codex-temp/agent-logs"
+        )
+        self.log_status_message = tk.StringVar(value="No run log yet")
 
         self.root.title("UPGR Codex Agent")
         self.root.geometry("980x720")
@@ -54,6 +58,11 @@ class UpgrAgentGui:
         ttk.Label(header, text="Task").grid(row=0, column=0, sticky="w")
         self.status_label = ttk.Label(header, textvariable=self.status_message)
         self.status_label.grid(row=0, column=1, sticky="e")
+        ttk.Label(
+            header,
+            textvariable=self.session_message,
+            foreground="#667085",
+        ).grid(row=1, column=0, columnspan=2, sticky="w", pady=(6, 0))
 
         body = ttk.Panedwindow(self.root, orient=tk.VERTICAL)
         body.grid(row=1, column=0, sticky="nsew", padx=12, pady=(0, 12))
@@ -117,6 +126,11 @@ class UpgrAgentGui:
         ttk.Button(log_info, text="Copy Log", command=self._copy_log).grid(row=0, column=1, padx=(0, 4))
         ttk.Button(log_info, text="Clear Log", command=self._clear_logs).grid(row=0, column=2, padx=(0, 4))
         ttk.Button(log_info, text="Select All Log", command=self._select_all_log).grid(row=0, column=3)
+        ttk.Label(
+            log_info,
+            textvariable=self.log_status_message,
+            foreground="#667085",
+        ).grid(row=1, column=0, columnspan=4, sticky="w", pady=(6, 0))
 
         log_frame = ttk.Frame(bottom_frame)
         log_frame.grid(row=1, column=0, sticky="nsew")
@@ -308,6 +322,7 @@ class UpgrAgentGui:
         timestamp = datetime.now().strftime("%y%m%d-%H%M%S")
         self.current_log_path = self.logs_dir / f"run-{timestamp}.log"
         self.log_handle = self.current_log_path.open("w", encoding="utf-8")
+        self.log_status_message.set(f"Writing log: {self.current_log_path.name}")
         self._clear_logs()
         self._append_log(f">>> Starting {self.script_file.name}\n")
         self._set_running_state(True)
@@ -378,6 +393,10 @@ class UpgrAgentGui:
                     self.process = None
                     self.process_thread = None
                     self._close_log_handle()
+                    if self.current_log_path is not None:
+                        self.log_status_message.set(
+                            f"Last log: {self.current_log_path.name}"
+                        )
                     self._set_running_state(False)
                     self._refresh_git_status()
         except queue.Empty:
