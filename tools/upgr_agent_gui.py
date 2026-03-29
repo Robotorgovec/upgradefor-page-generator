@@ -23,12 +23,14 @@ class UpgrAgentGui:
 
         self.process: subprocess.Popen[str] | None = None
         self.process_thread: threading.Thread | None = None
-        self.output_queue: queue.Queue[tuple[str, str | None]] = queue.Queue()
+        self.output_queue: queue.Queue[tuple[str, int, str | None]] = queue.Queue()
         self.log_handle = None
         self.current_log_path: Path | None = None
         self.pending_save = None
         self.git_refresh_job = None
         self.last_saved_text = ""
+        self.active_run_id = 0
+        self.stop_requested = False
         self.status_message = tk.StringVar(value="Idle")
         self.git_message = tk.StringVar(value="Checking git status...")
         self.task_status_message = tk.StringVar(value="")
@@ -319,6 +321,10 @@ class UpgrAgentGui:
             messagebox.showerror("Save failed", "task.txt could not be saved.")
             return
 
+        self._drain_output_queue()
+        self.stop_requested = False
+        self.active_run_id += 1
+        run_id = self.active_run_id
         timestamp = datetime.now().strftime("%y%m%d-%H%M%S")
         self.current_log_path = self.logs_dir / f"run-{timestamp}.log"
         self.log_handle = self.current_log_path.open("w", encoding="utf-8")
@@ -354,20 +360,28 @@ class UpgrAgentGui:
             self._set_running_state(False)
             return
 
-        self.process_thread = threading.Thread(target=self._read_process_output, daemon=True)
+        self.process_thread = threading.Thread(
+            target=self._read_process_output,
+            args=(run_id,),
+            daemon=True,
+        )
         self.process_thread.start()
 
-    def _read_process_output(self) -> None:
+    def _read_process_output(self, run_id: int) -> None:
         assert self.process is not None
         if self.process.stdout is not None:
             for line in self.process.stdout:
-                self.output_queue.put(("line", line))
+                self.output_queue.put(("line", run_id, line))
         return_code = self.process.wait()
-        self.output_queue.put(("done", str(return_code)))
+        self.output_queue.put(("done", run_id, str(return_code)))
 
     def _stop_agent(self) -> None:
-        if self.process is None:
+        if self.process is None or self.stop_requested:
             return
+        self.stop_requested = True
+        self.status_message.set("Stopping")
+        self.status_label.configure(foreground="#b42318")
+        self.stop_button.configure(state="disabled")
         self._append_log(">>> Stopping process tree...\n")
         pid = self.process.pid
         try:
@@ -384,7 +398,9 @@ class UpgrAgentGui:
     def _poll_output_queue(self) -> None:
         try:
             while True:
-                event, payload = self.output_queue.get_nowait()
+                event, run_id, payload = self.output_queue.get_nowait()
+                if run_id != self.active_run_id:
+                    continue
                 if event == "line":
                     self._append_log(payload or "")
                 elif event == "done":
@@ -392,6 +408,7 @@ class UpgrAgentGui:
                     self._append_log(f"\n>>> Process exited with code {return_code}\n")
                     self.process = None
                     self.process_thread = None
+                    self.stop_requested = False
                     self._close_log_handle()
                     if self.current_log_path is not None:
                         self.log_status_message.set(
@@ -433,6 +450,13 @@ class UpgrAgentGui:
         if self.git_refresh_job is not None:
             self.root.after_cancel(self.git_refresh_job)
         self.git_refresh_job = self.root.after(5000, self._refresh_git_status)
+
+    def _drain_output_queue(self) -> None:
+        try:
+            while True:
+                self.output_queue.get_nowait()
+        except queue.Empty:
+            pass
 
     def _set_running_state(self, running: bool) -> None:
         if running:
