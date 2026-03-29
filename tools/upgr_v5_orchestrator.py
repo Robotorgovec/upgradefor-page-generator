@@ -20,6 +20,9 @@ STEP_STATUS_IN_PROGRESS = "in_progress"
 STEP_STATUS_COMPLETED = "completed"
 STEP_STATUS_FAILED = "failed"
 
+PLAN_RESPONSE_START = "<<<UPGR_PLAN_START>>>"
+PLAN_RESPONSE_END = "<<<UPGR_PLAN_END>>>"
+
 
 @dataclass
 class Step:
@@ -126,11 +129,13 @@ class UpgrV5Orchestrator:
         return goal
 
     def load_or_create_plan(self, goal: str) -> list[Step]:
-        if self.plan_file.exists() and self.plan_file.read_text(encoding="utf-8").strip():
-            titles = self.parse_plan_titles(self.plan_file.read_text(encoding="utf-8"))
+        plan_text = self.plan_file.read_text(encoding="utf-8") if self.plan_file.exists() else ""
+        if plan_text.strip():
+            titles = self.parse_plan_titles(plan_text)
         else:
-            titles = self.generate_plan_titles(goal)
-            self.write_plan(titles)
+            plan_text = self.generate_plan_with_codex(goal)
+            self.plan_file.write_text(plan_text.rstrip() + "\n", encoding="utf-8")
+            titles = self.parse_plan_titles(plan_text)
 
         steps: list[Step] = []
         for index, title in enumerate(titles, start=1):
@@ -139,43 +144,53 @@ class UpgrV5Orchestrator:
             steps.append(Step(id=step_id, title=title, task_file=task_file))
         return steps
 
-    def generate_plan_titles(self, goal: str) -> list[str]:
-        extracted = self.extract_goal_items(goal)
-        if len(extracted) >= 2:
-            titles = extracted[:8]
-        else:
-            single_goal = self.compact_whitespace(goal)
-            titles = [
-                f"Inspect the current implementation and isolate the files needed for: {single_goal}",
-                f"Implement the smallest functional backend change for: {single_goal}",
-                f"Verify the result and update only required runtime artifacts for: {single_goal}",
-            ]
-        return [self.ensure_terminal_period(title) for title in titles]
+    def generate_plan_with_codex(self, goal: str) -> str:
+        prompt = self.render_plan_generation_task(goal)
+        self.task_txt_file.write_text(prompt, encoding="utf-8")
+        self.commit_if_needed("orchestrator: prepare plan generation")
 
-    def extract_goal_items(self, goal: str) -> list[str]:
-        items: list[str] = []
-        for raw_line in goal.splitlines():
-            line = raw_line.strip()
-            if not line:
-                continue
-            line = re.sub(r"^[-*]\s+", "", line)
-            line = re.sub(r"^\d+[.)]\s+", "", line)
-            if len(line) < 8:
-                continue
-            items.append(self.compact_whitespace(line))
-        if len(items) >= 2:
-            return items
+        result = self.run_auto_codex()
+        if result.returncode != 0:
+            raise OrchestratorError(
+                "Plan generation failed via auto-codex.ps1.\n"
+                f"{self.trim_output(result.stdout + result.stderr)}"
+            )
 
-        sentences = re.split(r"(?<=[.!?])\s+", self.compact_whitespace(goal))
-        items = [sentence.strip() for sentence in sentences if len(sentence.strip()) >= 8]
-        return items
+        return self.extract_plan_from_output(result.stdout)
 
-    def write_plan(self, titles: list[str]) -> None:
-        lines = ["# Plan", ""]
-        for index, title in enumerate(titles, start=1):
-            lines.append(f"{index}. [ ] {title}")
-        lines.append("")
-        self.plan_file.write_text("\n".join(lines), encoding="utf-8")
+    def render_plan_generation_task(self, goal: str) -> str:
+        return (
+            "Analyze the current repository and create an implementation plan for the goal below.\n\n"
+            "Goal:\n"
+            f"{goal.strip()}\n\n"
+            "Requirements:\n"
+            "- Do not modify any files.\n"
+            "- Do not start implementation.\n"
+            "- Return a markdown plan that is applicable to this repository.\n"
+            "- Use 3 to 7 concrete development steps.\n"
+            "- Keep steps focused on meaningful engineering work, not generic advice.\n"
+            f"- Return the plan only between these exact markers: {PLAN_RESPONSE_START} and {PLAN_RESPONSE_END}.\n"
+            "- The plan should use a numbered markdown checklist in this format:\n"
+            "  1. [ ] First step\n"
+            "  2. [ ] Second step\n"
+        )
+
+    def extract_plan_from_output(self, output: str) -> str:
+        match = re.search(
+            rf"{re.escape(PLAN_RESPONSE_START)}\s*(.*?)\s*{re.escape(PLAN_RESPONSE_END)}",
+            output,
+            flags=re.DOTALL,
+        )
+        if not match:
+            raise OrchestratorError(
+                "Could not extract a plan from auto-codex.ps1 output.\n"
+                f"{self.trim_output(output)}"
+            )
+
+        plan_text = match.group(1).strip()
+        if not plan_text:
+            raise OrchestratorError("auto-codex.ps1 returned empty plan content.")
+        return plan_text
 
     def parse_plan_titles(self, content: str) -> list[str]:
         titles: list[str] = []
