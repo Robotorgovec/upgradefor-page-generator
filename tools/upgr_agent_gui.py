@@ -169,6 +169,11 @@ class UpgrAgentGui:
         self.log_handle = self.current_log_path.open("w", encoding="utf-8")
         self._clear_logs()
         self._append_log(f">>> Starting {self.script_file.name}\n")
+        if not self._prepare_gui_commit():
+            self._append_log(">>> GUI task commit failed. Run aborted.\n")
+            self._close_log_handle()
+            self._refresh_git_status()
+            return
         self._set_running_state(True)
 
         script_path = str(self.script_file).replace("'", "''")
@@ -179,11 +184,6 @@ class UpgrAgentGui:
             "-Command",
             (
                 "$ErrorActionPreference = 'Stop'\n"
-                "Write-Host '>>> Preparing GUI task commit...'\n"
-                "git add -- task.txt\n"
-                "if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\n"
-                "git commit --allow-empty -m 'task: from GUI'\n"
-                "if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\n"
                 f"& '{script_path}'\n"
                 "exit $LASTEXITCODE\n"
             ),
@@ -205,6 +205,77 @@ class UpgrAgentGui:
 
         self.process_thread = threading.Thread(target=self._read_process_output, daemon=True)
         self.process_thread.start()
+
+    def _prepare_gui_commit(self) -> bool:
+        self._append_log(">>> Preparing GUI task commit...\n")
+        try:
+            add_result = subprocess.run(
+                ["git", "add", "."],
+                cwd=self.repo_root,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except OSError as exc:
+            messagebox.showerror("Git failed", f"git add failed:\n{exc}")
+            self._append_log(f"git add failed: {exc}\n")
+            return False
+
+        if add_result.stdout:
+            self._append_log(add_result.stdout)
+        if add_result.stderr:
+            self._append_log(add_result.stderr)
+        if add_result.returncode != 0:
+            messagebox.showerror("Git failed", "git add . failed. See log for details.")
+            return False
+
+        try:
+            status_result = subprocess.run(
+                ["git", "status", "--porcelain"],
+                cwd=self.repo_root,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except OSError as exc:
+            messagebox.showerror("Git failed", f"git status failed:\n{exc}")
+            self._append_log(f"git status failed: {exc}\n")
+            return False
+
+        if status_result.returncode != 0:
+            if status_result.stdout:
+                self._append_log(status_result.stdout)
+            if status_result.stderr:
+                self._append_log(status_result.stderr)
+            messagebox.showerror("Git failed", "git status failed. See log for details.")
+            return False
+
+        if not status_result.stdout.strip():
+            self._append_log(">>> No changes to commit.\n")
+            return True
+
+        try:
+            commit_result = subprocess.run(
+                ["git", "commit", "-m", "task: from GUI"],
+                cwd=self.repo_root,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except OSError as exc:
+            messagebox.showerror("Git failed", f"git commit failed:\n{exc}")
+            self._append_log(f"git commit failed: {exc}\n")
+            return False
+
+        if commit_result.stdout:
+            self._append_log(commit_result.stdout)
+        if commit_result.stderr:
+            self._append_log(commit_result.stderr)
+        if commit_result.returncode != 0:
+            messagebox.showerror("Git failed", "git commit failed. See log for details.")
+            return False
+
+        return True
 
     def _read_process_output(self) -> None:
         assert self.process is not None
