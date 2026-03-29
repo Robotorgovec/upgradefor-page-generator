@@ -206,6 +206,14 @@ class UpgrAgentGui:
         self.root.clipboard_append(text)
         return True
 
+    def _copy_all(self, widget: tk.Text) -> bool:
+        text = widget.get("1.0", "end-1c")
+        if not text:
+            return False
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+        return True
+
     def _select_all(self, widget: tk.Text) -> None:
         widget.tag_add(tk.SEL, "1.0", "end-1c")
         widget.mark_set(tk.INSERT, "1.0")
@@ -229,7 +237,7 @@ class UpgrAgentGui:
         return True
 
     def _copy_task(self) -> bool:
-        return self._copy_selection(self.task_text)
+        return self._copy_all(self.task_text)
 
     def _paste_task(self) -> bool:
         return self._paste_into_task()
@@ -246,7 +254,7 @@ class UpgrAgentGui:
         self._select_all(self.task_text)
 
     def _copy_log(self) -> bool:
-        return self._copy_selection(self.log_text)
+        return self._copy_all(self.log_text)
 
     def _select_all_log(self) -> None:
         self._select_all(self.log_text)
