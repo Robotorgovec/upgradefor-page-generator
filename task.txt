@@ -7,7 +7,7 @@ Goal:
 - удобное копирование и очистку
 - улучшение UX интерфейса
 
-Current step: 5/6 - удобное копирование и очистку.
+Current step: 6/6 - улучшение UX интерфейса.
 
 Requirements:
 - Complete only this step.
