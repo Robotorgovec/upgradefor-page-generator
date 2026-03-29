@@ -16,7 +16,9 @@ class UpgrAgentGui:
         self.repo_root = Path(__file__).resolve().parent.parent
         self.task_file = self.repo_root / "task.txt"
         self.script_file = self.repo_root / "auto-codex.ps1"
-        self.logs_dir = self.repo_root / "artifacts" / "agent-logs"
+        # Keep runtime logs in a gitignored location so GUI launches do not dirty the repo
+        # before auto-codex.ps1 performs its clean-worktree pre-check.
+        self.logs_dir = self.repo_root / ".codex-temp" / "agent-logs"
         self.logs_dir.mkdir(parents=True, exist_ok=True)
 
         self.process: subprocess.Popen[str] | None = None
