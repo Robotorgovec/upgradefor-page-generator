@@ -38,6 +38,8 @@ class UpgrAgentGui:
             value="Autosave: 500 ms after edit | Logs: .codex-temp/agent-logs"
         )
         self.log_status_message = tk.StringVar(value="No run log yet")
+        self.task_metrics_message = tk.StringVar(value="0 lines | 0 chars")
+        self.log_metrics_message = tk.StringVar(value="0 lines | 0 chars")
 
         self.root.title("UPGR Codex Agent")
         self.root.geometry("980x720")
@@ -80,6 +82,9 @@ class UpgrAgentGui:
         ttk.Label(task_info, text="Edit task.txt").grid(row=0, column=0, sticky="w")
         self.task_status_label = ttk.Label(task_info, textvariable=self.task_status_message)
         self.task_status_label.grid(row=0, column=1, sticky="e", padx=(0, 8))
+        ttk.Label(task_info, textvariable=self.task_metrics_message, foreground="#667085").grid(
+            row=1, column=0, sticky="w", pady=(4, 0)
+        )
         ttk.Button(task_info, text="Paste Task", command=self._paste_task).grid(row=0, column=2, padx=(0, 4))
         ttk.Button(task_info, text="Copy Task", command=self._copy_task).grid(row=0, column=3, padx=(0, 4))
         ttk.Button(task_info, text="Clear Task", command=self._clear_task).grid(row=0, column=4, padx=(0, 4))
@@ -115,6 +120,11 @@ class UpgrAgentGui:
         git_frame.columnconfigure(0, weight=1)
         self.git_label = ttk.Label(git_frame, textvariable=self.git_message)
         self.git_label.grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            git_frame,
+            text="Shortcuts: Ctrl+Enter run | Esc stop | Alt+1 task | Alt+2 log",
+            foreground="#667085",
+        ).grid(row=1, column=0, sticky="w", pady=(4, 0))
 
         bottom_frame = ttk.Frame(body, padding=0)
         bottom_frame.columnconfigure(0, weight=1)
@@ -133,6 +143,11 @@ class UpgrAgentGui:
             textvariable=self.log_status_message,
             foreground="#667085",
         ).grid(row=1, column=0, columnspan=4, sticky="w", pady=(6, 0))
+        ttk.Label(
+            log_info,
+            textvariable=self.log_metrics_message,
+            foreground="#667085",
+        ).grid(row=2, column=0, columnspan=4, sticky="w", pady=(2, 0))
 
         log_frame = ttk.Frame(bottom_frame)
         log_frame.grid(row=1, column=0, sticky="nsew")
@@ -177,6 +192,10 @@ class UpgrAgentGui:
             self.task_text.bind(sequence, self._handle_task_paste)
         for sequence in ("<Control-x>", "<Control-X>"):
             self.task_text.bind(sequence, self._handle_task_cut)
+        self.root.bind("<Control-Return>", self._handle_run_shortcut)
+        self.root.bind("<Escape>", self._handle_stop_shortcut)
+        self.root.bind("<Alt-1>", self._handle_focus_task)
+        self.root.bind("<Alt-2>", self._handle_focus_log)
 
     def _show_task_menu(self, event: tk.Event[tk.Misc]) -> str:
         self.task_text.focus_set()
@@ -283,6 +302,27 @@ class UpgrAgentGui:
         self._cut_task()
         return "break"
 
+    def _handle_run_shortcut(self, _event: tk.Event[tk.Misc]) -> str:
+        self._run_agent()
+        return "break"
+
+    def _handle_stop_shortcut(self, _event: tk.Event[tk.Misc]) -> str:
+        self._stop_agent()
+        return "break"
+
+    def _handle_focus_task(self, _event: tk.Event[tk.Misc]) -> str:
+        self.task_text.focus_set()
+        return "break"
+
+    def _handle_focus_log(self, _event: tk.Event[tk.Misc]) -> str:
+        self.log_text.focus_set()
+        return "break"
+
+    def _update_metrics(self, widget: tk.Text, target: tk.StringVar) -> None:
+        text = widget.get("1.0", "end-1c")
+        lines = text.count("\n") + 1 if text else 0
+        target.set(f"{lines} lines | {len(text)} chars")
+
     def _load_task_file(self) -> None:
         if self.task_file.exists():
             content = self.task_file.read_text(encoding="utf-8")
@@ -293,12 +333,14 @@ class UpgrAgentGui:
         self.task_text.insert("1.0", content)
         self.task_text.edit_modified(False)
         self.last_saved_text = content
+        self._update_metrics(self.task_text, self.task_metrics_message)
         self._set_task_status("task.txt loaded", "#2d6a4f")
 
     def _on_task_modified(self, _event: tk.Event[tk.Misc]) -> None:
         if not self.task_text.edit_modified():
             return
         self.task_text.edit_modified(False)
+        self._update_metrics(self.task_text, self.task_metrics_message)
         self._set_task_status("Unsaved changes", "#9a6700")
         if self.pending_save is not None:
             self.root.after_cancel(self.pending_save)
@@ -491,12 +533,14 @@ class UpgrAgentGui:
         if log_only:
             self.log_text.configure(state="normal")
             self.log_text.insert(tk.END, text)
+            self._update_metrics(self.log_text, self.log_metrics_message)
             self.log_text.see(tk.END)
             self.log_text.configure(state="disabled")
 
     def _clear_logs(self) -> None:
         self.log_text.configure(state="normal")
         self.log_text.delete("1.0", tk.END)
+        self._update_metrics(self.log_text, self.log_metrics_message)
         self.log_text.configure(state="disabled")
 
     def _open_logs(self) -> None:
