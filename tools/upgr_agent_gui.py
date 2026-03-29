@@ -68,7 +68,11 @@ class UpgrAgentGui:
         task_info.columnconfigure(0, weight=1)
         ttk.Label(task_info, text="Edit task.txt").grid(row=0, column=0, sticky="w")
         self.task_status_label = ttk.Label(task_info, textvariable=self.task_status_message)
-        self.task_status_label.grid(row=0, column=1, sticky="e")
+        self.task_status_label.grid(row=0, column=1, sticky="e", padx=(0, 8))
+        ttk.Button(task_info, text="Paste Task", command=self._paste_task).grid(row=0, column=2, padx=(0, 4))
+        ttk.Button(task_info, text="Copy Task", command=self._copy_task).grid(row=0, column=3, padx=(0, 4))
+        ttk.Button(task_info, text="Clear Task", command=self._clear_task).grid(row=0, column=4, padx=(0, 4))
+        ttk.Button(task_info, text="Select All Task", command=self._select_all_task).grid(row=0, column=5)
 
         task_frame = ttk.Frame(top_frame)
         task_frame.grid(row=1, column=0, sticky="nsew")
@@ -106,7 +110,14 @@ class UpgrAgentGui:
         bottom_frame.rowconfigure(1, weight=1)
         body.add(bottom_frame, weight=2)
 
-        ttk.Label(bottom_frame, text="Live output").grid(row=0, column=0, sticky="w", pady=(0, 6))
+        log_info = ttk.Frame(bottom_frame)
+        log_info.grid(row=0, column=0, sticky="ew", pady=(0, 6))
+        log_info.columnconfigure(0, weight=1)
+        ttk.Label(log_info, text="Live output").grid(row=0, column=0, sticky="w")
+        ttk.Button(log_info, text="Copy Log", command=self._copy_log).grid(row=0, column=1, padx=(0, 4))
+        ttk.Button(log_info, text="Clear Log", command=self._clear_logs).grid(row=0, column=2, padx=(0, 4))
+        ttk.Button(log_info, text="Select All Log", command=self._select_all_log).grid(row=0, column=3)
+
         log_frame = ttk.Frame(bottom_frame)
         log_frame.grid(row=1, column=0, sticky="nsew")
         log_frame.columnconfigure(0, weight=1)
@@ -117,6 +128,136 @@ class UpgrAgentGui:
         self.log_text.configure(yscrollcommand=log_scroll.set)
         self.log_text.grid(row=0, column=0, sticky="nsew")
         log_scroll.grid(row=0, column=1, sticky="ns")
+
+        self._build_context_menus()
+        self._bind_shortcuts()
+
+    def _build_context_menus(self) -> None:
+        self.task_menu = tk.Menu(self.root, tearoff=0)
+        self.task_menu.add_command(label="Copy", command=self._copy_task)
+        self.task_menu.add_command(label="Paste", command=self._paste_task)
+        self.task_menu.add_command(label="Cut", command=self._cut_task)
+        self.task_menu.add_command(label="Select All", command=self._select_all_task)
+        self.task_menu.add_separator()
+        self.task_menu.add_command(label="Clear", command=self._clear_task)
+
+        self.log_menu = tk.Menu(self.root, tearoff=0)
+        self.log_menu.add_command(label="Copy", command=self._copy_log)
+        self.log_menu.add_command(label="Select All", command=self._select_all_log)
+        self.log_menu.add_separator()
+        self.log_menu.add_command(label="Clear", command=self._clear_logs)
+
+        self.task_text.bind("<Button-3>", self._show_task_menu)
+        self.log_text.bind("<Button-3>", self._show_log_menu)
+
+    def _bind_shortcuts(self) -> None:
+        for sequence in ("<Control-a>", "<Control-A>"):
+            self.task_text.bind(sequence, self._handle_task_select_all)
+            self.log_text.bind(sequence, self._handle_log_select_all)
+        for sequence in ("<Control-c>", "<Control-C>", "<Control-Insert>"):
+            self.task_text.bind(sequence, self._handle_task_copy)
+            self.log_text.bind(sequence, self._handle_log_copy)
+        for sequence in ("<Control-v>", "<Control-V>", "<Shift-Insert>"):
+            self.task_text.bind(sequence, self._handle_task_paste)
+        for sequence in ("<Control-x>", "<Control-X>"):
+            self.task_text.bind(sequence, self._handle_task_cut)
+
+    def _show_task_menu(self, event: tk.Event[tk.Misc]) -> str:
+        self.task_text.focus_set()
+        self.task_menu.tk_popup(event.x_root, event.y_root)
+        self.task_menu.grab_release()
+        return "break"
+
+    def _show_log_menu(self, event: tk.Event[tk.Misc]) -> str:
+        self.log_text.focus_set()
+        self.log_menu.tk_popup(event.x_root, event.y_root)
+        self.log_menu.grab_release()
+        return "break"
+
+    def _has_selection(self, widget: tk.Text) -> bool:
+        try:
+            widget.index("sel.first")
+            widget.index("sel.last")
+            return True
+        except tk.TclError:
+            return False
+
+    def _copy_selection(self, widget: tk.Text) -> bool:
+        if not self._has_selection(widget):
+            return False
+        text = widget.get("sel.first", "sel.last")
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+        return True
+
+    def _select_all(self, widget: tk.Text) -> None:
+        widget.tag_add(tk.SEL, "1.0", "end-1c")
+        widget.mark_set(tk.INSERT, "1.0")
+        widget.see(tk.INSERT)
+        widget.focus_set()
+
+    def _delete_selection(self, widget: tk.Text) -> bool:
+        if not self._has_selection(widget):
+            return False
+        widget.delete("sel.first", "sel.last")
+        return True
+
+    def _paste_into_task(self) -> bool:
+        try:
+            clipboard_text = self.root.clipboard_get()
+        except tk.TclError:
+            return False
+        if self._has_selection(self.task_text):
+            self.task_text.delete("sel.first", "sel.last")
+        self.task_text.insert(tk.INSERT, clipboard_text)
+        return True
+
+    def _copy_task(self) -> bool:
+        return self._copy_selection(self.task_text)
+
+    def _paste_task(self) -> bool:
+        return self._paste_into_task()
+
+    def _cut_task(self) -> bool:
+        if not self._copy_task():
+            return False
+        return self._delete_selection(self.task_text)
+
+    def _clear_task(self) -> None:
+        self.task_text.delete("1.0", tk.END)
+
+    def _select_all_task(self) -> None:
+        self._select_all(self.task_text)
+
+    def _copy_log(self) -> bool:
+        return self._copy_selection(self.log_text)
+
+    def _select_all_log(self) -> None:
+        self._select_all(self.log_text)
+
+    def _handle_task_select_all(self, _event: tk.Event[tk.Misc]) -> str:
+        self._select_all_task()
+        return "break"
+
+    def _handle_log_select_all(self, _event: tk.Event[tk.Misc]) -> str:
+        self._select_all_log()
+        return "break"
+
+    def _handle_task_copy(self, _event: tk.Event[tk.Misc]) -> str:
+        self._copy_task()
+        return "break"
+
+    def _handle_log_copy(self, _event: tk.Event[tk.Misc]) -> str:
+        self._copy_log()
+        return "break"
+
+    def _handle_task_paste(self, _event: tk.Event[tk.Misc]) -> str:
+        self._paste_task()
+        return "break"
+
+    def _handle_task_cut(self, _event: tk.Event[tk.Misc]) -> str:
+        self._cut_task()
+        return "break"
 
     def _load_task_file(self) -> None:
         if self.task_file.exists():
