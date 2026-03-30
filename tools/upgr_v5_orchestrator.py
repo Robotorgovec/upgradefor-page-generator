@@ -190,19 +190,27 @@ class UpgrV5Orchestrator:
         plan_text = match.group(1).strip()
         if not plan_text:
             raise OrchestratorError("auto-codex.ps1 returned empty plan content.")
+        plan_text = re.sub(r"\s+(?=(?:\d+\.\s+\[[ xX]\]|\d+\.\s+))", "\n", plan_text)
         return plan_text
 
     def parse_plan_titles(self, content: str) -> list[str]:
+        normalized = re.sub(r"\s+(?=(?:\d+\.\s+\[[ xX]\]|\d+\.\s+))", "\n", content.strip())
         titles: list[str] = []
-        for raw_line in content.splitlines():
+        for raw_line in normalized.splitlines():
             line = raw_line.strip()
             if not line:
                 continue
-            match = re.match(r"^(?:[-*]|\d+[.)])\s+(?:\[[ xX]\]\s+)?(.+)$", line)
-            if match:
-                titles.append(self.ensure_terminal_period(self.compact_whitespace(match.group(1))))
-        if not titles:
-            raise OrchestratorError(f"Could not parse any plan steps from {self.plan_file}")
+            line = re.sub(r"^\d+\.\s*\[[ xX]\]\s*", "", line)
+            line = re.sub(r"^\d+\.\s*", "", line)
+            line = re.sub(r"^[-*]\s*", "", line)
+            line = self.ensure_terminal_period(self.compact_whitespace(line))
+            if line:
+                titles.append(line)
+        if not 3 <= len(titles) <= 7:
+            raise OrchestratorError(
+                f"Plan must contain 3-7 meaningful steps, got {len(titles)}.\n"
+                f"{self.trim_output(normalized)}"
+            )
         return titles
 
     def create_task_files(self, goal: str, steps: list[Step]) -> None:
