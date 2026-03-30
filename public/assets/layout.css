@@ -714,21 +714,30 @@ body{
   transition: none;
 }
 body > .app-content{
-  margin-left: var(--sidebar-collapsed-width);
+  margin-left: 0;
   padding-top: calc(var(--header-height) + 3px);
-  transition: margin-left var(--transition-fast);
-  width: calc(100% - var(--sidebar-collapsed-width));
+  transition: margin-left var(--transition-fast), width var(--transition-fast);
+  width: 100%;
 }
 body > footer{
-  margin-left: var(--sidebar-collapsed-width);
+  margin-left: 0;
   transition: margin-left var(--transition-fast);
 }
-body.menu-open > .app-content,
-body.menu-open > footer{
-  margin-left: var(--sidebar-expanded-width);
-}
-body.menu-open > .app-content{
-  width: calc(100% - var(--sidebar-expanded-width));
+@media (min-width: 769px){
+  body > .app-content{
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+  }
+  body > footer{
+    margin-left: var(--sidebar-collapsed-width);
+  }
+  body.menu-open > .app-content,
+  body.menu-open > footer{
+    margin-left: var(--sidebar-expanded-width);
+  }
+  body.menu-open > .app-content{
+    width: calc(100% - var(--sidebar-expanded-width));
+  }
 }
 
 /* Sidebar */
@@ -990,13 +999,6 @@ body.menu-open .burger-line:nth-child(3){bottom: 6px; transform: rotate(-45deg)}
 @media (min-width: 769px){ :root{ --sidebar-footer-display: none; } }
 
 @media (min-width: 1200px){
-  body.menu-open > .app-content,
-  body.menu-open > footer{
-    margin-left: var(--sidebar-expanded-width);
-  }
-  body.menu-open > .app-content{
-    width: calc(100% - var(--sidebar-expanded-width));
-  }
   body.menu-open .sidebar{
     width: var(--sidebar-expanded-width);
     transform: none;
@@ -1318,16 +1320,6 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 @media (min-width:901px) and (max-width:1200px){
   .hero{grid-template-columns:1.25fr .75fr;}
   .hero-art{max-width:460px;}
-}
-
-@media (min-width:769px){
-  body.menu-open > .app-content{
-    padding-left: var(--space-2);
-  }
-
-  body.menu-open > footer{
-    padding-left: var(--space-2);
-  }
 }
 
 /* fio-rus mobile gutters fix: from #search-preview and below */
