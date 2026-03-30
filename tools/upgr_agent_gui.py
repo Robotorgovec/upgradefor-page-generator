@@ -136,7 +136,7 @@ class UpgrAgentGui:
         log_info.columnconfigure(0, weight=1)
         ttk.Label(log_info, text="Live output").grid(row=0, column=0, sticky="w")
         ttk.Button(log_info, text="Copy Log", command=self._copy_log).grid(row=0, column=1, padx=(0, 4))
-        ttk.Button(log_info, text="Clear Log", command=self._clear_logs).grid(row=0, column=2, padx=(0, 4))
+        ttk.Button(log_info, text="Clear Log", command=self._clear_log).grid(row=0, column=2, padx=(0, 4))
         ttk.Button(log_info, text="Select All Log", command=self._select_all_log).grid(row=0, column=3)
         ttk.Label(
             log_info,
@@ -165,18 +165,22 @@ class UpgrAgentGui:
 
     def _build_context_menus(self) -> None:
         self.task_menu = tk.Menu(self.root, tearoff=0)
-        self.task_menu.add_command(label="Copy", command=self._copy_task)
+        self.task_menu.add_command(label="Copy Selection", command=self._copy_task_selection)
         self.task_menu.add_command(label="Paste", command=self._paste_task)
-        self.task_menu.add_command(label="Cut", command=self._cut_task)
+        self.task_menu.add_command(label="Cut Selection", command=self._cut_task)
         self.task_menu.add_command(label="Select All", command=self._select_all_task)
         self.task_menu.add_separator()
-        self.task_menu.add_command(label="Clear", command=self._clear_task)
+        self.task_menu.add_command(label="Copy Task", command=self._copy_task)
+        self.task_menu.add_command(label="Clear Selection", command=self._clear_task_selection)
+        self.task_menu.add_command(label="Clear Task", command=self._clear_task)
 
         self.log_menu = tk.Menu(self.root, tearoff=0)
-        self.log_menu.add_command(label="Copy", command=self._copy_log)
+        self.log_menu.add_command(label="Copy Selection", command=self._copy_log_selection)
         self.log_menu.add_command(label="Select All", command=self._select_all_log)
         self.log_menu.add_separator()
-        self.log_menu.add_command(label="Clear", command=self._clear_logs)
+        self.log_menu.add_command(label="Copy Log", command=self._copy_log)
+        self.log_menu.add_command(label="Clear Selection", command=self._clear_log_selection)
+        self.log_menu.add_command(label="Clear Log", command=self._clear_log)
 
         self.task_text.bind("<Button-3>", self._show_task_menu)
         self.log_text.bind("<Button-3>", self._show_log_menu)
@@ -245,6 +249,12 @@ class UpgrAgentGui:
         widget.delete("sel.first", "sel.last")
         return True
 
+    def _clear_text(self, widget: tk.Text) -> None:
+        widget.delete("1.0", tk.END)
+
+    def _clear_selection(self, widget: tk.Text) -> bool:
+        return self._delete_selection(widget)
+
     def _paste_into_task(self) -> bool:
         try:
             clipboard_text = self.root.clipboard_get()
@@ -258,16 +268,22 @@ class UpgrAgentGui:
     def _copy_task(self) -> bool:
         return self._copy_all(self.task_text)
 
+    def _copy_task_selection(self) -> bool:
+        return self._copy_selection(self.task_text)
+
     def _paste_task(self) -> bool:
         return self._paste_into_task()
 
     def _cut_task(self) -> bool:
-        if not self._copy_task():
+        if not self._copy_task_selection():
             return False
         return self._delete_selection(self.task_text)
 
     def _clear_task(self) -> None:
-        self.task_text.delete("1.0", tk.END)
+        self._clear_text(self.task_text)
+
+    def _clear_task_selection(self) -> bool:
+        return self._clear_selection(self.task_text)
 
     def _select_all_task(self) -> None:
         self._select_all(self.task_text)
@@ -275,8 +291,25 @@ class UpgrAgentGui:
     def _copy_log(self) -> bool:
         return self._copy_all(self.log_text)
 
+    def _copy_log_selection(self) -> bool:
+        return self._copy_selection(self.log_text)
+
     def _select_all_log(self) -> None:
         self._select_all(self.log_text)
+
+    def _clear_log(self) -> None:
+        self.log_text.configure(state="normal")
+        self._clear_text(self.log_text)
+        self._update_metrics(self.log_text, self.log_metrics_message)
+        self.log_text.configure(state="disabled")
+
+    def _clear_log_selection(self) -> bool:
+        self.log_text.configure(state="normal")
+        cleared = self._clear_selection(self.log_text)
+        if cleared:
+            self._update_metrics(self.log_text, self.log_metrics_message)
+        self.log_text.configure(state="disabled")
+        return cleared
 
     def _handle_task_select_all(self, _event: tk.Event[tk.Misc]) -> str:
         self._select_all_task()
@@ -287,11 +320,11 @@ class UpgrAgentGui:
         return "break"
 
     def _handle_task_copy(self, _event: tk.Event[tk.Misc]) -> str:
-        self._copy_task()
+        self._copy_task_selection()
         return "break"
 
     def _handle_log_copy(self, _event: tk.Event[tk.Misc]) -> str:
-        self._copy_log()
+        self._copy_log_selection()
         return "break"
 
     def _handle_task_paste(self, _event: tk.Event[tk.Misc]) -> str:
@@ -379,7 +412,7 @@ class UpgrAgentGui:
         self.current_log_path = self.logs_dir / f"run-{timestamp}.log"
         self.log_handle = self.current_log_path.open("w", encoding="utf-8")
         self.log_status_message.set(f"Writing log: {self.current_log_path.name}")
-        self._clear_logs()
+        self._clear_log()
         self._append_log(f">>> Starting {self.script_file.name}\n")
         self._set_running_state(True)
 
@@ -536,12 +569,6 @@ class UpgrAgentGui:
             self._update_metrics(self.log_text, self.log_metrics_message)
             self.log_text.see(tk.END)
             self.log_text.configure(state="disabled")
-
-    def _clear_logs(self) -> None:
-        self.log_text.configure(state="normal")
-        self.log_text.delete("1.0", tk.END)
-        self._update_metrics(self.log_text, self.log_metrics_message)
-        self.log_text.configure(state="disabled")
 
     def _open_logs(self) -> None:
         target = self.current_log_path if self.current_log_path and self.current_log_path.exists() else self.logs_dir
