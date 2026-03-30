@@ -5,24 +5,65 @@
     const container = document.querySelector(selector);
     if (!container) {
       console.warn("[UPGR] container not found for", selector);
-      return;
+      return false;
     }
 
     try {
       const res = await fetch(url, { credentials: "include" });
       if (!res.ok) {
         console.error("[UPGR] failed to load", url, res.status);
-        return;
+        return false;
       }
       const html = await res.text();
       if (!html || !html.trim()) {
         console.warn("[UPGR] empty layout response for", url);
-        return;
+        return false;
       }
       container.innerHTML = html;
+      return true;
     } catch (err) {
       console.error("[UPGR] error loading", url, err);
+      return false;
     }
+  }
+
+  function hasRequiredLayoutNodes(container, requiredSelectors = []) {
+    if (!container) return false;
+    if (!container.innerHTML || !container.innerHTML.trim()) return false;
+
+    return requiredSelectors.every((selector) => Boolean(container.querySelector(selector)));
+  }
+
+  async function ensureLayoutMarkup(url, selector, requiredSelectors = []) {
+    const container = document.querySelector(selector);
+    if (!container) {
+      console.warn("[UPGR] container not found for", selector);
+      return false;
+    }
+
+    if (hasRequiredLayoutNodes(container, requiredSelectors)) {
+      return false;
+    }
+
+    return fetchAndInsert(url, selector);
+  }
+
+  function afterTwoFrames() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
+  }
+
+  async function waitForShellReady() {
+    if (document.readyState !== "complete") {
+      await new Promise((resolve) => {
+        window.addEventListener("load", resolve, { once: true });
+      });
+    }
+
+    await afterTwoFrames();
   }
 
   function qs(sel, root = document) {
@@ -693,8 +734,16 @@
 
   async function loadLayout() {
     try {
-      await fetchAndInsert("/includes/header.html", "header");
-      await fetchAndInsert("/includes/menu.html", ".sidebar");
+      await ensureLayoutMarkup("/includes/header.html", "header", [
+        ".nav",
+        "#burgerBtn",
+        ".auth-buttons",
+      ]);
+      await ensureLayoutMarkup("/includes/menu.html", ".sidebar", [
+        ".sidebar-inner",
+        ".menu-item",
+      ]);
+      await waitForShellReady();
 
       initSidebarActiveState();
       initThemeSwitcher();
@@ -759,6 +808,12 @@
         root.style.setProperty("--header-height", h + "px");
       }
 
+      function scheduleHeaderHeightSync() {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(updateHeaderHeight);
+        });
+      }
+
       const desktopBreakpoint = 1200;
       const collapsedStorageKey = "upgr-sidebar-collapsed";
       let isDesktop = window.innerWidth >= desktopBreakpoint;
@@ -811,13 +866,14 @@
         }
       });
 
-      window.addEventListener("load", updateHeaderHeight);
-      window.addEventListener("resize", updateHeaderHeight);
+      window.addEventListener("load", scheduleHeaderHeightSync);
+      window.addEventListener("resize", scheduleHeaderHeightSync);
       window.addEventListener("resize", syncMenuState);
-      updateHeaderHeight();
+      scheduleHeaderHeightSync();
       syncMenuState();
 
       await updateAuthButtons();
+      scheduleHeaderHeightSync();
       initStickyFooter();
       initMobileBottomNav();
     } catch (e) {
