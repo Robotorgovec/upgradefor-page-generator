@@ -49,8 +49,8 @@ class UpgrV5Orchestrator:
         self.auto_codex_script = repo_root / "auto-codex.ps1"
 
     def run(self) -> int:
-        self.ensure_runtime_layout()
         self.ensure_repo_clean()
+        self.ensure_runtime_layout()
 
         goal = self.read_goal()
         steps = self.load_or_create_plan(goal)
