@@ -1,31 +1,21 @@
-Улучши tools/upgr_v5_orchestrator.py.
+Analyze the current repository and create an implementation plan for the goal below.
 
-Проблема:
-Сейчас план создается примитивно (без использования Codex), поэтому шаги некачественные и не приводят к реальным изменениям.
+Goal:
+Улучшить GUI локального AI-агента до удобного ежедневного использования.
 
-Цель:
-Сделать генерацию плана через Codex.
+Добавить:
+- кнопки управления task и log
+- устойчивый Run flow
+- удобное копирование и очистку
+- улучшение UX интерфейса
 
-Требования:
-
-1. При отсутствии plan.md:
-   - сформировать prompt на основе goal.txt
-   - вызвать auto-codex.ps1
-   - получить результат как текст плана
-
-2. План должен:
-   - содержать конкретные шаги разработки
-   - быть разбит на 3–7 логических шагов
-   - быть применим к текущему repo
-
-3. Сохранить результат в runtime/plan.md
-
-4. Далее использовать этот план как сейчас
-
-5. Не менять:
-   - auto-codex.ps1
-   - tools/upgr_agent_gui.py
-
-6. Минимальные изменения
-
-После выполнения остановиться.
+Requirements:
+- Do not modify any files.
+- Do not start implementation.
+- Return a markdown plan that is applicable to this repository.
+- Use 3 to 7 concrete development steps.
+- Keep steps focused on meaningful engineering work, not generic advice.
+- Return the plan only between these exact markers: <<<UPGR_PLAN_START>>> and <<<UPGR_PLAN_END>>>.
+- The plan should use a numbered markdown checklist in this format:
+  1. [ ] First step
+  2. [ ] Second step
