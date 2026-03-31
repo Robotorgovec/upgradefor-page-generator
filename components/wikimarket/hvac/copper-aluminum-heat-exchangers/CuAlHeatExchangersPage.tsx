@@ -440,22 +440,24 @@ export default function CuAlHeatExchangersPage() {
         <h2>Ориентиры цен (аккуратно)</h2>
 
         <div className={styles.card}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Изделие</th>
-                <th>На что влияет цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              {productItems.map((item) => (
-                <tr key={item.slug}>
-                  <td>{item.title}</td>
-                  <td>Рядность + площадь, шаг ламели/покрытие, материалы рамы, срочность, документы/испытания.</td>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Изделие</th>
+                  <th>На что влияет цена</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {productItems.map((item) => (
+                  <tr key={item.slug}>
+                    <td>{item.title}</td>
+                    <td>Рядность + площадь, шаг ламели/покрытие, материалы рамы, срочность, документы/испытания.</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
