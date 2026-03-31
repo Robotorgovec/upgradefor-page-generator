@@ -81,6 +81,113 @@
 
   </style>
 
+  <style>
+    body.is-home .app-content > section.wrap:not(.hero) {
+      padding-block: clamp(32px, 5vw, 56px);
+    }
+
+    body.is-home .app-content .status-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px 16px;
+      align-items: start;
+    }
+
+    body.is-home .app-content .status-grid > div {
+      min-width: 0;
+    }
+
+    body.is-home .app-content .cards-3,
+    body.is-home .app-content .cards-6 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: stretch;
+    }
+
+    body.is-home .app-content .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: stretch;
+    }
+
+    body.is-home .app-content #roadmap .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    body.is-home .app-content .card > :last-child {
+      margin-bottom: 0;
+    }
+
+    @media (min-width: 600px) and (max-width: 900px) {
+      body.is-home .app-content > section.wrap:not(.hero) {
+        padding-block: 32px;
+      }
+
+      body.is-home .app-content .status-grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      }
+
+      body.is-home .app-content .status-grid .h {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+
+      body.is-home .app-content .status-grid > div:not(.h):nth-child(3n) {
+        grid-column: 1 / -1;
+      }
+
+      body.is-home .app-content .cards-3,
+      body.is-home .app-content .cards-6,
+      body.is-home .app-content .grid,
+      body.is-home .app-content #roadmap .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 599.98px) {
+      body.is-home .app-content > section.wrap:not(.hero) {
+        padding-block: 24px;
+      }
+
+      body.is-home .app-content .status-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      body.is-home .app-content .status-grid .h {
+        display: none;
+      }
+
+      body.is-home .app-content .status-grid > div {
+        display: grid;
+        gap: 6px;
+      }
+
+      body.is-home .app-content .status-grid > div:not(.h)::before {
+        content: attr(data-label);
+        font-size: 0.75rem;
+        line-height: 1.2;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+
+      body.is-home .app-content .cards-3,
+      body.is-home .app-content .cards-6,
+      body.is-home .app-content .grid,
+      body.is-home .app-content #roadmap .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      body.is-home .app-content .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
   
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -139,12 +246,12 @@
         <div class="status-grid">
           <div class="h"><strong>Раздел</strong></div><div class="h"><strong>Статус</strong></div><div class="h"><strong>Комментарий</strong></div>
 
-          <div>Каталог решений</div><div><span class="badge b-soon">В процессе</span></div><div>Наполнение карточек и фильтров</div>
-          <div>Публикации от пользователей</div><div><span class="badge b-soon">В процессе</span></div><div>Онбординг и модерация</div>
-          <div>Кейсы/проекты</div><div><span class="badge b-todo">Запланировано</span></div><div>Первые публикации — после пилотов</div>
-          <div>Пилоты и партнёры</div><div><span class="badge b-todo">Запланировано</span></div><div>Форма заявки на пилот</div>
-          <div>Сообщество</div><div><span class="badge b-todo">Запланировано</span></div><div>Профили и сообщения</div>
-          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек-листы по качеству публикаций</div>
+          <div data-label="Раздел">Каталог решений</div><div data-label="Статус"><span class="badge b-soon">В процессе</span></div><div data-label="Комментарий">Наполнение карточек и фильтров</div>
+          <div data-label="Раздел">Публикации от пользователей</div><div data-label="Статус"><span class="badge b-soon">В процессе</span></div><div data-label="Комментарий">Онбординг и модерация</div>
+          <div data-label="Раздел">Кейсы/проекты</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Первые публикации — после пилотов</div>
+          <div data-label="Раздел">Пилоты и партнёры</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Форма заявки на пилот</div>
+          <div data-label="Раздел">Сообщество</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Профили и сообщения</div>
+          <div data-label="Раздел">Документация/гайд</div><div data-label="Статус"><span class="badge b-done">Готово</span></div><div data-label="Комментарий">Чек-листы по качеству публикаций</div>
         </div>
         <p class="lead" style="margin-top:var(--space-3)">
           Публичная статус-страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
