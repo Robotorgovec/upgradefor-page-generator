@@ -37,7 +37,7 @@
   })();
 </script>
 
-
+  <link rel="stylesheet" href="/assets/layout.css?v=20260331-1" />
 
   
   <!-- Structured data -->
@@ -73,20 +73,110 @@
       </div>
     </div>
     <!-- Hero -->
-    <section class="wrap hero">
-      <div>
-        <h1>UPGRADE — платформа, где технологии находят применение</h1>
-        <p class="lead">
-          Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.
-        </p>
-        <div class="cta" style="display:flex;gap:12px;margin-top:var(--space-3);flex-wrap:wrap">
+    <section class="wrap hero home-hero home-band-strong">
+      <div class="hero-content">
+        <div class="hero-left-inner">
+        <p class="hero-eyebrow">ПЛАТФОРМА ДЛЯ ПУБЛИКАЦИЙ, ПИЛОТОВ И ПРИКЛАДНЫХ ТЕХНОЛОГИЙ</p>
+        <h1 class="hero-title">
+          <span class="hero-title-main"><span class="hero-brand">UPGRADE-INNOVATIONS</span><span class="hero-separator"> — </span><span class="hero-rest">платформа, где технологии находят применение</span></span>
+        </h1>
+        <p class="hero-subtitle">Каталог решений, публикаций, кейсов и пилотов — в одной системе</p>
+        <div class="hero-art hero-art-mobile" aria-hidden="true">
+          <img
+            class="hero-figure"
+            src="assets/hero-character.png"
+            alt="Персонаж"
+            width="1365"
+            height="2048"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          >
+        </div>
+        <p class="lead hero-lead">Публикуйте решения и исследования, собирайте кейсы, находите партнёров и запускайте пилоты. Статусы, публикации и практические направления собраны в одной понятной структуре.</p>
+        <div class="hero-chip-list" aria-label="Ключевые направления">
+          <span class="hero-chip">Каталог решений</span>
+          <span class="hero-chip">Публикации и кейсы</span>
+          <span class="hero-chip">Пилоты и партнёры</span>
+        </div>
+
+        <div class="cta">
           <a class="btn" href="#join">Присоединиться</a>
           <a class="btn btn--ghost" href="#catalog">Каталог</a>
           <a class="btn btn--ghost" href="#faq">Как это работает?</a>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
+      </div>
+      <div class="hero-art hero-art-desktop" aria-hidden="true">
+        <img
+          class="hero-figure"
+          src="assets/hero-character.png"
+          alt="Персонаж"
+          width="1365"
+          height="2048"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        >
+      </div>
+    </section>
+
+    <!-- Trust strip (premium visuals, inline SVG) -->
+    <section class="wrap home-plain home-trust-strip" aria-label="Доверие и качество">
+      <div class="home-trust-strip-grid">
+        <div class="home-trust-strip-item">
+          <div class="home-icon-badge" aria-hidden="true">
+            <svg class="home-icon" viewBox="0 0 24 24">
+              <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="home-trust-strip-text">
+            <div class="home-trust-strip-title">Верификация</div>
+            <div class="home-trust-strip-sub">премодерация и чек-листы</div>
+          </div>
+        </div>
+
+        <div class="home-trust-strip-item">
+          <div class="home-icon-badge" aria-hidden="true">
+            <svg class="home-icon" viewBox="0 0 24 24">
+              <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M6 16V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 16V5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M18 16v-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="home-trust-strip-text">
+            <div class="home-trust-strip-title">Прозрачность</div>
+            <div class="home-trust-strip-sub">статусы и changelog</div>
+          </div>
+        </div>
+
+        <div class="home-trust-strip-item">
+          <div class="home-icon-badge" aria-hidden="true">
+            <svg class="home-icon" viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="12" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="home-trust-strip-text">
+            <div class="home-trust-strip-title">Human-in-the-loop</div>
+            <div class="home-trust-strip-sub">финальное слово за людьми</div>
+          </div>
+        </div>
+
+        <div class="home-trust-strip-item">
+          <div class="home-icon-badge" aria-hidden="true">
+            <svg class="home-icon" viewBox="0 0 24 24">
+              <path d="M7 11V8a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <rect x="6" y="11" width="12" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="home-trust-strip-text">
+            <div class="home-trust-strip-title">Безопасность</div>
+            <div class="home-trust-strip-sub">процессы и контроль</div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -139,6 +229,44 @@
             <li><strong>Human-in-the-loop</strong>: финальное слово — за людьми.</li>
             <li><strong>Конфиденциальность</strong> и уважение авторских прав.</li>
           </ul>
+        </div>
+        <div class="card home-ai-visual" aria-hidden="true">
+          <svg class="home-ai-visual-svg" viewBox="0 0 640 420">
+            <defs>
+              <linearGradient id="home-ai-g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(18,175,240,0.35)"/>
+                <stop offset="1" stop-color="rgba(18,175,240,0)"/>
+              </linearGradient>
+              <linearGradient id="home-ai-g2" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="rgba(15,23,42,0.10)"/>
+                <stop offset="1" stop-color="rgba(15,23,42,0)"/>
+              </linearGradient>
+            </defs>
+
+            <rect x="0" y="0" width="640" height="420" rx="28" fill="url(#home-ai-g1)"/>
+            <rect x="0" y="0" width="640" height="420" rx="28" fill="url(#home-ai-g2)"/>
+
+            <g stroke="rgba(15,23,42,0.10)" stroke-width="1">
+              <path d="M60 80H580"/>
+              <path d="M60 130H580"/>
+              <path d="M60 180H580"/>
+              <path d="M60 230H580"/>
+              <path d="M60 280H580"/>
+              <path d="M60 330H580"/>
+            </g>
+
+            <g fill="rgba(255,255,255,0.82)" stroke="rgba(15,23,42,0.10)" stroke-width="1">
+              <rect x="70" y="90" width="220" height="90" rx="18"/>
+              <rect x="310" y="90" width="260" height="90" rx="18"/>
+              <rect x="70" y="200" width="500" height="110" rx="18"/>
+            </g>
+
+            <g fill="rgba(18,175,240,0.28)">
+              <circle cx="120" cy="120" r="10"/>
+              <circle cx="360" cy="120" r="10"/>
+              <circle cx="120" cy="240" r="10"/>
+            </g>
+          </svg>
         </div>
       </div>
     </section>
@@ -330,6 +458,6 @@
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
-
+  <script src="/assets/load-layout.js?v=20260331-1"></script>
 </body>
 </html>
