@@ -37,157 +37,6 @@
 
   <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
-  <style>
-    body > .app-content {
-      padding-top: var(--header-height);
-    }
-    @media (max-width: 768px) {
-      body > .app-content {
-        padding-top: calc(var(--header-height) - 1px);
-      }
-    }
-  
-    .hero-content{--hero-h1:clamp(28px,3.2vw,44px);display:grid;grid-template-areas:"title" "subtitle" "desc" "cta";gap:12px;min-width:0}
-.hero-left-inner{width:100%;max-width:480px;margin:0 auto}
-.hero-title{grid-area:title;margin:0 0 10px}
-.hero-title-main{white-space:nowrap;overflow-wrap:normal;word-break:keep-all;hyphens:none;font-size:var(--hero-h1);line-height:1.05;display:block;color:var(--text)}
-.hero-subtitle{grid-area:subtitle;font-size:clamp(16px,2.2vw,30px);line-height:1.1;font-weight:700;text-align:center;max-width:none;margin:10px auto 0;color:var(--color-primary, #19A7FF)}
-.hero-subtitle-line1,.hero-subtitle-line2{display:block;white-space:nowrap}
-.hero-lead{grid-area:desc;margin:18px 0 0;color:var(--text);text-align:left;font-size:clamp(16px,1.15vw,19px);line-height:1.45}
-.hero .cta{grid-area:cta;margin-top:18px}
-.hero .cta .btn{width:100%;max-width:560px}
-.hero-art-mobile{display:none}
-.hero-art-desktop{display:block}
-
-@media (max-width:768px){
-  .hero-content{grid-template-areas:"title" "subtitle" "media" "desc" "cta";text-align:center;margin-top:16px}
-  .hero-title{margin-top:-4px}
-  .hero-art-mobile{display:block;grid-area:media;max-width:min(360px,92vw);margin:12px auto 4px;justify-self:center}
-  .hero-art-desktop{display:none}
-  .hero-title-main{font-size:clamp(20px,6vw,30px)}
-  .hero-subtitle{font-size:clamp(16px,4.6vw,22px);max-width:none;line-height:1.1;margin:0 auto}
-  .hero-lead,.hero .lead{margin-top:14px;font-size:clamp(15px,4vw,17px)}
-}
-
-      .hero-subtitle-line1,.hero-subtitle-line2{white-space:nowrap}
-    }
-    @media (max-width:360px){
-      .hero-content{--hero-h1:clamp(24px,7.2vw,52px)}
-    }
-    @media (min-width:901px) and (max-width:1200px){
-      .hero{grid-template-columns:1.25fr .75fr}
-      .hero-art{max-width:460px}
-    }
-
-  </style>
-
-  <style>
-    body.is-home .app-content > section.wrap:not(.hero) {
-      padding-block: clamp(32px, 5vw, 56px);
-    }
-
-    body.is-home .app-content .status-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
-      gap: 12px 16px;
-      align-items: start;
-    }
-
-    body.is-home .app-content .status-grid > div {
-      min-width: 0;
-    }
-
-    body.is-home .app-content .cards-3,
-    body.is-home .app-content .cards-6 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--gap);
-      align-items: stretch;
-    }
-
-    body.is-home .app-content .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--gap);
-      align-items: stretch;
-    }
-
-    body.is-home .app-content #roadmap .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    body.is-home .app-content .card > :last-child {
-      margin-bottom: 0;
-    }
-
-    @media (min-width: 600px) and (max-width: 900px) {
-      body.is-home .app-content > section.wrap:not(.hero) {
-        padding-block: 32px;
-      }
-
-      body.is-home .app-content .status-grid {
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      }
-
-      body.is-home .app-content .status-grid .h {
-        grid-column: 1 / -1;
-        width: 100%;
-      }
-
-      body.is-home .app-content .status-grid > div:not(.h):nth-child(3n) {
-        grid-column: 1 / -1;
-      }
-
-      body.is-home .app-content .cards-3,
-      body.is-home .app-content .cards-6,
-      body.is-home .app-content .grid,
-      body.is-home .app-content #roadmap .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 599.98px) {
-      body.is-home .app-content > section.wrap:not(.hero) {
-        padding-block: 24px;
-      }
-
-      body.is-home .app-content .status-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 10px;
-      }
-
-      body.is-home .app-content .status-grid .h {
-        display: none;
-      }
-
-      body.is-home .app-content .status-grid > div {
-        display: grid;
-        gap: 6px;
-      }
-
-      body.is-home .app-content .status-grid > div:not(.h)::before {
-        content: attr(data-label);
-        font-size: 0.75rem;
-        line-height: 1.2;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: var(--muted);
-      }
-
-      body.is-home .app-content .cards-3,
-      body.is-home .app-content .cards-6,
-      body.is-home .app-content .grid,
-      body.is-home .app-content #roadmap .grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      body.is-home .app-content .btn {
-        width: 100%;
-      }
-    }
-  </style>
-
   
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -217,20 +66,27 @@
 
   <main id="main" class="app-content">
     <!-- Hero -->
-    <section class="wrap hero">
+    <section class="wrap hero home-hero home-band-strong">
       <div class="hero-content">
         <div class="hero-left-inner">
+        <p class="hero-eyebrow">Платформа для публикаций, пилотов и прикладных технологий</p>
         <h1 class="hero-title">
-          <span class="hero-title-main">UPGRADE - INNOVATIONS</span>
+          <span class="hero-title-main">UPGRADE — платформа, где технологии находят применение</span>
         </h1>
-        <h2 class="hero-subtitle"><span class="hero-subtitle-line1">платформа, где технологии</span><span class="hero-subtitle-line2">находят применение</span></h2>
+        <p class="hero-subtitle">Каталог решений, публикации, кейсы и пилоты — в одной системе</p>
         <div class="hero-art hero-art-mobile" aria-hidden="true">
           <img class="hero-figure" src="assets/hero-character.png" alt="Персонаж">
         </div>
-<p class="lead hero-lead">Публикуйте решения и исследования, объединяйтесь с партнёрами и запускайте пилоты. Статус и планы развития — здесь и сейчас.</p>
+        <p class="lead hero-lead">Публикуйте решения и исследования, находите партнёров и запускайте пилоты. Статусы, публикации и практические направления собраны в одной понятной структуре.</p>
+        <div class="hero-chip-list" aria-label="Ключевые направления">
+          <span class="hero-chip">Каталог решений</span>
+          <span class="hero-chip">Публикации и кейсы</span>
+          <span class="hero-chip">Пилоты и партнёры</span>
+        </div>
 
         <div class="cta">
           <a class="btn" href="#join">Присоединиться</a>
+          <a class="btn btn--ghost" href="#status">Посмотреть разделы</a>
         </div>
         </div>
       </div>
@@ -239,8 +95,30 @@
       </div>
     </section>
 
+    <!-- How it works -->
+    <section class="wrap home-plain home-how" id="how-it-works" aria-labelledby="how-it-works-title">
+      <h2 class="section-title" id="how-it-works-title">Как это работает</h2>
+      <div class="cards-3 home-how-grid">
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">1</span>
+          <h3>Публикуете</h3>
+          <p>Добавляете решение, исследование или кейс в понятной структуре.</p>
+        </article>
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">2</span>
+          <h3>Находите</h3>
+          <p>Пользователи и партнёры находят материалы через каталог и тематические витрины.</p>
+        </article>
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">3</span>
+          <h3>Запускаете</h3>
+          <p>Из публикации и контакта переходите к пилоту, внедрению или сотрудничеству.</p>
+        </article>
+      </div>
+    </section>
+
     <!-- Status -->
-    <section class="wrap" id="status" aria-labelledby="status-title">
+    <section class="wrap home-band" id="status" aria-labelledby="status-title">
       <h2 class="section-title" id="status-title">Состояние разделов</h2>
       <div class="card">
         <div class="status-grid">
@@ -260,7 +138,7 @@
     </section>
 
     <!-- Goals -->
-    <section class="wrap" id="goals" aria-labelledby="goals-title">
+    <section class="wrap home-plain" id="goals" aria-labelledby="goals-title">
       <h2 class="section-title" id="goals-title">Наши цели</h2>
       <div class="cards-3">
         <article class="card"><h3>Апгрейд через применение</h3><p>Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.</p></article>
@@ -270,7 +148,7 @@
     </section>
 
     <!-- AI -->
-    <section class="wrap" id="ai" aria-labelledby="ai-title">
+    <section class="wrap home-band" id="ai" aria-labelledby="ai-title">
       <h2 class="section-title" id="ai-title">Искусственный интеллект на платформе</h2>
       <div class="grid">
         <div class="card">
@@ -293,7 +171,7 @@
     </section>
 
     <!-- Technology directions -->
-    <section class="wrap" id="tech" aria-labelledby="tech-title">
+    <section class="wrap home-plain" id="tech" aria-labelledby="tech-title">
       <h2 class="section-title" id="tech-title">Направления технологий</h2>
       <div class="cards-6">
         <article class="card"><h3>AI/ML</h3><p>Модели, пайплайны, MLOps, доверие и безопасность ИИ.</p></article>
@@ -307,7 +185,7 @@
     </section>
 
     <!-- Catalog teaser -->
-    <section class="wrap" id="catalog" aria-labelledby="catalog-title">
+    <section class="wrap home-band" id="catalog" aria-labelledby="catalog-title">
       <h2 class="section-title" id="catalog-title">Каталог и публикации</h2>
       <div class="grid">
         <article class="card">
@@ -324,7 +202,7 @@
     </section>
 
     <!-- Roadmap -->
-    <section class="wrap" id="roadmap" aria-labelledby="roadmap-title">
+    <section class="wrap home-band-strong" id="roadmap" aria-labelledby="roadmap-title">
       <h2 class="section-title" id="roadmap-title">Роадмап (публичный план)</h2>
       <div class="grid">
         <div class="card">
@@ -355,7 +233,7 @@
     </section>
 
     <!-- Changelog -->
-    <section class="wrap" id="changelog">
+    <section class="wrap home-plain" id="changelog">
   <h2>Журнал изменений</h2>
   <div class="changelog-container">
     <div class="card">
@@ -374,7 +252,7 @@
 </section> 
 
     <!-- Join / Feedback -->
-    <section class="wrap" id="join" aria-labelledby="join-title">
+    <section class="wrap home-band-strong" id="join" aria-labelledby="join-title">
       <h2 class="section-title" id="join-title">Присоединиться к раннему доступу</h2>
       <div class="grid">
         <div class="card">
@@ -391,7 +269,7 @@
     </section>
 
     <!-- Premium Marketplace: Vitrines + Trust -->
-    <section class="wrap" id="vitrines" aria-labelledby="vitrines-title">
+    <section class="wrap home-plain" id="vitrines" aria-labelledby="vitrines-title">
       <h2 class="section-title" id="vitrines-title">Витрины направлений</h2>
       <p class="lead">Платформа мультивендорная, но витрины разделяют контент по назначению — так навигация остаётся понятной, а уровень качества — ровным.</p>
       <div class="cards-6">
@@ -428,7 +306,7 @@
       </div>
     </section>
 
-    <section class="wrap" id="trust" aria-labelledby="trust-title">
+    <section class="wrap home-band" id="trust" aria-labelledby="trust-title">
       <h2 class="section-title" id="trust-title">Надёжность и серьёзность платформы</h2>
       <div class="grid">
         <article class="card">
@@ -451,7 +329,7 @@
       <p class="lead" style="margin-top:var(--space-3)">Мы выстраиваем доверие через ясный язык, проверяемые факты и понятные процессы — от подачи до сделки.</p>
     </section>
 
-    <section class="wrap" id="quality" aria-labelledby="quality-title">
+    <section class="wrap home-band-strong" id="quality" aria-labelledby="quality-title">
       <h2 class="section-title" id="quality-title">Правила качества публикаций</h2>
       <div class="cards-3">
         <article class="card">
