@@ -2660,32 +2660,6 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   text-underline-offset: 0.18em;
 }
 
-body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary) {
-  cursor: default;
-  pointer-events: none;
-  color: color-mix(in srgb, var(--sidebar-text) 78%, white);
-  background: transparent;
-  transform: none;
-}
-
-body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary):hover {
-  background: transparent;
-  transform: none;
-}
-
-body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::after {
-  content: "Скоро";
-  margin-left: auto;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.06);
-  color: color-mix(in srgb, var(--sidebar-text-strong) 78%, white);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 @media (max-width: 1460px) {
   body.menu-open .is-home .home-hero {
     grid-template-columns: 1fr;
@@ -2787,15 +2761,11 @@ body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::afte
 
 @media (max-width: 420px) {
   .is-home .hero-title-main {
-    font-size: clamp(24px, 7.6vw, 30px);
+    font-size: clamp(26px, 8.2vw, 32px);
   }
 
   .is-home .hero-art-mobile {
     width: min(100%, 248px);
-  }
-
-  .is-home .hero-brand {
-    white-space: normal;
   }
 }
 
@@ -2808,133 +2778,286 @@ body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::afte
 }
 
 /* =========================================================
-   Homepage app-router compatibility layer
-   Keeps the premium homepage stable inside the current React shell
+   Homepage app-router shell compatibility
+   Restores the accepted shell geometry inside the current app shell
+   without changing the shell source files outside the allowed scope.
    ========================================================= */
 
 body:has(.is-home) {
   overflow-x: clip;
 }
 
+body:has(.is-home) header.site-header,
+body:has(.is-home) header[data-site-header="true"],
+body:has(.is-home) .site-header {
+  height: auto;
+}
+
 body:has(.is-home) .app-content {
   width: auto;
   max-width: none;
+  padding: calc(var(--header-height) + 3px) 0 0;
 }
 
-body:has(.is-home) .header-inner {
-  width: min(100%, 1400px);
-  margin: 0 auto;
-}
-
-body:has(.is-home) .header-brand {
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-body:has(.is-home) .auth-actions a {
-  min-height: 42px;
-  align-items: center;
-}
-
-body:has(.is-home) .sidebar {
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    opacity 0.28s ease;
-}
-
-body:has(.is-home) .sidebar-inner {
-  padding-bottom: 28px;
-}
-
-body:has(.is-home) .sidebar-section {
-  opacity: 0.86;
-}
-
-body:has(.is-home) .sidebar-link {
-  border-radius: 12px;
-}
-
-@media (min-width: 1200px) {
-  body:has(.is-home) .app-shell[data-sidebar-open="false"] .sidebar {
-    transform: translateX(calc(-1 * var(--sidebar-width) + var(--sidebar-width-collapsed)));
-    opacity: 0.98;
-    box-shadow: none;
+@media (min-width: 769px) {
+  body:has(.is-home) .sidebar {
+    transform: none !important;
+    width: 46px;
   }
 
-  body:has(.is-home) .app-shell[data-sidebar-open="false"] .app-content {
-    margin-left: var(--sidebar-width-collapsed);
-    width: calc(100% - var(--sidebar-width-collapsed));
-  }
-
-  body:has(.is-home) .app-shell[data-sidebar-open="true"] .sidebar {
-    transform: translateX(0);
-    opacity: 1;
-    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
-  }
-
-  body:has(.is-home) .app-shell[data-sidebar-open="true"] .app-content {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-  }
-}
-
-@media (max-width: 1199px) {
   body:has(.is-home) .app-content {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-/* =========================================================
-   Homepage shell parity + wider first-screen surface hotfix
-   Keep shell behavior aligned with the working preview while
-   widening the hero surface to match later section widths.
-   ========================================================= */
-
-.is-home .home-hero {
-  max-width: min(1320px, calc(100vw - clamp(30px, 4vw, 72px)));
-  width: min(100%, 1320px);
-  padding-inline: clamp(24px, 2.6vw, 32px);
-  gap: clamp(40px, 4.9vw, 86px);
-}
-
-.is-home .hero-content {
-  padding-right: clamp(8px, 1.25vw, 22px);
-}
-
-.is-home .hero-left-inner {
-  max-width: min(100%, 780px);
-}
-
-.is-home .hero-subtitle,
-.is-home .hero-lead,
-.is-home .hero .lead,
-.is-home .hero-chip-list,
-.is-home .hero .cta {
-  max-width: 100%;
-}
-
-@media (max-width: 1280px) {
-  .is-home .home-hero {
-    max-width: min(1280px, calc(100vw - clamp(28px, 3.6vw, 54px)));
-    padding-inline: clamp(22px, 2.8vw, 28px);
-    gap: clamp(34px, 4vw, 62px);
+    margin-left: 46px;
+    width: calc(100% - 46px);
   }
 
-  .is-home .hero-left-inner {
-    max-width: min(100%, 760px);
+  body.menu-open:has(.is-home) .sidebar {
+    width: 260px;
+  }
+
+  body.menu-open:has(.is-home) .app-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
   }
 }
 
 @media (max-width: 768px) {
+  body:has(.is-home) .app-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  body:has(.is-home) .sidebar {
+    width: 260px;
+  }
+
+  body:not(.menu-open):has(.is-home) .sidebar {
+    transform: translateX(-100%) !important;
+  }
+
+  body.menu-open:has(.is-home) .sidebar {
+    transform: translateX(0) !important;
+  }
+}
+
+/* =========================================================
+   Homepage premium polish after shell restore
+   Keeps the accepted shell intact while widening the first screen
+   and tightening the premium vendor/trust rhythm.
+   ========================================================= */
+
+.is-home {
+  --home-stage-width: min(1480px, calc(100vw - clamp(26px, 3vw, 56px)));
+  --home-hero-copy-max: 820px;
+  --home-card-padding: clamp(24px, 1.9vw, 30px);
+  --home-card-shadow: 0 18px 38px rgba(15, 23, 42, 0.05);
+}
+
+.is-home main.app-content > section.wrap {
+  max-width: var(--home-stage-width);
+  padding-inline: clamp(18px, 2.35vw, 32px);
+}
+
+.is-home .home-hero {
+  max-width: min(1360px, calc(100vw - clamp(26px, 3vw, 56px)));
+  grid-template-columns: minmax(0, 1.46fr) minmax(340px, 472px);
+  gap: clamp(44px, 5.2vw, 96px);
+  padding-inline: clamp(26px, 2.6vw, 36px);
+  padding-top: clamp(46px, 5.6vw, 82px);
+  padding-bottom: clamp(50px, 6vw, 84px);
+}
+
+.is-home .hero-content {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding-right: clamp(10px, 1.5vw, 24px);
+}
+
+.is-home .hero-left-inner {
+  display: grid;
+  width: 100%;
+  max-width: min(100%, var(--home-hero-copy-max));
+  gap: clamp(16px, 1.65vw, 24px);
+}
+
+.is-home .hero-title-main {
+  max-width: 16.5ch;
+  font-size: clamp(46px, 4.4vw, 62px);
+  line-height: 1.03;
+}
+
+.is-home .hero-subtitle {
+  max-width: 34ch;
+  line-height: 1.28;
+}
+
+.is-home .hero-lead,
+.is-home .hero .lead {
+  max-width: 63ch;
+  line-height: 1.72;
+}
+
+.is-home .hero-chip-list {
+  gap: 12px;
+}
+
+.is-home .hero-chip {
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.is-home .hero .cta {
+  gap: 14px;
+}
+
+.is-home .hero-art {
+  width: min(100%, 440px);
+  justify-self: end;
+  padding: clamp(20px, 1.9vw, 28px);
+}
+
+.is-home .home-trust-strip {
+  padding-top: clamp(22px, 2.4vw, 30px);
+  padding-bottom: clamp(26px, 2.8vw, 34px);
+}
+
+.is-home .home-trust-strip-grid {
+  gap: clamp(14px, 1.8vw, 20px);
+}
+
+.is-home .home-trust-strip-item,
+.is-home .home-vendor-card,
+.is-home .home-partnership-summary,
+.is-home .home-partnership-points,
+.is-home .home-step-card,
+.is-home .home-legal .card {
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.045);
+}
+
+.is-home .home-vendor-card,
+.is-home .home-partnership-summary,
+.is-home .home-partnership-points,
+.is-home .home-step-card,
+.is-home .home-legal .card {
+  padding: var(--home-card-padding);
+  border-radius: 20px;
+}
+
+.is-home .home-vendor-intro,
+.is-home .home-status-note,
+.is-home .home-vitrines-intro {
+  max-width: 76ch;
+}
+
+.is-home .section-title {
+  margin-bottom: clamp(18px, 2vw, 26px);
+}
+
+.is-home .home-vendor-note,
+.is-home .home-contact-note {
+  padding: 16px 18px;
+  border-radius: 18px;
+}
+
+@media (max-width: 1460px) {
+  body.menu-open .is-home .home-hero {
+    max-width: min(1240px, calc(100vw - 28px));
+    gap: clamp(30px, 4vw, 44px);
+  }
+
+  body.menu-open .is-home .hero-content {
+    padding-right: 0;
+  }
+
+  body.menu-open .is-home .hero-art {
+    justify-self: start;
+    width: min(100%, 360px);
+  }
+}
+
+@media (max-width: 1180px) {
   .is-home .home-hero {
-    max-width: min(100%, calc(100vw - 24px));
-    padding-inline: clamp(18px, 5vw, 24px);
+    max-width: min(1280px, calc(100vw - 24px));
+    gap: clamp(30px, 4vw, 44px);
+    padding-inline: clamp(20px, 3vw, 26px);
   }
 
   .is-home .hero-content {
     padding-right: 0;
+  }
+
+  .is-home .hero-art {
+    justify-self: start;
+    width: min(100%, 360px);
+  }
+}
+
+@media (max-width: 768px) {
+  .is-home main.app-content > section.wrap {
+    padding-inline: 0;
+  }
+
+  .is-home .home-hero {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    min-height: 0;
+    padding-inline: clamp(18px, 5vw, 24px);
+    gap: clamp(26px, 6vw, 34px);
+  }
+
+  .is-home .hero-content,
+  .is-home .hero-left-inner,
+  .is-home .hero-title,
+  .is-home .hero-title-main,
+  .is-home .hero-subtitle,
+  .is-home .hero-lead,
+  .is-home .hero .cta,
+  .is-home .hero-chip-list {
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+  }
+
+  .is-home .hero-left-inner {
+    gap: 16px;
+  }
+
+  .is-home .hero-title-main {
+    max-width: none;
+    font-size: clamp(32px, 8.6vw, 40px);
+    line-height: 1.08;
+  }
+
+  .is-home .hero-subtitle {
+    max-width: none;
+    font-size: clamp(18px, 4.8vw, 22px);
+  }
+
+  .is-home .hero-lead,
+  .is-home .hero .lead {
+    max-width: none;
+  }
+
+  .is-home .hero .cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .is-home .hero .cta .btn,
+  .is-home .hero .cta .btn.btn--ghost {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .is-home .hero-art {
+    width: min(100%, 260px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .is-home .hero-title-main {
+    font-size: clamp(25px, 7.4vw, 30px);
   }
 }
 
