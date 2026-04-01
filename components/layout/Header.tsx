@@ -17,14 +17,7 @@ export default function Header({
     return (
       <header className="site-header" data-site-header="true">
         <div className="wrap nav">
-          <button
-            className="burger"
-            id="burgerBtn"
-            aria-label={isSidebarOpen ? "Закрыть меню" : "Открыть меню"}
-            aria-expanded={isSidebarOpen ? true : undefined}
-            type="button"
-            onClick={onToggleSidebar}
-          >
+          <button className="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
             <span className="burger-icon">
               <span className="burger-line"></span>
               <span className="burger-line"></span>
@@ -33,18 +26,7 @@ export default function Header({
           </button>
 
           <Link className="brand" href="/" aria-label="UPGRADE INNOVATIONS">
-            <div id="upgr-logo-slot">
-              <span className="upgr-logo" aria-label="UPGRADE Innovations">
-                <img
-                  className="upgr-logo__base"
-                  src="/assets/logo/logo-black-only.png"
-                  alt="UPGRADE Innovations"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="upgr-logo__accent" aria-hidden="true"></span>
-              </span>
-            </div>
+            <div id="upgr-logo-slot"></div>
           </Link>
 
           <div className="grow"></div>

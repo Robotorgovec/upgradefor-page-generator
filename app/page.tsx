@@ -5,11 +5,14 @@ import Script from "next/script";
 type HomeTemplate = {
   mainHtml: string;
   jsonLd: string[];
+  headStyles: string[];
   layoutCss: string;
   layoutJs: string;
 };
 
 const MAIN_REGEX = /<main[^>]*>([\s\S]*?)<\/main>/i;
+const STYLESHEET_LINK_REGEX =
+  /<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi;
 const JSON_LD_REGEX =
   /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
 
@@ -30,6 +33,9 @@ function loadHomeTemplate(): HomeTemplate {
     jsonLd: Array.from(html.matchAll(JSON_LD_REGEX))
       .map((match) => match[1].trim())
       .filter(Boolean),
+    headStyles: Array.from(html.matchAll(STYLESHEET_LINK_REGEX))
+      .map((match) => match[1].trim())
+      .filter((href) => href && !href.includes("/assets/layout.css")),
     layoutCss: readPublicFile("assets/layout.css"),
     layoutJs: readPublicFile("assets/load-layout.js"),
   };
@@ -38,14 +44,17 @@ function loadHomeTemplate(): HomeTemplate {
 const homeTemplate = loadHomeTemplate();
 
 export const metadata = {
-  title: "UPGRADE INNOVATIONS - открытая бета",
+  title: "UPGRADE INNOVATIONS — платформа для вендоров и внедрения",
   description:
-    "UPGRADE - платформа для вендоров, пилотов и внедрения технологий. Партнёрские витрины, маршрутизация запросов и AI-поддержка.",
+    "Платформа для вендоров, пилотов и внедрения технологий. Вендоры получают структурированную витрину, поток профильных запросов и инструменты автоматизации. Компании получают проверяемые решения и понятный путь от запроса до пилота.",
 };
 
 export default function HomePage() {
   return (
     <>
+      {homeTemplate.headStyles.map((href) => (
+        <link key={href} rel="stylesheet" href={href} />
+      ))}
       <style dangerouslySetInnerHTML={{ __html: homeTemplate.layoutCss }} />
       {homeTemplate.jsonLd.map((data, index) => (
         <Script
