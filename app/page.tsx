@@ -6,9 +6,9 @@ import { loadHtmlTemplate } from "../lib/html-template";
 const homeTemplate = loadHtmlTemplate("index.html");
 
 export const metadata = {
-  title: "UPGRADE INNOVATIONS — открытая бета",
+  title: "UPGRADE INNOVATIONS - открытая бета",
   description:
-    "UPGRADE — платформа, где технологии находят применение. Каталог, публикации, пилоты и кейсы. Публичный статус и план развития.",
+    "UPGRADE - платформа для вендоров, пилотов и внедрения технологий. Структурированная витрина, маршрутизация обращений, AI-поддержка и сопровождение пилотов.",
 };
 
 export default function HomePage() {
