@@ -12,7 +12,9 @@ type LayoutShellProps = {
 
 export default function LayoutShell({ children }: LayoutShellProps) {
   const pathname = usePathname();
-  const isHomepage = pathname === "/";
+  const [clientPathname, setClientPathname] = useState("");
+  const effectivePathname = clientPathname || pathname || "";
+  const isHomepage = effectivePathname === "/";
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = useCallback(() => {
@@ -24,8 +26,12 @@ export default function LayoutShell({ children }: LayoutShellProps) {
   }, []);
 
   useEffect(() => {
-    setIsSidebarOpen(false);
+    setClientPathname(window.location.pathname);
   }, [pathname]);
+
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [effectivePathname]);
 
   useEffect(() => {
     document.body.classList.toggle("is-home", isHomepage);
