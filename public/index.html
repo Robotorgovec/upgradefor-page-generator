@@ -1,10 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta name="upgr-build" content="layout-fix-2026-01-29-03">
-
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <!-- Ensure no caching so users always receive the latest build -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -48,13 +46,8 @@
     "name":"UPGRADE INNOVATIONS",
     "url":"https://upgradefor.com/",
     "logo":"https://robotorgovec.github.io/upgradefor-page-generator/assets/upgrade-innovations-logo-main.svg",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "MD",
-      "addressLocality": "Chișinău",
-      "streetAddress": "Указать юридический адрес",
-      "postalCode": "MD-20xxx"
-    },
+    "description":"Платформа для вендоров, пилотов и внедрения технологий. Вендоры получают структурированную витрину, профильные запросы и инструменты автоматизации.",
+    "email":"info@upgradefor.com",
     "contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"info@upgradefor.com","areaServed":["EU","Worldwide"],"availableLanguage":["ru","en","ro"]}]
   }
   </script>
@@ -63,24 +56,19 @@
 <body class="is-home">
   <a class="skip" href="#main">К содержанию</a>
 
-    
+  <header></header>
+  <aside class="sidebar"></aside>
+
   <main id="main" class="app-content">
-    <!-- Бета-баннер -->
-    <div class="phase" role="status" aria-live="polite">
-      <div class="wrap content">
-        <span class="tag" aria-label="Этап разработки">BETA</span>
-        <div class="text">Новый сервис. Публикуем статус разделов, план развития и журнал изменений — ваши идеи помогают расставлять приоритеты.</div>
-      </div>
-    </div>
     <!-- Hero -->
     <section class="wrap hero home-hero home-band-strong">
       <div class="hero-content">
         <div class="hero-left-inner">
-        <p class="hero-eyebrow">ПЛАТФОРМА ДЛЯ ПУБЛИКАЦИЙ, ПИЛОТОВ И ПРИКЛАДНЫХ ТЕХНОЛОГИЙ</p>
+        <p class="hero-eyebrow">Платформа для вендоров, пилотов и внедрения технологий</p>
         <h1 class="hero-title">
-          <span class="hero-title-main"><span class="hero-brand">UPGRADE-INNOVATIONS</span><span class="hero-separator"> — </span><span class="hero-rest">платформа, где технологии находят применение</span></span>
+          <span class="hero-title-main"><span class="hero-brand">UPGRADE INNOVATIONS</span><span class="hero-rest">платформа для вендоров и внедрения</span></span>
         </h1>
-        <p class="hero-subtitle">Каталог решений, публикаций, кейсов и пилотов — в одной системе</p>
+        <p class="hero-subtitle">Вендоры получают структурированную витрину, поток профильных запросов и инструменты автоматизации. Компании — проверяемые решения и понятный путь от запроса до пилота.</p>
         <div class="hero-art hero-art-mobile" aria-hidden="true">
           <img
             class="hero-figure"
@@ -93,19 +81,19 @@
             fetchpriority="high"
           >
         </div>
-        <p class="lead hero-lead">Публикуйте решения и исследования, собирайте кейсы, находите партнёров и запускайте пилоты. Статусы, публикации и практические направления собраны в одной понятной структуре.</p>
-        <div class="hero-chip-list" aria-label="Ключевые направления">
-          <span class="hero-chip">Каталог решений</span>
-          <span class="hero-chip">Публикации и кейсы</span>
-          <span class="hero-chip">Пилоты и партнёры</span>
+        <p class="lead hero-lead">Платформа объединяет каталог решений, публикации, заявки, пилоты и AI-поддержку работы с клиентами в одной системе. Мы подключаем партнёра, настраиваем его цифровое присутствие и маршрутизацию заявок, после чего помогаем довести первые обращения до внедрения.</p>
+        <div class="hero-chip-list" aria-label="Ключевые преимущества">
+          <span class="hero-chip">Поток запросов</span>
+          <span class="hero-chip">Верификация</span>
+          <span class="hero-chip">AI-поддержка</span>
+          <span class="hero-chip">Пилоты и внедрение</span>
         </div>
 
         <div class="cta">
-          <a class="btn" href="#join">Присоединиться</a>
-          <a class="btn btn--ghost" href="#catalog">Каталог</a>
-          <a class="btn btn--ghost" href="#faq">Как это работает?</a>
+          <a class="btn" href="#vendor">Стать вендором</a>
+          <a class="btn btn--ghost" href="#status">Посмотреть разделы</a>
         </div>
-      </div>
+        </div>
       </div>
       <div class="hero-art hero-art-desktop" aria-hidden="true">
         <img
@@ -132,8 +120,8 @@
             </svg>
           </div>
           <div class="home-trust-strip-text">
-            <div class="home-trust-strip-title">Верификация</div>
-            <div class="home-trust-strip-sub">премодерация и чек-листы</div>
+            <div class="home-trust-strip-title">Верификация партнёров</div>
+            <div class="home-trust-strip-sub">профиль, материалы и категории</div>
           </div>
         </div>
 
@@ -147,8 +135,8 @@
             </svg>
           </div>
           <div class="home-trust-strip-text">
-            <div class="home-trust-strip-title">Прозрачность</div>
-            <div class="home-trust-strip-sub">статусы и changelog</div>
+            <div class="home-trust-strip-title">Маршрутизация запросов</div>
+            <div class="home-trust-strip-sub">статусы, этапы и история работы</div>
           </div>
         </div>
 
@@ -160,8 +148,8 @@
             </svg>
           </div>
           <div class="home-trust-strip-text">
-            <div class="home-trust-strip-title">Human-in-the-loop</div>
-            <div class="home-trust-strip-sub">финальное слово за людьми</div>
+            <div class="home-trust-strip-title">AI-поддержка</div>
+            <div class="home-trust-strip-sub">публикации, обновления и сопровождение</div>
           </div>
         </div>
 
@@ -173,45 +161,103 @@
             </svg>
           </div>
           <div class="home-trust-strip-text">
-            <div class="home-trust-strip-title">Безопасность</div>
-            <div class="home-trust-strip-sub">процессы и контроль</div>
+            <div class="home-trust-strip-title">Пилоты и внедрение</div>
+            <div class="home-trust-strip-sub">путь от запроса до запуска</div>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="wrap home-band" id="vendor" aria-labelledby="vendor-title">
+      <h2 class="section-title" id="vendor-title">Для вендоров</h2>
+      <p class="lead home-vendor-intro">Платформа для компаний, которые поставляют технологии, оборудование, материалы, сервисы или отраслевые решения и хотят получать больше профильных обращений без хаотичной ручной сборки маркетинга и воронки.</p>
+      <div class="cards-3 home-vendor-grid">
+        <article class="card home-vendor-card">
+          <h3>Заказы и входящие запросы</h3>
+          <p>Публичная витрина и маршрутизация заявок помогают собирать профильные обращения по категориям, направлениям и типам внедрения.</p>
+        </article>
+        <article class="card home-vendor-card">
+          <h3>Витрина и адаптивный аккаунт</h3>
+          <p>Для партнёра формируется структурированное присутствие: направления, решения, кейсы, публикации, медиа, контакты и понятные точки входа в заявку.</p>
+        </article>
+        <article class="card home-vendor-card">
+          <h3>Автоматизация и AI-поддержка</h3>
+          <p>Система помогает вести публикации, обновлять данные, сопровождать заявки, фиксировать статусы и постепенно собирать более управляемый процесс продаж.</p>
+        </article>
+      </div>
+      <p class="home-vendor-note">Доступ для вендоров предоставляется по партнёрскому пакету. Публичный прайс на главной не размещается.</p>
+    </section>
+
+    <section class="wrap home-plain home-partnership" id="partnership" aria-labelledby="partnership-title">
+      <h2 class="section-title" id="partnership-title">Модель партнёрства</h2>
+      <div class="grid home-partnership-grid">
+        <article class="card home-partnership-summary">
+          <p>На первом этапе основной платный доступ предоставляется вендорам и поставщикам решений. В пакет входят витрина присутствия, публикации, маршрутизация обращений, AI-инструменты и сопровождение первых сценариев пилота и внедрения, а компании получают более понятный путь к подбору решения.</p>
+        </article>
+        <article class="card home-partnership-points">
+          <ul class="home-value-list">
+            <li>Партнёрский доступ к платформе</li>
+            <li>Вендор-профиль и витрина решений</li>
+            <li>Маршрутизация обращений и статусов</li>
+            <li>AI-поддержка публикаций и продаж</li>
+            <li>Сопровождение пилотов и внедрения</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="wrap home-plain home-how" id="how-it-works" aria-labelledby="how-it-works-title">
+      <h2 class="section-title" id="how-it-works-title">Как это работает</h2>
+      <div class="cards-3 home-how-grid">
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">1</span>
+          <h3>Подключаем вендора</h3>
+          <p>Формируем присутствие на платформе: профиль, категории, публикации, материалы и точки контакта.</p>
+        </article>
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">2</span>
+          <h3>Настраиваем процессы</h3>
+          <p>Определяем направления, формы обращений, статусы, публикации и маршрут первых заявок.</p>
+        </article>
+        <article class="card home-step-card">
+          <span class="home-step-number" aria-hidden="true">3</span>
+          <h3>Запускаем работу</h3>
+          <p>После проверки и настройки платформа помогает принимать запросы, сопровождать пилоты и фиксировать дальнейшее внедрение.</p>
+        </article>
+      </div>
+    </section>
+
     <!-- Status -->
-    <section class="wrap" id="status" aria-labelledby="status-title">
+    <section class="wrap home-band" id="status" aria-labelledby="status-title">
       <h2 class="section-title" id="status-title">Состояние разделов</h2>
       <div class="card">
         <div class="status-grid">
           <div class="h"><strong>Раздел</strong></div><div class="h"><strong>Статус</strong></div><div class="h"><strong>Комментарий</strong></div>
 
-          <div>Каталог решений</div><div><span class="badge b-soon">В процессе</span></div><div>Наполнение карточек и фильтров</div>
-          <div>Публикации от пользователей</div><div><span class="badge b-soon">В процессе</span></div><div>Онбординг и модерация</div>
-          <div>Кейсы/проекты</div><div><span class="badge b-todo">Запланировано</span></div><div>Первые публикации — после пилотов</div>
-          <div>Пилоты и партнёры</div><div><span class="badge b-todo">Запланировано</span></div><div>Форма заявки на пилот</div>
-          <div>Сообщество</div><div><span class="badge b-todo">Запланировано</span></div><div>Профили и сообщения</div>
-          <div>Документация/гайд</div><div><span class="badge b-done">Готово</span></div><div>Чек-листы по качеству публикаций</div>
+          <div data-label="Раздел">Каталог решений</div><div data-label="Статус"><span class="badge b-soon">В процессе</span></div><div data-label="Комментарий">Наполнение карточек и фильтров</div>
+          <div data-label="Раздел">Публикации от пользователей</div><div data-label="Статус"><span class="badge b-soon">В процессе</span></div><div data-label="Комментарий">Онбординг и модерация</div>
+          <div data-label="Раздел">Кейсы/проекты</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Первые публикации — после пилотов</div>
+          <div data-label="Раздел">Пилоты и партнёры</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Форма заявки на пилот</div>
+          <div data-label="Раздел">Сообщество</div><div data-label="Статус"><span class="badge b-todo">Запланировано</span></div><div data-label="Комментарий">Профили и сообщения</div>
+          <div data-label="Раздел">Документация/гайд</div><div data-label="Статус"><span class="badge b-done">Готово</span></div><div data-label="Комментарий">Чек-листы по качеству публикаций</div>
         </div>
-        <p class="lead" style="margin-top:var(--space-3)">
-          Публичная статус-страница инфраструктуры: <a href="#">status.upgradefor.com</a>.
-        </p>
+        <p class="lead home-status-note" style="margin-top:var(--space-3)">Публичная статус-страница инфраструктуры готовится к публикации. До этого этапы и изменения фиксируются на главной и в журнале изменений.</p>
       </div>
     </section>
 
     <!-- Goals -->
-    <section class="wrap" id="goals" aria-labelledby="goals-title">
+    <section class="wrap home-plain" id="goals" aria-labelledby="goals-title">
       <h2 class="section-title" id="goals-title">Наши цели</h2>
       <div class="cards-3">
         <article class="card"><h3>Апгрейд через применение</h3><p>Соединяем идеи, образование и индустрию — помогаем решениям быстрее доходить до реального использования.</p></article>
         <article class="card"><h3>Прозрачность ожиданий</h3><p>Статус, план и изменения — на одной странице. Пользователи понимают этап и следующий шаг.</p></article>
-        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, human-in-the-loop, приватность и корректное цитирование.</p></article>
+        <article class="card"><h3>Ответственный ИИ</h3><p>Принципы: понятность, участие человека в принятии решений, приватность и корректное цитирование.</p></article>
       </div>
     </section>
 
     <!-- AI -->
-    <section class="wrap" id="ai" aria-labelledby="ai-title">
+    <section class="wrap home-band" id="ai" aria-labelledby="ai-title">
       <h2 class="section-title" id="ai-title">Искусственный интеллект на платформе</h2>
       <div class="grid">
         <div class="card">
@@ -226,7 +272,7 @@
           <h3>Принципы</h3>
           <ul>
             <li><strong>Понятность</strong>: видно, где ИИ помогает и как.</li>
-            <li><strong>Human-in-the-loop</strong>: финальное слово — за людьми.</li>
+            <li><strong>Человек в контуре</strong>: финальное слово — за людьми.</li>
             <li><strong>Конфиденциальность</strong> и уважение авторских прав.</li>
           </ul>
         </div>
@@ -272,7 +318,7 @@
     </section>
 
     <!-- Technology directions -->
-    <section class="wrap" id="tech" aria-labelledby="tech-title">
+    <section class="wrap home-plain" id="tech" aria-labelledby="tech-title">
       <h2 class="section-title" id="tech-title">Направления технологий</h2>
       <div class="cards-6">
         <article class="card"><h3>AI/ML</h3><p>Модели, пайплайны, MLOps, доверие и безопасность ИИ.</p></article>
@@ -286,24 +332,24 @@
     </section>
 
     <!-- Catalog teaser -->
-    <section class="wrap" id="catalog" aria-labelledby="catalog-title">
-      <h2 class="section-title" id="catalog-title">Каталог и публикации</h2>
+    <section class="wrap home-band" id="catalog" aria-labelledby="catalog-title">
+      <h2 class="section-title" id="catalog-title">Публикации и присутствие на платформе</h2>
       <div class="grid">
         <article class="card">
-          <h3>Решения от UPGRADE&nbsp;INNOVATIONS</h3>
-          <p>Собственные продукты и учебные комплексы с методическими материалами. Поддержка внедрения и обучение.</p>
-          <p><a href="#">Открыть каталог компании →</a></p>
+          <h3>Витрина партнёра</h3>
+          <p>Структурированное представление компании, направлений, решений, материалов и точек контакта для профильных обращений.</p>
+          <p class="home-card-status">Раздел оформляется после подключения партнёра и публикации материалов.</p>
         </article>
         <article class="card">
-          <h3>Публикации от пользователей</h3>
-          <p>Раздел в процессе наполнения. Подать публикацию можно за <strong>3–5 минут</strong>: короткая форма, авто-подсказки качества и модерация.</p>
-          <p><a href="#">Как опубликовать →</a></p>
+          <h3>Публикации и материалы</h3>
+          <p>Партнёрские публикации, кейсы и обновления проходят через отдельный контур онбординга, редакторской проверки и маршрутизации.</p>
+          <p class="home-card-status">Подача материалов открывается вместе с соответствующим партнёрским сценарием.</p>
         </article>
       </div>
     </section>
 
     <!-- Roadmap -->
-    <section class="wrap" id="roadmap" aria-labelledby="roadmap-title">
+    <section class="wrap home-band-strong" id="roadmap" aria-labelledby="roadmap-title">
       <h2 class="section-title" id="roadmap-title">Роадмап (публичный план)</h2>
       <div class="grid">
         <div class="card">
@@ -334,9 +380,9 @@
     </section>
 
     <!-- Changelog -->
-    <section class="wrap" id="changelog">
-  <h2>Журнал изменений</h2>
-  <div class="changelog-container">
+    <section class="wrap home-plain" id="changelog">
+  <h2 class="section-title">Журнал изменений</h2>
+  <div class="changelog-container home-changelog-grid">
     <div class="card">
       <h3>25 января 2026 • v0.5.0</h3>
       <p>Запуск нового формата журнала ( карточки и временная линия ), обновление брендовой палитры и улучшение доступности. Добавлены статус-индикаторы для ключевых разделов платформы.</p>
@@ -353,85 +399,85 @@
 </section> 
 
     <!-- Join / Feedback -->
-    <section class="wrap" id="join" aria-labelledby="join-title">
-      <h2 class="section-title" id="join-title">Присоединиться к раннему доступу</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Стать участником</h3>
-          <p>Получите ранний доступ и влияйте на приоритеты. В обмен — конструктивный фидбек и готовность тестировать фичи.</p>
-          <p><a class="btn" href="#feedback">Оставить заявку</a></p>
+    <section class="wrap home-band-strong" id="join" aria-labelledby="join-title">
+      <h2 class="section-title" id="join-title">Стать вендором или отправить запрос</h2>
+      <div class="grid home-join-grid">
+        <div class="card join-card-primary">
+          <h3>Стать вендором</h3>
+          <p>Подходит поставщикам технологий, оборудования, материалов, сервисов и интеграторам. Укажите категорию, регион и кратко опишите решение.</p>
+          <p><a class="btn" href="mailto:info@upgradefor.com?subject=%5BUPGR%20VENDOR%5D">Написать о партнёрстве</a></p>
         </div>
-        <div class="card" id="feedback">
-          <h3>Обратная связь</h3>
-          <p>Пока самый быстрый канал — email. Форма с файлом/скриншотом появится в ближайших релизах.</p>
-          <p><a class="btn btn--ghost" href="mailto:info@upgradefor.com?subject=%5BUPGRADE%20BETA%5D%20Отзыв%20или%20идея">info@upgradefor.com</a></p>
+        <div class="card join-card-support">
+          <h3>Запрос на пилот или внедрение</h3>
+          <p>Для компаний, которым нужен подбор решения, публикация задачи или запуск пилота с участием вендоров платформы.</p>
+          <p><a class="btn btn--ghost" href="mailto:info@upgradefor.com?subject=%5BUPGR%20REQUEST%5D">Отправить запрос</a></p>
         </div>
       </div>
     </section>
 
     <!-- Premium Marketplace: Vitrines + Trust -->
-    <section class="wrap" id="vitrines" aria-labelledby="vitrines-title">
-      <h2 class="section-title" id="vitrines-title">Витрины направлений</h2>
-      <p class="lead">Платформа мультивендорная, но витрины разделяют контент по назначению — так навигация остаётся понятной, а уровень качества — ровным.</p>
+    <section class="wrap home-plain" id="vitrines" aria-labelledby="vitrines-title">
+      <h2 class="section-title" id="vitrines-title">Отраслевые витрины</h2>
+      <p class="lead home-vitrines-intro">Платформа разделяет контент по отраслям и сценариям внедрения, чтобы вендор, заказчик и редактор работали в предсказуемой структуре без смешения ролей.</p>
       <div class="cards-6">
         <article class="card">
           <h3>Недвижимость (премиум)</h3>
           <p>Объекты с верификацией продавца и документов. Премодерация фото, планировок и правового статуса.</p>
-          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+          <p class="home-card-status">Витрина готовится к отдельному запуску.</p>
         </article>
         <article class="card">
           <h3>Образование</h3>
           <p>Учебные стенды, лаборатории, методические комплексы, EdTech-решения.</p>
-          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+          <p class="home-card-status">Витрина формируется вместе с пакетами материалов.</p>
         </article>
         <article class="card">
           <h3>Ремонт и услуги</h3>
           <p>Сервисные центры, промышленный ремонт, аудит, инжиниринг.</p>
-          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+          <p class="home-card-status">Сценарий готовится к публикации.</p>
         </article>
         <article class="card">
           <h3>Оборудование и материалы</h3>
           <p>Индустриальные модули, композиты, аддитив, энергетика.</p>
-          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+          <p class="home-card-status">Категории и фильтры уточняются перед запуском.</p>
         </article>
         <article class="card">
           <h3>Сообщество</h3>
           <p>Ленты проектов и событий — без смешения с торговыми карточками.</p>
-          <p><a class="btn btn--ghost" href="#">Перейти →</a></p>
+          <p class="home-card-status">Контур сообщества подключается отдельно от витрин.</p>
         </article>
         <article class="card">
           <h3>R&amp;D и пилоты</h3>
           <p>НИОКР, прототипы, пилотные внедрения и партнёрства.</p>
-          <p><a class="btn btn--ghost" href="#">Открыть витрину →</a></p>
+          <p class="home-card-status">Раздел запускается вместе с рабочими пилотными кейсами.</p>
         </article>
       </div>
     </section>
 
-    <section class="wrap" id="trust" aria-labelledby="trust-title">
-      <h2 class="section-title" id="trust-title">Надёжность и серьёзность платформы</h2>
+    <section class="wrap home-band" id="trust" aria-labelledby="trust-title">
+      <h2 class="section-title" id="trust-title">Проверяемость платформы</h2>
       <div class="grid">
         <article class="card">
-          <h3>Верификация и премодерация</h3>
+          <h3>Что видно партнёру</h3>
           <ul>
-            <li><strong>KYC/документы продавца</strong> для премиальных разделов (например, недвижимость).</li>
-            <li><strong>Стандарты листингов</strong>: фото, планировки, метрики, юридические атрибуты.</li>
-            <li><strong>Раздельные витрины</strong>, чтобы не смешивать рыночные и социальные посты.</li>
+            <li><strong>Структура присутствия</strong>: категории, материалы, точки контакта и понятный маршрут обращения.</li>
+            <li><strong>Роли и разделы</strong>: витрины, публикации и служебные сценарии не смешиваются в один поток.</li>
+            <li><strong>Публичные статусы</strong>: изменения и этапы развития страницы отражаются в роадмапе и журнале изменений.</li>
           </ul>
         </article>
         <article class="card">
-          <h3>Безопасная сделка</h3>
+          <h3>Как снижается хаос</h3>
           <ul>
-            <li><strong>Эскроу/депонирование</strong> (на этапе внедрения) для сделок повышенной стоимости.</li>
-            <li><strong>Проверка объекта</strong>: чек-лист и запрос пакета документов.</li>
-            <li><strong>Публичный статус</strong> и <strong>changelog</strong> — видимость работ и релизов.</li>
+            <li><strong>Верификация партнёра</strong>: профиль, категории и материалы проходят отдельную проверку.</li>
+            <li><strong>Умеренные обещания</strong>: на витрине нет фейковых метрик, публичных TODO и декоративных ссылок.</li>
+            <li><strong>Человеческий контроль</strong>: важные решения, публикации и сценарии пилота не передаются полностью автоматике.</li>
           </ul>
         </article>
       </div>
-      <p class="lead" style="margin-top:var(--space-3)">Мы выстраиваем доверие через ясный язык, проверяемые факты и понятные процессы — от подачи до сделки.</p>
+      <p class="lead" style="margin-top:var(--space-3)">Доверие строится через ясный язык, проверяемые факты и отсутствие “пустых” элементов на витрине — от первого просмотра до рабочего контакта.</p>
     </section>
 
-    <section class="wrap" id="quality" aria-labelledby="quality-title">
-      <h2 class="section-title" id="quality-title">Правила качества публикаций</h2>
+    <section class="wrap home-band-strong" id="quality" aria-labelledby="quality-title">
+      <h2 class="section-title" id="quality-title">Стандарты качества материалов</h2>
       <div class="cards-3">
         <article class="card">
           <h3>Чёткие категории и фильтры</h3>
@@ -442,8 +488,27 @@
           <p>Цифры, планы помещений/схемы, спецификации, документы — вместо «общих слов».</p>
         </article>
         <article class="card">
-          <h3>Соц-посты отдельно</h3>
-          <p>Личные ленты и обсуждения — в разделе «Сообщество», чтобы не снижать серьёзность торговых витрин.</p>
+          <h3>Сценарии не смешиваются</h3>
+          <p>Личные ленты, торговые витрины, пилоты и редакторские материалы разведены по отдельным контурам и не конфликтуют на главной.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap home-plain home-legal" id="contacts" aria-labelledby="contacts-title">
+      <h2 class="section-title" id="contacts-title">Контакты и юридическая информация</h2>
+      <div class="grid home-legal-grid">
+        <article class="card">
+          <h3>Связь</h3>
+          <p>Email: <a href="mailto:info@upgradefor.com">info@upgradefor.com</a></p>
+          <p class="home-contact-note">Юридические и договорные реквизиты предоставляются партнёрам по запросу на этапе подключения.</p>
+        </article>
+        <article class="card">
+          <h3>Документы</h3>
+          <ul class="home-link-list">
+            <li><a href="/legal/privacy">Политика конфиденциальности</a></li>
+            <li><a href="/legal/terms">Условия использования</a></li>
+            <li><a href="/legal/refunds">Политика возвратов</a></li>
+          </ul>
         </article>
       </div>
     </section>
