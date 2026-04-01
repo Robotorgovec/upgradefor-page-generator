@@ -1,0 +1,54 @@
+﻿<div class="wrap nav">
+  <button class="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
+    <span class="burger-icon">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </span>
+  </button>
+
+  <a class="brand" href="/" aria-label="UPGRADE INNOVATIONS">
+    <div id="upgr-logo-slot"></div>
+  </a>
+
+  <div class="grow"></div>
+
+  <div class="header-icons" aria-label="Быстрые действия">
+    <button class="icon-btn" aria-label="Поиск" data-path="/search" type="button">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button
+      class="icon-btn notifications-trigger"
+      aria-label="Уведомления"
+      data-path="/notifications"
+      data-notifications-trigger="true"
+      aria-haspopup="true"
+      aria-expanded="false"
+      type="button"
+    >
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="notification-badge" data-notification-badge hidden aria-live="polite"></span>
+    </button>
+    <div class="theme-switch" data-theme-switch>
+      <button
+        class="theme-switch-trigger"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label="Тема дня"
+      >
+        <span class="theme-dot" aria-hidden="true"></span>
+      </button>
+
+      <div class="theme-switch-menu" role="menu" aria-label="Тема дня">
+        <div class="theme-switch-title">Тема дня</div>
+        <div data-theme-switch-options></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-buttons">
+    <a class="btn btn--ghost" href="/account/login" rel="nofollow" data-auth-link="signin">Войти</a>
+    <a class="btn" href="/account/register" rel="nofollow" data-auth-link="signup">Создать аккаунт</a>
+  </div>
+</div>
