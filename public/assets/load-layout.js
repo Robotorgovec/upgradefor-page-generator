@@ -459,14 +459,19 @@
 
   function renderBottomNav(nav) {
     nav.innerHTML = "";
-    const items = [
-      { label: "Home", icon: "home", href: "/" },
-      { label: "Feed", icon: "dynamic_feed", href: "/feed" },
-      { label: "Messages", icon: "mark_unread_chat_alt", href: "/messages" },
-      { label: "Account", icon: "account_circle", href: "/account" },
-    ];
-
     const currentPath = window.location.pathname;
+    const isHomepage = currentPath === "/";
+    const items = isHomepage
+      ? [
+          { label: "Главная", icon: "home", href: "/" },
+          { label: "Аккаунт", icon: "account_circle", href: "/account" },
+        ]
+      : [
+          { label: "Главная", icon: "home", href: "/" },
+          { label: "Лента", icon: "dynamic_feed", href: "/feed" },
+          { label: "Сообщения", icon: "mark_unread_chat_alt", href: "/messages" },
+          { label: "Аккаунт", icon: "account_circle", href: "/account" },
+        ];
 
     items.forEach((item) => {
       const link = createEl("a", "mobile-bottom-nav-item", { href: item.href });
@@ -751,13 +756,18 @@
 
       document.dispatchEvent(new Event("layout:ready"));
 
-      const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
-      } else {
-        startChameleon();
+      const currentPath = window.location.pathname;
+      const isHomepage = currentPath === "/";
+
+      if (!isHomepage) {
+        const startChameleon = () => runChameleonIntro({ cooldownHours: 12, probability: 0.35 });
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", startChameleon, { once: true });
+        } else {
+          startChameleon();
+        }
+        enableChameleonOnNavigation();
       }
-      enableChameleonOnNavigation();
 
       const body = document.body;
       const root = document.documentElement;
@@ -794,8 +804,8 @@
           }
 
           authButtonsEl.innerHTML = `
-            <a class="btn btn--ghost" href="/account" rel="nofollow">Account</a>
-            ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Profile</a>' : ""}
+            <a class="btn btn--ghost" href="/account" rel="nofollow">Аккаунт</a>
+            ${hasProfileRoute ? '<a class="btn" href="/account/profile" rel="nofollow">Профиль</a>' : ""}
           `;
         } catch (err) {
           console.error("[UPGR] error loading auth session", err);
@@ -817,6 +827,7 @@
       const desktopBreakpoint = 1200;
       const collapsedStorageKey = "upgr-sidebar-collapsed";
       let isDesktop = window.innerWidth >= desktopBreakpoint;
+      let homepageDesktopMenuOpen = false;
 
       function getCollapsedPreference() {
         return localStorage.getItem(collapsedStorageKey) === "true";
@@ -831,8 +842,13 @@
         if (nowDesktop !== isDesktop) {
           isDesktop = nowDesktop;
           if (isDesktop) {
-            const preferCollapsed = getCollapsedPreference();
-            body.classList.toggle("menu-open", !preferCollapsed);
+            if (isHomepage) {
+              homepageDesktopMenuOpen = false;
+              body.classList.remove("menu-open");
+            } else {
+              const preferCollapsed = getCollapsedPreference();
+              body.classList.toggle("menu-open", !preferCollapsed);
+            }
           } else {
             body.classList.remove("menu-open");
           }
@@ -843,6 +859,11 @@
         burger.addEventListener("click", function () {
           const nowDesktop = window.innerWidth >= desktopBreakpoint;
           if (nowDesktop) {
+            if (isHomepage) {
+              homepageDesktopMenuOpen = !body.classList.contains("menu-open");
+              body.classList.toggle("menu-open", homepageDesktopMenuOpen);
+              return;
+            }
             body.classList.toggle("menu-open");
             setCollapsedPreference(!body.classList.contains("menu-open"));
             return;
@@ -854,8 +875,13 @@
       }
 
       if (isDesktop) {
-        const preferCollapsed = getCollapsedPreference();
-        body.classList.toggle("menu-open", !preferCollapsed);
+        if (isHomepage) {
+          homepageDesktopMenuOpen = false;
+          body.classList.remove("menu-open");
+        } else {
+          const preferCollapsed = getCollapsedPreference();
+          body.classList.toggle("menu-open", !preferCollapsed);
+        }
       } else {
         body.classList.remove("menu-open");
       }
@@ -863,6 +889,9 @@
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && body.classList.contains("menu-open")) {
           body.classList.remove("menu-open");
+          if (isHomepage && isDesktop) {
+            homepageDesktopMenuOpen = false;
+          }
         }
       });
 
