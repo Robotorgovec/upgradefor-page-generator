@@ -89,100 +89,100 @@ export default function Sidebar({ currentPath = "/", isHomepage = false }: Sideb
     <aside
       id="primary-sidebar"
       className={`sidebar ${styles.sidebar}`}
-      aria-label="РћСЃРЅРѕРІРЅР°СЏ РЅР°РІРёРіР°С†РёСЏ"
+      aria-label="Основная навигация"
       data-shell-home={isHomepage ? "true" : "false"}
     >
       <div className={`sidebar-inner ${styles.sidebarInner}`}>
-        <SectionLabel>РќР°РІРёРіР°С†РёСЏ</SectionLabel>
+        <SectionLabel>Навигация</SectionLabel>
 
         <MenuEntry
-          label="Р“Р»Р°РІРЅР°СЏ"
+          label="Главная"
           icon="space_dashboard"
           href="/"
           path="/"
-          title="Р“Р»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° (РґР°С€Р±РѕСЂРґ, РѕР±Р·РѕСЂ)"
+          title="Главная"
           active={isPathActive(currentPath, "/")}
         />
         <MenuEntry
-          label="Р›РµРЅС‚Р°"
+          label="Лента"
           icon="dynamic_feed"
           path="/feed"
-          title="РџСѓР±Р»РёРєР°С†РёРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, РР-СЂРµРєРѕРјРµРЅРґР°С†РёРё"
+          title="Лента"
           active={isPathActive(currentPath, "/feed")}
         />
         <MenuEntry
-          label="РџРѕРїСѓР»СЏСЂРЅРѕРµ"
+          label="Популярное"
           icon="auto_graph"
           path="/feed/trending"
-          title="РўРѕРї Р·Р°РїРёСЃРё РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№"
+          title="Популярное"
           active={isPathActive(currentPath, "/feed/trending")}
         />
         <MenuEntry
-          label="РџРѕРґРїРёСЃРєРё"
+          label="Подписки"
           icon="subscriptions"
           path="/feed/subscribed"
-          title="РџРѕСЃС‚С‹ РѕС‚СЃР»РµР¶РёРІР°РµРјС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№"
+          title="Подписки"
           active={isPathActive(currentPath, "/feed/subscribed")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>РљРѕРјРјСѓРЅРёРєР°С†РёРё</SectionLabel>
+        <SectionLabel>Коммуникации</SectionLabel>
 
         <MenuEntry
-          label="РР-Р°СЃСЃРёСЃС‚РµРЅС‚"
+          label="ИИ-ассистент"
           icon="neurology"
           path="/assistant"
-          title="РЈРјРЅС‹Р№ РР-РїРѕРјРѕС‰РЅРёРє, РјРѕР·Рі РїР»Р°С‚С„РѕСЂРјС‹"
+          title="ИИ-ассистент"
           active={isPathActive(currentPath, "/assistant")}
         />
         <MenuEntry
-          label="РЎРѕРѕР±С‰РµРЅРёСЏ"
+          label="Сообщения"
           icon="mark_unread_chat_alt"
           path="/messages"
-          title="РћР±С‰Р°СЏ РІС…РѕРґСЏС‰Р°СЏ РїРѕ СЃРѕРѕР±С‰РµРЅРёСЏРј Рё РґРёР°Р»РѕРіР°Рј"
+          title="Сообщения"
           active={isPathActive(currentPath, "/messages")}
         />
         <MenuEntry
-          label="Р§Р°С‚С‹"
+          label="Чаты"
           icon="forum"
           path="/messages/chats"
-          title="Р›РёС‡РЅС‹Рµ Рё РіСЂСѓРїРїРѕРІС‹Рµ РїРµСЂРµРїРёСЃРєРё"
+          title="Чаты"
           active={isPathActive(currentPath, "/messages/chats")}
         />
         <MenuEntry
-          label="Р—РІРѕРЅРєРё"
+          label="Звонки"
           icon="phone_in_talk"
           path="/messages/calls"
-          title="РђСѓРґРёРѕ Рё РІРёРґРµРѕСЃРІСЏР·СЊ"
+          title="Звонки"
           active={isPathActive(currentPath, "/messages/calls")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel dataAuth="private">РџСЂРѕС„РёР»СЊ</SectionLabel>
+        <SectionLabel dataAuth="private">Профиль</SectionLabel>
 
         <MenuEntry
-          label="РџСЂРѕС„РёР»СЊ"
+          label="Профиль"
           icon="person"
           path="/profile"
-          title="Р›РёС‡РЅР°СЏ СЃС‚СЂР°РЅРёС†Р° Рё РЅР°СЃС‚СЂРѕР№РєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"
+          title="Профиль"
           dataAuth="private"
           active={isPathActive(currentPath, "/profile")}
         />
         <MenuEntry
-          label="Р”РѕСЃС‚РёР¶РµРЅРёСЏ"
+          label="Достижения"
           icon="emoji_events"
           path="/profile/achievements"
-          title="РќР°РіСЂР°РґС‹, СѓСЂРѕРІРЅРё Рё Р±РµР№РґР¶Рё"
+          title="Достижения"
           dataAuth="private"
           active={isPathActive(currentPath, "/profile/achievements")}
         />
         <MenuEntry
-          label="РўРѕРєРµРЅС‹"
+          label="Токены"
           icon="token"
           path="/profile/tokens"
-          title="Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РІР°Р»СЋС‚Р° Рё Р±Р°Р»Р»С‹"
+          title="Токены"
           dataAuth="private"
           active={isPathActive(currentPath, "/profile/tokens")}
         />
@@ -198,25 +198,25 @@ export default function Sidebar({ currentPath = "/", isHomepage = false }: Sideb
           </summary>
           <div className={styles.menuSubmenu}>
             <MenuEntry
-              label="РљР°С‚РµРіРѕСЂРёРё"
+              label="Категории"
               icon="category"
               href="/wikimarket/categories"
               path="/wikimarket/categories"
-              title="Р Р°Р·РґРµР»С‹ РєР°С‚Р°Р»РѕРіР° С‚РѕРІР°СЂРѕРІ"
+              title="Категории"
               active={isPathActive(currentPath, "/wikimarket/categories")}
             />
             <details className={`menu-group ${styles.menuGroup}`} open={isDomainsOpen}>
-              <summary className={`menu-item ${styles.menuItem}`} aria-label="Р”РѕРјРµРЅС‹">
+              <summary className={`menu-item ${styles.menuItem}`} aria-label="Домены">
                 <span className={`menu-icon material-symbols-outlined ${styles.menuIcon}`}>domain</span>
-                <span className={`menu-label ${styles.menuLabel}`}>Р”РѕРјРµРЅС‹</span>
+                <span className={`menu-label ${styles.menuLabel}`}>Домены</span>
               </summary>
               <div className={styles.menuSubmenu}>
                 <MenuEntry
-                  label="РРјРµРЅРЅРѕР№ РґРѕРјРµРЅ .Р РЈРЎ (Р¤РРћ)"
+                  label="Именной домен .РУС (ФИО)"
                   icon="badge"
                   href="/wikimarket/domains/fio-rus"
                   path="/wikimarket/domains/fio-rus"
-                  title="РРјРµРЅРЅРѕР№ РґРѕРјРµРЅ .Р РЈРЎ (Р¤РРћ)"
+                  title="Именной домен .РУС (ФИО)"
                   active={isPathActive(currentPath, "/wikimarket/domains/fio-rus")}
                 />
               </div>
@@ -224,30 +224,30 @@ export default function Sidebar({ currentPath = "/", isHomepage = false }: Sideb
             <details className={`menu-group ${styles.menuGroup}`} open={isBeautyOpen}>
               <summary
                 className={`menu-item ${styles.menuItem}`}
-                aria-label="РљСЂР°СЃРѕС‚Р°"
+                aria-label="Красота"
                 data-path="/wikimarket/beauty"
-                title="Beauty-СѓСЃР»СѓРіРё Рё РїРѕРґР±РѕСЂ РёСЃРїРѕР»РЅРёС‚РµР»РµР№ РІ WikiMarket"
+                title="Красота"
               >
                 <span className={`menu-icon material-symbols-outlined ${styles.menuIcon}`}>
                   face_retouching_natural
                 </span>
-                <span className={`menu-label ${styles.menuLabel}`}>РљСЂР°СЃРѕС‚Р°</span>
+                <span className={`menu-label ${styles.menuLabel}`}>Красота</span>
               </summary>
               <div className={styles.menuSubmenu}>
                 <MenuEntry
-                  label="РЎРІР°РґРµР±РЅС‹Рµ РїСЂРёС‡РµСЃРєРё"
+                  label="Свадебные прически"
                   icon="content_cut"
                   href="/wikimarket/beauty/wedding-hairstyles"
                   path="/wikimarket/beauty/wedding-hairstyles"
-                  title="РЎРІР°РґРµР±РЅС‹Рµ РїСЂРёС‡РµСЃРєРё: РІС‹Р±РѕСЂ СЃС‚РёР»СЏ, РїРѕРґР±РѕСЂ РјР°СЃС‚РµСЂР° Рё Р°РЅРєРµС‚С‹ РёСЃРїРѕР»РЅРёС‚РµР»РµР№"
+                  title="Свадебные прически"
                   active={isPathActive(currentPath, "/wikimarket/beauty/wedding-hairstyles")}
                 />
                 <MenuEntry
-                  label="РЎРІР°РґРµР±РЅС‹Р№ РјР°РєРёСЏР¶"
+                  label="Свадебный макияж"
                   icon="face"
                   href="/wikimarket/beauty/bridal-makeup"
                   path="/wikimarket/beauty/bridal-makeup"
-                  title="РЎРІР°РґРµР±РЅС‹Р№ РјР°РєРёСЏР¶: РїРѕРґР±РѕСЂ РѕР±СЂР°Р·Р°, РІРёР·Р°Р¶РёСЃС‚Р° Рё С„РѕСЂРјР°С‚Р° СѓСЃР»СѓРіРё"
+                  title="Свадебный макияж"
                   active={isPathActive(currentPath, "/wikimarket/beauty/bridal-makeup")}
                 />
               </div>
@@ -257,60 +257,60 @@ export default function Sidebar({ currentPath = "/", isHomepage = false }: Sideb
 
         <div className="menu-separator" data-auth="private"></div>
 
-        <SectionLabel>РљР»РёРјР°С‚РёС‡РµСЃРєРёРµ СЃРёСЃС‚РµРјС‹ (РћР’Рљ)</SectionLabel>
+        <SectionLabel>Климатические системы (ОВК)</SectionLabel>
 
         <MenuEntry
-          label="РџСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ"
+          label="Проектирование"
           icon="architecture"
           path="/wikimarket/hvac/design"
-          title="РџСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ РєР»РёРјР°С‚РёС‡РµСЃРєРёС… СЃРёСЃС‚РµРј Рё РћР’Рљ"
+          title="Проектирование"
           active={isPathActive(currentPath, "/wikimarket/hvac/design")}
         />
         <MenuEntry
-          label="РњРѕРЅС‚Р°Р¶"
+          label="Монтаж"
           icon="build"
           path="/wikimarket/hvac/installation"
-          title="РњРѕРЅС‚Р°Р¶ РєР»РёРјР°С‚РёС‡РµСЃРєРёС… СЃРёСЃС‚РµРј Рё РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ"
+          title="Монтаж"
           active={isPathActive(currentPath, "/wikimarket/hvac/installation")}
         />
         <MenuEntry
-          label="РћР±СЃР»СѓР¶РёРІР°РЅРёРµ"
+          label="Обслуживание"
           icon="settings_suggest"
           path="/wikimarket/hvac/maintenance"
-          title="РЎРµСЂРІРёСЃРЅРѕРµ РѕР±СЃР»СѓР¶РёРІР°РЅРёРµ Рё РїРѕРґРґРµСЂР¶РєР° РћР’Рљ"
+          title="Обслуживание"
           active={isPathActive(currentPath, "/wikimarket/hvac/maintenance")}
         />
         <MenuEntry
-          label="Р”РёР°РіРЅРѕСЃС‚РёРєР°"
+          label="Диагностика"
           icon="analytics"
           path="/wikimarket/hvac/diagnostics"
-          title="Р”РёР°РіРЅРѕСЃС‚РёРєР°, Р°СѓРґРёС‚ Рё РїСЂРѕРІРµСЂРєР° РћР’Рљ-СЃРёСЃС‚РµРј"
+          title="Диагностика"
           active={isPathActive(currentPath, "/wikimarket/hvac/diagnostics")}
         />
         <MenuEntry
-          label="Р РµРјРѕРЅС‚"
+          label="Ремонт"
           icon="handyman"
           path="/wikimarket/hvac/repair"
-          title="Р РµРјРѕРЅС‚ Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ СЃРёСЃС‚РµРј РћР’Рљ"
+          title="Ремонт"
           active={isPathActive(currentPath, "/wikimarket/hvac/repair")}
         />
 
         <details className={`menu-group ${styles.menuGroup}`} open={isHeatExchangersOpen}>
           <summary
             className={`menu-item ${styles.menuItem}`}
-            aria-label="РљР°С‚Р°Р»РѕРі С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ"
+            aria-label="Каталог теплообменников"
             data-path="/wikimarket/hvac/heat-exchangers"
-            title="РљР°С‚Р°Р»РѕРі С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ РґР»СЏ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ СЃРёСЃС‚РµРј"
+            title="Каталог теплообменников"
           >
             <span className={`menu-icon material-symbols-outlined ${styles.menuIcon}`}>heat_pump</span>
-            <span className={`menu-label ${styles.menuLabel}`}>РљР°С‚Р°Р»РѕРі С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ</span>
+            <span className={`menu-label ${styles.menuLabel}`}>Каталог теплообменников</span>
           </summary>
           <div className={`menu-submenu ${styles.menuSubmenu}`}>
             <MenuEntry
-              label="РњРµРґРЅРѕ-Р°Р»СЋРјРёРЅРёРµРІС‹Рµ С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРё (Cu-Al)"
+              label="Медно-алюминиевые теплообменники (Cu-Al)"
               href="/wikimarket/hvac/copper-aluminum-heat-exchangers"
               path="/wikimarket/hvac/copper-aluminum-heat-exchangers"
-              title="РџСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ, РїСЂРѕРёР·РІРѕРґСЃС‚РІРѕ Рё РїРѕСЃС‚Р°РІРєР° РјРµРґРЅРѕ-Р°Р»СЋРјРёРЅРёРµРІС‹С… С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ"
+              title="Медно-алюминиевые теплообменники (Cu-Al)"
               iconClassName="menu-icon menu-icon--cu-al"
               active={isPathActive(currentPath, "/wikimarket/hvac/copper-aluminum-heat-exchangers")}
             />
@@ -318,198 +318,198 @@ export default function Sidebar({ currentPath = "/", isHomepage = false }: Sideb
         </details>
 
         <MenuEntry
-          label="Р РµРјРѕРЅС‚ С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ"
+          label="Ремонт теплообменников"
           icon="plumbing"
           href="/wikimarket/hvac/heat-exchanger-repair"
           path="/wikimarket/hvac/heat-exchanger-repair"
-          title="Р РµРјРѕРЅС‚ С‚РµРїР»РѕРѕР±РјРµРЅРЅРёРєРѕРІ РїРѕ С‚РёРїР°Рј Рё Р·Р°РґР°С‡Р°Рј"
+          title="Ремонт теплообменников"
           active={isPathActive(currentPath, "/wikimarket/hvac/heat-exchanger-repair")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>Р РµС€РµРЅРёСЏ РґР»СЏ РЅРµРґРІРёР¶РёРјРѕСЃС‚Рё</SectionLabel>
+        <SectionLabel>Решения для недвижимости</SectionLabel>
 
         <MenuEntry
-          label="Р РµС€РµРЅРёСЏ РґР»СЏ РЅРµРґРІРёР¶РёРјРѕСЃС‚Рё"
+          label="Решения для недвижимости"
           icon="maps_home_work"
           path="/wikimarket/real-estate"
-          title="Р’РёС‚СЂРёРЅР° СЂРµС€РµРЅРёР№ РґР»СЏ СЂС‹РЅРєР° РЅРµРґРІРёР¶РёРјРѕСЃС‚Рё"
+          title="Решения для недвижимости"
           active={isPathActive(currentPath, "/wikimarket/real-estate")}
         />
         <MenuEntry
           label="PropTech"
           icon="hub"
           path="/wikimarket/real-estate/proptech"
-          title="PropTech Рё С‚РµС…РЅРѕР»РѕРіРёРё РґР»СЏ РЅРµРґРІРёР¶РёРјРѕСЃС‚Рё"
+          title="PropTech"
           active={isPathActive(currentPath, "/wikimarket/real-estate/proptech")}
         />
         <MenuEntry
-          label="РљРѕРјРјРµСЂС‡РµСЃРєР°СЏ РЅРµРґРІРёР¶РёРјРѕСЃС‚СЊ"
+          label="Коммерческая недвижимость"
           icon="apartment"
           path="/wikimarket/real-estate/commercial"
-          title="РљРѕРјРјРµСЂС‡РµСЃРєР°СЏ РЅРµРґРІРёР¶РёРјРѕСЃС‚СЊ Рё РїСЂРµРјРёР°Р»СЊРЅС‹Рµ РѕР±СЉРµРєС‚С‹"
+          title="Коммерческая недвижимость"
           active={isPathActive(currentPath, "/wikimarket/real-estate/commercial")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>РРіСЂС‹ Рё РѕР±СѓС‡РµРЅРёРµ</SectionLabel>
+        <SectionLabel>Игры и обучение</SectionLabel>
 
         <MenuEntry
-          label="РРіСЂС‹ РѕР±СѓС‡Р°СЋС‰РёРµ"
+          label="Игры обучающие"
           icon="sports_esports"
           path="/wikimarket/education-games"
-          title="РРіСЂС‹ РѕР±СѓС‡Р°СЋС‰РёРµ Рё СЃРёРјСѓР»СЏС‚РѕСЂС‹ (EdTech)"
+          title="Игры обучающие"
           active={isPathActive(currentPath, "/wikimarket/education-games")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel dataAuth="private">РљРѕС€РµР»С‘Рє</SectionLabel>
+        <SectionLabel dataAuth="private">Кошелек</SectionLabel>
 
         <MenuEntry
-          label="РљРѕС€РµР»С‘Рє"
+          label="Кошелек"
           icon="account_balance_wallet"
           path="/wallet"
-          title="Р¤РёРЅР°РЅСЃС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (СЃС‡РµС‚Р° Рё РїР»Р°С‚РµР¶Рё)"
+          title="Кошелек"
           dataAuth="private"
           active={isPathActive(currentPath, "/wallet")}
         />
         <MenuEntry
-          label="Р‘Р°Р»Р°РЅСЃ"
+          label="Баланс"
           icon="savings"
           path="/wallet/balance"
-          title="РўРµРєСѓС‰РёР№ Р±Р°Р»Р°РЅСЃ СЃСЂРµРґСЃС‚РІ Рё С‚РѕРєРµРЅРѕРІ"
+          title="Баланс"
           dataAuth="private"
           active={isPathActive(currentPath, "/wallet/balance")}
         />
         <MenuEntry
-          label="РСЃС‚РѕСЂРёСЏ"
+          label="История"
           icon="receipt_long"
           path="/wallet/history"
-          title="РЎРїРёСЃРѕРє С‚СЂР°РЅР·Р°РєС†РёР№ Рё РїРѕРєСѓРїРѕРє"
+          title="История"
           dataAuth="private"
           active={isPathActive(currentPath, "/wallet/history")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>РћСЂРіР°РЅР°Р№Р·РµСЂ</SectionLabel>
+        <SectionLabel>Органайзер</SectionLabel>
 
         <MenuEntry
-          label="РћСЂРіР°РЅР°Р№Р·РµСЂ"
+          label="Органайзер"
           icon="view_kanban"
           path="/organizer"
-          title="РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ, РїСЂРѕРµРєС‚С‹, CRM-РёРЅСЃС‚СЂСѓРјРµРЅС‚С‹"
+          title="Органайзер"
           active={isPathActive(currentPath, "/organizer")}
         />
         <MenuEntry
-          label="РљР°Р»РµРЅРґР°СЂСЊ"
+          label="Календарь"
           icon="event"
           path="/organizer/calendar"
-          title="Р Р°СЃРїРёСЃР°РЅРёРµ СЃРѕР±С‹С‚РёР№ Рё РІСЃС‚СЂРµС‡"
+          title="Календарь"
           active={isPathActive(currentPath, "/organizer/calendar")}
         />
         <MenuEntry
-          label="Р—Р°РґР°С‡Рё"
+          label="Задачи"
           icon="task_alt"
           path="/organizer/tasks"
-          title="РЈРїСЂР°РІР»РµРЅРёРµ СЃРїРёСЃРєРѕРј Р·Р°РґР°С‡"
+          title="Задачи"
           active={isPathActive(currentPath, "/organizer/tasks")}
         />
         <MenuEntry
-          label="CRM-РјРѕРґСѓР»Рё"
+          label="CRM-модули"
           icon="stacked_bar_chart"
           path="/organizer/crm"
-          title="РЈРїСЂР°РІР»РµРЅРёРµ РєР»РёРµРЅС‚Р°РјРё Рё РїСЂРѕРґР°Р¶Р°РјРё"
+          title="CRM-модули"
           active={isPathActive(currentPath, "/organizer/crm")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>Р‘РёР·РЅРµСЃ</SectionLabel>
+        <SectionLabel>Бизнес</SectionLabel>
 
         <MenuEntry
-          label="Р‘РёР·РЅРµСЃ"
+          label="Бизнес"
           icon="business_center"
           path="/business"
-          title="РљРѕРјРїР°РЅРёРё Рё B2B-РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё"
+          title="Бизнес"
           active={isPathActive(currentPath, "/business")}
         />
         <MenuEntry
-          label="РљРѕРјРїР°РЅРёРё"
+          label="Компании"
           icon="apartment"
           path="/business/companies"
-          title="РџСЂРѕС„РёР»Рё Рё СЃС‚СЂР°РЅРёС†С‹ РєРѕРјРїР°РЅРёР№"
+          title="Компании"
           active={isPathActive(currentPath, "/business/companies")}
         />
         <MenuEntry
-          label="B2B-РїРѕСЂС‚Р°Р»"
+          label="B2B-портал"
           icon="diversity_3"
           path="/business/b2b"
-          title="РРЅСЃС‚СЂСѓРјРµРЅС‚С‹ РґР»СЏ РєРѕСЂРїРѕСЂР°С‚РёРІРЅС‹С… РєР»РёРµРЅС‚РѕРІ"
+          title="B2B-портал"
           active={isPathActive(currentPath, "/business/b2b")}
         />
 
         <div className="menu-separator"></div>
 
-        <SectionLabel>РЎРµСЂРІРёСЃС‹ Рё СЂР°Р·РІРёС‚РёРµ</SectionLabel>
+        <SectionLabel>Сервисы и развитие</SectionLabel>
 
         <MenuEntry
-          label="Р—РґРѕСЂРѕРІСЊРµ"
+          label="Здоровье"
           icon="monitor_heart"
           path="/health"
-          title="Р—РґРѕСЂРѕРІСЊРµ Рё С„РёС‚РЅРµСЃ (РјРµРґРёС†РёРЅСЃРєРёРµ СЃРµСЂРІРёСЃС‹)"
+          title="Здоровье"
           active={isPathActive(currentPath, "/health")}
         />
         <MenuEntry
-          label="Р›РѕРіРёСЃС‚РёРєР°"
+          label="Логистика"
           icon="local_shipping"
           path="/logistics"
-          title="Р”РѕСЃС‚Р°РІРєРё Рё С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹Рµ СЃРµСЂРІРёСЃС‹"
+          title="Логистика"
           active={isPathActive(currentPath, "/logistics")}
         />
         <MenuEntry
-          label="РћР±СЂР°Р·РѕРІР°РЅРёРµ"
+          label="Образование"
           icon="menu_book"
           path="/education"
-          title="РћР±СѓС‡РµРЅРёРµ Рё РїСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅРѕРµ СЂР°Р·РІРёС‚РёРµ"
+          title="Образование"
           active={isPathActive(currentPath, "/education")}
         />
         <MenuEntry
-          label="РљСѓСЂСЃС‹"
+          label="Курсы"
           icon="school"
           path="/education/courses"
-          title="РћРЅР»Р°Р№РЅ-РѕР±СѓС‡РµРЅРёРµ Рё С‚СЂРµРЅРёРЅРіРё"
+          title="Курсы"
           active={isPathActive(currentPath, "/education/courses")}
         />
         <MenuEntry
-          label="РџСЂРѕС„РµСЃСЃРёРё"
+          label="Профессии"
           icon="work_outline"
           path="/education/careers"
-          title="Р’Р°РєР°РЅСЃРёРё Рё РєР°СЂСЊРµСЂРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё"
+          title="Профессии"
           active={isPathActive(currentPath, "/education/careers")}
         />
         <MenuEntry
-          label="Р Р°Р·РІР»РµС‡РµРЅРёСЏ"
+          label="Развлечения"
           icon="theater_comedy"
           path="/entertainment"
-          title="РРіСЂС‹, РєРѕРЅС‚РµРЅС‚, СЃРѕР±С‹С‚РёСЏ"
+          title="Развлечения"
           active={isPathActive(currentPath, "/entertainment")}
         />
         <MenuEntry
-          label="РРіСЂС‹"
+          label="Игры"
           icon="sports_esports"
           path="/entertainment/games"
-          title="РРіСЂРѕРІС‹Рµ СЃРµСЂРІРёСЃС‹, РјРёРЅРё-РёРіСЂС‹"
+          title="Игры"
           active={isPathActive(currentPath, "/entertainment/games")}
         />
         <MenuEntry
-          label="РўРІРѕСЂС‡РµСЃС‚РІРѕ"
+          label="Творчество"
           icon="brush"
           path="/entertainment/creative"
-          title="РџСЂРѕРµРєС‚С‹ РґР»СЏ СЃР°РјРѕСЂРµР°Р»РёР·Р°С†РёРё Рё С‚РІРѕСЂС‡РµСЃС‚РІР°"
+          title="Творчество"
           active={isPathActive(currentPath, "/entertainment/creative")}
         />
       </div>

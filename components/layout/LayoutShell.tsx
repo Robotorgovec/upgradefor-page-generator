@@ -82,14 +82,14 @@ export default function LayoutShell({ children }: LayoutShellProps) {
     () =>
       isHomepage
         ? [
-            { href: "/", icon: "home", label: "Р“Р»Р°РІРЅР°СЏ" },
-            { href: "/account", icon: "account_circle", label: "РђРєРєР°СѓРЅС‚" },
+            { href: "/", icon: "home", label: "Главная" },
+            { href: "/account", icon: "account_circle", label: "Аккаунт" },
           ]
         : [
-            { href: "/", icon: "home", label: "Р“Р»Р°РІРЅР°СЏ" },
-            { href: "/feed", icon: "dynamic_feed", label: "Р›РµРЅС‚Р°" },
-            { href: "/messages", icon: "mark_unread_chat_alt", label: "РЎРѕРѕР±С‰РµРЅРёСЏ" },
-            { href: "/account", icon: "account_circle", label: "РђРєРєР°СѓРЅС‚" },
+            { href: "/", icon: "home", label: "Главная" },
+            { href: "/feed", icon: "dynamic_feed", label: "Лента" },
+            { href: "/messages", icon: "mark_unread_chat_alt", label: "Сообщения" },
+            { href: "/account", icon: "account_circle", label: "Аккаунт" },
           ],
     [isHomepage]
   );
@@ -97,7 +97,7 @@ export default function LayoutShell({ children }: LayoutShellProps) {
   return (
     <>
       <a className={`skip ${styles.skipLink}`} href="#main">
-        Рљ СЃРѕРґРµСЂР¶Р°РЅРёСЋ
+        К содержанию
       </a>
       <div
         className={styles.shell}
@@ -118,10 +118,10 @@ export default function LayoutShell({ children }: LayoutShellProps) {
         <button
           className={styles.sidebarOverlay}
           type="button"
-          aria-label="Р—Р°РєСЂС‹С‚СЊ РјРµРЅСЋ"
+          aria-label="Закрыть меню"
           onClick={closeSidebar}
         />
-        <nav className={`mobile-bottom-nav ${styles.mobileBottomNav}`} aria-label="РќРёР¶РЅСЏСЏ РЅР°РІРёРіР°С†РёСЏ">
+        <nav className={`mobile-bottom-nav ${styles.mobileBottomNav}`} aria-label="Нижняя навигация">
           {bottomNavItems.map((item) => {
             const isActive =
               item.href === "/"

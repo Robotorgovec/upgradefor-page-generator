@@ -25,7 +25,7 @@ export default function Header({
           className={`burger ${styles.burger}`}
           id="burgerBtn"
           type="button"
-          aria-label="РћС‚РєСЂС‹С‚СЊ РјРµРЅСЋ"
+          aria-label="Открыть меню"
           aria-controls="primary-sidebar"
           aria-expanded={isSidebarOpen}
           onClick={onToggleSidebar}
@@ -52,10 +52,10 @@ export default function Header({
 
         <div className={styles.grow}></div>
 
-        <div className={`header-icons ${styles.headerIcons}`} aria-label="Р‘С‹СЃС‚СЂС‹Рµ РґРµР№СЃС‚РІРёСЏ">
+        <div className={`header-icons ${styles.headerIcons}`} aria-label="Быстрые действия">
           <button
             className={`icon-btn ${styles.iconButton}`}
-            aria-label="РџРѕРёСЃРє"
+            aria-label="Поиск"
             data-path="/search"
             type="button"
           >
@@ -63,7 +63,7 @@ export default function Header({
           </button>
           <button
             className={`icon-btn notifications-trigger ${styles.iconButton}`}
-            aria-label="РЈРІРµРґРѕРјР»РµРЅРёСЏ"
+            aria-label="Уведомления"
             data-path="/notifications"
             data-notifications-trigger="true"
             aria-haspopup="true"
@@ -79,13 +79,13 @@ export default function Header({
               type="button"
               aria-haspopup="true"
               aria-expanded="false"
-              aria-label="РўРµРјР° РґРЅСЏ"
+              aria-label="Тема дня"
             >
               <span className="theme-dot" aria-hidden="true"></span>
             </button>
 
-            <div className={`theme-switch-menu ${styles.themeSwitchMenu}`} role="menu" aria-label="РўРµРјР° РґРЅСЏ">
-              <div className="theme-switch-title">РўРµРјР° РґРЅСЏ</div>
+            <div className={`theme-switch-menu ${styles.themeSwitchMenu}`} role="menu" aria-label="Тема дня">
+              <div className="theme-switch-title">Тема дня</div>
               <div data-theme-switch-options></div>
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function Header({
             rel="nofollow"
             data-auth-link="signin"
           >
-            Р’РѕР№С‚Рё
+            Войти
           </Link>
           <Link
             className={`btn ${styles.authButton} ${styles.authButtonPrimary}`}
@@ -106,7 +106,7 @@ export default function Header({
             rel="nofollow"
             data-auth-link="signup"
           >
-            РЎРѕР·РґР°С‚СЊ Р°РєРєР°СѓРЅС‚
+            Создать аккаунт
           </Link>
         </div>
       </div>
