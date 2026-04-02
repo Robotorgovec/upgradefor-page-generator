@@ -39,33 +39,34 @@ export default function CuAlHeatExchangersPage() {
     [],
   );
 
-  const manufacturerTrackRef = useRef<HTMLDivElement | null>(null);
+  const manufacturerViewportRef = useRef<HTMLDivElement | null>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  const productTrackRef = useRef<HTMLDivElement | null>(null);
+  const productViewportRef = useRef<HTMLDivElement | null>(null);
   const [canScrollProductPrev, setCanScrollProductPrev] = useState(false);
   const [canScrollProductNext, setCanScrollProductNext] = useState(false);
 
   const updateManufacturerControls = useCallback(() => {
-    const track = manufacturerTrackRef.current;
-    if (!track) return;
+    const viewport = manufacturerViewportRef.current;
+    if (!viewport) return;
 
-    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-    setCanScrollPrev(track.scrollLeft > 4);
-    setCanScrollNext(track.scrollLeft < maxScrollLeft - 4);
+    const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    setCanScrollPrev(viewport.scrollLeft > 4);
+    setCanScrollNext(viewport.scrollLeft < maxScrollLeft - 4);
   }, []);
 
   const scrollManufacturers = useCallback(
     (direction: 1 | -1) => {
-      const track = manufacturerTrackRef.current;
-      if (!track) return;
+      const viewport = manufacturerViewportRef.current;
+      if (!viewport) return;
 
-      const firstCard = track.querySelector<HTMLElement>("[data-manufacturer-card='true']");
-      const style = window.getComputedStyle(track);
+      const firstCard = viewport.querySelector<HTMLElement>("[data-manufacturer-card='true']");
+      const style = window.getComputedStyle(firstCard?.parentElement ?? viewport);
       const gap = Number.parseFloat(style.columnGap || style.gap || "0");
-      const step = (firstCard?.getBoundingClientRect().width ?? track.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
+      const step =
+        (firstCard?.getBoundingClientRect().width ?? viewport.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
 
-      track.scrollBy({
+      viewport.scrollBy({
         left: direction * step,
         behavior: "smooth",
       });
@@ -74,25 +75,26 @@ export default function CuAlHeatExchangersPage() {
   );
 
   const updateProductControls = useCallback(() => {
-    const track = productTrackRef.current;
-    if (!track) return;
+    const viewport = productViewportRef.current;
+    if (!viewport) return;
 
-    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-    setCanScrollProductPrev(track.scrollLeft > 4);
-    setCanScrollProductNext(track.scrollLeft < maxScrollLeft - 4);
+    const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    setCanScrollProductPrev(viewport.scrollLeft > 4);
+    setCanScrollProductNext(viewport.scrollLeft < maxScrollLeft - 4);
   }, []);
 
   const scrollProducts = useCallback(
     (direction: 1 | -1) => {
-      const track = productTrackRef.current;
-      if (!track) return;
+      const viewport = productViewportRef.current;
+      if (!viewport) return;
 
-      const firstCard = track.querySelector<HTMLElement>("[data-product-card='true']");
-      const style = window.getComputedStyle(track);
+      const firstCard = viewport.querySelector<HTMLElement>("[data-product-card='true']");
+      const style = window.getComputedStyle(firstCard?.parentElement ?? viewport);
       const gap = Number.parseFloat(style.columnGap || style.gap || "0");
-      const step = (firstCard?.getBoundingClientRect().width ?? track.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
+      const step =
+        (firstCard?.getBoundingClientRect().width ?? viewport.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
 
-      track.scrollBy({
+      viewport.scrollBy({
         left: direction * step,
         behavior: "smooth",
       });
@@ -101,29 +103,29 @@ export default function CuAlHeatExchangersPage() {
   );
 
   useEffect(() => {
-    const track = manufacturerTrackRef.current;
-    if (!track) return;
+    const viewport = manufacturerViewportRef.current;
+    if (!viewport) return;
 
     updateManufacturerControls();
-    track.addEventListener("scroll", updateManufacturerControls, { passive: true });
+    viewport.addEventListener("scroll", updateManufacturerControls, { passive: true });
     window.addEventListener("resize", updateManufacturerControls);
 
     return () => {
-      track.removeEventListener("scroll", updateManufacturerControls);
+      viewport.removeEventListener("scroll", updateManufacturerControls);
       window.removeEventListener("resize", updateManufacturerControls);
     };
   }, [updateManufacturerControls]);
 
   useEffect(() => {
-    const track = productTrackRef.current;
-    if (!track) return;
+    const viewport = productViewportRef.current;
+    if (!viewport) return;
 
     updateProductControls();
-    track.addEventListener("scroll", updateProductControls, { passive: true });
+    viewport.addEventListener("scroll", updateProductControls, { passive: true });
     window.addEventListener("resize", updateProductControls);
 
     return () => {
-      track.removeEventListener("scroll", updateProductControls);
+      viewport.removeEventListener("scroll", updateProductControls);
       window.removeEventListener("resize", updateProductControls);
     };
   }, [updateProductControls]);
@@ -269,8 +271,8 @@ export default function CuAlHeatExchangersPage() {
           </div>
         </div>
 
-        <div className={styles.manufacturerViewport}>
-          <div className={styles.manufacturerTrack} ref={manufacturerTrackRef}>
+        <div className={styles.manufacturerViewport} ref={manufacturerViewportRef}>
+          <div className={styles.manufacturerTrack}>
             {cuAlManufacturerCards.map((company) => {
               const capabilities = getDisplayCapabilities(company);
               const miniFacts = getCardMiniFacts(company);
@@ -365,8 +367,8 @@ export default function CuAlHeatExchangersPage() {
           </div>
         </div>
 
-        <div className={styles.productViewport}>
-          <div className={styles.productTrack} ref={productTrackRef}>
+        <div className={styles.productViewport} ref={productViewportRef}>
+          <div className={styles.productTrack}>
             {productItems.map((item) => (
               <article
                 key={item.slug}
