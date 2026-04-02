@@ -1,0 +1,249 @@
+.page {
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #dbe5f1;
+  --accent: var(--btn-primary-bg, var(--color-primary, #0ea5e9));
+  --accent-soft: var(--primary-50, var(--color-soft, #e6f7ff));
+  --shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px 12px 56px;
+  display: grid;
+  gap: 20px;
+  color: var(--text);
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.breadcrumbs a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.header,
+.filters,
+.gridSection {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.kicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent-soft) 70%, white);
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.header h1,
+.filters h2,
+.cardTitle {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.header h1 {
+  font-size: clamp(28px, 1.1vw + 24px, 36px);
+  line-height: 1.2;
+}
+
+.lead,
+.description,
+.relevance,
+.geo,
+.rating {
+  margin: 0;
+  color: var(--muted);
+}
+
+.backLink,
+.cardTitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.backLink {
+  width: fit-content;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.backLink:hover,
+.cardTitle a:hover {
+  text-decoration: underline;
+}
+
+.filters ul,
+.tags,
+.facts,
+.trustEvidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filters li,
+.tags li,
+.facts li,
+.trustEvidence li {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.filters li,
+.facts li {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--accent-soft) 14%, white);
+}
+
+.tags li {
+  background: color-mix(in srgb, var(--accent-soft) 32%, white);
+}
+
+.trustEvidence li {
+  color: #14532d;
+  border-color: color-mix(in srgb, #22c55e 36%, var(--line));
+  background: #f0fdf4;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #f8fafc;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.roleBadge {
+  background: color-mix(in srgb, var(--accent-soft) 28%, white);
+}
+
+.trustBadge {
+  color: #166534;
+  border-color: #86efac;
+  background: #dcfce7;
+  cursor: help;
+}
+
+.cardTitle {
+  font-size: clamp(20px, 0.6vw + 18px, 24px);
+  line-height: 1.3;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.relevance,
+.geo,
+.rating {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ratingRated {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.cta:hover {
+  text-decoration: none;
+  filter: brightness(0.96);
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 32px 20px 64px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

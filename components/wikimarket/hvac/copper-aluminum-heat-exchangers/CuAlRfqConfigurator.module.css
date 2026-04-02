@@ -1,0 +1,885 @@
+.configurator {
+  --rfq-bg: linear-gradient(170deg, #f2f8ff 0%, #f7fbff 55%, #ffffff 100%);
+  --rfq-surface: #ffffff;
+  --rfq-text: #0f172a;
+  --rfq-muted: #4b5563;
+  --rfq-line: #d7e3f2;
+  --rfq-accent: #0b7cc7;
+  --rfq-accent-strong: #085f98;
+  --rfq-accent-soft: #e8f5ff;
+  --rfq-success: #0f766e;
+  --rfq-error: #b91c1c;
+  --rfq-shadow: 0 18px 36px rgba(15, 23, 42, 0.09);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  padding: 16px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 22px;
+  background: var(--rfq-bg);
+  color: var(--rfq-text);
+  overflow: clip;
+}
+
+.configurator *,
+.configurator *::before,
+.configurator *::after {
+  box-sizing: border-box;
+}
+
+.configurator > *,
+.layout > *,
+.wizardColumn > *,
+.summaryColumn > *,
+.stepper > *,
+.stepCard > *,
+.stepSection > *,
+.fieldGrid2 > *,
+.fieldGrid3 > *,
+.checkGrid > *,
+.inlineChecks > *,
+.radioGrid > *,
+.reviewGrid > *,
+.radioStack > *,
+.fileActions > *,
+.quickChips > *,
+.chipGrid > *,
+.deadlineModeRow > * {
+  min-width: 0;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.header h2 {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(20px, 0.8vw + 17px, 24px);
+  line-height: 1.35;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.header p {
+  margin: 0;
+  max-width: 72ch;
+  color: var(--rfq-muted);
+  font-size: clamp(15px, 0.2vw + 14px, 16px);
+  line-height: 1.56;
+}
+
+.trustLine {
+  font-weight: 600;
+}
+
+.quickChips,
+.chipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quickChip,
+.inlineChip,
+.deadlineModeButton,
+.deadlineModeButtonActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--rfq-text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 600;
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.quickChip:hover,
+.inlineChip:hover,
+.deadlineModeButton:hover,
+.deadlineModeButtonActive:hover {
+  border-color: color-mix(in srgb, var(--rfq-accent) 45%, var(--rfq-line));
+  background: var(--rfq-accent-soft);
+}
+
+.inlineChipActive,
+.deadlineModeButtonActive {
+  border-color: var(--rfq-accent);
+  background: var(--rfq-accent-soft);
+  color: var(--rfq-accent-strong);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.wizardColumn,
+.summaryColumn {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  align-content: start;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.stepButton {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--rfq-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.stepButton:hover {
+  border-color: color-mix(in srgb, var(--rfq-accent) 55%, var(--rfq-line));
+}
+
+.stepButtonActive {
+  border-color: var(--rfq-accent);
+  background: var(--rfq-accent-soft);
+}
+
+.stepIndex {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--rfq-accent);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.stepLabel {
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.progressWrap {
+  padding-top: 2px;
+}
+
+.progressBar {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: #d9e6f7;
+  overflow: hidden;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 14%;
+  background: linear-gradient(90deg, var(--rfq-accent) 0%, #31a6f2 100%);
+}
+
+.progressStep1 .progressFill {
+  width: 14%;
+}
+
+.progressStep2 .progressFill {
+  width: 28%;
+}
+
+.progressStep3 .progressFill {
+  width: 42%;
+}
+
+.progressStep4 .progressFill {
+  width: 57%;
+}
+
+.progressStep5 .progressFill {
+  width: 71%;
+}
+
+.progressStep6 .progressFill {
+  width: 85%;
+}
+
+.progressStep7 .progressFill {
+  width: 100%;
+}
+
+.stepCard,
+.summaryCard,
+.estimateCard,
+.successState,
+.errorState,
+.groupBlock,
+.routingBlock,
+.reviewCard {
+  border: 1px solid var(--rfq-line);
+  border-radius: 18px;
+  background: var(--rfq-surface);
+  box-shadow: var(--rfq-shadow);
+}
+
+.stepCard {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.stepSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.stepSection h3 {
+  margin: 0;
+  max-width: 30ch;
+  font-size: clamp(18px, 0.5vw + 16px, 20px);
+  line-height: 1.4;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.subheading {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.field,
+.fieldGrid2,
+.fieldGrid3,
+.checkGrid,
+.inlineChecks,
+.radioGrid,
+.reviewGrid,
+.radioStack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.field span {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea,
+.fileActions select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #c7d5e8;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--rfq-text);
+  font: inherit;
+  line-height: 1.5;
+}
+
+.field textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.fieldPrefilled {
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, #f59e0b 40%, var(--rfq-line));
+  border-radius: 14px;
+  background: #fff7ed;
+}
+
+.fieldPrefilled span {
+  color: #7c2d12;
+}
+
+.fieldPrefilled input,
+.fieldPrefilled textarea,
+.fieldPrefilled select {
+  border-color: color-mix(in srgb, #f59e0b 50%, #c7d5e8);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible,
+.fileActions select:focus-visible,
+.stepButton:focus-visible,
+.quickChip:focus-visible,
+.inlineChip:focus-visible,
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.mobileSummaryToggle:focus-visible {
+  outline: 2px solid var(--rfq-accent);
+  outline-offset: 2px;
+}
+
+.microHelp {
+  margin: 0;
+  color: var(--rfq-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.helperNotice,
+.highlightNotice {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.helperNotice {
+  border: 1px solid color-mix(in srgb, var(--rfq-accent) 35%, var(--rfq-line));
+  background: #f1f8ff;
+  color: var(--rfq-muted);
+}
+
+.highlightNotice {
+  border: 1px solid color-mix(in srgb, #f59e0b 40%, var(--rfq-line));
+  background: #fff7ed;
+  color: #7c2d12;
+}
+
+.radioCard {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 14px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.radioCard small {
+  color: var(--rfq-muted);
+  line-height: 1.5;
+}
+
+.radioCardActive {
+  border-color: var(--rfq-accent);
+  background: var(--rfq-accent-soft);
+}
+
+.checkboxItem,
+.checkboxLine,
+.radioLine {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.checkboxItem input,
+.checkboxLine input,
+.radioLine input {
+  margin-top: 2px;
+}
+
+.radioLine span {
+  display: grid;
+  gap: 4px;
+}
+
+.radioLine small {
+  color: var(--rfq-muted);
+  line-height: 1.5;
+}
+
+.helperWrap {
+  display: grid;
+  gap: 12px;
+}
+
+.helperDetails {
+  border: 1px solid var(--rfq-line);
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px 12px;
+}
+
+.helperDetails summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.diagram {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 12px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.diagram rect,
+.diagram circle,
+.diagram line {
+  stroke: #2b4d70;
+  stroke-width: 2;
+  fill: none;
+}
+
+.diagram text {
+  fill: #2b4d70;
+  font-size: 11px;
+}
+
+.dropzone {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed #8bb9df;
+  border-radius: 16px;
+  background: #f8fcff;
+  text-align: center;
+}
+
+.dropzone p {
+  margin: 0;
+}
+
+.dropzoneActive {
+  border-color: var(--rfq-accent);
+  background: #eaf6ff;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.fileList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fileItem {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.fileMeta {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fileMeta > div {
+  display: grid;
+  gap: 4px;
+}
+
+.fileMeta p,
+.fileMeta small {
+  margin: 0;
+}
+
+.filePreview {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 1px solid var(--rfq-line);
+  border-radius: 10px;
+  flex: none;
+}
+
+.fileActions {
+  display: grid;
+  gap: 10px;
+}
+
+.removeButton,
+.secondaryButton,
+.primaryButton,
+.mobileSummaryToggle {
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondaryButton,
+.removeButton,
+.mobileSummaryToggle {
+  background: #fff;
+  border-color: var(--rfq-line);
+  color: var(--rfq-text);
+}
+
+.secondaryButton:hover,
+.removeButton:hover,
+.mobileSummaryToggle:hover {
+  border-color: color-mix(in srgb, var(--rfq-accent) 45%, var(--rfq-line));
+  background: var(--rfq-accent-soft);
+}
+
+.primaryButton {
+  background: var(--rfq-accent);
+  border-color: var(--rfq-accent);
+  color: #fff;
+}
+
+.primaryButton:hover {
+  background: var(--rfq-accent-strong);
+  border-color: var(--rfq-accent-strong);
+}
+
+.primaryButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.routingBlock {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background: #f9fcff;
+}
+
+.routingBlock h4 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.reviewCard {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.reviewCard h4,
+.reviewCard ul {
+  margin: 0;
+}
+
+.reviewCard ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+}
+
+.stepActions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.errorBlock,
+.successState,
+.errorState {
+  margin-top: 0;
+  padding: 14px;
+}
+
+.errorBlock,
+.errorState {
+  border-color: color-mix(in srgb, var(--rfq-error) 40%, var(--rfq-line));
+  background: #fff1f2;
+}
+
+.errorText {
+  margin: 0;
+  color: var(--rfq-error);
+  font-weight: 600;
+}
+
+.successState {
+  border-color: color-mix(in srgb, var(--rfq-success) 40%, var(--rfq-line));
+  background: #f0fdf9;
+}
+
+.successState h4,
+.errorState h4,
+.successState p,
+.errorState p,
+.errorBlock p {
+  margin: 0;
+}
+
+.successState p + p,
+.errorState p + p,
+.errorBlock p + p {
+  margin-top: 6px;
+}
+
+.stopBoundaryNote {
+  color: #134e4a;
+}
+
+.mobileSummaryToggle {
+  width: 100%;
+}
+
+.summarySticky {
+  display: grid;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.summaryCard,
+.estimateCard {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.summaryCard h3,
+.estimateCard h3,
+.summaryCard ul,
+.estimateCard ul {
+  margin: 0;
+}
+
+.summaryCard h3,
+.estimateCard h3 {
+  font-size: clamp(18px, 0.5vw + 16px, 20px);
+  line-height: 1.4;
+}
+
+.summaryCard ul,
+.estimateCard ul {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+}
+
+.estimateCaption {
+  margin: 0;
+  color: var(--rfq-muted);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.estimateRange {
+  margin: 0;
+  font-size: clamp(24px, 0.8vw + 20px, 28px);
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.estimateMid {
+  margin: 0;
+  color: var(--rfq-muted);
+  font-weight: 600;
+}
+
+.estimateHint {
+  margin: 0;
+  color: var(--rfq-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.groupBlock {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fbfdff;
+}
+
+.groupTitle {
+  margin: 0;
+  font-size: clamp(16px, 0.4vw + 15px, 18px);
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.scenarioSummaryCard {
+  display: grid;
+  gap: 12px;
+}
+
+.scenarioSummaryCard p {
+  margin: 0;
+  color: var(--rfq-text);
+}
+
+.deadlineBlock {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--rfq-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.deadlineTitle {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.deadlineModeRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.summaryOpen {
+  display: grid;
+}
+
+@media (min-width: 768px) {
+  .configurator {
+    padding: 20px;
+  }
+
+  .layout,
+  .wizardColumn,
+  .summaryColumn {
+    gap: 20px;
+  }
+
+  .fieldGrid2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fieldGrid3,
+  .checkGrid,
+  .reviewGrid,
+  .radioGrid,
+  .deadlineModeRow,
+  .stepActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fileActions {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .configurator {
+    gap: 32px;
+    padding: 24px;
+  }
+
+  .layout,
+  .wizardColumn,
+  .summaryColumn {
+    gap: 24px;
+  }
+
+  .fieldGrid3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.78fr);
+    align-items: start;
+  }
+
+  .stepper {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .summarySticky {
+    position: sticky;
+    top: 84px;
+  }
+
+  .mobileSummaryToggle {
+    display: none;
+  }
+}
+
+@media (max-width: 1279px) {
+  .summarySticky {
+    display: none;
+  }
+
+  .summaryOpen {
+    display: grid;
+  }
+}
+
+@media (max-width: 767px) {
+  .configurator {
+    gap: 16px;
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .quickChip,
+  .inlineChip,
+  .deadlineModeButton,
+  .deadlineModeButtonActive {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .stepCard,
+  .summaryCard,
+  .estimateCard,
+  .successState,
+  .errorState,
+  .groupBlock,
+  .routingBlock,
+  .reviewCard {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .secondaryButton,
+  .primaryButton,
+  .mobileSummaryToggle,
+  .removeButton {
+    width: 100%;
+  }
+}
