@@ -1,110 +1,113 @@
 "use client";
 
 import Link from "next/link";
+import styles from "./Shell.module.css";
 
 type HeaderProps = {
+  isHomepage?: boolean;
   isSidebarOpen?: boolean;
   onToggleSidebar?: () => void;
-  variant?: "default" | "homepage";
 };
 
 export default function Header({
+  isHomepage = false,
   isSidebarOpen = false,
   onToggleSidebar = () => {},
-  variant = "default",
 }: HeaderProps) {
-  if (variant === "homepage") {
-    return (
-      <header className="site-header" data-site-header="true">
-        <div className="wrap nav">
-          <button className="burger" id="burgerBtn" aria-label="Открыть меню" type="button">
-            <span className="burger-icon">
-              <span className="burger-line"></span>
-              <span className="burger-line"></span>
-              <span className="burger-line"></span>
-            </span>
-          </button>
-
-          <Link className="brand" href="/" aria-label="UPGRADE INNOVATIONS">
-            <div id="upgr-logo-slot"></div>
-          </Link>
-
-          <div className="grow"></div>
-
-          <div className="header-icons" aria-label="Быстрые действия">
-            <button className="icon-btn" aria-label="Поиск" data-path="/search" type="button">
-              <span className="material-symbols-outlined">search</span>
-            </button>
-            <button
-              className="icon-btn notifications-trigger"
-              aria-label="Уведомления"
-              data-path="/notifications"
-              data-notifications-trigger="true"
-              aria-haspopup="true"
-              aria-expanded="false"
-              type="button"
-            >
-              <span className="material-symbols-outlined">notifications</span>
-              <span className="notification-badge" data-notification-badge hidden aria-live="polite"></span>
-            </button>
-            <div className="theme-switch" data-theme-switch>
-              <button
-                className="theme-switch-trigger"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                aria-label="Тема дня"
-              >
-                <span className="theme-dot" aria-hidden="true"></span>
-              </button>
-
-              <div className="theme-switch-menu" role="menu" aria-label="Тема дня">
-                <div className="theme-switch-title">Тема дня</div>
-                <div data-theme-switch-options></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="auth-buttons">
-            <Link className="btn btn--ghost" href="/account/login" rel="nofollow" data-auth-link="signin">
-              Войти
-            </Link>
-            <Link className="btn" href="/account/register" rel="nofollow" data-auth-link="signup">
-              Создать аккаунт
-            </Link>
-          </div>
-        </div>
-      </header>
-    );
-  }
-
   return (
-    <header>
-      <div className="header-inner">
+    <header
+      className={`site-header ${styles.siteHeader}`}
+      data-site-header="true"
+      data-shell-home={isHomepage ? "true" : "false"}
+    >
+      <div className={`wrap nav ${styles.nav}`}>
         <button
+          className={`burger ${styles.burger}`}
+          id="burgerBtn"
           type="button"
-          className="burger"
-          aria-label="Открыть меню"
+          aria-label="РћС‚РєСЂС‹С‚СЊ РјРµРЅСЋ"
+          aria-controls="primary-sidebar"
           aria-expanded={isSidebarOpen}
           onClick={onToggleSidebar}
         >
-          <span className="burger-lines" aria-hidden="true">
-            <span />
-            <span />
-            <span />
+          <span className={`burger-icon ${styles.burgerIcon}`} aria-hidden="true">
+            <span className="burger-line"></span>
+            <span className="burger-line"></span>
+            <span className="burger-line"></span>
           </span>
         </button>
-        <Link className="header-brand" href="/">
-          <span aria-hidden="true">⚡</span>
-          Upgrade Innovations
+
+        <Link className={`brand ${styles.brand}`} href="/" aria-label="UPGRADE Innovations">
+          <span className={`upgr-logo ${styles.logo}`} aria-hidden="true">
+            <img
+              className={`upgr-logo__base ${styles.logoBase}`}
+              src="/assets/logo/logo-black-only.png"
+              alt="UPGRADE Innovations"
+              loading="eager"
+              decoding="async"
+            />
+            <span className={`upgr-logo__accent ${styles.logoAccent}`}></span>
+          </span>
         </Link>
-        <div className="header-actions">
-          <div className="auth-actions">
-            <Link href="/account/login">Sign in</Link>
-            <Link className="primary" href="/account/register">
-              Sign up
-            </Link>
+
+        <div className={styles.grow}></div>
+
+        <div className={`header-icons ${styles.headerIcons}`} aria-label="Р‘С‹СЃС‚СЂС‹Рµ РґРµР№СЃС‚РІРёСЏ">
+          <button
+            className={`icon-btn ${styles.iconButton}`}
+            aria-label="РџРѕРёСЃРє"
+            data-path="/search"
+            type="button"
+          >
+            <span className="material-symbols-outlined">search</span>
+          </button>
+          <button
+            className={`icon-btn notifications-trigger ${styles.iconButton}`}
+            aria-label="РЈРІРµРґРѕРјР»РµРЅРёСЏ"
+            data-path="/notifications"
+            data-notifications-trigger="true"
+            aria-haspopup="true"
+            aria-expanded="false"
+            type="button"
+          >
+            <span className="material-symbols-outlined">notifications</span>
+            <span className="notification-badge" data-notification-badge hidden aria-live="polite"></span>
+          </button>
+          <div className={`theme-switch ${styles.themeSwitch}`} data-theme-switch>
+            <button
+              className={`theme-switch-trigger ${styles.themeSwitchTrigger}`}
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="РўРµРјР° РґРЅСЏ"
+            >
+              <span className="theme-dot" aria-hidden="true"></span>
+            </button>
+
+            <div className={`theme-switch-menu ${styles.themeSwitchMenu}`} role="menu" aria-label="РўРµРјР° РґРЅСЏ">
+              <div className="theme-switch-title">РўРµРјР° РґРЅСЏ</div>
+              <div data-theme-switch-options></div>
+            </div>
           </div>
+        </div>
+
+        <div className={`auth-buttons ${styles.authButtons}`}>
+          <Link
+            className={`btn btn--ghost ${styles.authButton}`}
+            href="/account/login"
+            rel="nofollow"
+            data-auth-link="signin"
+          >
+            Р’РѕР№С‚Рё
+          </Link>
+          <Link
+            className={`btn ${styles.authButton} ${styles.authButtonPrimary}`}
+            href="/account/register"
+            rel="nofollow"
+            data-auth-link="signup"
+          >
+            РЎРѕР·РґР°С‚СЊ Р°РєРєР°СѓРЅС‚
+          </Link>
         </div>
       </div>
     </header>

@@ -7,7 +7,6 @@ type HomeTemplate = {
   jsonLd: string[];
   headStyles: string[];
   layoutCss: string;
-  layoutJs: string;
 };
 
 const MAIN_REGEX = /<main[^>]*>([\s\S]*?)<\/main>/i;
@@ -37,7 +36,6 @@ function loadHomeTemplate(): HomeTemplate {
       .map((match) => match[1].trim())
       .filter((href) => href && !href.includes("/assets/layout.css")),
     layoutCss: readPublicFile("assets/layout.css"),
-    layoutJs: readPublicFile("assets/load-layout.js"),
   };
 }
 
@@ -69,9 +67,6 @@ export default function HomePage() {
       <div className="is-home">
         <div dangerouslySetInnerHTML={{ __html: homeTemplate.mainHtml }} />
       </div>
-      <Script id="upgr-home-layout" strategy="afterInteractive">
-        {homeTemplate.layoutJs}
-      </Script>
     </>
   );
 }
