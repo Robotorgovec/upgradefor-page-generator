@@ -431,6 +431,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  container-type: inline-size;
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: var(--space-1);
@@ -455,14 +456,14 @@
 }
 
 .manufacturerSlide {
-  flex: 0 0 min(100%, 304px);
-  min-width: min(100%, 304px);
+  flex: 0 0 min(100cqw, 304px);
+  min-width: min(100cqw, 304px);
   scroll-snap-align: start;
 }
 
 .productSlide {
-  flex: 0 0 min(100%, 320px);
-  min-width: min(100%, 320px);
+  flex: 0 0 min(100cqw, 320px);
+  min-width: min(100cqw, 320px);
   scroll-snap-align: start;
 }
 
@@ -931,13 +932,13 @@
   }
 
   .manufacturerSlide {
-    flex-basis: calc((100% - 20px) / 2);
-    min-width: calc((100% - 20px) / 2);
+    flex-basis: calc((100cqw - 20px) / 2);
+    min-width: calc((100cqw - 20px) / 2);
   }
 
   .productSlide {
-    flex-basis: calc((100% - 20px) / 2);
-    min-width: calc((100% - 20px) / 2);
+    flex-basis: calc((100cqw - 20px) / 2);
+    min-width: calc((100cqw - 20px) / 2);
   }
 
   .twoColumns {
@@ -1013,13 +1014,13 @@
   }
 
   .manufacturerSlide {
-    flex-basis: calc((100% - 48px) / 3);
-    min-width: calc((100% - 48px) / 3);
+    flex-basis: calc((100cqw - 48px) / 3);
+    min-width: calc((100cqw - 48px) / 3);
   }
 
   .productSlide {
-    flex-basis: calc((100% - 48px) / 3);
-    min-width: calc((100% - 48px) / 3);
+    flex-basis: calc((100cqw - 48px) / 3);
+    min-width: calc((100cqw - 48px) / 3);
   }
 }
 
