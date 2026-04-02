@@ -42,6 +42,9 @@ export default function CuAlHeatExchangersPage() {
   const manufacturerTrackRef = useRef<HTMLDivElement | null>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const productTrackRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollProductPrev, setCanScrollProductPrev] = useState(false);
+  const [canScrollProductNext, setCanScrollProductNext] = useState(false);
 
   const updateManufacturerControls = useCallback(() => {
     const track = manufacturerTrackRef.current;
@@ -70,6 +73,33 @@ export default function CuAlHeatExchangersPage() {
     [],
   );
 
+  const updateProductControls = useCallback(() => {
+    const track = productTrackRef.current;
+    if (!track) return;
+
+    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    setCanScrollProductPrev(track.scrollLeft > 4);
+    setCanScrollProductNext(track.scrollLeft < maxScrollLeft - 4);
+  }, []);
+
+  const scrollProducts = useCallback(
+    (direction: 1 | -1) => {
+      const track = productTrackRef.current;
+      if (!track) return;
+
+      const firstCard = track.querySelector<HTMLElement>("[data-product-card='true']");
+      const style = window.getComputedStyle(track);
+      const gap = Number.parseFloat(style.columnGap || style.gap || "0");
+      const step = (firstCard?.getBoundingClientRect().width ?? track.clientWidth) + (Number.isNaN(gap) ? 0 : gap);
+
+      track.scrollBy({
+        left: direction * step,
+        behavior: "smooth",
+      });
+    },
+    [],
+  );
+
   useEffect(() => {
     const track = manufacturerTrackRef.current;
     if (!track) return;
@@ -83,6 +113,20 @@ export default function CuAlHeatExchangersPage() {
       window.removeEventListener("resize", updateManufacturerControls);
     };
   }, [updateManufacturerControls]);
+
+  useEffect(() => {
+    const track = productTrackRef.current;
+    if (!track) return;
+
+    updateProductControls();
+    track.addEventListener("scroll", updateProductControls, { passive: true });
+    window.addEventListener("resize", updateProductControls);
+
+    return () => {
+      track.removeEventListener("scroll", updateProductControls);
+      window.removeEventListener("resize", updateProductControls);
+    };
+  }, [updateProductControls]);
 
   return (
     <main className={styles.page}>
@@ -192,7 +236,10 @@ export default function CuAlHeatExchangersPage() {
 
       <section id="manufacturers" className={styles.section}>
         <div className={styles.sectionHeadingRow}>
-          <h2>Производители для Cu-Al / HVAC</h2>
+          <div className={styles.sectionTitleGroup}>
+            <span className={styles.sectionChip}>Производители и поставщики</span>
+            <h2>Производители и поставщики для Cu-Al / HVAC</h2>
+          </div>
 
           <div className={styles.manufacturerHeaderActions}>
             <div className={styles.manufacturerControls} role="group" aria-label="Управление списком производителей">
@@ -291,35 +338,69 @@ export default function CuAlHeatExchangersPage() {
         </div>
       </section>
       <section id="products" className={styles.section}>
-        <h2>Изделия (по назначению)</h2>
+        <div className={styles.sectionHeadingRow}>
+          <h2>Изделия (по назначению)</h2>
 
-        <div className={styles.productGrid}>
-          {productItems.map((item) => (
-            <article key={item.slug} className={styles.card}>
-              <h3>{item.title}</h3>
-              <p>{item.whereUsed}</p>
-              <p>{item.whereUsedExtra}</p>
+          <div className={styles.productHeaderActions}>
+            <div className={styles.productControls} role="group" aria-label="Управление списком изделий">
+              <button
+                type="button"
+                className={`${styles.productArrow} ${!canScrollProductPrev ? styles.productArrowDisabled : ""}`}
+                aria-label="Предыдущие изделия"
+                onClick={() => scrollProducts(-1)}
+                disabled={!canScrollProductPrev}
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                className={`${styles.productArrow} ${!canScrollProductNext ? styles.productArrowDisabled : ""}`}
+                aria-label="Следующие изделия"
+                onClick={() => scrollProducts(1)}
+                disabled={!canScrollProductNext}
+              >
+                →
+              </button>
+            </div>
+          </div>
+        </div>
 
-              <ul>
-                {item.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
+        <div className={styles.productViewport}>
+          <div className={styles.productTrack} ref={productTrackRef}>
+            {productItems.map((item) => (
+              <article
+                key={item.slug}
+                data-product-card="true"
+                className={`${styles.card} ${styles.productSlideCard} ${styles.productSlide}`}
+              >
+                <div className={styles.productImageWrap}>
+                  <div className={styles.productImagePlaceholder} />
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.whereUsed}</p>
+                <p>{item.whereUsedExtra}</p>
 
-              <div className={styles.actions}>
-                <a className={`${styles.btn} ${styles.btnOutline}`} href={`#product-${item.slug}`}>
-                  Подробнее
-                </a>
-                <a
-                  className={`${styles.btn} ${styles.btnPrimary}`}
-                  href="#request"
-                  onClick={() => setProduct(item.slug)}
-                >
-                  Рассчитать/КП
-                </a>
-              </div>
-            </article>
-          ))}
+                <ul>
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+
+                <div className={styles.actions}>
+                  <a className={`${styles.btn} ${styles.btnOutline}`} href={`#product-${item.slug}`}>
+                    Подробнее
+                  </a>
+                  <a
+                    className={`${styles.btn} ${styles.btnPrimary}`}
+                    href="#request"
+                    onClick={() => setProduct(item.slug)}
+                  >
+                    Рассчитать/КП
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
