@@ -4,9 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "baseline:routes": "node scripts/baseline/routes-discover.mjs",
+    "baseline:smoke": "node scripts/baseline/smoke.mjs",
     "dev": "next dev",
     "build": "next build",
     "db:generate": "prisma generate",
+    "postinstall": "prisma generate",
     "start": "next start",
     "test:layout": "node scripts/layout.test.mjs"
   },
