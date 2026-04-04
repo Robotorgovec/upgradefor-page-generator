@@ -1,61 +1,22 @@
-import fs from "node:fs";
-import path from "node:path";
 import Script from "next/script";
 
-type HomeTemplate = {
-  mainHtml: string;
-  jsonLd: string[];
-  headStyles: string[];
-  layoutCss: string;
-  layoutJs: string;
-};
+import BodyClass from "../components/layout/BodyClass";
+import { loadHtmlTemplate } from "../lib/html-template";
 
-const MAIN_REGEX = /<main[^>]*>([\s\S]*?)<\/main>/i;
-const STYLESHEET_LINK_REGEX =
-  /<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi;
-const JSON_LD_REGEX =
-  /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-
-function readPublicFile(relativePath: string) {
-  return fs.readFileSync(path.join(process.cwd(), "public", relativePath), "utf8");
-}
-
-function loadHomeTemplate(): HomeTemplate {
-  const html = readPublicFile("index.html");
-  const mainMatch = html.match(MAIN_REGEX);
-
-  if (!mainMatch) {
-    throw new Error("Main tag not found in public/index.html");
-  }
-
-  return {
-    mainHtml: mainMatch[1].trim(),
-    jsonLd: Array.from(html.matchAll(JSON_LD_REGEX))
-      .map((match) => match[1].trim())
-      .filter(Boolean),
-    headStyles: Array.from(html.matchAll(STYLESHEET_LINK_REGEX))
-      .map((match) => match[1].trim())
-      .filter((href) => href && !href.includes("/assets/layout.css")),
-    layoutCss: readPublicFile("assets/layout.css"),
-    layoutJs: readPublicFile("assets/load-layout.js"),
-  };
-}
-
-const homeTemplate = loadHomeTemplate();
+const homeTemplate = loadHtmlTemplate("index.html");
 
 export const metadata = {
-  title: "UPGRADE INNOVATIONS — платформа для вендоров и внедрения",
+  title: "UPGRADE INNOVATIONS - открытая бета",
   description:
-    "Платформа для вендоров, пилотов и внедрения технологий. Вендоры получают структурированную витрину, поток профильных запросов и инструменты автоматизации. Компании получают проверяемые решения и понятный путь от запроса до пилота.",
+    "UPGRADE - платформа для вендоров, пилотов и внедрения технологий. Структурированная витрина, маршрутизация обращений, AI-поддержка и сопровождение пилотов.",
 };
 
 export default function HomePage() {
   return (
     <>
-      {homeTemplate.headStyles.map((href) => (
-        <link key={href} rel="stylesheet" href={href} />
+      {homeTemplate.styles.map((style, index) => (
+        <style key={`home-style-${index}`} dangerouslySetInnerHTML={{ __html: style }} />
       ))}
-      <style dangerouslySetInnerHTML={{ __html: homeTemplate.layoutCss }} />
       {homeTemplate.jsonLd.map((data, index) => (
         <Script
           key={`home-jsonld-${index}`}
@@ -66,12 +27,10 @@ export default function HomePage() {
           {data}
         </Script>
       ))}
+      <BodyClass className="is-home" />
       <div className="is-home">
         <div dangerouslySetInnerHTML={{ __html: homeTemplate.mainHtml }} />
       </div>
-      <Script id="upgr-home-layout" strategy="afterInteractive">
-        {homeTemplate.layoutJs}
-      </Script>
     </>
   );
 }

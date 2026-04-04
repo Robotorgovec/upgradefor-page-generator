@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
+    "db:generate": "prisma generate",
     "start": "next start",
-    "test:layout": "node scripts/layout.test.mjs",
-    "check:layout": "node scripts/verify-layout.mjs"
+    "test:layout": "node scripts/layout.test.mjs"
   },
   "dependencies": {
     "next": "^16.1.4",

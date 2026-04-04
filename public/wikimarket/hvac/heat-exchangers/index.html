@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta name="upgr-build" content="layout-fix-2026-01-29-03">
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -42,7 +40,7 @@
   })();
 </script>
 
-
+<link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
 
   <!-- Open Graph -->
@@ -536,7 +534,9 @@
 </head>
 
 <body>
-      <main class="app-content">
+  <header></header>
+  <aside class="sidebar"></aside>
+  <main class="app-content">
     <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
 
     <div class="bottom-safe">
@@ -1125,6 +1125,6 @@
       if(el) el.textContent = new Date().getFullYear();
     })();
   </script>
-
+  <script src="/assets/load-layout.js?v=20260205-1"></script>
 </body>
 </html>

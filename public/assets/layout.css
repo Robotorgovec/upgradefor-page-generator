@@ -2660,6 +2660,32 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
   text-underline-offset: 0.18em;
 }
 
+body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary) {
+  cursor: default;
+  pointer-events: none;
+  color: color-mix(in srgb, var(--sidebar-text) 78%, white);
+  background: transparent;
+  transform: none;
+}
+
+body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary):hover {
+  background: transparent;
+  transform: none;
+}
+
+body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::after {
+  content: "Скоро";
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  color: color-mix(in srgb, var(--sidebar-text-strong) 78%, white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 @media (max-width: 1460px) {
   body.menu-open .is-home .home-hero {
     grid-template-columns: 1fr;
@@ -2778,286 +2804,282 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 }
 
 /* =========================================================
-   Homepage app-router shell compatibility
-   Restores the accepted shell geometry inside the current app shell
-   without changing the shell source files outside the allowed scope.
-   ========================================================= */
-
-body:has(.is-home) {
-  overflow-x: clip;
-}
-
-body:has(.is-home) header.site-header,
-body:has(.is-home) header[data-site-header="true"],
-body:has(.is-home) .site-header {
-  height: auto;
-}
-
-body:has(.is-home) .app-content {
-  width: auto;
-  max-width: none;
-  padding: calc(var(--header-height) + 3px) 0 0;
-}
-
-@media (min-width: 769px) {
-  body:has(.is-home) .sidebar {
-    transform: none !important;
-    width: 46px;
-  }
-
-  body:has(.is-home) .app-content {
-    margin-left: 46px;
-    width: calc(100% - 46px);
-  }
-
-  body.menu-open:has(.is-home) .sidebar {
-    width: 260px;
-  }
-
-  body.menu-open:has(.is-home) .app-content {
-    margin-left: 260px;
-    width: calc(100% - 260px);
-  }
-}
-
-@media (max-width: 768px) {
-  body:has(.is-home) .app-content {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  body:has(.is-home) .sidebar {
-    width: 260px;
-  }
-
-  body:not(.menu-open):has(.is-home) .sidebar {
-    transform: translateX(-100%) !important;
-  }
-
-  body.menu-open:has(.is-home) .sidebar {
-    transform: translateX(0) !important;
-  }
-}
-
-/* =========================================================
-   Homepage premium polish after shell restore
-   Keeps the accepted shell intact while widening the first screen
-   and tightening the premium vendor/trust rhythm.
+   Homepage accepted-baseline premium polish v1
+   Homepage-only geometry and rhythm refinements on top of the
+   accepted premium/vendor baseline. Shell must remain untouched.
    ========================================================= */
 
 .is-home {
-  --home-stage-width: min(1480px, calc(100vw - clamp(26px, 3vw, 56px)));
-  --home-hero-copy-max: 820px;
-  --home-card-padding: clamp(24px, 1.9vw, 30px);
-  --home-card-shadow: 0 18px 38px rgba(15, 23, 42, 0.05);
+  --home-section-space: clamp(68px, 7vw, 108px);
+  --home-card-padding: clamp(26px, 2vw, 34px);
+  --home-card-gap: 18px;
+  --home-stage-width: min(1360px, calc(100vw - clamp(32px, 4vw, 80px)));
+  --home-hero-copy-max: 780px;
+}
+
+.is-home main > section.wrap {
+  padding-block: var(--home-section-space);
 }
 
 .is-home main.app-content > section.wrap {
   max-width: var(--home-stage-width);
-  padding-inline: clamp(18px, 2.35vw, 32px);
+  padding-inline: clamp(20px, 2.7vw, 34px);
+}
+
+.is-home .section-title {
+  margin-bottom: clamp(24px, 2.2vw, 34px);
+}
+
+.is-home .card {
+  padding: var(--home-card-padding);
+  gap: var(--home-card-gap);
+  border-color: color-mix(in srgb, var(--theme-border) 62%, white);
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.055);
+}
+
+.is-home .card h3 {
+  font-size: clamp(21px, 1.7vw, 25px);
 }
 
 .is-home .home-hero {
-  max-width: min(1360px, calc(100vw - clamp(26px, 3vw, 56px)));
-  grid-template-columns: minmax(0, 1.46fr) minmax(340px, 472px);
-  gap: clamp(44px, 5.2vw, 96px);
-  padding-inline: clamp(26px, 2.6vw, 36px);
-  padding-top: clamp(46px, 5.6vw, 82px);
-  padding-bottom: clamp(50px, 6vw, 84px);
+  max-width: min(1360px, calc(100vw - clamp(34px, 4vw, 84px)));
+  width: min(100%, 1360px);
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 430px);
+  gap: clamp(46px, 5.4vw, 96px);
+  min-height: clamp(500px, 65vh, 650px);
+  padding-top: clamp(48px, 5.4vw, 82px);
+  padding-bottom: clamp(52px, 6.1vw, 88px);
+  padding-inline: clamp(30px, 3vw, 42px);
 }
 
 .is-home .hero-content {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding-right: clamp(10px, 1.5vw, 24px);
+  padding-right: clamp(12px, 1.3vw, 28px);
 }
 
 .is-home .hero-left-inner {
-  display: grid;
-  width: 100%;
   max-width: min(100%, var(--home-hero-copy-max));
-  gap: clamp(16px, 1.65vw, 24px);
+  gap: clamp(16px, 1.6vw, 24px);
+}
+
+.is-home .hero-title {
+  margin-bottom: 0;
 }
 
 .is-home .hero-title-main {
-  max-width: 16.5ch;
-  font-size: clamp(46px, 4.4vw, 62px);
-  line-height: 1.03;
+  gap: clamp(10px, 1vw, 16px);
+  font-size: clamp(40px, 4vw, 56px);
+  line-height: 1.06;
+}
+
+.is-home .hero-rest {
+  max-width: 15ch;
 }
 
 .is-home .hero-subtitle {
-  max-width: 34ch;
-  line-height: 1.28;
+  max-width: 36ch;
+  font-size: clamp(19px, 1.72vw, 25px);
+  line-height: 1.38;
 }
 
 .is-home .hero-lead,
 .is-home .hero .lead {
-  max-width: 63ch;
+  max-width: 61ch;
+  font-size: clamp(16px, 1.04vw, 19px);
   line-height: 1.72;
 }
 
 .is-home .hero-chip-list {
   gap: 12px;
+  margin-top: 2px;
 }
 
 .is-home .hero-chip {
   min-height: 44px;
-  padding: 0 18px;
+  padding-inline: 18px;
 }
 
 .is-home .hero .cta {
   gap: 14px;
+  margin-top: 10px;
+}
+
+.is-home .hero .cta .btn,
+.is-home .hero .cta .btn.btn--ghost {
+  min-width: 220px;
 }
 
 .is-home .hero-art {
-  width: min(100%, 440px);
-  justify-self: end;
-  padding: clamp(20px, 1.9vw, 28px);
+  width: min(100%, 430px);
+  padding: clamp(22px, 2vw, 30px);
+  border-radius: 30px;
 }
 
 .is-home .home-trust-strip {
-  padding-top: clamp(22px, 2.4vw, 30px);
-  padding-bottom: clamp(26px, 2.8vw, 34px);
+  padding-top: clamp(24px, 2.8vw, 38px);
+  padding-bottom: clamp(32px, 3.6vw, 48px);
 }
 
 .is-home .home-trust-strip-grid {
-  gap: clamp(14px, 1.8vw, 20px);
+  gap: clamp(14px, 1.8vw, 22px);
 }
 
-.is-home .home-trust-strip-item,
-.is-home .home-vendor-card,
-.is-home .home-partnership-summary,
-.is-home .home-partnership-points,
-.is-home .home-step-card,
-.is-home .home-legal .card {
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.045);
-}
-
-.is-home .home-vendor-card,
-.is-home .home-partnership-summary,
-.is-home .home-partnership-points,
-.is-home .home-step-card,
-.is-home .home-legal .card {
-  padding: var(--home-card-padding);
+.is-home .home-trust-strip-item {
+  gap: 14px;
+  padding: 16px 18px;
   border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.045);
+}
+
+.is-home .home-trust-strip-title {
+  font-size: 0.96rem;
+  letter-spacing: -0.01em;
+}
+
+.is-home .home-trust-strip-sub {
+  font-size: 0.86rem;
+  color: color-mix(in srgb, var(--text) 64%, white);
 }
 
 .is-home .home-vendor-intro,
-.is-home .home-status-note,
-.is-home .home-vitrines-intro {
-  max-width: 76ch;
+.is-home .home-vitrines-intro,
+.is-home .home-status-note {
+  max-width: 74ch;
 }
 
-.is-home .section-title {
-  margin-bottom: clamp(18px, 2vw, 26px);
+.is-home .home-vendor-grid,
+.is-home .home-how-grid {
+  gap: clamp(20px, 2vw, 28px);
+}
+
+.is-home .home-vendor-card,
+.is-home .home-partnership-summary,
+.is-home .home-partnership-points,
+.is-home .home-legal .card,
+.is-home .join-card-primary,
+.is-home .join-card-support {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.is-home .home-vendor-card {
+  border-color: color-mix(in srgb, var(--theme-border-strong) 68%, white);
+  box-shadow: 0 22px 46px rgba(15, 23, 42, 0.06);
+}
+
+.is-home .home-vendor-note,
+.is-home .home-contact-note,
+.is-home .home-card-status {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .is-home .home-vendor-note,
 .is-home .home-contact-note {
-  padding: 16px 18px;
-  border-radius: 18px;
+  margin-top: clamp(24px, 2vw, 32px);
+  padding: 18px 20px;
 }
 
-@media (max-width: 1460px) {
-  body.menu-open .is-home .home-hero {
-    max-width: min(1240px, calc(100vw - 28px));
-    gap: clamp(30px, 4vw, 44px);
+.is-home .home-partnership-grid,
+.is-home .home-legal-grid,
+.is-home .home-join-grid {
+  gap: clamp(18px, 1.9vw, 26px);
+}
+
+.is-home #join .card h3,
+.is-home #contacts .card h3 {
+  margin-bottom: 0;
+}
+
+.is-home .home-link-list {
+  gap: 12px;
+}
+
+@media (max-width: 1280px) {
+  .is-home {
+    --home-stage-width: min(1328px, calc(100vw - clamp(28px, 3.6vw, 64px)));
   }
 
-  body.menu-open .is-home .hero-content {
-    padding-right: 0;
-  }
-
-  body.menu-open .is-home .hero-art {
-    justify-self: start;
-    width: min(100%, 360px);
+  .is-home .home-hero {
+    max-width: min(1328px, calc(100vw - clamp(28px, 3.6vw, 64px)));
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 405px);
+    gap: clamp(40px, 4.8vw, 74px);
+    padding-inline: clamp(26px, 2.8vw, 34px);
   }
 }
 
 @media (max-width: 1180px) {
-  .is-home .home-hero {
-    max-width: min(1280px, calc(100vw - 24px));
-    gap: clamp(30px, 4vw, 44px);
-    padding-inline: clamp(20px, 3vw, 26px);
+  .is-home .home-hero,
+  body.menu-open .is-home .home-hero {
+    grid-template-columns: 1fr;
+    gap: clamp(30px, 4vw, 42px);
+    min-height: 0;
   }
 
-  .is-home .hero-content {
+  .is-home .hero-content,
+  body.menu-open .is-home .hero-content {
+    align-items: flex-start;
     padding-right: 0;
   }
 
-  .is-home .hero-art {
+  .is-home .hero-left-inner,
+  body.menu-open .is-home .hero-left-inner {
+    max-width: min(100%, 860px);
+  }
+
+  .is-home .hero-art,
+  body.menu-open .is-home .hero-art {
     justify-self: start;
-    width: min(100%, 360px);
+    width: min(100%, 380px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .is-home .home-hero {
+    padding-inline: clamp(22px, 3vw, 28px);
   }
 }
 
 @media (max-width: 768px) {
+  .is-home {
+    --home-section-space: clamp(56px, 9vw, 78px);
+  }
+
   .is-home main.app-content > section.wrap {
-    padding-inline: 0;
+    padding-inline: clamp(16px, 4.8vw, 24px);
   }
 
   .is-home .home-hero {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    min-height: 0;
+    max-width: min(100%, calc(100vw - 18px));
+    padding-top: 0 !important;
+    padding-bottom: clamp(36px, 7vw, 58px);
     padding-inline: clamp(18px, 5vw, 24px);
-    gap: clamp(26px, 6vw, 34px);
-  }
-
-  .is-home .hero-content,
-  .is-home .hero-left-inner,
-  .is-home .hero-title,
-  .is-home .hero-title-main,
-  .is-home .hero-subtitle,
-  .is-home .hero-lead,
-  .is-home .hero .cta,
-  .is-home .hero-chip-list {
-    justify-self: stretch;
-    width: 100%;
-    max-width: none;
-  }
-
-  .is-home .hero-left-inner {
-    gap: 16px;
   }
 
   .is-home .hero-title-main {
-    max-width: none;
-    font-size: clamp(32px, 8.6vw, 40px);
-    line-height: 1.08;
+    font-size: clamp(32px, 6.8vw, 42px);
   }
 
   .is-home .hero-subtitle {
     max-width: none;
-    font-size: clamp(18px, 4.8vw, 22px);
+    font-size: clamp(18px, 4.7vw, 23px);
   }
 
-  .is-home .hero-lead,
-  .is-home .hero .lead {
-    max-width: none;
-  }
-
-  .is-home .hero .cta {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .is-home .hero .cta .btn,
-  .is-home .hero .cta .btn.btn--ghost {
-    width: 100%;
-    min-width: 0;
+  .is-home .hero-chip-list {
+    gap: 10px;
   }
 
   .is-home .hero-art {
-    width: min(100%, 260px);
-    justify-self: center;
+    width: min(100%, 300px);
+    padding: 18px;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 390px) {
   .is-home .hero-title-main {
-    font-size: clamp(25px, 7.4vw, 30px);
+    font-size: clamp(30px, 8.6vw, 36px);
+  }
+
+  .is-home .hero-subtitle {
+    font-size: 18px;
   }
 }
 

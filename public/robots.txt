@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /account/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /_upgr_deploy_check
+Disallow: /_upgr_deploy_check.txt
+Disallow: /_upgr_deploy_check.html
+
+Sitemap: https://upgradefor.com/sitemap.xml

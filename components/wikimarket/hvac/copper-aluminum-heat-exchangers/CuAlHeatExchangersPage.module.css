@@ -1,0 +1,715 @@
+.page {
+  --bg: #f7fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #e2e8f0;
+  --hx-accent: var(--btn-primary-bg, var(--color-primary, #0ea5e9));
+  --hx-accent-hover: var(--btn-primary-bg-hover, var(--color-primary-strong, color-mix(in srgb, var(--hx-accent) 86%, #0f172a)));
+  --hx-accent-soft: var(--primary-50, var(--color-soft, #e6f7ff));
+  --hx-accent-border: var(--tag-border, color-mix(in srgb, var(--hx-accent) 45%, var(--line)));
+  --hx-accent-contrast: var(--btn-primary-text, #ffffff);
+  --shadow: 0 14px 34px rgba(2, 6, 23, 0.08);
+
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: grid;
+  gap: 28px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+  scroll-margin-top: 84px;
+}
+
+.page h1 {
+  margin: 0;
+  font-size: clamp(28px, 2.6vw, 44px);
+  line-height: 1.12;
+  font-weight: 800;
+}
+
+.h1Line1,
+.h1Line2 {
+  display: block;
+}
+
+.h1Line2 {
+  font-size: 0.86em;
+  margin-top: 8px;
+}
+
+.page h2,
+.page h3,
+.page p,
+.page ul {
+  margin: 0;
+}
+
+.page ul {
+  padding-left: 20px;
+}
+
+.page li + li {
+  margin-top: 6px;
+}
+
+.heroText,
+.hero,
+.threeCards,
+.splitSection,
+.productGrid,
+.usecaseGrid,
+.detailsGrid,
+.formGrid,
+.contactsGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.hero {
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.heroVisual img {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+}
+
+.kicker {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--hx-accent-soft);
+  font-weight: 700;
+}
+
+.lead {
+  color: var(--muted);
+}
+
+.card {
+  display: grid;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btnPrimary {
+  background: var(--hx-accent);
+  color: var(--hx-accent-contrast);
+  border-color: var(--hx-accent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hx-accent) 30%, transparent);
+}
+
+.btnPrimary:hover {
+  background: var(--hx-accent-hover);
+  border-color: var(--hx-accent-hover);
+}
+
+.btnOutline {
+  background: transparent;
+  color: var(--hx-accent);
+  border-color: var(--hx-accent-border);
+}
+
+.btnOutline:hover {
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.chips a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+.twoColumns {
+  columns: 1;
+}
+
+.hiddenTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.usecaseLink {
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--surface);
+}
+
+.sectionHeadingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.manufacturerHeaderActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.showAllLink {
+  color: var(--hx-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--hx-accent-border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.showAllLink:hover {
+  text-decoration: none;
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
+}
+
+.manufacturerControls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.manufacturerArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.manufacturerArrow:focus-visible {
+  outline: 2px solid var(--hx-accent);
+  outline-offset: 2px;
+}
+
+.manufacturerArrowDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.manufacturerViewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.manufacturerViewport::-webkit-scrollbar {
+  display: none;
+}
+
+.manufacturerTrack {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 12px;
+  min-width: 100%;
+}
+
+.manufacturerSlide {
+  flex: 0 0 86%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.manufacturerCard {
+  gap: 14px;
+  height: 100%;
+  grid-template-rows: auto 1fr;
+}
+
+.manufacturerImageWrap {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.manufacturerImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.manufacturerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.manufacturerBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+}
+
+.badgeRole {
+  color: var(--text);
+  background: color-mix(in srgb, var(--hx-accent-soft) 30%, white);
+}
+
+.badgeTrust {
+  color: #0f5132;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.manufacturerTitle {
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.manufacturerTitle a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.manufacturerTitle a:hover {
+  text-decoration: underline;
+}
+
+.manufacturerDescription {
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.manufacturerRelevance {
+  color: color-mix(in srgb, var(--muted) 80%, var(--hx-accent));
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.manufacturerRating {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.manufacturerRatingRated {
+  color: var(--text);
+}
+
+.manufacturerGeo {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.manufacturerCapabilities,
+.manufacturerFacts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.manufacturerCapabilities li,
+.manufacturerFacts li {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.manufacturerCapabilities li {
+  background: color-mix(in srgb, var(--hx-accent-soft) 35%, white);
+}
+
+.manufacturerFacts li {
+  background: color-mix(in srgb, var(--hx-accent-soft) 20%, white);
+  color: var(--muted);
+}
+
+.manufacturerCard .actions {
+  margin-top: auto;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.input,
+.textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  font: inherit;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--line);
+  text-align: left;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.contactLine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--hx-accent-soft) 45%, white);
+}
+
+.contactIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--hx-accent-border);
+}
+
+.contactActions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.separator {
+  height: 1px;
+  margin: 12px 0;
+  background: var(--line);
+}
+
+.geoList {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.geoItem {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.geoPhone {
+  color: var(--muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .page {
+    gap: 36px;
+    padding: 24px 20px 44px;
+  }
+
+  .hero {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .threeCards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .splitSection,
+  .detailsGrid,
+  .contactsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .productGrid,
+  .usecaseGrid,
+  .formGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .manufacturerSlide {
+    flex-basis: calc((100% - 12px) / 2);
+  }
+
+  .twoColumns {
+    columns: 2;
+  }
+
+  .contactActions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1280px) {
+  .productGrid,
+  .usecaseGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .manufacturerSlide {
+    flex-basis: calc((100% - 24px) / 3);
+  }
+}
+
+.sharedContacts :global(.wrap) {
+  max-width: 100%;
+  padding: 0;
+}
+
+.sharedContacts :global(.grid) {
+  display: grid;
+  gap: 12px;
+}
+
+.sharedContacts :global(.grid-2) {
+  grid-template-columns: 1fr;
+}
+
+.sharedContacts :global(.card) {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.sharedContacts :global(.btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.sharedContacts :global(.btn:hover) {
+  text-decoration: none;
+}
+
+.sharedContacts :global(.btn:not(.btn-outline)) {
+  background: var(--hx-accent);
+  color: var(--hx-accent-contrast);
+  border-color: var(--hx-accent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hx-accent) 30%, transparent);
+}
+
+.sharedContacts :global(.btn:not(.btn-outline):hover) {
+  background: var(--hx-accent-hover);
+  border-color: var(--hx-accent-hover);
+}
+
+.sharedContacts :global(.btn.btn-outline) {
+  background: transparent;
+  color: var(--hx-accent);
+  border-color: var(--hx-accent-border);
+  box-shadow: none;
+}
+
+.sharedContacts :global(.btn.btn-outline:hover) {
+  border-color: var(--hx-accent);
+  background: var(--hx-accent-soft);
+}
+
+.sharedContacts :global(.contact-actions) {
+  display: grid;
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 10px 8px 24px;
+    gap: 20px;
+  }
+
+  .hero {
+    padding-top: 0;
+    gap: 12px;
+  }
+
+  .heroText,
+  .section,
+  .threeCards,
+  .splitSection,
+  .productGrid,
+  .usecaseGrid,
+  .detailsGrid,
+  .formGrid,
+  .contactsGrid {
+    gap: 12px;
+  }
+
+  .section,
+  .hero,
+  .threeCards,
+  .splitSection,
+  .productGrid,
+  .usecaseGrid,
+  .detailsGrid,
+  .formGrid,
+  .contactsGrid {
+    max-width: 100%;
+  }
+
+  .card {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .manufacturerHeaderActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .manufacturerSlide {
+    flex-basis: 92%;
+  }
+
+  .actions {
+    justify-content: center;
+    row-gap: 8px;
+  }
+
+  .btn,
+  .sharedContacts :global(.btn) {
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .card > .btn {
+    justify-self: center;
+  }
+
+  .page h1,
+  .page h2,
+  .page h3,
+  .page p,
+  .page ul {
+    margin: 0;
+  }
+
+  .sharedContacts :global(h2),
+  .sharedContacts :global(h3),
+  .sharedContacts :global(p),
+  .sharedContacts :global(ul) {
+    margin: 0;
+  }
+
+  .sharedContacts :global(.grid),
+  .sharedContacts :global(.contact-actions) {
+    gap: 12px;
+  }
+
+  .sharedContacts :global(.card) {
+    padding: 10px;
+  }
+}
+@media (min-width: 768px) {
+  .sharedContacts :global(.grid-2) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sharedContacts :global(.contact-actions) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

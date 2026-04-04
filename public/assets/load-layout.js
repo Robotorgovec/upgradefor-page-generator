@@ -70,10 +70,6 @@
     return root.querySelector(sel);
   }
 
-  function qsa(sel, root = document) {
-    return Array.from(root.querySelectorAll(sel));
-  }
-
   function createEl(tag, className, attrs) {
     const el = document.createElement(tag);
     if (className) el.className = className;
@@ -88,179 +84,6 @@
 
   function getThemeSystem() {
     return window.UPGR_THEME_SYSTEM || null;
-  }
-
-  const FALLBACK_THEME_STORAGE_KEY = "userTheme";
-  const FALLBACK_THEMES = [
-    { key: "red", weekdayLabelRu: "Воскресенье", primary: "#F25F6B", soft: "#FEE2E2", bg: "#FFF5F5" },
-    { key: "orange", weekdayLabelRu: "Понедельник", primary: "#F4A259", soft: "#FFEDD5", bg: "#FFF7ED" },
-    { key: "yellow", weekdayLabelRu: "Вторник", primary: "#E6C95A", soft: "#FEF9C3", bg: "#FEFCE8" },
-    { key: "green", weekdayLabelRu: "Среда", primary: "#63CA84", soft: "#DCFCE7", bg: "#F0FDF4" },
-    { key: "brand-blue", weekdayLabelRu: "Четверг", primary: "#12AFF0", soft: "#E6F7FF", bg: "#F5FCFF" },
-    { key: "indigo", weekdayLabelRu: "Пятница", primary: "#7187E8", soft: "#DBEAFE", bg: "#EFF6FF" },
-    { key: "purple", weekdayLabelRu: "Суббота", primary: "#8C79E8", soft: "#EDE9FE", bg: "#F5F3FF" },
-  ];
-  const fallbackThemeByKey = new Map(FALLBACK_THEMES.map((theme) => [theme.key, theme]));
-  const fallbackWeekCycle = ["red", "orange", "yellow", "green", "brand-blue", "indigo", "purple"];
-
-  function getFallbackTheme(themeKey) {
-    return fallbackThemeByKey.get(themeKey) || fallbackThemeByKey.get("green");
-  }
-
-  function getFallbackInitialThemeKey() {
-    try {
-      const stored = window.localStorage.getItem(FALLBACK_THEME_STORAGE_KEY);
-      if (stored === "auto") {
-        return fallbackWeekCycle[new Date().getDay()] || "green";
-      }
-      if (stored && fallbackThemeByKey.has(stored)) {
-        return stored;
-      }
-    } catch (error) {
-      void error;
-    }
-
-    return fallbackWeekCycle[new Date().getDay()] || "green";
-  }
-
-  function applyFallbackTheme(themeKey, persist) {
-    const theme = getFallbackTheme(themeKey);
-    const root = document.documentElement;
-
-    root.dataset.theme = theme.key;
-    root.style.setProperty("--theme-primary", theme.primary);
-    root.style.setProperty("--theme-primary-hover", theme.primary);
-    root.style.setProperty("--theme-primary-active", theme.primary);
-    root.style.setProperty("--theme-secondary-accent", theme.primary);
-    root.style.setProperty("--theme-soft-bg", theme.bg);
-    root.style.setProperty("--theme-soft-bg-strong", theme.soft);
-    root.style.setProperty("--theme-border", theme.soft);
-    root.style.setProperty("--theme-border-strong", theme.soft);
-    root.style.setProperty("--theme-chip-bg", theme.soft);
-    root.style.setProperty("--theme-chip-border", theme.soft);
-    root.style.setProperty("--theme-card-accent", theme.soft);
-    root.style.setProperty("--theme-link", theme.primary);
-    root.style.setProperty("--theme-link-hover", theme.primary);
-    root.style.setProperty("--color-primary", theme.primary);
-    root.style.setProperty("--btn-primary-bg", theme.primary);
-    root.style.setProperty("--btn-primary-bg-hover", theme.primary);
-    root.style.setProperty("--btn-primary-bg-active", theme.primary);
-    root.style.setProperty("--btn-primary-border", theme.primary);
-    root.style.setProperty("--focus-ring", "rgba(18, 175, 240, 0.28)");
-
-    if (persist) {
-      try {
-        window.localStorage.setItem(FALLBACK_THEME_STORAGE_KEY, theme.key);
-      } catch (error) {
-        void error;
-      }
-    }
-
-    qsa("[data-theme-switch]").forEach((switchNode) => {
-      const trigger = qs(".theme-switch-trigger", switchNode);
-      const dot = qs(".theme-dot", switchNode);
-
-      if (trigger) {
-        trigger.setAttribute("aria-label", `Тема дня. Сейчас ${theme.weekdayLabelRu}`);
-      }
-
-      if (dot) {
-        dot.style.background = theme.primary;
-        dot.style.boxShadow = `0 0 0 2px ${theme.primary}47`;
-      }
-
-      qsa("[data-theme]", switchNode).forEach((item) => {
-        item.setAttribute("aria-checked", item.getAttribute("data-theme") === theme.key ? "true" : "false");
-      });
-    });
-  }
-
-  function renderFallbackThemeOptions() {
-    qsa("[data-theme-switch-options]").forEach((container) => {
-      if (container.childElementCount > 0) {
-        return;
-      }
-
-      container.innerHTML = FALLBACK_THEMES.map((theme) => {
-        return (
-          '<button type="button" class="theme-switch-item" role="menuitemradio" data-theme="' +
-          theme.key +
-          '" aria-checked="false" aria-label="' +
-          theme.weekdayLabelRu +
-          '">' +
-          '<span class="theme-switch-item-content">' +
-          '<span class="theme-switch-item-swatch" aria-hidden="true" style="--theme-switch-swatch: ' +
-          theme.primary +
-          ';"></span>' +
-          '<span class="theme-switch-item-label">' +
-          theme.weekdayLabelRu +
-          "</span>" +
-          "</span>" +
-          "</button>"
-        );
-      }).join("");
-    });
-  }
-
-  function initFallbackThemeSwitcher() {
-    const switchers = qsa("[data-theme-switch]");
-    if (!switchers.length) return;
-
-    renderFallbackThemeOptions();
-
-    const closeMenus = () => {
-      switchers.forEach((switchNode) => {
-        switchNode.classList.remove("is-open");
-        const trigger = qs(".theme-switch-trigger", switchNode);
-        if (trigger) {
-          trigger.setAttribute("aria-expanded", "false");
-        }
-      });
-    };
-
-    switchers.forEach((switchNode) => {
-      const trigger = qs(".theme-switch-trigger", switchNode);
-      const options = qs("[data-theme-switch-options]", switchNode);
-
-      if (trigger) {
-        trigger.addEventListener("click", function (event) {
-          event.preventDefault();
-          const isOpen = switchNode.classList.contains("is-open");
-          closeMenus();
-          if (!isOpen) {
-            switchNode.classList.add("is-open");
-            trigger.setAttribute("aria-expanded", "true");
-          }
-        });
-      }
-
-      if (options) {
-        options.addEventListener("click", function (event) {
-          const target = event.target.closest("[data-theme]");
-          if (!target) {
-            return;
-          }
-
-          const themeKey = target.getAttribute("data-theme");
-          if (!themeKey) {
-            return;
-          }
-
-          applyFallbackTheme(themeKey, true);
-          closeMenus();
-        });
-      }
-    });
-
-    document.addEventListener("click", function (event) {
-      if (event.target.closest("[data-theme-switch]")) {
-        return;
-      }
-
-      closeMenus();
-    });
-
-    applyFallbackTheme(getFallbackInitialThemeKey(), false);
   }
 
   function formatThemeSwitchTitle() {
@@ -348,10 +171,7 @@
 
   function initThemeSwitcher() {
     const themeSystem = getThemeSystem();
-    if (!themeSystem) {
-      initFallbackThemeSwitcher();
-      return;
-    }
+    if (!themeSystem) return;
 
     themeSystem.reapply();
 

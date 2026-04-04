@@ -1,8 +1,6 @@
-<!doctype html>
+e<!doctype html>
 <html lang="ru">
 <head>
-<meta name="upgr-build" content="layout-fix-2026-01-29-03">
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -31,7 +29,6 @@
         "2": "yellow",
         "3": "green",
         "4": "cyan",
-
         "5": "blue",
         "6": "violet"
       };
@@ -43,7 +40,7 @@
   })();
 </script>
 
-
+<link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
 
 
   
@@ -65,8 +62,7 @@
       --bg:#f7fafc;
       --surface:#ffffff;
       --soft:#f1f5f9;
-      --t
-        ext:#0f172a;
+      --text:#0f172a;
       --muted:#475569;
       --line:#e2e8f0;
 
@@ -101,8 +97,7 @@
     body{
       margin:0;
       background: var(--bg);
-      col
-        or: var(--text);
+      color: var(--text);
       font: var(--fs-0)/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
@@ -120,11 +115,15 @@
     .upgr-hx{
       width:100%;
       overflow-x: clip;
-      overflow-wrap: normal;
-      
+     overflow-wrap: normal;
       word-break: normal;
-           hyphens:auto;
+      hyphens:auto;
     }
+
+    .upgr-hx .hero h1 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
     .upgr-hx *{ min-width:0; }
 
@@ -158,8 +157,7 @@
 
     .upgr-hx p{ margin: 0 0 12px; }
 
-    .up
-    gr-hx .hr{ height:1px; background: var(--line); margin: 14px 0; }
+    .upgr-hx .hr{ height:1px; background: var(--line); margin: 14px 0; }
 
     .upgr-hx .wiki-text{ max-width: 840px; }
     .upgr-hx .icon-badge{
@@ -527,57 +525,6 @@
       .upgr-hx .nav-chips{ overflow-x:auto; -webkit-overflow-scrolling: touch; }
       .upgr-hx .nav-chips::-webkit-scrollbar{ display:none; }
     }
-
-
-    /* HX-MOBILE-HERO-STABILITY fix-7 (prevent narrow shrink + vertical text) */
-    @media (max-width: 768px) {
-      .upgr-hx,
-      .upgr-hx .bottom-safe,
-      .upgr-hx .hero,
-      .upgr-hx .wrap,
-      .upgr-hx .hero-grid,
-      .upgr-hx .hero-main {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-      }
-
-      .upgr-hx .wrap {
-        display: block !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      .upgr-hx .hero-grid {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        justify-items: stretch !important;
-        justify-content: stretch !important;
-        align-items: start !important;
-      }
-
-      .upgr-hx .kicker,
-      .upgr-hx .hero h1,
-      .upgr-hx .hero .lead,
-      .upgr-hx .hero-phone {
-        writing-mode: horizontal-tb !important;
-        text-orientation: mixed !important;
-
-        white-space: normal !important;
-        overflow-wrap: normal !important;
-        word-break: normal !important;
-        hyphens: auto;
-        max-width: 100% !important;
-      }
-
-      .upgr-hx .hero h1 {
-        overflow-wrap: anywhere !important;
-        word-break: break-word !important;
-      }
-    }
-
-    /* DEPLOY-MARK: HX-MOBILE-HERO-STABILITY fix-7 */
-
   </style>
 
   <!-- Structured data (минимум; детали лучше подставлять генератором под конкретный URL/язык) -->
@@ -628,7 +575,9 @@
 </head>
 
 <body>
-      <main class="app-content">
+  <header></header>
+  <aside class="sidebar"></aside>
+  <main class="app-content">
     <div class="upgr-hx" data-upgr-country="global" data-upgr-phone="{{PHONE_E164}}" data-upgr-phone-display="{{PHONE_DISPLAY}}" data-upgr-whatsapp="{{WHATSAPP_E164}}">
 
     <div class="bottom-safe">
@@ -1365,6 +1314,6 @@
     })();
   </script>
 
-
+  <script src="/assets/load-layout.js?v=20260205-1"></script>
 </body>
 </html>
