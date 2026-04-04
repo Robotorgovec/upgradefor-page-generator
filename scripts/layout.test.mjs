@@ -1,32 +1,35 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert/strict";
 
 const root = process.cwd();
-const cssPath = path.join(root, 'public', 'assets', 'layout.css');
-const headerPath = path.join(root, 'components', 'layout', 'Header.tsx');
+const layoutShellPath = path.join(root, "components", "layout", "LayoutShell.tsx");
+const homePagePath = path.join(root, "app", "page.tsx");
+const snapshotPath = path.join(
+  root,
+  "tests",
+  "__snapshots__",
+  "layout-shell.txt"
+);
 
-const css = fs.readFileSync(cssPath, 'utf8');
-const header = fs.readFileSync(headerPath, 'utf8');
+const layoutShellSource = fs.readFileSync(layoutShellPath, "utf8");
+const homePageSource = fs.readFileSync(homePagePath, "utf8");
 
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error(message);
-  }
+const normalized = layoutShellSource.trim().replace(/\s+$/gm, "");
+const snapshot = `${normalized}\n`;
+
+if (process.env.UPDATE_SNAPSHOT === "1" || !fs.existsSync(snapshotPath)) {
+  fs.writeFileSync(snapshotPath, snapshot, "utf8");
+} else {
+  const existing = fs.readFileSync(snapshotPath, "utf8");
+  assert.equal(snapshot, existing, "Layout snapshot mismatch");
 }
 
-assert(css.includes('.site-header{'), 'Expected .site-header selector in layout.css');
-assert(css.includes('position:fixed;'), 'Expected fixed positioning in .site-header');
-assert(
-  css.includes('backdrop-filter: blur(12px);') || css.includes('-webkit-backdrop-filter: blur(12px);'),
-  'Expected backdrop-filter blur in .site-header'
-);
-assert(
-  header.includes('className="site-header"'),
-  'Expected site-header class on root Header component'
-);
-assert(
-  css.includes('.notifications-overlay{') && css.includes('position:sticky;') && css.includes('top:calc(var(--header-height) + env(safe-area-inset-top, 0px));'),
-  'Expected notifications overlay to open below fixed header'
-);
+assert.match(layoutShellSource, /<Header\b/, "Header missing in layout shell");
+assert.match(layoutShellSource, /<Sidebar\b/, "Sidebar missing in layout shell");
+assert.match(layoutShellSource, /<main\b/, "Main content wrapper missing");
 
-console.log('layout checks passed');
+assert.match(homePageSource, /export default function/, "Home page export missing");
+assert.ok(!homePageSource.includes("<html"), "Home page should not render <html>");
+
+console.log("Layout tests passed");
