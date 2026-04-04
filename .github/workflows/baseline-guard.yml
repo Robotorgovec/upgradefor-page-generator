@@ -1,0 +1,25 @@
+name: Baseline Guard
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  baseline-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify baseline ancestor
+        run: git merge-base --is-ancestor 4a2e07b ${{ github.event.pull_request.head.sha }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Baseline smoke
+        run: BASE_URL=https://upgradefor.com npm run baseline:smoke
+      - name: Build
+        run: npm run build
+      - name: Layout test
+        run: npm run test:layout
