@@ -1,32 +1,74 @@
-// app/account/login/login-form.tsx
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+
+function normalizeEmail(value: unknown) {
+  return typeof value === "string" ? value.trim().toLowerCase() : "";
+}
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function getSafeNextPath(value: string | null | undefined, fallback = "/account") {
+  if (!value) {
+    return fallback;
+  }
+
+  if (!value.startsWith("/") || value.startsWith("//")) {
+    return fallback;
+  }
+
+  return value;
+}
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const searchParams = useSearchParams();
-  const nextPath = searchParams.get("next") || "/account";
+  const nextPath = getSafeNextPath(searchParams?.get("next"), "/account");
+  const queryError = searchParams?.get("error");
+  const queryReason = searchParams?.get("reason");
+  const wasRegistered = searchParams?.get("registered") === "1";
+  const wasLoggedOut = searchParams?.get("logged_out") === "1";
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [message, setMessage] = useState<{
     type: "error" | "success";
     text: string;
   } | null>(null);
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const queryMessage =
+    message ??
+    (wasLoggedOut
+      ? { type: "success" as const, text: "You have been signed out." }
+      : wasRegistered
+        ? { type: "success" as const, text: "Account created. Sign in to continue." }
+        : queryReason === "unauthorized"
+          ? { type: "error" as const, text: "Please sign in to access your account." }
+          : queryError === "CredentialsSignin"
+            ? { type: "error" as const, text: "Invalid email or password." }
+            : null);
+
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
     setMessage(null);
+
+    const normalizedEmail = normalizeEmail(email);
+    if (!isValidEmail(normalizedEmail)) {
+      setMessage({ type: "error", text: "Enter a valid email address." });
+      return;
+    }
+
     setLoading(true);
 
     try {
       const result = await signIn("credentials", {
-        email,
+        email: normalizedEmail,
         password,
         redirect: false,
       });
@@ -34,7 +76,7 @@ export default function LoginForm() {
       if (!result) {
         setMessage({
           type: "error",
-          text: "Не удалось выполнить вход. Попробуйте ещё раз.",
+          text: "Sign-in could not be completed. Please try again.",
         });
         return;
       }
@@ -42,16 +84,19 @@ export default function LoginForm() {
       if (result.error) {
         setMessage({
           type: "error",
-          text: "Неверный email или пароль.",
+          text:
+            result.error === "CredentialsSignin"
+              ? "Invalid email or password."
+              : "You are not authorized to sign in with these credentials.",
         });
         return;
       }
 
-      window.location.href = nextPath;
+      window.location.assign(nextPath);
     } catch {
       setMessage({
         type: "error",
-        text: "Ошибка сети. Попробуйте ещё раз.",
+        text: "Network error. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -61,11 +106,9 @@ export default function LoginForm() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1>Вход</h1>
+        <h1>Sign in</h1>
 
-        {message ? (
-          <p className={`auth-message ${message.type}`}>{message.text}</p>
-        ) : null}
+        {queryMessage ? <p className={`auth-message ${queryMessage.type}`}>{queryMessage.text}</p> : null}
 
         <form onSubmit={onSubmit}>
           <div>
@@ -75,13 +118,14 @@ export default function LoginForm() {
               type="email"
               autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
+              disabled={loading}
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password">Пароль</label>
+            <label htmlFor="password">Password</label>
 
             <div className="password-field">
               <input
@@ -89,16 +133,18 @@ export default function LoginForm() {
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
+                disabled={loading}
                 required
               />
 
               <button
                 type="button"
                 className="password-toggle"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-                title={showPassword ? "Скрыть пароль" : "Показать пароль"}
+                onClick={() => setShowPassword((value) => !value)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                title={showPassword ? "Hide password" : "Show password"}
+                disabled={loading}
               >
                 <span className="material-symbols-outlined">
                   {showPassword ? "visibility_off" : "visibility"}
@@ -108,9 +154,14 @@ export default function LoginForm() {
           </div>
 
           <button type="submit" disabled={loading}>
-            {loading ? "Вход..." : "Войти"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
+
+        <div className="auth-links">
+          <Link href="/account/register">Create account</Link>
+          <Link href="/account/forgot">Forgot password?</Link>
+        </div>
       </div>
     </div>
   );

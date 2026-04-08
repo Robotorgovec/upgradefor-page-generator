@@ -1,0 +1,8 @@
+ALTER TABLE "User"
+ADD COLUMN "profileCompleted" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN "welcomeSeen" BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE "Profile"
+ADD COLUMN "headline" TEXT,
+ADD COLUMN "location" TEXT,
+ADD COLUMN "links" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];

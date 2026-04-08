@@ -6,19 +6,40 @@ import { prisma } from "../../../../lib/prisma";
 
 type ProfilePayload = {
   displayName?: string;
+  role?: string;
   headline?: string;
   bio?: string;
   location?: string;
   links?: string[];
-  avatarUrl?: string;
 };
 
-function isValidUrl(value: string) {
+type ProfileFieldErrors = {
+  displayName?: string;
+  role?: string;
+  links?: string;
+};
+
+const ACCOUNT_TYPES = ["customer", "provider"] as const;
+
+function getAccountType(value: string | undefined) {
+  const normalized = value?.trim().toLowerCase();
+
+  return ACCOUNT_TYPES.includes(normalized as (typeof ACCOUNT_TYPES)[number])
+    ? (normalized as (typeof ACCOUNT_TYPES)[number])
+    : null;
+}
+
+function normalizeUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
+
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return null;
+    }
+
+    return url.toString();
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -30,48 +51,70 @@ export async function PATCH(request: Request) {
   }
 
   const body = (await request.json().catch(() => null)) as ProfilePayload | null;
+  const fieldErrors: ProfileFieldErrors = {};
 
   const displayName = body?.displayName?.trim() ?? "";
   if (displayName.length < 2) {
-    return NextResponse.json({ message: "Имя должно быть минимум из 2 символов." }, { status: 400 });
+    fieldErrors.displayName = "Enter a name with at least 2 characters.";
   }
 
-  const links = (body?.links ?? []).map((link) => link.trim()).filter(Boolean);
+  const role = getAccountType(body?.role);
+  if (!role) {
+    fieldErrors.role = "Choose a valid account type.";
+  }
+
+  const rawLinks = (body?.links ?? []).map((link) => link.trim()).filter(Boolean);
+  const links = rawLinks.map(normalizeUrl);
+
   if (links.length > 3) {
-    return NextResponse.json({ message: "Можно добавить не больше 3 ссылок." }, { status: 400 });
+    fieldErrors.links = "You can add up to 3 links.";
+  } else if (links.some((link) => !link)) {
+    fieldErrors.links = "Links must start with http:// or https://.";
   }
 
-  if (links.some((link) => !isValidUrl(link))) {
-    return NextResponse.json({ message: "Проверьте формат ссылок (http/https)." }, { status: 400 });
+  if (Object.keys(fieldErrors).length > 0) {
+    return NextResponse.json(
+      {
+        message: "Fix the highlighted fields and try again.",
+        fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
-  const profileData = {
-    displayName,
-    headline: body?.headline?.trim() || null,
-    bio: body?.bio?.trim() || null,
-    location: body?.location?.trim() || null,
-    links,
-    avatarUrl: body?.avatarUrl,
-  };
+  const accountType = role as (typeof ACCOUNT_TYPES)[number];
+  const normalizedLinks = links.filter((link): link is string => Boolean(link));
 
-  const user = await prisma.user.update({
+  await prisma.user.update({
     where: { id: session.user.id },
     data: {
+      role: accountType,
       profileCompleted: true,
+      welcomeSeen: true,
       profile: {
         upsert: {
-          create: profileData,
-          update: profileData,
+          create: {
+            displayName,
+            headline: body?.headline?.trim() || null,
+            bio: body?.bio?.trim() || null,
+            location: body?.location?.trim() || null,
+            links: normalizedLinks,
+          },
+          update: {
+            displayName,
+            headline: body?.headline?.trim() || null,
+            bio: body?.bio?.trim() || null,
+            location: body?.location?.trim() || null,
+            links: normalizedLinks,
+          },
         },
       },
     },
-    select: {
-      id: true,
-      email: true,
-      profileCompleted: true,
-      profile: true,
-    },
   });
 
-  return NextResponse.json(user);
+  return NextResponse.json({
+    ok: true,
+    message: "Profile saved. Redirecting to your dashboard...",
+    redirectTo: "/account/dashboard",
+  });
 }

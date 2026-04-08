@@ -7,15 +7,9 @@ import RegisterForm from "./register-form";
 export default async function RegisterPage() {
   const session = await getServerSession(authOptions);
 
-  if (session) {
+  if (session?.user) {
     redirect("/account");
   }
 
-  return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <RegisterForm />
-      </div>
-    </div>
-  );
+  return <RegisterForm />;
 }

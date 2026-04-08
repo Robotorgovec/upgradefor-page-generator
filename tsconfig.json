@@ -11,7 +11,7 @@
     "strict": false,
     "noEmit": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "incremental": true,
     "esModuleInterop": true,
