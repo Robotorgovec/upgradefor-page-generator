@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { logVerificationLink, sendEmail } from "../../../../lib/mail";
 import { prisma } from "../../../../lib/prisma";
 import { rateLimit } from "../../../../lib/rate-limit";
+import { validateSameOrigin } from "../../../../lib/request-security";
 import { generateRawToken, hashToken } from "../../../../lib/tokens";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,6 +23,11 @@ function getBaseUrl() {
 }
 
 export async function POST(request: Request) {
+  const originError = validateSameOrigin(request);
+  if (originError) {
+    return originError;
+  }
+
   const ip = getClientIp(request);
   const limitResult = rateLimit({ key: `forgot:${ip}`, limit: 5, windowMs: 10 * 60 * 1000 });
 
@@ -37,7 +43,6 @@ export async function POST(request: Request) {
   }
 
   const user = await prisma.user.findUnique({ where: { email }, select: { id: true, email: true } });
-
   if (!user) {
     return NextResponse.json({ ok: true });
   }
@@ -60,10 +65,10 @@ export async function POST(request: Request) {
 
   await sendEmail({
     to: user.email,
-    subject: "Сброс пароля",
-    text: "Перейдите по ссылке, чтобы задать новый пароль",
+    subject: "Password reset",
+    text: "Open the link to set a new password.",
     html: `
-      <p>Перейдите по ссылке, чтобы задать новый пароль:</p>
+      <p>Open the link below to set a new password:</p>
       <p><a href="${resetLink}">${resetLink}</a></p>
     `,
   });

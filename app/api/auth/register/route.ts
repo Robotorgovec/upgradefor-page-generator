@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
+import { sendEmail, logVerificationLink } from "../../../../lib/mail";
 import { prisma } from "../../../../lib/prisma";
 import { rateLimit } from "../../../../lib/rate-limit";
-import { sendEmail, logVerificationLink } from "../../../../lib/mail";
+import { getPasswordValidationMessage, validateSameOrigin } from "../../../../lib/request-security";
 import { generateRawToken, hashToken } from "../../../../lib/tokens";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PASSWORD_MIN_LENGTH = 8;
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
 
 function getClientIp(request: Request) {
@@ -24,12 +24,17 @@ function getBaseUrl() {
 }
 
 export async function POST(request: Request) {
+  const originError = validateSameOrigin(request);
+  if (originError) {
+    return originError;
+  }
+
   const ip = getClientIp(request);
   const limitResult = rateLimit({ key: `register:${ip}`, limit: 5, windowMs: 10 * 60 * 1000 });
 
   if (!limitResult.ok) {
     return NextResponse.json(
-      { ok: false, code: "RATE_LIMIT", message: "Слишком много попыток. Попробуйте позже." },
+      { ok: false, code: "RATE_LIMIT", message: "Too many attempts. Please try again later." },
       { status: 429 }
     );
   }
@@ -40,18 +45,17 @@ export async function POST(request: Request) {
 
   if (!email || !EMAIL_REGEX.test(email)) {
     return NextResponse.json(
-      { ok: false, code: "INVALID_EMAIL", message: "Введите корректный email." },
+      { ok: false, code: "INVALID_EMAIL", message: "Enter a valid email address." },
       { status: 400 }
     );
   }
 
-  if (typeof password !== "string" || password.length < PASSWORD_MIN_LENGTH) {
+  const passwordError =
+    typeof password === "string" ? getPasswordValidationMessage(password) : "Password is required.";
+
+  if (passwordError) {
     return NextResponse.json(
-      {
-        ok: false,
-        code: "INVALID_PASSWORD",
-        message: `Пароль должен быть не короче ${PASSWORD_MIN_LENGTH} символов.`,
-      },
+      { ok: false, code: "INVALID_PASSWORD", message: passwordError },
       { status: 400 }
     );
   }
@@ -59,7 +63,7 @@ export async function POST(request: Request) {
   const existingUser = await prisma.user.findUnique({ where: { email }, select: { id: true } });
   if (existingUser) {
     return NextResponse.json(
-      { ok: false, code: "USER_EXISTS", message: "Пользователь с таким email уже существует." },
+      { ok: false, code: "USER_EXISTS", message: "A user with this email already exists." },
       { status: 409 }
     );
   }
@@ -100,13 +104,16 @@ export async function POST(request: Request) {
 
   await sendEmail({
     to: user.email,
-    subject: "Подтверждение email",
-    text: "Перейдите по ссылке для подтверждения",
+    subject: "Email verification",
+    text: "Open the link to verify your email address.",
     html: `
-      <p>Перейдите по ссылке для подтверждения email:</p>
+      <p>Open the link below to verify your email address:</p>
       <p><a href="${verifyLink}">${verifyLink}</a></p>
     `,
   });
 
-  return NextResponse.json({ ok: true, message: "Регистрация успешна. Проверьте почту." }, { status: 201 });
+  return NextResponse.json(
+    { ok: true, message: "Registration successful. Check your email for the verification link." },
+    { status: 201 }
+  );
 }

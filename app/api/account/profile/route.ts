@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { authOptions } from "../../../../lib/auth";
 import { prisma } from "../../../../lib/prisma";
+import { validateSameOrigin } from "../../../../lib/request-security";
 
 type ProfilePayload = {
   displayName?: string;
@@ -23,6 +24,11 @@ function isValidUrl(value: string) {
 }
 
 export async function PATCH(request: Request) {
+  const originError = validateSameOrigin(request);
+  if (originError) {
+    return originError;
+  }
+
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {

@@ -14,6 +14,7 @@ type ResendPayload = {
 };
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const RESEND_USER_AGENT = "UpgradeForAuth/1.0 (+https://upgradefor.com)";
 
 function getBaseUrl() {
   return process.env.NEXTAUTH_URL ?? "http://localhost:3000";
@@ -36,6 +37,7 @@ async function sendWithResend(payload: ResendPayload) {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "User-Agent": RESEND_USER_AGENT,
     },
     body: JSON.stringify(payload),
   });

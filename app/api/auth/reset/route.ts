@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "../../../../lib/prisma";
 import { rateLimit } from "../../../../lib/rate-limit";
+import { getPasswordValidationMessage, validateSameOrigin } from "../../../../lib/request-security";
 import { hashToken } from "../../../../lib/tokens";
-
-const PASSWORD_MIN_LENGTH = 8;
 
 function getClientIp(request: Request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -17,6 +16,11 @@ function getClientIp(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const originError = validateSameOrigin(request);
+  if (originError) {
+    return originError;
+  }
+
   const ip = getClientIp(request);
   const limitResult = rateLimit({ key: `reset:${ip}`, limit: 10, windowMs: 10 * 60 * 1000 });
 
@@ -32,8 +36,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, code: "TOKEN_INVALID" }, { status: 400 });
   }
 
-  if (password.length < PASSWORD_MIN_LENGTH) {
-    return NextResponse.json({ ok: false, code: "INVALID_PASSWORD" }, { status: 400 });
+  const passwordError = getPasswordValidationMessage(password);
+  if (passwordError) {
+    return NextResponse.json({ ok: false, code: "INVALID_PASSWORD", message: passwordError }, { status: 400 });
   }
 
   const tokenHash = hashToken(token);
