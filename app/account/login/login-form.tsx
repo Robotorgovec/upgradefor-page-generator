@@ -25,7 +25,22 @@ function getSafeNextPath(value: string | null | undefined, fallback = "/account"
   return value;
 }
 
-export default function LoginForm() {
+function getAuthErrorMessage(error: string | null | undefined) {
+  switch (error) {
+    case "CredentialsSignin":
+      return "Invalid email or password.";
+    case "AccessDenied":
+      return "Please verify your email before signing in.";
+    case "google_email_not_verified":
+      return "Your Google account must have a verified email address.";
+    case "google_account_error":
+      return "Google sign-in could not be completed. Please try again.";
+    default:
+      return "You are not authorized to sign in with these credentials.";
+  }
+}
+
+export default function LoginForm({ googleEnabled }: { googleEnabled: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const searchParams = useSearchParams();
@@ -36,22 +51,24 @@ export default function LoginForm() {
   const wasLoggedOut = searchParams?.get("logged_out") === "1";
 
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [credentialsLoading, setCredentialsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [message, setMessage] = useState<{
     type: "error" | "success";
     text: string;
   } | null>(null);
 
+  const loading = credentialsLoading || googleLoading;
   const queryMessage =
     message ??
     (wasLoggedOut
       ? { type: "success" as const, text: "You have been signed out." }
       : wasRegistered
-        ? { type: "success" as const, text: "Account created. Sign in to continue." }
+        ? { type: "success" as const, text: "Account created. Verify your email, then sign in to continue." }
         : queryReason === "unauthorized"
           ? { type: "error" as const, text: "Please sign in to access your account." }
-          : queryError === "CredentialsSignin"
-            ? { type: "error" as const, text: "Invalid email or password." }
+          : queryError
+            ? { type: "error" as const, text: getAuthErrorMessage(queryError) }
             : null);
 
   async function onSubmit(event: React.FormEvent) {
@@ -64,7 +81,7 @@ export default function LoginForm() {
       return;
     }
 
-    setLoading(true);
+    setCredentialsLoading(true);
 
     try {
       const result = await signIn("credentials", {
@@ -84,10 +101,7 @@ export default function LoginForm() {
       if (result.error) {
         setMessage({
           type: "error",
-          text:
-            result.error === "CredentialsSignin"
-              ? "Invalid email or password."
-              : "You are not authorized to sign in with these credentials.",
+          text: getAuthErrorMessage(result.error),
         });
         return;
       }
@@ -99,7 +113,22 @@ export default function LoginForm() {
         text: "Network error. Please try again.",
       });
     } finally {
-      setLoading(false);
+      setCredentialsLoading(false);
+    }
+  }
+
+  async function onGoogleClick() {
+    setMessage(null);
+    setGoogleLoading(true);
+
+    try {
+      await signIn("google", { callbackUrl: "/account" });
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Google sign-in could not be started. Please try again.",
+      });
+      setGoogleLoading(false);
     }
   }
 
@@ -109,6 +138,20 @@ export default function LoginForm() {
         <h1>Sign in</h1>
 
         {queryMessage ? <p className={`auth-message ${queryMessage.type}`}>{queryMessage.text}</p> : null}
+
+        {googleEnabled ? (
+          <>
+            <button type="button" className="auth-provider-button" onClick={onGoogleClick} disabled={loading}>
+              <span className="auth-provider-mark" aria-hidden="true">
+                G
+              </span>
+              <span>{googleLoading ? "Redirecting to Google..." : "Continue with Google"}</span>
+            </button>
+            <div className="auth-divider" aria-hidden="true">
+              <span>or continue with email</span>
+            </div>
+          </>
+        ) : null}
 
         <form onSubmit={onSubmit}>
           <div>
@@ -154,7 +197,7 @@ export default function LoginForm() {
           </div>
 
           <button type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
+            {credentialsLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 

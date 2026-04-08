@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-import { authOptions } from "../../../lib/auth";
+import { authOptions, isGoogleAuthEnabled } from "../../../lib/auth";
 import LoginForm from "./login-form";
 
 function getSafeNextPath(value: string | null | undefined, fallback = "/account") {
@@ -30,5 +30,5 @@ export default async function LoginPage({
     redirect(nextPath);
   }
 
-  return <LoginForm />;
+  return <LoginForm googleEnabled={isGoogleAuthEnabled()} />;
 }

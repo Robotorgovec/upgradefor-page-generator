@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -34,17 +35,33 @@ function getPasswordValidationError(password: unknown) {
   return null;
 }
 
-export default function RegisterForm() {
+function getAuthErrorMessage(error: string | null | undefined) {
+  switch (error) {
+    case "google_email_not_verified":
+      return "Your Google account must have a verified email address.";
+    case "google_account_error":
+      return "Google sign-in could not be completed. Please try again.";
+    default:
+      return null;
+  }
+}
+
+export default function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
+  const searchParams = useSearchParams();
+  const queryError = searchParams?.get("error");
+  const queryMessage = getAuthErrorMessage(queryError);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [submitState, setSubmitState] = useState<"idle" | "registering" | "signingIn">("idle");
+  const [submitState, setSubmitState] = useState<"idle" | "registering" | "signingIn" | "google">("idle");
   const [message, setMessage] = useState<{
     type: "error" | "success";
     text: string;
   } | null>(null);
 
   const loading = submitState !== "idle";
+  const visibleMessage = message ?? (queryMessage ? { type: "error" as const, text: queryMessage } : null);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -113,12 +130,41 @@ export default function RegisterForm() {
     }
   }
 
+  async function onGoogleClick() {
+    setMessage(null);
+    setSubmitState("google");
+
+    try {
+      await signIn("google", { callbackUrl: "/account" });
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Google sign-in could not be started. Please try again.",
+      });
+      setSubmitState("idle");
+    }
+  }
+
   return (
     <div className="auth-page">
       <div className="auth-card">
         <h1>Create account</h1>
 
-        {message ? <p className={`auth-message ${message.type}`}>{message.text}</p> : null}
+        {visibleMessage ? <p className={`auth-message ${visibleMessage.type}`}>{visibleMessage.text}</p> : null}
+
+        {googleEnabled ? (
+          <>
+            <button type="button" className="auth-provider-button" onClick={onGoogleClick} disabled={loading}>
+              <span className="auth-provider-mark" aria-hidden="true">
+                G
+              </span>
+              <span>{submitState === "google" ? "Redirecting to Google..." : "Continue with Google"}</span>
+            </button>
+            <div className="auth-divider" aria-hidden="true">
+              <span>or create an account with email</span>
+            </div>
+          </>
+        ) : null}
 
         <form onSubmit={onSubmit}>
           <div>

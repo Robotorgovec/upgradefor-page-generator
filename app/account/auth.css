@@ -34,6 +34,76 @@
   color: var(--text);
 }
 
+.auth-provider-button {
+  width: 100%;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.05s ease;
+}
+
+.auth-provider-button:hover {
+  border-color: var(--btn-primary-bg);
+}
+
+.auth-provider-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--form-focus-ring);
+}
+
+.auth-provider-button:active {
+  transform: translateY(1px);
+}
+
+.auth-provider-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-provider-mark {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--btn-primary-bg);
+  font-weight: 800;
+}
+
+.auth-divider {
+  position: relative;
+  margin: 18px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid var(--card-border);
+}
+
+.auth-divider span {
+  position: relative;
+  padding: 0 12px;
+  background: var(--surface);
+}
+
 .auth-message {
   margin: 0 0 14px;
   font-size: 14px;
@@ -181,4 +251,28 @@
 .password-toggle .material-symbols-outlined {
   font-size: 20px;
   line-height: 1;
+}
+
+.auth-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.auth-links a {
+  color: var(--btn-primary-bg);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+.auth-hint {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
 }

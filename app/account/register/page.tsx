@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-import { authOptions } from "../../../lib/auth";
+import { authOptions, isGoogleAuthEnabled } from "../../../lib/auth";
 import RegisterForm from "./register-form";
 
 export default async function RegisterPage() {
@@ -11,5 +11,5 @@ export default async function RegisterPage() {
     redirect("/account");
   }
 
-  return <RegisterForm />;
+  return <RegisterForm googleEnabled={isGoogleAuthEnabled()} />;
 }
