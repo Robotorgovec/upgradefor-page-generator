@@ -3255,3 +3255,84 @@ body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::afte
   }
 }
 
+/* =========================================================
+   HOMEPAGE SYMMETRY LOCK v1 (EOF final override)
+   Scope: homepage only (.is-home). No shell/header/sidebar changes.
+   Goals:
+   - one consistent stage width + gutters across all homepage sections
+   - hero and special sections aligned to the same axis
+   - fewer avoidable wraps on wide screens, graceful wraps on narrow screens
+   ========================================================= */
+
+/* A) Single source of truth for homepage geometry */
+.is-home {
+  /* Wider stage on big screens to reduce premature wraps, but still bounded */
+  --home-stage-max: 1480px;
+
+  /* Unified gutters */
+  --home-gutter: clamp(18px, 2.4vw, 30px);
+
+  /* Unified copy width for section intros (allow more width on wide screens) */
+  --home-copy-max: clamp(66ch, 72vw, 88ch);
+
+  /* Derived */
+  --home-stage-width: min(var(--home-stage-max), 100%);
+}
+
+/* When sidebar is open, keep stage slightly more conservative */
+body.menu-open .is-home {
+  --home-stage-max: 1400px;
+  --home-copy-max: clamp(64ch, 68vw, 84ch);
+}
+
+/* B) Apply geometry to every homepage section wrapper */
+.is-home main.app-content > section.wrap {
+  max-width: var(--home-stage-width);
+  margin-inline: auto;
+  padding-inline: var(--home-gutter);
+}
+
+/* C) Force Hero section to respect the same axis (avoid "hero has its own gutters") */
+.is-home section.wrap.home-hero {
+  max-width: var(--home-stage-width);
+  margin-inline: auto;
+  padding-inline: var(--home-gutter);
+}
+
+/* D) Section titles + intros: consistent alignment and better wrap quality */
+.is-home .section-title,
+.is-home .card h3 {
+  text-wrap: balance; /* progressive enhancement */
+}
+
+.is-home .lead,
+.is-home .card p,
+.is-home .card li {
+  text-wrap: pretty; /* progressive enhancement */
+}
+
+/* Avoid overly narrow intros on wide screens */
+.is-home .lead {
+  max-inline-size: min(100%, var(--home-copy-max));
+}
+
+/* E) Fix the "single section centered title" symmetry breaker (How it works) */
+.is-home .home-how .section-title {
+  text-align: left;
+}
+
+/* Keep the how-it-works grid aligned to the same stage axis */
+.is-home .home-how-grid {
+  max-width: 100%;
+  margin-inline: 0;
+}
+
+/* F) Narrow screens safety: prevent horizontal scroll from long tokens */
+@media (max-width: 360px) {
+  .is-home .lead,
+  .is-home .card p,
+  .is-home .card li {
+    overflow-wrap: anywhere;
+  }
+}
+
