@@ -3083,3 +3083,175 @@ body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::afte
   }
 }
 
+/* =========================================================
+   Home hero: 1-column mode polish (CSS-only first pass)
+   - Neutralize desktop hero media card when hero stacks
+   - Use in-flow media to avoid tall empty gaps
+   - Keep centered composition with readable left-aligned lead
+   ========================================================= */
+
+@media (max-width: 1460px) {
+  body.menu-open .is-home .home-hero {
+    justify-items: center;
+  }
+
+  body.menu-open .is-home .hero-left-inner {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  body.menu-open .is-home .hero-lead,
+  body.menu-open .is-home .hero .lead {
+    text-align: left;
+    margin-inline: auto;
+    justify-self: center;
+    width: min(100%, 61ch);
+  }
+
+  body.menu-open .is-home .hero-art.hero-art-desktop {
+    display: none;
+    min-height: 0;
+  }
+
+  body.menu-open .is-home .hero-art.hero-art-mobile {
+    display: block;
+    width: min(100%, 360px);
+    margin: 0 auto;
+  }
+
+  body.menu-open .is-home .hero-chip-list,
+  body.menu-open .is-home .hero .cta {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1180px) {
+  .is-home .home-hero {
+    justify-items: center;
+  }
+
+  .is-home .hero-left-inner {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .is-home .hero-lead,
+  .is-home .hero .lead {
+    text-align: left;
+    margin-inline: auto;
+    justify-self: center;
+    width: min(100%, 61ch);
+  }
+
+  .is-home .hero-art.hero-art-desktop {
+    display: none;
+    min-height: 0;
+  }
+
+  .is-home .hero-art.hero-art-mobile {
+    display: block;
+    width: min(100%, 360px);
+    margin: 0 auto;
+  }
+
+  .is-home .hero-chip-list,
+  .is-home .hero .cta {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 980px) {
+  .is-home .hero .cta {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Homepage typography & width polish (homepage-only)
+   - Reduce premature wraps on wide screens
+   - Keep section titles anchored to their content columns
+   - Preserve accepted hero stacked baseline
+   ========================================================= */
+
+.is-home {
+  --home-stage-width: min(1448px, calc(100vw - clamp(28px, 3.4vw, 88px)));
+  --home-hero-copy-max: clamp(780px, 57vw, 860px);
+  --home-section-copy-max: clamp(64ch, 68vw, 82ch);
+  --home-hero-rest-max: clamp(15ch, 18vw, 19ch);
+  --home-hero-subtitle-max: clamp(36ch, 43vw, 44ch);
+  --home-hero-lead-max: clamp(61ch, 54vw, 68ch);
+}
+
+@media (min-width: 1181px) {
+  body.menu-open .is-home {
+    --home-stage-width: min(1400px, calc(100vw - clamp(28px, 3vw, 80px)));
+    --home-hero-copy-max: clamp(760px, 52vw, 820px);
+    --home-section-copy-max: clamp(62ch, 64vw, 78ch);
+    --home-card-gap: clamp(16px, 1.4vw, 22px);
+  }
+}
+
+.is-home main.app-content > section.wrap {
+  padding-inline: clamp(18px, 2.4vw, 30px);
+}
+
+.is-home main.app-content > section.wrap > .section-title,
+.is-home .card h3 {
+  text-wrap: balance;
+}
+
+.is-home main.app-content > section.wrap > .section-title {
+  margin-inline: 0;
+  text-align: left;
+}
+
+.is-home main.app-content > section.wrap > .lead,
+.is-home .card p,
+.is-home .card li {
+  text-wrap: pretty;
+}
+
+.is-home main.app-content > section.wrap > .lead {
+  max-width: min(100%, var(--home-section-copy-max));
+  margin-inline: 0;
+}
+
+.is-home .home-how .section-title {
+  max-width: 1180px;
+  margin-inline: auto;
+  text-align: left;
+}
+
+@media (min-width: 1181px) {
+  .is-home .hero-left-inner {
+    max-width: min(100%, var(--home-hero-copy-max));
+  }
+
+  .is-home .hero-rest {
+    max-width: min(100%, var(--home-hero-rest-max));
+    text-wrap: balance;
+  }
+
+  .is-home .hero-subtitle {
+    max-width: min(100%, var(--home-hero-subtitle-max));
+    text-wrap: pretty;
+  }
+
+  .is-home .hero-lead,
+  .is-home .hero .lead {
+    max-width: min(100%, var(--home-hero-lead-max));
+  }
+}
+
+@media (max-width: 360px) {
+  .is-home main.app-content > section.wrap > .lead,
+  .is-home .card p,
+  .is-home .card li,
+  .is-home .hero-subtitle,
+  .is-home .hero-lead,
+  .is-home .hero .lead {
+    overflow-wrap: anywhere;
+  }
+}
+
