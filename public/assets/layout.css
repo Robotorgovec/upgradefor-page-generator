@@ -3471,55 +3471,60 @@ body.menu-open .is-home {
 }
 
 /* =========================================================
-   HOMEPAGE HERO SYMMETRY HOTFIX v3 (EOF FINAL)
-   Goal:
-   - Desktop (>=1181px): make H1 more compact by widening .hero-rest
-   - Stacked (<=1180px) and menu-open stacked (<=1460px): center subtitle + lead
-   - Keep one-art-wrapper rule and prevent narrow-screen overflow
+   HOMEPAGE HERO ALIGNMENT CONTRACT v3.1 (EOF FINAL)
+   Contract:
+   - 2-column (image on the right): LEFT aligned copy + chips + CTA
+   - stacked (image moved below): CENTER aligned composition
    Scope: ONLY .is-home home hero
+   NOTE: This block must remain the LAST thing in layout.css
    ========================================================= */
 
-/* 1) Wide desktop: reduce avoidable 3-line wrapping */
+/* 1) 2-column state (desktop/tablet where image is still on the right):
+      force LEFT alignment and prevent premature centering in menu-open */
 @media (min-width: 1181px) {
+  .is-home section.wrap.home-hero .hero-content {
+    justify-self: start;
+  }
+
   .is-home section.wrap.home-hero .hero-left-inner {
+    text-align: left;
+    margin-inline: 0;
     max-width: min(100%, clamp(820px, 58vw, 960px));
   }
 
-  /* Key: allow .hero-rest to land in ~2 lines on wide screens */
-  .is-home section.wrap.home-hero .hero-rest {
-    max-width: min(100%, clamp(22ch, 26vw, 28ch));
-    text-wrap: pretty; /* avoid "balanced 3-line" when 2-line is possible */
-  }
-
-  /* Keep subtitle a bit wider to avoid early wraps */
-  .is-home section.wrap.home-hero .hero-subtitle {
-    max-width: min(100%, clamp(44ch, 46vw, 58ch));
-  }
-
-  /* Keep lead readable but not overly cramped */
+  .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
   .is-home section.wrap.home-hero .hero .lead {
-    max-width: min(100%, clamp(64ch, 50vw, 78ch));
+    text-align: left;
+    margin-inline: 0;
   }
 
-  /* menu-open desktop is narrower: slightly smaller rest max */
+  .is-home section.wrap.home-hero .hero-chip-list,
+  .is-home section.wrap.home-hero .cta {
+    justify-content: flex-start;
+  }
+
+  /* Key: reduce avoidable 3-line H1 by widening hero-rest on wide screens */
+  .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(22ch, 26vw, 28ch));
+    text-wrap: pretty;
+  }
+
+  /* menu-open: content is narrower, so keep hero-rest slightly tighter, but still LEFT */
   body.menu-open .is-home section.wrap.home-hero .hero-rest {
     max-width: min(100%, clamp(18ch, 22vw, 24ch));
   }
 }
 
-/* 2) Generic stacked hero: center subtitle + lead for true symmetry */
+/* 2) Stacked state (image moved below):
+      CENTER aligned composition as requested */
 @media (max-width: 1180px) {
   .is-home section.wrap.home-hero .hero-left-inner {
     text-align: center;
     margin-inline: auto;
   }
 
-  .is-home section.wrap.home-hero .hero-subtitle {
-    text-align: center;
-    margin-inline: auto;
-  }
-
+  .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
   .is-home section.wrap.home-hero .hero .lead {
     text-align: center;
@@ -3533,32 +3538,8 @@ body.menu-open .is-home {
   }
 }
 
-/* 3) menu-open stacked happens earlier: apply same symmetry */
-@media (max-width: 1460px) {
-  body.menu-open .is-home section.wrap.home-hero .hero-left-inner {
-    text-align: center;
-    margin-inline: auto;
-  }
-
-  body.menu-open .is-home section.wrap.home-hero .hero-subtitle {
-    text-align: center;
-    margin-inline: auto;
-  }
-
-  body.menu-open .is-home section.wrap.home-hero .hero-lead,
-  body.menu-open .is-home section.wrap.home-hero .hero .lead {
-    text-align: center;
-    margin-inline: auto;
-    width: min(100%, 68ch);
-  }
-
-  body.menu-open .is-home section.wrap.home-hero .hero-chip-list,
-  body.menu-open .is-home section.wrap.home-hero .cta {
-    justify-content: center;
-  }
-}
-
-/* 4) Narrow-screen safety (reflow) */
+/* 3) Narrow-screen safety (reflow):
+      prevent rare long tokens from causing horizontal scroll */
 @media (max-width: 360px) {
   .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
