@@ -3470,3 +3470,100 @@ body.menu-open .is-home {
   }
 }
 
+/* =========================================================
+   HOMEPAGE HERO SYMMETRY HOTFIX v3 (EOF FINAL)
+   Goal:
+   - Desktop (>=1181px): make H1 more compact by widening .hero-rest
+   - Stacked (<=1180px) and menu-open stacked (<=1460px): center subtitle + lead
+   - Keep one-art-wrapper rule and prevent narrow-screen overflow
+   Scope: ONLY .is-home home hero
+   ========================================================= */
+
+/* 1) Wide desktop: reduce avoidable 3-line wrapping */
+@media (min-width: 1181px) {
+  .is-home section.wrap.home-hero .hero-left-inner {
+    max-width: min(100%, clamp(820px, 58vw, 960px));
+  }
+
+  /* Key: allow .hero-rest to land in ~2 lines on wide screens */
+  .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(22ch, 26vw, 28ch));
+    text-wrap: pretty; /* avoid "balanced 3-line" when 2-line is possible */
+  }
+
+  /* Keep subtitle a bit wider to avoid early wraps */
+  .is-home section.wrap.home-hero .hero-subtitle {
+    max-width: min(100%, clamp(44ch, 46vw, 58ch));
+  }
+
+  /* Keep lead readable but not overly cramped */
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    max-width: min(100%, clamp(64ch, 50vw, 78ch));
+  }
+
+  /* menu-open desktop is narrower: slightly smaller rest max */
+  body.menu-open .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(18ch, 22vw, 24ch));
+  }
+}
+
+/* 2) Generic stacked hero: center subtitle + lead for true symmetry */
+@media (max-width: 1180px) {
+  .is-home section.wrap.home-hero .hero-left-inner {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .is-home section.wrap.home-hero .hero-subtitle {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    text-align: center;
+    margin-inline: auto;
+    width: min(100%, 68ch);
+  }
+
+  .is-home section.wrap.home-hero .hero-chip-list,
+  .is-home section.wrap.home-hero .cta {
+    justify-content: center;
+  }
+}
+
+/* 3) menu-open stacked happens earlier: apply same symmetry */
+@media (max-width: 1460px) {
+  body.menu-open .is-home section.wrap.home-hero .hero-left-inner {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-subtitle {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-lead,
+  body.menu-open .is-home section.wrap.home-hero .hero .lead {
+    text-align: center;
+    margin-inline: auto;
+    width: min(100%, 68ch);
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-chip-list,
+  body.menu-open .is-home section.wrap.home-hero .cta {
+    justify-content: center;
+  }
+}
+
+/* 4) Narrow-screen safety (reflow) */
+@media (max-width: 360px) {
+  .is-home section.wrap.home-hero .hero-subtitle,
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    overflow-wrap: anywhere;
+  }
+}
+
