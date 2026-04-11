@@ -3471,65 +3471,141 @@ body.menu-open .is-home {
 }
 
 /* =========================================================
-   HOMEPAGE HERO ALIGNMENT CONTRACT v3.1 (EOF FINAL)
+   HOMEPAGE HERO ALIGNMENT CONTRACT v3.2 (EOF FINAL)
+   Single source of truth for first-screen alignment.
+
    Contract:
-   - 2-column (image on the right): LEFT aligned copy + chips + CTA
-   - stacked (image moved below): CENTER aligned composition
-   Scope: ONLY .is-home home hero
-   NOTE: This block must remain the LAST thing in layout.css
+   - 2-column hero (image stays on the right): ALL hero copy is left-aligned
+   - stacked hero (image moves below): hero composition is centered
+   - H1 never uses justify
+   - justify is allowed only for long descriptive text on medium stacked widths
+   - no horizontal scroll
+   - one visible hero art wrapper only
    ========================================================= */
 
-/* 1) 2-column state (desktop/tablet where image is still on the right):
-      force LEFT alignment and prevent premature centering in menu-open */
-@media (min-width: 1181px) {
-  .is-home section.wrap.home-hero .hero-content {
-    justify-self: start;
-  }
+/* Shared guardrails */
+.is-home section.wrap.home-hero .hero-rest {
+  display: block;
+  margin-inline: auto;
+  text-wrap: balance;
+}
 
+.is-home section.wrap.home-hero .hero-subtitle,
+.is-home section.wrap.home-hero .hero-lead,
+.is-home section.wrap.home-hero .hero .lead {
+  text-wrap: pretty;
+}
+
+/* =========================================================
+   1) TWO-COLUMN HERO:
+   before the image drops below, everything stays left-aligned
+   ========================================================= */
+@media (min-width: 1181px) {
   .is-home section.wrap.home-hero .hero-left-inner {
     text-align: left;
+    justify-self: start;
+    align-self: center;
     margin-inline: 0;
-    max-width: min(100%, clamp(820px, 58vw, 960px));
+    max-width: min(100%, clamp(820px, 56vw, 940px));
   }
 
+  .is-home section.wrap.home-hero h1,
+  .is-home section.wrap.home-hero .hero-brand,
+  .is-home section.wrap.home-hero .hero-rest,
   .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
   .is-home section.wrap.home-hero .hero .lead {
     text-align: left;
     margin-inline: 0;
+  }
+
+  .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(23ch, 29vw, 31ch));
+  }
+
+  .is-home section.wrap.home-hero .hero-subtitle {
+    max-width: min(100%, clamp(44ch, 44vw, 58ch));
+  }
+
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    max-width: min(100%, clamp(60ch, 45vw, 72ch));
   }
 
   .is-home section.wrap.home-hero .hero-chip-list,
   .is-home section.wrap.home-hero .cta {
     justify-content: flex-start;
   }
+}
 
-  /* Key: reduce avoidable 3-line H1 by widening hero-rest on wide screens */
-  .is-home section.wrap.home-hero .hero-rest {
-    max-width: min(100%, clamp(22ch, 26vw, 28ch));
-    text-wrap: pretty;
+/* Explicit override for menu-open desktop:
+   older layers used body.menu-open specificity, so repeat left contract with equal/higher specificity */
+@media (min-width: 1181px) and (max-width: 1460px) {
+  body.menu-open .is-home section.wrap.home-hero .hero-left-inner {
+    text-align: left;
+    justify-self: start;
+    margin-inline: 0;
+    max-width: min(100%, clamp(760px, 52vw, 860px));
   }
 
-  /* menu-open: content is narrower, so keep hero-rest slightly tighter, but still LEFT */
+  body.menu-open .is-home section.wrap.home-hero h1,
+  body.menu-open .is-home section.wrap.home-hero .hero-brand,
+  body.menu-open .is-home section.wrap.home-hero .hero-rest,
+  body.menu-open .is-home section.wrap.home-hero .hero-subtitle,
+  body.menu-open .is-home section.wrap.home-hero .hero-lead,
+  body.menu-open .is-home section.wrap.home-hero .hero .lead {
+    text-align: left;
+    margin-inline: 0;
+  }
+
   body.menu-open .is-home section.wrap.home-hero .hero-rest {
-    max-width: min(100%, clamp(18ch, 22vw, 24ch));
+    max-width: min(100%, clamp(20ch, 24vw, 27ch));
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-subtitle {
+    max-width: min(100%, clamp(38ch, 40vw, 50ch));
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-lead,
+  body.menu-open .is-home section.wrap.home-hero .hero .lead {
+    max-width: min(100%, clamp(52ch, 41vw, 64ch));
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-chip-list,
+  body.menu-open .is-home section.wrap.home-hero .cta {
+    justify-content: flex-start;
   }
 }
 
-/* 2) Stacked state (image moved below):
-      CENTER aligned composition as requested */
+/* =========================================================
+   2) STACKED HERO:
+   after image drops below, the composition becomes centered
+   ========================================================= */
 @media (max-width: 1180px) {
   .is-home section.wrap.home-hero .hero-left-inner {
     text-align: center;
+    justify-self: center;
+    align-self: start;
     margin-inline: auto;
+    max-width: min(100%, clamp(320px, 90vw, 760px));
+  }
+
+  .is-home section.wrap.home-hero h1,
+  .is-home section.wrap.home-hero .hero-brand,
+  .is-home section.wrap.home-hero .hero-rest {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(18ch, 74vw, 27ch));
   }
 
   .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
   .is-home section.wrap.home-hero .hero .lead {
-    text-align: center;
     margin-inline: auto;
-    width: min(100%, 68ch);
+    max-width: min(100%, clamp(32ch, 86vw, 62ch));
   }
 
   .is-home section.wrap.home-hero .hero-chip-list,
@@ -3538,8 +3614,62 @@ body.menu-open .is-home {
   }
 }
 
-/* 3) Narrow-screen safety (reflow):
-      prevent rare long tokens from causing horizontal scroll */
+/* Explicit stacked override for body.menu-open to kill conflicting earlier rules */
+@media (max-width: 1180px) {
+  body.menu-open .is-home section.wrap.home-hero .hero-left-inner {
+    text-align: center;
+    justify-self: center;
+    margin-inline: auto;
+  }
+
+  body.menu-open .is-home section.wrap.home-hero h1,
+  body.menu-open .is-home section.wrap.home-hero .hero-brand,
+  body.menu-open .is-home section.wrap.home-hero .hero-rest,
+  body.menu-open .is-home section.wrap.home-hero .hero-subtitle,
+  body.menu-open .is-home section.wrap.home-hero .hero-lead,
+  body.menu-open .is-home section.wrap.home-hero .hero .lead {
+    margin-inline: auto;
+  }
+
+  body.menu-open .is-home section.wrap.home-hero .hero-chip-list,
+  body.menu-open .is-home section.wrap.home-hero .cta {
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+   3) MEDIUM STACKED WIDTHS:
+   make long descriptive text visually even between left and right edges,
+   but NEVER justify the H1
+   ========================================================= */
+@media (min-width: 481px) and (max-width: 1180px) {
+  .is-home section.wrap.home-hero .hero-subtitle,
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    text-align: justify;
+    text-align-last: center;
+  }
+}
+
+/* =========================================================
+   4) NARROW MOBILE:
+   no justify on very narrow screens, keep centered text
+   ========================================================= */
+@media (max-width: 480px) {
+  .is-home section.wrap.home-hero .hero-subtitle,
+  .is-home section.wrap.home-hero .hero-lead,
+  .is-home section.wrap.home-hero .hero .lead {
+    text-align: center;
+  }
+
+  .is-home section.wrap.home-hero .hero-rest {
+    max-width: min(100%, clamp(16ch, 80vw, 22ch));
+  }
+}
+
+/* =========================================================
+   5) VERY NARROW SAFETY
+   ========================================================= */
 @media (max-width: 360px) {
   .is-home section.wrap.home-hero .hero-subtitle,
   .is-home section.wrap.home-hero .hero-lead,
