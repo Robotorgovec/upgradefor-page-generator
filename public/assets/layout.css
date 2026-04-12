@@ -2324,36 +2324,92 @@ body:not(.menu-open) .sidebar-footer-item .menu-label{display: none;}
 
 .is-home .home-trust-strip-item {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
   padding: 14px;
   border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--theme-border) 62%, white);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+  border: 1px solid color-mix(in srgb, var(--neutral-900) 10%, white);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
   min-width: 0;
+}
+
+.is-home .home-trust-strip-item:hover,
+.is-home .home-trust-strip-item:focus-within {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--theme-primary) 22%, white);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
 }
 
 .is-home .home-icon-badge {
   flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--theme-link);
-  background:
-    radial-gradient(circle at 30% 25%, rgba(18, 175, 240, 0.20), transparent 60%),
-    radial-gradient(circle at 80% 75%, rgba(18, 175, 240, 0.10), transparent 55%),
-    rgba(255, 255, 255, 0.92);
-  border: 1px solid color-mix(in srgb, var(--theme-border) 55%, white);
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--theme-primary) 8%, white);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 16%, white);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.is-home .home-icon-badge::before {
+  font-family: "Material Symbols Outlined";
+  font-size: 24px;
+  line-height: 1;
+  color: var(--neutral-900);
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 200,
+    "GRAD" 0,
+    "opsz" 24;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.is-home .home-trust-strip-item:nth-child(1) .home-icon-badge::before {
+  content: "verified_user";
+}
+
+.is-home .home-trust-strip-item:nth-child(2) .home-icon-badge::before {
+  content: "account_tree";
+}
+
+.is-home .home-trust-strip-item:nth-child(3) .home-icon-badge::before {
+  content: "auto_awesome";
+}
+
+.is-home .home-trust-strip-item:nth-child(4) .home-icon-badge::before {
+  content: "rocket_launch";
+}
+
+.is-home .home-trust-strip-item:hover .home-icon-badge,
+.is-home .home-trust-strip-item:focus-within .home-icon-badge {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--theme-primary) 10%, white);
+  border-color: color-mix(in srgb, var(--theme-primary) 24%, white);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 .is-home .home-icon {
-  width: 22px;
-  height: 22px;
-  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .is-home .home-trust-strip-text {
@@ -2927,8 +2983,9 @@ body.menu-open .is-home .sidebar .menu-item[data-path]:not(a):not(summary)::afte
   gap: 14px;
   padding: 16px 18px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.045);
+  border-color: color-mix(in srgb, var(--neutral-900) 10%, white);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.045);
 }
 
 .is-home .home-trust-strip-title {
