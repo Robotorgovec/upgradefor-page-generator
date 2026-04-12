@@ -1,0 +1,114 @@
+{
+  "id": "retrofit-hvac-lab",
+  "slug": "retrofit-hvac-lab",
+  "role": "service",
+  "primaryRouteFamily": "manufacturers",
+  "routeFamilies": ["manufacturers"],
+  "publicName": "Retrofit HVAC Lab",
+  "legalName": "Retrofit HVAC Lab LLP",
+  "shortDescription": "Replacement и retrofit Cu-Al секций для AHU и rooftop с адаптацией присоединений и геометрии.",
+  "fullDescriptionMd": "## О компании\n\nRetrofit HVAC Lab работает на стыке сервиса и производства replacement coils. Команда берет на себя сверку посадочных размеров, адаптацию присоединений и выпуск replacement-секций по шильдику или образцу.\n\n## Что полезно клиенту\n\n- Быстрый аудит существующей секции\n- Подтверждение replacement geometry до запуска\n- Технические документы для сервисного контракта и повторных закупок",
+  "logo": {
+    "url": "/assets/logo/logo-blue-only.png",
+    "alt": "Retrofit HVAC Lab logo",
+    "width": 256,
+    "height": 256
+  },
+  "coverImage": {
+    "url": "/assets/media/heat-exchanger-hero.png",
+    "alt": "Retrofit Cu-Al coil engineering",
+    "width": 1600,
+    "height": 900
+  },
+  "hq": {
+    "country": "Kazakhstan",
+    "city": "Almaty"
+  },
+  "serviceRegions": ["Kazakhstan", "Uzbekistan", "Kyrgyzstan"],
+  "languages": ["ru", "en"],
+  "contacts": {
+    "formEnabled": true
+  },
+  "verification": {
+    "isVerified": true,
+    "level": "basic"
+  },
+  "capabilities": [
+    "Retrofit replacement",
+    "AHU coils",
+    "Custom size",
+    "Fast quotation",
+    "HVAC projects"
+  ],
+  "categories": ["hvac/copper-aluminum-heat-exchangers"],
+  "rating": {
+    "state": "rated",
+    "avg": 4.6,
+    "count": 8
+  },
+  "documents": [
+    {
+      "type": "procedure",
+      "title": "Replacement survey checklist",
+      "url": "/wikimarket/manufacturers/retrofit-hvac-lab#documents"
+    }
+  ],
+  "standardProducts": [
+    {
+      "id": "retrofit-ahu-replacement",
+      "slug": "ahu-replacement-pack",
+      "title": "AHU replacement pack",
+      "shortDescription": "Комплект replacement для AHU с проверкой присоединений и посадочных размеров.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "AHU replacement pack",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "mixed",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/manufacturers/retrofit-hvac-lab#inquiry",
+      "specs": {
+        "surveyHours": 24,
+        "drawingIncluded": "yes"
+      }
+    }
+  ],
+  "seo": {
+    "title": "Retrofit HVAC Lab — replacement Cu-Al секции для AHU и rooftop",
+    "description": "Профиль сервисной команды replacement coils: retrofit, survey, документы и быстрый RFQ.",
+    "canonicalPath": "/wikimarket/manufacturers/retrofit-hvac-lab",
+    "ogImageUrl": "/assets/media/heat-exchanger-hero.png",
+    "breadcrumbTitle": "Retrofit HVAC Lab",
+    "noindex": true
+  },
+  "updatedAt": "2026-04-12T00:00:00.000Z",
+  "responseSpeedLabel": "Ответ до 4 часов",
+  "leadTimeLabel": "2-4 недели",
+  "minimumOrderLabel": "От 1 replacement-проекта",
+  "paymentTerms": "По сервисному scope",
+  "deliveryNotes": "Работаем по образцу, шильдику и фото для replacement-проектов.",
+  "highlights": [
+    "Replacement по образцу без риска потерять посадку",
+    "Сервисный аудит и выпуск replacement drawing",
+    "Подходит для rooftop и legacy AHU проектов"
+  ],
+  "profileFacts": [
+    {
+      "label": "Replacement",
+      "value": "AHU / rooftop"
+    },
+    {
+      "label": "Response",
+      "value": "до 4 часов"
+    },
+    {
+      "label": "Lead time",
+      "value": "2-4 недели"
+    },
+    {
+      "label": "HQ",
+      "value": "Almaty, Kazakhstan"
+    }
+  ]
+}

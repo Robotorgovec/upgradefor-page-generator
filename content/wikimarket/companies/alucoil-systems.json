@@ -1,0 +1,149 @@
+{
+  "id": "alucoil-systems",
+  "slug": "alucoil-systems",
+  "role": "manufacturer",
+  "primaryRouteFamily": "manufacturers",
+  "routeFamilies": ["manufacturers"],
+  "publicName": "AluCoil Systems",
+  "legalName": "AluCoil Systems FZ-LLC",
+  "shortDescription": "Cu-Al секции для AHU, DX и rooftop-проектов с расчетом под режимы, OEM-партиями и тендерными пакетами.",
+  "fullDescriptionMd": "## О компании\n\nAluCoil Systems выпускает Cu-Al теплообменные секции для вентиляции, rooftop-агрегатов и промышленных HVAC-проектов. Команда ведет проект от расчета по режимам до выпуска пакета документов для закупки и экспорта.\n\n## Что умеем\n\n- OEM-производство серий и pilot batches\n- Замена секций по образцу, шильдику и посадочным размерам\n- Подбор покрытий под влажные и прибрежные среды\n- Подготовка тендерного пакета, паспортов и pressure test records",
+  "logo": {
+    "url": "/assets/logo/logo-blue-only.png",
+    "alt": "AluCoil Systems logo",
+    "width": 256,
+    "height": 256
+  },
+  "coverImage": {
+    "url": "/assets/media/heat-exchanger-hero.png",
+    "alt": "Cu-Al coils for HVAC projects",
+    "width": 1600,
+    "height": 900
+  },
+  "hq": {
+    "country": "UAE",
+    "city": "Dubai"
+  },
+  "serviceRegions": ["MENA", "Central Asia", "EU"],
+  "languages": ["ru", "en"],
+  "contacts": {
+    "formEnabled": true
+  },
+  "verification": {
+    "isVerified": true,
+    "level": "docs"
+  },
+  "capabilities": [
+    "Cu-Al coils",
+    "AHU coils",
+    "OEM production",
+    "Custom size",
+    "Tender docs",
+    "Export supply"
+  ],
+  "categories": ["hvac/copper-aluminum-heat-exchangers"],
+  "rating": {
+    "state": "rated",
+    "avg": 4.8,
+    "count": 12
+  },
+  "documents": [
+    {
+      "type": "certificate",
+      "title": "ISO 9001 request pack",
+      "url": "/wikimarket/manufacturers/alucoil-systems#documents"
+    },
+    {
+      "type": "datasheet",
+      "title": "AHU coil datasheet set",
+      "url": "/wikimarket/manufacturers/alucoil-systems#documents"
+    }
+  ],
+  "standardProducts": [
+    {
+      "id": "alucoil-ahu-coil-standard",
+      "slug": "ahu-coil-standard",
+      "title": "AHU Coil (standard)",
+      "shortDescription": "Стандартная Cu-Al секция для приточных установок и retrofit-проектов.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "AHU coil standard",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "made_to_order",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/manufacturers/alucoil-systems#inquiry",
+      "specs": {
+        "tubeDiameterMm": 9.52,
+        "rows": 4
+      }
+    },
+    {
+      "id": "alucoil-rooftop-replacement",
+      "slug": "rooftop-replacement-coil",
+      "title": "Rooftop replacement coil",
+      "shortDescription": "Замена rooftop-секций по образцу с адаптацией присоединений.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "Rooftop replacement coil",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "mixed",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/manufacturers/alucoil-systems#inquiry",
+      "specs": {
+        "pressureBar": 32,
+        "leadTimeWeeks": 4
+      }
+    }
+  ],
+  "seo": {
+    "title": "AluCoil Systems — производитель Cu-Al теплообменников для HVAC",
+    "description": "Профиль производителя Cu-Al секций: компетенции, стандартные позиции, документы и запрос КП.",
+    "canonicalPath": "/wikimarket/manufacturers/alucoil-systems",
+    "ogImageUrl": "/assets/media/heat-exchanger-hero.png",
+    "breadcrumbTitle": "AluCoil Systems",
+    "noindex": true
+  },
+  "updatedAt": "2026-04-12T00:00:00.000Z",
+  "responseSpeedLabel": "Ответ в течение 2 часов",
+  "leadTimeLabel": "3-5 недель",
+  "minimumOrderLabel": "От 1 секции / pilot batch",
+  "paymentTerms": "TBD по проекту и Incoterms",
+  "deliveryNotes": "Экспортные отгрузки и тендерные комплекты доступны по запросу.",
+  "highlights": [
+    "Расчет под реальные режимы воздуха, воды или DX",
+    "OEM и replacement-проекты без побочного рефакторинга закупки",
+    "Паспорт, маркировка и испытания под тендерные требования"
+  ],
+  "profileFacts": [
+    {
+      "label": "Response",
+      "value": "2 часа"
+    },
+    {
+      "label": "Lead time",
+      "value": "3-5 недель"
+    },
+    {
+      "label": "HQ",
+      "value": "Dubai, UAE"
+    },
+    {
+      "label": "Markets",
+      "value": "MENA, Central Asia, EU"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Можно ли запустить replacement по старому образцу?",
+      "answer": "Да, если есть фото шильдика, габариты и рабочие режимы, команда собирает replacement package и подтверждает посадку."
+    },
+    {
+      "question": "Поддерживаете ли OEM-партии?",
+      "answer": "Да, компания ведет pilot batches и серийные партии с повторяемыми конфигурациями под бренд заказчика."
+    }
+  ]
+}

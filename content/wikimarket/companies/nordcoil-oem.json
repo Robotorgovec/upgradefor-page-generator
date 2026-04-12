@@ -1,0 +1,112 @@
+{
+  "id": "nordcoil-oem",
+  "slug": "nordcoil-oem",
+  "role": "oem",
+  "primaryRouteFamily": "manufacturers",
+  "routeFamilies": ["manufacturers"],
+  "publicName": "NordCoil OEM",
+  "legalName": "NordCoil OEM Sanayi A.S.",
+  "shortDescription": "Контрактное производство Cu-Al секций для DX, rooftop и тепловых насосов под бренд заказчика.",
+  "fullDescriptionMd": "## О компании\n\nNordCoil OEM специализируется на контрактном выпуске теплообменных секций для брендов HVAC-оборудования. Фокус компании - OEM-поставки, стабильная геометрия серий и выпуск под согласованный BOM.\n\n## Сильные стороны\n\n- OEM batches для heat pump и rooftop-линеек\n- Согласование конструкторской документации до запуска партии\n- Поддержка epoxy coatings и документации для EU/MENA-поставок",
+  "logo": {
+    "url": "/assets/logo/logo-blue-only.png",
+    "alt": "NordCoil OEM logo",
+    "width": 256,
+    "height": 256
+  },
+  "coverImage": {
+    "url": "/assets/media/heat-exchanger-hero.png",
+    "alt": "OEM Cu-Al coil production",
+    "width": 1600,
+    "height": 900
+  },
+  "hq": {
+    "country": "Turkey",
+    "city": "Bursa"
+  },
+  "serviceRegions": ["EU", "MENA"],
+  "languages": ["en"],
+  "contacts": {
+    "formEnabled": true
+  },
+  "verification": {
+    "isVerified": true,
+    "level": "docs"
+  },
+  "capabilities": [
+    "Cu-Al coils",
+    "OEM production",
+    "DX evaporators",
+    "Heat pump coils",
+    "Fast quotation"
+  ],
+  "categories": ["hvac/copper-aluminum-heat-exchangers"],
+  "rating": {
+    "state": "new"
+  },
+  "documents": [
+    {
+      "type": "catalog",
+      "title": "OEM production capability pack",
+      "url": "/wikimarket/manufacturers/nordcoil-oem#documents"
+    }
+  ],
+  "standardProducts": [
+    {
+      "id": "nordcoil-dx-evap",
+      "slug": "dx-evaporator-oem",
+      "title": "DX evaporator (OEM line)",
+      "shortDescription": "OEM-линейка DX испарителей для rooftop и split-систем.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "DX evaporator OEM line",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "made_to_order",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/manufacturers/nordcoil-oem#inquiry",
+      "specs": {
+        "refrigerants": "R410A/R32",
+        "rows": 3
+      }
+    }
+  ],
+  "seo": {
+    "title": "NordCoil OEM — OEM-производство Cu-Al coils для HVAC",
+    "description": "Профиль OEM-партнера: DX и heat pump секции, серийное производство и документация под бренд заказчика.",
+    "canonicalPath": "/wikimarket/manufacturers/nordcoil-oem",
+    "ogImageUrl": "/assets/media/heat-exchanger-hero.png",
+    "breadcrumbTitle": "NordCoil OEM",
+    "noindex": true
+  },
+  "updatedAt": "2026-04-12T00:00:00.000Z",
+  "responseSpeedLabel": "Ответ в рабочий день",
+  "leadTimeLabel": "4-6 недель",
+  "minimumOrderLabel": "MOQ зависит от BOM",
+  "paymentTerms": "Проектные условия по партии",
+  "deliveryNotes": "Поддержка экспортных поставок в EU и MENA.",
+  "highlights": [
+    "OEM-фокус без смешения с розничными запросами",
+    "Согласование партии по серии и BOM",
+    "Поддержка coated coils для outdoor и marine-like сценариев"
+  ],
+  "profileFacts": [
+    {
+      "label": "OEM focus",
+      "value": "Heat pump / rooftop"
+    },
+    {
+      "label": "Lead time",
+      "value": "4-6 недель"
+    },
+    {
+      "label": "HQ",
+      "value": "Bursa, Turkey"
+    },
+    {
+      "label": "Regions",
+      "value": "EU, MENA"
+    }
+  ]
+}

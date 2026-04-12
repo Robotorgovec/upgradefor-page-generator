@@ -1,0 +1,112 @@
+{
+  "id": "delta-cooling-distribution",
+  "slug": "delta-cooling-distribution",
+  "role": "distributor",
+  "primaryRouteFamily": "sellers",
+  "routeFamilies": ["sellers"],
+  "publicName": "Delta Cooling Distribution",
+  "legalName": "Delta Cooling Distribution LLC",
+  "shortDescription": "Дистрибуция Cu-Al секций и HVAC-компонентов с акцентом на наличие, MOQ и отгрузки по Central Asia.",
+  "fullDescriptionMd": "## О компании\n\nDelta Cooling Distribution работает как distributor-профиль для подрядчиков и сервисных команд, которым важны наличие, MOQ и понятный логистический сценарий. Компания держит фокус на складских и short lead time поставках.\n\n## Что получает закупка\n\n- Быструю проверку наличия и MOQ\n- Понятный shipping plan по Central Asia\n- Подбор стандартных Cu-Al позиций под replacement и project needs",
+  "logo": {
+    "url": "/assets/logo/logo-blue-only.png",
+    "alt": "Delta Cooling Distribution logo",
+    "width": 256,
+    "height": 256
+  },
+  "coverImage": {
+    "url": "/assets/media/heat-exchanger-hero.png",
+    "alt": "HVAC distribution stock",
+    "width": 1600,
+    "height": 900
+  },
+  "hq": {
+    "country": "Kazakhstan",
+    "city": "Astana"
+  },
+  "serviceRegions": ["Kazakhstan", "Uzbekistan", "Kyrgyzstan"],
+  "languages": ["ru", "en"],
+  "contacts": {
+    "formEnabled": true
+  },
+  "verification": {
+    "isVerified": true,
+    "level": "basic"
+  },
+  "capabilities": [
+    "Cu-Al coils",
+    "Export supply",
+    "Fast quotation",
+    "HVAC projects"
+  ],
+  "categories": ["hvac/copper-aluminum-heat-exchangers"],
+  "rating": {
+    "state": "new"
+  },
+  "documents": [
+    {
+      "type": "catalog",
+      "title": "Distributor stock request form",
+      "url": "/wikimarket/sellers/delta-cooling-distribution#documents"
+    }
+  ],
+  "standardProducts": [
+    {
+      "id": "delta-stock-ahu",
+      "slug": "stock-ahu-coil",
+      "title": "Stock AHU coil",
+      "shortDescription": "Типовая складская позиция для сервисных и project-команд.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "Stock AHU coil",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "stock",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/sellers/delta-cooling-distribution#inquiry",
+      "specs": {
+        "dispatchDays": 2,
+        "moq": 1
+      }
+    }
+  ],
+  "seo": {
+    "title": "Delta Cooling Distribution — seller-профиль Cu-Al секций для HVAC",
+    "description": "Профиль продавца и distributor-партнера: наличие, MOQ, логистика и быстрый запрос коммерческого предложения.",
+    "canonicalPath": "/wikimarket/sellers/delta-cooling-distribution",
+    "ogImageUrl": "/assets/media/heat-exchanger-hero.png",
+    "breadcrumbTitle": "Delta Cooling Distribution",
+    "noindex": true
+  },
+  "updatedAt": "2026-04-12T00:00:00.000Z",
+  "responseSpeedLabel": "Ответ до 2 часов",
+  "leadTimeLabel": "1-7 дней",
+  "minimumOrderLabel": "MOQ от 1 позиции",
+  "paymentTerms": "Предварительное согласование условий поставки",
+  "deliveryNotes": "Доставка по Central Asia и складские отгрузки для replacement-проектов.",
+  "brands": ["Warehouse stock", "Replacement support", "Central Asia logistics"],
+  "highlights": [
+    "Складской seller-профиль с коротким lead time",
+    "Упор на наличие, MOQ и логистику",
+    "Подходит для сервисных и urgent project-запросов"
+  ],
+  "profileFacts": [
+    {
+      "label": "MOQ",
+      "value": "от 1 позиции"
+    },
+    {
+      "label": "Lead time",
+      "value": "1-7 дней"
+    },
+    {
+      "label": "Regions",
+      "value": "Central Asia"
+    },
+    {
+      "label": "HQ",
+      "value": "Astana, Kazakhstan"
+    }
+  ]
+}
