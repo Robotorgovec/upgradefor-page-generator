@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { getLearningGameSitemapPaths } from '@/lib/learning-game/sitemap';
+import { getLearningGameSitemapPaths } from '../lib/learning-game/sitemap';
 
 const BASE_URL = 'https://upgradefor.com';
 
