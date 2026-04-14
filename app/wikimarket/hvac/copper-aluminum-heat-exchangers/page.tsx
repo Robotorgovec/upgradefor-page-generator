@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import CuAlHeatExchangersPage from "../../../../components/wikimarket/hvac/copper-aluminum-heat-exchangers/CuAlHeatExchangersPage";
+import { getCuAlManufacturerCards } from "../../../../lib/wikimarket/company-catalog";
 
 export const metadata: Metadata = {
   title: "Медно-алюминиевые теплообменники (Cu-Al) — проектирование, производство и поставка",
@@ -9,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <CuAlHeatExchangersPage />;
+  return <CuAlHeatExchangersPage manufacturerCards={getCuAlManufacturerCards()} />;
 }

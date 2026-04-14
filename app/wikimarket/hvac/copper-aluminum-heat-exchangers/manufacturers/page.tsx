@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { getCuAlManufacturerCards } from "../../../../../lib/wikimarket/company-catalog";
 import {
-  cuAlManufacturerCards,
   getCardMiniFacts,
   getCompanyImage,
   getCompanyImageAlt,
@@ -30,6 +30,8 @@ const coreFilters = [
 ];
 
 export default function CuAlManufacturersPage() {
+  const cuAlManufacturerCards = getCuAlManufacturerCards();
+
   return (
     <main className={styles.page}>
       <header className={styles.header}>

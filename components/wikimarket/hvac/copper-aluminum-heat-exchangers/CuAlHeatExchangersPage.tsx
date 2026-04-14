@@ -9,16 +9,20 @@ import { faqItems, heroChips, productItems, useCases } from "./data";
 import {
   DEFAULT_MANUFACTURER_CARD_IMAGE,
   DEFAULT_MANUFACTURER_CARD_IMAGE_ALT,
-  cuAlManufacturerCards,
   getCardMiniFacts,
   getCompanyLocationLabel,
   getCompanyRoleLabel,
   getDisplayCapabilities,
   getRatingLabel,
   hasRatedReviews,
+  type ManufacturerCompanyCardView,
 } from "./manufacturers";
 
-export default function CuAlHeatExchangersPage() {
+type CuAlHeatExchangersPageProps = {
+  manufacturerCards: ManufacturerCompanyCardView[];
+};
+
+export default function CuAlHeatExchangersPage({ manufacturerCards }: CuAlHeatExchangersPageProps) {
   const [product, setProduct] = useState("");
   const [usecase, setUsecase] = useState("");
 
@@ -224,7 +228,7 @@ export default function CuAlHeatExchangersPage() {
 
         <div className={styles.manufacturerViewport}>
           <div className={styles.manufacturerTrack} ref={manufacturerTrackRef}>
-            {cuAlManufacturerCards.map((company) => {
+            {manufacturerCards.map((company) => {
               const capabilities = getDisplayCapabilities(company);
               const miniFacts = getCardMiniFacts(company);
               const hasRatedState = hasRatedReviews(company);

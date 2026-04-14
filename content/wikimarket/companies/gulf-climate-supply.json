@@ -1,0 +1,112 @@
+{
+  "id": "gulf-climate-supply",
+  "slug": "gulf-climate-supply",
+  "role": "supplier",
+  "primaryRouteFamily": "manufacturers",
+  "routeFamilies": ["manufacturers", "sellers"],
+  "publicName": "Gulf Climate Supply",
+  "legalName": "Gulf Climate Supply Trading Co.",
+  "shortDescription": "Поставки Cu-Al coils со склада и под заказ для HVAC-проектов, включая экспорт и тендерные пакеты.",
+  "fullDescriptionMd": "## О компании\n\nGulf Climate Supply закрывает поставки Cu-Al секций для подрядчиков, сервисных команд и системных интеграторов. Профиль компании - складские позиции, смешанный stock + project sourcing и подготовка коммерческого пакета под закупку.\n\n## Операционная модель\n\n- Складские позиции для типовых replacement и project needs\n- Под заказ - coated coils и нестандартные размеры\n- Поддержка логистики по GCC и MENA",
+  "logo": {
+    "url": "/assets/logo/logo-blue-only.png",
+    "alt": "Gulf Climate Supply logo",
+    "width": 256,
+    "height": 256
+  },
+  "coverImage": {
+    "url": "/assets/media/heat-exchanger-hero.png",
+    "alt": "HVAC supply chain for Cu-Al coils",
+    "width": 1600,
+    "height": 900
+  },
+  "hq": {
+    "country": "Saudi Arabia",
+    "city": "Dammam"
+  },
+  "serviceRegions": ["GCC", "MENA"],
+  "languages": ["en", "ar"],
+  "contacts": {
+    "formEnabled": true
+  },
+  "verification": {
+    "isVerified": false
+  },
+  "capabilities": [
+    "Cu-Al coils",
+    "Export supply",
+    "Tender docs",
+    "Anti-corrosion coating",
+    "HVAC projects"
+  ],
+  "categories": ["hvac/copper-aluminum-heat-exchangers"],
+  "rating": {
+    "state": "no_reviews"
+  },
+  "documents": [
+    {
+      "type": "catalog",
+      "title": "Stock and sourcing request pack",
+      "url": "/wikimarket/manufacturers/gulf-climate-supply#documents"
+    }
+  ],
+  "standardProducts": [
+    {
+      "id": "gulf-stock-coil",
+      "slug": "stock-cual-coil",
+      "title": "Stock Cu-Al coil",
+      "shortDescription": "Складская позиция для быстрых project и replacement-запросов.",
+      "image": {
+        "url": "/assets/media/heat-exchanger-hero.png",
+        "alt": "Stock Cu-Al coil",
+        "width": 1200,
+        "height": 800
+      },
+      "availabilityMode": "stock",
+      "priceMode": "request_quote",
+      "inquiryUrl": "/wikimarket/manufacturers/gulf-climate-supply#inquiry",
+      "specs": {
+        "stockMode": "mixed",
+        "dispatchDays": 3
+      }
+    }
+  ],
+  "seo": {
+    "title": "Gulf Climate Supply — поставщик Cu-Al coils для HVAC-проектов",
+    "description": "Профиль поставщика и project sourcing партнера: складские позиции, регионы поставки и запрос КП.",
+    "canonicalPath": "/wikimarket/manufacturers/gulf-climate-supply",
+    "ogImageUrl": "/assets/media/heat-exchanger-hero.png",
+    "breadcrumbTitle": "Gulf Climate Supply",
+    "noindex": true
+  },
+  "updatedAt": "2026-04-12T00:00:00.000Z",
+  "responseSpeedLabel": "Ответ в течение дня",
+  "leadTimeLabel": "Со склада / 1-2 недели",
+  "minimumOrderLabel": "MOQ зависит от stock lot",
+  "paymentTerms": "TBD по логистике и валюте",
+  "deliveryNotes": "Доступны GCC и MENA отгрузки, mixed stock + sourcing model.",
+  "brands": ["Cu-Al coils", "AHU replacement", "Project sourcing"],
+  "highlights": [
+    "Склад + project sourcing в одном профиле",
+    "Поддержка coating и tender docs",
+    "Удобен для поставок в GCC и MENA"
+  ],
+  "profileFacts": [
+    {
+      "label": "Stock mode",
+      "value": "Склад + под заказ"
+    },
+    {
+      "label": "Response",
+      "value": "в течение дня"
+    },
+    {
+      "label": "Regions",
+      "value": "GCC, MENA"
+    },
+    {
+      "label": "HQ",
+      "value": "Dammam, Saudi Arabia"
+    }
+  ]
+}
