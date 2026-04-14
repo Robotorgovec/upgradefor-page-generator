@@ -1,0 +1,153 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+  color: #102640;
+}
+
+.hero {
+  background: linear-gradient(145deg, #eef5fc 0%, #f8fbff 100%);
+  border: 1px solid #d7e1ed;
+  border-radius: 18px;
+  padding: 1.25rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #355d88;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+}
+
+.hero h1 {
+  margin: 0.55rem 0 0;
+  font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  line-height: 1.2;
+}
+
+.heroLead {
+  margin: 0.85rem 0 0;
+  max-width: 76ch;
+  line-height: 1.5;
+}
+
+.section {
+  margin-top: 1.8rem;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+}
+
+.sectionLead {
+  margin: 0.65rem 0 0;
+  line-height: 1.5;
+}
+
+.heroActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  border: 1px solid transparent;
+}
+
+.primaryButton {
+  background: #164f9c;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #ffffff;
+  color: #164f9c;
+  border-color: #164f9c;
+}
+
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible {
+  outline: 3px solid #2d75dd;
+  outline-offset: 2px;
+}
+
+.factsGrid {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.factCard,
+.faqItem {
+  border: 1px solid #d5dde7;
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: #ffffff;
+}
+
+.factCard h3,
+.faqItem h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.factCard p,
+.faqItem p {
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
+.pointsList {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  line-height: 1.55;
+}
+
+.pointsList li + li {
+  margin-top: 0.45rem;
+}
+
+.faqList {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.canonicalNote {
+  margin-top: 0.9rem;
+  color: #3d5c7c;
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .hero {
+    padding: 1rem;
+  }
+
+  .factsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}
