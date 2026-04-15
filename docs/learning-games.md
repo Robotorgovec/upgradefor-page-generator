@@ -1,10 +1,11 @@
 # Learning games
 
-## Copper-aluminum heat exchangers basics (visible MVP)
+## Copper-aluminum heat exchangers quiz on live Cu-Al page
 
-- Canonical URL: `/learn/industrial/copper-aluminum-heat-exchangers-basics`
-- This route is a visible MVP quiz page with indexable educational HTML and an interactive quiz block.
+- Acceptance URL: `/wikimarket/hvac/copper-aluminum-heat-exchangers`
+- The quiz is now visible directly on the live Cu-Al page as an additional section (`#quiz-section`).
+- Source-of-truth route file: `app/wikimarket/hvac/copper-aluminum-heat-exchangers/page.tsx`
 - Data module: `lib/learning-game/copper-aluminum-heat-exchanger-quiz-data.ts`
 - Client quiz component: `components/learning-game/copper-aluminum-heat-exchanger-quiz.tsx`
-- Quiz state is internal component state and is **not** encoded in URL query, hash, or path steps.
-- Route path is included in runtime sitemap helpers via `lib/learning-game/sitemap.ts`.
+- Quiz state is internal component state and is **not** encoded in URL query/hash/path steps.
+- Runtime sitemap helper keeps legacy and canonical paths; it is not reduced to a one-path implementation.

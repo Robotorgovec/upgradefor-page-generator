@@ -10,7 +10,7 @@ import { getLearningGameSitemapPaths } from "../../lib/learning-game/sitemap";
 test("copper-aluminum quiz data is consistent and sitemap-safe", () => {
   assert.equal(
     COPPER_ALUMINUM_HEAT_EXCHANGER_GAME_PATH,
-    "/learn/industrial/copper-aluminum-heat-exchangers-basics",
+    "/wikimarket/hvac/copper-aluminum-heat-exchangers",
   );
 
   assert.equal(COPPER_ALUMINUM_HEAT_EXCHANGER_QUESTIONS.length, 10);
@@ -24,6 +24,7 @@ test("copper-aluminum quiz data is consistent and sitemap-safe", () => {
 
   const paths = getLearningGameSitemapPaths();
   assert.ok(paths.includes(COPPER_ALUMINUM_HEAT_EXCHANGER_GAME_PATH));
+  assert.ok(paths.length >= 2);
 
   const disallowedFragments = [
     "?",

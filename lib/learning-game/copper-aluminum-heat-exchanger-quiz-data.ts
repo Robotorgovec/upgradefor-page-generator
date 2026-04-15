@@ -8,7 +8,7 @@ export type CopperAluminumHeatExchangerQuestion = {
 };
 
 export const COPPER_ALUMINUM_HEAT_EXCHANGER_GAME_PATH =
-  "/learn/industrial/copper-aluminum-heat-exchangers-basics";
+  "/wikimarket/hvac/copper-aluminum-heat-exchangers";
 
 export const COPPER_ALUMINUM_HEAT_EXCHANGER_QUESTIONS: CopperAluminumHeatExchangerQuestion[] = [
   {
