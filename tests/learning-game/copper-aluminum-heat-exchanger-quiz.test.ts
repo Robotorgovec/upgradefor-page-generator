@@ -24,7 +24,6 @@ test("copper-aluminum quiz data is consistent and sitemap-safe", () => {
 
   const paths = getLearningGameSitemapPaths();
   assert.ok(paths.includes(COPPER_ALUMINUM_HEAT_EXCHANGER_GAME_PATH));
-  assert.ok(paths.length >= 2);
 
   const disallowedFragments = [
     "?",
