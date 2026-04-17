@@ -8,22 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  email         String       @unique
-  passwordHash  String
-  role          String       @default("user")
-  emailVerified DateTime?
-  profileCompleted Boolean   @default(false)
-  welcomeSeen     Boolean   @default(false)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id               String      @id @default(cuid())
+  email            String      @unique
+  passwordHash     String
+  role             String      @default("user")
+  emailVerified    DateTime?
+  profileCompleted Boolean     @default(false)
+  welcomeSeen      Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 
   profile Profile?
   tokens  EmailToken[]
 }
 
 model Profile {
-  userId      String  @id
+  userId      String   @id
   displayName String?
   avatarUrl   String?
   headline    String?
@@ -44,4 +44,186 @@ model EmailToken {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CatalogModelStatus {
+  draft
+  active
+  hidden
+  deprecated
+}
+
+enum SelectionResultStatus {
+  matched_standard
+  matched_with_warning
+  no_standard_match
+  project_specific
+}
+
+model CatalogFamily {
+  id          String          @id @default(cuid())
+  code        String          @unique
+  name        String
+  description String?
+  active      Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  series CatalogSeries[]
+}
+
+model CatalogSeries {
+  id                         String          @id @default(cuid())
+  familyId                   String
+  code                       String
+  name                       String
+  applicationType            String[]        @default([])
+  standardSelectable         Boolean         @default(true)
+  manufacturerReviewRequired Boolean         @default(false)
+  createdAt                  DateTime        @default(now())
+  updatedAt                  DateTime        @updatedAt
+
+  family CatalogFamily @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  models CatalogModel[]
+
+  @@unique([familyId, code])
+  @@index([code])
+}
+
+model CatalogModel {
+  id                         String             @id @default(cuid())
+  seriesId                   String
+  modelCodeRaw               String
+  modelCodeNormalized        String             @unique
+  displayName                String
+  slug                       String             @unique
+  status                     CatalogModelStatus @default(active)
+  applicationType            String[]           @default([])
+  airflowMinM3h              Int
+  airflowMaxM3h              Int
+  staticPressureMinPa        Int?
+  staticPressureMaxPa        Int?
+  coolingCapacityKwMin       Decimal?           @db.Decimal(10, 2)
+  coolingCapacityKwMax       Decimal?           @db.Decimal(10, 2)
+  heatingCapacityKwMin       Decimal?           @db.Decimal(10, 2)
+  heatingCapacityKwMax       Decimal?           @db.Decimal(10, 2)
+  mountingType               String[]           @default([])
+  driveType                  String?
+  cabinetType                String?
+  ductOrientation            String[]           @default([])
+  coilType                   String[]           @default([])
+  heatRecoveryType           String[]           @default([])
+  motorType                  String[]           @default([])
+  pipeSystemType             String?
+  pipeConnectionSide         String?
+  powerSupply                String?
+  widthMm                    Int?
+  depthMm                    Int?
+  heightMm                   Int?
+  weightKg                   Int?
+  filterStages               Json?
+  sections                   Json?
+  dimensions                 Json?
+  industries                 String[]           @default([])
+  notes                      String?
+  sourceCatalogVersion       String
+  sourcePageRefs             String[]           @default([])
+  aliases                    String[]           @default([])
+  isStandardSelectable       Boolean            @default(true)
+  manufacturerReviewRequired Boolean            @default(false)
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+
+  series     CatalogSeries    @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+  options    CatalogOption[]
+  aliasItems CatalogAlias[]
+  logs       SelectionLog[]
+  requests   SelectionRequest[]
+  overrides  AdminOverride[]
+
+  @@index([seriesId])
+  @@index([airflowMinM3h, airflowMaxM3h])
+  @@index([staticPressureMinPa, staticPressureMaxPa])
+  @@index([status])
+}
+
+model CatalogOption {
+  id          String   @id @default(cuid())
+  modelId     String
+  optionCode  String
+  optionType  String
+  optionValue String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  model CatalogModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@index([modelId])
+  @@index([optionType])
+}
+
+model CatalogAlias {
+  id        String   @id @default(cuid())
+  modelId   String
+  alias     String
+  createdAt DateTime @default(now())
+
+  model CatalogModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@unique([modelId, alias])
+  @@index([alias])
+}
+
+model SelectionRequest {
+  id                 String                @id @default(cuid())
+  inputPayload       Json
+  resultStatus       SelectionResultStatus
+  selectedModelId    String?
+  selectedFamilyCode String?
+  contactName        String?
+  contactEmail       String?
+  contactPhone       String?
+  company            String?
+  comment            String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  selectedModel CatalogModel? @relation(fields: [selectedModelId], references: [id], onDelete: SetNull)
+  logs          SelectionLog[]
+
+  @@index([resultStatus])
+  @@index([selectedFamilyCode])
+  @@index([createdAt])
+}
+
+model SelectionLog {
+  id         String   @id @default(cuid())
+  requestId  String
+  modelId    String?
+  score      Float?
+  reasons    Json?
+  warnings   Json?
+  createdAt  DateTime @default(now())
+
+  request SelectionRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  model   CatalogModel?    @relation(fields: [modelId], references: [id], onDelete: SetNull)
+
+  @@index([requestId])
+  @@index([modelId])
+}
+
+model AdminOverride {
+  id        String   @id @default(cuid())
+  modelId   String
+  ruleType  String
+  rulePayload Json
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  model CatalogModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@index([modelId])
+  @@index([ruleType])
+  @@index([active])
 }
