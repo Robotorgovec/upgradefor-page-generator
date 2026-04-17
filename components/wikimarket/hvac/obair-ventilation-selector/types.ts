@@ -1,3 +1,4 @@
+
 export type ObairFamilyId = "BF" | "GXH" | "FG" | "ZKW";
 
 export type TaskType =
@@ -6,9 +7,19 @@ export type TaskType =
   | "cooling-heating-air"
   | "modular-ahu-cleanroom";
 
-export type MountingType = "indoor-standard" | "limited-plant-room" | "ceiling-or-tight-space" | "rooftop-or-technical-floor";
+export type MountingType =
+  | "indoor-standard"
+  | "limited-plant-room"
+  | "ceiling-or-tight-space"
+  | "rooftop-or-technical-floor";
 
-export type IndustryType = "medicine" | "biopharma" | "electronics" | "mall-hotel" | "workshop-factory" | "other";
+export type IndustryType =
+  | "medicine"
+  | "biopharma"
+  | "electronics"
+  | "mall-hotel"
+  | "workshop-factory"
+  | "other";
 
 export type ComplexityLevel = "simple-box" | "cabinety-unit" | "modular-ahu";
 

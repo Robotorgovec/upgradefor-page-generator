@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -39,7 +40,10 @@ export default function ObairSelectorClient() {
   const localRecommendation = useMemo(() => getRecommendation(inputs), [inputs]);
   const [apiRecommendation, setApiRecommendation] = useState<ApiRecommendResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [requestState, setRequestState] = useState<{ status: "idle" | "sending" | "done" | "error"; message?: string }>({
+  const [requestState, setRequestState] = useState<{
+    status: "idle" | "sending" | "done" | "error";
+    message?: string;
+  }>({
     status: "idle",
   });
 
@@ -129,12 +133,15 @@ export default function ObairSelectorClient() {
       ? [
           `Primary model: ${apiRecommendation.primaryModel.displayName}`,
           `Airflow range: ${apiRecommendation.primaryModel.airflowRangeM3h[0]}–${apiRecommendation.primaryModel.airflowRangeM3h[1]} m³/h`,
-          ...apiRecommendation.alternatives.map((item) => `Alternative: ${item.displayName} (score ${item.score.toFixed(2)})`),
+          ...apiRecommendation.alternatives.map(
+            (item) => `Alternative: ${item.displayName} (score ${item.score.toFixed(2)})`
+          ),
         ]
       : ["Стандартный типоразмер не определён. Используйте запрос инженеру."]
     : localRecommendation.scenarios;
 
-  const clarificationList = apiRecommendation?.clarificationChecklist ?? localRecommendation.clarifyForEngineering;
+  const clarificationList =
+    apiRecommendation?.clarificationChecklist ?? localRecommendation.clarifyForEngineering;
 
   const handleCreateRequest = async () => {
     setRequestState({ status: "sending" });
@@ -161,20 +168,33 @@ export default function ObairSelectorClient() {
           shortlist: apiRecommendation
             ? [apiRecommendation.primaryModel, ...apiRecommendation.alternatives]
                 .filter(Boolean)
-                .map((item) => ({ modelId: item?.id, score: item?.score, warnings: item?.warnings }))
+                .map((item) => ({
+                  modelId: item?.id,
+                  score: item?.score,
+                  warnings: item?.warnings,
+                }))
             : undefined,
         }),
       });
 
       if (!response.ok) {
-        setRequestState({ status: "error", message: "Не удалось сохранить запрос. Попробуйте позже." });
+        setRequestState({
+          status: "error",
+          message: "Не удалось сохранить запрос. Попробуйте позже.",
+        });
         return;
       }
 
       const payload = (await response.json()) as { requestId?: string };
-      setRequestState({ status: "done", message: `Запрос сохранён: ${payload.requestId ?? "без ID"}` });
+      setRequestState({
+        status: "done",
+        message: `Запрос сохранён: ${payload.requestId ?? "без ID"}`,
+      });
     } catch {
-      setRequestState({ status: "error", message: "Сетевая ошибка при отправке запроса" });
+      setRequestState({
+        status: "error",
+        message: "Сетевая ошибка при отправке запроса",
+      });
     }
   };
 
@@ -183,8 +203,8 @@ export default function ObairSelectorClient() {
       <div className={styles.selectorHeader}>
         <h2>Interactive OBAIR Selector</h2>
         <p>
-          Ответьте на ключевые вопросы по проекту — и получите рекомендованное семейство OBAIR без перезагрузки
-          страницы.
+          Ответьте на ключевые вопросы по проекту — и получите рекомендованное семейство OBAIR без
+          перезагрузки страницы.
         </p>
       </div>
 
@@ -194,12 +214,19 @@ export default function ObairSelectorClient() {
             Тип задачи
             <select
               value={inputs.taskType}
-              onChange={(event) => setInputs((prev) => ({ ...prev, taskType: event.target.value as TaskType }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  taskType: event.target.value as TaskType,
+                }))
+              }
             >
               <option value="ventilation-only">Только вентиляция</option>
               <option value="fresh-exhaust-heat-recovery">Приток/вытяжка с рекуперацией</option>
               <option value="cooling-heating-air">Охлаждение/нагрев воздуха</option>
-              <option value="modular-ahu-cleanroom">Модульная AHU / чистое помещение / сложная система</option>
+              <option value="modular-ahu-cleanroom">
+                Модульная AHU / чистое помещение / сложная система
+              </option>
             </select>
           </label>
 
@@ -211,7 +238,10 @@ export default function ObairSelectorClient() {
               step={100}
               value={inputs.airflowM3h}
               onChange={(event) =>
-                setInputs((prev) => ({ ...prev, airflowM3h: Number(event.target.value) || defaultInputs.airflowM3h }))
+                setInputs((prev) => ({
+                  ...prev,
+                  airflowM3h: Number(event.target.value) || defaultInputs.airflowM3h,
+                }))
               }
             />
           </label>
@@ -224,7 +254,11 @@ export default function ObairSelectorClient() {
               step={50}
               value={inputs.staticPressurePa}
               onChange={(event) =>
-                setInputs((prev) => ({ ...prev, staticPressurePa: Number(event.target.value) || defaultInputs.staticPressurePa }))
+                setInputs((prev) => ({
+                  ...prev,
+                  staticPressurePa:
+                    Number(event.target.value) || defaultInputs.staticPressurePa,
+                }))
               }
             />
           </label>
@@ -233,7 +267,12 @@ export default function ObairSelectorClient() {
             Нужен ли heat recovery
             <select
               value={inputs.needHeatRecovery ? "yes" : "no"}
-              onChange={(event) => setInputs((prev) => ({ ...prev, needHeatRecovery: event.target.value === "yes" }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  needHeatRecovery: event.target.value === "yes",
+                }))
+              }
             >
               <option value="no">Нет</option>
               <option value="yes">Да</option>
@@ -244,7 +283,12 @@ export default function ObairSelectorClient() {
             Нужен ли cooling/heating coil
             <select
               value={inputs.needCoil ? "yes" : "no"}
-              onChange={(event) => setInputs((prev) => ({ ...prev, needCoil: event.target.value === "yes" }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  needCoil: event.target.value === "yes",
+                }))
+              }
             >
               <option value="no">Нет</option>
               <option value="yes">Да</option>
@@ -255,7 +299,12 @@ export default function ObairSelectorClient() {
             Тип монтажа / ограничение по месту
             <select
               value={inputs.mountingType}
-              onChange={(event) => setInputs((prev) => ({ ...prev, mountingType: event.target.value as MountingType }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  mountingType: event.target.value as MountingType,
+                }))
+              }
             >
               <option value="indoor-standard">Стандартный indoor монтаж</option>
               <option value="limited-plant-room">Ограниченная машинная зона</option>
@@ -268,7 +317,12 @@ export default function ObairSelectorClient() {
             Объект / отрасль
             <select
               value={inputs.industry}
-              onChange={(event) => setInputs((prev) => ({ ...prev, industry: event.target.value as IndustryType }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  industry: event.target.value as IndustryType,
+                }))
+              }
             >
               <option value="medicine">Медицина</option>
               <option value="biopharma">Биофарма</option>
@@ -283,7 +337,12 @@ export default function ObairSelectorClient() {
             Степень сложности
             <select
               value={inputs.complexity}
-              onChange={(event) => setInputs((prev) => ({ ...prev, complexity: event.target.value as ComplexityLevel }))}
+              onChange={(event) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  complexity: event.target.value as ComplexityLevel,
+                }))
+              }
             >
               <option value="simple-box">Простой box ventilation</option>
               <option value="cabinety-unit">Cabinet unit</option>
@@ -325,9 +384,15 @@ export default function ObairSelectorClient() {
           </ul>
 
           <div className={styles.resultCtas}>
-            <button type="button" className={styles.primaryBtn} onClick={handleCreateRequest} disabled={requestState.status === "sending"}>
+            <button
+              type="button"
+              className={styles.primaryBtn}
+              onClick={handleCreateRequest}
+              disabled={requestState.status === "sending"}
+            >
               {requestState.status === "sending" ? "Отправка..." : "Отправить запрос"}
             </button>
+
             <a href="#final-cta" className={styles.secondaryBtn}>
               Получить консультацию
             </a>
