@@ -1,0 +1,168 @@
+.page {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+  color: #0d1b2a;
+}
+
+.hero {
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f5f9ff, #ffffff);
+  display: grid;
+  gap: 1rem;
+}
+
+.kicker {
+  margin: 0;
+  color: #1f5eff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.selectorSection {
+  margin-top: 1.5rem;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.selectorHeader p {
+  margin-top: 0.5rem;
+}
+
+.selectorGrid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.form input,
+.form select {
+  font: inherit;
+  border: 1px solid #bcccdc;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
+}
+
+.resultCard,
+.familyCard,
+.industryCard,
+.finalCta {
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  padding: 1rem;
+  background: #fdfefe;
+}
+
+.resultKicker {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #486581;
+}
+
+.resultCtas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.primaryBtn {
+  background: #1f5eff;
+  color: #fff;
+}
+
+.secondaryBtn {
+  border: 1px solid #1f5eff;
+  color: #1f5eff;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid #d9e2ec;
+  border-radius: 12px;
+}
+
+.compareTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.compareTable th,
+.compareTable td {
+  border-bottom: 1px solid #e6edf3;
+  padding: 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.faqList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faqItem {
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.faqItem summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .selectorGrid,
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    width: min(1200px, calc(100% - 1rem));
+  }
+}
