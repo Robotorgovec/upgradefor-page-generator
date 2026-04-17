@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OBAIR Ventilation Selector — BF / GXH / FG / ZKW | UPGR</title>
+  <meta name="description" content="Подбор OBAIR вентиляционных/air-side установок по семействам BF, GXH, FG, ZKW." />
+  <link rel="stylesheet" href="/assets/layout.css?v=20260205-1" />
+  <style>
+    :root{--bg:#f5f8fc;--card:#fff;--line:#d9e2ec;--text:#102a43;--muted:#486581;--brand:#1f5eff}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .wrap{max-width:1120px;margin:0 auto;padding:20px 16px 48px}
+    .hero,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+    .kicker{font-size:12px;text-transform:uppercase;color:var(--brand);font-weight:700;letter-spacing:.04em}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn-primary{background:var(--brand);color:#fff}.btn-outline{border:1px solid var(--brand);color:var(--brand)}
+    .section{margin-top:18px}.grid{display:grid;gap:12px}.grid-2{grid-template-columns:1fr 1fr}
+    .selector{display:grid;gap:12px;grid-template-columns:1.2fr 1fr}
+    label{display:grid;gap:6px;font-weight:600;font-size:14px} input,select{padding:10px;border-radius:10px;border:1px solid #bcccdc;font:inherit}
+    table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid #e6edf3;text-align:left;vertical-align:top}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+    details{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff} summary{cursor:pointer;font-weight:700}
+    ul{margin:8px 0 0;padding-left:18px}
+    @media (max-width:900px){.grid-2,.selector{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <p class="kicker">HVAC / OBAIR Official Catalog Selector</p>
+      <h1>Подбор OBAIR вентиляционных и air-side установок</h1>
+      <p>Direct selector по официальному каталогу OBAIR. Результат — предварительная рекомендация семейства: BF / GXH / FG / ZKW.</p>
+      <a class="btn btn-primary" href="#selector">Начать подбор</a>
+    </section>
+
+    <section id="selector" class="section card selector">
+      <form class="grid" id="obair-form">
+        <label>Тип задачи
+          <select id="taskType">
+            <option value="ventilation-only">Только вентиляция</option>
+            <option value="fresh-exhaust-heat-recovery">Приток/вытяжка с рекуперацией</option>
+            <option value="cooling-heating-air">Охлаждение/нагрев воздуха</option>
+            <option value="modular-ahu-cleanroom">Модульная AHU / чистое помещение / сложная air treatment система</option>
+          </select>
+        </label>
+        <label>Расход воздуха, m³/h <input id="airflow" type="number" value="12000" min="500" step="100" /></label>
+        <label>Требуемое статическое давление, Pa <input id="pressure" type="number" value="600" min="50" step="50" /></label>
+        <label>Нужен ли heat recovery
+          <select id="needHeatRecovery"><option value="no">Нет</option><option value="yes">Да</option></select>
+        </label>
+        <label>Нужен ли cooling/heating coil
+          <select id="needCoil"><option value="no">Нет</option><option value="yes">Да</option></select>
+        </label>
+        <label>Тип монтажа / ограничение по месту
+          <select id="mountingType">
+            <option value="indoor-standard">Стандартный indoor монтаж</option>
+            <option value="limited-plant-room">Ограниченная машинная зона</option>
+            <option value="ceiling-or-tight-space">Потолочная / очень компактная зона</option>
+            <option value="rooftop-or-technical-floor">Rooftop / технический этаж</option>
+          </select>
+        </label>
+        <label>Объект / отрасль
+          <select id="industry">
+            <option value="medicine">Медицина</option>
+            <option value="biopharma">Биофарма</option>
+            <option value="electronics">Электроника</option>
+            <option value="mall-hotel">Mall / Hotel</option>
+            <option value="workshop-factory">Workshop / Factory</option>
+            <option value="other" selected>Другое</option>
+          </select>
+        </label>
+        <label>Степень сложности
+          <select id="complexity">
+            <option value="simple-box">Простой box ventilation</option>
+            <option value="cabinety-unit">Cabinet unit</option>
+            <option value="modular-ahu">Modular AHU</option>
+          </select>
+        </label>
+      </form>
+      <aside class="card" id="result" style="margin:0">
+        <p class="kicker">Recommended family</p>
+        <h2 id="familyName">BF</h2>
+        <p id="familyTitle"></p>
+        <h3>Why this family fits</h3>
+        <ul id="reasons"></ul>
+        <h3>Typical suitable scenarios</h3>
+        <ul id="scenarios"></ul>
+        <h3>Что ещё нужно уточнить для точного инженерного подбора</h3>
+        <ul>
+          <li>Design параметры воздуха (лето/зима)</li>
+          <li>Класс фильтрации и гигиенические требования</li>
+          <li>Ограничения по габаритам, сервису и автоматике</li>
+          <li>Требования к коммерческому предложению и срокам</li>
+        </ul>
+        <p style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="mailto:info@upgradefor.com?subject=OBAIR%20consultation" class="btn btn-primary">Отправить запрос</a>
+          <a href="mailto:info@upgradefor.com?subject=OBAIR%20input%20data" class="btn btn-outline">Получить консультацию</a>
+        </p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>Family cards</h2>
+      <div class="grid grid-2" id="familyCards"></div>
+    </section>
+
+    <section class="section">
+      <h2>Comparison block</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Параметр</th><th>BF</th><th>GXH</th><th>FG</th><th>ZKW</th></tr></thead>
+          <tbody>
+            <tr><td>Назначение</td><td>Box ventilation</td><td>Fresh + exhaust + heat recovery</td><td>Cabinet coil treatment</td><td>Modular AHU</td></tr>
+            <tr><td>Airflow range</td><td>~2k–50k</td><td>~3k–50k</td><td>~2k–36k</td><td>Up to ~200k</td></tr>
+            <tr><td>Static pressure</td><td>Up to ~1,000 Pa</td><td>Up to ~1,000 Pa</td><td>~200–2,000 Pa</td><td>Project specific</td></tr>
+            <tr><td>Heat recovery</td><td>Optional</td><td>Core</td><td>Secondary</td><td>Available by modules</td></tr>
+            <tr><td>Cleanroom relevance</td><td>Low</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Industry scenarios</h2>
+      <div class="grid grid-2">
+        <article class="card"><h3>Medicine & health</h3><p>Чаще требуется ZKW при сложной фильтрации и контроле зон.</p></article>
+        <article class="card"><h3>Pharmacy / biology</h3><p>Для cleanroom/process задач обычно нужен ZKW и секционная компоновка.</p></article>
+        <article class="card"><h3>Electronics</h3><p>Стабильные параметры и чистота воздуха часто требуют modular AHU уровня ZKW.</p></article>
+        <article class="card"><h3>Mall / hotel</h3><p>GXH актуален для энергоэффективной fresh-air схемы; BF — для более простых задач.</p></article>
+        <article class="card"><h3>Workshop / factory</h3><p>BF/FG для типовых участков, ZKW для сложной многоступенчатой air treatment логики.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>FAQ</h2>
+      <div class="grid">
+        <details><summary>Чем BF отличается от GXH?</summary><p>BF — simple box ventilation, GXH — heat recovery fresh/exhaust.</p></details>
+        <details><summary>Когда нужен ZKW вместо FG?</summary><p>Когда нужен modular AHU, cleanroom relevance и много функциональных секций.</p></details>
+        <details><summary>Можно ли сделать точный подбор без полного ТЗ?</summary><p>Можно дать предварительную рекомендацию, но инженерный подбор требует полного ТЗ.</p></details>
+        <details><summary>Какие данные нужны для коммерческого предложения?</summary><p>Airflow, pressure, режимы, требования к heat recovery/coil, ограничения по месту, отрасль.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const families = {
+      BF: {
+        title: "BF — Box Type Ventilation Unit",
+        suitable: ["simple ventilation", "без сложных секций"],
+        notSuitable: ["модульная AHU", "cleanroom-уровень"],
+        range: "~2,000–50,000 m³/h; up to ~1,000 Pa",
+        scenarios: ["Commercial ventilation", "Workshop simple zones"]
+      },
+      GXH: {
+        title: "GXH — Heat Recovery Fresh Air Ventilation Unit",
+        suitable: ["fresh+exhaust", "energy recovery"],
+        notSuitable: ["глубокая modular AHU конфигурация"],
+        range: "~3,000–50,000 m³/h; up to ~1,000 Pa",
+        scenarios: ["Hotels & malls", "Office fresh-air systems"]
+      },
+      FG: {
+        title: "FG — Cabinet Fan Coil / Cabinet Air-side Unit",
+        suitable: ["coil-based treatment", "compact cabinet format"],
+        notSuitable: ["full modular AHU"],
+        range: "~2,000–36,000 m³/h; ~200–2,000 Pa",
+        scenarios: ["Compact commercial", "Cabinet retrofit zones"]
+      },
+      ZKW: {
+        title: "ZKW — Modular Air Handling Unit",
+        suitable: ["modular AHU", "cleanroom", "high airflow"],
+        notSuitable: ["simple box-only cases"],
+        range: "Up to ~200,000 m³/h; pressure project-specific",
+        scenarios: ["Medicine", "Biopharma", "Electronics", "Large industrial AHU"]
+      }
+    };
+
+    const cardHost = document.getElementById("familyCards");
+    cardHost.innerHTML = Object.entries(families).map(([id, x]) => `
+      <article class="card">
+        <h3>${id} — ${x.title.replace(id + " — ", "")}</h3>
+        <p><strong>Когда подходит:</strong> ${x.suitable.join(", ")}</p>
+        <p><strong>Когда не подходит:</strong> ${x.notSuitable.join(", ")}</p>
+        <p><strong>Типовой диапазон:</strong> ${x.range}</p>
+      </article>
+    `).join("");
+
+    const fields = ["taskType","airflow","pressure","needHeatRecovery","needCoil","mountingType","industry","complexity"];
+    fields.forEach((id) => document.getElementById(id).addEventListener("input", recommend));
+
+    function recommend() {
+      const taskType = document.getElementById("taskType").value;
+      const airflow = Number(document.getElementById("airflow").value || 0);
+      const pressure = Number(document.getElementById("pressure").value || 0);
+      const needHeatRecovery = document.getElementById("needHeatRecovery").value === "yes";
+      const needCoil = document.getElementById("needCoil").value === "yes";
+      const mounting = document.getElementById("mountingType").value;
+      const industry = document.getElementById("industry").value;
+      const complexity = document.getElementById("complexity").value;
+
+      let family = "BF";
+      const reasons = [];
+
+      if (taskType === "modular-ahu-cleanroom" || complexity === "modular-ahu" || ["medicine","biopharma","electronics"].includes(industry) || airflow >= 50000) {
+        family = "ZKW";
+        reasons.push("Modular AHU / cleanroom / high-airflow профиль → ZKW");
+      } else if (needHeatRecovery || taskType === "fresh-exhaust-heat-recovery") {
+        family = "GXH";
+        reasons.push("Heat recovery / fresh+exhaust задача → GXH");
+      } else if (needCoil || taskType === "cooling-heating-air" || complexity === "cabinety-unit" || ["limited-plant-room","ceiling-or-tight-space"].includes(mounting)) {
+        family = "FG";
+        reasons.push("Cabinet + coil-based + compact solution → FG");
+      } else {
+        family = "BF";
+        reasons.push("Simple box ventilation without complex functional sections → BF");
+      }
+
+      if (family === "BF" && pressure > 1200) {
+        reasons.push("Для высокого static pressure нужна инженерная проверка FG/ZKW");
+      }
+
+      document.getElementById("familyName").textContent = family;
+      document.getElementById("familyTitle").textContent = families[family].title;
+      document.getElementById("reasons").innerHTML = reasons.map((r) => `<li>${r}</li>`).join("");
+      document.getElementById("scenarios").innerHTML = families[family].scenarios.map((s) => `<li>${s}</li>`).join("");
+    }
+
+    recommend();
+  </script>
+</body>
+</html>
