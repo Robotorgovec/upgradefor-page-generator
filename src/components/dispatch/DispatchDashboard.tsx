@@ -82,12 +82,16 @@ export default function DispatchDashboard() {
       <div className="dispatchGrid" aria-label="Demo dashboard диспетчеризации">
         <header className="dispatchHeader panel">
           <div>
-            <p className="eyebrow">UPGRADE Dispatch / Asia Park demo</p>
-            <h1>Интеллектуальная диспетчерская объекта</h1>
+            <p className="eyebrow">UPGRADE Dispatch / Asia Park Astana</p>
+            <h1>
+              Интеллектуальная диспетчеризация существующей BMS/SCADA: холодоснабжение, вентиляция,
+              насосные группы, чиллеры Trane, аварии, тренды, паспорта оборудования и AI-диагностика.
+            </h1>
           </div>
           <div className="headerStatus">
             <span>Связь: Онлайн</span>
-            <strong>Simulated gateway</strong>
+            <strong>BMS/SCADA 10.50.4.41</strong>
+            <span>Operator</span>
             <b>DEMO MODE</b>
           </div>
         </header>
@@ -217,7 +221,7 @@ export default function DispatchDashboard() {
               </div>
               <div className="plantRoom">
                 <span>CH-1</span>
-                <span>NPS-2</span>
+                <span>ШУ-2</span>
                 <span>VC-13</span>
               </div>
             </div>
@@ -366,7 +370,7 @@ export default function DispatchDashboard() {
           {notificationItems.map((alarm) => (
             <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>
               <span>{severityLabel(alarm.severity)}</span>
-              <strong>{alarm.title.replace(" на насосе NPS-2", "")}</strong>
+              <strong>{alarm.title.replace(" на ШУ-2", "")}</strong>
             </button>
           ))}
           <button className="secondaryButton" type="button" onClick={() => setModal("readonly")}>

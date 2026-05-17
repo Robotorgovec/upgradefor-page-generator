@@ -13,7 +13,7 @@ export const dispatchSections: { id: DispatchSection; label: string; badge?: str
   { id: "overview", label: "Обзор объекта" },
   { id: "cooling", label: "Холодоснабжение", badge: "LIVE" },
   { id: "ventilation", label: "Вентиляция" },
-  { id: "itp", label: "ИТП" },
+  { id: "itp", label: "Теплообменники" },
   { id: "pumps", label: "Насосные группы" },
   { id: "alarms", label: "Аварии", badge: "3" },
   { id: "tickets", label: "Заявки" },
@@ -23,11 +23,13 @@ export const dispatchSections: { id: DispatchSection; label: string; badge?: str
 
 export const objectSummary = {
   name: "Asia Park Astana",
-  address: "пр. Кабанбай Батыра, Астана",
-  mode: "Premium demo / offline SCADA twin",
+  address: "Астана, Казахстан",
+  mode: "UPGRADE Dispatch / WinGroup поверх существующей web-based BMS/SCADA",
+  scadaHost: "10.50.4.41",
+  operator: "Operator",
   updatedAt: "13.05.2026 21:40 UTC",
-  area: "154 000 м²",
-  floors: "B2 + 13",
+  area: "TO VERIFY",
+  floors: "тех. отметки +11.400 / +12.600 / +13.500",
   systemsOnline: 42,
   systemsTotal: 46,
 };
@@ -41,9 +43,9 @@ export const kpis = [
 
 export const liveSystems = [
   { name: "Холодоснабжение", status: "degraded", load: 72, note: "DP sensor anomaly" },
-  { name: "Вентиляция", status: "online", load: 61, note: "4 камеры active" },
-  { name: "ИТП", status: "online", load: 48, note: "ГВС / отопление stable" },
-  { name: "Насосные группы", status: "warning", load: 66, note: "Pump CHW-P-07 at 40 Hz" },
+  { name: "Вентиляция", status: "online", load: 61, note: "VC-13 / VC-11 камеры active" },
+  { name: "Теплообменники", status: "online", load: 48, note: "около 6 узлов / TO VERIFY" },
+  { name: "Насосные группы", status: "warning", load: 66, note: "ШУ-1...ШУ-4 / около 10 насосов" },
 ];
 
 export const trendData = [
@@ -57,47 +59,48 @@ export const trendData = [
 ];
 
 export const chillers = [
-  { id: "CH-01", model: "Carrier 30XW-P 900", status: "RUN", load: 78, supply: "6.1°C", return: "11.8°C", flow: "412 м³/ч" },
-  { id: "CH-02", model: "Carrier 30XW-P 900", status: "RUN", load: 74, supply: "6.3°C", return: "11.6°C", flow: "398 м³/ч" },
-  { id: "CH-03", model: "Trane Sintesis RTAF", status: "STANDBY", load: 0, supply: "—", return: "—", flow: "0 м³/ч" },
-  { id: "CH-04", model: "Trane Sintesis RTAF", status: "RUN", load: 63, supply: "6.5°C", return: "12.1°C", flow: "365 м³/ч" },
-  { id: "CH-05", model: "Daikin EWAD-TZ", status: "SERVICE", load: 0, supply: "lock", return: "lock", flow: "0 м³/ч" },
+  { id: "CH-IN-05", model: "Внутренний чиллер 5 / Trane TO VERIFY", status: "RUN", load: 78, supply: "6.1°C", return: "11.8°C", flow: "412 м³/ч" },
+  { id: "CH-RTAF", model: "Новый чиллер Trane RTAF125", status: "RUN", load: 74, supply: "6.3°C", return: "11.6°C", flow: "398 м³/ч" },
+  { id: "CH-IN-01", model: "Внутренний чиллер 1 / Trane TO VERIFY", status: "STANDBY", load: 0, supply: "—", return: "—", flow: "0 м³/ч" },
+  { id: "CH-RTAD2", model: "Чиллер RTAD2 / Trane RTAD115", status: "RUN", load: 63, supply: "6.5°C", return: "12.1°C", flow: "365 м³/ч" },
+  { id: "CH-RTAD4", model: "Чиллер RTAD4 / Trane RTAD115", status: "SERVICE", load: 0, supply: "lock", return: "lock", flow: "0 м³/ч" },
 ];
 
 export const pumpGroups = [
-  { name: "CHW Primary", medium: "вода", pumps: ["CHW-P-01", "CHW-P-02", "CHW-P-03"], hz: [48, 47, 0] },
-  { name: "Glycol Loop", medium: "гликоль 35%", pumps: ["GLY-P-04", "GLY-P-05"], hz: [44, 43] },
-  { name: "Fan coil loop", medium: "фанкойлы", pumps: ["FCU-P-06", "FCU-P-07", "FCU-P-08"], hz: [41, 40, 0] },
-  { name: "AHU cooling", medium: "вентиляция", pumps: ["AHU-P-09", "AHU-P-10"], hz: [46, 45] },
+  { name: "ШУ-1", medium: "гликоль", pumps: ["насос 1", "насос 2"], hz: [44, 43] },
+  { name: "ШУ-2", medium: "вода", pumps: ["насос 3", "насос 4", "насос 5"], hz: [48, 47, 0] },
+  { name: "ШУ-3", medium: "фанкойлы", pumps: ["насос 6", "насос 7", "насос 8"], hz: [41, 40, 0] },
+  { name: "ШУ-4", medium: "вентиляция", pumps: ["насос 9", "насос 10"], hz: [46, 45] },
 ];
 
 export const ventilationUnits = [
-  { id: "VC-13-01", mark: "+13.500", location: "верхняя тех. отметка / roof plantroom", airflow: "64 000 м³/ч", status: "RUN", co2: 612 },
-  { id: "VC-13-02", mark: "+13.500", location: "верхняя тех. отметка / east shaft", airflow: "58 500 м³/ч", status: "RUN", co2: 590 },
-  { id: "VC-13-03", mark: "+12.600", location: "верхняя тех. отметка / food court", airflow: "47 800 м³/ч", status: "EVENT", co2: 740 },
-  { id: "VC-11-01", mark: "+11.400", location: "верхняя тех. отметка / cinema zone", airflow: "39 200 м³/ч", status: "RUN", co2: 665 },
+  { id: "VC-13-01", mark: "+13.500", location: "венткамера / П2-2, П2-3 / П9 / П10 / В9 / В10", airflow: "TO VERIFY", status: "RUN", co2: 612 },
+  { id: "VC-13-02", mark: "+13.500", location: "венткамера / П2-1 / П23 / В23 / П25 / В25 / ВДУ6 / ПДУ-1", airflow: "TO VERIFY", status: "RUN", co2: 590 },
+  { id: "VC-13-03", mark: "+12.600", location: "венткамера / П1-3 / П8 / П28 / В1 / В3 / ВДУ21 / ВДУ3", airflow: "TO VERIFY", status: "EVENT", co2: 740 },
+  { id: "VC-13-04", mark: "+13.500", location: "офисно-рекреационный блок / B41 / B71 / B19 / B45 / П19 / П29", airflow: "TO VERIFY", status: "RUN", co2: 650 },
+  { id: "VC-11-01", mark: "+11.400", location: "кинотеатр / проекционная / охлаждение кинопроекторов", airflow: "TO VERIFY", status: "RUN", co2: 665 },
 ];
 
 export const alarms = [
   { id: "ALM-6553", severity: "critical", system: "Холодоснабжение", equipment: "DP-SENS-CHW-01", message: "DP = 6553.5 bar", recommendation: "Проверить scaling, Modbus register, sensor range, формулу перепада давления", time: "21:38:11" },
-  { id: "ALM-1040", severity: "warning", system: "Насосные группы", equipment: "FCU-P-07", message: "Насос работает на 40 Hz при повышенном ΔT", recommendation: "Проверить уставку VFD и балансировку ветки фанкойлов", time: "21:31:08" },
+  { id: "ALM-1040", severity: "warning", system: "Насосные группы", equipment: "ШУ-2", message: "Насосная группа удерживает 40 Hz при повышенном ΔT", recommendation: "Проверить уставку VFD и балансировку ветки фанкойлов", time: "21:31:08" },
   { id: "EVT-VC13", severity: "event", system: "Вентиляция", equipment: "VC-13-03", message: "Событие: переход заслонки в ручной режим", recommendation: "Сверить локальный щит автоматики и команду диспетчера", time: "21:26:44" },
 ];
 
 export const equipmentPassport = {
   id: "DP-SENS-CHW-01",
-  model: "WIKA A2G-50 differential pressure transmitter",
-  location: "Тех. помещение ХЦ, коллектор CHW, отметка B1",
+  model: "Differential pressure transmitter / TO VERIFY",
+  location: "Asia Park Astana / Холодоснабжение / контур насосной группы",
   status: "CRITICAL / value out of physical range",
-  tags: ["SCADA.CHW.DP_01.PV", "MODBUS.4x40117", "AI.ANOMALY.DP_SCALE", "BMS.ALARM.6553"],
-  documents: ["Паспорт датчика DP-SENS-CHW-01.pdf", "P&ID Холодоснабжение лист 04.dwg", "Modbus map CHW rev.7.xlsx"],
+  tags: ["BMS.10.50.4.41", "SCADA.CHW.DP_01.PV", "AI.ANOMALY.DP_SCALE", "BMS.ALARM.6553"],
+  documents: ["SCADA/web-HMI 10.50.4.41", "Раздел Asia Park Astana / Холодоснабжение", "Modbus/BACnet map — TO VERIFY"],
   alarmHistory: ["13.05.2026 21:38 — DP 6553.5 bar", "12.05.2026 18:04 — DP 0.0 bar 12 sec", "03.05.2026 09:12 — signal frozen"],
   serviceHistory: ["20.04.2026 — визуальный осмотр, замечаний нет", "14.03.2026 — калибровка нуля", "28.01.2026 — замена импульсной трубки"],
 };
 
 export const aiInsights = [
   "Значение DP 6553.5 bar физически невозможно для CHW-контура. Вероятность ошибки scaling/register: 91%.",
-  "Профиль нагрузки чиллеров нормальный, но насос FCU-P-07 удерживается на 40 Hz при росте ΔT.",
+  "Профиль нагрузки чиллеров Trane нормальный, но насосная группа удерживается на 40 Hz при росте ΔT.",
   "VC-13-03 на отметке +12.600 создала event без влияния на comfort KPI, требуется подтверждение ручного режима.",
 ];
 
@@ -246,21 +249,21 @@ const commonDocuments: EquipmentDocument[] = [
 export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   {
     id: "ventilation-vc13",
-    label: "Вентиляция — 12 установок",
-    shortLabel: "Вентиляция",
-    countLabel: "12 установок",
+    label: "Вентиляция — VC-13 / VC-11",
+    shortLabel: "Венткамеры",
+    countLabel: "+11.400 / +12.600 / +13.500",
     trendKey: "flow",
     status: "В работе",
-    model: "VC-13-* / VC-11-01",
-    serial: "VC13-DEMO-012",
-    inventoryNumber: "INV-VNT-0012",
-    location: "Техэтаж, блок А / кровля",
-    manufacturer: "TO VERIFY",
-    year: "2021",
+    model: "VC-13-01...04 / VC-11-01",
+    serial: "VENT-ASIA-PARK-TO-VERIFY",
+    inventoryNumber: "INV-VNT-TO-VERIFY",
+    location: "Верхние технические отметки и кинотеатр",
+    manufacturer: "REMAK подтверждён минимум по одной установке / остальные TO VERIFY",
+    year: "TO VERIFY",
     onlineParams: [
-      { label: "Расход", value: "45.6 м3/ч" },
-      { label: "Температура притока", value: "21.4 °C" },
-      { label: "Фильтр", value: "72%" },
+      { label: "VC-13-01", value: "П2-2 / П2-3 / П9 / П10 / В9 / В10" },
+      { label: "VC-13-03", value: "П1-3 / П8 / П28 / В1 / В3 / ВДУ21 / ВДУ3" },
+      { label: "VC-11-01", value: "кинотеатр / охлаждение кинопроекторов" },
     ],
     serviceHistory: commonServiceHistory,
     documents: commonDocuments,
@@ -275,17 +278,17 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   },
   {
     id: "chiller-ch1",
-    label: "Чиллеры — 5 позиций",
-    shortLabel: "Чиллеры",
+    label: "Чиллеры Trane — 5 позиций",
+    shortLabel: "Чиллеры Trane",
     countLabel: "5 позиций",
     trendKey: "energy",
     status: "В работе",
-    model: "Trane / RTAF / RTAD или TO VERIFY",
-    serial: "CH-1-TO-VERIFY",
+    model: "Trane RTAF125 / RTAD115 / Adaptive Control / Helirotor",
+    serial: "TRANE-ASIA-PARK-TO-VERIFY",
     inventoryNumber: "INV-CH-0001",
-    location: "Холодильный центр, машинный зал",
-    manufacturer: "Trane / TO VERIFY",
-    year: "2020",
+    location: "Asia Park Astana / раздел Холодоснабжение",
+    manufacturer: "Trane",
+    year: "TO VERIFY",
     onlineParams: [
       { label: "COP/EER demo", value: "4.18" },
       { label: "Температура подачи", value: "7.2 °C" },
@@ -293,13 +296,13 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
       { label: "Наработка", value: "18 420 ч" },
     ],
     serviceHistory: [
-      { date: "2026-05-17", title: "Плановое обслуживание чиллера CH-1", result: "Ожидает заявки" },
+      { date: "2026-05-17", title: "Плановое обслуживание чиллерной позиции", result: "Ожидает заявки" },
       ...commonServiceHistory,
     ],
     documents: commonDocuments,
     aiRecommendations: [
       "Запланировать ТО CH-1 в ближайшее окно низкой нагрузки.",
-      "Сравнить энергопотребление с позициями CH-2/CH-3, есть потенциал балансировки.",
+      "Сравнить энергопотребление RTAF / RTAD и внутренних чиллеров, есть потенциал балансировки.",
       "Для подбора аналога нужна верификация модели и серийного номера.",
     ],
     relatedAlarmIds: ["alarm-chiller-service"],
@@ -308,18 +311,18 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     y: 30,
   },
   {
-    id: "pump-nps2",
-    label: "Насосы — 10 насосов",
-    shortLabel: "Насосы",
-    countLabel: "4 группы / около 10 насосов",
+    id: "pump-shu2",
+    label: "Насосные группы — ШУ-1...ШУ-4",
+    shortLabel: "ШУ-1...ШУ-4",
+    countLabel: "около 10 насосов",
     trendKey: "pressure",
     status: "Авария",
-    model: "NPS group demo",
-    serial: "NPS-2-DEMO-6553",
+    model: "Насосные группы холодоснабжения / TO VERIFY",
+    serial: "SHU-2-DEMO-6553",
     inventoryNumber: "INV-PMP-0010",
-    location: "Насосная, -1 этаж",
-    manufacturer: "Grundfos / Wilo или TO VERIFY",
-    year: "2019",
+    location: "Asia Park Astana / Холодоснабжение / ШУ-1...ШУ-4",
+    manufacturer: "TO VERIFY",
+    year: "TO VERIFY",
     onlineParams: [
       { label: "Давление", value: "6553.3 / 6553.5 бар anomaly" },
       { label: "Расход", value: "45.6 м3/ч" },
@@ -329,7 +332,7 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     documents: commonDocuments,
     aiRecommendations: [
       "DP anomaly 6553.3 / 6553.5 bar похожа на ошибку шкалы или historian tag mapping.",
-      "Проверить датчик давления NPS-2, единицы измерения и привязку Modbus/BACnet тега.",
+      "Проверить датчик давления на ШУ-2, единицы измерения и привязку Modbus/BACnet тега.",
       "До подтверждения данных не выполнять удаленный сброс аварии.",
     ],
     relatedAlarmIds: ["alarm-pump-pressure"],
@@ -339,15 +342,15 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   },
   {
     id: "itp-demo",
-    label: "ИТП — demo / TO VERIFY",
-    shortLabel: "ИТП",
-    countLabel: "demo / TO VERIFY",
+    label: "Теплообменные узлы — около 6",
+    shortLabel: "Теплообменники",
+    countLabel: "около 6 узлов",
     trendKey: "temperature",
     status: "TO VERIFY",
-    model: "ИТП demo skid",
+    model: "Теплообменные узлы холодоснабжения / TO VERIFY",
     serial: "TO VERIFY",
     inventoryNumber: "INV-ITP-DEMO",
-    location: "Тепловой пункт",
+    location: "Asia Park Astana / контуры гликоль, вода, фанкойлы, вентиляция",
     manufacturer: "TO VERIFY",
     year: "TO VERIFY",
     onlineParams: [
@@ -358,7 +361,7 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     serviceHistory: commonServiceHistory,
     documents: commonDocuments,
     aiRecommendations: [
-      "Нужна инвентаризация ИТП и сверка схемы с фактической обвязкой.",
+      "Нужна инвентаризация теплообменных узлов и сверка схемы с фактической обвязкой.",
       "Проверить превышение температуры обратки на соседнем контуре.",
     ],
     relatedAlarmIds: ["alarm-return-temp"],
@@ -368,17 +371,17 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   },
   {
     id: "automation-cabinets",
-    label: "Шкафы автоматики — 28 шкафов",
-    shortLabel: "Шкафы автоматики",
-    countLabel: "28 шкафов",
+    label: "Существующая web-based BMS/SCADA",
+    shortLabel: "BMS/SCADA",
+    countLabel: "10.50.4.41 / Operator",
     trendKey: "energy",
     status: "В работе",
-    model: "BMS panel demo",
-    serial: "BMS-28-DEMO",
+    model: "web-HMI / SCADA operational core",
+    serial: "10.50.4.41",
     inventoryNumber: "INV-BMS-0028",
-    location: "Этажи B1-L4",
-    manufacturer: "Siemens / Schneider / TO VERIFY",
-    year: "2022",
+    location: "Asia Park Astana / Холодоснабжение",
+    manufacturer: "TO VERIFY",
+    year: "TO VERIFY",
     onlineParams: [
       { label: "Связь", value: "Online / simulated gateway" },
       { label: "Контроллеры", value: "28/28" },
@@ -434,9 +437,9 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     model: "Valve actuator demo",
     serial: "DRV-098-DEMO",
     inventoryNumber: "INV-DRV-0098",
-    location: "ИТП, вентиляция, холодоснабжение",
-    manufacturer: "Belimo / Siemens / TO VERIFY",
-    year: "2021",
+    location: "теплообменные узлы, вентиляция, холодоснабжение",
+    manufacturer: "TO VERIFY",
+    year: "TO VERIFY",
     onlineParams: [
       { label: "Открытие ср.", value: "46%" },
       { label: "Ручной режим", value: "0" },
@@ -455,20 +458,20 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   },
   {
     id: "cooling-circuits",
-    label: "Холодоснабжение — 2 контура",
+    label: "Холодоснабжение — 4 контура",
     shortLabel: "Холодоснабжение",
-    countLabel: "2 контура",
+    countLabel: "гликоль / вода / фанкойлы / вентиляция",
     trendKey: "temperature",
     status: "Предупреждение",
-    model: "CHW loop demo",
-    serial: "CHW-02-DEMO",
+    model: "Гликоль / вода / фанкойлы / вентиляция",
+    serial: "CHW-ASIA-PARK-DEMO",
     inventoryNumber: "INV-CHW-0002",
     location: "Холодильный центр / торговые галереи",
     manufacturer: "TO VERIFY",
     year: "2020",
     onlineParams: [
-      { label: "Контур 1", value: "7.2 / 12.8 °C" },
-      { label: "Контур 2", value: "8.1 / 13.6 °C" },
+      { label: "Гликоль", value: "7.2 / 12.8 °C demo" },
+      { label: "Вода", value: "8.1 / 13.6 °C demo" },
       { label: "Delta T", value: "5.6 K" },
     ],
     serviceHistory: commonServiceHistory,
@@ -493,8 +496,8 @@ export const realtimeMetrics: DispatchMetric[] = [
 export const alarmEvents: DispatchAlarmEvent[] = [
   {
     id: "alarm-pump-pressure",
-    title: "Высокое давление на насосе NPS-2",
-    equipmentId: "pump-nps2",
+    title: "DP 6553.x bar на ШУ-2",
+    equipmentId: "pump-shu2",
     severity: "critical",
     time: "10:42",
     description: "DP anomaly 6553.3 / 6553.5 bar, требуется верификация тега.",
@@ -518,7 +521,7 @@ export const alarmEvents: DispatchAlarmEvent[] = [
 ];
 
 export const dispatchAiInsights: DispatchAiInsight[] = [
-  { id: "anomaly", title: "Обнаружение аномалий", value: "выявлено 2 отклонения", equipmentId: "pump-nps2" },
+  { id: "anomaly", title: "Data quality insight", value: "DP 6553.x bar", equipmentId: "pump-shu2" },
   { id: "failure", title: "Прогнозирование отказов", value: "риск по 3 единицам оборудования" },
   { id: "energy", title: "Оптимизация энергопотребления", value: "экономия до 15%", equipmentId: "chiller-ch1" },
   { id: "recommend", title: "Рекомендации AI", value: "доступно 4 рекомендации" },
