@@ -2,8 +2,9 @@ import BodyClass from "../../components/layout/BodyClass";
 import DispatchDashboard from "../../src/components/dispatch/DispatchDashboard";
 
 export const metadata = {
-  title: "UPGRADE Dispatch Demo — Asia Park Astana",
-  description: "Закрытая demo-страница медиадиспетчеризации инженерных систем Asia Park Astana.",
+  title: "UPGRADE Dispatch / Asia Park Astana",
+  description:
+    "Интеллектуальная диспетчеризация существующей BMS/SCADA: холодоснабжение, вентиляция, насосные группы, чиллеры Trane, аварии, тренды, паспорта оборудования и AI-диагностика.",
   robots: { index: false, follow: false },
 };
 
