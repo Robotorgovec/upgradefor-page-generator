@@ -1,5 +1,5 @@
 import BodyClass from "../../components/layout/BodyClass";
-import DispatchDemo from "../../src/components/dispatch/DispatchDemo";
+import DispatchDashboard from "../../src/components/dispatch/DispatchDashboard";
 
 export const metadata = {
   title: "UPGRADE Dispatch Demo — Asia Park Astana",
@@ -18,7 +18,7 @@ export default function DispatchPage() {
         body.dispatch-demo-page .mobile-bottom-nav { display: none !important; }
         body.dispatch-demo-page .app-content { padding: 0 !important; margin: 0 !important; max-width: none !important; }
       `}</style>
-      <DispatchDemo />
+      <DispatchDashboard />
     </>
   );
 }
