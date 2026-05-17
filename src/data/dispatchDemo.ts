@@ -273,8 +273,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-return-temp"],
     relatedTrendKeys: ["temperature", "flow"],
-    x: 16,
-    y: 24,
+    x: 28,
+    y: 25,
   },
   {
     id: "chiller-ch1",
@@ -307,8 +307,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-chiller-service"],
     relatedTrendKeys: ["temperature", "energy"],
-    x: 82,
-    y: 30,
+    x: 18,
+    y: 82,
   },
   {
     id: "pump-shu2",
@@ -337,8 +337,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-pump-pressure"],
     relatedTrendKeys: ["pressure", "flow"],
-    x: 18,
-    y: 72,
+    x: 39,
+    y: 84,
   },
   {
     id: "itp-demo",
@@ -366,8 +366,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-return-temp"],
     relatedTrendKeys: ["temperature"],
-    x: 72,
-    y: 76,
+    x: 57,
+    y: 82,
   },
   {
     id: "automation-cabinets",
@@ -395,8 +395,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: [],
     relatedTrendKeys: ["energy"],
-    x: 50,
-    y: 14,
+    x: 83,
+    y: 70,
   },
   {
     id: "sensors",
@@ -424,8 +424,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-pump-pressure"],
     relatedTrendKeys: ["pressure", "temperature"],
-    x: 90,
-    y: 58,
+    x: 88,
+    y: 55,
   },
   {
     id: "valves-drives",
@@ -453,8 +453,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: [],
     relatedTrendKeys: ["flow"],
-    x: 8,
-    y: 50,
+    x: 12,
+    y: 57,
   },
   {
     id: "cooling-circuits",
@@ -482,8 +482,8 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     ],
     relatedAlarmIds: ["alarm-return-temp", "alarm-chiller-service"],
     relatedTrendKeys: ["temperature", "energy"],
-    x: 44,
-    y: 86,
+    x: 70,
+    y: 84,
   },
 ];
 

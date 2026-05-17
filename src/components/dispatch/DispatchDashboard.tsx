@@ -20,11 +20,23 @@ const passportTabs = ["Паспорт", "Параметры", "ТО", "Доку�
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
 
 type ModalState = "readonly" | "ticket" | null;
+type NodeSeverity = DispatchAlarmEvent["severity"] | "normal";
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   if (severity === "critical") return "Авария";
   if (severity === "warning") return "Предупреждение";
   return "ТО";
+}
+
+function getNodeSeverity(node: DispatchEquipmentNode): NodeSeverity {
+  const severities = node.relatedAlarmIds
+    .map((id) => alarmEvents.find((alarm) => alarm.id === id)?.severity)
+    .filter(Boolean);
+
+  if (severities.includes("critical")) return "critical";
+  if (severities.includes("warning")) return "warning";
+  if (severities.includes("service")) return "service";
+  return "normal";
 }
 
 export default function DispatchDashboard() {
@@ -48,13 +60,15 @@ export default function DispatchDashboard() {
 
   const selectedEquipment =
     dispatchEquipmentNodes.find((node) => node.id === selectedId) ?? dispatchEquipmentNodes[0];
+  const selectedSeverity = getNodeSeverity(selectedEquipment);
+  const selectedTrendSeries = trendSeries.find((item) => item.key === selectedEquipment.trendKey) ?? trendSeries[0];
+  const selectedTrendPoints = selectedTrendSeries.periods["24h"];
+  const selectedTrendMax = Math.max(...selectedTrendPoints.map((point) => point.value), 1);
 
   const relatedAlarms = useMemo(
     () => alarmEvents.filter((alarm) => selectedEquipment.relatedAlarmIds.includes(alarm.id)),
     [selectedEquipment],
   );
-
-  const notificationItems = alarmEvents.slice(0, 3);
 
   const selectEquipment = (node: DispatchEquipmentNode) => {
     setSelectedId(node.id);
@@ -65,16 +79,12 @@ export default function DispatchDashboard() {
 
   const openAlarm = (alarm: DispatchAlarmEvent) => {
     const node = dispatchEquipmentNodes.find((item) => item.id === alarm.equipmentId);
-    if (node) {
-      selectEquipment(node);
-    }
+    if (node) selectEquipment(node);
   };
 
   const handleAiSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setAiAnswer(
-      "AI анализирует mock-данные. Для реального ответа требуется подключение к BMS/SCADA historian.",
-    );
+    setAiAnswer("AI анализирует mock-данные. Для реального ответа требуется подключение к BMS/SCADA historian.");
   };
 
   return (
@@ -176,65 +186,75 @@ export default function DispatchDashboard() {
           <div className="twinTopline">
             <div>
               <p className="eyebrow">Digital twin</p>
-              <h2>3D цифровой двойник объекта</h2>
+              <h2>2.5D цифровой двойник Asia Park Astana</h2>
             </div>
             <div className="readOnlyPill">Read-only / control locked</div>
           </div>
 
-          <div className="twinStage">
+          <div
+            className={`twinStage trend-${selectedEquipment.trendKey} selected-${selectedEquipment.id} severity-${selectedSeverity}`}
+            data-selected-equipment={selectedEquipment.id}
+          >
             <svg className="flowLayer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <path className="flowPath pathOne" d="M13 25 C28 18 35 38 50 28 S75 18 84 31" />
-              <path className="flowPath pathTwo" d="M18 72 C34 60 44 84 61 72 S77 55 91 58" />
-              <path className="flowPath pathThree" d="M8 50 C28 48 35 54 49 49 S70 37 90 42" />
-              <circle className="dataDot dotOne" r="1.2">
-                <animateMotion dur="4.8s" repeatCount="indefinite" path="M13 25 C28 18 35 38 50 28 S75 18 84 31" />
+              <path className="flowPath flowCooling" d="M14 78 C27 70 39 72 51 65 S76 56 88 62" />
+              <path className="flowPath flowHydraulic" d="M12 85 C27 90 43 83 55 79 S73 79 87 84" />
+              <path className="flowPath flowVentilation" d="M18 32 C34 20 49 25 61 18 S77 20 88 30" />
+              <path className="flowPath flowData" d="M49 14 C53 25 56 35 62 45 S76 58 87 69" />
+              <circle className="dataDot dotCooling" r="1.15">
+                <animateMotion dur="5.2s" repeatCount="indefinite" path="M14 78 C27 70 39 72 51 65 S76 56 88 62" />
               </circle>
-              <circle className="dataDot dotTwo" r="1.1">
-                <animateMotion dur="5.8s" repeatCount="indefinite" path="M18 72 C34 60 44 84 61 72 S77 55 91 58" />
+              <circle className="dataDot dotHydraulic" r="1">
+                <animateMotion dur="6.4s" repeatCount="indefinite" path="M12 85 C27 90 43 83 55 79 S73 79 87 84" />
               </circle>
-              <circle className="dataDot dotThree" r="1">
-                <animateMotion dur="4.2s" repeatCount="indefinite" path="M8 50 C28 48 35 54 49 49 S70 37 90 42" />
+              <circle className="dataDot dotVentilation" r="1">
+                <animateMotion dur="4.8s" repeatCount="indefinite" path="M18 32 C34 20 49 25 61 18 S77 20 88 30" />
+              </circle>
+              <circle className="dataDot dotData" r="0.95">
+                <animateMotion dur="4.2s" repeatCount="indefinite" path="M49 14 C53 25 56 35 62 45 S76 58 87 69" />
               </circle>
             </svg>
 
-            <div className="buildingIso" aria-hidden="true">
-              <div className="roofDeck">
-                <span />
-                <span />
-                <span />
+            <div className="mallTwin" aria-hidden="true">
+              <div className="technicalMarkers">
+                <span>+11.400</span>
+                <span>+12.600</span>
+                <span>+13.500</span>
               </div>
-              <div className="tower towerA">
-                {Array.from({ length: 24 }).map((_, index) => (
-                  <i key={index} />
-                ))}
+              <div className="roofTech">
+                <span className="roofUnit">VC-13</span>
+                <span className="roofUnit">VC-11</span>
+                <span className="roofUnit">SCADA</span>
               </div>
-              <div className="tower towerB">
-                {Array.from({ length: 18 }).map((_, index) => (
-                  <i key={index} />
-                ))}
+              <div className="mallMass">
+                <div className="sideWing sideWingLeft">{Array.from({ length: 12 }).map((_, index) => <i key={index} />)}</div>
+                <div className="atriumGlass">
+                  {Array.from({ length: 9 }).map((_, index) => <i key={index} />)}
+                  <strong>ASIA PARK</strong>
+                </div>
+                <div className="sideWing sideWingRight">{Array.from({ length: 12 }).map((_, index) => <i key={index} />)}</div>
+                <div className="retailRibbon"><span /><span /><span /><span /><span /></div>
               </div>
-              <div className="techFloor">
-                <b />
-                <b />
-                <b />
-                <b />
+              <div className="equipmentYard">
+                <span className="yardItem yardChillers">Trane RTAF / RTAD</span>
+                <span className="yardItem yardPumps">ШУ-1...ШУ-4</span>
+                <span className="yardItem yardHex">Plate HEX</span>
+                <span className="yardItem yardCircuit">Glycol / water</span>
               </div>
-              <div className="plantRoom">
-                <span>CH-1</span>
-                <span>ШУ-2</span>
-                <span>VC-13</span>
+              <div className="integrationLayer">
+                <span>existing BMS/SCADA 10.50.4.41</span>
+                <b>UPGRADE Dispatch / AI</b>
               </div>
             </div>
 
             {dispatchEquipmentNodes.map((node) => {
+              const severity = getNodeSeverity(node);
               const isSelected = node.id === selectedEquipment.id;
-              const hasAlarm = node.relatedAlarmIds.some((id) => alarmEvents.find((alarm) => alarm.id === id)?.severity === "critical");
 
               return (
                 <button
                   key={node.id}
                   type="button"
-                  className={`equipmentNode ${isSelected ? "isSelected" : ""} ${hasAlarm ? "hasAlarm" : ""}`}
+                  className={`equipmentNode severity-${severity} ${isSelected ? "isSelected" : ""} ${severity !== "normal" ? "hasAlarm" : ""}`}
                   style={{ left: `${node.x}%`, top: `${node.y}%` }}
                   onClick={() => selectEquipment(node)}
                 >
@@ -284,6 +304,33 @@ export default function DispatchDashboard() {
               <small>Статус: {selectedEquipment.status}</small>
             </div>
             <div className="qrBox">QR</div>
+          </div>
+
+          <div className="drawerSnapshot">
+            <article>
+              <span>Последнее событие</span>
+              <strong>{relatedAlarms[0]?.title ?? "Активных аварий нет"}</strong>
+              <small>{relatedAlarms[0]?.description ?? "Демо-паспорт в режиме read-only"}</small>
+            </article>
+            <article>
+              <span>Связанные системы</span>
+              <strong>{selectedEquipment.relatedTrendKeys.join(" / ") || "TO VERIFY"}</strong>
+              <small>{selectedEquipment.location}</small>
+            </article>
+            <article className="miniTrend">
+              <span>{selectedTrendSeries.label}</span>
+              <div>
+                {selectedTrendPoints.map((point) => (
+                  <i key={point.label} style={{ height: `${Math.max(12, (point.value / selectedTrendMax) * 100)}%` }} />
+                ))}
+              </div>
+              <small>24h · {selectedTrendSeries.unit}</small>
+            </article>
+            <article>
+              <span>Сервис</span>
+              <strong>{selectedEquipment.serviceHistory[0]?.title ?? "TO VERIFY"}</strong>
+              <small>{selectedEquipment.serviceHistory[0]?.result ?? "Нужна верификация на объекте"}</small>
+            </article>
           </div>
 
           <div className="passportTabs" role="tablist" aria-label="Разделы паспорта">
@@ -349,7 +396,9 @@ export default function DispatchDashboard() {
           <div className="relatedBlock">
             <span>Связанные аварии/тренды</span>
             {relatedAlarms.length ? (
-              relatedAlarms.map((alarm) => <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>{alarm.title}</button>)
+              relatedAlarms.map((alarm) => (
+                <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>{alarm.title}</button>
+              ))
             ) : (
               <small>Активных аварий нет</small>
             )}
@@ -367,7 +416,7 @@ export default function DispatchDashboard() {
             <p className="eyebrow">Notifications</p>
             <h2>Уведомления</h2>
           </div>
-          {notificationItems.map((alarm) => (
+          {alarmEvents.slice(0, 3).map((alarm) => (
             <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>
               <span>{severityLabel(alarm.severity)}</span>
               <strong>{alarm.title.replace(" на ШУ-2", "")}</strong>
@@ -402,832 +451,29 @@ export default function DispatchDashboard() {
           </button>
         ))}
         <div className="bottomMeta">
-          <span>Связь с объектом: Онлайн / Simulated gateway</span>
-          <span>Пользователь: Диспетчер</span>
-          <input aria-label="Текущее demo-время" value={demoTime} onChange={(event) => setDemoTime(event.target.value)} />
-          <b>DEMO MODE</b>
+          <span>{demoTime}</span>
+          <input value={demoTime} onChange={(event) => setDemoTime(event.target.value)} aria-label="Demo time" />
         </div>
       </nav>
 
       {modal ? (
-        <div className="modalBackdrop" role="presentation" onMouseDown={() => setModal(null)}>
-          <div className="demoModal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
-            <button type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
-            {modal === "readonly" ? (
-              <>
-                <h2>Управление оборудованием отключено</h2>
-                <p>
-                  Управление оборудованием отключено в демонстрационном режиме. Для реального управления требуется
-                  интеграция с BMS/SCADA, подтверждение прав доступа, аудит тегов и согласование с эксплуатационной
-                  службой.
-                </p>
-              </>
-            ) : (
-              <>
-                <h2>Demo-заявка создана</h2>
-                <p>
-                  Заявка по оборудованию {selectedEquipment.shortLabel} сформирована в demo/read-only режиме и не
-                  отправлена во внешнюю систему.
-                </p>
-              </>
-            )}
+        <div className="modalBackdrop" role="presentation" onClick={() => setModal(null)}>
+          <div className="demoModal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+            <button type="button" onClick={() => setModal(null)} aria-label="Закрыть">
+              ×
+            </button>
+            <h2>{modal === "ticket" ? "Demo-заявка создана" : "Управление заблокировано"}</h2>
+            <p>
+              {modal === "ticket"
+                ? "Заявка создана только в интерфейсе демонстрации. Реальная интеграция с Service Desk не выполняется."
+                : "Демонстрационная страница работает в read-only режиме и не отправляет команды в BMS/SCADA."}
+            </p>
           </div>
         </div>
       ) : null}
 
       <style jsx>{`
-        :global(body.is-dispatch-demo .site-header),
-        :global(body.is-dispatch-demo .sidebar),
-        :global(body.is-dispatch-demo .mobile-bottom-nav),
-        :global(body.is-dispatch-demo .skip) {
-          display: none !important;
-        }
-
-        :global(body.is-dispatch-demo .app-content) {
-          width: 100% !important;
-          margin-left: 0 !important;
-          padding: 0 !important;
-        }
-
-        .dispatchShell {
-          min-height: 100vh;
-          margin: 0;
-          padding: 14px 14px 88px;
-          color: #dbeafe;
-          background:
-            radial-gradient(circle at 48% 18%, rgba(14, 165, 233, 0.18), transparent 34%),
-            linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px),
-            #020712;
-          background-size: auto, 34px 34px, 34px 34px, auto;
-        }
-
-        .dispatchGrid {
-          display: grid;
-          grid-template-columns: minmax(270px, 320px) minmax(470px, 1fr) minmax(300px, 340px);
-          grid-template-rows: auto 1fr auto;
-          gap: 14px;
-          min-height: calc(100vh - 116px);
-        }
-
-        .panel {
-          border: 1px solid rgba(56, 189, 248, 0.26);
-          border-radius: 8px;
-          background: linear-gradient(145deg, rgba(8, 20, 38, 0.84), rgba(2, 8, 23, 0.74));
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 52px rgba(0,0,0,0.34);
-          backdrop-filter: blur(18px);
-        }
-
-        .dispatchHeader {
-          grid-column: 1 / -1;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 20px;
-          padding: 16px 20px;
-        }
-
-        .dispatchHeader h1,
-        .panelHeading h2,
-        .twinTopline h2 {
-          margin: 0;
-          color: #f8fafc;
-          font-size: 20px;
-          line-height: 1.15;
-        }
-
-        .eyebrow {
-          margin: 0 0 6px;
-          color: #67e8f9;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .headerStatus {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          color: #93c5fd;
-          font-size: 12px;
-        }
-
-        .headerStatus b,
-        .bottomMeta b,
-        .readOnlyPill {
-          border: 1px solid rgba(34, 211, 238, 0.42);
-          border-radius: 999px;
-          color: #22d3ee;
-          padding: 7px 10px;
-          box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
-        }
-
-        .leftRail {
-          display: grid;
-          gap: 14px;
-          align-content: start;
-        }
-
-        .leftRail .panel,
-        .passportDrawer,
-        .notificationsPanel {
-          padding: 16px;
-        }
-
-        .panelHeading {
-          margin-bottom: 14px;
-        }
-
-        .kpiGrid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 8px;
-        }
-
-        .kpiCard,
-        .aiInsight,
-        .paramGrid div,
-        .serviceList article {
-          border: 1px solid rgba(125, 211, 252, 0.18);
-          border-radius: 8px;
-          background: rgba(15, 23, 42, 0.62);
-          padding: 12px;
-        }
-
-        .kpiCard span,
-        .aiInsight span,
-        .paramGrid span,
-        .serviceList span,
-        .passportList dt,
-        .relatedBlock span {
-          display: block;
-          color: #93c5fd;
-          font-size: 11px;
-        }
-
-        .kpiCard strong,
-        .aiInsight strong,
-        .paramGrid strong {
-          display: block;
-          margin: 7px 0 4px;
-          color: #f8fafc;
-          font-size: 18px;
-        }
-
-        .kpiCard small,
-        .serviceList small,
-        .passportHero small,
-        .relatedBlock small {
-          color: #86efac;
-          font-size: 11px;
-        }
-
-        button {
-          font: inherit;
-        }
-
-        .eventList,
-        .serviceList,
-        .documentList,
-        .relatedBlock {
-          display: grid;
-          gap: 8px;
-        }
-
-        .eventItem,
-        .aiInsight,
-        .notificationsPanel button,
-        .documentList button,
-        .relatedBlock button {
-          width: 100%;
-          border: 1px solid rgba(125, 211, 252, 0.18);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.66);
-          color: #dbeafe;
-          cursor: pointer;
-          padding: 10px;
-          text-align: left;
-          transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .eventItem:hover,
-        .aiInsight:hover,
-        .notificationsPanel button:hover,
-        .documentList button:hover,
-        .relatedBlock button:hover,
-        .equipmentNode:hover .nodeCore {
-          border-color: rgba(34, 211, 238, 0.72);
-          box-shadow: 0 0 24px rgba(34, 211, 238, 0.16);
-          transform: translateY(-1px);
-        }
-
-        .eventItem span,
-        .notificationsPanel span {
-          color: #67e8f9;
-          font-size: 11px;
-        }
-
-        .eventItem strong,
-        .notificationsPanel strong {
-          display: block;
-          margin: 4px 0;
-          color: #f8fafc;
-          font-size: 13px;
-        }
-
-        .eventItem.critical {
-          border-color: rgba(248, 113, 113, 0.45);
-        }
-
-        .eventItem.warning {
-          border-color: rgba(251, 191, 36, 0.38);
-        }
-
-        .secondaryButton,
-        .commandStrip button,
-        .drawerActions button,
-        .aiInput button,
-        .dispatchBottomNav button {
-          border: 1px solid rgba(56, 189, 248, 0.34);
-          border-radius: 8px;
-          background: rgba(14, 165, 233, 0.1);
-          color: #e0f2fe;
-          cursor: pointer;
-          padding: 9px 11px;
-        }
-
-        .full {
-          width: 100%;
-          margin-top: 10px;
-        }
-
-        .aiGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px;
-        }
-
-        .aiInput {
-          display: flex;
-          gap: 8px;
-          margin-top: 12px;
-        }
-
-        .aiInput input,
-        .bottomMeta input {
-          min-width: 0;
-          border: 1px solid rgba(56, 189, 248, 0.25);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.72);
-          color: #e0f2fe;
-          padding: 10px;
-        }
-
-        .aiInput input {
-          flex: 1;
-        }
-
-        .aiAnswer {
-          margin: 10px 0 0;
-          color: #bae6fd;
-          font-size: 12px;
-          line-height: 1.45;
-        }
-
-        .twinPanel {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          min-height: 690px;
-          overflow: hidden;
-          padding: 18px;
-        }
-
-        .twinTopline {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          position: relative;
-          z-index: 2;
-        }
-
-        .twinStage {
-          position: relative;
-          flex: 1;
-          min-height: 480px;
-          margin: 16px 0;
-          border: 1px solid rgba(56, 189, 248, 0.18);
-          border-radius: 8px;
-          overflow: hidden;
-          background:
-            radial-gradient(circle at 50% 52%, rgba(34, 211, 238, 0.14), transparent 34%),
-            linear-gradient(rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-            rgba(2, 8, 23, 0.42);
-          background-size: auto, 28px 28px, 28px 28px, auto;
-        }
-
-        .flowLayer {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.62));
-        }
-
-        .flowPath {
-          fill: none;
-          stroke: rgba(34, 211, 238, 0.58);
-          stroke-width: 0.55;
-          stroke-dasharray: 1.5 2.1;
-          animation: dashFlow 4s linear infinite;
-        }
-
-        .pathTwo {
-          stroke: rgba(56, 189, 248, 0.5);
-          animation-duration: 5.4s;
-        }
-
-        .pathThree {
-          stroke: rgba(103, 232, 249, 0.42);
-          animation-duration: 3.8s;
-        }
-
-        .dataDot {
-          fill: #e0f2fe;
-          filter: drop-shadow(0 0 7px #22d3ee);
-        }
-
-        .buildingIso {
-          position: absolute;
-          left: 50%;
-          top: 24%;
-          width: min(88%, 820px);
-          aspect-ratio: 1.32;
-          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(1.08);
-          transform-style: preserve-3d;
-        }
-
-        .buildingIso::before {
-          content: "";
-          position: absolute;
-          inset: 8% 10% 12% 10%;
-          border: 1px solid rgba(186, 230, 253, 0.48);
-          background:
-            linear-gradient(90deg, rgba(186, 230, 253, 0.18) 1px, transparent 1px),
-            linear-gradient(rgba(186, 230, 253, 0.12) 1px, transparent 1px),
-            linear-gradient(145deg, rgba(14, 165, 233, 0.28), rgba(6, 78, 118, 0.2));
-          background-size: 34px 34px, 34px 34px, auto;
-          clip-path: polygon(16% 0, 78% 0, 100% 32%, 82% 100%, 20% 100%, 0 62%);
-          box-shadow: inset 0 0 44px rgba(125, 211, 252, 0.16), 0 0 70px rgba(34, 211, 238, 0.22);
-        }
-
-        .roofDeck,
-        .techFloor,
-        .plantRoom,
-        .tower {
-          position: absolute;
-          border: 1px solid rgba(125, 211, 252, 0.42);
-          background: linear-gradient(145deg, rgba(59, 130, 246, 0.34), rgba(8, 47, 73, 0.24));
-          box-shadow: inset 0 0 34px rgba(186, 230, 253, 0.16), 0 0 52px rgba(14, 165, 233, 0.28);
-        }
-
-        .roofDeck {
-          inset: 2% 12% 55% 14%;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-          padding: 14px;
-        }
-
-        .roofDeck span,
-        .techFloor b {
-          border: 1px solid rgba(34, 211, 238, 0.35);
-          background: rgba(34, 211, 238, 0.12);
-        }
-
-        .tower {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 4px;
-          padding: 10px;
-          transform: translateZ(62px);
-        }
-
-        .tower i {
-          min-height: 12px;
-          border: 1px solid rgba(191, 219, 254, 0.24);
-          background: rgba(125, 211, 252, 0.12);
-        }
-
-        .towerA {
-          inset: 18% 48% 18% 17%;
-        }
-
-        .towerB {
-          inset: 28% 22% 18% 56%;
-          transform: translateZ(44px);
-        }
-
-        .techFloor {
-          inset: 58% 20% 22% 18%;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
-          padding: 12px;
-        }
-
-        .plantRoom {
-          inset: 75% 30% 6% 25%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          transform: translateZ(22px);
-        }
-
-        .plantRoom span {
-          border: 1px solid rgba(34, 211, 238, 0.42);
-          color: #cffafe;
-          font-size: 11px;
-          padding: 6px;
-        }
-
-        .equipmentNode {
-          position: absolute;
-          z-index: 3;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          border: 0;
-          background: transparent;
-          color: #dbeafe;
-          cursor: pointer;
-          transform: translate(-50%, -50%);
-        }
-
-        .nodeCore {
-          width: 18px;
-          height: 18px;
-          border: 1px solid rgba(103, 232, 249, 0.95);
-          border-radius: 50%;
-          background: radial-gradient(circle, #e0f2fe 0 16%, #22d3ee 17% 36%, rgba(14, 165, 233, 0.25) 37%);
-          box-shadow: 0 0 24px rgba(34, 211, 238, 0.72);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .nodeLabel {
-          min-width: 132px;
-          border: 1px solid rgba(125, 211, 252, 0.26);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.72);
-          padding: 8px 10px;
-          text-align: left;
-          box-shadow: 0 10px 28px rgba(0,0,0,0.28);
-        }
-
-        .nodeLabel strong,
-        .nodeLabel small {
-          display: block;
-        }
-
-        .nodeLabel small {
-          color: #93c5fd;
-          font-size: 11px;
-        }
-
-        .equipmentNode.isSelected .nodeCore,
-        .equipmentNode.hasAlarm .nodeCore {
-          transform: scale(1.28);
-        }
-
-        .equipmentNode.isSelected .nodeLabel {
-          border-color: rgba(34, 211, 238, 0.85);
-          box-shadow: 0 0 32px rgba(34, 211, 238, 0.22);
-        }
-
-        .equipmentNode.hasAlarm .nodeCore {
-          border-color: rgba(248, 113, 113, 0.95);
-          animation: alarmPulse 1.3s ease-in-out infinite;
-        }
-
-        .commandStrip {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          position: relative;
-          z-index: 2;
-        }
-
-        .recommendationPanel {
-          margin-top: 14px;
-          border: 1px solid rgba(34, 211, 238, 0.24);
-          border-radius: 8px;
-          background: rgba(8, 47, 73, 0.32);
-          padding: 14px;
-        }
-
-        .recommendationPanel h3 {
-          margin: 0;
-          color: #f8fafc;
-        }
-
-        .recommendationPanel ul {
-          margin: 10px 0 0;
-          padding-left: 18px;
-          color: #bae6fd;
-          font-size: 13px;
-          line-height: 1.5;
-        }
-
-        .passportDrawer {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .drawerClose,
-        .demoModal > button,
-        .replacementPanel > button {
-          position: absolute;
-          right: 10px;
-          top: 10px;
-          border: 1px solid rgba(125, 211, 252, 0.24);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.72);
-          color: #e0f2fe;
-          cursor: pointer;
-          width: 30px;
-          height: 30px;
-        }
-
-        .passportHero {
-          display: grid;
-          grid-template-columns: 1fr 66px;
-          gap: 12px;
-          align-items: center;
-          border: 1px solid rgba(125, 211, 252, 0.18);
-          border-radius: 8px;
-          background: rgba(15, 23, 42, 0.62);
-          padding: 12px;
-        }
-
-        .passportHero strong {
-          display: block;
-          color: #f8fafc;
-          line-height: 1.25;
-        }
-
-        .statusDot {
-          display: inline-block;
-          width: 9px;
-          height: 9px;
-          margin-right: 7px;
-          border-radius: 999px;
-          background: #22c55e;
-          box-shadow: 0 0 14px #22c55e;
-        }
-
-        .statusDot.danger {
-          background: #f87171;
-          box-shadow: 0 0 14px #f87171;
-        }
-
-        .qrBox {
-          display: grid;
-          place-items: center;
-          aspect-ratio: 1;
-          border: 1px dashed rgba(125, 211, 252, 0.45);
-          color: #67e8f9;
-          font-weight: 800;
-        }
-
-        .passportTabs {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 6px;
-          margin: 12px 0;
-        }
-
-        .passportTabs button {
-          border: 1px solid rgba(125, 211, 252, 0.18);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.48);
-          color: #93c5fd;
-          cursor: pointer;
-          padding: 8px 6px;
-        }
-
-        .passportTabs button.isActive {
-          border-color: rgba(34, 211, 238, 0.68);
-          color: #e0f2fe;
-          background: rgba(14, 165, 233, 0.18);
-        }
-
-        .passportList {
-          display: grid;
-          gap: 8px;
-          margin: 0;
-        }
-
-        .passportList div {
-          display: grid;
-          grid-template-columns: 110px 1fr;
-          gap: 10px;
-          border-bottom: 1px solid rgba(125, 211, 252, 0.12);
-          padding-bottom: 8px;
-        }
-
-        .passportList dd {
-          margin: 0;
-          color: #f8fafc;
-          font-size: 13px;
-        }
-
-        .paramGrid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px;
-        }
-
-        .documentList button span {
-          display: inline-grid;
-          place-items: center;
-          width: 38px;
-          margin-right: 8px;
-          color: #67e8f9;
-        }
-
-        .relatedBlock {
-          margin-top: 14px;
-        }
-
-        .drawerActions {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 8px;
-          margin-top: 14px;
-        }
-
-        .notificationsPanel {
-          grid-column: 3;
-          align-self: end;
-        }
-
-        .replacementPanel {
-          position: fixed;
-          z-index: 20;
-          left: 50%;
-          bottom: 76px;
-          width: min(760px, calc(100vw - 32px));
-          transform: translateX(-50%);
-          border: 1px solid rgba(34, 211, 238, 0.46);
-          border-radius: 8px;
-          background: rgba(2, 8, 23, 0.94);
-          box-shadow: 0 0 48px rgba(34, 211, 238, 0.2);
-          color: #e0f2fe;
-          padding: 18px 48px 18px 18px;
-        }
-
-        .replacementPanel strong {
-          display: block;
-          margin-bottom: 12px;
-        }
-
-        .replacementPanel div {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 8px;
-        }
-
-        .replacementPanel span {
-          border: 1px solid rgba(125, 211, 252, 0.2);
-          border-radius: 8px;
-          padding: 10px;
-          color: #93c5fd;
-        }
-
-        .replacementPanel span.isDone {
-          border-color: rgba(34, 197, 94, 0.5);
-          color: #bbf7d0;
-        }
-
-        .dispatchBottomNav {
-          position: fixed;
-          z-index: 18;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          border-top: 1px solid rgba(56, 189, 248, 0.28);
-          background: rgba(2, 8, 23, 0.94);
-          box-shadow: 0 -18px 44px rgba(0,0,0,0.36);
-          padding: 10px 14px;
-          backdrop-filter: blur(18px);
-        }
-
-        .dispatchBottomNav button {
-          white-space: nowrap;
-        }
-
-        .bottomMeta {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-left: auto;
-          color: #93c5fd;
-          font-size: 12px;
-          white-space: nowrap;
-        }
-
-        .bottomMeta input {
-          width: 146px;
-          padding: 7px 9px;
-          font-size: 12px;
-        }
-
-        .modalBackdrop {
-          position: fixed;
-          z-index: 40;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          background: rgba(0, 0, 0, 0.64);
-          padding: 20px;
-        }
-
-        .demoModal {
-          position: relative;
-          width: min(560px, 100%);
-          border: 1px solid rgba(34, 211, 238, 0.42);
-          border-radius: 8px;
-          background: #020817;
-          color: #dbeafe;
-          box-shadow: 0 0 64px rgba(34, 211, 238, 0.2);
-          padding: 28px;
-        }
-
-        .demoModal h2 {
-          margin: 0 36px 12px 0;
-          color: #f8fafc;
-        }
-
-        .demoModal p {
-          margin: 0;
-          color: #bfdbfe;
-          line-height: 1.55;
-        }
-
-        @keyframes dashFlow {
-          from { stroke-dashoffset: 0; }
-          to { stroke-dashoffset: -18; }
-        }
-
-        @keyframes alarmPulse {
-          0%, 100% { box-shadow: 0 0 18px rgba(248, 113, 113, 0.45); }
-          50% { box-shadow: 0 0 36px rgba(248, 113, 113, 0.95); }
-        }
-
-        @media (max-width: 1120px) {
-          .dispatchGrid {
-            grid-template-columns: minmax(280px, 360px) minmax(520px, 1fr);
-          }
-
-          .passportDrawer,
-          .notificationsPanel {
-            grid-column: 1 / -1;
-          }
-        }
-
-        @media (max-width: 980px) {
-          .dispatchShell {
-            margin: -16px;
-            padding: 16px 16px 120px;
-          }
-
-          .dispatchGrid {
-            display: block;
-          }
-
-          .leftRail,
-          .twinPanel,
-          .passportDrawer,
-          .notificationsPanel {
-            margin-top: 14px;
-          }
-
-          .twinPanel {
-            min-height: 680px;
-          }
-
-          .dispatchBottomNav,
-          .bottomMeta {
-            overflow-x: auto;
-          }
-        }
+        :global(body.is-dispatch-demo){background:#020617}.dispatchShell{min-height:100vh;margin:-24px;padding:18px 18px 92px;background:radial-gradient(circle at 52% 22%,rgba(14,165,233,0.19),transparent 29%),radial-gradient(circle at 72% 72%,rgba(16,185,129,0.12),transparent 26%),linear-gradient(135deg,#020617 0%,#06111f 46%,#020617 100%);color:#dbeafe;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.dispatchGrid{display:grid;grid-template-columns:minmax(280px,370px) minmax(620px,1fr) minmax(300px,410px);grid-auto-rows:min-content;gap:14px}.panel{border:1px solid rgba(56,189,248,0.26);border-radius:8px;background:linear-gradient(145deg,rgba(8,20,38,0.86),rgba(2,8,23,0.74));box-shadow:inset 0 1px 0 rgba(255,255,255,0.07),0 18px 52px rgba(0,0,0,0.34);backdrop-filter:blur(18px)}.dispatchHeader{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px}.eyebrow{margin:0 0 6px;color:#67e8f9;font-size:11px;font-weight:800;letter-spacing:0.13em;text-transform:uppercase}h1,h2,h3{margin:0;color:#f8fafc;letter-spacing:0}h1{max-width:980px;font-size:clamp(20px,2vw,30px);line-height:1.22}h2{font-size:18px}button,input{font:inherit}button{border:1px solid rgba(125,211,252,0.2);border-radius:8px;background:rgba(2,8,23,0.58);color:#dbeafe;cursor:pointer}button:hover{border-color:rgba(34,211,238,0.72)}.headerStatus{display:grid;gap:6px;min-width:220px;color:#bfdbfe;font-size:12px;text-align:right}.headerStatus strong{color:#e0f2fe}.headerStatus b{justify-self:end;border:1px solid rgba(34,197,94,0.5);border-radius:999px;color:#bbf7d0;padding:4px 8px}.leftRail{display:grid;gap:14px}.panelHeading{margin-bottom:12px}.leftRail .panel,.notificationsPanel,.passportDrawer{padding:16px}.kpiGrid,.aiGrid,.paramGrid,.drawerSnapshot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.kpiCard,.drawerSnapshot article,.paramGrid div,.serviceList article{border:1px solid rgba(125,211,252,0.16);border-radius:8px;background:rgba(2,8,23,0.46);padding:10px}.kpiCard span,.drawerSnapshot span,.paramGrid span,.serviceList span{display:block;color:#93c5fd;font-size:10px;text-transform:uppercase;letter-spacing:0.08em}.kpiCard strong,.drawerSnapshot strong,.paramGrid strong,.serviceList strong{display:block;margin:6px 0 3px;color:#f8fafc;font-size:13px}small{color:#bae6fd;line-height:1.35}.eventList{display:grid;gap:8px}.eventItem,.aiInsight,.notificationsPanel button{width:100%;display:grid;gap:4px;padding:10px;text-align:left}.eventItem.critical{border-color:rgba(248,113,113,0.5);box-shadow:0 0 22px rgba(248,113,113,0.12)}.eventItem.warning{border-color:rgba(251,191,36,0.46)}.eventItem.service{border-color:rgba(147,197,253,0.42)}.secondaryButton.full{width:100%;margin-top:10px;padding:10px 12px}.aiGrid{margin-bottom:10px}.aiInsight strong{color:#e0f2fe}.aiInput{display:grid;grid-template-columns:1fr 46px;gap:8px}.aiInput input,.bottomMeta input{min-width:0;border:1px solid rgba(125,211,252,0.24);border-radius:8px;background:rgba(2,8,23,0.64);color:#e0f2fe;padding:9px 10px}.aiAnswer{margin:10px 0 0;color:#bfdbfe;font-size:13px}.twinPanel{min-height:830px;padding:16px}.twinTopline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.readOnlyPill{border:1px solid rgba(34,197,94,0.44);border-radius:999px;color:#bbf7d0;font-size:12px;font-weight:800;padding:7px 10px;white-space:nowrap}.twinStage{position:relative;min-height:575px;overflow:hidden;border:1px solid rgba(34,211,238,0.28);border-radius:8px;background:radial-gradient(circle at 50% 28%,rgba(34,211,238,0.2),transparent 28%),radial-gradient(circle at 48% 82%,rgba(16,185,129,0.12),transparent 30%),linear-gradient(rgba(125,211,252,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,0.05) 1px,transparent 1px),rgba(2,8,23,0.42);background-size:auto,auto,28px 28px,28px 28px,auto}.flowLayer{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 10px rgba(34,211,238,0.62))}.flowPath{fill:none;stroke:rgba(34,211,238,0.56);stroke-width:0.55;stroke-dasharray:1.5 2.1;animation:dashFlow 4s linear infinite;opacity:0.55;transition:opacity 0.25s ease,stroke-width 0.25s ease,filter 0.25s ease}.flowHydraulic{stroke:rgba(74,222,128,0.52);animation-duration:5.4s}.flowVentilation{stroke:rgba(103,232,249,0.44);animation-duration:3.8s}.flowData{stroke:rgba(147,197,253,0.5);stroke-dasharray:0.9 1.8;animation-duration:3.2s}.selected-chiller-ch1 .flowCooling,.selected-cooling-circuits .flowCooling,.selected-cooling-circuits .flowHydraulic,.selected-pump-shu2 .flowHydraulic,.selected-itp-demo .flowHydraulic,.selected-ventilation-vc13 .flowVentilation,.selected-automation-cabinets .flowData,.severity-critical .flowHydraulic,.severity-warning .flowCooling{opacity:1;stroke-width:0.84;filter:drop-shadow(0 0 10px rgba(34,211,238,0.76))}.severity-critical .flowHydraulic{stroke:rgba(248,113,113,0.84);filter:drop-shadow(0 0 13px rgba(248,113,113,0.82))}.dataDot{fill:#e0f2fe;filter:drop-shadow(0 0 7px #22d3ee)}.dotHydraulic{fill:#bbf7d0}.dotData{fill:#bfdbfe}.mallTwin{position:absolute;left:50%;top:49%;width:min(94%,900px);height:min(66%,410px);transform:translate(-50%,-50%)}.mallTwin::before,.mallTwin::after{content:"";position:absolute;left:6%;right:6%;bottom:15%;height:18%;border-radius:50%;background:rgba(14,165,233,0.12);filter:blur(24px)}.mallTwin::after{left:18%;right:18%;bottom:5%;background:rgba(16,185,129,0.1);filter:blur(18px)}.mallMass{position:absolute;left:6%;right:6%;top:26%;height:43%;transform:perspective(850px) rotateX(51deg) rotateZ(-3deg);transform-origin:50% 72%}.sideWing,.atriumGlass,.retailRibbon,.technicalMarkers span{border:1px solid rgba(125,211,252,0.34);box-shadow:inset 0 0 30px rgba(186,230,253,0.12),0 0 42px rgba(14,165,233,0.18)}.sideWing{position:absolute;top:18%;bottom:10%;width:36%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:12px;background:linear-gradient(90deg,rgba(34,211,238,0.1) 1px,transparent 1px),linear-gradient(145deg,rgba(85,64,44,0.52),rgba(15,23,42,0.7))}.sideWingLeft{left:0;clip-path:polygon(0 24%,100% 8%,96% 100%,6% 92%)}.sideWingRight{right:0;clip-path:polygon(4% 8%,100% 23%,94% 92%,0 100%)}.sideWing i{min-height:14px;border:1px solid rgba(191,219,254,0.16);background:rgba(125,211,252,0.08)}.atriumGlass{position:absolute;z-index:2;left:34%;top:-2%;width:32%;height:106%;overflow:hidden;display:grid;grid-template-columns:repeat(9,1fr);gap:3px;padding:12px 14px 26px;border-radius:50% 50% 18% 18% / 78% 78% 22% 22%;background:radial-gradient(circle at 50% 20%,rgba(240,249,255,0.36),transparent 22%),linear-gradient(120deg,rgba(125,211,252,0.44),rgba(14,165,233,0.14) 42%,rgba(2,8,23,0.6));box-shadow:inset 0 0 46px rgba(240,249,255,0.15),0 0 70px rgba(34,211,238,0.28)}.atriumGlass i{border-left:1px solid rgba(224,242,254,0.36);background:linear-gradient(180deg,rgba(255,255,255,0.16),rgba(34,211,238,0.02))}.atriumGlass strong{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);color:#e0f2fe;font-size:11px;letter-spacing:0.22em;text-shadow:0 0 14px rgba(224,242,254,0.6);white-space:nowrap}.retailRibbon{position:absolute;left:6%;right:6%;bottom:-8%;height:22%;display:grid;grid-template-columns:1.3fr 1fr 1.4fr 1fr 1.3fr;gap:9px;padding:9px 16px;background:linear-gradient(90deg,rgba(15,23,42,0.86),rgba(8,47,73,0.58),rgba(15,23,42,0.86))}.retailRibbon span{border:1px solid rgba(34,211,238,0.18);background:rgba(186,230,253,0.07)}.technicalMarkers{position:absolute;z-index:2;left:15%;right:12%;top:8%;display:flex;justify-content:space-between;pointer-events:none}.technicalMarkers span{border-radius:999px;background:rgba(2,8,23,0.74);color:#bae6fd;font-size:10px;font-weight:800;padding:6px 9px}.roofTech{position:absolute;z-index:1;left:18%;right:16%;top:14%;height:18%;display:grid;grid-template-columns:1.2fr 1fr 0.9fr;gap:12px}.roofUnit,.yardItem,.integrationLayer span,.integrationLayer b{display:flex;align-items:center;justify-content:center;border:1px solid rgba(34,211,238,0.28);border-radius:8px;background:rgba(2,8,23,0.72);color:#cffafe;font-size:11px;font-weight:800;padding:7px 8px;text-align:center}.roofUnit{transform:perspective(720px) rotateX(54deg) rotateZ(-3deg);background:linear-gradient(145deg,rgba(8,47,73,0.8),rgba(34,211,238,0.13))}.equipmentYard{position:absolute;left:12%;right:12%;bottom:8%;display:grid;grid-template-columns:1.4fr 1.1fr 1fr 1.2fr;gap:10px}.yardItem{min-height:36px;background:linear-gradient(145deg,rgba(15,23,42,0.82),rgba(8,47,73,0.5))}.yardChillers{border-color:rgba(56,189,248,0.52)}.yardPumps{border-color:rgba(248,113,113,0.48)}.yardHex,.yardCircuit{border-color:rgba(74,222,128,0.42)}.integrationLayer{position:absolute;right:6%;top:70%;width:24%;display:grid;gap:7px}.integrationLayer span,.integrationLayer b{justify-content:flex-start;font-size:10px}.equipmentNode{position:absolute;z-index:3;display:flex;align-items:center;gap:8px;border:0;background:transparent;color:#dbeafe;cursor:pointer;transform:translate(-50%,-50%)}.nodeCore{width:18px;height:18px;border:1px solid rgba(103,232,249,0.95);border-radius:50%;background:radial-gradient(circle,#e0f2fe 0 16%,#22d3ee 17% 36%,rgba(14,165,233,0.25) 37%);box-shadow:0 0 24px rgba(34,211,238,0.72);transition:transform 0.2s ease,box-shadow 0.2s ease}.nodeLabel{min-width:132px;border:1px solid rgba(125,211,252,0.26);border-radius:8px;background:rgba(2,8,23,0.72);padding:8px 10px;text-align:left;box-shadow:0 10px 28px rgba(0,0,0,0.28)}.nodeLabel strong,.nodeLabel small{display:block}.equipmentNode.isSelected .nodeCore,.equipmentNode.hasAlarm .nodeCore{transform:scale(1.28)}.equipmentNode.isSelected .nodeLabel{border-color:rgba(34,211,238,0.85);box-shadow:0 0 32px rgba(34,211,238,0.22)}.equipmentNode.severity-critical .nodeCore{border-color:rgba(248,113,113,0.95);animation:alarmPulse 1.3s ease-in-out infinite}.equipmentNode.severity-warning .nodeCore{border-color:rgba(251,191,36,0.95);box-shadow:0 0 24px rgba(251,191,36,0.5);animation:warningPulse 1.8s ease-in-out infinite}.equipmentNode.severity-service .nodeCore{border-color:rgba(147,197,253,0.95);box-shadow:0 0 22px rgba(147,197,253,0.5)}.commandStrip{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.commandStrip button,.drawerActions button,.dispatchBottomNav button{padding:9px 11px}.recommendationPanel{margin-top:14px;border:1px solid rgba(34,211,238,0.24);border-radius:8px;background:rgba(8,47,73,0.32);padding:14px}.recommendationPanel ul{margin:10px 0 0;padding-left:18px;color:#bae6fd;font-size:13px;line-height:1.5}.passportDrawer{position:relative;overflow:hidden}.drawerClose,.demoModal>button,.replacementPanel>button{position:absolute;right:10px;top:10px;width:30px;height:30px;padding:0}.passportHero{display:grid;grid-template-columns:1fr 66px;gap:12px;align-items:center;border:1px solid rgba(125,211,252,0.18);border-radius:8px;background:rgba(15,23,42,0.62);padding:12px}.passportHero strong{display:block;color:#f8fafc;line-height:1.25}.drawerSnapshot{margin-top:12px}.miniTrend div{display:grid;grid-template-columns:repeat(7,1fr);align-items:end;gap:3px;height:44px;margin:8px 0 4px}.miniTrend i{display:block;min-height:8px;border-radius:999px 999px 2px 2px;background:linear-gradient(180deg,#67e8f9,rgba(14,165,233,0.24))}.statusDot{display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:999px;background:#22c55e;box-shadow:0 0 14px #22c55e}.statusDot.danger{background:#f87171;box-shadow:0 0 14px #f87171}.qrBox{display:grid;place-items:center;aspect-ratio:1;border:1px dashed rgba(125,211,252,0.45);color:#67e8f9;font-weight:800}.passportTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}.passportTabs button{padding:8px 6px}.passportTabs button.isActive{border-color:rgba(34,211,238,0.68);color:#e0f2fe;background:rgba(14,165,233,0.18)}.passportList{display:grid;gap:8px;margin:0}.passportList div{display:grid;grid-template-columns:110px 1fr;gap:10px;border-bottom:1px solid rgba(125,211,252,0.12);padding-bottom:8px}.passportList dt{color:#93c5fd;font-size:12px}.passportList dd{margin:0;color:#f8fafc;font-size:13px}.serviceList,.documentList,.relatedBlock,.drawerActions{display:grid;gap:8px}.documentList button,.relatedBlock button{padding:9px 10px;text-align:left}.relatedBlock{margin-top:14px}.relatedBlock>span{color:#93c5fd;font-size:12px}.drawerActions{margin-top:14px}.notificationsPanel{grid-column:3;align-self:end;display:grid;gap:8px}.replacementPanel{position:fixed;z-index:20;left:50%;bottom:76px;width:min(760px,calc(100vw - 32px));transform:translateX(-50%);border:1px solid rgba(34,211,238,0.46);border-radius:8px;background:rgba(2,8,23,0.94);box-shadow:0 0 48px rgba(34,211,238,0.2);color:#e0f2fe;padding:18px 48px 18px 18px}.replacementPanel strong{display:block;margin-bottom:12px}.replacementPanel div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.replacementPanel span{border:1px solid rgba(125,211,252,0.2);border-radius:8px;padding:10px;color:#93c5fd}.replacementPanel span.isDone{border-color:rgba(34,197,94,0.5);color:#bbf7d0}.dispatchBottomNav{position:fixed;z-index:18;left:0;right:0;bottom:0;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(56,189,248,0.28);background:rgba(2,8,23,0.94);box-shadow:0 -18px 44px rgba(0,0,0,0.36);padding:10px 14px;backdrop-filter:blur(18px)}.dispatchBottomNav button{white-space:nowrap}.bottomMeta{display:flex;align-items:center;gap:10px;margin-left:auto;color:#93c5fd;font-size:12px;white-space:nowrap}.bottomMeta input{width:146px;padding:7px 9px;font-size:12px}.modalBackdrop{position:fixed;z-index:40;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.64);padding:20px}.demoModal{position:relative;width:min(560px,100%);border:1px solid rgba(34,211,238,0.42);border-radius:8px;background:#020817;color:#dbeafe;box-shadow:0 0 64px rgba(34,211,238,0.2);padding:28px}.demoModal h2{margin:0 36px 12px 0}.demoModal p{margin:0;color:#bfdbfe;line-height:1.55}@keyframes dashFlow{from{stroke-dashoffset:0}to{stroke-dashoffset:-18}}@keyframes alarmPulse{0%,100%{box-shadow:0 0 18px rgba(248,113,113,0.45)}50%{box-shadow:0 0 36px rgba(248,113,113,0.95)}}@keyframes warningPulse{0%,100%{box-shadow:0 0 16px rgba(251,191,36,0.34)}50%{box-shadow:0 0 30px rgba(251,191,36,0.72)}}@media (max-width:1120px){.dispatchGrid{grid-template-columns:minmax(280px,360px) minmax(520px,1fr)}.passportDrawer,.notificationsPanel{grid-column:1 / -1}}@media (max-width:980px){.dispatchShell{margin:-16px;padding:16px 16px 120px}.dispatchGrid{display:block}.leftRail,.twinPanel,.passportDrawer,.notificationsPanel{margin-top:14px}.twinPanel{min-height:680px}.dispatchBottomNav,.bottomMeta{overflow-x:auto}}
       `}</style>
     </div>
   );
