@@ -282,6 +282,13 @@ export default function DispatchDashboard() {
     () => alarmEvents.filter((alarm) => selectedEquipment.relatedAlarmIds.includes(alarm.id)),
     [selectedEquipment],
   );
+  const ventilationNode = dispatchEquipmentNodes.find((node) => node.id === "ventilation-vc13");
+  const ventilationSeverity = ventilationNode ? getNodeSeverity(ventilationNode) : "normal";
+  const isVentilationFocused = selectedEquipment.id === "ventilation-vc13" || activeSection.id === "ventilation";
+  const linkedSystemsLabel =
+    selectedEquipment.id === "ventilation-vc13"
+      ? "VC-13-01 / VC-13-02 / VC-13-03 / VC-13-04 / VC-11-01"
+      : selectedEquipment.relatedTrendKeys.join(" / ") || "TO VERIFY";
 
   const selectEquipment = (node: DispatchEquipmentNode) => {
     setSelectedId(node.id);
@@ -303,6 +310,12 @@ export default function DispatchDashboard() {
   const openAlarm = (alarm: DispatchAlarmEvent) => {
     const node = dispatchEquipmentNodes.find((item) => item.id === alarm.equipmentId);
     if (node) selectEquipment(node);
+  };
+
+  const selectVentilationAhu = () => {
+    setActiveSectionId("ventilation");
+
+    if (ventilationNode) selectEquipment(ventilationNode);
   };
 
   const handleAiSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -478,7 +491,7 @@ export default function DispatchDashboard() {
               </circle>
             </svg>
 
-            <div className="mallTwin" aria-hidden="true">
+            <div className="mallTwin">
               <div className="roofBackplane">
                 <div className="technicalMarkers">
                   <span>+11.400</span>
@@ -491,6 +504,27 @@ export default function DispatchDashboard() {
                   <span className="roofUnit roofChiller">Trane RTAF / RTAD</span>
                 </div>
               </div>
+              <button
+                type="button"
+                className={`ahuVisual severity-${ventilationSeverity} ${isVentilationFocused ? "isActive" : ""}`}
+                onClick={selectVentilationAhu}
+                aria-label="Открыть паспорт вентустановки VC-13"
+              >
+                <span className="ahuShell">
+                  <span className="ahuSection ahuIntake"><i /><i /><i /><i /></span>
+                  <span className="ahuSection ahuFilter">FLT</span>
+                  <span className="ahuSection ahuCoil">HEX</span>
+                  <span className="ahuSection ahuFan">FAN</span>
+                  <span className="ahuDuct" />
+                </span>
+                <span className="ahuAirflow" aria-hidden="true">
+                  <i /><i /><i /><i />
+                </span>
+                <span className="ahuCaption">
+                  <strong>Вентустановка VC-13</strong>
+                  <small>REMAK / TO VERIFY</small>
+                </span>
+              </button>
               <div className="mallMass">
                 <div className="sideWing sideWingLeft">
                   {Array.from({ length: 12 }).map((_, index) => <i key={index} />)}
@@ -590,7 +624,7 @@ export default function DispatchDashboard() {
             </article>
             <article>
               <span>Связанные системы</span>
-              <strong>{selectedEquipment.relatedTrendKeys.join(" / ") || "TO VERIFY"}</strong>
+              <strong>{linkedSystemsLabel}</strong>
               <small>{selectedEquipment.location}</small>
             </article>
             <article className="miniTrend">
@@ -747,6 +781,200 @@ export default function DispatchDashboard() {
           </div>
         </div>
       ) : null}
+
+      <style jsx>{`
+        .ahuVisual {
+          position: absolute;
+          z-index: 9;
+          left: 8%;
+          top: 5%;
+          width: min(335px, 36%);
+          min-width: 280px;
+          height: 122px;
+          display: block;
+          border: 1px solid rgba(103, 232, 249, 0.42);
+          border-radius: 8px;
+          background: linear-gradient(145deg, rgba(2, 8, 23, 0.86), rgba(8, 47, 73, 0.56));
+          box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+          cursor: pointer;
+          overflow: visible;
+          padding: 12px 16px 31px;
+          text-align: left;
+          transform: perspective(740px) rotateX(47deg) rotateZ(-3deg);
+          transform-origin: 50% 80%;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .ahuVisual:hover,
+        .ahuVisual.isActive {
+          border-color: rgba(34, 211, 238, 0.94);
+          box-shadow: 0 0 42px rgba(34, 211, 238, 0.27), 0 18px 42px rgba(0, 0, 0, 0.34);
+          filter: saturate(1.15);
+        }
+
+        .ahuVisual.severity-warning {
+          border-color: rgba(251, 191, 36, 0.64);
+        }
+
+        .ahuShell {
+          position: relative;
+          display: grid;
+          grid-template-columns: 1.05fr 0.75fr 0.85fr 0.92fr 0.48fr;
+          height: 56px;
+          border: 1px solid rgba(191, 219, 254, 0.36);
+          border-radius: 7px;
+          background: linear-gradient(180deg, rgba(226, 232, 240, 0.82), rgba(100, 116, 139, 0.86));
+          box-shadow: inset 0 9px 18px rgba(255, 255, 255, 0.12), inset 0 -12px 20px rgba(15, 23, 42, 0.3);
+        }
+
+        .ahuSection {
+          position: relative;
+          display: grid;
+          place-items: center;
+          border-right: 1px solid rgba(15, 23, 42, 0.34);
+          color: rgba(15, 23, 42, 0.88);
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .ahuIntake {
+          display: grid;
+          gap: 4px;
+          padding: 9px 8px;
+          background: linear-gradient(90deg, rgba(8, 47, 73, 0.28), rgba(224, 242, 254, 0.2));
+        }
+
+        .ahuIntake i {
+          display: block;
+          width: 100%;
+          height: 4px;
+          border-radius: 999px;
+          background: rgba(15, 23, 42, 0.52);
+          box-shadow: 0 0 10px rgba(103, 232, 249, 0.2);
+        }
+
+        .ahuFilter {
+          background: repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.38) 0 2px, rgba(226, 232, 240, 0.35) 2px 5px);
+        }
+
+        .ahuCoil {
+          color: #7c2d12;
+          background: repeating-linear-gradient(0deg, rgba(184, 107, 56, 0.74) 0 3px, rgba(254, 215, 170, 0.28) 3px 7px);
+        }
+
+        .ahuFan::before {
+          content: "";
+          width: 28px;
+          height: 28px;
+          border: 5px solid rgba(15, 23, 42, 0.72);
+          border-radius: 50%;
+          box-shadow: inset 0 0 0 4px rgba(148, 163, 184, 0.44), 0 0 12px rgba(34, 211, 238, 0.22);
+        }
+
+        .ahuDuct {
+          position: relative;
+          border-radius: 0 6px 6px 0;
+          background: linear-gradient(90deg, rgba(148, 163, 184, 0.78), rgba(15, 23, 42, 0.72));
+        }
+
+        .ahuDuct::after {
+          content: "";
+          position: absolute;
+          right: -24px;
+          top: 14px;
+          width: 32px;
+          height: 26px;
+          border: 1px solid rgba(125, 211, 252, 0.3);
+          border-left: 0;
+          border-radius: 0 8px 8px 0;
+          background: rgba(15, 23, 42, 0.72);
+        }
+
+        .ahuAirflow {
+          position: absolute;
+          right: 3px;
+          top: 28px;
+          width: 78px;
+          height: 34px;
+          pointer-events: none;
+        }
+
+        .ahuAirflow i {
+          position: absolute;
+          left: 0;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #67e8f9;
+          box-shadow: 0 0 12px rgba(103, 232, 249, 0.85);
+          opacity: 0;
+          animation: ahuParticle 2.25s linear infinite;
+        }
+
+        .ahuAirflow i:nth-child(1) { top: 3px; animation-delay: 0s; }
+        .ahuAirflow i:nth-child(2) { top: 13px; animation-delay: 0.45s; }
+        .ahuAirflow i:nth-child(3) { top: 22px; animation-delay: 0.9s; }
+        .ahuAirflow i:nth-child(4) { top: 8px; animation-delay: 1.35s; }
+
+        .ahuCaption {
+          position: absolute;
+          left: 14px;
+          right: 14px;
+          bottom: 7px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          color: #e0f2fe;
+        }
+
+        .ahuCaption strong {
+          font-size: 12px;
+          line-height: 1.1;
+          text-shadow: 0 0 16px rgba(224, 242, 254, 0.52);
+        }
+
+        .ahuCaption small {
+          flex: 0 0 auto;
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          border-radius: 999px;
+          background: rgba(2, 8, 23, 0.64);
+          color: #bae6fd;
+          font-size: 9px;
+          font-weight: 900;
+          padding: 4px 6px;
+        }
+
+        .section-ventilation .ahuAirflow i,
+        .selected-ventilation-vc13 .ahuAirflow i,
+        .ahuVisual.isActive .ahuAirflow i {
+          animation-duration: 1.55s;
+        }
+
+        @keyframes ahuParticle {
+          0% { transform: translateX(0); opacity: 0; }
+          20% { opacity: 0.85; }
+          100% { transform: translateX(62px); opacity: 0; }
+        }
+
+        @media (max-width: 980px) {
+          .ahuVisual {
+            left: 5%;
+            top: 4%;
+            min-width: 245px;
+            width: 42%;
+            height: 112px;
+            padding: 10px 12px 29px;
+          }
+
+          .ahuCaption {
+            display: grid;
+            gap: 3px;
+          }
+        }
+      `}</style>
 
       <style jsx>{`
         .systemTabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin:0 0 12px}.systemTab{min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;text-align:left;background:linear-gradient(145deg,rgba(2,8,23,0.72),rgba(8,47,73,0.34));border-color:rgba(125,211,252,0.18)}.systemTab span{font-size:12px;font-weight:800;line-height:1.2;overflow-wrap:anywhere}.systemTab b{flex:0 0 auto;border:1px solid rgba(34,211,238,0.32);border-radius:999px;color:#67e8f9;font-size:9px;padding:3px 6px}.systemTab.isActive{border-color:rgba(34,211,238,0.82);background:linear-gradient(145deg,rgba(14,165,233,0.24),rgba(2,8,23,0.76));box-shadow:0 0 28px rgba(34,211,238,0.16)}.systemContext{display:grid;grid-template-columns:1.1fr 1fr 1.15fr;gap:10px;margin-bottom:12px;border:1px solid rgba(34,211,238,0.2);border-radius:8px;background:rgba(2,8,23,0.36);padding:12px}.systemContextIntro small{display:block;margin-top:6px;color:#bfdbfe}.systemSignalList{display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px}.systemSignalList span{border:1px solid rgba(125,211,252,0.2);border-radius:999px;background:rgba(15,23,42,0.58);color:#dbeafe;font-size:11px;font-weight:700;padding:6px 8px}.sectionEquipmentList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.sectionEquipmentList button{min-width:0;display:grid;gap:2px;padding:8px 9px;text-align:left}.sectionEquipmentList span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:800}.sectionEquipmentList small{font-size:10px}.sectionEmpty{border:1px dashed rgba(125,211,252,0.22);border-radius:8px;background:rgba(2,8,23,0.4);padding:10px}.sectionEmpty strong{display:block;color:#e0f2fe;margin-bottom:4px}.twinStage .equipmentNode{opacity:0.44;transition:opacity 0.2s ease,filter 0.2s ease}.twinStage .equipmentNode.isInSection,.twinStage .equipmentNode.isSelected{opacity:1;filter:drop-shadow(0 0 10px rgba(34,211,238,0.18))}.equipmentNode.isInSection .nodeLabel{border-color:rgba(34,211,238,0.52)}.equipmentNode.isInSection .nodeCore{box-shadow:0 0 30px rgba(34,211,238,0.86)}.section-cooling .flowCooling,.section-conditioning .flowCooling,.section-conditioning .flowHydraulic,.section-ventilation .flowVentilation,.section-heating .flowHydraulic,.section-pumps .flowHydraulic,.section-hex .flowHydraulic,.section-alarms .flowCooling,.section-alarms .flowHydraulic,.section-trends .flowCooling,.section-trends .flowHydraulic,.section-equipment .flowCooling,.section-equipment .flowHydraulic,.section-equipment .flowVentilation,.section-tickets .flowHydraulic,.section-ai .flowData,.section-overview .flowCooling,.section-overview .flowHydraulic,.section-overview .flowVentilation,.section-overview .flowData{opacity:1;stroke-width:0.82}

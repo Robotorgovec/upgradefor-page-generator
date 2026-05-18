@@ -84,7 +84,7 @@ export const ventilationUnits = [
 export const alarms = [
   { id: "ALM-6553", severity: "critical", system: "Холодоснабжение", equipment: "DP-SENS-CHW-01", message: "DP = 6553.5 bar", recommendation: "Проверить scaling, Modbus register, sensor range, формулу перепада давления", time: "21:38:11" },
   { id: "ALM-1040", severity: "warning", system: "Насосные группы", equipment: "ШУ-2", message: "Насосная группа удерживает 40 Hz при повышенном ΔT", recommendation: "Проверить уставку VFD и балансировку ветки фанкойлов", time: "21:31:08" },
-  { id: "EVT-VC13", severity: "event", system: "Вентиляция", equipment: "VC-13-03", message: "Событие: переход заслонки в ручной режим", recommendation: "Сверить локальный щит автоматики и команду диспетчера", time: "21:26:44" },
+  { id: "EVT-VC13", severity: "event", system: "Вентиляция", equipment: "VC-13", message: "Рост перепада давления на фильтре", recommendation: "Проверить фильтр, датчик ΔP и состояние заслонок", time: "21:26:44" },
 ];
 
 export const equipmentPassport = {
@@ -249,32 +249,36 @@ const commonDocuments: EquipmentDocument[] = [
 export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
   {
     id: "ventilation-vc13",
-    label: "Вентиляция — VC-13 / VC-11",
-    shortLabel: "Венткамеры",
+    label: "Вентиляционная установка / Венткамера VC-13",
+    shortLabel: "Вентустановка VC-13",
     countLabel: "+11.400 / +12.600 / +13.500",
     trendKey: "flow",
     status: "В работе",
-    model: "VC-13-01...04 / VC-11-01",
+    model: "AHU / TO VERIFY",
     serial: "VENT-ASIA-PARK-TO-VERIFY",
     inventoryNumber: "INV-VNT-TO-VERIFY",
-    location: "Верхние технические отметки и кинотеатр",
-    manufacturer: "REMAK подтверждён минимум по одной установке / остальные TO VERIFY",
+    location: "верхние технические отметки +11.400 / +12.600 / +13.500",
+    manufacturer: "REMAK / TO VERIFY",
     year: "TO VERIFY",
     onlineParams: [
-      { label: "VC-13-01", value: "П2-2 / П2-3 / П9 / П10 / В9 / В10" },
-      { label: "VC-13-03", value: "П1-3 / П8 / П28 / В1 / В3 / ВДУ21 / ВДУ3" },
-      { label: "VC-11-01", value: "кинотеатр / охлаждение кинопроекторов" },
+      { label: "Приточный воздух", value: "VC-13-01 / VC-13-02 / VC-13-03 / VC-13-04" },
+      { label: "Вытяжной воздух", value: "VC-13 / VC-11 контекст" },
+      { label: "Температура притока", value: "TO VERIFY" },
+      { label: "ΔP фильтра", value: "рост / требует проверки" },
+      { label: "Положение заслонки", value: "Auto / TO VERIFY" },
+      { label: "Статус вентилятора", value: "В работе" },
+      { label: "VC-11-01", value: "кинотеатр / проекционная / охлаждение кинопроекторов" },
     ],
     serviceHistory: commonServiceHistory,
-    documents: commonDocuments,
+    documents: [{ title: "Документы TO VERIFY", type: "TO VERIFY" }],
     aiRecommendations: [
-      "Проверить перепад давления на фильтрах VC-13 перед следующим регламентом.",
+      "Проверить фильтры, заслонки, датчики давления и привязку к существующей BMS/SCADA.",
       "Сохранить текущий режим, отклонений по расходу не выявлено.",
     ],
-    relatedAlarmIds: ["alarm-return-temp"],
+    relatedAlarmIds: ["alarm-vent-filter"],
     relatedTrendKeys: ["temperature", "flow"],
-    x: 34,
-    y: 23,
+    x: 27,
+    y: 29,
   },
   {
     id: "chiller-ch1",
@@ -501,6 +505,14 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     severity: "critical",
     time: "10:42",
     description: "DP anomaly 6553.3 / 6553.5 bar, требуется верификация тега.",
+  },
+  {
+    id: "alarm-vent-filter",
+    title: "Рост перепада давления на фильтре",
+    equipmentId: "ventilation-vc13",
+    severity: "warning",
+    time: "10:24",
+    description: "Проверить фильтр, датчик ΔP и состояние заслонок.",
   },
   {
     id: "alarm-return-temp",
