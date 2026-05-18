@@ -1,5 +1,6 @@
 import BodyClass from "../../components/layout/BodyClass";
 import DispatchDashboard from "../../src/components/dispatch/DispatchDashboard";
+import Equipment3DViewer from "../../src/components/dispatch/Equipment3DViewer";
 
 export const metadata = {
   title: "UPGRADE Dispatch / Asia Park Astana",
@@ -18,8 +19,13 @@ export default function DispatchPage() {
         body.dispatch-demo-page [data-sidebar],
         body.dispatch-demo-page .mobile-bottom-nav { display: none !important; }
         body.dispatch-demo-page .app-content { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+        body.dispatch-demo-page .dispatchPageStack { min-height: 100vh; overflow: hidden; background: #020617; }
+        body.dispatch-demo-page .dispatchPageStack .dispatchShell { margin: 0 !important; }
       `}</style>
-      <DispatchDashboard />
+      <main className="dispatchPageStack">
+        <Equipment3DViewer />
+        <DispatchDashboard />
+      </main>
     </>
   );
 }
