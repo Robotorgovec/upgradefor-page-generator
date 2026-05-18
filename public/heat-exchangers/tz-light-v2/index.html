@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heat Exchanger TZ LIGHT V2.3 Demo</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: Arial, sans-serif; background: #f4f5f2; color: #111; }
+    model-viewer { width: 100%; height: calc(100vh - 86px); background: #f7f8f5; }
+    .bar { min-height: 86px; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #ccc; box-sizing: border-box; flex-wrap: wrap; }
+    button, select { border: 1px solid #888; background: #fff; padding: 9px 12px; border-radius: 4px; font-size: 14px; }
+    .title { font-weight: 700; margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <div class="title">Heat Exchanger TZ LIGHT V2.3 Demo</div>
+    <select id="variant">
+      <option value="./model_clean.glb">model only</option>
+      <option value="./model_annotated.glb">with dimensions</option>
+      <option value="./model_exploded.glb">exploded</option>
+    </select>
+    <button data-view="hero">Hero</button>
+    <button data-view="front">Front</button>
+    <button data-view="top">Top</button>
+    <button data-view="collector">Collector side</button>
+    <button data-view="rear">Rear bends</button>
+    <button data-view="routing">Routing</button>
+    <button data-view="hollow">Hollow pipe detail</button>
+    <button data-view="exploded">Exploded</button>
+    <button data-view="iso">Isometric</button>
+  </div>
+  <!-- GLB bounds stay mm-sized: X -250..1390, Y 0..700, Z -78.5..78.5; stable center target 570m 350m 0m. -->
+  <model-viewer id="viewer"
+    src="./model_clean.glb"
+    camera-controls
+    interaction-prompt="none"
+    shadow-intensity="0.45"
+    exposure="1.05"
+    camera-orbit="45deg 62deg 2600m"
+    camera-target="570m 350m 0m"
+    field-of-view="24deg"
+    min-camera-orbit="auto auto 350m"
+    max-camera-orbit="auto auto 7600m"
+    min-field-of-view="8deg"
+    max-field-of-view="45deg"></model-viewer>
+  <script>
+    const viewer = document.querySelector("#viewer");
+    const CENTER_TARGET = "570m 350m 0m";
+    const views = {
+      hero: ["45deg 62deg 2450m", CENTER_TARGET, "24deg", "./model_clean.glb"],
+      front: ["0deg 78deg 2600m", CENTER_TARGET, "20deg", "./model_clean.glb"],
+      top: ["0deg 0deg 2600m", "620m 350m 0m", "20deg", "./model_clean.glb"],
+      collector: ["-90deg 78deg 1500m", "-80m 350m 4m", "20deg", "./model_clean.glb"],
+      rear: ["90deg 78deg 1600m", "1350m 350m -28.5m", "20deg", "./model_clean.glb"],
+      routing: ["-70deg 72deg 1700m", "80m 360m 2m", "20deg", "./model_annotated.glb"],
+      hollow: ["-70deg 74deg 900m", "-250m 107.5m -28.5m", "18deg", "./model_clean.glb"],
+      exploded: ["45deg 64deg 3000m", CENTER_TARGET, "24deg", "./model_exploded.glb"],
+      iso: ["45deg 62deg 2600m", CENTER_TARGET, "24deg", "./model_clean.glb"]
+    };
+    document.querySelector("#variant").addEventListener("change", (event) => viewer.src = event.target.value);
+    document.querySelectorAll("button[data-view]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const [orbit, target, fov, src] = views[button.dataset.view];
+        if (src) viewer.src = src;
+        viewer.cameraOrbit = orbit;
+        viewer.cameraTarget = target;
+        viewer.fieldOfView = fov;
+      });
+    });
+  </script>
+</body>
+</html>
