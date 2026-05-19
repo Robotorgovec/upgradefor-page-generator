@@ -1,8 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Html, OrbitControls, useGLTF } from "@react-three/drei";
+import { useState } from "react";
 
 const equipmentItems = [
   {
@@ -37,173 +35,150 @@ const equipmentItems = [
 
 type EquipmentItem = (typeof equipmentItems)[number];
 
-type ErrorBoundaryProps = {
-  children: React.ReactNode;
-  fallback: React.ReactNode;
+type AhuModule = {
+  id: string;
+  label: string;
+  shortLabel: string;
+  className: string;
+  detail: string;
 };
 
-type ErrorBoundaryState = {
-  hasError: boolean;
-};
-
-class ModelErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { hasError: false };
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  render() {
-    return this.state.hasError ? this.props.fallback : this.props.children;
-  }
-}
-
-function LoadedAhuModel({ item, onSelect }: { item: EquipmentItem; onSelect: () => void }) {
-  const gltf = useGLTF(item.modelPath);
-  const model = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
-
-  return (
-    <group
-      onClick={(event) => {
-        event.stopPropagation();
-        onSelect();
-      }}
-      rotation={[0, -0.32, 0]}
-      scale={[1.04, 1.04, 1.04]}
-    >
-      <primitive object={model} />
-    </group>
-  );
-}
-
-function LabelBadge({ item, exploded }: { item: EquipmentItem; exploded: boolean }) {
-  return (
-    <Html position={[0, 1.45, 0]} center distanceFactor={6}>
-      <div className="modelLabel">
-        <strong>{item.label}</strong>
-        <span>{item.status}</span>
-        <small>{exploded ? "Разобрана" : "Собрана"}</small>
-      </div>
-    </Html>
-  );
-}
-
-const explodedParts = [
-  { label: "заслонка", color: "#8fd8ff", position: [-2.35, 0, 0], size: [0.28, 1.36, 1.18] },
-  { label: "фильтр", color: "#334155", position: [-1.32, 0.04, 0], size: [0.32, 1.1, 1.08] },
-  { label: "теплообменник", color: "#b86b38", position: [-0.34, 0.12, 0], size: [0.32, 1.1, 1.08] },
-  { label: "вентилятор", color: "#1f2937", position: [0.72, -0.02, 0], size: [0.72, 0.92, 0.92] },
-  { label: "привод", color: "#0f172a", position: [1.58, -0.74, 0.38], size: [0.42, 0.26, 0.42] },
-  { label: "корпус / крышка", color: "#9ca3af", position: [0.14, 0.72, 1.05], size: [4.4, 0.12, 0.16] },
+const ahuModules: AhuModule[] = [
+  { id: "intake", label: "AIR INTAKE", shortLabel: "INTAKE", className: "intakeModule", detail: "Damper blades" },
+  { id: "filter", label: "FILTER", shortLabel: "FILTER", className: "filterModule", detail: "Filter grid" },
+  { id: "coil", label: "HEAT EXCHANGER / COIL", shortLabel: "COIL", className: "coilModule", detail: "Copper ribs" },
+  { id: "fan", label: "FAN", shortLabel: "FAN", className: "fanModule", detail: "Rotor section" },
+  { id: "supply", label: "SUPPLY DUCT", shortLabel: "DUCT", className: "supplyModule", detail: "Outlet duct" },
 ];
 
-function BoxPart({
-  label,
-  color,
-  position,
-  size,
-  onSelect,
-}: {
-  label: string;
-  color: string;
-  position: number[];
-  size: number[];
-  onSelect: () => void;
-}) {
-  return (
-    <group position={position as [number, number, number]} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={size as [number, number, number]} />
-        <meshStandardMaterial color={color} metalness={0.28} roughness={0.48} />
-      </mesh>
-      <Html position={[0, 0.72, 0]} center distanceFactor={7}>
-        <span className="partLabel">{label}</span>
-      </Html>
-    </group>
-  );
-}
-
-function ProceduralAhu({ exploded, onSelect }: { exploded: boolean; onSelect: () => void }) {
-  if (exploded) {
+function ModuleDetail({ module }: { module: AhuModule }) {
+  if (module.id === "intake") {
     return (
-      <group rotation={[0, -0.34, 0]}>
-        {explodedParts.map((part) => (
-          <BoxPart key={part.label} {...part} onSelect={onSelect} />
-        ))}
-      </group>
+      <span className="damperAssembly" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+    );
+  }
+
+  if (module.id === "filter") {
+    return <span className="filterGrid" aria-hidden="true" />;
+  }
+
+  if (module.id === "coil") {
+    return (
+      <span className="coilPack" aria-hidden="true">
+        {Array.from({ length: 11 }).map((_, index) => <i key={index} />)}
+        <b />
+        <b />
+      </span>
+    );
+  }
+
+  if (module.id === "fan") {
+    return (
+      <span className="fanRotor" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
     );
   }
 
   return (
-    <group rotation={[0, -0.34, 0]} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[4.8, 1.35, 1.5]} />
-        <meshStandardMaterial color="#aeb4ba" metalness={0.22} roughness={0.55} />
-      </mesh>
-      <mesh position={[-2.5, 0, 0]}>
-        <boxGeometry args={[0.18, 1.42, 1.55]} />
-        <meshStandardMaterial color="#7dd3fc" metalness={0.1} roughness={0.25} transparent opacity={0.62} />
-      </mesh>
-      <mesh position={[-0.35, -0.73, 0.04]}>
-        <boxGeometry args={[2.6, 0.08, 1.26]} />
-        <meshStandardMaterial color="#d1d5db" metalness={0.2} roughness={0.5} />
-      </mesh>
-      <mesh position={[1.3, -0.82, 0.34]}>
-        <boxGeometry args={[0.42, 0.28, 0.42]} />
-        <meshStandardMaterial color="#111827" metalness={0.4} roughness={0.42} />
-      </mesh>
-    </group>
+    <span className="ductVanes" aria-hidden="true">
+      <i />
+      <i />
+      <i />
+    </span>
   );
 }
 
-function AhuScene({ item, exploded, onSelect }: { item: EquipmentItem; exploded: boolean; onSelect: () => void }) {
+function DetailedAhuVisual({
+  item,
+  exploded,
+  selected,
+  onSelect,
+}: {
+  item: EquipmentItem;
+  exploded: boolean;
+  selected: boolean;
+  onSelect: () => void;
+}) {
   return (
-    <Canvas camera={{ position: [5, 3.1, 5], fov: 40 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }} shadows>
-      <color attach="background" args={["#06111f"]} />
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[5, 6, 4]} intensity={1.5} castShadow />
-      <pointLight position={[-3, 2, 2]} intensity={1.1} color="#67e8f9" />
-      <gridHelper args={[7, 14, "#155e75", "#0f2738"]} position={[0, -0.82, 0]} />
-      <Suspense fallback={<Html center><span className="sceneLoader">Loading GLB</span></Html>}>
-        {exploded ? (
-          <ProceduralAhu exploded onSelect={onSelect} />
-        ) : (
-          <ModelErrorBoundary fallback={<ProceduralAhu exploded={false} onSelect={onSelect} />}>
-            <LoadedAhuModel item={item} onSelect={onSelect} />
-          </ModelErrorBoundary>
-        )}
-        <LabelBadge item={item} exploded={exploded} />
-      </Suspense>
-      <OrbitControls enableDamping enablePan={false} minDistance={3.2} maxDistance={8.5} />
-    </Canvas>
-  );
-}
-
-function WebGlPreview({ item }: { item: EquipmentItem }) {
-  return (
-    <div className="webglFallback">
-      <div className="fallbackAhu">
-        <span />
+    <button
+      type="button"
+      className={`detailedAhuVisual ${exploded ? "isExploded" : ""} ${selected ? "isSelected" : ""}`}
+      onClick={onSelect}
+      aria-label={`Открыть паспорт: ${item.label}`}
+    >
+      <span className="ahuSceneGlow" aria-hidden="true" />
+      <span className="airflowTrack airflowTrackIn" aria-hidden="true">
         <i />
-        <b />
-      </div>
-      <strong>{item.label}</strong>
-      <small>WebGL недоступен: показан read-only fallback preview.</small>
-    </div>
+        <i />
+        <i />
+      </span>
+      <span className="airflowTrack airflowTrackOut" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </span>
+
+      <span className="ahuRig">
+        <span className="ductConnection inletDuct">
+          <span className="ductFace">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          <strong>INLET</strong>
+        </span>
+
+        <span className="moduleRail topRail" aria-hidden="true" />
+        <span className="moduleRail bottomRail" aria-hidden="true" />
+
+        {ahuModules.map((module) => (
+          <span key={module.id} className={`ahuModule ${module.className}`}>
+            <span className="moduleSkin" />
+            <span className="modulePanel">
+              <span className="moduleCode">{module.shortLabel}</span>
+              <ModuleDetail module={module} />
+            </span>
+            <span className="moduleLabel">
+              <strong>{module.label}</strong>
+              <small>{module.detail}</small>
+            </span>
+          </span>
+        ))}
+
+        <span className="ductConnection outletDuct">
+          <span className="ductFace">
+            <i />
+            <i />
+            <i />
+          </span>
+          <strong>OUTLET</strong>
+        </span>
+
+        <span className="transparentCover" aria-hidden="true" />
+      </span>
+
+      <span className="unitCaption">
+        <strong>{item.label}</strong>
+        <span>{item.status} · {exploded ? "Cutaway / exploded" : "Sectional AHU"}</span>
+      </span>
+    </button>
   );
 }
 
 export default function Equipment3DViewer() {
   const [selectedEquipment, setSelectedEquipment] = useState(equipmentItems[0].id);
   const [isExploded, setIsExploded] = useState(false);
-  const [hasWebGl, setHasWebGl] = useState<boolean | null>(null);
   const activeItem = equipmentItems.find((item) => item.id === selectedEquipment) ?? equipmentItems[0];
-
-  useEffect(() => {
-    const canvas = document.createElement("canvas");
-    const supported = Boolean(window.WebGLRenderingContext && (canvas.getContext("webgl2") || canvas.getContext("webgl")));
-    setHasWebGl(supported);
-  }, []);
 
   const selectModel = () => setSelectedEquipment(activeItem.id);
   const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
@@ -222,18 +197,23 @@ export default function Equipment3DViewer() {
             {isExploded ? "Собрать установку" : "Разобрать установку"}
           </button>
         </div>
-        <div className="viewerViewport" onClick={selectModel}>
-          {hasWebGl === false ? <WebGlPreview item={activeItem} /> : <AhuScene item={activeItem} exploded={isExploded} onSelect={selectModel} />}
+        <div className="viewerViewport">
+          <DetailedAhuVisual
+            item={activeItem}
+            exploded={isExploded}
+            selected={selectedEquipment === activeItem.id}
+            onSelect={selectModel}
+          />
         </div>
         <div className="viewerHints">
-          <span>Drag to rotate</span>
-          <span>Scroll to zoom</span>
-          <span>Click model to open passport</span>
-          <span>{isExploded ? "Internal labels visible" : "GLB model / fallback ready"}</span>
+          <span>Click AHU to open passport</span>
+          <span>{isExploded ? "Cutaway details visible" : "Sectional no-assets AHU"}</span>
+          <span>Filter / coil / fan / dampers</span>
+          <span>Read-only / control locked</span>
         </div>
       </div>
 
-      <aside className="passportPanel">
+      <aside className={`passportPanel ${selectedEquipment === activeItem.id ? "isSelected" : ""}`}>
         <div className="passportTop">
           <p>Equipment passport</p>
           <h3>{activeItem.label}</h3>
@@ -277,10 +257,7 @@ export default function Equipment3DViewer() {
       </aside>
 
       <style jsx global>{`
-        .modelLabel{min-width:220px;border:1px solid rgba(125,211,252,.42);border-radius:8px;background:rgba(2,8,23,.82);box-shadow:0 0 24px rgba(34,211,238,.22);padding:8px 10px;text-align:center;color:#e0f2fe;font-family:Inter,system-ui,sans-serif}.modelLabel strong,.modelLabel span,.modelLabel small{display:block}.modelLabel span{margin-top:4px;color:#bbf7d0;font-size:11px;font-weight:800}.modelLabel small{color:#93c5fd;font-size:10px}.partLabel,.sceneLoader{display:block;border:1px solid rgba(125,211,252,.34);border-radius:999px;background:rgba(2,8,23,.82);color:#e0f2fe;font:700 10px Inter,system-ui,sans-serif;padding:4px 7px;white-space:nowrap;box-shadow:0 0 18px rgba(34,211,238,.18)}.sceneLoader{border-radius:8px;font-size:12px;padding:8px 10px}
-      `}</style>
-      <style jsx>{`
-        .equipment3DSection{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:14px;padding:18px;background:radial-gradient(circle at 48% 8%,rgba(14,165,233,.18),transparent 34%),linear-gradient(135deg,#020617,#06111f 48%,#020617);color:#dbeafe;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.viewerPanel,.passportPanel{border:1px solid rgba(56,189,248,.28);border-radius:8px;background:linear-gradient(145deg,rgba(8,20,38,.92),rgba(2,8,23,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 52px rgba(0,0,0,.34)}.viewerPanel{padding:14px}.viewerHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.viewerHeader p,.passportTop p{margin:0 0 6px;color:#67e8f9;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.viewerHeader h2,.passportTop h3{margin:0;color:#f8fafc;letter-spacing:0}.viewerHeader h2{font-size:clamp(18px,1.7vw,25px)}.viewerHeader small{display:block;margin-top:6px;color:#bfdbfe}.viewerHeader button,.explodeButton{border:1px solid rgba(34,211,238,.42);border-radius:8px;background:rgba(14,165,233,.14);color:#e0f2fe;font-weight:800;padding:10px 12px;cursor:pointer}.viewerHeader button:hover,.explodeButton:hover{border-color:rgba(34,211,238,.8)}.viewerViewport{height:430px;overflow:hidden;border:1px solid rgba(34,211,238,.24);border-radius:8px;background:linear-gradient(rgba(125,211,252,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,.05) 1px,transparent 1px),radial-gradient(circle at 50% 38%,rgba(34,211,238,.14),transparent 31%),#06111f;background-size:28px 28px,28px 28px,auto,auto;cursor:pointer}.viewerHints{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.viewerHints span,.statusRow span,.chipBlock span,.chipBlock button{border:1px solid rgba(125,211,252,.2);border-radius:999px;background:rgba(15,23,42,.62);color:#dbeafe;font-size:11px;font-weight:800;padding:6px 8px}.passportPanel{padding:14px}.statusRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.statusRow span:first-child{border-color:rgba(34,197,94,.42);color:#bbf7d0}.passportGrid{display:grid;gap:7px;margin:14px 0}.passportGrid div{display:grid;grid-template-columns:128px 1fr;gap:10px;border-bottom:1px solid rgba(125,211,252,.12);padding-bottom:7px}.passportGrid dt{color:#93c5fd;font-size:12px}.passportGrid dd{margin:0;color:#f8fafc;font-size:13px;line-height:1.35}.chipBlock{display:grid;gap:8px;margin-top:12px}.chipBlock strong,.controlsLocked strong{color:#e0f2fe;font-size:13px}.chipBlock div,.controlsLocked div{display:flex;flex-wrap:wrap;gap:7px}.chipBlock button{border-radius:8px;cursor:pointer}.explodeButton{width:100%;margin-top:14px}.controlsLocked{display:grid;gap:9px;margin-top:14px;border:1px solid rgba(248,113,113,.22);border-radius:8px;background:rgba(127,29,29,.12);padding:10px}.controlsLocked button{border:1px solid rgba(148,163,184,.2);border-radius:8px;background:rgba(15,23,42,.5);color:#94a3b8;padding:8px 9px}.webglFallback{height:100%;display:grid;place-items:center;text-align:center;color:#dbeafe}.webglFallback strong{display:block;margin-top:12px}.webglFallback small{color:#bfdbfe}.fallbackAhu{position:relative;width:min(420px,82%);height:140px;border:1px solid rgba(125,211,252,.34);border-radius:8px;background:linear-gradient(90deg,#9ca3af,#d1d5db);box-shadow:0 0 40px rgba(34,211,238,.18)}.fallbackAhu span,.fallbackAhu i,.fallbackAhu b{position:absolute;display:block}.fallbackAhu span{left:0;top:16px;bottom:16px;width:58px;background:repeating-linear-gradient(0deg,rgba(14,116,144,.4) 0 8px,rgba(226,232,240,.9) 8px 16px)}.fallbackAhu i{left:138px;top:20px;bottom:20px;width:32px;background:#334155}.fallbackAhu b{right:42px;top:48px;width:46px;height:46px;border-radius:50%;background:#111827}@media(max-width:980px){.equipment3DSection{grid-template-columns:1fr;padding:14px}.viewerHeader{display:grid}.viewerViewport{height:360px}.passportGrid div{grid-template-columns:1fr}}
+        .equipment3DSection{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:14px;padding:18px;background:radial-gradient(circle at 48% 8%,rgba(14,165,233,.18),transparent 34%),linear-gradient(135deg,#020617,#06111f 48%,#020617);color:#dbeafe;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.viewerPanel,.passportPanel{border:1px solid rgba(56,189,248,.28);border-radius:8px;background:linear-gradient(145deg,rgba(8,20,38,.92),rgba(2,8,23,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 52px rgba(0,0,0,.34)}.viewerPanel{padding:14px}.viewerHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.viewerHeader p,.passportTop p{margin:0 0 6px;color:#67e8f9;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.viewerHeader h2,.passportTop h3{margin:0;color:#f8fafc;letter-spacing:0}.viewerHeader h2{font-size:clamp(18px,1.7vw,25px)}.viewerHeader small{display:block;margin-top:6px;color:#bfdbfe}.viewerHeader button,.explodeButton{border:1px solid rgba(34,211,238,.42);border-radius:8px;background:rgba(14,165,233,.14);color:#e0f2fe;font-weight:800;padding:10px 12px;cursor:pointer}.viewerHeader button:hover,.explodeButton:hover{border-color:rgba(34,211,238,.8)}.viewerViewport{position:relative;height:430px;overflow:hidden;border:1px solid rgba(34,211,238,.24);border-radius:8px;background:linear-gradient(rgba(125,211,252,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,.05) 1px,transparent 1px),radial-gradient(circle at 50% 38%,rgba(34,211,238,.14),transparent 31%),#06111f;background-size:28px 28px,28px 28px,auto,auto}.viewerViewport::before{content:"";position:absolute;left:5%;right:5%;bottom:20%;height:38%;transform:perspective(780px) rotateX(62deg);border:1px solid rgba(14,165,233,.16);background:linear-gradient(90deg,rgba(14,165,233,.12),rgba(15,23,42,.08));box-shadow:0 0 42px rgba(34,211,238,.12)}.viewerHints{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.viewerHints span,.statusRow span,.chipBlock span,.chipBlock button{border:1px solid rgba(125,211,252,.2);border-radius:999px;background:rgba(15,23,42,.62);color:#dbeafe;font-size:11px;font-weight:800;padding:6px 8px}.detailedAhuVisual{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:transparent;color:inherit;cursor:pointer;text-align:left}.detailedAhuVisual:focus-visible{outline:2px solid #67e8f9;outline-offset:-5px}.ahuSceneGlow{position:absolute;left:12%;right:10%;top:27%;height:43%;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.24),rgba(34,211,238,0) 66%);filter:blur(18px)}.ahuRig{position:absolute;left:8%;right:8%;top:39%;height:31%;transform:perspective(980px) rotateX(55deg) rotateZ(-7deg) skewX(-6deg);transform-origin:center;filter:drop-shadow(0 28px 28px rgba(0,0,0,.34));transition:transform .32s ease}.detailedAhuVisual.isExploded .ahuRig{transform:perspective(980px) rotateX(55deg) rotateZ(-7deg) skewX(-6deg) translateY(-8px)}.moduleRail{position:absolute;left:12%;right:11%;height:8px;border-radius:999px;background:linear-gradient(90deg,#1f2937,#dbeafe,#1f2937);box-shadow:0 0 18px rgba(148,163,184,.18)}.topRail{top:-12px}.bottomRail{bottom:-12px}.ahuModule,.ductConnection{position:absolute;top:0;height:100%;border:1px solid rgba(226,232,240,.38);background:linear-gradient(145deg,rgba(203,213,225,.95),rgba(100,116,139,.86));box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset -20px -18px 34px rgba(15,23,42,.24);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}.ahuModule::before{content:"";position:absolute;inset:8px;border:1px solid rgba(15,23,42,.18);background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.03));clip-path:polygon(0 0,100% 8%,100% 91%,0 100%)}.ahuModule::after{content:"";position:absolute;left:0;right:0;top:-14px;height:14px;border:1px solid rgba(226,232,240,.2);background:linear-gradient(90deg,rgba(226,232,240,.86),rgba(100,116,139,.82));transform:skewX(-18deg);transform-origin:bottom}.moduleSkin{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.22),transparent 35%,rgba(34,211,238,.08) 75%,transparent);opacity:.78}.modulePanel{position:absolute;inset:17px 12px;display:grid;place-items:center;border:1px solid rgba(15,23,42,.24);background:rgba(2,8,23,.13);overflow:hidden}.moduleCode{position:absolute;left:8px;top:7px;z-index:2;border:1px solid rgba(15,23,42,.28);border-radius:999px;background:rgba(2,8,23,.52);color:#e0f2fe;font-size:9px;font-weight:900;letter-spacing:.08em;padding:3px 6px}.moduleLabel{position:absolute;left:50%;top:calc(100% + 28px);z-index:5;min-width:112px;transform:translateX(-50%) rotateZ(7deg) skewX(6deg);border:1px solid rgba(125,211,252,.26);border-radius:8px;background:rgba(2,8,23,.86);box-shadow:0 0 18px rgba(34,211,238,.16);padding:6px 8px;text-align:center;opacity:.78}.moduleLabel strong,.moduleLabel small{display:block}.moduleLabel strong{color:#e0f2fe;font-size:9px;font-weight:900;letter-spacing:.05em}.moduleLabel small{margin-top:2px;color:#93c5fd;font-size:9px}.detailedAhuVisual.isExploded .moduleLabel{opacity:1;border-color:rgba(34,211,238,.56)}.intakeModule{left:13%;width:14%}.filterModule{left:27%;width:15%}.coilModule{left:42%;width:18%}.fanModule{left:60%;width:16%}.supplyModule{left:76%;width:12%}.inletDuct{left:2%;width:11%;border-radius:8px 0 0 8px;background:linear-gradient(145deg,rgba(148,163,184,.86),rgba(51,65,85,.92))}.outletDuct{left:88%;width:10%;border-radius:0 8px 8px 0;background:linear-gradient(145deg,rgba(148,163,184,.86),rgba(51,65,85,.92))}.ductConnection strong{position:absolute;left:50%;bottom:-24px;transform:translateX(-50%) rotateZ(7deg) skewX(6deg);color:#bae6fd;font-size:9px;font-weight:900;letter-spacing:.12em}.ductFace{position:absolute;inset:14px 12px;display:grid;gap:6px;border:1px solid rgba(15,23,42,.32);background:rgba(2,8,23,.24);padding:8px}.ductFace i{display:block;border-radius:999px;background:linear-gradient(90deg,rgba(103,232,249,.42),rgba(226,232,240,.72));box-shadow:0 0 10px rgba(34,211,238,.18)}.damperAssembly{position:absolute;inset:18px 20px;display:grid;gap:6px}.damperAssembly i{display:block;height:10px;border-radius:999px;background:linear-gradient(90deg,#475569,#e2e8f0);transform:rotate(-13deg);box-shadow:0 0 9px rgba(15,23,42,.24)}.filterGrid{position:absolute;inset:12px 18px;border:1px solid rgba(15,23,42,.45);background:linear-gradient(90deg,rgba(15,23,42,.5) 1px,transparent 1px),linear-gradient(rgba(15,23,42,.5) 1px,transparent 1px),linear-gradient(135deg,rgba(226,232,240,.86),rgba(51,65,85,.64));background-size:7px 7px,7px 7px,auto}.coilPack{position:absolute;inset:12px 17px;border:1px solid rgba(120,53,15,.42);background:repeating-linear-gradient(90deg,rgba(15,23,42,.2) 0 2px,transparent 2px 8px),rgba(251,146,60,.1)}.coilPack i{position:absolute;top:10%;bottom:10%;width:4px;border-radius:999px;background:linear-gradient(#fed7aa,#c2410c);box-shadow:0 0 10px rgba(251,146,60,.44)}.coilPack i:nth-child(1){left:8%}.coilPack i:nth-child(2){left:16%}.coilPack i:nth-child(3){left:24%}.coilPack i:nth-child(4){left:32%}.coilPack i:nth-child(5){left:40%}.coilPack i:nth-child(6){left:48%}.coilPack i:nth-child(7){left:56%}.coilPack i:nth-child(8){left:64%}.coilPack i:nth-child(9){left:72%}.coilPack i:nth-child(10){left:80%}.coilPack i:nth-child(11){left:88%}.coilPack b{position:absolute;left:8%;right:8%;height:6px;border-radius:999px;background:linear-gradient(90deg,#7c2d12,#fed7aa,#7c2d12)}.coilPack b:nth-of-type(1){top:22%}.coilPack b:nth-of-type(2){bottom:22%}.fanRotor{position:absolute;width:min(72px,62%);aspect-ratio:1;border:8px solid rgba(15,23,42,.78);border-radius:50%;background:radial-gradient(circle,#0f172a 0 16%,#bae6fd 17% 23%,#1e293b 24% 100%);box-shadow:inset 0 0 20px rgba(2,8,23,.9),0 0 18px rgba(34,211,238,.22);animation:fanIdle 6s linear infinite}.fanRotor i{position:absolute;left:50%;top:50%;width:41%;height:12%;border-radius:999px 80% 80% 999px;background:linear-gradient(90deg,#bae6fd,#64748b);transform-origin:left center}.fanRotor i:nth-child(1){transform:rotate(0deg)}.fanRotor i:nth-child(2){transform:rotate(90deg)}.fanRotor i:nth-child(3){transform:rotate(180deg)}.fanRotor i:nth-child(4){transform:rotate(270deg)}.ductVanes{position:absolute;inset:17px 14px;display:grid;gap:7px}.ductVanes i{display:block;border:1px solid rgba(15,23,42,.24);background:linear-gradient(90deg,rgba(186,230,253,.5),rgba(71,85,105,.72));transform:skewY(-8deg)}.transparentCover{position:absolute;left:14%;right:12%;top:-20px;height:28px;border:1px solid rgba(186,230,253,.22);background:linear-gradient(90deg,rgba(224,242,254,.24),rgba(34,211,238,.08));transform:skewX(-18deg);box-shadow:0 0 24px rgba(34,211,238,.15)}.detailedAhuVisual.isExploded .intakeModule{transform:translate(-12px,-12px)}.detailedAhuVisual.isExploded .filterModule{transform:translate(-6px,-32px)}.detailedAhuVisual.isExploded .coilModule{transform:translate(4px,-42px)}.detailedAhuVisual.isExploded .fanModule{transform:translate(14px,-28px)}.detailedAhuVisual.isExploded .supplyModule{transform:translate(26px,-12px)}.detailedAhuVisual.isExploded .transparentCover{transform:translateY(-50px) skewX(-18deg);opacity:.55}.detailedAhuVisual.isSelected .ahuModule,.detailedAhuVisual:hover .ahuModule{border-color:rgba(34,211,238,.58);box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset -20px -18px 34px rgba(15,23,42,.24),0 0 26px rgba(34,211,238,.13)}.airflowTrack{position:absolute;z-index:4;left:7%;right:7%;height:20px;pointer-events:none}.airflowTrackIn{top:31%}.airflowTrackOut{top:64%}.airflowTrack::before{content:"";position:absolute;left:0;right:0;top:9px;border-top:1px dashed rgba(103,232,249,.54);filter:drop-shadow(0 0 8px rgba(34,211,238,.75))}.airflowTrack i{position:absolute;top:4px;width:10px;height:10px;border-top:2px solid #67e8f9;border-right:2px solid #67e8f9;transform:rotate(45deg);animation:airflowMove 3.2s linear infinite}.airflowTrack i:nth-child(1){animation-delay:0s}.airflowTrack i:nth-child(2){animation-delay:1s}.airflowTrack i:nth-child(3){animation-delay:2s}.unitCaption{position:absolute;left:50%;top:12%;transform:translateX(-50%);min-width:min(460px,76%);border:1px solid rgba(125,211,252,.36);border-radius:8px;background:rgba(2,8,23,.82);box-shadow:0 0 26px rgba(34,211,238,.2);padding:10px 14px;text-align:center}.unitCaption strong,.unitCaption span{display:block}.unitCaption strong{color:#f8fafc;font-size:18px}.unitCaption span{margin-top:4px;color:#bbf7d0;font-size:12px;font-weight:800}.passportPanel{padding:14px;transition:border-color .2s ease,box-shadow .2s ease}.passportPanel.isSelected{border-color:rgba(34,211,238,.46);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 52px rgba(0,0,0,.34),0 0 26px rgba(34,211,238,.1)}.statusRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.statusRow span:first-child{border-color:rgba(34,197,94,.42);color:#bbf7d0}.passportGrid{display:grid;gap:7px;margin:14px 0}.passportGrid div{display:grid;grid-template-columns:128px 1fr;gap:10px;border-bottom:1px solid rgba(125,211,252,.12);padding-bottom:7px}.passportGrid dt{color:#93c5fd;font-size:12px}.passportGrid dd{margin:0;color:#f8fafc;font-size:13px;line-height:1.35}.chipBlock{display:grid;gap:8px;margin-top:12px}.chipBlock strong,.controlsLocked strong{color:#e0f2fe;font-size:13px}.chipBlock div,.controlsLocked div{display:flex;flex-wrap:wrap;gap:7px}.chipBlock button{border-radius:8px;cursor:pointer}.explodeButton{width:100%;margin-top:14px}.controlsLocked{display:grid;gap:9px;margin-top:14px;border:1px solid rgba(248,113,113,.22);border-radius:8px;background:rgba(127,29,29,.12);padding:10px}.controlsLocked button{border:1px solid rgba(148,163,184,.2);border-radius:8px;background:rgba(15,23,42,.5);color:#94a3b8;padding:8px 9px}@keyframes airflowMove{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:98%;opacity:0}}@keyframes fanIdle{to{transform:rotate(360deg)}}@media(max-width:980px){.equipment3DSection{grid-template-columns:1fr;padding:14px}.viewerHeader{display:grid}.viewerViewport{height:370px}.passportGrid div{grid-template-columns:1fr}.ahuRig{left:3%;right:3%;transform:perspective(860px) rotateX(57deg) rotateZ(-6deg) skewX(-4deg) scale(.92)}.unitCaption{top:9%}.moduleLabel{display:none}.detailedAhuVisual.isExploded .moduleLabel{display:block;min-width:88px}.viewerHints span{font-size:10px}}
       `}</style>
     </section>
   );
