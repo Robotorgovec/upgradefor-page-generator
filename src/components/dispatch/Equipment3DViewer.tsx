@@ -161,16 +161,18 @@ function AhuScene({
   onSelect: () => void;
 }) {
   return (
-    <Canvas camera={{ position: [6.4, 3.2, 6.2], fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }} shadows>
+    <Canvas camera={{ position: [5.6, 2.7, 5.1], fov: 33 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }} shadows>
       <color attach="background" args={["#06111f"]} />
-      <ambientLight intensity={0.85} />
-      <directionalLight position={[5, 6, 4]} intensity={1.65} castShadow />
-      <pointLight position={[-3, 2.4, 2.8]} intensity={1.05} color="#67e8f9" />
-      <pointLight position={[3, 1.3, -2.3]} intensity={0.65} color="#38bdf8" />
+      <ambientLight intensity={1.05} />
+      <hemisphereLight args={["#dbeafe", "#07111f", 1.05]} />
+      <directionalLight position={[5, 6, 4]} intensity={2.05} castShadow />
+      <directionalLight position={[-4, 2.6, -3]} intensity={0.72} color="#bae6fd" />
+      <pointLight position={[-3, 2.4, 2.8]} intensity={1.15} color="#67e8f9" />
+      <pointLight position={[3, 1.3, -2.3]} intensity={0.75} color="#38bdf8" />
       <gridHelper args={[8, 16, "#155e75", "#0f2738"]} position={[0, -1, 0]} />
       <Suspense fallback={<LoadingBadge exploded={exploded} />}>
         <ModelErrorBoundary fallback={<ModelFallback item={item} exploded={exploded} onSelect={onSelect} />}>
-          <Bounds fit clip observe margin={1.18}>
+          <Bounds fit clip observe margin={0.72}>
             <Center>
               <LoadedAhuModel item={item} exploded={exploded} onSelect={onSelect} />
             </Center>
