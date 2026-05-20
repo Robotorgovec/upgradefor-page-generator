@@ -75,7 +75,7 @@ function LoadedAhuModel({
   onSelect: () => void;
 }) {
   const modelPath = exploded ? item.explodedModelPath : item.modelPath;
-  const gltf = useGLTF(modelPath);
+  const gltf = useGLTF(modelPath, true);
   const model = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
 
   return (
