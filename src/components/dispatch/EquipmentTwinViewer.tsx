@@ -150,7 +150,8 @@ function AssetErrorLabel({ onOpenPassport }: { onOpenPassport: () => void }) {
   return (
     <button className="equipmentTwinFallback" type="button" onClick={onOpenPassport}>
       <strong>3D-модель пока не загружена</strong>
-      <span>GLB отсутствует в public models. Паспорт оборудования доступен в demo/read-only режиме.</span>
+      <span className="equipmentTwinAssetBadge">GLB asset не найден</span>
+      <span>Паспорт оборудования доступен в demo/read-only режиме.</span>
     </button>
   );
 }
@@ -301,15 +302,31 @@ export default function EquipmentTwinViewer({
         }
 
         .equipmentTwinFallback strong {
+          display: block;
           color: #f8fafc;
           font-size: 18px;
         }
 
         .equipmentTwinFallback span {
+          display: block;
           max-width: 420px;
           color: #93c5fd;
           font-size: 12px;
           line-height: 1.45;
+        }
+
+        .equipmentTwinFallback .equipmentTwinAssetBadge {
+          justify-self: center;
+          width: fit-content;
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          border-radius: 999px;
+          background: rgba(15, 23, 42, 0.68);
+          color: #bfdbfe;
+          padding: 5px 10px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
 
         .equipmentTwinHints {
