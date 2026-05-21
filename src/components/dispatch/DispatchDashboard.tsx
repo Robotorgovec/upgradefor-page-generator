@@ -1,0 +1,1842 @@
+"use client";
+
+import { FormEvent, useEffect, useMemo, useState } from "react";
+
+import {
+  alarmEvents,
+  dispatchAiInsights,
+  dispatchEquipmentNodes,
+  dispatchSectionDetails,
+  dispatchSections,
+  realtimeMetrics,
+  trendSeries,
+  type DispatchAlarmEvent,
+  type DispatchEquipmentNode,
+  type DispatchSection,
+  type DispatchTrendKey,
+} from "../../data/dispatchDemo";
+import DispatchTrendsPanel from "./DispatchTrendsPanel";
+
+const passportTabs = ["Паспорт", "Параметры", "ТО", "Документы"];
+const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
+
+type ModalState = "readonly" | "ticket" | null;
+
+function severityLabel(severity: DispatchAlarmEvent["severity"]) {
+  if (severity === "critical") return "Авария";
+  if (severity === "warning") return "Предупреждение";
+  return "ТО";
+}
+
+function statusTone(status: DispatchEquipmentNode["status"]) {
+  if (status === "Авария") return "danger";
+  if (status === "Предупреждение" || status === "TO VERIFY") return "warning";
+  return "ok";
+}
+
+export default function DispatchDashboard() {
+  const [activeSectionId, setActiveSectionId] = useState<DispatchSection>("overview");
+  const [selectedId, setSelectedId] = useState("automation-cabinets");
+  const [selectedTrendKey, setSelectedTrendKey] = useState<DispatchTrendKey>("energy");
+  const [passportTab, setPassportTab] = useState(passportTabs[0]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [modal, setModal] = useState<ModalState>(null);
+  const [aiAnswer, setAiAnswer] = useState("");
+  const [demoTime, setDemoTime] = useState("17.05.2026 10:45");
+
+  useEffect(() => {
+    document.body.classList.add("is-dispatch-demo");
+    document.body.classList.remove("menu-open");
+
+    return () => {
+      document.body.classList.remove("is-dispatch-demo");
+    };
+  }, []);
+
+  const selectedEquipment =
+    dispatchEquipmentNodes.find((node) => node.id === selectedId) ?? dispatchEquipmentNodes[0];
+
+  const selectedSection =
+    dispatchSectionDetails.find((section) => section.id === activeSectionId) ?? dispatchSectionDetails[0];
+
+  const relatedAlarms = useMemo(
+    () => {
+      const relatedIds = new Set([...selectedEquipment.relatedAlarmIds, ...selectedSection.relatedAlarmIds]);
+      return alarmEvents.filter((alarm) => relatedIds.has(alarm.id));
+    },
+    [selectedEquipment, selectedSection],
+  );
+
+  const notificationItems = useMemo(() => {
+    const relatedIds = new Set(relatedAlarms.map((alarm) => alarm.id));
+    return [...relatedAlarms, ...alarmEvents.filter((alarm) => !relatedIds.has(alarm.id))].slice(0, 3);
+  }, [relatedAlarms]);
+
+  const relatedNodes = useMemo(
+    () =>
+      selectedSection.relatedNodeIds
+        .map((nodeId) => dispatchEquipmentNodes.find((node) => node.id === nodeId))
+        .filter((node): node is DispatchEquipmentNode => Boolean(node)),
+    [selectedSection],
+  );
+
+  const selectedLastEvent = relatedAlarms[0]
+    ? `${severityLabel(relatedAlarms[0].severity)} · ${relatedAlarms[0].time} · ${relatedAlarms[0].title}`
+    : selectedSection.lastEvent;
+
+  const hasDpAnomalyContext =
+    selectedEquipment.visualTone === "anomaly" ||
+    selectedSection.relatedAlarmIds.includes("alarm-pump-pressure");
+
+  const selectEquipment = (node: DispatchEquipmentNode, sectionId?: DispatchSection) => {
+    const nextSection = sectionId
+      ? dispatchSectionDetails.find((section) => section.id === sectionId)
+      : dispatchSectionDetails.find(
+          (section) => section.nodeId === node.id || section.relatedNodeIds.includes(node.id),
+        );
+
+    setSelectedId(node.id);
+    setActiveSectionId(nextSection?.id ?? activeSectionId);
+    setSelectedTrendKey(nextSection?.trendKey ?? node.trendKey);
+    setPassportTab(passportTabs[0]);
+    setIsDrawerOpen(true);
+  };
+
+  const selectSection = (sectionId: DispatchSection) => {
+    const section = dispatchSectionDetails.find((item) => item.id === sectionId) ?? dispatchSectionDetails[0];
+    const node = dispatchEquipmentNodes.find((item) => item.id === section.nodeId) ?? selectedEquipment;
+
+    setActiveSectionId(section.id);
+    setSelectedId(node.id);
+    setSelectedTrendKey(section.trendKey);
+    setPassportTab(passportTabs[0]);
+    setIsDrawerOpen(true);
+  };
+
+  const openAlarm = (alarm: DispatchAlarmEvent) => {
+    const node = dispatchEquipmentNodes.find((item) => item.id === alarm.equipmentId);
+    const section = dispatchSectionDetails.find((item) => item.relatedAlarmIds.includes(alarm.id));
+    if (node) {
+      selectEquipment(node, section?.id);
+    }
+  };
+
+  const openAiDiagnostics = () => {
+    setActiveSectionId("ai");
+    setSelectedTrendKey(selectedEquipment.visualTone === "anomaly" ? "pressure" : selectedEquipment.trendKey);
+    setAiAnswer(
+      `AI-диагностика demo: ${selectedEquipment.shortLabel}. Рекомендации сформированы локально, без запроса к BMS/SCADA.`,
+    );
+    setIsDrawerOpen(true);
+  };
+
+  const openTrendsFor = (trendKey: DispatchTrendKey, nodeId?: string) => {
+    if (nodeId) {
+      setSelectedId(nodeId);
+    }
+    setActiveSectionId("trends");
+    setSelectedTrendKey(trendKey);
+    setIsDrawerOpen(true);
+  };
+
+  const handleAiSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setAiAnswer(
+      "AI анализирует mock-данные. Для реального ответа требуется подключение к BMS/SCADA historian.",
+    );
+  };
+
+  return (
+    <div className="dispatchShell">
+      <div className="dispatchGrid" aria-label="Demo dashboard диспетчеризации">
+        <header className="dispatchHeader panel">
+          <div>
+            <p className="eyebrow">UPGRADE Dispatch / Asia Park Astana</p>
+            <h1>
+              Интеллектуальная диспетчеризация существующей BMS/SCADA: холодоснабжение, вентиляция,
+              насосные группы, чиллеры Trane, аварии, тренды, паспорта оборудования и AI-диагностика.
+            </h1>
+          </div>
+          <div className="headerStatus">
+            <span>Связь: Онлайн</span>
+            <strong>BMS/SCADA 10.50.4.41</strong>
+            <span>Operator</span>
+            <b>DEMO MODE</b>
+          </div>
+        </header>
+
+        <aside className="leftRail">
+          <section className="sectionPanel panel">
+            <div className="panelHeading">
+              <p className="eyebrow">Engineering modules</p>
+              <h2>Разделы диспетчеризации</h2>
+            </div>
+            <div className="sectionList" aria-label="Инженерные разделы">
+              {dispatchSections.map((section) => {
+                const detail =
+                  dispatchSectionDetails.find((item) => item.id === section.id) ?? dispatchSectionDetails[0];
+                const sectionAlarmCount = detail.relatedAlarmIds.length;
+
+                return (
+                  <button
+                    key={section.id}
+                    type="button"
+                    className={`sectionItem ${activeSectionId === section.id ? "isActive" : ""}`}
+                    onClick={() => selectSection(section.id)}
+                  >
+                    <span>
+                      {section.label}
+                      {section.badge ? <b>{section.badge}</b> : null}
+                    </span>
+                    <small>
+                      {detail.equipmentCount} · {sectionAlarmCount ? `${sectionAlarmCount} event` : "no active alarm"}
+                    </small>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="panel">
+            <div className="panelHeading">
+              <p className="eyebrow">Live telemetry</p>
+              <h2>Мониторинг в реальном времени</h2>
+            </div>
+            <div className="kpiGrid">
+              {realtimeMetrics.map((metric) => (
+                <article className="kpiCard" key={metric.label}>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                  <small>{metric.state} · {metric.trend}</small>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="panel">
+            <div className="panelHeading">
+              <p className="eyebrow">Events · {selectedSection.id}</p>
+              <h2>Аварии и события</h2>
+            </div>
+            <div className="eventContext">
+              <span>Контекст раздела</span>
+              <strong>{selectedSection.lastEvent}</strong>
+            </div>
+            <div className="eventList">
+              {notificationItems.map((alarm) => (
+                <button
+                  className={`eventItem ${alarm.severity} ${
+                    relatedAlarms.some((related) => related.id === alarm.id) ? "isRelated" : ""
+                  }`}
+                  key={alarm.id}
+                  type="button"
+                  onClick={() => openAlarm(alarm)}
+                >
+                  <span>{severityLabel(alarm.severity)} · {alarm.time}</span>
+                  <strong>{alarm.title}</strong>
+                  <small>{alarm.description}</small>
+                </button>
+              ))}
+            </div>
+            <button className="secondaryButton full" type="button" onClick={() => setModal("ticket")}>
+              Создать заявку
+            </button>
+          </section>
+
+          <DispatchTrendsPanel
+            trendSeries={trendSeries}
+            selectedTrendKey={selectedTrendKey}
+            onTrendChange={setSelectedTrendKey}
+          />
+
+          <section className="panel">
+            <div className="panelHeading">
+              <p className="eyebrow">AI analytics</p>
+              <h2>AI-аналитика и прогнозирование</h2>
+            </div>
+            <div className="aiGrid">
+              {dispatchAiInsights.map((insight) => (
+                <button
+                  className="aiInsight"
+                  key={insight.id}
+                  type="button"
+                  onClick={() => {
+                    const node = dispatchEquipmentNodes.find((item) => item.id === insight.equipmentId);
+                    if (node) {
+                      selectEquipment(node, insight.id === "anomaly" ? "ai" : undefined);
+                    } else {
+                      selectSection("ai");
+                    }
+                  }}
+                >
+                  <span>{insight.title}</span>
+                  <strong>{insight.value}</strong>
+                </button>
+              ))}
+            </div>
+            <form className="aiInput" onSubmit={handleAiSubmit}>
+              <input aria-label="AI assistant" placeholder="Задайте вопрос по объекту..." />
+              <button type="submit">AI</button>
+            </form>
+            {aiAnswer ? <p className="aiAnswer">{aiAnswer}</p> : null}
+          </section>
+        </aside>
+
+        <main className="twinPanel panel">
+          <div className="twinTopline">
+            <div>
+              <p className="eyebrow">Digital twin</p>
+              <h2>{dispatchSections.find((section) => section.id === activeSectionId)?.label}</h2>
+            </div>
+            <div className="readOnlyPill">Read-only / control locked</div>
+          </div>
+
+          <div className="twinStage">
+            <div className="stageLegend">
+              <span><i className="legendAhu" />AHU VC-13/VC-11</span>
+              <span><i className="legendAnomaly" />DP data-quality</span>
+            </div>
+            {hasDpAnomalyContext ? (
+              <div className="anomalyCallout">
+                <span>AI insight</span>
+                DP 6553.3 / 6553.5 bar · проверить scaling/register
+              </div>
+            ) : null}
+
+            <svg className="flowLayer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path className="flowPath pathOne" d="M13 25 C28 18 35 38 50 28 S75 18 84 31" />
+              <path className="flowPath pathTwo" d="M18 72 C34 60 44 84 61 72 S77 55 91 58" />
+              <path className="flowPath pathThree" d="M8 50 C28 48 35 54 49 49 S70 37 90 42" />
+              <circle className="dataDot dotOne" r="1.2">
+                <animateMotion dur="4.8s" repeatCount="indefinite" path="M13 25 C28 18 35 38 50 28 S75 18 84 31" />
+              </circle>
+              <circle className="dataDot dotTwo" r="1.1">
+                <animateMotion dur="5.8s" repeatCount="indefinite" path="M18 72 C34 60 44 84 61 72 S77 55 91 58" />
+              </circle>
+              <circle className="dataDot dotThree" r="1">
+                <animateMotion dur="4.2s" repeatCount="indefinite" path="M8 50 C28 48 35 54 49 49 S70 37 90 42" />
+              </circle>
+            </svg>
+
+            <div className="buildingIso" aria-hidden="true">
+              <div className="roofDeck">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="tower towerA">
+                {Array.from({ length: 24 }).map((_, index) => (
+                  <i key={index} />
+                ))}
+              </div>
+              <div className="tower towerB">
+                {Array.from({ length: 18 }).map((_, index) => (
+                  <i key={index} />
+                ))}
+              </div>
+              <div className="techFloor">
+                <b />
+                <b />
+                <b />
+                <b />
+              </div>
+              <div className="plantRoom">
+                <span>CH-1</span>
+                <span>ШУ-2</span>
+                <span>VC-13</span>
+              </div>
+            </div>
+
+            {dispatchEquipmentNodes.map((node) => {
+              const isSelected = node.id === selectedEquipment.id;
+              const hasAlarm = node.relatedAlarmIds.some((id) => alarmEvents.find((alarm) => alarm.id === id)?.severity === "critical");
+              const placementClass =
+                node.x > 66 ? "labelLeft" : node.y > 78 ? "labelTop" : node.y < 22 ? "labelBottom" : "";
+              const toneClass =
+                node.visualTone === "ahu" ? "isAhu" : node.visualTone === "anomaly" ? "isAnomaly" : "";
+
+              return (
+                <button
+                  key={node.id}
+                  type="button"
+                  className={`equipmentNode ${placementClass} ${toneClass} ${isSelected ? "isSelected" : ""} ${
+                    hasAlarm ? "hasAlarm" : ""
+                  }`}
+                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                  onClick={() => selectEquipment(node)}
+                  aria-pressed={isSelected}
+                  aria-label={`Открыть ${node.label}`}
+                >
+                  <span className="nodeCore">
+                    {node.visualTone === "ahu" ? <small>AHU</small> : null}
+                    {node.visualTone === "anomaly" ? <small>DP</small> : null}
+                  </span>
+                  <span className="nodeLabel">
+                    <strong>{node.shortLabel}</strong>
+                    <small>{node.countLabel}</small>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <section className="sectionDetailPanel">
+            <div className="sectionDetailHeader">
+              <div>
+                <p className="eyebrow">Selected module</p>
+                <h3>{dispatchSections.find((section) => section.id === activeSectionId)?.label}</h3>
+              </div>
+              <span>{selectedSection.activeAlarms}</span>
+            </div>
+            <p>{selectedSection.description}</p>
+            <div className="sectionMetrics">
+              <div>
+                <span>Оборудование</span>
+                <strong>{selectedSection.equipmentCount}</strong>
+              </div>
+              {selectedSection.keyMetrics.map((metric) => (
+                <div key={metric.label}>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                </div>
+              ))}
+            </div>
+            <div className="relatedNodesRow">
+              <span>Связанные узлы</span>
+              <div>
+                {relatedNodes.map((node) => (
+                  <button key={node.id} type="button" onClick={() => selectEquipment(node)}>
+                    {node.shortLabel}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="sectionAlarmSummary">
+              <span>Связанные события</span>
+              {relatedAlarms.length ? (
+                <div>
+                  {relatedAlarms.map((alarm) => (
+                    <button key={alarm.id} type="button" className={alarm.severity} onClick={() => openAlarm(alarm)}>
+                      {alarm.title}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <small>Активных событий по разделу нет</small>
+              )}
+            </div>
+            <div className="sectionActions">
+              <button type="button" onClick={() => setIsDrawerOpen(true)}>Open passport</button>
+              <button type="button" onClick={() => setModal("ticket")}>Create demo ticket</button>
+              <button type="button" onClick={() => openTrendsFor(selectedSection.trendKey, selectedSection.nodeId)}>
+                Show trends
+              </button>
+              <button type="button" onClick={openAiDiagnostics}>AI diagnostics</button>
+            </div>
+          </section>
+
+          <div className="commandStrip">
+            {controlButtons.map((button) => (
+              <button key={button} type="button" onClick={() => setModal("readonly")}>
+                {button}
+              </button>
+            ))}
+          </div>
+
+          <section className="recommendationPanel">
+            <div>
+              <p className="eyebrow">AI recommendations</p>
+              <h3>{selectedEquipment.shortLabel}</h3>
+            </div>
+            <ul>
+              {selectedEquipment.aiRecommendations.map((recommendation) => (
+                <li key={recommendation}>{recommendation}</li>
+              ))}
+            </ul>
+          </section>
+        </main>
+
+        <aside className={`passportDrawer panel ${isDrawerOpen ? "isOpen" : ""}`}>
+          <button className="drawerClose" type="button" onClick={() => setIsDrawerOpen(false)} aria-label="Закрыть паспорт">
+            ×
+          </button>
+          <div className="panelHeading">
+            <p className="eyebrow">Equipment registry</p>
+            <h2>Паспортизация оборудования</h2>
+          </div>
+          <div className="passportHero">
+            <div>
+              <span className={`statusDot ${statusTone(selectedEquipment.status)}`} />
+              <strong>{selectedEquipment.label}</strong>
+              <small>Статус: {selectedEquipment.status}</small>
+            </div>
+            <div className="qrBox">QR</div>
+          </div>
+
+          <div className="datasheetSnapshot">
+            <div>
+              <span>Тип</span>
+              <strong>{selectedEquipment.type}</strong>
+            </div>
+            <div>
+              <span>Локация</span>
+              <strong>{selectedEquipment.location}</strong>
+            </div>
+            <div>
+              <span>Последнее событие</span>
+              <strong>{selectedLastEvent}</strong>
+            </div>
+            <div>
+              <span>Сервисная заметка</span>
+              <strong>{selectedEquipment.serviceNote}</strong>
+            </div>
+          </div>
+
+          <div className="passportTabs" role="tablist" aria-label="Разделы паспорта">
+            {passportTabs.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={passportTab === tab}
+                className={passportTab === tab ? "isActive" : undefined}
+                onClick={() => setPassportTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {passportTab === "Паспорт" ? (
+            <>
+              <dl className="passportList">
+                <div><dt>Тип</dt><dd>{selectedEquipment.type}</dd></div>
+                <div><dt>Модель</dt><dd>{selectedEquipment.model}</dd></div>
+                <div><dt>Серийный номер</dt><dd>{selectedEquipment.serial}</dd></div>
+                <div><dt>Инвентарный номер</dt><dd>{selectedEquipment.inventoryNumber}</dd></div>
+                <div><dt>Местоположение</dt><dd>{selectedEquipment.location}</dd></div>
+                <div><dt>Производитель</dt><dd>{selectedEquipment.manufacturer}</dd></div>
+                <div><dt>Год выпуска</dt><dd>{selectedEquipment.year}</dd></div>
+              </dl>
+              <div className="linkedSystemsBlock">
+                <span>Связанные системы</span>
+                <div>
+                  {selectedEquipment.linkedSystems.map((system) => (
+                    <small key={system}>{system}</small>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : null}
+
+          {passportTab === "Параметры" ? (
+            <div className="paramGrid">
+              {selectedEquipment.onlineParams.map((param) => (
+                <div key={param.label}>
+                  <span>{param.label}</span>
+                  <strong>{param.value}</strong>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {passportTab === "ТО" ? (
+            <>
+              <div className="serviceNote">
+                <span>Service note</span>
+                <strong>{selectedEquipment.serviceNote}</strong>
+              </div>
+              <div className="serviceList">
+                {selectedEquipment.serviceHistory.map((item) => (
+                  <article key={`${item.date}-${item.title}`}>
+                    <span>{item.date}</span>
+                    <strong>{item.title}</strong>
+                    <small>{item.result}</small>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          {passportTab === "Документы" ? (
+            <>
+              <div className="tagList">
+                <span>SCADA/BMS tags</span>
+                {(selectedEquipment.scadaTags.length ? selectedEquipment.scadaTags : ["TO VERIFY"]).map((tag) => (
+                  <code key={tag}>{tag}</code>
+                ))}
+              </div>
+              <div className="documentList">
+                {selectedEquipment.documents.map((document) => (
+                  <button key={document.title} type="button" onClick={() => setModal("readonly")}>
+                    <span>{document.type}</span>
+                    {document.title}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          <div className="relatedBlock">
+            <span>Связанные аварии/тренды</span>
+            {relatedAlarms.length ? (
+              relatedAlarms.map((alarm) => <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>{alarm.title}</button>)
+            ) : (
+              <small>Активных аварий нет</small>
+            )}
+          </div>
+
+          <div className="aiRecommendationBlock">
+            <span>AI recommendation</span>
+            <strong>{selectedEquipment.aiRecommendations[0]}</strong>
+          </div>
+
+          <div className="drawerActions">
+            <button type="button" onClick={() => setModal("ticket")}>Создать заявку</button>
+            <button type="button" onClick={() => openTrendsFor(selectedEquipment.trendKey, selectedEquipment.id)}>
+              Открыть тренды
+            </button>
+            <button type="button" onClick={openAiDiagnostics}>AI-диагностика</button>
+            <button type="button" onClick={() => setModal("readonly")}>Read-only controls</button>
+          </div>
+        </aside>
+
+        <aside className="notificationsPanel panel">
+          <div className="panelHeading">
+            <p className="eyebrow">Notifications</p>
+            <h2>Уведомления</h2>
+          </div>
+          {notificationItems.map((alarm) => (
+            <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>
+              <span>{severityLabel(alarm.severity)}</span>
+              <strong>{alarm.title.replace(" на ШУ-2", "")}</strong>
+            </button>
+          ))}
+          <button className="secondaryButton" type="button" onClick={() => setModal("readonly")}>
+            Все уведомления
+          </button>
+        </aside>
+      </div>
+
+      <nav className="dispatchBottomNav" aria-label="Навигация диспетчерской">
+        {dispatchSections.map((section) => (
+          <button
+            key={section.id}
+            type="button"
+            className={activeSectionId === section.id ? "isActive" : undefined}
+            onClick={() => selectSection(section.id)}
+          >
+            {section.label}
+          </button>
+        ))}
+        <div className="bottomMeta">
+          <span>Связь с объектом: Онлайн / Simulated gateway</span>
+          <span>Пользователь: Диспетчер</span>
+          <input aria-label="Текущее demo-время" value={demoTime} onChange={(event) => setDemoTime(event.target.value)} />
+          <b>DEMO MODE</b>
+        </div>
+      </nav>
+
+      {modal ? (
+        <div className="modalBackdrop" role="presentation" onMouseDown={() => setModal(null)}>
+          <div className="demoModal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+            <button type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
+            {modal === "readonly" ? (
+              <>
+                <h2>Управление оборудованием отключено</h2>
+                <p>
+                  Управление оборудованием отключено в демонстрационном режиме. Для реального управления требуется
+                  интеграция с BMS/SCADA, подтверждение прав доступа, аудит тегов и согласование с эксплуатационной
+                  службой.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2>Demo-заявка создана</h2>
+                <p>
+                  Заявка по оборудованию {selectedEquipment.shortLabel} сформирована в demo/read-only режиме и не
+                  отправлена во внешнюю систему.
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      <style jsx>{`
+        :global(body.is-dispatch-demo .site-header),
+        :global(body.is-dispatch-demo .sidebar),
+        :global(body.is-dispatch-demo .mobile-bottom-nav),
+        :global(body.is-dispatch-demo .skip) {
+          display: none !important;
+        }
+
+        :global(body.is-dispatch-demo .app-content) {
+          width: 100% !important;
+          margin-left: 0 !important;
+          padding: 0 !important;
+        }
+
+        .dispatchShell {
+          min-height: 100vh;
+          margin: 0;
+          padding: 14px 14px 88px;
+          color: #dbeafe;
+          background:
+            radial-gradient(circle at 48% 18%, rgba(14, 165, 233, 0.18), transparent 34%),
+            linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+            #020712;
+          background-size: auto, 34px 34px, 34px 34px, auto;
+        }
+
+        .dispatchGrid {
+          display: grid;
+          grid-template-columns: minmax(270px, 320px) minmax(470px, 1fr) minmax(300px, 340px);
+          grid-template-rows: auto 1fr auto;
+          gap: 14px;
+          min-height: calc(100vh - 116px);
+        }
+
+        .panel {
+          border: 1px solid rgba(56, 189, 248, 0.26);
+          border-radius: 8px;
+          background: linear-gradient(145deg, rgba(8, 20, 38, 0.84), rgba(2, 8, 23, 0.74));
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 52px rgba(0,0,0,0.34);
+          backdrop-filter: blur(18px);
+        }
+
+        .dispatchHeader {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          padding: 16px 20px;
+        }
+
+        .dispatchHeader h1,
+        .panelHeading h2,
+        .twinTopline h2 {
+          margin: 0;
+          color: #f8fafc;
+          font-size: 20px;
+          line-height: 1.15;
+        }
+
+        .eyebrow {
+          margin: 0 0 6px;
+          color: #67e8f9;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .headerStatus {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: #93c5fd;
+          font-size: 12px;
+        }
+
+        .headerStatus b,
+        .bottomMeta b,
+        .readOnlyPill {
+          border: 1px solid rgba(34, 211, 238, 0.42);
+          border-radius: 999px;
+          color: #22d3ee;
+          padding: 7px 10px;
+          box-shadow: 0 0 22px rgba(34, 211, 238, 0.18);
+        }
+
+        .leftRail {
+          display: grid;
+          gap: 14px;
+          align-content: start;
+        }
+
+        .leftRail .panel,
+        .passportDrawer,
+        .notificationsPanel {
+          padding: 16px;
+        }
+
+        .panelHeading {
+          margin-bottom: 14px;
+        }
+
+        .sectionPanel {
+          overflow: hidden;
+        }
+
+        .sectionList {
+          display: grid;
+          gap: 7px;
+        }
+
+        .sectionItem {
+          width: 100%;
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.56);
+          color: #dbeafe;
+          cursor: pointer;
+          padding: 10px;
+          text-align: left;
+          transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+        }
+
+        .sectionItem:hover,
+        .sectionItem.isActive {
+          border-color: rgba(34, 211, 238, 0.72);
+          background: rgba(14, 165, 233, 0.16);
+          transform: translateX(2px);
+        }
+
+        .sectionItem span {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          color: #f8fafc;
+          font-size: 13px;
+          font-weight: 700;
+          line-height: 1.25;
+        }
+
+        .sectionItem b {
+          border: 1px solid rgba(103, 232, 249, 0.38);
+          border-radius: 999px;
+          color: #67e8f9;
+          flex: 0 0 auto;
+          font-size: 9px;
+          padding: 2px 6px;
+        }
+
+        .sectionItem small {
+          display: block;
+          margin-top: 5px;
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.25;
+        }
+
+        .kpiGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .kpiCard,
+        .aiInsight,
+        .paramGrid div,
+        .serviceList article {
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.62);
+          padding: 12px;
+        }
+
+        .kpiCard span,
+        .aiInsight span,
+        .paramGrid span,
+        .serviceList span,
+        .passportList dt,
+        .relatedBlock span {
+          display: block;
+          color: #93c5fd;
+          font-size: 11px;
+        }
+
+        .kpiCard strong,
+        .aiInsight strong,
+        .paramGrid strong {
+          display: block;
+          margin: 7px 0 4px;
+          color: #f8fafc;
+          font-size: 18px;
+        }
+
+        .kpiCard small,
+        .serviceList small,
+        .passportHero small,
+        .relatedBlock small {
+          color: #86efac;
+          font-size: 11px;
+        }
+
+        button {
+          font: inherit;
+        }
+
+        .eventList,
+        .serviceList,
+        .documentList,
+        .relatedBlock {
+          display: grid;
+          gap: 8px;
+        }
+
+        .eventContext,
+        .serviceNote,
+        .aiRecommendationBlock {
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(8, 47, 73, 0.26);
+          margin-bottom: 10px;
+          padding: 10px;
+        }
+
+        .eventContext span,
+        .serviceNote span,
+        .aiRecommendationBlock span,
+        .linkedSystemsBlock span,
+        .tagList span {
+          display: block;
+          color: #67e8f9;
+          font-size: 11px;
+          font-weight: 800;
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        }
+
+        .eventContext strong,
+        .serviceNote strong,
+        .aiRecommendationBlock strong {
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+
+        .eventItem,
+        .aiInsight,
+        .notificationsPanel button,
+        .documentList button,
+        .relatedBlock button {
+          width: 100%;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.66);
+          color: #dbeafe;
+          cursor: pointer;
+          padding: 10px;
+          text-align: left;
+          transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .eventItem:hover,
+        .aiInsight:hover,
+        .notificationsPanel button:hover,
+        .documentList button:hover,
+        .relatedBlock button:hover,
+        .equipmentNode:hover .nodeCore {
+          border-color: rgba(34, 211, 238, 0.72);
+          box-shadow: 0 0 24px rgba(34, 211, 238, 0.16);
+          transform: translateY(-1px);
+        }
+
+        .eventItem span,
+        .notificationsPanel span {
+          color: #67e8f9;
+          font-size: 11px;
+        }
+
+        .eventItem strong,
+        .notificationsPanel strong {
+          display: block;
+          margin: 4px 0;
+          color: #f8fafc;
+          font-size: 13px;
+        }
+
+        .eventItem.critical {
+          border-color: rgba(248, 113, 113, 0.45);
+        }
+
+        .eventItem.isRelated {
+          background: rgba(14, 165, 233, 0.16);
+          box-shadow: inset 3px 0 0 rgba(34, 211, 238, 0.9);
+        }
+
+        .eventItem.warning {
+          border-color: rgba(251, 191, 36, 0.38);
+        }
+
+        .secondaryButton,
+        .commandStrip button,
+        .drawerActions button,
+        .sectionActions button,
+        .relatedNodesRow button,
+        .sectionAlarmSummary button,
+        .aiInput button,
+        .dispatchBottomNav button {
+          border: 1px solid rgba(56, 189, 248, 0.34);
+          border-radius: 8px;
+          background: rgba(14, 165, 233, 0.1);
+          color: #e0f2fe;
+          cursor: pointer;
+          padding: 9px 11px;
+        }
+
+        .full {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        .aiGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .aiInput {
+          display: flex;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .aiInput input,
+        .bottomMeta input {
+          min-width: 0;
+          border: 1px solid rgba(56, 189, 248, 0.25);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.72);
+          color: #e0f2fe;
+          padding: 10px;
+        }
+
+        .aiInput input {
+          flex: 1;
+        }
+
+        .aiAnswer {
+          margin: 10px 0 0;
+          color: #bae6fd;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+
+        .twinPanel {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-height: 690px;
+          overflow: hidden;
+          padding: 18px;
+        }
+
+        .twinTopline {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          position: relative;
+          z-index: 2;
+        }
+
+        .twinStage {
+          position: relative;
+          flex: 1;
+          min-height: 480px;
+          margin: 16px 0;
+          border: 1px solid rgba(56, 189, 248, 0.18);
+          border-radius: 8px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 50% 52%, rgba(34, 211, 238, 0.14), transparent 34%),
+            linear-gradient(rgba(125, 211, 252, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(125, 211, 252, 0.05) 1px, transparent 1px),
+            rgba(2, 8, 23, 0.42);
+          background-size: auto, 28px 28px, 28px 28px, auto;
+        }
+
+        .stageLegend {
+          position: absolute;
+          z-index: 4;
+          left: 14px;
+          top: 14px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          max-width: 62%;
+        }
+
+        .stageLegend span,
+        .anomalyCallout {
+          border: 1px solid rgba(125, 211, 252, 0.22);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.72);
+          color: #bfdbfe;
+          font-size: 11px;
+          line-height: 1.2;
+          padding: 7px 9px;
+        }
+
+        .stageLegend i {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          margin-right: 6px;
+          border-radius: 999px;
+        }
+
+        .legendAhu {
+          background: #22c55e;
+          box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+        }
+
+        .legendAnomaly {
+          background: #f59e0b;
+          box-shadow: 0 0 12px rgba(245, 158, 11, 0.8);
+        }
+
+        .anomalyCallout {
+          position: absolute;
+          z-index: 4;
+          right: 14px;
+          top: 14px;
+          max-width: 250px;
+          border-color: rgba(251, 191, 36, 0.46);
+          color: #fde68a;
+          box-shadow: 0 0 28px rgba(245, 158, 11, 0.14);
+        }
+
+        .anomalyCallout span {
+          display: block;
+          color: #fbbf24;
+          font-size: 10px;
+          font-weight: 800;
+          margin-bottom: 4px;
+          text-transform: uppercase;
+        }
+
+        .flowLayer {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.62));
+        }
+
+        .flowPath {
+          fill: none;
+          stroke: rgba(34, 211, 238, 0.58);
+          stroke-width: 0.55;
+          stroke-dasharray: 1.5 2.1;
+          animation: dashFlow 4s linear infinite;
+        }
+
+        .pathTwo {
+          stroke: rgba(56, 189, 248, 0.5);
+          animation-duration: 5.4s;
+        }
+
+        .pathThree {
+          stroke: rgba(103, 232, 249, 0.42);
+          animation-duration: 3.8s;
+        }
+
+        .dataDot {
+          fill: #e0f2fe;
+          filter: drop-shadow(0 0 7px #22d3ee);
+        }
+
+        .buildingIso {
+          position: absolute;
+          left: 50%;
+          top: 24%;
+          width: min(88%, 820px);
+          aspect-ratio: 1.32;
+          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(1.08);
+          transform-style: preserve-3d;
+        }
+
+        .buildingIso::before {
+          content: "";
+          position: absolute;
+          inset: 8% 10% 12% 10%;
+          border: 1px solid rgba(186, 230, 253, 0.48);
+          background:
+            linear-gradient(90deg, rgba(186, 230, 253, 0.18) 1px, transparent 1px),
+            linear-gradient(rgba(186, 230, 253, 0.12) 1px, transparent 1px),
+            linear-gradient(145deg, rgba(14, 165, 233, 0.28), rgba(6, 78, 118, 0.2));
+          background-size: 34px 34px, 34px 34px, auto;
+          clip-path: polygon(16% 0, 78% 0, 100% 32%, 82% 100%, 20% 100%, 0 62%);
+          box-shadow: inset 0 0 44px rgba(125, 211, 252, 0.16), 0 0 70px rgba(34, 211, 238, 0.22);
+        }
+
+        .roofDeck,
+        .techFloor,
+        .plantRoom,
+        .tower {
+          position: absolute;
+          border: 1px solid rgba(125, 211, 252, 0.42);
+          background: linear-gradient(145deg, rgba(59, 130, 246, 0.34), rgba(8, 47, 73, 0.24));
+          box-shadow: inset 0 0 34px rgba(186, 230, 253, 0.16), 0 0 52px rgba(14, 165, 233, 0.28);
+        }
+
+        .roofDeck {
+          inset: 2% 12% 55% 14%;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          padding: 14px;
+        }
+
+        .roofDeck span,
+        .techFloor b {
+          border: 1px solid rgba(34, 211, 238, 0.35);
+          background: rgba(34, 211, 238, 0.12);
+        }
+
+        .tower {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 4px;
+          padding: 10px;
+          transform: translateZ(62px);
+        }
+
+        .tower i {
+          min-height: 12px;
+          border: 1px solid rgba(191, 219, 254, 0.24);
+          background: rgba(125, 211, 252, 0.12);
+        }
+
+        .towerA {
+          inset: 18% 48% 18% 17%;
+        }
+
+        .towerB {
+          inset: 28% 22% 18% 56%;
+          transform: translateZ(44px);
+        }
+
+        .techFloor {
+          inset: 58% 20% 22% 18%;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 8px;
+          padding: 12px;
+        }
+
+        .plantRoom {
+          inset: 75% 30% 6% 25%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          transform: translateZ(22px);
+        }
+
+        .plantRoom span {
+          border: 1px solid rgba(34, 211, 238, 0.42);
+          color: #cffafe;
+          font-size: 11px;
+          padding: 6px;
+        }
+
+        .equipmentNode {
+          position: absolute;
+          z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border: 0;
+          background: transparent;
+          color: #dbeafe;
+          cursor: pointer;
+          transform: translate(-50%, -50%);
+        }
+
+        .equipmentNode.labelLeft {
+          flex-direction: row-reverse;
+        }
+
+        .equipmentNode.labelTop {
+          flex-direction: column-reverse;
+          gap: 6px;
+        }
+
+        .equipmentNode.labelBottom {
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .nodeCore {
+          display: grid;
+          place-items: center;
+          width: 18px;
+          height: 18px;
+          border: 1px solid rgba(103, 232, 249, 0.95);
+          border-radius: 50%;
+          background: radial-gradient(circle, #e0f2fe 0 16%, #22d3ee 17% 36%, rgba(14, 165, 233, 0.25) 37%);
+          box-shadow: 0 0 24px rgba(34, 211, 238, 0.72);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .nodeCore small {
+          color: #020617;
+          font-size: 7px;
+          font-weight: 900;
+          line-height: 1;
+        }
+
+        .nodeLabel {
+          min-width: 118px;
+          max-width: 168px;
+          border: 1px solid rgba(125, 211, 252, 0.26);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.72);
+          padding: 8px 10px;
+          text-align: left;
+          box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+        }
+
+        .nodeLabel strong,
+        .nodeLabel small {
+          display: block;
+        }
+
+        .nodeLabel small {
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.25;
+        }
+
+        .equipmentNode.isSelected .nodeCore,
+        .equipmentNode.hasAlarm .nodeCore {
+          transform: scale(1.28);
+        }
+
+        .equipmentNode.isSelected::before {
+          content: "";
+          position: absolute;
+          inset: -10px;
+          border: 1px solid rgba(34, 211, 238, 0.58);
+          border-radius: 10px;
+          box-shadow: 0 0 34px rgba(34, 211, 238, 0.22);
+          pointer-events: none;
+        }
+
+        .equipmentNode.isSelected .nodeLabel {
+          border-color: rgba(34, 211, 238, 0.85);
+          box-shadow: 0 0 32px rgba(34, 211, 238, 0.22);
+        }
+
+        .equipmentNode.isAhu .nodeCore {
+          width: 24px;
+          height: 24px;
+          background: radial-gradient(circle, #dcfce7 0 16%, #22c55e 17% 42%, rgba(34, 197, 94, 0.2) 43%);
+          box-shadow: 0 0 28px rgba(34, 197, 94, 0.62);
+        }
+
+        .equipmentNode.isAhu .nodeLabel {
+          border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .equipmentNode.isAnomaly .nodeCore {
+          width: 24px;
+          height: 24px;
+          border-color: rgba(251, 191, 36, 0.94);
+          background: radial-gradient(circle, #fef3c7 0 14%, #f59e0b 15% 44%, rgba(245, 158, 11, 0.2) 45%);
+          box-shadow: 0 0 28px rgba(245, 158, 11, 0.58);
+        }
+
+        .equipmentNode.hasAlarm .nodeCore {
+          border-color: rgba(248, 113, 113, 0.95);
+          animation: alarmPulse 1.3s ease-in-out infinite;
+        }
+
+        .commandStrip {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          position: relative;
+          z-index: 2;
+        }
+
+        .sectionDetailPanel {
+          position: relative;
+          z-index: 2;
+          border: 1px solid rgba(125, 211, 252, 0.2);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.54);
+          margin-bottom: 12px;
+          padding: 14px;
+        }
+
+        .sectionDetailHeader {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 16px;
+          margin-bottom: 8px;
+        }
+
+        .sectionDetailHeader h3 {
+          margin: 0;
+          color: #f8fafc;
+          font-size: 18px;
+          line-height: 1.2;
+        }
+
+        .sectionDetailHeader > span {
+          border: 1px solid rgba(251, 191, 36, 0.32);
+          border-radius: 999px;
+          color: #fde68a;
+          flex: 0 0 auto;
+          font-size: 11px;
+          padding: 7px 10px;
+        }
+
+        .sectionDetailPanel p {
+          margin: 0 0 12px;
+          color: #bfdbfe;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .sectionMetrics {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .sectionMetrics div {
+          border: 1px solid rgba(125, 211, 252, 0.15);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.58);
+          padding: 10px;
+        }
+
+        .sectionMetrics span,
+        .relatedNodesRow > span,
+        .sectionAlarmSummary > span {
+          display: block;
+          color: #93c5fd;
+          font-size: 11px;
+          margin-bottom: 4px;
+        }
+
+        .sectionMetrics strong {
+          color: #f8fafc;
+          font-size: 13px;
+          line-height: 1.25;
+        }
+
+        .relatedNodesRow {
+          display: grid;
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .sectionAlarmSummary {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.42);
+          display: grid;
+          gap: 8px;
+          margin-bottom: 12px;
+          padding: 10px;
+        }
+
+        .sectionAlarmSummary div {
+          display: grid;
+          gap: 6px;
+        }
+
+        .sectionAlarmSummary button {
+          justify-content: flex-start;
+          text-align: left;
+        }
+
+        .sectionAlarmSummary button.critical {
+          border-color: rgba(248, 113, 113, 0.48);
+          color: #fecaca;
+        }
+
+        .sectionAlarmSummary button.warning {
+          border-color: rgba(251, 191, 36, 0.42);
+          color: #fde68a;
+        }
+
+        .sectionAlarmSummary button.service {
+          border-color: rgba(34, 197, 94, 0.36);
+          color: #bbf7d0;
+        }
+
+        .sectionAlarmSummary small {
+          color: #64748b;
+          font-size: 12px;
+        }
+
+        .relatedNodesRow div,
+        .sectionActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .recommendationPanel {
+          margin-top: 14px;
+          border: 1px solid rgba(34, 211, 238, 0.24);
+          border-radius: 8px;
+          background: rgba(8, 47, 73, 0.32);
+          padding: 14px;
+        }
+
+        .recommendationPanel h3 {
+          margin: 0;
+          color: #f8fafc;
+        }
+
+        .recommendationPanel ul {
+          margin: 10px 0 0;
+          padding-left: 18px;
+          color: #bae6fd;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+
+        .passportDrawer {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .drawerClose,
+        .demoModal > button {
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          border: 1px solid rgba(125, 211, 252, 0.24);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.72);
+          color: #e0f2fe;
+          cursor: pointer;
+          width: 30px;
+          height: 30px;
+        }
+
+        .passportHero {
+          display: grid;
+          grid-template-columns: 1fr 66px;
+          gap: 12px;
+          align-items: center;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.62);
+          padding: 12px;
+        }
+
+        .passportHero strong {
+          display: block;
+          color: #f8fafc;
+          line-height: 1.25;
+        }
+
+        .statusDot {
+          display: inline-block;
+          width: 9px;
+          height: 9px;
+          margin-right: 7px;
+          border-radius: 999px;
+          background: #22c55e;
+          box-shadow: 0 0 14px #22c55e;
+        }
+
+        .statusDot.danger {
+          background: #f87171;
+          box-shadow: 0 0 14px #f87171;
+        }
+
+        .statusDot.warning {
+          background: #f59e0b;
+          box-shadow: 0 0 14px #f59e0b;
+        }
+
+        .statusDot.ok {
+          background: #22c55e;
+          box-shadow: 0 0 14px #22c55e;
+        }
+
+        .qrBox {
+          display: grid;
+          place-items: center;
+          aspect-ratio: 1;
+          border: 1px dashed rgba(125, 211, 252, 0.45);
+          color: #67e8f9;
+          font-weight: 800;
+        }
+
+        .datasheetSnapshot {
+          display: grid;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .datasheetSnapshot div {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.48);
+          padding: 9px 10px;
+        }
+
+        .datasheetSnapshot span {
+          display: block;
+          color: #93c5fd;
+          font-size: 10px;
+          font-weight: 800;
+          margin-bottom: 3px;
+          text-transform: uppercase;
+        }
+
+        .datasheetSnapshot strong {
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .passportTabs {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 6px;
+          margin: 12px 0;
+        }
+
+        .passportTabs button {
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.48);
+          color: #93c5fd;
+          cursor: pointer;
+          padding: 8px 6px;
+        }
+
+        .passportTabs button.isActive {
+          border-color: rgba(34, 211, 238, 0.68);
+          color: #e0f2fe;
+          background: rgba(14, 165, 233, 0.18);
+        }
+
+        .passportList {
+          display: grid;
+          gap: 8px;
+          margin: 0;
+        }
+
+        .passportList div {
+          display: grid;
+          grid-template-columns: 110px 1fr;
+          gap: 10px;
+          border-bottom: 1px solid rgba(125, 211, 252, 0.12);
+          padding-bottom: 8px;
+        }
+
+        .passportList dd {
+          margin: 0;
+          color: #f8fafc;
+          font-size: 13px;
+        }
+
+        .linkedSystemsBlock {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.4);
+          margin-top: 10px;
+          padding: 10px;
+        }
+
+        .linkedSystemsBlock div {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+
+        .linkedSystemsBlock small {
+          border: 1px solid rgba(56, 189, 248, 0.24);
+          border-radius: 999px;
+          color: #bfdbfe;
+          padding: 5px 8px;
+        }
+
+        .paramGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .tagList {
+          display: grid;
+          gap: 6px;
+          margin-bottom: 10px;
+        }
+
+        .tagList code {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.62);
+          color: #bae6fd;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 11px;
+          padding: 8px;
+          white-space: normal;
+        }
+
+        .documentList button span {
+          display: inline-grid;
+          place-items: center;
+          width: 38px;
+          margin-right: 8px;
+          color: #67e8f9;
+        }
+
+        .relatedBlock {
+          margin-top: 14px;
+        }
+
+        .aiRecommendationBlock {
+          margin-top: 12px;
+          margin-bottom: 0;
+        }
+
+        .drawerActions {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-top: 14px;
+        }
+
+        .notificationsPanel {
+          grid-column: 3;
+          align-self: end;
+        }
+
+        .dispatchBottomNav {
+          position: fixed;
+          z-index: 18;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border-top: 1px solid rgba(56, 189, 248, 0.28);
+          background: rgba(2, 8, 23, 0.94);
+          box-shadow: 0 -18px 44px rgba(0,0,0,0.36);
+          padding: 10px 14px;
+          backdrop-filter: blur(18px);
+        }
+
+        .dispatchBottomNav button {
+          white-space: nowrap;
+        }
+
+        .dispatchBottomNav button.isActive {
+          border-color: rgba(34, 211, 238, 0.72);
+          background: rgba(14, 165, 233, 0.22);
+          color: #ffffff;
+        }
+
+        .bottomMeta {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-left: auto;
+          color: #93c5fd;
+          font-size: 12px;
+          white-space: nowrap;
+        }
+
+        .bottomMeta input {
+          width: 146px;
+          padding: 7px 9px;
+          font-size: 12px;
+        }
+
+        .modalBackdrop {
+          position: fixed;
+          z-index: 40;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          background: rgba(0, 0, 0, 0.64);
+          padding: 20px;
+        }
+
+        .demoModal {
+          position: relative;
+          width: min(560px, 100%);
+          border: 1px solid rgba(34, 211, 238, 0.42);
+          border-radius: 8px;
+          background: #020817;
+          color: #dbeafe;
+          box-shadow: 0 0 64px rgba(34, 211, 238, 0.2);
+          padding: 28px;
+        }
+
+        .demoModal h2 {
+          margin: 0 36px 12px 0;
+          color: #f8fafc;
+        }
+
+        .demoModal p {
+          margin: 0;
+          color: #bfdbfe;
+          line-height: 1.55;
+        }
+
+        @keyframes dashFlow {
+          from { stroke-dashoffset: 0; }
+          to { stroke-dashoffset: -18; }
+        }
+
+        @keyframes alarmPulse {
+          0%, 100% { box-shadow: 0 0 18px rgba(248, 113, 113, 0.45); }
+          50% { box-shadow: 0 0 36px rgba(248, 113, 113, 0.95); }
+        }
+
+        @media (max-width: 1120px) {
+          .dispatchGrid {
+            grid-template-columns: minmax(280px, 360px) minmax(520px, 1fr);
+          }
+
+          .passportDrawer,
+          .notificationsPanel {
+            grid-column: 1 / -1;
+          }
+        }
+
+        @media (max-width: 980px) {
+          .dispatchShell {
+            margin: -16px;
+            padding: 16px 16px 120px;
+          }
+
+          .dispatchGrid {
+            display: block;
+          }
+
+          .leftRail,
+          .twinPanel,
+          .passportDrawer,
+          .notificationsPanel {
+            margin-top: 14px;
+          }
+
+          .twinPanel {
+            min-height: 680px;
+          }
+
+          .dispatchBottomNav,
+          .bottomMeta {
+            overflow-x: auto;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
