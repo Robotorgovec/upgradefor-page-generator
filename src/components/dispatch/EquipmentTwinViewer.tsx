@@ -8,8 +8,10 @@ import type { Object3D } from "three";
 import type {
   EquipmentTwinAssemblyState,
   EquipmentTwinConfig,
+  EquipmentTwinId,
   EquipmentTwinExplodedTransform,
 } from "../../lib/dispatch/equipmentTwinTypes";
+import ProceduralEquipmentModel from "./ProceduralEquipmentModel";
 
 type EquipmentTwinViewerProps = {
   equipment: EquipmentTwinConfig;
@@ -146,11 +148,18 @@ function LoaderLabel() {
   );
 }
 
-function AssetErrorLabel({ onOpenPassport }: { onOpenPassport: () => void }) {
+function AssetErrorLabel({
+  onOpenPassport,
+  proceduralUnavailable = false,
+}: {
+  onOpenPassport: () => void;
+  proceduralUnavailable?: boolean;
+}) {
   return (
     <button className="equipmentTwinFallback" type="button" onClick={onOpenPassport}>
       <strong>3D-модель пока не загружена</strong>
       <span className="equipmentTwinAssetBadge">GLB asset не найден</span>
+      {proceduralUnavailable ? <span>Demo procedural model unavailable</span> : null}
       <span>Паспорт оборудования доступен в demo/read-only режиме.</span>
     </button>
   );
@@ -165,12 +174,20 @@ function AssetCheckingLabel() {
   );
 }
 
+const proceduralEquipmentIds = new Set<EquipmentTwinId>([
+  "chiller",
+  "cooling-tower-small",
+  "fancoil-fc92",
+  "multi-split-system",
+]);
+
 export default function EquipmentTwinViewer({
   equipment,
   state,
   onOpenPassport,
 }: EquipmentTwinViewerProps) {
   const [assetStatus, setAssetStatus] = useState<"checking" | "available" | "missing">("checking");
+  const hasProceduralFallback = proceduralEquipmentIds.has(equipment.id);
 
   useEffect(() => {
     let isMounted = true;
@@ -197,7 +214,29 @@ export default function EquipmentTwinViewer({
     <div className="equipmentTwinViewer" aria-label={`3D digital twin ${equipment.title}`}>
       <div className="equipmentTwinViewport">
         {assetStatus === "checking" ? <AssetCheckingLabel /> : null}
-        {assetStatus === "missing" ? <AssetErrorLabel onOpenPassport={onOpenPassport} /> : null}
+        {assetStatus === "missing" && !hasProceduralFallback ? <AssetErrorLabel onOpenPassport={onOpenPassport} /> : null}
+        {assetStatus === "missing" && hasProceduralFallback ? (
+          <ModelErrorBoundary
+            fallback={<AssetErrorLabel onOpenPassport={onOpenPassport} proceduralUnavailable />}
+          >
+            <Canvas camera={{ position: [5, 3.2, 5], fov: 42 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
+              <color attach="background" args={["#06111f"]} />
+              <ambientLight intensity={0.72} />
+              <directionalLight position={[5, 6, 4]} intensity={1.45} />
+              <pointLight position={[-3, 2.4, 2]} intensity={1.05} color="#67e8f9" />
+              <gridHelper args={[7, 14, "#155e75", "#0f2738"]} position={[0, -0.92, 0]} />
+              <Suspense fallback={<LoaderLabel />}>
+                <ProceduralEquipmentModel
+                  equipmentId={equipment.id}
+                  title={equipment.title}
+                  state={state}
+                  onOpenPassport={onOpenPassport}
+                />
+              </Suspense>
+              <OrbitControls enableDamping enablePan={false} minDistance={2.8} maxDistance={9} />
+            </Canvas>
+          </ModelErrorBoundary>
+        ) : null}
         {assetStatus === "available" ? (
           <Canvas camera={{ position: [5, 3.2, 5], fov: 42 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
             <color attach="background" args={["#06111f"]} />
