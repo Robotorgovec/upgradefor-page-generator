@@ -260,27 +260,6 @@ export default function EquipmentTwinViewer({
           color: #93c5fd;
           font-size: 10px;
         }
-      `}</style>
-      <style jsx>{`
-        .equipmentTwinViewer {
-          display: grid;
-          gap: 10px;
-        }
-
-        .equipmentTwinViewport {
-          position: relative;
-          height: min(42vh, 390px);
-          min-height: 300px;
-          overflow: hidden;
-          border: 1px solid rgba(34, 211, 238, 0.24);
-          border-radius: 8px;
-          background:
-            linear-gradient(rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(125, 211, 252, 0.05) 1px, transparent 1px),
-            radial-gradient(circle at 50% 38%, rgba(34, 211, 238, 0.14), transparent 31%),
-            #06111f;
-          background-size: 28px 28px, 28px 28px, auto, auto;
-        }
 
         .equipmentTwinFallback {
           position: absolute;
@@ -327,6 +306,27 @@ export default function EquipmentTwinViewer({
           font-weight: 800;
           letter-spacing: 0.04em;
           text-transform: uppercase;
+        }
+      `}</style>
+      <style jsx>{`
+        .equipmentTwinViewer {
+          display: grid;
+          gap: 10px;
+        }
+
+        .equipmentTwinViewport {
+          position: relative;
+          height: min(42vh, 390px);
+          min-height: 300px;
+          overflow: hidden;
+          border: 1px solid rgba(34, 211, 238, 0.24);
+          border-radius: 8px;
+          background:
+            linear-gradient(rgba(125, 211, 252, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(125, 211, 252, 0.05) 1px, transparent 1px),
+            radial-gradient(circle at 50% 38%, rgba(34, 211, 238, 0.14), transparent 31%),
+            #06111f;
+          background-size: 28px 28px, 28px 28px, auto, auto;
         }
 
         .equipmentTwinHints {
