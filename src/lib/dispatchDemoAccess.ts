@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export const DISPATCH_DEMO_ACCESS_COOKIE = "upgrade_dispatch_demo_access";
 export const DISPATCH_DEMO_COOKIE_MAX_AGE = 60 * 60 * 24;
 
-const FALLBACK_DISPATCH_DEMO_PASSWORD = "861515";
+const FALLBACK_DISPATCH_DEMO_PASSWORD = "100001";
 const TOKEN_PREFIX = "upgrade-dispatch-demo";
 
 function getDispatchDemoPassword() {
