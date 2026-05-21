@@ -15,12 +15,33 @@ import {
   type DispatchSection,
   type DispatchTrendKey,
 } from "../../data/dispatchDemo";
+import type {
+  EquipmentTwinAssemblyState,
+  EquipmentTwinId,
+} from "../../lib/dispatch/equipmentTwinTypes";
+import EquipmentTwinGrid from "./EquipmentTwinGrid";
 import DispatchTrendsPanel from "./DispatchTrendsPanel";
+import {
+  equipmentTwinNodeMap,
+  equipmentTwinSectionIdMap,
+  equipmentTwinSectionMap,
+  equipmentTwinSystemLabels,
+  getEquipmentTwinById,
+} from "./equipmentTwins.config";
 
 const passportTabs = ["Паспорт", "Параметры", "ТО", "Документы"];
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
+const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
+const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
+  "ahu-pv1": "assembled",
+  chiller: "assembled",
+  "cooling-tower-small": "assembled",
+  "fancoil-fc92": "assembled",
+  "multi-split-system": "assembled",
+};
 
 type ModalState = "readonly" | "ticket" | null;
+type PassportSource = "node" | "twin";
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   if (severity === "critical") return "Авария";
@@ -28,15 +49,25 @@ function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   return "ТО";
 }
 
-function statusTone(status: DispatchEquipmentNode["status"]) {
+function statusTone(status: string) {
   if (status === "Авария") return "danger";
   if (status === "Предупреждение" || status === "TO VERIFY") return "warning";
   return "ok";
 }
 
+function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
+  if (id === "ahu-pv1") return "flow";
+  if (id === "chiller" || id === "cooling-tower-small") return "energy";
+  return "temperature";
+}
+
 export default function DispatchDashboard() {
   const [activeSectionId, setActiveSectionId] = useState<DispatchSection>("overview");
   const [selectedId, setSelectedId] = useState("automation-cabinets");
+  const [selectedTwinId, setSelectedTwinId] = useState<EquipmentTwinId>("ahu-pv1");
+  const [passportSource, setPassportSource] = useState<PassportSource>("twin");
+  const [twinStates, setTwinStates] =
+    useState<Record<EquipmentTwinId, EquipmentTwinAssemblyState>>(initialTwinStates);
   const [selectedTrendKey, setSelectedTrendKey] = useState<DispatchTrendKey>("energy");
   const [passportTab, setPassportTab] = useState(passportTabs[0]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -58,6 +89,52 @@ export default function DispatchDashboard() {
 
   const selectedSection =
     dispatchSectionDetails.find((section) => section.id === activeSectionId) ?? dispatchSectionDetails[0];
+  const selectedTwin = getEquipmentTwinById(selectedTwinId);
+  const selectedTwinTrendKey = trendKeyForTwin(selectedTwin.id);
+  const selectedTwinPassportEquipment = useMemo(
+    () => ({
+      id: selectedTwin.id,
+      label: selectedTwin.title,
+      shortLabel: selectedTwin.shortTitle,
+      countLabel: equipmentTwinSystemLabels[selectedTwin.system],
+      type: equipmentTwinSystemLabels[selectedTwin.system],
+      trendKey: selectedTwinTrendKey,
+      status: selectedTwin.status,
+      model: selectedTwin.model,
+      serial: selectedTwin.serialNumber,
+      inventoryNumber: selectedTwin.inventoryNumber,
+      location: selectedTwin.location,
+      manufacturer: selectedTwin.manufacturer,
+      year: selectedTwin.year,
+      onlineParams: selectedTwin.trends.map((trend) => ({ label: trend, value: "Demo / read-only" })),
+      linkedSystems: selectedTwin.relatedSystems,
+      scadaTags: [
+        "DISPATCH.READ_ONLY.MODE",
+        `DISPATCH.TWIN.${selectedTwin.id.toUpperCase().replaceAll("-", "_")}`,
+        "BMS/SCADA.WRITE_BLOCKED",
+      ],
+      serviceNote: selectedTwin.serviceNote,
+      serviceHistory: [
+        { date: "2026-05-21", title: selectedTwin.lastEvent, result: selectedTwin.serviceNote },
+        { date: "TO VERIFY", title: "Паспортизация оборудования", result: "Данные показаны в demo registry" },
+      ],
+      documents: twinPassportActions.map((title) => ({
+        title,
+        type: title === "Создать заявку" || title === "Открыть тренды" ? "ACTION" : "DEMO",
+      })),
+      aiRecommendations: [
+        `${selectedTwin.shortTitle}: сохранить read-only режим до аудита тегов и ролей доступа.`,
+        selectedTwin.serviceNote,
+      ],
+      relatedAlarmIds: [],
+      relatedTrendKeys: [selectedTwinTrendKey],
+      x: 0,
+      y: 0,
+    }),
+    [selectedTwin, selectedTwinTrendKey],
+  );
+  const passportEquipment =
+    passportSource === "twin" ? selectedTwinPassportEquipment : selectedEquipment;
 
   const relatedAlarms = useMemo(
     () => {
@@ -83,6 +160,10 @@ export default function DispatchDashboard() {
   const selectedLastEvent = relatedAlarms[0]
     ? `${severityLabel(relatedAlarms[0].severity)} · ${relatedAlarms[0].time} · ${relatedAlarms[0].title}`
     : selectedSection.lastEvent;
+  const passportRelatedAlarms = passportSource === "twin" ? [] : relatedAlarms;
+  const passportLastEvent = passportSource === "twin" ? selectedTwin.lastEvent : selectedLastEvent;
+  const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
+  const highlightedTwinIds = equipmentTwinSectionMap[activeSectionId] ?? [selectedTwinId];
 
   const hasDpAnomalyContext =
     selectedEquipment.visualTone === "anomaly" ||
@@ -96,18 +177,47 @@ export default function DispatchDashboard() {
         );
 
     setSelectedId(node.id);
+    setPassportSource("node");
     setActiveSectionId(nextSection?.id ?? activeSectionId);
     setSelectedTrendKey(nextSection?.trendKey ?? node.trendKey);
     setPassportTab(passportTabs[0]);
     setIsDrawerOpen(true);
   };
 
+  const selectTwin = (twinId: EquipmentTwinId) => {
+    const nodeId = equipmentTwinNodeMap[twinId];
+    const node = dispatchEquipmentNodes.find((item) => item.id === nodeId);
+    const sectionId = equipmentTwinSectionIdMap[twinId] as DispatchSection;
+
+    setSelectedTwinId(twinId);
+    setPassportSource("twin");
+    setActiveSectionId(sectionId);
+    setSelectedId(node?.id ?? selectedId);
+    setSelectedTrendKey(node?.trendKey ?? trendKeyForTwin(twinId));
+    setPassportTab(passportTabs[0]);
+    setIsDrawerOpen(true);
+  };
+
+  const toggleTwinState = (twinId: EquipmentTwinId) => {
+    setTwinStates((current) => ({
+      ...current,
+      [twinId]: current[twinId] === "exploded" ? "assembled" : "exploded",
+    }));
+  };
+
   const selectSection = (sectionId: DispatchSection) => {
     const section = dispatchSectionDetails.find((item) => item.id === sectionId) ?? dispatchSectionDetails[0];
     const node = dispatchEquipmentNodes.find((item) => item.id === section.nodeId) ?? selectedEquipment;
+    const sectionTwinIds = equipmentTwinSectionMap[section.id] ?? [];
 
     setActiveSectionId(section.id);
     setSelectedId(node.id);
+    if (sectionTwinIds[0]) {
+      setSelectedTwinId(sectionTwinIds[0]);
+      setPassportSource("twin");
+    } else {
+      setPassportSource("node");
+    }
     setSelectedTrendKey(section.trendKey);
     setPassportTab(passportTabs[0]);
     setIsDrawerOpen(true);
@@ -123,9 +233,15 @@ export default function DispatchDashboard() {
 
   const openAiDiagnostics = () => {
     setActiveSectionId("ai");
-    setSelectedTrendKey(selectedEquipment.visualTone === "anomaly" ? "pressure" : selectedEquipment.trendKey);
+    setSelectedTrendKey(
+      passportSource === "twin"
+        ? selectedTwinTrendKey
+        : selectedEquipment.visualTone === "anomaly"
+          ? "pressure"
+          : selectedEquipment.trendKey,
+    );
     setAiAnswer(
-      `AI-диагностика demo: ${selectedEquipment.shortLabel}. Рекомендации сформированы локально, без запроса к BMS/SCADA.`,
+      `AI-диагностика demo: ${passportEquipment.shortLabel}. Рекомендации сформированы локально, без запроса к BMS/SCADA.`,
     );
     setIsDrawerOpen(true);
   };
@@ -291,6 +407,18 @@ export default function DispatchDashboard() {
             <div className="readOnlyPill">Read-only / control locked</div>
           </div>
 
+          <EquipmentTwinGrid
+            selectedTwinId={selectedTwinId}
+            twinStates={twinStates}
+            highlightedTwinIds={highlightedTwinIds}
+            onSelectTwin={selectTwin}
+            onToggleTwinState={toggleTwinState}
+            onOpenPassport={() => {
+              setPassportSource("twin");
+              setIsDrawerOpen(true);
+            }}
+          />
+
           <div className="twinStage">
             <div className="stageLegend">
               <span><i className="legendAhu" />AHU VC-13/VC-11</span>
@@ -446,10 +574,10 @@ export default function DispatchDashboard() {
           <section className="recommendationPanel">
             <div>
               <p className="eyebrow">AI recommendations</p>
-              <h3>{selectedEquipment.shortLabel}</h3>
+              <h3>{passportEquipment.shortLabel}</h3>
             </div>
             <ul>
-              {selectedEquipment.aiRecommendations.map((recommendation) => (
+              {passportEquipment.aiRecommendations.map((recommendation) => (
                 <li key={recommendation}>{recommendation}</li>
               ))}
             </ul>
@@ -466,9 +594,11 @@ export default function DispatchDashboard() {
           </div>
           <div className="passportHero">
             <div>
-              <span className={`statusDot ${statusTone(selectedEquipment.status)}`} />
-              <strong>{selectedEquipment.label}</strong>
-              <small>Статус: {selectedEquipment.status}</small>
+              <span className={`statusDot ${statusTone(passportEquipment.status)}`} />
+              <strong>{passportEquipment.label}</strong>
+              <small>
+                Статус: {passportEquipment.status} · {passportSource === "twin" ? "Read-only / demo mode" : "BMS registry"}
+              </small>
             </div>
             <div className="qrBox">QR</div>
           </div>
@@ -476,19 +606,19 @@ export default function DispatchDashboard() {
           <div className="datasheetSnapshot">
             <div>
               <span>Тип</span>
-              <strong>{selectedEquipment.type}</strong>
+              <strong>{passportEquipment.type}</strong>
             </div>
             <div>
               <span>Локация</span>
-              <strong>{selectedEquipment.location}</strong>
+              <strong>{passportEquipment.location}</strong>
             </div>
             <div>
               <span>Последнее событие</span>
-              <strong>{selectedLastEvent}</strong>
+              <strong>{passportLastEvent}</strong>
             </div>
             <div>
               <span>Сервисная заметка</span>
-              <strong>{selectedEquipment.serviceNote}</strong>
+              <strong>{passportEquipment.serviceNote}</strong>
             </div>
           </div>
 
@@ -510,28 +640,43 @@ export default function DispatchDashboard() {
           {passportTab === "Паспорт" ? (
             <>
               <dl className="passportList">
-                <div><dt>Тип</dt><dd>{selectedEquipment.type}</dd></div>
-                <div><dt>Модель</dt><dd>{selectedEquipment.model}</dd></div>
-                <div><dt>Серийный номер</dt><dd>{selectedEquipment.serial}</dd></div>
-                <div><dt>Инвентарный номер</dt><dd>{selectedEquipment.inventoryNumber}</dd></div>
-                <div><dt>Местоположение</dt><dd>{selectedEquipment.location}</dd></div>
-                <div><dt>Производитель</dt><dd>{selectedEquipment.manufacturer}</dd></div>
-                <div><dt>Год выпуска</dt><dd>{selectedEquipment.year}</dd></div>
+                <div><dt>Название</dt><dd>{passportEquipment.label}</dd></div>
+                <div><dt>Статус</dt><dd>{passportEquipment.status}</dd></div>
+                <div><dt>Режим</dt><dd>{passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked"}</dd></div>
+                <div><dt>Система</dt><dd>{passportEquipment.type}</dd></div>
+                <div><dt>Модель</dt><dd>{passportEquipment.model}</dd></div>
+                <div><dt>Серийный номер</dt><dd>{passportEquipment.serial}</dd></div>
+                <div><dt>Инвентарный номер</dt><dd>{passportEquipment.inventoryNumber}</dd></div>
+                <div><dt>Местоположение</dt><dd>{passportEquipment.location}</dd></div>
+                <div><dt>Производитель</dt><dd>{passportEquipment.manufacturer}</dd></div>
+                <div><dt>Год выпуска</dt><dd>{passportEquipment.year}</dd></div>
+                <div><dt>Последнее событие</dt><dd>{passportLastEvent}</dd></div>
+                <div><dt>Сервис</dt><dd>{passportEquipment.serviceNote}</dd></div>
               </dl>
               <div className="linkedSystemsBlock">
                 <span>Связанные системы</span>
                 <div>
-                  {selectedEquipment.linkedSystems.map((system) => (
+                  {passportEquipment.linkedSystems.map((system) => (
                     <small key={system}>{system}</small>
                   ))}
                 </div>
               </div>
+              {passportSource === "twin" ? (
+                <div className="linkedSystemsBlock">
+                  <span>Тренды</span>
+                  <div>
+                    {selectedTwin.trends.map((trend) => (
+                      <small key={trend}>{trend}</small>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </>
           ) : null}
 
           {passportTab === "Параметры" ? (
             <div className="paramGrid">
-              {selectedEquipment.onlineParams.map((param) => (
+              {passportEquipment.onlineParams.map((param) => (
                 <div key={param.label}>
                   <span>{param.label}</span>
                   <strong>{param.value}</strong>
@@ -544,10 +689,10 @@ export default function DispatchDashboard() {
             <>
               <div className="serviceNote">
                 <span>Service note</span>
-                <strong>{selectedEquipment.serviceNote}</strong>
+                <strong>{passportEquipment.serviceNote}</strong>
               </div>
               <div className="serviceList">
-                {selectedEquipment.serviceHistory.map((item) => (
+                {passportEquipment.serviceHistory.map((item) => (
                   <article key={`${item.date}-${item.title}`}>
                     <span>{item.date}</span>
                     <strong>{item.title}</strong>
@@ -562,13 +707,25 @@ export default function DispatchDashboard() {
             <>
               <div className="tagList">
                 <span>SCADA/BMS tags</span>
-                {(selectedEquipment.scadaTags.length ? selectedEquipment.scadaTags : ["TO VERIFY"]).map((tag) => (
+                {(passportEquipment.scadaTags.length ? passportEquipment.scadaTags : ["TO VERIFY"]).map((tag) => (
                   <code key={tag}>{tag}</code>
                 ))}
               </div>
               <div className="documentList">
-                {selectedEquipment.documents.map((document) => (
-                  <button key={document.title} type="button" onClick={() => setModal("readonly")}>
+                {passportEquipment.documents.map((document) => (
+                  <button
+                    key={document.title}
+                    type="button"
+                    onClick={() => {
+                      if (document.title === "Создать заявку") {
+                        setModal("ticket");
+                      } else if (document.title === "Открыть тренды") {
+                        openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
+                      } else {
+                        setModal("readonly");
+                      }
+                    }}
+                  >
                     <span>{document.type}</span>
                     {document.title}
                   </button>
@@ -579,21 +736,21 @@ export default function DispatchDashboard() {
 
           <div className="relatedBlock">
             <span>Связанные аварии/тренды</span>
-            {relatedAlarms.length ? (
-              relatedAlarms.map((alarm) => <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>{alarm.title}</button>)
+            {passportRelatedAlarms.length ? (
+              passportRelatedAlarms.map((alarm) => <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>{alarm.title}</button>)
             ) : (
-              <small>Активных аварий нет</small>
+              <small>{passportSource === "twin" ? "Активных аварий нет; twin работает в demo/read-only режиме" : "Активных аварий нет"}</small>
             )}
           </div>
 
           <div className="aiRecommendationBlock">
             <span>AI recommendation</span>
-            <strong>{selectedEquipment.aiRecommendations[0]}</strong>
+            <strong>{passportEquipment.aiRecommendations[0]}</strong>
           </div>
 
           <div className="drawerActions">
             <button type="button" onClick={() => setModal("ticket")}>Создать заявку</button>
-            <button type="button" onClick={() => openTrendsFor(selectedEquipment.trendKey, selectedEquipment.id)}>
+            <button type="button" onClick={() => openTrendsFor(passportEquipment.trendKey, passportTrendNodeId)}>
               Открыть тренды
             </button>
             <button type="button" onClick={openAiDiagnostics}>AI-диагностика</button>
@@ -654,7 +811,7 @@ export default function DispatchDashboard() {
               <>
                 <h2>Demo-заявка создана</h2>
                 <p>
-                  Заявка по оборудованию {selectedEquipment.shortLabel} сформирована в demo/read-only режиме и не
+                  Заявка по оборудованию {passportEquipment.shortLabel} сформирована в demo/read-only режиме и не
                   отправлена во внешнюю систему.
                 </p>
               </>
