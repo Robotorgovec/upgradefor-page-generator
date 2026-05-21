@@ -1,6 +1,8 @@
 import BodyClass from "../../components/layout/BodyClass";
+import DispatchDemoPasswordGate from "../../src/components/dispatch/DispatchDemoPasswordGate";
 import DispatchDashboard from "../../src/components/dispatch/DispatchDashboard";
 import Equipment3DViewer from "../../src/components/dispatch/Equipment3DViewer";
+import { hasDispatchDemoAccess } from "../../src/lib/dispatchDemoAccess";
 
 export const metadata = {
   title: "UPGRADE Dispatch / Asia Park Astana",
@@ -9,7 +11,9 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DispatchPage() {
+export default async function DispatchPage() {
+  const hasAccess = await hasDispatchDemoAccess();
+
   return (
     <>
       <BodyClass className="dispatch-demo-page" />
@@ -22,10 +26,13 @@ export default function DispatchPage() {
         body.dispatch-demo-page .dispatchPageStack { min-height: 100vh; overflow: hidden; background: #020617; }
         body.dispatch-demo-page .dispatchPageStack .dispatchShell { margin: 0 !important; }
       `}</style>
-      <main className="dispatchPageStack">
-        <Equipment3DViewer />
-        <DispatchDashboard />
-      </main>
+      {!hasAccess ? <DispatchDemoPasswordGate /> : null}
+      {hasAccess ? (
+        <main className="dispatchPageStack">
+          <Equipment3DViewer />
+          <DispatchDashboard />
+        </main>
+      ) : null}
     </>
   );
 }
