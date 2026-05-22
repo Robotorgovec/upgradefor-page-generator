@@ -23,6 +23,8 @@ export default function EquipmentTwinCard({
   onSelect,
   onToggleState,
 }: EquipmentTwinCardProps) {
+  const isChillerExplodedLocked = equipment.id === "chiller";
+
   return (
     <article
       className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isHighlighted ? "isHighlighted" : ""}`}
@@ -38,12 +40,17 @@ export default function EquipmentTwinCard({
       <div className="equipmentTwinCardFooter">
         <button
           type="button"
+          disabled={isChillerExplodedLocked}
           onClick={(event) => {
             event.stopPropagation();
             onToggleState();
           }}
         >
-          {state === "exploded" ? "Собрать" : "Разобрать"}
+          {isChillerExplodedLocked
+            ? "Разборка модели в подготовке"
+            : state === "exploded"
+              ? "Собрать"
+              : "Разобрать"}
         </button>
         <div>
           <span>Drag to rotate</span>
@@ -125,6 +132,13 @@ export default function EquipmentTwinCard({
           color: #e0f2fe;
           cursor: pointer;
           padding: 8px 10px;
+        }
+
+        .equipmentTwinCardFooter > button:disabled {
+          border-color: rgba(148, 163, 184, 0.22);
+          background: rgba(15, 23, 42, 0.62);
+          color: #94a3b8;
+          cursor: default;
         }
 
         .equipmentTwinCardFooter div {
