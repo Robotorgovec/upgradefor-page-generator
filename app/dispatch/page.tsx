@@ -1,6 +1,5 @@
 import BodyClass from "../../components/layout/BodyClass";
-import DispatchDashboard from "../../src/components/dispatch/DispatchDashboard";
-import Equipment3DViewer from "../../src/components/dispatch/Equipment3DViewer";
+import DispatchWorkspace from "../../src/components/dispatch/DispatchWorkspace";
 
 export const metadata = {
   title: "UPGRADE Dispatch / Asia Park Astana",
@@ -12,19 +11,17 @@ export const metadata = {
 export default function DispatchPage() {
   return (
     <>
-      <BodyClass className="dispatch-demo-page" />
+      <BodyClass className="dispatch-workspace-page" />
       <style>{`
-        body.dispatch-demo-page .site-header,
-        body.dispatch-demo-page .sidebar,
-        body.dispatch-demo-page [data-sidebar],
-        body.dispatch-demo-page .mobile-bottom-nav { display: none !important; }
-        body.dispatch-demo-page .app-content { padding: 0 !important; margin: 0 !important; max-width: none !important; }
-        body.dispatch-demo-page .dispatchPageStack { min-height: 100vh; overflow: hidden; background: #020617; }
-        body.dispatch-demo-page .dispatchPageStack .dispatchShell { margin: 0 !important; }
+        body.dispatch-workspace-page .site-header,
+        body.dispatch-workspace-page .sidebar,
+        body.dispatch-workspace-page [data-sidebar],
+        body.dispatch-workspace-page .mobile-bottom-nav { display: none !important; }
+        body.dispatch-workspace-page .app-content { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+        body.dispatch-workspace-page .dispatchPageStack { min-height: 100vh; overflow: hidden; background: #eef2f7; }
       `}</style>
       <main className="dispatchPageStack">
-        <Equipment3DViewer />
-        <DispatchDashboard />
+        <DispatchWorkspace />
       </main>
     </>
   );

@@ -8,7 +8,8 @@
     "build": "next build",
     "db:generate": "prisma generate",
     "start": "next start",
-    "test:layout": "node scripts/layout.test.mjs"
+    "test:layout": "node scripts/layout.test.mjs",
+    "test:dispatch": "node scripts/dispatch-smoke-test.mjs"
   },
   "dependencies": {
     "next": "^16.1.4",
