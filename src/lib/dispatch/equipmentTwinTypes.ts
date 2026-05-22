@@ -22,6 +22,10 @@ export type EquipmentTwinConfig = {
   system: EquipmentTwinSystem;
   status: string;
   modelPath: string;
+  assembledModelPath?: string;
+  explodedModelPath?: string;
+  explodedLocked?: boolean;
+  explodedLockedLabel?: string;
   location: string;
   manufacturer: string;
   model: string;

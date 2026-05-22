@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Html, OrbitControls, useGLTF } from "@react-three/drei";
+import { Bounds, Center, Html, OrbitControls, useGLTF } from "@react-three/drei";
 import type { Object3D } from "three";
 
 import type {
@@ -66,6 +66,22 @@ function collectBaseTransforms(root: Object3D) {
   return transforms;
 }
 
+function getEquipmentModelPath(equipment: EquipmentTwinConfig, state: EquipmentTwinAssemblyState) {
+  if (state === "exploded" && equipment.explodedModelPath) {
+    return equipment.explodedModelPath;
+  }
+
+  return equipment.assembledModelPath ?? equipment.modelPath;
+}
+
+function getInitialRotationY(equipmentId: EquipmentTwinConfig["id"]) {
+  if (equipmentId === "fancoil-fc92") {
+    return 2.82;
+  }
+
+  return -0.32;
+}
+
 function applyAbsoluteTransform(
   object: Object3D,
   base: BaseTransform,
@@ -82,14 +98,16 @@ function applyAbsoluteTransform(
 
 function LoadedTwinModel({
   equipment,
+  modelPath,
   state,
   onOpenPassport,
 }: {
   equipment: EquipmentTwinConfig;
+  modelPath: string;
   state: EquipmentTwinAssemblyState;
   onOpenPassport: () => void;
 }) {
-  const gltf = useGLTF(equipment.modelPath);
+  const gltf = useGLTF(modelPath, true);
   const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
   const baseTransforms = useMemo(() => collectBaseTransforms(gltf.scene), [gltf.scene]);
 
@@ -106,31 +124,14 @@ function LoadedTwinModel({
     });
   }, [baseTransforms, equipment.explodedTransforms, scene, state]);
 
-  useEffect(() => {
-    return () => {
-      scene.traverse((object) => {
-        const mesh = object as Object3D & {
-          geometry?: { dispose?: () => void };
-          material?: { dispose?: () => void } | Array<{ dispose?: () => void }>;
-        };
-
-        mesh.geometry?.dispose?.();
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach((material) => material.dispose?.());
-        } else {
-          mesh.material?.dispose?.();
-        }
-      });
-    };
-  }, [scene]);
-
   return (
     <group
+      key={modelPath}
       onClick={(event) => {
         event.stopPropagation();
         onOpenPassport();
       }}
-      rotation={[0, -0.32, 0]}
+      rotation={[0, getInitialRotationY(equipment.id), 0]}
       scale={[1.04, 1.04, 1.04]}
     >
       <primitive object={scene} />
@@ -171,12 +172,13 @@ export default function EquipmentTwinViewer({
   onOpenPassport,
 }: EquipmentTwinViewerProps) {
   const [assetStatus, setAssetStatus] = useState<"checking" | "available" | "missing">("checking");
+  const modelPath = getEquipmentModelPath(equipment, state);
 
   useEffect(() => {
     let isMounted = true;
     setAssetStatus("checking");
 
-    fetch(equipment.modelPath, { method: "HEAD" })
+    fetch(modelPath, { method: "HEAD" })
       .then((response) => {
         if (isMounted) {
           setAssetStatus(response.ok ? "available" : "missing");
@@ -191,7 +193,7 @@ export default function EquipmentTwinViewer({
     return () => {
       isMounted = false;
     };
-  }, [equipment.modelPath]);
+  }, [modelPath]);
 
   return (
     <div className="equipmentTwinViewer" aria-label={`3D digital twin ${equipment.title}`}>
@@ -207,9 +209,18 @@ export default function EquipmentTwinViewer({
             <gridHelper args={[7, 14, "#155e75", "#0f2738"]} position={[0, -0.82, 0]} />
             <Suspense fallback={<LoaderLabel />}>
               <ModelErrorBoundary fallback={<LoaderLabel />}>
-                <LoadedTwinModel equipment={equipment} state={state} onOpenPassport={onOpenPassport} />
+                <Bounds fit clip observe margin={0.78}>
+                  <Center>
+                    <LoadedTwinModel
+                      equipment={equipment}
+                      modelPath={modelPath}
+                      state={state}
+                      onOpenPassport={onOpenPassport}
+                    />
+                  </Center>
+                </Bounds>
               </ModelErrorBoundary>
-              <Html position={[0, 1.55, 0]} center distanceFactor={6}>
+              <Html position={[0, 1.05, 0]} center distanceFactor={3}>
                 <div className="equipmentTwinModelLabel">
                   <strong>{equipment.title}</strong>
                   <span>{equipment.status}</span>

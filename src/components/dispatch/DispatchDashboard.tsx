@@ -61,10 +61,37 @@ function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
   return "temperature";
 }
 
+function twinSelectionForSection(sectionId: DispatchSection, currentTwinId: EquipmentTwinId) {
+  const sectionTwinIds = equipmentTwinSectionMap[sectionId] ?? [];
+  const activeTwinId = sectionTwinIds.includes(currentTwinId) ? currentTwinId : sectionTwinIds[0];
+
+  if (!activeTwinId) {
+    return { activeTwinId: currentTwinId, relatedTwinIds: [] };
+  }
+
+  if (sectionId === "cooling") {
+    return { activeTwinId: "chiller" as const, relatedTwinIds: ["cooling-tower-small" as const] };
+  }
+
+  if (sectionId === "fanCoils") {
+    return { activeTwinId: "fancoil-fc92" as const, relatedTwinIds: ["multi-split-system" as const] };
+  }
+
+  if (sectionId === "ventilation") {
+    return { activeTwinId: "ahu-pv1" as const, relatedTwinIds: [] };
+  }
+
+  return {
+    activeTwinId,
+    relatedTwinIds: sectionTwinIds.filter((id) => id !== activeTwinId),
+  };
+}
+
 export default function DispatchDashboard() {
   const [activeSectionId, setActiveSectionId] = useState<DispatchSection>("overview");
   const [selectedId, setSelectedId] = useState("automation-cabinets");
   const [selectedTwinId, setSelectedTwinId] = useState<EquipmentTwinId>("ahu-pv1");
+  const [relatedTwinIds, setRelatedTwinIds] = useState<EquipmentTwinId[]>([]);
   const [passportSource, setPassportSource] = useState<PassportSource>("twin");
   const [twinStates, setTwinStates] =
     useState<Record<EquipmentTwinId, EquipmentTwinAssemblyState>>(initialTwinStates);
@@ -163,8 +190,6 @@ export default function DispatchDashboard() {
   const passportRelatedAlarms = passportSource === "twin" ? [] : relatedAlarms;
   const passportLastEvent = passportSource === "twin" ? selectedTwin.lastEvent : selectedLastEvent;
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
-  const highlightedTwinIds = equipmentTwinSectionMap[activeSectionId] ?? [selectedTwinId];
-
   const hasDpAnomalyContext =
     selectedEquipment.visualTone === "anomaly" ||
     selectedSection.relatedAlarmIds.includes("alarm-pump-pressure");
@@ -179,6 +204,13 @@ export default function DispatchDashboard() {
     setSelectedId(node.id);
     setPassportSource("node");
     setActiveSectionId(nextSection?.id ?? activeSectionId);
+    if (nextSection && equipmentTwinSectionMap[nextSection.id]?.length) {
+      const sectionTwinSelection = twinSelectionForSection(nextSection.id, selectedTwinId);
+      setSelectedTwinId(sectionTwinSelection.activeTwinId);
+      setRelatedTwinIds(sectionTwinSelection.relatedTwinIds);
+    } else {
+      setRelatedTwinIds([]);
+    }
     setSelectedTrendKey(nextSection?.trendKey ?? node.trendKey);
     setPassportTab(passportTabs[0]);
     setIsDrawerOpen(true);
@@ -190,6 +222,7 @@ export default function DispatchDashboard() {
     const sectionId = equipmentTwinSectionIdMap[twinId] as DispatchSection;
 
     setSelectedTwinId(twinId);
+    setRelatedTwinIds([]);
     setPassportSource("twin");
     setActiveSectionId(sectionId);
     setSelectedId(node?.id ?? selectedId);
@@ -208,14 +241,16 @@ export default function DispatchDashboard() {
   const selectSection = (sectionId: DispatchSection) => {
     const section = dispatchSectionDetails.find((item) => item.id === sectionId) ?? dispatchSectionDetails[0];
     const node = dispatchEquipmentNodes.find((item) => item.id === section.nodeId) ?? selectedEquipment;
-    const sectionTwinIds = equipmentTwinSectionMap[section.id] ?? [];
+    const sectionTwinSelection = twinSelectionForSection(section.id, selectedTwinId);
 
     setActiveSectionId(section.id);
     setSelectedId(node.id);
-    if (sectionTwinIds[0]) {
-      setSelectedTwinId(sectionTwinIds[0]);
+    if (equipmentTwinSectionMap[section.id]?.length) {
+      setSelectedTwinId(sectionTwinSelection.activeTwinId);
+      setRelatedTwinIds(sectionTwinSelection.relatedTwinIds);
       setPassportSource("twin");
     } else {
+      setRelatedTwinIds([]);
       setPassportSource("node");
     }
     setSelectedTrendKey(section.trendKey);
@@ -410,7 +445,7 @@ export default function DispatchDashboard() {
           <EquipmentTwinGrid
             selectedTwinId={selectedTwinId}
             twinStates={twinStates}
-            highlightedTwinIds={highlightedTwinIds}
+            relatedTwinIds={relatedTwinIds}
             onSelectTwin={selectTwin}
             onToggleTwinState={toggleTwinState}
             onOpenPassport={() => {
