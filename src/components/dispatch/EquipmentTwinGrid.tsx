@@ -27,6 +27,8 @@ export default function EquipmentTwinGrid({
 }: EquipmentTwinGridProps) {
   const activeEquipment = getEquipmentTwinById(selectedTwinId);
   const highlightedIds = new Set(highlightedTwinIds);
+  const isChillerExplodedLocked = activeEquipment.id === "chiller";
+  const activeTwinState = isChillerExplodedLocked ? "assembled" : twinStates[activeEquipment.id];
 
   return (
     <section className="equipmentTwinSection" aria-label="3D equipment twins">
@@ -35,14 +37,22 @@ export default function EquipmentTwinGrid({
           <p className="eyebrow">3D equipment twins</p>
           <h3>{activeEquipment.title}</h3>
         </div>
-        <button type="button" onClick={() => onToggleTwinState(activeEquipment.id)}>
-          {twinStates[activeEquipment.id] === "exploded" ? "Собрать" : "Разобрать"}
+        <button
+          type="button"
+          disabled={isChillerExplodedLocked}
+          onClick={() => onToggleTwinState(activeEquipment.id)}
+        >
+          {isChillerExplodedLocked
+            ? "Разборка модели в подготовке"
+            : twinStates[activeEquipment.id] === "exploded"
+              ? "Собрать"
+              : "Разобрать"}
         </button>
       </div>
 
       <EquipmentTwinViewer
         equipment={activeEquipment}
-        state={twinStates[activeEquipment.id]}
+        state={activeTwinState}
         onOpenPassport={onOpenPassport}
       />
 
@@ -51,7 +61,7 @@ export default function EquipmentTwinGrid({
           <EquipmentTwinCard
             key={equipment.id}
             equipment={equipment}
-            state={twinStates[equipment.id]}
+            state={equipment.id === "chiller" ? "assembled" : twinStates[equipment.id]}
             isActive={equipment.id === selectedTwinId}
             isHighlighted={highlightedIds.has(equipment.id)}
             onSelect={() => onSelectTwin(equipment.id)}
@@ -94,6 +104,13 @@ export default function EquipmentTwinGrid({
           color: #e0f2fe;
           cursor: pointer;
           padding: 9px 11px;
+        }
+
+        .equipmentTwinHeader button:disabled {
+          border-color: rgba(148, 163, 184, 0.24);
+          background: rgba(15, 23, 42, 0.62);
+          color: #94a3b8;
+          cursor: default;
         }
 
         .equipmentTwinCards {
