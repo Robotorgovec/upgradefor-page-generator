@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../../lib/prisma";
-import type { SelectorRequestPayload } from "../../../../lib/obair-selector/types";
+import type { SelectorInputPayload, SelectorRequestPayload } from "../../../../lib/obair-selector/types";
 
 const statusMap = {
   "matched-standard": "matched_standard",
@@ -29,6 +30,29 @@ function validateRequestPayload(payload: unknown): { ok: true; value: SelectorRe
   return { ok: true, value: body as SelectorRequestPayload };
 }
 
+function toPrismaSelectorInputPayload(input: SelectorInputPayload): Prisma.InputJsonObject {
+  return {
+    taskType: input.taskType,
+    airflowM3h: input.airflowM3h,
+    staticPressurePa: input.staticPressurePa,
+    ...(typeof input.needHeatRecovery === "boolean" ? { needHeatRecovery: input.needHeatRecovery } : {}),
+    ...(typeof input.needCoil === "boolean" ? { needCoil: input.needCoil } : {}),
+    ...(input.mountingType ? { mountingType: input.mountingType } : {}),
+    ...(input.industry ? { industry: input.industry } : {}),
+    ...(input.filterClassRequired ? { filterClassRequired: input.filterClassRequired } : {}),
+    ...(input.powerSupply ? { powerSupply: input.powerSupply } : {}),
+    ...(input.dimensionsLimitMm
+      ? {
+          dimensionsLimitMm: {
+            ...(typeof input.dimensionsLimitMm.width === "number" ? { width: input.dimensionsLimitMm.width } : {}),
+            ...(typeof input.dimensionsLimitMm.depth === "number" ? { depth: input.dimensionsLimitMm.depth } : {}),
+            ...(typeof input.dimensionsLimitMm.height === "number" ? { height: input.dimensionsLimitMm.height } : {}),
+          },
+        }
+      : {}),
+  };
+}
+
 export async function POST(request: Request) {
   let payload: unknown;
 
@@ -48,7 +72,7 @@ export async function POST(request: Request) {
 
   const created = await prisma.selectionRequest.create({
     data: {
-      inputPayload: body.inputPayload,
+      inputPayload: toPrismaSelectorInputPayload(body.inputPayload),
       resultStatus: statusMap[body.resultStatus],
       selectedModelId: body.selectedModelId,
       selectedFamilyCode: body.selectedFamilyCode,

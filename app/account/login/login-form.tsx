@@ -9,7 +9,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const searchParams = useSearchParams();
-  const nextPath = searchParams.get("next") || "/account";
+  const nextPath = searchParams?.get("next") || "/account";
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);

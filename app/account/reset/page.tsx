@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 
 type ResetState = "idle" | "loading" | "success" | "error";
@@ -10,7 +10,7 @@ const PASSWORD_MIN_LENGTH = 8;
 
 function ResetContent() {
   const searchParams = useSearchParams();
-  const token = useMemo(() => searchParams.get("token"), [searchParams]);
+  const token = useMemo(() => searchParams?.get("token") ?? null, [searchParams]);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,7 +24,7 @@ function ResetContent() {
     }
   }, [token]);
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!token) {

@@ -13,7 +13,7 @@ type VerifyResponse = {
 
 function VerifyContent() {
   const searchParams = useSearchParams();
-  const token = useMemo(() => searchParams.get("token"), [searchParams]);
+  const token = useMemo(() => searchParams?.get("token") ?? null, [searchParams]);
   const [state, setState] = useState<VerifyState>("loading");
   const [message, setMessage] = useState("Проверяем ссылку...");
 

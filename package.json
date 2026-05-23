@@ -9,7 +9,9 @@
     "db:generate": "prisma generate",
     "start": "next start",
     "test:layout": "node scripts/layout.test.mjs",
-    "test:dispatch": "node scripts/dispatch-smoke-test.mjs"
+    "test:dispatch": "node scripts/dispatch-smoke-test.mjs",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test:ci": "npm run test:layout && npm run test:dispatch && npm run typecheck && npm run build"
   },
   "dependencies": {
     "next": "^16.1.4",

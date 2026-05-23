@@ -10,6 +10,7 @@ const chromePath = findChrome();
 const startedProcesses = [];
 const nextEnvPath = path.join(root, "next-env.d.ts");
 const nextEnvBefore = fs.existsSync(nextEnvPath) ? fs.readFileSync(nextEnvPath, "utf8") : null;
+let serverLogs = "";
 
 process.on("exit", cleanup);
 process.on("SIGINT", () => {
@@ -22,30 +23,36 @@ if (!chromePath) {
   process.exit(0);
 }
 
-const port = await getFreePort();
-const baseUrl = `http://127.0.0.1:${port}`;
-const server = spawn(process.platform === "win32" ? "npx.cmd" : "npx", ["next", "dev", "--port", String(port)], {
-  cwd: root,
-  env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
-  stdio: ["ignore", "pipe", "pipe"],
-});
-startedProcesses.push(server);
-
-let serverLogs = "";
-server.stdout.on("data", (chunk) => {
-  serverLogs += chunk.toString();
-});
-server.stderr.on("data", (chunk) => {
-  serverLogs += chunk.toString();
-});
+const externalBaseUrl = normalizeBaseUrl(process.env.DISPATCH_BASE_URL);
+const baseUrl = externalBaseUrl ?? await startLocalDispatchServer();
 
 await waitForHttp(`${baseUrl}/dispatch`, 30_000);
 await assertDemoApiEndpoints(baseUrl);
 
 await assertDump(
   "/dispatch",
-  ["Object summary", "Center canvas", "Active Alarms", "Asia Park Astana", "Simulated telemetry · No real equipment control"],
+  [
+    "Object summary",
+    "Center canvas",
+    "Active Alarms",
+    "Asia Park Astana",
+    "Simulated telemetry · No real equipment control",
+    "Demo Scenario",
+  ],
   "default workspace",
+);
+
+await assertDump(
+  "/dispatch?demo=investor",
+  [
+    "Investor Demo Mode",
+    "Executive value cards",
+    "Object control workspace",
+    "Start cooling incident",
+    "Simulated presentation",
+    "No real equipment control",
+  ],
+  "investor presentation launch",
 );
 
 await assertDump(
@@ -76,12 +83,38 @@ assert.match(
 
 if (typeof WebSocket === "function") {
   await assertAlarmClickSelectsEquipmentAndWorkflow(`${baseUrl}/dispatch`);
+  await assertScenarioInvestorDemo(`${baseUrl}/dispatch?demo=investor`);
 } else {
-  console.warn("Alarm click smoke assertion skipped: global WebSocket is unavailable in this Node runtime.");
+  console.warn("Interactive dispatch smoke assertions skipped: global WebSocket is unavailable in this Node runtime.");
 }
 
 console.log("Dispatch smoke tests passed");
 cleanup();
+
+async function startLocalDispatchServer() {
+  const port = await getFreePort();
+  const url = `http://127.0.0.1:${port}`;
+  const server = spawn(process.platform === "win32" ? "npx.cmd" : "npx", ["next", "dev", "--port", String(port)], {
+    cwd: root,
+    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  startedProcesses.push(server);
+
+  server.stdout.on("data", (chunk) => {
+    serverLogs += chunk.toString();
+  });
+  server.stderr.on("data", (chunk) => {
+    serverLogs += chunk.toString();
+  });
+
+  return url;
+}
+
+function normalizeBaseUrl(value) {
+  if (!value) return undefined;
+  return value.replace(/\/+$/, "");
+}
 
 async function assertDump(pathname, expectedTexts, label) {
   const dom = await dumpDom(`${baseUrl}${pathname}`);
@@ -198,6 +231,108 @@ async function assertAlarmClickSelectsEquipmentAndWorkflow(url) {
   await cdp.close();
 }
 
+async function assertScenarioInvestorDemo(url) {
+  const chromeUserDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-scenario-chrome-"));
+  const debugPort = await getFreePort();
+  const chrome = spawn(chromePath, [
+    "--headless=new",
+    "--disable-gpu",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--window-size=1440,1000",
+    `--remote-debugging-port=${debugPort}`,
+    `--user-data-dir=${chromeUserDataDir}`,
+    "about:blank",
+  ]);
+  startedProcesses.push(chrome);
+
+  await waitForHttp(`http://127.0.0.1:${debugPort}/json/version`, 15_000);
+  const targets = await fetchJson(`http://127.0.0.1:${debugPort}/json/list`);
+  const pageTarget = targets.find((target) => target.type === "page" && target.webSocketDebuggerUrl);
+  assert.ok(pageTarget, "Chrome page target missing for scenario smoke");
+
+  const cdp = await createCdpClient(pageTarget.webSocketDebuggerUrl);
+  await cdp.send("Page.enable");
+  await cdp.send("Runtime.enable");
+  await cdp.send("Page.navigate", { url });
+  await waitForEval(
+    cdp,
+    "document.body.innerText.toLowerCase().includes('investor demo mode') && document.body.innerText.toLowerCase().includes('executive value cards')",
+    15_000,
+  );
+
+  await clickButtonWithText(cdp, "Start cooling incident");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('Cooling loop pressure drop') && document.body.innerText.toLowerCase().includes('guided incident')",
+    10_000,
+  );
+
+  const started = await cdp.send("Runtime.evaluate", {
+    expression: `({
+      activeTab: document.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim(),
+      href: window.location.href,
+      text: document.body.innerText
+    })`,
+    returnByValue: true,
+  });
+  assert.equal(started.result.value.activeTab, "Alarms", "scenario should open the Alarms inspector tab");
+  assert.match(started.result.value.href, /equipment=pump-shu2/, "scenario should select affected pump");
+  assert.match(started.result.value.href, /tab=alarms/, "scenario should sync alarms tab to URL");
+  assert.match(started.result.value.href, /demo=investor/, "investor demo URL flag should stay synced");
+  assert.match(started.result.value.text, /Probable cause: pump pressure instability/i);
+  assert.match(started.result.value.text, /Recommended action: inspect pump status/i);
+
+  await clickButtonWithText(cdp, "Prepare demo command");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.toLowerCase().includes('command confirmation') && document.body.innerText.toLowerCase().includes('demo api boundary')",
+    10_000,
+  );
+
+  await clickButtonWithText(cdp, "Confirm via simulation");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('Demo mitigation recorded') && document.body.innerText.includes('No real equipment was controlled')",
+    10_000,
+  );
+  await waitForEval(
+    cdp,
+    "document.body.innerText.toLowerCase().includes('business impact becomes visible') && document.body.innerText.toLowerCase().includes('downtime avoided')",
+    10_000,
+  );
+
+  await clickTabWithText(cdp, "Commands");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('confirmed by simulator') && document.body.innerText.includes('No backend, BMS, PLC, or field equipment was touched')",
+    10_000,
+  );
+
+  await clickTabWithText(cdp, "Scenario");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('✓ Demo mitigation recorded') && document.body.innerText.includes('Scenario advanced locally')",
+    10_000,
+  );
+
+  await clickButtonWithText(cdp, "Next step");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('Audit trail and repeatability') && document.body.innerText.includes('command journal preserves operator intent')",
+    10_000,
+  );
+
+  await clickButtonWithText(cdp, "Reset demo");
+  await waitForEval(
+    cdp,
+    "document.body.innerText.toLowerCase().includes('normal operations') && document.body.innerText.toLowerCase().includes('status: idle') && document.body.innerText.toLowerCase().includes('object summary')",
+    10_000,
+  );
+
+  await cdp.close();
+}
+
 async function clickSelector(cdp, selector) {
   const point = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
@@ -219,7 +354,9 @@ async function clickSelector(cdp, selector) {
 async function clickButtonWithText(cdp, text) {
   const point = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
-      const target = Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === ${JSON.stringify(text)});
+      const target = Array.from(document.querySelectorAll('button'))
+        .filter((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled)
+        .reverse()[0];
       if (!target) return null;
       target.scrollIntoView({ block: 'center', inline: 'center' });
       const rect = target.getBoundingClientRect();
@@ -229,6 +366,24 @@ async function clickButtonWithText(cdp, text) {
   });
 
   assert.ok(point.result.value, `button target missing: ${text}`);
+  await clickPoint(cdp, point.result.value);
+}
+
+async function clickTabWithText(cdp, text) {
+  const point = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const target = Array.from(document.querySelectorAll('button[role="tab"]'))
+        .filter((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled)
+        .reverse()[0];
+      if (!target) return null;
+      target.scrollIntoView({ block: 'center', inline: 'center' });
+      const rect = target.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.ok(point.result.value, `tab target missing: ${text}`);
   await clickPoint(cdp, point.result.value);
 }
 

@@ -1,5 +1,7 @@
 import type {
   BottomPanelTab,
+  DispatchPresentationStepId,
+  DispatchScenarioId,
   InspectorTab,
   PreparedCommandModel,
   StatusFilter,
@@ -9,6 +11,24 @@ import type {
   WorkflowJournalEntry,
 } from "./types";
 import { byId } from "./selectors";
+import {
+  advanceScenarioAfterCommand,
+  createInitialScenarioState,
+  getDispatchScenarioTarget,
+  resetDispatchScenario,
+  selectDispatchScenarioStep,
+  startDispatchScenario,
+} from "./dispatch-scenario-service";
+import {
+  createInitialPresentationState,
+  getNextPresentationStepId,
+  getPreviousPresentationStepId,
+  investorDemoScenarioId,
+  selectDispatchPresentationStep,
+  startDispatchPresentationMode,
+  stopDispatchPresentationMode,
+  toggleDispatchPresentationScript,
+} from "./dispatch-presentation-service";
 
 type WorkspaceAction =
   | { type: "selectFloor"; floorId: string }
@@ -27,6 +47,16 @@ type WorkspaceAction =
   | { type: "confirmCommand"; journalEntry: WorkflowJournalEntry; message?: string }
   | { type: "cancelCommand"; journalEntry?: WorkflowJournalEntry }
   | { type: "selectRecommendedAction"; actionId: string }
+  | { type: "startScenario"; scenarioId: DispatchScenarioId }
+  | { type: "resetScenario" }
+  | { type: "advanceScenarioAfterCommand"; command: PreparedCommandModel }
+  | { type: "selectScenarioStep"; stepId: string }
+  | { type: "startPresentationMode"; launchedFromUrl?: boolean }
+  | { type: "stopPresentationMode" }
+  | { type: "nextPresentationStep" }
+  | { type: "previousPresentationStep" }
+  | { type: "selectPresentationStep"; stepId: DispatchPresentationStepId }
+  | { type: "togglePresentationScript" }
   | { type: "hydrate"; state: Partial<WorkspaceState> };
 
 export function createInitialWorkspaceState(data: WorkspaceMockData): WorkspaceState {
@@ -39,6 +69,42 @@ export function createInitialWorkspaceState(data: WorkspaceMockData): WorkspaceS
     inspectorTab: "overview",
     bottomTab: "alarms",
     journal: [],
+    scenario: createInitialScenarioState(),
+    presentation: createInitialPresentationState(),
+  };
+}
+
+function applyPresentationNavigation(
+  state: WorkspaceState,
+  data: WorkspaceMockData,
+  stepId: DispatchPresentationStepId,
+): WorkspaceState {
+  const shouldStartIncident = stepId !== "opening";
+  const scenario =
+    shouldStartIncident && (state.scenario.id !== investorDemoScenarioId || state.scenario.status === "idle")
+      ? startDispatchScenario(investorDemoScenarioId)
+      : state.scenario;
+  const target = getDispatchScenarioTarget(scenario);
+  const equipment = byId(data.equipment, target.equipmentId);
+  const inspectorTab: InspectorTab = stepId === "audit" ? "history" : target.equipmentId ? "alarms" : state.inspectorTab;
+  const bottomTab: BottomPanelTab = stepId === "audit" ? "commands" : stepId === "opening" ? state.bottomTab : "scenario";
+
+  return {
+    ...state,
+    scenario,
+    presentation: selectDispatchPresentationStep(state.presentation, stepId),
+    selectedFloorId: equipment?.floorId ?? state.selectedFloorId,
+    selectedZoneId: equipment?.zoneId ?? state.selectedZoneId,
+    selectedSystemId: equipment?.systemId ?? state.selectedSystemId,
+    selectedEquipmentId: equipment?.id ?? state.selectedEquipmentId,
+    selectedAlarmId: shouldStartIncident ? target.alarmId : state.selectedAlarmId,
+    selectedWorkflowActionId: undefined,
+    inspectorTab,
+    bottomTab,
+    commandNotice:
+      shouldStartIncident && state.commandNotice === undefined
+        ? "Investor demo step selected. Scenario is simulated; no real equipment was controlled."
+        : state.commandNotice,
   };
 }
 
@@ -105,8 +171,9 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
 
     if (action.type === "selectAlarm") {
       const alarm = byId(data.alarms, action.alarmId);
-      if (!alarm) return state;
-      const equipment = byId(data.equipment, alarm.equipmentId);
+      const scenarioStep = state.scenario.steps.find((step) => step.relatedAlarmId === action.alarmId);
+      if (!alarm && !scenarioStep?.relatedEquipmentId) return state;
+      const equipment = byId(data.equipment, alarm?.equipmentId ?? scenarioStep?.relatedEquipmentId);
       if (!equipment) return state;
 
       return {
@@ -117,7 +184,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         selectedEquipmentId: equipment.id,
         inspectorTab: "alarms",
         bottomTab: "alarms",
-        selectedAlarmId: alarm.id,
+        selectedAlarmId: alarm?.id ?? action.alarmId,
         selectedWorkflowActionId: undefined,
         commandNotice: undefined,
       };
@@ -167,8 +234,33 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
     }
 
     if (action.type === "prepareCommand") {
+      const reviewStep = state.scenario.steps.find((step) =>
+        step.title.toLowerCase().includes("operator"),
+      );
+      const scenario =
+        state.scenario.status === "incident_active" && reviewStep
+          ? {
+              ...state.scenario,
+              status: "action_required" as const,
+              activeStepId: reviewStep.id,
+              steps: state.scenario.steps.map((step) => ({
+                ...step,
+                status:
+                  step.id === reviewStep.id
+                    ? "active" as const
+                    : step.status === "active"
+                      ? "completed" as const
+                      : step.status,
+              })),
+            }
+          : state.scenario;
+
       return {
         ...state,
+        scenario,
+        presentation: state.presentation.enabled
+          ? selectDispatchPresentationStep(state.presentation, "action")
+          : state.presentation,
         pendingCommand: action.command,
         selectedWorkflowActionId: action.command.actionId,
         selectedAlarmId: action.command.alarmId ?? state.selectedAlarmId,
@@ -214,8 +306,134 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
       return { ...state, selectedWorkflowActionId: action.actionId };
     }
 
+    if (action.type === "startScenario") {
+      const scenario = startDispatchScenario(action.scenarioId);
+      const target = getDispatchScenarioTarget(scenario);
+      const equipment = byId(data.equipment, target.equipmentId);
+
+      return {
+        ...state,
+        scenario,
+        presentation: state.presentation.enabled
+          ? selectDispatchPresentationStep(state.presentation, "incident")
+          : state.presentation,
+        selectedFloorId: equipment?.floorId ?? state.selectedFloorId,
+        selectedZoneId: equipment?.zoneId,
+        selectedSystemId: equipment?.systemId,
+        selectedEquipmentId: equipment?.id,
+        selectedAlarmId: target.alarmId,
+        inspectorTab: target.equipmentId ? "alarms" : "overview",
+        bottomTab: "scenario",
+        selectedWorkflowActionId: undefined,
+        pendingCommand: undefined,
+        commandNotice: "Demo scenario started. No real equipment was controlled.",
+      };
+    }
+
+    if (action.type === "resetScenario") {
+      return {
+        ...state,
+        scenario: resetDispatchScenario(),
+        presentation: state.presentation.enabled
+          ? selectDispatchPresentationStep(state.presentation, "opening")
+          : state.presentation,
+        selectedFloorId: data.floors[0]?.id,
+        selectedZoneId: undefined,
+        selectedSystemId: undefined,
+        selectedEquipmentId: undefined,
+        selectedAlarmId: undefined,
+        selectedWorkflowActionId: undefined,
+        pendingCommand: undefined,
+        inspectorTab: "overview",
+        bottomTab: "scenario",
+        commandNotice: "Demo state reset. No real equipment was controlled.",
+      };
+    }
+
+    if (action.type === "advanceScenarioAfterCommand") {
+      if (state.scenario.id === "normal-operations" || state.scenario.status === "idle") {
+        return state;
+      }
+
+      return {
+        ...state,
+        scenario: advanceScenarioAfterCommand(state.scenario, action.command.label),
+        presentation: state.presentation.enabled
+          ? selectDispatchPresentationStep(state.presentation, "impact")
+          : state.presentation,
+        bottomTab: "scenario",
+        commandNotice: "Scenario advanced locally. No real equipment was controlled.",
+      };
+    }
+
+    if (action.type === "selectScenarioStep") {
+      const step = state.scenario.steps.find((item) => item.id === action.stepId);
+      const equipment = byId(data.equipment, step?.relatedEquipmentId);
+
+      return {
+        ...state,
+        scenario: selectDispatchScenarioStep(state.scenario, action.stepId),
+        selectedFloorId: equipment?.floorId ?? state.selectedFloorId,
+        selectedZoneId: equipment?.zoneId ?? state.selectedZoneId,
+        selectedSystemId: equipment?.systemId ?? state.selectedSystemId,
+        selectedEquipmentId: equipment?.id ?? state.selectedEquipmentId,
+        selectedAlarmId: step?.relatedAlarmId ?? state.selectedAlarmId,
+        inspectorTab: step?.relatedAlarmId ? "alarms" : state.inspectorTab,
+        bottomTab: "scenario",
+      };
+    }
+
+    if (action.type === "startPresentationMode") {
+      return {
+        ...state,
+        presentation: startDispatchPresentationMode(Boolean(action.launchedFromUrl)),
+        commandNotice: "Investor demo mode ready. Simulated scenario only; no real equipment control.",
+      };
+    }
+
+    if (action.type === "stopPresentationMode") {
+      return {
+        ...state,
+        presentation: stopDispatchPresentationMode(),
+        commandNotice: "Investor demo mode closed. Workspace remains in demo simulation.",
+      };
+    }
+
+    if (action.type === "nextPresentationStep") {
+      return applyPresentationNavigation(
+        state,
+        data,
+        getNextPresentationStepId(state.presentation.activeStepId),
+      );
+    }
+
+    if (action.type === "previousPresentationStep") {
+      return applyPresentationNavigation(
+        state,
+        data,
+        getPreviousPresentationStepId(state.presentation.activeStepId),
+      );
+    }
+
+    if (action.type === "selectPresentationStep") {
+      return applyPresentationNavigation(state, data, action.stepId);
+    }
+
+    if (action.type === "togglePresentationScript") {
+      return {
+        ...state,
+        presentation: toggleDispatchPresentationScript(state.presentation),
+      };
+    }
+
     if (action.type === "hydrate") {
-      return { ...state, ...action.state, journal: action.state.journal ?? state.journal };
+      return {
+        ...state,
+        ...action.state,
+        journal: action.state.journal ?? state.journal,
+        scenario: action.state.scenario ?? state.scenario,
+        presentation: action.state.presentation ?? state.presentation,
+      };
     }
 
     return state;

@@ -3,20 +3,22 @@
 import { useMemo, useState } from "react";
 
 import styles from "./BridalMakeupPage.module.css";
-import type { BridalMakeupPageData } from "./data";
+import type { BridalMakeupPageData, PerformerTag } from "./data";
 
 type BridalMakeupPerformerGridProps = {
   section: BridalMakeupPageData["performersSection"];
 };
 
+type PerformerFilterId = "all" | PerformerTag;
+
 export default function BridalMakeupPerformerGrid({ section }: BridalMakeupPerformerGridProps) {
-  const [activeFilter, setActiveFilter] = useState<BridalMakeupPageData["performersSection"]["filters"][number]["id"]>(
-    "all",
-  );
+  const [activeFilter, setActiveFilter] = useState<PerformerFilterId>("all");
 
   const filteredPerformers = useMemo(() => {
     if (activeFilter === "all") return section.performers;
-    return section.performers.filter((performer) => performer.tags.includes(activeFilter));
+    return section.performers.filter((performer) =>
+      (performer.tags as readonly PerformerTag[]).includes(activeFilter),
+    );
   }, [activeFilter, section.performers]);
 
   return (
@@ -116,5 +118,4 @@ export default function BridalMakeupPerformerGrid({ section }: BridalMakeupPerfo
     </section>
   );
 }
-
 

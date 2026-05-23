@@ -17,6 +17,19 @@ import {
 } from "../../lib/dispatch/dispatch-api-client";
 import { getDispatchWorkspaceData } from "../../lib/dispatch/dispatch-data-provider";
 import {
+  applyScenarioToWorkspaceData,
+  dispatchScenarioOptions,
+  getDispatchScenarioDefinition,
+  getDispatchScenarioTarget,
+} from "../../lib/dispatch/dispatch-scenario-service";
+import {
+  dispatchPresentationSteps,
+  getDispatchPresentationStep,
+  getDispatchPresentationStepIndex,
+  getExecutiveValueCards,
+  startDispatchPresentationMode,
+} from "../../lib/dispatch/dispatch-presentation-service";
+import {
   byId,
   getEquipmentAlarms,
   getFilteredEquipment,
@@ -34,6 +47,10 @@ import type {
   AlarmModel,
   BottomPanelTab,
   CommandModel,
+  DispatchPresentationModeState,
+  DispatchScenarioId,
+  DispatchScenarioState,
+  DispatchScenarioStep,
   EquipmentModel,
   EventModel,
   InspectorTab,
@@ -60,7 +77,7 @@ const inspectorTabs: InspectorTab[] = [
   "history",
   "passport",
 ];
-const bottomTabs: BottomPanelTab[] = ["alarms", "events", "maintenance", "commands"];
+const bottomTabs: BottomPanelTab[] = ["alarms", "events", "maintenance", "commands", "scenario"];
 
 const layerLabels: Record<WorkspaceLayer, string> = {
   plan: "Plan",
@@ -100,6 +117,7 @@ const bottomTabLabels: Record<BottomPanelTab, string> = {
   events: "Events",
   maintenance: "Maintenance",
   commands: "Commands",
+  scenario: "Scenario",
 };
 
 const equipmentTypeLabels: Record<EquipmentModel["type"], string> = {
@@ -176,12 +194,27 @@ function formatApiTimestamp(value?: string) {
 function getEffectiveTelemetry(
   equipment: EquipmentModel,
   liveTelemetry?: SelectedTelemetryState,
+  preferEquipmentTelemetry = false,
 ): EquipmentModel["telemetry"] {
+  if (preferEquipmentTelemetry) {
+    return equipment.telemetry;
+  }
+
   if (liveTelemetry?.equipmentId === equipment.id && liveTelemetry.telemetry) {
     return liveTelemetry.telemetry;
   }
 
   return equipment.telemetry;
+}
+
+function isScenarioAffectingEquipment(scenario: DispatchScenarioState, equipmentId: string) {
+  const target = getDispatchScenarioTarget(scenario);
+
+  return scenario.id !== "normal-operations" && scenario.status !== "idle" && target.equipmentId === equipmentId;
+}
+
+function formatScenarioStatus(status: DispatchScenarioState["status"]) {
+  return status.replace(/_/g, " ");
 }
 
 function buildPreparedCommand({
@@ -247,6 +280,8 @@ function getHydratedStateFromUrl(data: WorkspaceMockData) {
   const status = params.get("status");
   const tab = params.get("tab");
   const query = params.get("q");
+  const demo = params.get("demo");
+  const presentation = params.get("presentation");
 
   if (floor) nextState.selectedFloorId = floor.id;
   if (zone) {
@@ -257,6 +292,9 @@ function getHydratedStateFromUrl(data: WorkspaceMockData) {
   if (isWorkspaceLayer(layer)) nextState.selectedLayer = layer;
   if (isStatusFilter(status)) nextState.statusFilter = status;
   if (query) nextState.searchQuery = query;
+  if (demo === "investor" || presentation === "investor" || presentation === "1") {
+    nextState.presentation = startDispatchPresentationMode(true);
+  }
 
   if (equipment) {
     nextState.selectedEquipmentId = equipment.id;
@@ -282,6 +320,7 @@ function syncStateToUrl(state: WorkspaceState) {
   if (state.selectedLayer !== "plan") params.set("layer", state.selectedLayer);
   if (state.statusFilter !== "all") params.set("status", state.statusFilter);
   if (state.searchQuery.trim()) params.set("q", state.searchQuery.trim());
+  if (state.presentation.enabled) params.set("demo", "investor");
   if (state.selectedEquipmentId && state.inspectorTab !== "overview") {
     params.set("tab", state.inspectorTab);
   }
@@ -296,11 +335,15 @@ function syncStateToUrl(state: WorkspaceState) {
 }
 
 export default function DispatchWorkspace() {
-  const data = useMemo(() => getDispatchWorkspaceData(), []);
-  const reducer = useMemo(() => createWorkspaceReducer(data), [data]);
-  const [state, dispatch] = useReducer(reducer, data, createInitialWorkspaceState);
+  const baseData = useMemo(() => getDispatchWorkspaceData(), []);
+  const reducer = useMemo(() => createWorkspaceReducer(baseData), [baseData]);
+  const [state, dispatch] = useReducer(reducer, baseData, createInitialWorkspaceState);
   const [isUrlHydrated, setIsUrlHydrated] = useState(false);
   const [selectedTelemetry, setSelectedTelemetry] = useState<SelectedTelemetryState>({ status: "idle" });
+  const data = useMemo(
+    () => applyScenarioToWorkspaceData(baseData, state.scenario),
+    [baseData, state.scenario],
+  );
 
   useEffect(() => {
     document.body.classList.add("is-dispatch-workspace");
@@ -312,9 +355,13 @@ export default function DispatchWorkspace() {
   }, []);
 
   useEffect(() => {
-    dispatch({ type: "hydrate", state: getHydratedStateFromUrl(data) });
+    const hydratedState = getHydratedStateFromUrl(baseData);
+    dispatch({ type: "hydrate", state: hydratedState });
+    if (hydratedState.presentation?.enabled) {
+      dispatch({ type: "startPresentationMode", launchedFromUrl: true });
+    }
     setIsUrlHydrated(true);
-  }, [data]);
+  }, [baseData]);
 
   useEffect(() => {
     if (!isUrlHydrated) return;
@@ -394,7 +441,10 @@ export default function DispatchWorkspace() {
   };
 
   return (
-    <section className="dispatchWorkspace" aria-label="Object Control Workspace">
+    <section
+      className={`dispatchWorkspace ${state.presentation.enabled ? "presentationActive" : ""}`}
+      aria-label="Object Control Workspace"
+    >
       <WorkspaceHeader
         data={data}
         state={state}
@@ -402,6 +452,11 @@ export default function DispatchWorkspace() {
         selectedTelemetry={selectedTelemetry}
         onClear={() => dispatch({ type: "clearSelection" })}
       />
+
+      <div className="demoKpiStack">
+        <ScenarioKpiStrip scenario={state.scenario} />
+        <ExecutiveValueCards scenario={state.scenario} presentation={state.presentation} />
+      </div>
 
       <section className="workspaceBody">
         <ObjectTreePanel
@@ -435,6 +490,7 @@ export default function DispatchWorkspace() {
 
       <BottomEventsPanel data={data} state={state} dispatch={dispatch} />
       <CommandConfirmationModal data={data} state={state} dispatch={dispatch} />
+      <PresentationModeOverlay state={state} dispatch={dispatch} />
 
       <style jsx global>{`
         body.is-dispatch-workspace .site-header,
@@ -621,7 +677,7 @@ export default function DispatchWorkspace() {
           height: 100vh;
           min-height: 100vh;
           display: grid;
-          grid-template-rows: auto minmax(0, 1fr) auto;
+          grid-template-rows: auto auto minmax(0, 1fr) auto;
           gap: 10px;
           background:
             linear-gradient(90deg, rgba(20, 184, 166, 0.08), rgba(245, 158, 11, 0.05)),
@@ -639,6 +695,17 @@ export default function DispatchWorkspace() {
           gap: 10px;
           overflow: hidden;
           padding: 0;
+        }
+
+        .demoKpiStack {
+          display: grid;
+          gap: 8px;
+        }
+
+        .presentationActive {
+          background:
+            linear-gradient(90deg, rgba(15, 118, 110, 0.1), rgba(245, 158, 11, 0.08)),
+            #eef2f7;
         }
 
         @media (max-width: 1180px) {
@@ -823,6 +890,268 @@ function WorkspaceHeader({
   );
 }
 
+function ScenarioKpiStrip({ scenario }: { scenario: DispatchScenarioState }) {
+  return (
+    <section className="scenarioKpiStrip" aria-label="Demo KPI estimate">
+      <div className="scenarioKpiTitle">
+        <span>Demo KPI estimate</span>
+        <strong>{scenario.title}</strong>
+        <small>{formatScenarioStatus(scenario.status)} · simulated investor demo</small>
+      </div>
+      <div className="scenarioKpiGrid">
+        {scenario.kpis.slice(0, 4).map((kpi) => (
+          <article key={kpi.id} className={kpi.trend ? `trend${kpi.trend}` : undefined}>
+            <span>{kpi.label}</span>
+            <strong>{kpi.value}</strong>
+            <small>{kpi.helperText}</small>
+          </article>
+        ))}
+      </div>
+      <style jsx>{`
+        .scenarioKpiStrip {
+          display: grid;
+          grid-template-columns: minmax(190px, 0.8fr) minmax(0, 2.2fr);
+          gap: 10px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          background: #ffffff;
+          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+          padding: 10px;
+        }
+
+        .scenarioKpiTitle {
+          display: grid;
+          align-content: center;
+          gap: 4px;
+        }
+
+        .scenarioKpiTitle span,
+        .scenarioKpiTitle strong,
+        .scenarioKpiTitle small {
+          display: block;
+        }
+
+        .scenarioKpiTitle span {
+          color: #0f766e;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .scenarioKpiTitle strong {
+          color: #111827;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .scenarioKpiTitle small {
+          color: #6b7280;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .scenarioKpiGrid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .scenarioKpiGrid article {
+          min-height: 76px;
+          display: grid;
+          align-content: center;
+          gap: 3px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          background: #f9fafb;
+          padding: 9px;
+        }
+
+        .scenarioKpiGrid article.trendup {
+          border-color: #f59e0b;
+          background: #fffbeb;
+        }
+
+        .scenarioKpiGrid article.trenddown {
+          border-color: #0f766e;
+          background: #ecfdf5;
+        }
+
+        .scenarioKpiGrid span,
+        .scenarioKpiGrid strong,
+        .scenarioKpiGrid small {
+          display: block;
+        }
+
+        .scenarioKpiGrid span {
+          color: #6b7280;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .scenarioKpiGrid strong {
+          color: #111827;
+          font-size: 16px;
+          line-height: 1.15;
+        }
+
+        .scenarioKpiGrid small {
+          color: #4b5563;
+          font-size: 11px;
+          line-height: 1.3;
+        }
+
+        @media (max-width: 920px) {
+          .scenarioKpiStrip {
+            grid-template-columns: 1fr;
+          }
+
+          .scenarioKpiGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+function ExecutiveValueCards({
+  scenario,
+  presentation,
+}: {
+  scenario: DispatchScenarioState;
+  presentation: DispatchPresentationModeState;
+}) {
+  if (!presentation.enabled) return null;
+
+  const cards = getExecutiveValueCards(scenario);
+
+  return (
+    <section className="executiveValueStrip" aria-label="Executive value cards">
+      <div className="executiveValueTitle">
+        <span>Executive value cards</span>
+        <strong>Investor demo estimate</strong>
+        <small>Simulated scenario · No real equipment control</small>
+      </div>
+      <div className="executiveValueGrid">
+        {cards.map((card) => (
+          <article key={card.id} className={card.tone ? `tone${card.tone}` : undefined}>
+            <span>{card.label}</span>
+            <strong>{card.value}</strong>
+            <small>{card.helperText}</small>
+          </article>
+        ))}
+      </div>
+      <style jsx>{`
+        .executiveValueStrip {
+          display: grid;
+          grid-template-columns: minmax(190px, 0.8fr) minmax(0, 2.2fr);
+          gap: 10px;
+          border: 1px solid #0f766e;
+          border-radius: 8px;
+          background: #f0fdfa;
+          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+          padding: 10px;
+        }
+
+        .executiveValueTitle {
+          display: grid;
+          align-content: center;
+          gap: 4px;
+        }
+
+        .executiveValueTitle span,
+        .executiveValueTitle strong,
+        .executiveValueTitle small {
+          display: block;
+        }
+
+        .executiveValueTitle span {
+          color: #0f766e;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .executiveValueTitle strong {
+          color: #111827;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .executiveValueTitle small {
+          color: #0f766e;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .executiveValueGrid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .executiveValueGrid article {
+          min-height: 70px;
+          display: grid;
+          align-content: center;
+          gap: 3px;
+          border: 1px solid #99f6e4;
+          border-radius: 8px;
+          background: #ffffff;
+          padding: 9px;
+        }
+
+        .executiveValueGrid article.tonesuccess {
+          border-color: #10b981;
+          background: #ecfdf5;
+        }
+
+        .executiveValueGrid article.tonewarning {
+          border-color: #f59e0b;
+          background: #fffbeb;
+        }
+
+        .executiveValueGrid span,
+        .executiveValueGrid strong,
+        .executiveValueGrid small {
+          display: block;
+        }
+
+        .executiveValueGrid span {
+          color: #6b7280;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .executiveValueGrid strong {
+          color: #111827;
+          font-size: 16px;
+          line-height: 1.15;
+        }
+
+        .executiveValueGrid small {
+          color: #4b5563;
+          font-size: 11px;
+          line-height: 1.3;
+        }
+
+        @media (max-width: 920px) {
+          .executiveValueStrip {
+            grid-template-columns: 1fr;
+          }
+
+          .executiveValueGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 function ObjectTreePanel({
   data,
   state,
@@ -840,6 +1169,7 @@ function ObjectTreePanel({
 }) {
   const activeAlarmEquipmentIds = new Set(data.alarms.map((alarm) => alarm.equipmentId));
   const equipmentTypes = Object.keys(equipmentTypeLabels) as EquipmentModel["type"][];
+  const [draftScenarioId, setDraftScenarioId] = useState<DispatchScenarioId>("cooling-loop-pressure-drop");
 
   return (
     <aside className="objectTree panelSurface" aria-label="Object navigation">
@@ -847,6 +1177,45 @@ function ObjectTreePanel({
         <span>Object tree</span>
         <h2>{data.object.shortName}</h2>
       </div>
+
+      <section className="scenarioControl" aria-label="Demo scenario">
+        <div>
+          <span>Demo Scenario</span>
+          <strong>{state.scenario.title}</strong>
+          <small>Demo Mode · Simulated scenario · No real equipment control</small>
+        </div>
+        <label>
+          <span>Scenario selector</span>
+          <select
+            value={draftScenarioId}
+            onChange={(event) => setDraftScenarioId(event.target.value as DispatchScenarioId)}
+          >
+            {dispatchScenarioOptions.map((scenario) => (
+              <option key={scenario.id} value={scenario.id}>
+                {scenario.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="scenarioActions">
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "startPresentationMode" })}
+          >
+            Launch investor demo
+          </button>
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "startScenario", scenarioId: draftScenarioId })}
+          >
+            Start scenario
+          </button>
+          <button type="button" onClick={() => dispatch({ type: "resetScenario" })}>
+            Reset demo
+          </button>
+        </div>
+        <p>Status: {formatScenarioStatus(state.scenario.status)}</p>
+      </section>
 
       <label className="searchBox">
         <span>Search</span>
@@ -972,6 +1341,81 @@ function ObjectTreePanel({
           min-height: 0;
           overflow: auto;
           padding: 14px;
+        }
+
+        .scenarioControl {
+          display: grid;
+          gap: 9px;
+          border: 1px solid #0f766e;
+          border-radius: 8px;
+          background: #ecfdf5;
+          color: #064e3b;
+          padding: 10px;
+        }
+
+        .scenarioControl div,
+        .scenarioControl label {
+          display: grid;
+          gap: 4px;
+        }
+
+        .scenarioControl span,
+        .scenarioControl p {
+          margin: 0;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .scenarioControl strong,
+        .scenarioControl small {
+          display: block;
+        }
+
+        .scenarioControl strong {
+          font-size: 14px;
+          line-height: 1.2;
+        }
+
+        .scenarioControl small {
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 1.25;
+        }
+
+        .scenarioControl select {
+          min-height: 36px;
+          border: 1px solid #99f6e4;
+          border-radius: 8px;
+          background: #ffffff;
+          color: #064e3b;
+          font: inherit;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 7px 8px;
+        }
+
+        .scenarioActions {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+
+        .scenarioActions button {
+          min-height: 36px;
+          border: 1px solid #0f766e;
+          border-radius: 8px;
+          background: #0f766e;
+          color: #ffffff;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 7px 8px;
+        }
+
+        .scenarioActions button:nth-child(3) {
+          background: #ffffff;
+          color: #0f766e;
         }
 
         .panelTitle span,
@@ -1745,6 +2189,16 @@ function EquipmentInspector({
         status={equipment.status}
       />
 
+      {isScenarioAffectingEquipment(state.scenario, equipment.id) ? (
+        <GuidedIncidentCard
+          data={data}
+          state={state}
+          dispatch={dispatch}
+          equipment={equipment}
+          alarm={selectedAlarm}
+        />
+      ) : null}
+
       <div className="inspectorTabs" role="tablist" aria-label="Equipment inspector tabs">
         {inspectorTabs.map((tab) => (
           <button
@@ -1775,7 +2229,7 @@ function EquipmentInspector({
         />
       ) : null}
       {state.inspectorTab === "telemetry" ? (
-        <TelemetryTab equipment={equipment} selectedTelemetry={selectedTelemetry} />
+        <TelemetryTab equipment={equipment} selectedTelemetry={selectedTelemetry} scenario={state.scenario} />
       ) : null}
       {state.inspectorTab === "controls" ? (
         <ControlsTab
@@ -1853,7 +2307,11 @@ function OverviewTab({
   recommendedActions: RecommendedActionModel[];
   selectedTelemetry: SelectedTelemetryState;
 }) {
-  const telemetry = getEffectiveTelemetry(equipment, selectedTelemetry);
+  const telemetry = getEffectiveTelemetry(
+    equipment,
+    selectedTelemetry,
+    isScenarioAffectingEquipment(state.scenario, equipment.id),
+  );
   const telemetryPreview = Object.entries(telemetry).slice(0, 4);
   const telemetryStatus =
     selectedTelemetry.equipmentId === equipment.id ? selectedTelemetry.status : "idle";
@@ -1918,14 +2376,100 @@ function OverviewTab({
   );
 }
 
+function GuidedIncidentCard({
+  data,
+  state,
+  dispatch,
+  equipment,
+  alarm,
+}: {
+  data: WorkspaceMockData;
+  state: WorkspaceState;
+  dispatch: Dispatch<WorkspaceAction>;
+  equipment: EquipmentModel;
+  alarm?: AlarmModel;
+}) {
+  const scenario = state.scenario;
+  const definition = getDispatchScenarioDefinition(scenario.id);
+  const target = getDispatchScenarioTarget(scenario);
+  const activeStepIndex = Math.max(
+    0,
+    scenario.steps.findIndex((step) => step.id === scenario.activeStepId),
+  );
+  const scenarioAction = data.recommendedActions.find((action) => action.id === `scenario-action-${scenario.id}`)
+    ?? getRecommendedActions(data, equipment.id, target.alarmId)[0];
+
+  const prepareScenarioCommand = () => {
+    const command = byId(data.commands, scenarioAction?.commandId ?? target.commandId) ?? data.commands[0];
+    if (!command) return;
+
+    if (scenarioAction) {
+      dispatch({ type: "selectRecommendedAction", actionId: scenarioAction.id });
+    }
+
+    dispatch({
+      type: "prepareCommand",
+      command: buildPreparedCommand({
+        equipment,
+        command,
+        action: scenarioAction,
+        alarm,
+        reason: `${definition.recommendedAction} Demo scenario only; no real equipment will be controlled.`,
+      }),
+    });
+  };
+
+  return (
+    <section className="guidedIncidentCard" aria-label="Guided incident">
+      <div className="guidedIncidentHeader">
+        <span>Guided Incident</span>
+        <strong>Step {activeStepIndex + 1} of {scenario.steps.length}</strong>
+      </div>
+      <h3>{scenario.title}</h3>
+      <dl>
+        <div>
+          <dt>What happened</dt>
+          <dd>{definition.story}</dd>
+        </div>
+        <div>
+          <dt>Probable cause</dt>
+          <dd>{definition.probableCause}</dd>
+        </div>
+        <div>
+          <dt>Recommended next action</dt>
+          <dd>{definition.recommendedAction}</dd>
+        </div>
+      </dl>
+      <div className="guidedIncidentActions">
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "selectEquipment", equipmentId: equipment.id, inspectorTab: "alarms" })}
+        >
+          Open affected equipment
+        </button>
+        <button type="button" onClick={prepareScenarioCommand}>
+          Prepare demo command
+        </button>
+      </div>
+      <p>Demo scenario updated locally. No real equipment was controlled.</p>
+    </section>
+  );
+}
+
 function TelemetryTab({
   equipment,
   selectedTelemetry,
+  scenario,
 }: {
   equipment: EquipmentModel;
   selectedTelemetry: SelectedTelemetryState;
+  scenario: DispatchScenarioState;
 }) {
-  const telemetry = getEffectiveTelemetry(equipment, selectedTelemetry);
+  const telemetry = getEffectiveTelemetry(
+    equipment,
+    selectedTelemetry,
+    isScenarioAffectingEquipment(scenario, equipment.id),
+  );
   const telemetryEntries = Object.entries(telemetry);
   const isCurrentEquipment = selectedTelemetry.equipmentId === equipment.id;
   const status = isCurrentEquipment ? selectedTelemetry.status : "idle";
@@ -2331,6 +2875,10 @@ function BottomEventsPanel({
             {commands.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)}
           </>
         ) : null}
+
+        {state.bottomTab === "scenario" ? (
+          <ScenarioTimeline scenario={state.scenario} dispatch={dispatch} />
+        ) : null}
       </div>
 
       <style jsx global>{`
@@ -2421,6 +2969,21 @@ function BottomEventsPanel({
           background: #ecfdf5;
         }
 
+        .bottomItem.scenarioStepItem {
+          border-color: #cbd5e1;
+          background: #f8fafc;
+        }
+
+        .bottomItem.scenarioStepItem.active {
+          border-color: #0f766e;
+          background: #ecfdf5;
+        }
+
+        .bottomItem.scenarioStepItem.completed {
+          border-color: #94a3b8;
+          background: #f1f5f9;
+        }
+
         @media (max-width: 820px) {
           .bottomPanel {
             grid-template-columns: 1fr;
@@ -2477,6 +3040,44 @@ function BottomJournalButton({
   );
 }
 
+function ScenarioTimeline({
+  scenario,
+  dispatch,
+}: {
+  scenario: DispatchScenarioState;
+  dispatch: Dispatch<WorkspaceAction>;
+}) {
+  return (
+    <>
+      {scenario.steps.map((step) => (
+        <ScenarioStepButton key={step.id} step={step} dispatch={dispatch} />
+      ))}
+    </>
+  );
+}
+
+function ScenarioStepButton({
+  step,
+  dispatch,
+}: {
+  step: DispatchScenarioStep;
+  dispatch: Dispatch<WorkspaceAction>;
+}) {
+  const prefix = step.status === "completed" ? "✓" : step.status === "active" ? "●" : "○";
+
+  return (
+    <button
+      type="button"
+      className={`bottomItem scenarioStepItem ${step.status}`}
+      onClick={() => dispatch({ type: "selectScenarioStep", stepId: step.id })}
+    >
+      <span>{step.timestamp ?? "T+00:00"} · {step.status}</span>
+      <strong>{prefix} {step.title}</strong>
+      <small>{step.description}</small>
+    </button>
+  );
+}
+
 function CommandConfirmationModal({
   data,
   state,
@@ -2512,6 +3113,7 @@ function CommandConfirmationModal({
         journalEntry: response.result.journalEntry,
         message: `${response.result.message} Updated ${formatApiTimestamp(response.result.updatedAt)}.`,
       });
+      dispatch({ type: "advanceScenarioAfterCommand", command });
     } catch (error) {
       setConfirmError(error instanceof Error ? error.message : "Dispatch command API unavailable");
       dispatch({
@@ -2718,6 +3320,256 @@ function CommandConfirmationModal({
         }
       `}</style>
     </div>
+  );
+}
+
+function PresentationModeOverlay({
+  state,
+  dispatch,
+}: {
+  state: WorkspaceState;
+  dispatch: Dispatch<WorkspaceAction>;
+}) {
+  if (!state.presentation.enabled) return null;
+
+  const step = getDispatchPresentationStep(state.presentation.activeStepId);
+  const stepIndex = getDispatchPresentationStepIndex(step.id);
+
+  if (!state.presentation.scriptVisible) {
+    return (
+      <button
+        className="presentationMiniToggle"
+        type="button"
+        onClick={() => dispatch({ type: "togglePresentationScript" })}
+      >
+        Show investor script
+        <style jsx>{`
+          .presentationMiniToggle {
+            position: fixed;
+            left: 18px;
+            bottom: 136px;
+            z-index: 70;
+            min-height: 40px;
+            border: 1px solid #0f766e;
+            border-radius: 8px;
+            background: #0f766e;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 900;
+            padding: 9px 12px;
+            box-shadow: 0 18px 44px rgba(15, 23, 42, 0.2);
+          }
+        `}</style>
+      </button>
+    );
+  }
+
+  return (
+    <aside className="presentationOverlay" aria-label="Investor demo script overlay">
+      <div className="presentationHeader">
+        <span>Investor Demo Mode</span>
+        <strong>{step.title}</strong>
+        <small>
+          Step {stepIndex + 1} of {dispatchPresentationSteps.length} · Simulated presentation · No real equipment
+          control
+        </small>
+      </div>
+
+      <p className="presentationScript">{step.script}</p>
+
+      <ul className="presentationPoints">
+        {step.talkingPoints.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
+
+      <div className="presentationNote">
+        <strong>{step.eyebrow}</strong>
+        <span>{step.presenterNote}</span>
+      </div>
+
+      <div className="presentationStepRail" aria-label="Presentation steps">
+        {dispatchPresentationSteps.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            aria-pressed={item.id === step.id}
+            className={item.id === step.id ? "isActive" : undefined}
+            onClick={() => dispatch({ type: "selectPresentationStep", stepId: item.id })}
+          >
+            {item.title}
+          </button>
+        ))}
+      </div>
+
+      <div className="presentationControls" aria-label="Presenter controls">
+        <button type="button" onClick={() => dispatch({ type: "previousPresentationStep" })}>
+          Previous step
+        </button>
+        {step.id === "opening" ? (
+          <button type="button" onClick={() => dispatch({ type: "selectPresentationStep", stepId: "incident" })}>
+            Start cooling incident
+          </button>
+        ) : (
+          <button type="button" onClick={() => dispatch({ type: "nextPresentationStep" })}>
+            Next step
+          </button>
+        )}
+        <button type="button" onClick={() => dispatch({ type: "resetScenario" })}>
+          Reset demo
+        </button>
+        <button type="button" onClick={() => dispatch({ type: "togglePresentationScript" })}>
+          Hide script
+        </button>
+        <button type="button" onClick={() => dispatch({ type: "stopPresentationMode" })}>
+          Exit presentation
+        </button>
+      </div>
+
+      <style jsx>{`
+        .presentationOverlay {
+          position: fixed;
+          left: 18px;
+          bottom: 136px;
+          z-index: 70;
+          width: min(430px, calc(100vw - 24px));
+          display: grid;
+          gap: 10px;
+          border: 1px solid #0f766e;
+          border-radius: 8px;
+          background: #ffffff;
+          color: #111827;
+          box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+          padding: 14px;
+        }
+
+        .presentationHeader {
+          display: grid;
+          gap: 3px;
+          border-bottom: 1px solid #d1fae5;
+          padding-bottom: 9px;
+        }
+
+        .presentationHeader span,
+        .presentationHeader strong,
+        .presentationHeader small {
+          display: block;
+        }
+
+        .presentationHeader span {
+          color: #0f766e;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .presentationHeader strong {
+          font-size: 18px;
+          line-height: 1.15;
+        }
+
+        .presentationHeader small {
+          color: #4b5563;
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 1.35;
+        }
+
+        .presentationScript {
+          margin: 0;
+          color: #111827;
+          font-size: 13px;
+          font-weight: 800;
+          line-height: 1.4;
+        }
+
+        .presentationPoints {
+          display: grid;
+          gap: 5px;
+          margin: 0;
+          padding-left: 18px;
+          color: #374151;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .presentationNote {
+          display: grid;
+          gap: 4px;
+          border: 1px solid #f59e0b;
+          border-radius: 8px;
+          background: #fffbeb;
+          color: #92400e;
+          padding: 8px;
+        }
+
+        .presentationNote strong,
+        .presentationNote span {
+          display: block;
+        }
+
+        .presentationNote strong {
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .presentationNote span {
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .presentationStepRail {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 6px;
+        }
+
+        .presentationStepRail button,
+        .presentationControls button {
+          min-height: 34px;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          background: #f9fafb;
+          color: #374151;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 7px 8px;
+        }
+
+        .presentationStepRail button.isActive,
+        .presentationControls button:nth-child(2) {
+          border-color: #0f766e;
+          background: #0f766e;
+          color: #ffffff;
+        }
+
+        .presentationControls {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 6px;
+        }
+
+        .presentationControls button:nth-child(5) {
+          grid-column: 1 / -1;
+          border-color: #111827;
+          background: #111827;
+          color: #ffffff;
+        }
+
+        @media (max-width: 820px) {
+          .presentationOverlay {
+            position: sticky;
+            right: auto;
+            bottom: auto;
+            width: auto;
+            margin-top: 8px;
+          }
+        }
+      `}</style>
+    </aside>
   );
 }
 
@@ -3017,6 +3869,95 @@ function InspectorStyles() {
         margin: 0;
         color: #111827;
         font-size: 13px;
+      }
+
+      .guidedIncidentCard {
+        display: grid;
+        gap: 9px;
+        border: 1px solid #0f766e;
+        border-radius: 8px;
+        background: #ecfdf5;
+        color: #064e3b;
+        padding: 10px;
+      }
+
+      .guidedIncidentHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .guidedIncidentHeader span,
+      .guidedIncidentHeader strong {
+        display: block;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .guidedIncidentCard h3 {
+        margin: 0;
+        color: #064e3b;
+        font-size: 15px;
+      }
+
+      .guidedIncidentCard dl {
+        display: grid;
+        gap: 7px;
+        margin: 0;
+      }
+
+      .guidedIncidentCard dl div {
+        display: grid;
+        gap: 3px;
+        border-top: 1px solid #99f6e4;
+        padding-top: 7px;
+      }
+
+      .guidedIncidentCard dt,
+      .guidedIncidentCard dd {
+        margin: 0;
+      }
+
+      .guidedIncidentCard dt {
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .guidedIncidentCard dd,
+      .guidedIncidentCard p {
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .guidedIncidentCard p {
+        margin: 0;
+      }
+
+      .guidedIncidentActions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+
+      .guidedIncidentActions button {
+        min-height: 36px;
+        border: 1px solid #0f766e;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #064e3b;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 900;
+        padding: 7px 8px;
+      }
+
+      .guidedIncidentActions button:last-child {
+        background: #0f766e;
+        color: #ffffff;
       }
 
       .telemetryHeader {

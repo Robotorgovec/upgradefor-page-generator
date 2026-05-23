@@ -15,7 +15,7 @@ export type InspectorTab =
   | "history"
   | "passport";
 
-export type BottomPanelTab = "alarms" | "events" | "maintenance" | "commands";
+export type BottomPanelTab = "alarms" | "events" | "maintenance" | "commands" | "scenario";
 
 export type EquipmentType = "chiller" | "fan_coil" | "ahu" | "pump" | "sensor";
 
@@ -160,6 +160,83 @@ export type WorkflowJournalEntry = {
   description: string;
 };
 
+export type DispatchScenarioStatus =
+  | "idle"
+  | "running"
+  | "incident_active"
+  | "action_required"
+  | "command_confirmed"
+  | "mitigated"
+  | "reset";
+
+export type DispatchScenarioId =
+  | "normal-operations"
+  | "cooling-loop-pressure-drop"
+  | "fan-coil-comfort-drift"
+  | "sensor-offline";
+
+export type DispatchScenarioStep = {
+  id: string;
+  title: string;
+  description: string;
+  status: "pending" | "active" | "completed";
+  timestamp?: string;
+  relatedEquipmentId?: string;
+  relatedAlarmId?: string;
+};
+
+export type DispatchScenarioKpi = {
+  id: string;
+  label: string;
+  value: string;
+  helperText: string;
+  trend?: "up" | "down" | "neutral";
+};
+
+export type DispatchScenarioState = {
+  id: DispatchScenarioId;
+  title: string;
+  status: DispatchScenarioStatus;
+  startedAt?: string;
+  updatedAt?: string;
+  activeStepId?: string;
+  steps: DispatchScenarioStep[];
+  kpis: DispatchScenarioKpi[];
+};
+
+export type DispatchPresentationStepId =
+  | "opening"
+  | "incident"
+  | "diagnosis"
+  | "action"
+  | "impact"
+  | "audit";
+
+export type DispatchPresentationStep = {
+  id: DispatchPresentationStepId;
+  eyebrow: string;
+  title: string;
+  script: string;
+  talkingPoints: string[];
+  presenterNote: string;
+  focus: "workspace" | "alarm" | "inspector" | "command" | "impact" | "journal";
+};
+
+export type DispatchExecutiveValueCard = {
+  id: string;
+  label: string;
+  value: string;
+  helperText: string;
+  tone?: "neutral" | "success" | "warning";
+};
+
+export type DispatchPresentationModeState = {
+  enabled: boolean;
+  activeStepId: DispatchPresentationStepId;
+  scriptVisible: boolean;
+  launchedFromUrl?: boolean;
+};
+
 export type WorkspaceMockData = {
   object: ObjectModel;
   floors: FloorModel[];
@@ -187,5 +264,7 @@ export type WorkspaceState = {
   selectedWorkflowActionId?: string;
   pendingCommand?: PreparedCommandModel;
   journal: WorkflowJournalEntry[];
+  scenario: DispatchScenarioState;
+  presentation: DispatchPresentationModeState;
   commandNotice?: string;
 };

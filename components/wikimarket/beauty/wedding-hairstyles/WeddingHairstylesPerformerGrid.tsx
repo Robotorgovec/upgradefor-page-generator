@@ -3,13 +3,16 @@
 import { useMemo, useState } from "react";
 
 import styles from "./WeddingHairstylesPage.module.css";
-import type { WeddingHairstylesPageData } from "./data";
+import type { PerformerTag, WeddingHairstylesPageData } from "./data";
 import { getWeddingHairstyleByFilterKey, getWeddingHairstyleBySlug } from "./weddingHairstylesTop100Data";
+import type { WeddingHairstyleCategory } from "./weddingHairstylesTop100Data";
 
 type WeddingHairstylesPerformerGridProps = {
   section: WeddingHairstylesPageData["performersSection"];
   hairstyleKey?: string;
 };
+
+type PerformerFilterId = "all" | PerformerTag;
 
 const PERFORMER_IMAGES: Record<
   WeddingHairstylesPageData["performersSection"]["performers"][number]["id"],
@@ -41,9 +44,7 @@ export default function WeddingHairstylesPerformerGrid({
   section,
   hairstyleKey,
 }: WeddingHairstylesPerformerGridProps) {
-  const [activeFilter, setActiveFilter] = useState<WeddingHairstylesPageData["performersSection"]["filters"][number]["id"]>(
-    "all",
-  );
+  const [activeFilter, setActiveFilter] = useState<PerformerFilterId>("all");
 
   const activeHairstyle = useMemo(() => resolveHairstyleFilter(hairstyleKey), [hairstyleKey]);
 
@@ -51,7 +52,9 @@ export default function WeddingHairstylesPerformerGrid({
     const filterMatchedPerformers =
       activeFilter === "all"
         ? section.performers
-        : section.performers.filter((performer) => performer.tags.includes(activeFilter));
+        : section.performers.filter((performer) =>
+            (performer.tags as readonly PerformerTag[]).includes(activeFilter),
+          );
 
     if (!activeHairstyle) {
       return filterMatchedPerformers;
@@ -59,7 +62,8 @@ export default function WeddingHairstylesPerformerGrid({
 
     return filterMatchedPerformers.filter((performer) => {
       const matchesExplicitKey = (performer.hairstyleKeys ?? []).includes(activeHairstyle.mastersFilterKey);
-      const matchesCategory = (performer.hairstyleCategories ?? []).includes(activeHairstyle.category);
+      const matchesCategory = ((performer.hairstyleCategories as readonly WeddingHairstyleCategory[] | undefined) ?? [])
+        .includes(activeHairstyle.category);
 
       return matchesExplicitKey || matchesCategory;
     });

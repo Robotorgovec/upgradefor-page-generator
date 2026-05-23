@@ -74,6 +74,10 @@ export interface ManufacturerCategoryPlacement {
   lastActivityAt?: string;
 }
 
+type ManufacturerCardWithPlacement = ManufacturerCompanyCardView & {
+  _placement: ManufacturerCategoryPlacement;
+};
+
 export interface ManufacturerCompany {
   id: string;
   slug: string;
@@ -560,7 +564,9 @@ function hasValue(value?: string | null): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
-function hasRatingPair(card: Pick<ManufacturerCompanyCardView, "ratingAvg" | "ratingCount">): boolean {
+function hasRatingPair<T extends Pick<ManufacturerCompanyCardView, "ratingAvg" | "ratingCount">>(
+  card: T,
+): card is T & { ratingAvg: number; ratingCount: number } {
   return typeof card.ratingAvg === "number" && typeof card.ratingCount === "number" && card.ratingCount > 0;
 }
 
@@ -626,7 +632,7 @@ function buildCardsForCategory(categorySlug: string): ManufacturerCompanyCardVie
   );
 
   const merged = visiblePlacements
-    .map((placement) => {
+    .map<ManufacturerCardWithPlacement | null>((placement) => {
       const card = cardsById.get(placement.companyId);
       if (!card) return null;
 
@@ -645,7 +651,7 @@ function buildCardsForCategory(categorySlug: string): ManufacturerCompanyCardVie
         _placement: placement,
       };
     })
-    .filter((item): item is ManufacturerCompanyCardView & { _placement: ManufacturerCategoryPlacement } => Boolean(item));
+    .filter((item): item is ManufacturerCardWithPlacement => item !== null);
 
   merged.sort((a, b) => {
     const featuredDiff = Number(b._placement.isFeatured) - Number(a._placement.isFeatured);
