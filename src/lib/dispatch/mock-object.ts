@@ -158,7 +158,14 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       mode: "auto",
       updatedAt: "12 sec ago",
       position: { x: 74, y: 25 },
-      model3d: { kind: "chiller", twinId: "chiller" },
+      model3d: {
+        kind: "chiller",
+        twinId: "chiller",
+        src: "/models/dispatch/chiller.glb",
+        nodeId: "chiller-ch1",
+        position: { x: 74, y: 25, z: 1 },
+        scale: 1,
+      },
       telemetry: {
         "Supply water temp": "6.3 °C",
         "Return water temp": "11.7 °C",
@@ -203,7 +210,13 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       mode: "auto",
       updatedAt: "18 sec ago",
       position: { x: 27, y: 66 },
-      model3d: { kind: "fan_coil", twinId: "fancoil-fc92" },
+      model3d: {
+        kind: "fan_coil",
+        twinId: "fancoil-fc92",
+        nodeId: "fan-coil-fc-021",
+        position: { x: 27, y: 66, z: 0.4 },
+        scale: 0.74,
+      },
       telemetry: {
         "Supply temperature": "8.1 °C",
         "Return temperature": "13.6 °C",
@@ -248,7 +261,14 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       mode: "manual",
       updatedAt: "24 sec ago",
       position: { x: 59, y: 67 },
-      model3d: { kind: "ahu", twinId: "ahu-pv1" },
+      model3d: {
+        kind: "ahu",
+        twinId: "ahu-pv1",
+        src: "/models/equipment/supply-vent-unit-01.glb",
+        nodeId: "ventilation-vc13-03",
+        position: { x: 59, y: 67, z: 0.8 },
+        scale: 0.9,
+      },
       telemetry: {
         "Supply air temp": "18.4 °C",
         "Return air temp": "23.0 °C",
@@ -373,7 +393,14 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       mode: "auto",
       updatedAt: "21 sec ago",
       position: { x: 71, y: 26 },
-      model3d: { kind: "ahu", twinId: "ahu-pv1" },
+      model3d: {
+        kind: "ahu",
+        twinId: "ahu-pv1",
+        src: "/models/equipment/supply-vent-unit-01.glb",
+        nodeId: "ventilation-vc13-01",
+        position: { x: 71, y: 26, z: 0.8 },
+        scale: 0.9,
+      },
       telemetry: {
         "Supply air temp": "17.9 °C",
         CO2: "612 ppm",

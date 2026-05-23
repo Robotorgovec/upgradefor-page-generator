@@ -68,6 +68,18 @@ await assertDump(
 );
 
 await assertDump(
+  "/dispatch?layer=3d",
+  ["3D fallback view", "Simulated layout", "No real equipment control"],
+  "workspace 3D layer deep link",
+);
+
+await assertDump(
+  "/dispatch?layer=random",
+  ["Object summary", "Center canvas", "visible assets"],
+  "invalid layer fallback",
+);
+
+await assertDump(
   "/dispatch?equipment=unknown-id&tab=telemetry",
   ["Object summary", "Priority alarms", "Active Alarms"],
   "unknown equipment fallback",
@@ -82,6 +94,9 @@ assert.match(
 );
 
 if (typeof WebSocket === "function") {
+  await assertVisibleAssetsRegression(`${baseUrl}/dispatch?zone=zone-retail-a&layer=hvac&status=all`);
+  await assertLayer3dRegression(`${baseUrl}/dispatch?equipment=fc-021&layer=hvac`);
+  await assertInvalidLayerFallback(`${baseUrl}/dispatch?layer=random`);
   await assertAlarmClickSelectsEquipmentAndWorkflow(`${baseUrl}/dispatch`);
   await assertScenarioInvestorDemo(`${baseUrl}/dispatch?demo=investor`);
 } else {
@@ -231,6 +246,92 @@ async function assertAlarmClickSelectsEquipmentAndWorkflow(url) {
   await cdp.close();
 }
 
+async function assertVisibleAssetsRegression(url) {
+  const { cdp } = await openCdpPage(url, "visible assets regression");
+
+  await waitForEval(
+    cdp,
+    "document.body.innerText.includes('Фанкойл FC-021') && Boolean(document.querySelector('[data-testid=\"dispatch-equipment-marker-fc-021\"]'))",
+    15_000,
+  );
+
+  const result = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const visibleText = document.querySelector('[data-testid="dispatch-visible-assets-count"]')?.textContent?.trim() ?? '';
+      const scopeText = document.querySelector('[data-testid="dispatch-zone-assets-count"]')?.textContent?.trim() ?? '';
+      const marker = document.querySelector('[data-testid="dispatch-equipment-marker-fc-021"]');
+      return { visibleText, scopeText, markerVisible: Boolean(marker), href: window.location.href };
+    })()`,
+    returnByValue: true,
+  });
+
+  const value = result.result.value;
+  assert.match(value.scopeText, /^1 assets? in scope/, "zone scope should include FC-021");
+  assert.doesNotMatch(value.visibleText, /^0 visible assets/, "visible assets should not be zero for FC-021 zone");
+  assert.equal(value.markerVisible, true, "FC-021 marker should render on the canvas");
+  assert.match(value.href, /zone=zone-retail-a/, "zone deep link should remain synced");
+
+  await cdp.close();
+}
+
+async function assertLayer3dRegression(url) {
+  const { cdp } = await openCdpPage(url, "3D layer regression");
+
+  await waitForEval(cdp, "Boolean(document.querySelector('[data-testid=\"dispatch-equipment-marker-fc-021\"]'))", 15_000);
+  await clickSelector(cdp, "[data-testid='dispatch-layer-3d']");
+  await waitForEval(
+    cdp,
+    "window.location.href.includes('layer=3d') && Boolean(document.querySelector('[data-testid=\"dispatch-canvas-3d\"]')) && document.body.innerText.includes('3D fallback view')",
+    10_000,
+  );
+
+  const after3d = await cdp.send("Runtime.evaluate", {
+    expression: `(() => ({
+      href: window.location.href,
+      markerVisible: Boolean(document.querySelector('[data-testid="dispatch-equipment-marker-fc-021"]')),
+      activeTab: document.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim(),
+      text: document.body.innerText,
+    }))()`,
+    returnByValue: true,
+  });
+
+  assert.match(after3d.result.value.href, /layer=3d/, "3D layer click should sync layer=3d");
+  assert.equal(after3d.result.value.markerVisible, true, "FC-021 marker should render in 3D fallback layer");
+  assert.notEqual(after3d.result.value.activeTab, "3D Model", "workspace layer=3d must not force inspector tab=3d");
+  assert.match(after3d.result.value.text, /Simulated layout · No real equipment control/);
+
+  await clickSelector(cdp, "[data-testid='dispatch-equipment-marker-fc-021']");
+  await waitForEval(cdp, "window.location.href.includes('equipment=fc-021') && document.body.innerText.includes('Фанкойл FC-021')", 10_000);
+
+  await cdp.close();
+}
+
+async function assertInvalidLayerFallback(url) {
+  const { cdp } = await openCdpPage(url, "invalid layer fallback");
+
+  await waitForEval(
+    cdp,
+    "!window.location.href.includes('layer=random') && Boolean(document.querySelector('[data-testid=\"dispatch-visible-assets-count\"]'))",
+    15_000,
+  );
+
+  const fallback = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const activeLayer = Array.from(document.querySelectorAll('.layerSwitch button'))
+        .find((button) => button.classList.contains('isActive'))?.textContent?.trim();
+      const visibleText = document.querySelector('[data-testid="dispatch-visible-assets-count"]')?.textContent?.trim() ?? '';
+      return { href: window.location.href, activeLayer, visibleText };
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.doesNotMatch(fallback.result.value.href, /layer=random/, "invalid layer should be removed from URL");
+  assert.match(fallback.result.value.activeLayer, /Plan|HVAC/, "invalid layer should fall back to a safe layer");
+  assert.doesNotMatch(fallback.result.value.visibleText, /^0 visible assets/, "invalid layer fallback should keep canvas data usable");
+
+  await cdp.close();
+}
+
 async function assertScenarioInvestorDemo(url) {
   const chromeUserDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-scenario-chrome-"));
   const debugPort = await getFreePort();
@@ -312,7 +413,7 @@ async function assertScenarioInvestorDemo(url) {
   await clickTabWithText(cdp, "Scenario");
   await waitForEval(
     cdp,
-    "document.body.innerText.includes('✓ Demo mitigation recorded') && document.body.innerText.includes('Scenario advanced locally')",
+    "document.querySelector('.bottomTabs [role=\"tab\"][aria-selected=\"true\"]')?.textContent?.trim() === 'Scenario' && Array.from(document.querySelectorAll('.scenarioStepItem.completed')).some((item) => item.textContent?.includes('Demo mitigation recorded'))",
     10_000,
   );
 
@@ -331,6 +432,35 @@ async function assertScenarioInvestorDemo(url) {
   );
 
   await cdp.close();
+}
+
+async function openCdpPage(url, label) {
+  const chromeUserDataDir = fs.mkdtempSync(path.join(os.tmpdir(), `dispatch-${label.replace(/\W+/g, "-")}-`));
+  const debugPort = await getFreePort();
+  const chrome = spawn(chromePath, [
+    "--headless=new",
+    "--disable-gpu",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--window-size=1440,1000",
+    `--remote-debugging-port=${debugPort}`,
+    `--user-data-dir=${chromeUserDataDir}`,
+    "about:blank",
+  ]);
+  startedProcesses.push(chrome);
+
+  await waitForHttp(`http://127.0.0.1:${debugPort}/json/version`, 15_000);
+  const targets = await fetchJson(`http://127.0.0.1:${debugPort}/json/list`);
+  const pageTarget = targets.find((target) => target.type === "page" && target.webSocketDebuggerUrl);
+  assert.ok(pageTarget, `Chrome page target missing for ${label}`);
+
+  const cdp = await createCdpClient(pageTarget.webSocketDebuggerUrl);
+  await cdp.send("Page.enable");
+  await cdp.send("Runtime.enable");
+  await cdp.send("Page.navigate", { url });
+  await waitForEval(cdp, "document.body.innerText.toLowerCase().includes('center canvas')", 15_000);
+
+  return { cdp };
 }
 
 async function clickSelector(cdp, selector) {

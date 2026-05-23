@@ -35,6 +35,7 @@ import {
   getFilteredEquipment,
   getObjectSummary,
   getRecommendedActions,
+  getScopedEquipment,
   getZoneEquipment,
   statusRank,
 } from "../../lib/dispatch/selectors";
@@ -53,6 +54,7 @@ import type {
   DispatchScenarioStep,
   EquipmentModel,
   EventModel,
+  FloorModel,
   InspectorTab,
   PreparedCommandModel,
   RecommendedActionModel,
@@ -372,8 +374,9 @@ export default function DispatchWorkspace() {
   const selectedZone = byId(data.zones, state.selectedZoneId);
   const selectedSystem = byId(data.systems, state.selectedSystemId);
   const selectedEquipment = byId(data.equipment, state.selectedEquipmentId);
+  const scopedEquipment = getScopedEquipment(data, state);
   const filteredEquipment = getFilteredEquipment(data, state);
-  const visibleEquipment = filteredEquipment.filter((equipment) => equipment.floorId === selectedFloor?.id);
+  const visibleEquipment = filteredEquipment;
   const selectedEquipmentVisible = selectedEquipment
     ? visibleEquipment.some((equipment) => equipment.id === selectedEquipment.id)
     : true;
@@ -473,6 +476,7 @@ export default function DispatchWorkspace() {
           state={state}
           dispatch={dispatch}
           selectedFloorId={selectedFloor?.id}
+          scopedEquipment={scopedEquipment}
           selectedEquipmentVisible={selectedEquipmentVisible}
           visibleEquipment={visibleEquipment}
         />
@@ -1637,6 +1641,7 @@ function ObjectCanvas({
   state,
   dispatch,
   selectedFloorId,
+  scopedEquipment,
   selectedEquipmentVisible,
   visibleEquipment,
 }: {
@@ -1644,15 +1649,25 @@ function ObjectCanvas({
   state: WorkspaceState;
   dispatch: Dispatch<WorkspaceAction>;
   selectedFloorId?: string;
+  scopedEquipment: EquipmentModel[];
   selectedEquipmentVisible: boolean;
   visibleEquipment: EquipmentModel[];
 }) {
   const selectedFloor = byId(data.floors, selectedFloorId);
   const floorZones = data.zones.filter((zone) => zone.floorId === selectedFloorId);
   const sortedEquipment = [...visibleEquipment].sort((a, b) => statusRank(b.status) - statusRank(a.status));
+  const hasActiveFilters =
+    state.statusFilter !== "all" ||
+    Boolean(state.selectedSystemId) ||
+    Boolean(state.searchQuery.trim()) ||
+    !["plan", "hvac", "3d"].includes(state.selectedLayer);
+  const visibleSummary =
+    scopedEquipment.length === visibleEquipment.length
+      ? `${visibleEquipment.length} visible assets`
+      : `${scopedEquipment.length} assets in scope · ${visibleEquipment.length} visible after filters`;
 
   return (
-    <section className="objectCanvas panelSurface" aria-label="Object plan canvas">
+    <section className="objectCanvas panelSurface" aria-label="Object plan canvas" data-testid="dispatch-canvas">
       <div className="canvasHeader">
         <div>
           <span>Center canvas</span>
@@ -1664,6 +1679,7 @@ function ObjectCanvas({
             <button
               key={layer}
               type="button"
+              data-testid={layer === "3d" ? "dispatch-layer-3d" : layer === "hvac" ? "dispatch-layer-hvac" : undefined}
               className={state.selectedLayer === layer ? "isActive" : ""}
               onClick={() => dispatch({ type: "setLayer", layer })}
             >
@@ -1679,51 +1695,71 @@ function ObjectCanvas({
         </div>
       ) : null}
 
-      <div className={`floorCanvas ${state.selectedLayer === "3d" ? "is3dLayer" : ""}`}>
-        <div className="planGrid" aria-hidden="true" />
-        {floorZones.map((zone) => (
-          <button
-            type="button"
-            key={zone.id}
-            className={`zoneBlock ${state.selectedZoneId === zone.id && !state.selectedEquipmentId ? "isSelected" : ""} ${getStatusClass(zone.status)}`}
-            style={{
-              left: `${zone.bounds.x}%`,
-              top: `${zone.bounds.y}%`,
-              width: `${zone.bounds.width}%`,
-              height: `${zone.bounds.height}%`,
-            }}
-            onClick={() => dispatch({ type: "selectZone", zoneId: zone.id })}
-          >
-            <span>{zone.name}</span>
-            <small>{zone.temperature} · {zone.co2}</small>
-          </button>
-        ))}
+      <div
+        className={`floorCanvas ${state.selectedLayer === "3d" ? "is3dLayer" : ""}`}
+        data-testid={state.selectedLayer === "3d" ? "dispatch-canvas-3d" : undefined}
+      >
+        {state.selectedLayer === "3d" ? (
+          <WorkspaceFallback3dCanvas
+            data={data}
+            state={state}
+            dispatch={dispatch}
+            selectedFloor={selectedFloor}
+            floorZones={floorZones}
+            sortedEquipment={sortedEquipment}
+            scopedEquipment={scopedEquipment}
+            hasActiveFilters={hasActiveFilters}
+          />
+        ) : (
+          <>
+            <div className="planGrid" aria-hidden="true" />
+            {floorZones.map((zone) => (
+              <button
+                type="button"
+                key={zone.id}
+                className={`zoneBlock ${state.selectedZoneId === zone.id && !state.selectedEquipmentId ? "isSelected" : ""} ${getStatusClass(zone.status)}`}
+                style={{
+                  left: `${zone.bounds.x}%`,
+                  top: `${zone.bounds.y}%`,
+                  width: `${zone.bounds.width}%`,
+                  height: `${zone.bounds.height}%`,
+                }}
+                onClick={() => dispatch({ type: "selectZone", zoneId: zone.id })}
+              >
+                <span>{zone.name}</span>
+                <small>{zone.temperature} · {zone.co2}</small>
+              </button>
+            ))}
 
-        {sortedEquipment.map((equipment) => {
-          const system = byId(data.systems, equipment.systemId);
-          const isSelected = state.selectedEquipmentId === equipment.id;
-          return (
-            <button
-              key={equipment.id}
-              type="button"
-              className={`equipmentMarker ${getStatusClass(equipment.status)} ${isSelected ? "isSelected" : ""}`}
-              style={{ left: `${equipment.position.x}%`, top: `${equipment.position.y}%` }}
-              onClick={() => dispatch({ type: "selectEquipment", equipmentId: equipment.id })}
-              aria-label={`Open ${equipment.displayName}`}
-            >
-              <span>{equipmentTypeLabels[equipment.type]}</span>
-              <strong>{equipment.displayName}</strong>
-              <small>{system?.shortName}</small>
-            </button>
-          );
-        })}
+            {sortedEquipment.map((equipment) => {
+              const system = byId(data.systems, equipment.systemId);
+              const isSelected = state.selectedEquipmentId === equipment.id;
+              return (
+                <button
+                  key={equipment.id}
+                  type="button"
+                  data-testid={`dispatch-equipment-marker-${equipment.id}`}
+                  className={`equipmentMarker ${getStatusClass(equipment.status)} ${isSelected ? "isSelected" : ""}`}
+                  style={{ left: `${equipment.position.x}%`, top: `${equipment.position.y}%` }}
+                  onClick={() => dispatch({ type: "selectEquipment", equipmentId: equipment.id })}
+                  aria-label={`Open ${equipment.displayName}`}
+                >
+                  <span>{equipmentTypeLabels[equipment.type]}</span>
+                  <strong>{equipment.displayName}</strong>
+                  <small>{system?.shortName}</small>
+                </button>
+              );
+            })}
 
-        {!sortedEquipment.length ? (
-          <div className="emptyCanvas">
-            <strong>Нет оборудования в текущем фильтре</strong>
-            <span>Смените этаж, систему, статус или поисковый запрос.</span>
-          </div>
-        ) : null}
+            {!sortedEquipment.length ? (
+              <CanvasEmptyState
+                scopedEquipmentCount={scopedEquipment.length}
+                hasActiveFilters={hasActiveFilters}
+                onClearFilters={() => dispatch({ type: "clearFilters" })}
+              />
+            ) : null}
+          </>
+        )}
       </div>
 
       <div className="canvasFooter">
@@ -1735,7 +1771,10 @@ function ObjectCanvas({
             </span>
           ))}
         </div>
-        <strong>{visibleEquipment.length} visible assets</strong>
+        <div className="assetCounters" aria-label="Canvas asset counts">
+          <strong data-testid="dispatch-zone-assets-count">{scopedEquipment.length} assets in scope</strong>
+          <strong data-testid="dispatch-visible-assets-count">{visibleSummary}</strong>
+        </div>
       </div>
 
       <style jsx>{`
@@ -1821,13 +1860,10 @@ function ObjectCanvas({
         }
 
         .floorCanvas.is3dLayer {
+          border-color: #334155;
           background:
-            linear-gradient(135deg, rgba(17, 24, 39, 0.1), rgba(15, 118, 110, 0.14)),
-            #f3f4f6;
-        }
-
-        .floorCanvas.is3dLayer .zoneBlock {
-          transform: skewY(-5deg);
+            linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 64, 175, 0.74)),
+            #111827;
         }
 
         .planGrid {
@@ -1922,16 +1958,6 @@ function ObjectCanvas({
           font-size: 11px;
         }
 
-        .emptyCanvas {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          place-content: center;
-          gap: 6px;
-          color: #4b5563;
-          text-align: center;
-        }
-
         .canvasFooter {
           display: flex;
           align-items: center;
@@ -1939,7 +1965,8 @@ function ObjectCanvas({
           gap: 12px;
         }
 
-        .legend {
+        .legend,
+        .assetCounters {
           display: flex;
           flex-wrap: wrap;
           gap: 8px;
@@ -1954,9 +1981,17 @@ function ObjectCanvas({
           font-weight: 800;
         }
 
-        .canvasFooter strong {
+        .assetCounters {
+          justify-content: flex-end;
+        }
+
+        .assetCounters strong {
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          background: #ffffff;
           color: #374151;
           font-size: 12px;
+          padding: 5px 7px;
         }
 
         @media (max-width: 820px) {
@@ -1965,7 +2000,8 @@ function ObjectCanvas({
             display: grid;
           }
 
-          .layerSwitch {
+          .layerSwitch,
+          .assetCounters {
             justify-content: flex-start;
           }
 
@@ -1975,6 +2011,295 @@ function ObjectCanvas({
         }
       `}</style>
     </section>
+  );
+}
+
+function CanvasEmptyState({
+  scopedEquipmentCount,
+  hasActiveFilters,
+  onClearFilters,
+}: {
+  scopedEquipmentCount: number;
+  hasActiveFilters: boolean;
+  onClearFilters: () => void;
+}) {
+  return (
+    <div className="emptyCanvas">
+      <strong>No equipment matches current filters</strong>
+      <span>
+        {scopedEquipmentCount
+          ? `Clear filters to see ${scopedEquipmentCount} asset${scopedEquipmentCount === 1 ? "" : "s"} in this scope.`
+          : "Change floor or zone to see equipment on the canvas."}
+      </span>
+      {hasActiveFilters ? (
+        <button type="button" data-testid="dispatch-clear-filters" onClick={onClearFilters}>
+          Clear filters
+        </button>
+      ) : null}
+      <style jsx>{`
+        .emptyCanvas {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-content: center;
+          gap: 8px;
+          color: #4b5563;
+          padding: 24px;
+          text-align: center;
+        }
+
+        .emptyCanvas strong {
+          color: #111827;
+          font-size: 16px;
+        }
+
+        .emptyCanvas span {
+          max-width: 360px;
+          font-size: 13px;
+          line-height: 1.4;
+        }
+
+        .emptyCanvas button {
+          justify-self: center;
+          min-height: 36px;
+          border: 1px solid #0f766e;
+          border-radius: 8px;
+          background: #0f766e;
+          color: #ffffff;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 8px 12px;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function WorkspaceFallback3dCanvas({
+  data,
+  state,
+  dispatch,
+  selectedFloor,
+  floorZones,
+  sortedEquipment,
+  scopedEquipment,
+  hasActiveFilters,
+}: {
+  data: WorkspaceMockData;
+  state: WorkspaceState;
+  dispatch: Dispatch<WorkspaceAction>;
+  selectedFloor?: FloorModel;
+  floorZones: ZoneModel[];
+  sortedEquipment: EquipmentModel[];
+  scopedEquipment: EquipmentModel[];
+  hasActiveFilters: boolean;
+}) {
+  return (
+    <div className="fallback3dScene" aria-label="3D fallback equipment layout">
+      <div className="fallback3dNotice">
+        <strong>3D fallback view</strong>
+        <span>Simulated layout · No real equipment control</span>
+      </div>
+      <div className="fallback3dPlane" aria-hidden="true">
+        <span>{selectedFloor?.level ?? "Object"}</span>
+      </div>
+      {floorZones.map((zone) => (
+        <button
+          type="button"
+          key={zone.id}
+          className={`fallback3dZone ${state.selectedZoneId === zone.id && !state.selectedEquipmentId ? "isSelected" : ""}`}
+          style={{
+            left: `${zone.bounds.x + zone.bounds.width / 2}%`,
+            top: `${zone.bounds.y + zone.bounds.height / 2}%`,
+            width: `${Math.max(84, zone.bounds.width * 3.2)}px`,
+          }}
+          onClick={() => dispatch({ type: "selectZone", zoneId: zone.id })}
+        >
+          {zone.name}
+        </button>
+      ))}
+      {sortedEquipment.map((equipment) => {
+        const system = byId(data.systems, equipment.systemId);
+        const isSelected = state.selectedEquipmentId === equipment.id;
+        const z = equipment.model3d?.position?.z ?? equipment.position.z ?? 0;
+        return (
+          <button
+            key={equipment.id}
+            type="button"
+            data-testid={`dispatch-equipment-marker-${equipment.id}`}
+            className={`fallback3dMarker ${getStatusClass(equipment.status)} ${isSelected ? "isSelected" : ""}`}
+            style={{
+              left: `${equipment.model3d?.position?.x ?? equipment.position.x}%`,
+              top: `${equipment.model3d?.position?.y ?? equipment.position.y}%`,
+              transform: `translate(-50%, -50%) translateY(${-z * 8}px)`,
+            }}
+            onClick={() => dispatch({ type: "selectEquipment", equipmentId: equipment.id })}
+            aria-label={`Open ${equipment.displayName} in 3D fallback`}
+          >
+            <span>{equipmentTypeLabels[equipment.type]}</span>
+            <strong>{equipment.displayName}</strong>
+            <small>{system?.shortName} · z{z}</small>
+          </button>
+        );
+      })}
+      {!sortedEquipment.length ? (
+        <CanvasEmptyState
+          scopedEquipmentCount={scopedEquipment.length}
+          hasActiveFilters={hasActiveFilters}
+          onClearFilters={() => dispatch({ type: "clearFilters" })}
+        />
+      ) : null}
+      <style jsx>{`
+        .fallback3dScene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #e5e7eb;
+          perspective: 900px;
+        }
+
+        .fallback3dNotice {
+          position: absolute;
+          z-index: 8;
+          left: 14px;
+          top: 14px;
+          display: grid;
+          gap: 2px;
+          border: 1px solid rgba(226, 232, 240, 0.32);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.76);
+          padding: 10px 12px;
+          backdrop-filter: blur(8px);
+        }
+
+        .fallback3dNotice strong,
+        .fallback3dNotice span {
+          display: block;
+        }
+
+        .fallback3dNotice strong {
+          font-size: 13px;
+        }
+
+        .fallback3dNotice span {
+          color: #cbd5e1;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .fallback3dPlane {
+          position: absolute;
+          left: 7%;
+          top: 13%;
+          width: 86%;
+          height: 72%;
+          transform: rotateX(58deg) rotateZ(-4deg);
+          transform-origin: center;
+          border: 1px solid rgba(226, 232, 240, 0.42);
+          border-radius: 8px;
+          background:
+            linear-gradient(rgba(148, 163, 184, 0.23) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(148, 163, 184, 0.23) 1px, transparent 1px),
+            rgba(15, 23, 42, 0.38);
+          background-size: 36px 36px;
+          box-shadow: 0 38px 80px rgba(0, 0, 0, 0.34);
+        }
+
+        .fallback3dPlane span {
+          position: absolute;
+          left: 18px;
+          top: 14px;
+          color: #cbd5e1;
+          font-size: 12px;
+          font-weight: 900;
+        }
+
+        .fallback3dZone,
+        .fallback3dMarker {
+          position: absolute;
+          z-index: 4;
+          border-radius: 8px;
+          cursor: pointer;
+          text-align: left;
+        }
+
+        .fallback3dZone {
+          min-height: 32px;
+          transform: translate(-50%, -50%) rotate(-4deg);
+          border: 1px solid rgba(226, 232, 240, 0.26);
+          background: rgba(255, 255, 255, 0.1);
+          color: #e5e7eb;
+          font-size: 11px;
+          font-weight: 900;
+          padding: 7px 9px;
+        }
+
+        .fallback3dZone.isSelected {
+          border-color: #5eead4;
+          background: rgba(20, 184, 166, 0.22);
+        }
+
+        .fallback3dMarker {
+          min-width: 142px;
+          min-height: 62px;
+          border: 2px solid #94a3b8;
+          background: rgba(248, 250, 252, 0.96);
+          color: #111827;
+          padding: 8px 10px;
+          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+          transition: box-shadow 0.16s ease, transform 0.16s ease;
+        }
+
+        .fallback3dMarker:hover,
+        .fallback3dMarker.isSelected {
+          box-shadow: 0 22px 44px rgba(20, 184, 166, 0.36);
+        }
+
+        .fallback3dMarker span,
+        .fallback3dMarker strong,
+        .fallback3dMarker small {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .fallback3dMarker span {
+          color: #64748b;
+          font-size: 10px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .fallback3dMarker strong {
+          margin-top: 2px;
+          font-size: 12px;
+        }
+
+        .fallback3dMarker small {
+          color: #475569;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .fallback3dMarker.statusNormal {
+          border-color: #10b981;
+        }
+
+        .fallback3dMarker.statusWarning {
+          border-color: #f59e0b;
+        }
+
+        .fallback3dMarker.statusCritical {
+          border-color: #dc2626;
+        }
+
+        .fallback3dMarker.statusOffline {
+          border-color: #6b7280;
+        }
+      `}</style>
+    </div>
   );
 }
 

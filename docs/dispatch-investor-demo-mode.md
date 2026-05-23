@@ -81,6 +81,22 @@ If the browser state feels stale, reload:
 
 ## Fallback Plans
 
+### Center Canvas Layers
+
+- Workspace layer and inspector tab are separate states.
+- `tab=3d` opens the selected equipment model inside the right inspector.
+- `layer=3d` switches the center canvas to the workspace 3D layer.
+- Test directly with `/dispatch?layer=3d` or `/dispatch?equipment=fc-021&tab=alarms&layer=3d`.
+
+The workspace 3D layer currently uses fallback 2.5D equipment markers: floor plane, zone labels, clickable equipment billboards, status colors, and selected-equipment highlight. Full building/scene GLB mapping can be connected later through `equipment.model3d.nodeId`, `equipment.model3d.src`, and optional transform fields.
+
+Current model sources are equipment-level assets, not a full building scene:
+
+- `public/models/dispatch/chiller.glb`
+- `public/models/equipment/supply-vent-unit-01.glb`
+- `public/models/equipment/supply-vent-unit-01-assembled.glb`
+- `public/models/equipment/supply-vent-unit-01-exploded.glb`
+
 ### If 3D Model Fails
 
 - Stay in Plan/Alarms/Telemetry views.

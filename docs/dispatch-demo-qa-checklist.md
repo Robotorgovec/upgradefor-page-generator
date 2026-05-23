@@ -90,6 +90,27 @@ Expected behavior:
 - Unknown telemetry returns HTTP `404` with `ok: false`.
 - Commands return `simulated_accepted` and explicitly say no real equipment control.
 
+## Center Canvas Layers
+
+Check the difference between workspace layer and inspector tab:
+
+- `/dispatch?equipment=ch-001&tab=3d` opens the selected equipment's 3D Model inspector tab.
+- `/dispatch?layer=3d` opens the center canvas workspace 3D layer.
+- `/dispatch?equipment=fc-021&tab=alarms&layer=3d` keeps the inspector on Alarms while the center canvas is in 3D fallback mode.
+
+Expected behavior:
+
+- `layer=3d` shows "3D fallback view · Simulated layout · No real equipment control".
+- FC-021 remains visible in Zone A when status is All and layer is HVAC or 3D.
+- Invalid layer values fall back safely and do not remove visible assets.
+- The fallback layer uses clickable 2.5D equipment billboards until a full building/scene GLB is mapped.
+
+Known 3D mapping state:
+
+- Full building/scene GLB mapping is not connected yet.
+- Equipment-level sources exist for chiller and AHU under `public/models/dispatch/` and `public/models/equipment/`.
+- Future scene mapping should use `equipment.model3d.nodeId`, `src`, `position`, `rotation`, and `scale`.
+
 ## Known Safety Copy
 
 Safe wording:

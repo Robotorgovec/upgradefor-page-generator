@@ -39,6 +39,7 @@ type WorkspaceAction =
   | { type: "setLayer"; layer: WorkspaceLayer }
   | { type: "setStatusFilter"; statusFilter: StatusFilter }
   | { type: "setSearchQuery"; searchQuery: string }
+  | { type: "clearFilters" }
   | { type: "setInspectorTab"; inspectorTab: InspectorTab }
   | { type: "setBottomTab"; bottomTab: BottomPanelTab }
   | { type: "clearSelection" }
@@ -115,6 +116,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         ...state,
         selectedFloorId: action.floorId,
         selectedZoneId: undefined,
+        selectedSystemId: undefined,
         selectedEquipmentId: undefined,
         selectedAlarmId: undefined,
         selectedWorkflowActionId: undefined,
@@ -129,6 +131,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         ...state,
         selectedFloorId: zone?.floorId ?? state.selectedFloorId,
         selectedZoneId: action.zoneId,
+        selectedSystemId: undefined,
         selectedEquipmentId: undefined,
         selectedAlarmId: undefined,
         selectedWorkflowActionId: undefined,
@@ -200,6 +203,17 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
 
     if (action.type === "setSearchQuery") {
       return { ...state, searchQuery: action.searchQuery };
+    }
+
+    if (action.type === "clearFilters") {
+      return {
+        ...state,
+        selectedSystemId: undefined,
+        selectedLayer: "hvac",
+        statusFilter: "all",
+        searchQuery: "",
+        commandNotice: undefined,
+      };
     }
 
     if (action.type === "setInspectorTab") {

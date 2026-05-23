@@ -26,6 +26,27 @@ export function getSystemIdsForLayer(data: WorkspaceMockData, layer: WorkspaceLa
   return new Set(data.systems.filter((system) => system.layer === layer).map((system) => system.id));
 }
 
+export function matchesWorkspaceLayer(
+  data: WorkspaceMockData,
+  equipment: EquipmentModel,
+  layer: WorkspaceLayer,
+) {
+  if (layer === "plan" || layer === "hvac" || layer === "3d") return true;
+
+  const system = byId(data.systems, equipment.systemId);
+  if (system?.layer === layer) return true;
+
+  if (layer === "cooling") {
+    return equipment.type === "chiller" || equipment.type === "fan_coil" || equipment.systemId === "cooling";
+  }
+
+  if (layer === "ventilation") {
+    return equipment.type === "ahu" || system?.layer === "ventilation";
+  }
+
+  return false;
+}
+
 export function matchesStatus(status: EquipmentModel["status"], filter: StatusFilter) {
   return filter === "all" || status === filter;
 }
@@ -50,15 +71,20 @@ export function getZoneEquipment(data: WorkspaceMockData, zoneId?: string) {
   return data.equipment.filter((equipment) => equipment.zoneId === zoneId);
 }
 
-export function getFilteredEquipment(data: WorkspaceMockData, state: WorkspaceState) {
-  const layerSystemIds = getSystemIdsForLayer(data, state.selectedLayer);
-  const query = state.searchQuery.trim().toLowerCase();
-
+export function getScopedEquipment(data: WorkspaceMockData, state: WorkspaceState) {
   return data.equipment.filter((equipment) => {
     if (state.selectedFloorId && equipment.floorId !== state.selectedFloorId) return false;
     if (state.selectedZoneId && equipment.zoneId !== state.selectedZoneId) return false;
+    return true;
+  });
+}
+
+export function getFilteredEquipment(data: WorkspaceMockData, state: WorkspaceState) {
+  const query = state.searchQuery.trim().toLowerCase();
+
+  return getScopedEquipment(data, state).filter((equipment) => {
     if (state.selectedSystemId && equipment.systemId !== state.selectedSystemId) return false;
-    if (!layerSystemIds.has(equipment.systemId)) return false;
+    if (!matchesWorkspaceLayer(data, equipment, state.selectedLayer)) return false;
     if (!matchesStatus(equipment.status, state.statusFilter)) return false;
 
     if (!query) return true;

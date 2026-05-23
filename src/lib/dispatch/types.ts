@@ -82,8 +82,21 @@ export type EquipmentModel = {
     z?: number;
   };
   model3d?: {
-    kind: "chiller" | "fan_coil" | "ahu";
+    kind?: EquipmentType;
     twinId: "chiller" | "fancoil-fc92" | "ahu-pv1";
+    src?: string;
+    nodeId?: string;
+    position?: {
+      x: number;
+      y: number;
+      z?: number;
+    };
+    rotation?: {
+      x?: number;
+      y?: number;
+      z?: number;
+    };
+    scale?: number;
   };
   telemetry: Record<string, number | string | boolean>;
   capabilities: {
