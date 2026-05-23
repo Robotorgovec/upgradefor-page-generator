@@ -17,7 +17,14 @@ export type InspectorTab =
 
 export type BottomPanelTab = "alarms" | "events" | "maintenance" | "commands" | "scenario";
 
-export type EquipmentType = "chiller" | "fan_coil" | "ahu" | "pump" | "sensor";
+export type EquipmentType =
+  | "chiller"
+  | "fan_coil"
+  | "ahu"
+  | "pump"
+  | "sensor"
+  | "cooling_tower"
+  | "conditioner";
 
 export type ObjectModel = {
   id: string;
@@ -83,7 +90,7 @@ export type EquipmentModel = {
   };
   model3d?: {
     kind?: EquipmentType;
-    twinId: "chiller" | "fancoil-fc92" | "ahu-pv1";
+    twinId: "chiller" | "fancoil-fc92" | "ahu-pv1" | "cooling-tower-small" | "multi-split-system";
     src?: string;
     nodeId?: string;
     position?: {

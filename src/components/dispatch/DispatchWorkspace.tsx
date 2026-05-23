@@ -128,6 +128,8 @@ const equipmentTypeLabels: Record<EquipmentModel["type"], string> = {
   ahu: "AHU",
   pump: "Pump",
   sensor: "Sensor",
+  cooling_tower: "Cooling tower",
+  conditioner: "Conditioner",
 };
 
 const fallback3dTypeCodes: Record<EquipmentModel["type"], string> = {
@@ -136,6 +138,8 @@ const fallback3dTypeCodes: Record<EquipmentModel["type"], string> = {
   ahu: "AHU",
   pump: "P",
   sensor: "S",
+  cooling_tower: "CT",
+  conditioner: "AC",
 };
 
 const riskLabels: Record<RecommendedActionModel["risk"], string> = {

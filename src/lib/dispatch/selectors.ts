@@ -37,7 +37,14 @@ export function matchesWorkspaceLayer(
   if (system?.layer === layer) return true;
 
   if (layer === "cooling") {
-    return equipment.type === "chiller" || equipment.type === "fan_coil" || equipment.systemId === "cooling";
+    return (
+      equipment.type === "chiller" ||
+      equipment.type === "fan_coil" ||
+      equipment.type === "cooling_tower" ||
+      equipment.type === "conditioner" ||
+      equipment.systemId === "cooling" ||
+      equipment.systemId === "conditioning"
+    );
   }
 
   if (layer === "ventilation") {

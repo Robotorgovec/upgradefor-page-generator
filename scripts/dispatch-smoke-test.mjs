@@ -100,6 +100,7 @@ if (typeof WebSocket === "function") {
   await assertLayerInspectorSync(
     `${baseUrl}/dispatch?object=asia-park&floor=floor-12600&zone=zone-service&system=cooling&equipment=pump-shu2&layer=ventilation&tab=3d`,
   );
+  await assertEquipment3dCatalog(baseUrl);
   await assertAlarmClickSelectsEquipmentAndWorkflow(`${baseUrl}/dispatch`);
   await assertScenarioInvestorDemo(`${baseUrl}/dispatch?demo=investor`);
 } else {
@@ -108,6 +109,7 @@ if (typeof WebSocket === "function") {
 
 console.log("Dispatch smoke tests passed");
 cleanup();
+process.exit(0);
 
 async function startLocalDispatchServer() {
   const port = await getFreePort();
@@ -207,6 +209,8 @@ async function assertAlarmClickSelectsEquipmentAndWorkflow(url) {
   await cdp.send("Runtime.enable");
   await cdp.send("Page.navigate", { url });
   await waitForEval(cdp, "document.body.innerText.includes('Active Alarms')", 15_000);
+  await waitForEval(cdp, "Boolean(document.querySelector('.bottomItem'))", 10_000);
+  await delay(600);
 
   await clickBottomItemWithText(cdp, "DP 6553.x bar на ШУ-2");
   await waitForEval(cdp, "document.body.innerText.includes('Насосная группа ШУ-2')", 10_000);
@@ -437,6 +441,87 @@ async function assertLayerInspectorSync(url) {
   await cdp.close();
 }
 
+async function assertEquipment3dCatalog(baseUrl) {
+  const catalog = [
+    {
+      path: "/dispatch?equipment=ahu-vc13-03",
+      name: "Вентустановка VC-13-03",
+      label: "AHU guaranteed 3D preview",
+      fallbackId: "dispatch-equipment-twin-fallback-ahu-pv1",
+    },
+    {
+      path: "/dispatch?equipment=ch-001",
+      name: "Чиллер CH-1",
+      label: "chiller guaranteed 3D preview",
+      fallbackId: "dispatch-equipment-twin-fallback-chiller",
+    },
+    {
+      path: "/dispatch?equipment=fc-021",
+      name: "Фанкойл FC-021",
+      label: "fan coil fallback 3D",
+      fallbackId: "dispatch-equipment-twin-fallback-fancoil-fc92",
+    },
+    {
+      path: "/dispatch?equipment=ct-001",
+      name: "Градирня CT-1",
+      label: "cooling tower fallback 3D",
+      fallbackId: "dispatch-equipment-twin-fallback-cooling-tower-small",
+    },
+    {
+      path: "/dispatch?equipment=ac-ms-001",
+      name: "Кондиционер MS-1",
+      label: "conditioner fallback 3D",
+      fallbackId: "dispatch-equipment-twin-fallback-multi-split-system",
+    },
+  ];
+
+  for (const item of catalog) {
+    const { cdp } = await openCdpPage(`${baseUrl}${item.path}`, item.label);
+
+    await waitForEval(cdp, `document.body.innerText.includes(${JSON.stringify(item.name)})`, 15_000);
+    await waitForEval(
+      cdp,
+      `Array.from(document.querySelectorAll('button[role="tab"]')).some((button) => button.textContent?.includes('3D Model'))`,
+      10_000,
+    );
+    await clickTabWithText(cdp, "3D Model");
+    await waitForEval(
+      cdp,
+      `document.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim() === '3D Model' && document.body.innerText.includes(${JSON.stringify(item.name)})`,
+      10_000,
+    );
+    await waitForEval(
+      cdp,
+      item.fallbackId
+        ? `Boolean(document.querySelector('[data-testid="${item.fallbackId}"]'))`
+        : "Boolean(document.querySelector('.equipmentTwinViewport canvas'))",
+      15_000,
+    );
+
+    const state = await cdp.send("Runtime.evaluate", {
+      expression: `(() => ({
+        href: window.location.href,
+        activeTab: document.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim(),
+        hasCanvas: Boolean(document.querySelector('.equipmentTwinViewport canvas')),
+        hasFallback: ${item.fallbackId ? `Boolean(document.querySelector('[data-testid="${item.fallbackId}"]'))` : "false"},
+        text: document.body.innerText,
+      }))()`,
+      returnByValue: true,
+    });
+
+    assert.equal(state.result.value.activeTab, "3D Model", `${item.label}: 3D Model tab should be active after click`);
+    assert.match(state.result.value.href, /tab=3d/, `${item.label}: 3D tab click should sync tab=3d`);
+    assert.match(state.result.value.text, new RegExp(escapeRegExp(item.name)), `${item.label}: selected equipment name should stay visible`);
+    if (item.fallbackId) {
+      assert.equal(state.result.value.hasFallback, true, `${item.label}: fallback 3D model should render`);
+      assert.match(state.result.value.text, /Built-in 3D fallback/, `${item.label}: fallback copy should be visible`);
+      assert.match(state.result.value.text, /No real equipment control/, `${item.label}: safety copy should be visible`);
+    }
+
+    await cdp.close();
+  }
+}
+
 async function assertScenarioInvestorDemo(url) {
   const chromeUserDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-scenario-chrome-"));
   const debugPort = await getFreePort();
@@ -624,7 +709,7 @@ async function clickTabWithText(cdp, text) {
   const point = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
       const target = Array.from(document.querySelectorAll('button[role="tab"]'))
-        .filter((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled)
+        .filter((button) => (button.textContent?.trim() === ${JSON.stringify(text)} || button.textContent?.includes(${JSON.stringify(text)})) && !button.disabled)
         .reverse()[0];
       if (!target) return null;
       target.scrollIntoView({ block: 'center', inline: 'center' });
