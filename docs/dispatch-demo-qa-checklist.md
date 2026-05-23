@@ -43,7 +43,7 @@ Expected coverage:
 Use the same smoke script against a preview/staging domain:
 
 ```bash
-DISPATCH_BASE_URL=https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-git-804530-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 Do this after deployment and before sending the URL to investors or customers.
@@ -65,16 +65,16 @@ http://localhost:3000/dispatch?demo=investor
 Deployed:
 
 ```txt
-https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
+https://upgradefor-page-generator-git-804530-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
 ```
 
 Preview/staging base URL:
 
 ```txt
-https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app
+https://upgradefor-page-generator-git-804530-bacalimser-8615s-projects.vercel.app
 ```
 
-This is a temporary Vercel preview URL. Re-run deployed smoke if a new preview URL is created.
+This is the Vercel branch preview alias. Re-run deployed smoke after every branch update.
 
 ## API Endpoints
 
