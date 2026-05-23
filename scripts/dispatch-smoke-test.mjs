@@ -446,31 +446,31 @@ async function assertEquipment3dCatalog(baseUrl) {
     {
       path: "/dispatch?equipment=ahu-vc13-03",
       name: "Вентустановка VC-13-03",
-      label: "AHU guaranteed 3D preview",
+      label: "AHU GLB/fallback 3D preview",
       fallbackId: "dispatch-equipment-twin-fallback-ahu-pv1",
     },
     {
       path: "/dispatch?equipment=ch-001",
       name: "Чиллер CH-1",
-      label: "chiller guaranteed 3D preview",
+      label: "chiller GLB/fallback 3D preview",
       fallbackId: "dispatch-equipment-twin-fallback-chiller",
     },
     {
       path: "/dispatch?equipment=fc-021",
       name: "Фанкойл FC-021",
-      label: "fan coil fallback 3D",
+      label: "fan coil GLB/fallback 3D preview",
       fallbackId: "dispatch-equipment-twin-fallback-fancoil-fc92",
     },
     {
       path: "/dispatch?equipment=ct-001",
       name: "Градирня CT-1",
-      label: "cooling tower fallback 3D",
+      label: "cooling tower GLB/fallback 3D preview",
       fallbackId: "dispatch-equipment-twin-fallback-cooling-tower-small",
     },
     {
       path: "/dispatch?equipment=ac-ms-001",
       name: "Кондиционер MS-1",
-      label: "conditioner fallback 3D",
+      label: "conditioner GLB/fallback 3D preview",
       fallbackId: "dispatch-equipment-twin-fallback-multi-split-system",
     },
   ];
@@ -492,9 +492,7 @@ async function assertEquipment3dCatalog(baseUrl) {
     );
     await waitForEval(
       cdp,
-      item.fallbackId
-        ? `Boolean(document.querySelector('[data-testid="${item.fallbackId}"]'))`
-        : "Boolean(document.querySelector('.equipmentTwinViewport canvas'))",
+      `Boolean(document.querySelector('.equipmentTwinViewport canvas')) || Boolean(document.querySelector('[data-testid="${item.fallbackId}"]'))`,
       15_000,
     );
 
@@ -512,11 +510,12 @@ async function assertEquipment3dCatalog(baseUrl) {
     assert.equal(state.result.value.activeTab, "3D Model", `${item.label}: 3D Model tab should be active after click`);
     assert.match(state.result.value.href, /tab=3d/, `${item.label}: 3D tab click should sync tab=3d`);
     assert.match(state.result.value.text, new RegExp(escapeRegExp(item.name)), `${item.label}: selected equipment name should stay visible`);
-    if (item.fallbackId) {
-      assert.equal(state.result.value.hasFallback, true, `${item.label}: fallback 3D model should render`);
-      assert.match(state.result.value.text, /Built-in 3D fallback/, `${item.label}: fallback copy should be visible`);
-      assert.match(state.result.value.text, /No real equipment control/, `${item.label}: safety copy should be visible`);
-    }
+    assert.equal(
+      state.result.value.hasCanvas || state.result.value.hasFallback,
+      true,
+      `${item.label}: real GLB canvas or safe fallback should render`,
+    );
+    assert.match(state.result.value.text, /No real equipment control/, `${item.label}: safety copy should be visible`);
 
     await cdp.close();
   }

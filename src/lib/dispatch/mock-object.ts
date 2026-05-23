@@ -315,7 +315,7 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       model3d: {
         kind: "ahu",
         twinId: "ahu-pv1",
-        src: "/models/equipment/supply-vent-unit-01.glb",
+        src: "/models/equipment/supply-vent-unit-01-assembled.glb",
         nodeId: "ventilation-vc13-03",
         position: { x: 59, y: 67, z: 0.8 },
         scale: 0.9,
@@ -447,7 +447,7 @@ export const dispatchWorkspaceMock: WorkspaceMockData = {
       model3d: {
         kind: "ahu",
         twinId: "ahu-pv1",
-        src: "/models/equipment/supply-vent-unit-01.glb",
+        src: "/models/equipment/supply-vent-unit-01-assembled.glb",
         nodeId: "ventilation-vc13-01",
         position: { x: 71, y: 26, z: 0.8 },
         scale: 0.9,

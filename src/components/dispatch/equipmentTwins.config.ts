@@ -17,7 +17,7 @@ export const equipmentTwins: EquipmentTwinConfig[] = [
     shortTitle: "ПВ-1",
     system: "ventilation",
     status: "В работе",
-    modelPath: "/models/equipment/supply-vent-unit-01.glb",
+    modelPath: "/models/equipment/supply-vent-unit-01-assembled.glb",
     location: "Asia Park Astana / Венткамера / +11.400",
     manufacturer: "TO VERIFY",
     model: "Приточная вентиляционная установка / TO VERIFY",

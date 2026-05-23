@@ -133,7 +133,7 @@ function LoadedTwinModel({
   state: EquipmentTwinAssemblyState;
   onOpenPassport: () => void;
 }) {
-  const gltf = useGLTF(equipment.modelPath);
+  const gltf = useGLTF(equipment.modelPath, true);
   const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
   const baseTransforms = useMemo(() => collectBaseTransforms(gltf.scene), [gltf.scene]);
 
@@ -258,7 +258,7 @@ export default function EquipmentTwinViewer({
   onOpenPassport,
 }: EquipmentTwinViewerProps) {
   const [assetStatus, setAssetStatus] = useState<"checking" | "available" | "missing">("checking");
-  const useGuaranteedPreview = true;
+  const useGuaranteedPreview = false;
   const assetNote =
     assetStatus === "available" ? "GLB asset available · guaranteed demo preview" : "GLB asset can be connected later";
 
