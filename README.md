@@ -1,5 +1,11 @@
 # upgradefor-page-generator
 
+## Бренд-ассеты и 3D-логотип UPGR
+
+3D-исходники логотипа UPGR лежат в `assets/brand/upgr-logo-3d/source/`.
+Для Blender по умолчанию используйте `upgr-logo.blend`; рядом сохранены STEP,
+SolidWorks, M3D и backup `.blend1` для CAD/import fallback.
+
 ## База данных (Prisma, этап 1)
 
 Этот этап подготавливает структуру базы данных для будущих аккаунтов и авторизации.
