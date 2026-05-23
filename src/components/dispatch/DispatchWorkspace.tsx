@@ -130,6 +130,14 @@ const equipmentTypeLabels: Record<EquipmentModel["type"], string> = {
   sensor: "Sensor",
 };
 
+const fallback3dTypeCodes: Record<EquipmentModel["type"], string> = {
+  chiller: "CH",
+  fan_coil: "FC",
+  ahu: "AHU",
+  pump: "P",
+  sensor: "S",
+};
+
 const riskLabels: Record<RecommendedActionModel["risk"], string> = {
   low: "Low risk",
   medium: "Medium risk",
@@ -486,13 +494,21 @@ export default function DispatchWorkspace() {
           state={state}
           dispatch={dispatch}
           selectedEquipment={selectedEquipment}
+          selectedEquipmentVisible={selectedEquipmentVisible}
           selectedZone={selectedZone}
           selectedSystem={selectedSystem}
+          scopedEquipment={scopedEquipment}
+          visibleEquipment={visibleEquipment}
           selectedTelemetry={selectedTelemetry}
         />
       </section>
 
-      <BottomEventsPanel data={data} state={state} dispatch={dispatch} />
+      <BottomEventsPanel
+        data={data}
+        state={state}
+        dispatch={dispatch}
+        visibleEquipment={visibleEquipment}
+      />
       <CommandConfirmationModal data={data} state={state} dispatch={dispatch} />
       <PresentationModeOverlay state={state} dispatch={dispatch} />
 
@@ -2100,9 +2116,16 @@ function WorkspaceFallback3dCanvas({
       <div className="fallback3dNotice">
         <strong>3D fallback view</strong>
         <span>Simulated layout · No real equipment control</span>
+        <small>{sortedEquipment.length} visible assets · {selectedFloor?.level ?? "object scope"}</small>
+      </div>
+      <div className="fallback3dLegend" aria-hidden="true">
+        <span>Workspace layer</span>
+        <strong>2.5D equipment map</strong>
       </div>
       <div className="fallback3dPlane" aria-hidden="true">
         <span>{selectedFloor?.level ?? "Object"}</span>
+        <i className="axisX">X</i>
+        <i className="axisY">Y</i>
       </div>
       {floorZones.map((zone) => (
         <button
@@ -2128,7 +2151,7 @@ function WorkspaceFallback3dCanvas({
             key={equipment.id}
             type="button"
             data-testid={`dispatch-equipment-marker-${equipment.id}`}
-            className={`fallback3dMarker ${getStatusClass(equipment.status)} ${isSelected ? "isSelected" : ""}`}
+            className={`fallback3dMarker fallback3dType-${equipment.type} ${getStatusClass(equipment.status)} ${isSelected ? "isSelected" : ""}`}
             style={{
               left: `${equipment.model3d?.position?.x ?? equipment.position.x}%`,
               top: `${equipment.model3d?.position?.y ?? equipment.position.y}%`,
@@ -2137,6 +2160,7 @@ function WorkspaceFallback3dCanvas({
             onClick={() => dispatch({ type: "selectEquipment", equipmentId: equipment.id })}
             aria-label={`Open ${equipment.displayName} in 3D fallback`}
           >
+            <b>{fallback3dTypeCodes[equipment.type]}</b>
             <span>{equipmentTypeLabels[equipment.type]}</span>
             <strong>{equipment.displayName}</strong>
             <small>{system?.shortName} · z{z}</small>
@@ -2157,6 +2181,10 @@ function WorkspaceFallback3dCanvas({
           overflow: hidden;
           color: #e5e7eb;
           perspective: 900px;
+          background:
+            radial-gradient(circle at 22% 18%, rgba(94, 234, 212, 0.2), transparent 25%),
+            radial-gradient(circle at 78% 22%, rgba(59, 130, 246, 0.22), transparent 30%),
+            linear-gradient(135deg, rgba(2, 6, 23, 0.18), rgba(15, 23, 42, 0.5));
         }
 
         .fallback3dNotice {
@@ -2174,7 +2202,8 @@ function WorkspaceFallback3dCanvas({
         }
 
         .fallback3dNotice strong,
-        .fallback3dNotice span {
+        .fallback3dNotice span,
+        .fallback3dNotice small {
           display: block;
         }
 
@@ -2188,6 +2217,41 @@ function WorkspaceFallback3dCanvas({
           font-weight: 800;
         }
 
+        .fallback3dNotice small {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+
+        .fallback3dLegend {
+          position: absolute;
+          z-index: 8;
+          right: 14px;
+          top: 14px;
+          display: grid;
+          gap: 3px;
+          border: 1px solid rgba(226, 232, 240, 0.24);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.62);
+          padding: 9px 11px;
+          text-align: right;
+          backdrop-filter: blur(8px);
+        }
+
+        .fallback3dLegend span {
+          color: #94a3b8;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .fallback3dLegend strong {
+          color: #f8fafc;
+          font-size: 12px;
+        }
+
         .fallback3dPlane {
           position: absolute;
           left: 7%;
@@ -2199,11 +2263,33 @@ function WorkspaceFallback3dCanvas({
           border: 1px solid rgba(226, 232, 240, 0.42);
           border-radius: 8px;
           background:
+            linear-gradient(135deg, rgba(20, 184, 166, 0.12), transparent 42%),
             linear-gradient(rgba(148, 163, 184, 0.23) 1px, transparent 1px),
             linear-gradient(90deg, rgba(148, 163, 184, 0.23) 1px, transparent 1px),
             rgba(15, 23, 42, 0.38);
           background-size: 36px 36px;
           box-shadow: 0 38px 80px rgba(0, 0, 0, 0.34);
+        }
+
+        .fallback3dPlane::before,
+        .fallback3dPlane::after {
+          content: "";
+          position: absolute;
+          pointer-events: none;
+        }
+
+        .fallback3dPlane::before {
+          inset: 22px;
+          border: 1px dashed rgba(94, 234, 212, 0.34);
+          border-radius: 8px;
+        }
+
+        .fallback3dPlane::after {
+          left: 12%;
+          right: 12%;
+          top: 50%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.72), transparent);
         }
 
         .fallback3dPlane span {
@@ -2213,6 +2299,30 @@ function WorkspaceFallback3dCanvas({
           color: #cbd5e1;
           font-size: 12px;
           font-weight: 900;
+        }
+
+        .fallback3dPlane i {
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          display: grid;
+          place-items: center;
+          border-radius: 999px;
+          background: rgba(15, 23, 42, 0.74);
+          color: #bfdbfe;
+          font-size: 10px;
+          font-style: normal;
+          font-weight: 900;
+        }
+
+        .fallback3dPlane .axisX {
+          right: 24px;
+          bottom: 20px;
+        }
+
+        .fallback3dPlane .axisY {
+          left: 24px;
+          bottom: 20px;
         }
 
         .fallback3dZone,
@@ -2228,11 +2338,12 @@ function WorkspaceFallback3dCanvas({
           min-height: 32px;
           transform: translate(-50%, -50%) rotate(-4deg);
           border: 1px solid rgba(226, 232, 240, 0.26);
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(15, 23, 42, 0.5);
           color: #e5e7eb;
           font-size: 11px;
           font-weight: 900;
           padding: 7px 9px;
+          box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
         }
 
         .fallback3dZone.isSelected {
@@ -2241,19 +2352,49 @@ function WorkspaceFallback3dCanvas({
         }
 
         .fallback3dMarker {
-          min-width: 142px;
-          min-height: 62px;
+          min-width: 152px;
+          min-height: 70px;
           border: 2px solid #94a3b8;
-          background: rgba(248, 250, 252, 0.96);
+          background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 232, 240, 0.92));
           color: #111827;
-          padding: 8px 10px;
-          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
-          transition: box-shadow 0.16s ease, transform 0.16s ease;
+          padding: 10px 10px 10px 48px;
+          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+          transition: box-shadow 0.16s ease, filter 0.16s ease;
+        }
+
+        .fallback3dMarker::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: -18px;
+          width: 44px;
+          height: 12px;
+          transform: translateX(-50%);
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.25);
+          filter: blur(4px);
+        }
+
+        .fallback3dMarker b {
+          position: absolute;
+          left: 10px;
+          top: 11px;
+          width: 28px;
+          height: 28px;
+          display: grid;
+          place-items: center;
+          border-radius: 8px;
+          background: #0f172a;
+          color: #ffffff;
+          font-size: 10px;
+          font-weight: 900;
         }
 
         .fallback3dMarker:hover,
         .fallback3dMarker.isSelected {
           box-shadow: 0 22px 44px rgba(20, 184, 166, 0.36);
+          filter: saturate(1.08);
         }
 
         .fallback3dMarker span,
@@ -2298,6 +2439,22 @@ function WorkspaceFallback3dCanvas({
         .fallback3dMarker.statusOffline {
           border-color: #6b7280;
         }
+
+        .fallback3dMarker.statusNormal b {
+          background: #047857;
+        }
+
+        .fallback3dMarker.statusWarning b {
+          background: #b45309;
+        }
+
+        .fallback3dMarker.statusCritical b {
+          background: #b91c1c;
+        }
+
+        .fallback3dMarker.statusOffline b {
+          background: #475569;
+        }
       `}</style>
     </div>
   );
@@ -2308,21 +2465,27 @@ function InspectorPanel({
   state,
   dispatch,
   selectedEquipment,
+  selectedEquipmentVisible,
   selectedZone,
   selectedSystem,
+  scopedEquipment,
+  visibleEquipment,
   selectedTelemetry,
 }: {
   data: WorkspaceMockData;
   state: WorkspaceState;
   dispatch: Dispatch<WorkspaceAction>;
   selectedEquipment?: EquipmentModel;
+  selectedEquipmentVisible: boolean;
   selectedZone?: ZoneModel;
   selectedSystem?: SystemModel;
+  scopedEquipment: EquipmentModel[];
+  visibleEquipment: EquipmentModel[];
   selectedTelemetry: SelectedTelemetryState;
 }) {
   return (
     <aside className="inspectorPanel panelSurface" aria-label="Inspector panel">
-      {selectedEquipment ? (
+      {selectedEquipment && selectedEquipmentVisible ? (
         <EquipmentInspector
           data={data}
           state={state}
@@ -2331,9 +2494,23 @@ function InspectorPanel({
           selectedTelemetry={selectedTelemetry}
         />
       ) : selectedZone ? (
-        <ZoneInspector data={data} dispatch={dispatch} zone={selectedZone} />
+        <ZoneInspector
+          data={data}
+          state={state}
+          dispatch={dispatch}
+          zone={selectedZone}
+          visibleEquipment={visibleEquipment}
+        />
       ) : selectedSystem ? (
         <SystemInspector data={data} dispatch={dispatch} system={selectedSystem} />
+      ) : state.selectedLayer !== "plan" ? (
+        <LayerInspector
+          data={data}
+          state={state}
+          dispatch={dispatch}
+          scopedEquipment={scopedEquipment}
+          visibleEquipment={visibleEquipment}
+        />
       ) : (
         <ObjectSummaryInspector data={data} dispatch={dispatch} />
       )}
@@ -2396,15 +2573,21 @@ function ObjectSummaryInspector({
 
 function ZoneInspector({
   data,
+  state,
   dispatch,
   zone,
+  visibleEquipment,
 }: {
   data: WorkspaceMockData;
+  state: WorkspaceState;
   dispatch: Dispatch<WorkspaceAction>;
   zone: ZoneModel;
+  visibleEquipment: EquipmentModel[];
 }) {
   const equipment = getZoneEquipment(data, zone.id);
+  const visibleZoneEquipment = visibleEquipment.filter((item) => item.zoneId === zone.id);
   const activeEvents = data.events.filter((event) => event.zoneId === zone.id);
+  const hasHiddenEquipment = equipment.length > visibleZoneEquipment.length;
 
   return (
     <div className="inspectorStack">
@@ -2414,18 +2597,44 @@ function ZoneInspector({
         <Metric label="Humidity" value={zone.humidity} />
         <Metric label="CO2" value={zone.co2} />
         <Metric label="Assets" value={String(equipment.length)} />
+        <Metric label="Visible now" value={String(visibleZoneEquipment.length)} />
       </div>
       <section className="inspectorBlock">
-        <h3>Equipment in zone</h3>
-        <div className="compactList">
-          {equipment.map((item) => (
-            <button key={item.id} type="button" onClick={() => dispatch({ type: "selectEquipment", equipmentId: item.id })}>
-              <i className={getStatusClass(item.status)} />
-              <span>{item.displayName}</span>
-            </button>
-          ))}
-        </div>
+        <h3>Equipment in current canvas layer</h3>
+        {visibleZoneEquipment.length ? (
+          <div className="compactList">
+            {visibleZoneEquipment.map((item) => (
+              <button key={item.id} type="button" onClick={() => dispatch({ type: "selectEquipment", equipmentId: item.id })}>
+                <i className={getStatusClass(item.status)} />
+                <span>{item.displayName}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="mutedText">
+            No equipment in this zone matches the current {layerLabels[state.selectedLayer]} layer or filters.
+          </p>
+        )}
+        {hasHiddenEquipment ? (
+          <p className="mutedText">
+            {equipment.length - visibleZoneEquipment.length} asset
+            {equipment.length - visibleZoneEquipment.length === 1 ? "" : "s"} hidden by layer/status/search filters.
+          </p>
+        ) : null}
       </section>
+      {visibleEquipment.length && !visibleZoneEquipment.length ? (
+        <section className="inspectorBlock">
+          <h3>Visible elsewhere in scope</h3>
+          <div className="compactList">
+            {visibleEquipment.slice(0, 5).map((item) => (
+              <button key={item.id} type="button" onClick={() => dispatch({ type: "selectEquipment", equipmentId: item.id })}>
+                <i className={getStatusClass(item.status)} />
+                <span>{item.displayName}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section className="inspectorBlock">
         <h3>Active events</h3>
         {activeEvents.length ? (
@@ -2442,6 +2651,75 @@ function ZoneInspector({
           <p className="mutedText">Активных событий по зоне нет.</p>
         )}
       </section>
+      <InspectorStyles />
+    </div>
+  );
+}
+
+function LayerInspector({
+  data,
+  state,
+  dispatch,
+  scopedEquipment,
+  visibleEquipment,
+}: {
+  data: WorkspaceMockData;
+  state: WorkspaceState;
+  dispatch: Dispatch<WorkspaceAction>;
+  scopedEquipment: EquipmentModel[];
+  visibleEquipment: EquipmentModel[];
+}) {
+  const activeLayerSystems =
+    state.selectedLayer === "plan" || state.selectedLayer === "hvac" || state.selectedLayer === "3d"
+      ? data.systems
+      : data.systems.filter((system) => system.layer === state.selectedLayer);
+  const activeAlarms = data.alarms.filter((alarm) =>
+    visibleEquipment.some((equipment) => equipment.id === alarm.equipmentId),
+  );
+  const title =
+    state.selectedLayer === "3d"
+      ? "Workspace 3D layer"
+      : `${layerLabels[state.selectedLayer]} layer`;
+
+  return (
+    <div className="inspectorStack">
+      <InspectorTitle
+        eyebrow="Canvas context"
+        title={title}
+        subtitle="Inspector follows the active center canvas layer"
+      />
+      <div className="summaryGrid">
+        <Metric label="Visible assets" value={String(visibleEquipment.length)} />
+        <Metric label="Assets in scope" value={String(scopedEquipment.length)} />
+        <Metric label="Systems" value={String(activeLayerSystems.length)} />
+        <Metric label="Active alarms" value={String(activeAlarms.length)} tone={activeAlarms.length ? "warning" : undefined} />
+      </div>
+      <section className="inspectorBlock">
+        <h3>Equipment in current layer</h3>
+        {visibleEquipment.length ? (
+          <div className="compactList">
+            {visibleEquipment.slice(0, 8).map((item) => (
+              <button key={item.id} type="button" onClick={() => dispatch({ type: "selectEquipment", equipmentId: item.id })}>
+                <i className={getStatusClass(item.status)} />
+                <span>{item.displayName}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="mutedText">
+            No equipment matches this layer in the current floor/zone scope. Use Clear filters or pick another floor/zone.
+          </p>
+        )}
+      </section>
+      {state.selectedLayer === "3d" ? (
+        <section className="inspectorBlock">
+          <h3>3D mode</h3>
+          <p className="mutedText">
+            Workspace 3D uses the fallback 2.5D equipment layout. Equipment-level GLB models still open from the
+            selected asset&apos;s 3D Model tab. No real equipment control.
+          </p>
+        </section>
+      ) : null}
       <InspectorStyles />
     </div>
   );
@@ -3138,18 +3416,40 @@ function BottomEventsPanel({
   data,
   state,
   dispatch,
+  visibleEquipment,
 }: {
   data: WorkspaceMockData;
   state: WorkspaceState;
   dispatch: Dispatch<WorkspaceAction>;
+  visibleEquipment: EquipmentModel[];
 }) {
-  const activeAlarms = data.alarms.filter((alarm) => alarm.status === "active");
-  const events = data.events.filter((event) => event.type === "event");
-  const maintenance = data.events.filter((event) => event.type === "maintenance");
-  const commands = data.events.filter((event) => event.type === "command");
-  const commandJournal = state.journal.filter((entry) =>
-    ["command_prepared", "command_confirmed", "command_cancelled"].includes(entry.type),
+  const isScopedToCanvas =
+    Boolean(state.selectedZoneId) ||
+    Boolean(state.selectedSystemId) ||
+    Boolean(state.selectedEquipmentId) ||
+    state.selectedLayer === "cooling" ||
+    state.selectedLayer === "ventilation" ||
+    state.selectedLayer === "3d" ||
+    state.statusFilter !== "all" ||
+    Boolean(state.searchQuery.trim());
+  const visibleEquipmentIds = new Set(visibleEquipment.map((equipment) => equipment.id));
+  const matchesBottomScope = (equipmentId?: string) =>
+    !isScopedToCanvas || (equipmentId ? visibleEquipmentIds.has(equipmentId) : false);
+  const activeAlarms = data.alarms.filter((alarm) => alarm.status === "active" && matchesBottomScope(alarm.equipmentId));
+  const events = data.events.filter((event) => event.type === "event" && matchesBottomScope(event.equipmentId));
+  const maintenance = data.events.filter((event) => event.type === "maintenance" && matchesBottomScope(event.equipmentId));
+  const commands = data.events.filter((event) => event.type === "command" && matchesBottomScope(event.equipmentId));
+  const commandJournal = state.journal.filter(
+    (entry) =>
+      ["command_prepared", "command_confirmed", "command_cancelled"].includes(entry.type) &&
+      matchesBottomScope(entry.equipmentId),
   );
+  const contextLabel =
+    state.selectedLayer === "3d"
+      ? "current 3D layer/scope"
+      : state.selectedLayer === "hvac" || state.selectedLayer === "plan"
+        ? "current scope"
+        : `${layerLabels[state.selectedLayer]} layer/scope`;
 
   return (
     <section className="bottomPanel" aria-label="Alarms and events">
@@ -3170,35 +3470,51 @@ function BottomEventsPanel({
 
       <div className="bottomContent">
         {state.bottomTab === "alarms" ? (
-          activeAlarms.map((alarm) => (
-            <button
-              key={alarm.id}
-              type="button"
-              className={`bottomItem ${getStatusClass(alarm.severity)}`}
-              onClick={() => dispatch({ type: "selectAlarm", alarmId: alarm.id })}
-            >
-              <span>{alarm.timestamp}</span>
-              <strong>{alarm.title}</strong>
-              <small>{alarm.message}</small>
-            </button>
-          ))
+          activeAlarms.length ? (
+            activeAlarms.map((alarm) => (
+              <button
+                key={alarm.id}
+                type="button"
+                className={`bottomItem ${getStatusClass(alarm.severity)}`}
+                onClick={() => dispatch({ type: "selectAlarm", alarmId: alarm.id })}
+              >
+                <span>{alarm.timestamp}</span>
+                <strong>{alarm.title}</strong>
+                <small>{alarm.message}</small>
+              </button>
+            ))
+          ) : (
+            <BottomEmptyState title="No alarms in current layer/scope" description={`No active alarms match the ${contextLabel}.`} />
+          )
         ) : null}
 
         {state.bottomTab === "events" ? (
-          events.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)
+          events.length ? (
+            events.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)
+          ) : (
+            <BottomEmptyState title="No events in current layer/scope" description={`No events match the ${contextLabel}.`} />
+          )
         ) : null}
 
         {state.bottomTab === "maintenance" ? (
-          maintenance.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)
+          maintenance.length ? (
+            maintenance.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)
+          ) : (
+            <BottomEmptyState title="No maintenance in current layer/scope" description={`No maintenance events match the ${contextLabel}.`} />
+          )
         ) : null}
 
         {state.bottomTab === "commands" ? (
-          <>
-            {commandJournal.map((entry) => (
-              <BottomJournalButton key={entry.id} entry={entry} dispatch={dispatch} />
-            ))}
-            {commands.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)}
-          </>
+          commandJournal.length || commands.length ? (
+            <>
+              {commandJournal.map((entry) => (
+                <BottomJournalButton key={entry.id} entry={entry} dispatch={dispatch} />
+              ))}
+              {commands.map((event) => <BottomEventButton key={event.id} event={event} dispatch={dispatch} />)}
+            </>
+          ) : (
+            <BottomEmptyState title="No commands in current layer/scope" description={`No command journal entries match the ${contextLabel}.`} />
+          )
         ) : null}
 
         {state.bottomTab === "scenario" ? (
@@ -3294,6 +3610,33 @@ function BottomEventsPanel({
           background: #ecfdf5;
         }
 
+        .bottomEmptyState {
+          min-height: 86px;
+          display: grid;
+          align-content: center;
+          gap: 5px;
+          border: 1px dashed #cbd5e1;
+          border-radius: 8px;
+          background: #f8fafc;
+          color: #475569;
+          padding: 12px;
+        }
+
+        .bottomEmptyState strong,
+        .bottomEmptyState small {
+          display: block;
+        }
+
+        .bottomEmptyState strong {
+          color: #111827;
+          font-size: 13px;
+        }
+
+        .bottomEmptyState small {
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
         .bottomItem.scenarioStepItem {
           border-color: #cbd5e1;
           background: #f8fafc;
@@ -3362,6 +3705,15 @@ function BottomJournalButton({
       <strong>{entry.title}</strong>
       <small>{entry.description}</small>
     </button>
+  );
+}
+
+function BottomEmptyState({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="bottomEmptyState">
+      <strong>{title}</strong>
+      <small>{description}</small>
+    </div>
   );
 }
 

@@ -97,6 +97,9 @@ if (typeof WebSocket === "function") {
   await assertVisibleAssetsRegression(`${baseUrl}/dispatch?zone=zone-retail-a&layer=hvac&status=all`);
   await assertLayer3dRegression(`${baseUrl}/dispatch?equipment=fc-021&layer=hvac`);
   await assertInvalidLayerFallback(`${baseUrl}/dispatch?layer=random`);
+  await assertLayerInspectorSync(
+    `${baseUrl}/dispatch?object=asia-park&floor=floor-12600&zone=zone-service&system=cooling&equipment=pump-shu2&layer=ventilation&tab=3d`,
+  );
   await assertAlarmClickSelectsEquipmentAndWorkflow(`${baseUrl}/dispatch`);
   await assertScenarioInvestorDemo(`${baseUrl}/dispatch?demo=investor`);
 } else {
@@ -205,10 +208,7 @@ async function assertAlarmClickSelectsEquipmentAndWorkflow(url) {
   await cdp.send("Page.navigate", { url });
   await waitForEval(cdp, "document.body.innerText.includes('Active Alarms')", 15_000);
 
-  await cdp.send("Runtime.evaluate", {
-    expression: "document.querySelector('.bottomItem.statusCritical')?.click()",
-    awaitPromise: true,
-  });
+  await clickBottomItemWithText(cdp, "DP 6553.x bar на ШУ-2");
   await waitForEval(cdp, "document.body.innerText.includes('Насосная группа ШУ-2')", 10_000);
 
   const result = await cdp.send("Runtime.evaluate", {
@@ -332,6 +332,111 @@ async function assertInvalidLayerFallback(url) {
   await cdp.close();
 }
 
+async function assertLayerInspectorSync(url) {
+  const { cdp } = await openCdpPage(url, "layer and inspector sync regression");
+
+  await waitForEval(
+    cdp,
+    "window.location.href.includes('layer=ventilation') && !window.location.href.includes('equipment=pump-shu2') && !window.location.href.includes('system=cooling') && !window.location.href.includes('tab=3d') && document.querySelector('.inspectorTitle span')?.textContent?.trim() !== 'Selected equipment'",
+    15_000,
+  );
+
+  const ventilationState = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const activeLayer = Array.from(document.querySelectorAll('.layerSwitch button'))
+        .find((button) => button.classList.contains('isActive'))?.textContent?.trim();
+      const inspectorEyebrow = document.querySelector('.inspectorTitle span')?.textContent?.trim();
+      const inspectorText = document.querySelector('[aria-label="Inspector panel"]')?.textContent ?? '';
+      const bottomText = document.querySelector('[aria-label="Alarms and events"]')?.textContent ?? '';
+      const visibleText = document.querySelector('[data-testid="dispatch-visible-assets-count"]')?.textContent?.trim() ?? '';
+      const ahuMarkerVisible = Boolean(document.querySelector('[data-testid="dispatch-equipment-marker-ahu-vc13-03"]'));
+      return { href: window.location.href, activeLayer, inspectorEyebrow, inspectorText, bottomText, visibleText, ahuMarkerVisible };
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.match(ventilationState.result.value.href, /layer=ventilation/, "ventilation layer should stay in URL");
+  assert.doesNotMatch(
+    ventilationState.result.value.href,
+    /equipment=pump-shu2/,
+    "hidden pump selection should be removed from URL when ventilation layer is active",
+  );
+  assert.doesNotMatch(
+    ventilationState.result.value.href,
+    /system=cooling/,
+    "incompatible cooling system should be removed from URL when ventilation layer is active",
+  );
+  assert.notEqual(
+    ventilationState.result.value.inspectorEyebrow,
+    "Selected equipment",
+    "inspector should not keep stale pump equipment when the canvas layer hides it",
+  );
+  assert.match(
+    ventilationState.result.value.inspectorText,
+    /Equipment in current canvas layer|Inspector follows the active center canvas layer/,
+    "inspector should explain the current canvas layer context",
+  );
+  assert.match(
+    ventilationState.result.value.inspectorText,
+    /Вентустановка VC-13-03/,
+    "ventilation layer should surface ventilation equipment in the right inspector",
+  );
+  assert.equal(
+    ventilationState.result.value.ahuMarkerVisible,
+    true,
+    "AHU marker should render when ventilation layer is active in the service zone",
+  );
+  assert.match(
+    ventilationState.result.value.bottomText,
+    /VC-13-03: заслонка/,
+    "bottom alarms should include ventilation alarm for the current layer",
+  );
+  assert.doesNotMatch(
+    ventilationState.result.value.bottomText,
+    /DP 6553\.x bar/,
+    "bottom alarms should not keep unrelated cooling pump alarm in ventilation layer",
+  );
+
+  await clickLayerButtonWithText(cdp, "Cooling");
+  await waitForEval(
+    cdp,
+    "window.location.href.includes('layer=cooling') && Boolean(document.querySelector('[data-testid=\"dispatch-equipment-marker-pump-shu2\"]')) && Boolean(document.querySelector('[data-testid=\"dispatch-equipment-marker-sens-dp-01\"]'))",
+    15_000,
+  );
+
+  const coolingState = await cdp.send("Runtime.evaluate", {
+    expression: `(() => ({
+      href: window.location.href,
+      pumpVisible: Boolean(document.querySelector('[data-testid="dispatch-equipment-marker-pump-shu2"]')),
+      sensorVisible: Boolean(document.querySelector('[data-testid="dispatch-equipment-marker-sens-dp-01"]')),
+      inspectorText: document.querySelector('[aria-label="Inspector panel"]')?.textContent ?? '',
+      bottomText: document.querySelector('[aria-label="Alarms and events"]')?.textContent ?? '',
+    }))()`,
+    returnByValue: true,
+  });
+
+  assert.match(coolingState.result.value.href, /layer=cooling/, "cooling layer should sync to URL");
+  assert.equal(coolingState.result.value.pumpVisible, true, "pump should reappear in the cooling canvas layer");
+  assert.equal(coolingState.result.value.sensorVisible, true, "DP sensor should reappear in the cooling canvas layer");
+  assert.match(
+    coolingState.result.value.inspectorText,
+    /Насосная группа ШУ-2/,
+    "right inspector should show pump after returning to the cooling layer",
+  );
+  assert.match(
+    coolingState.result.value.inspectorText,
+    /Equipment in current canvas layer/,
+    "zone inspector should list equipment for the active cooling canvas layer",
+  );
+  assert.match(
+    coolingState.result.value.bottomText,
+    /DP 6553\.x bar/,
+    "bottom alarms should show cooling pump alarm after returning to cooling layer",
+  );
+
+  await cdp.close();
+}
+
 async function assertScenarioInvestorDemo(url) {
   const chromeUserDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-scenario-chrome-"));
   const debugPort = await getFreePort();
@@ -413,7 +518,7 @@ async function assertScenarioInvestorDemo(url) {
   await clickBottomTabWithText(cdp, "Scenario");
   await waitForEval(
     cdp,
-    "document.querySelector('.bottomTabs [role=\"tab\"][aria-selected=\"true\"]')?.textContent?.trim() === 'Scenario' && Array.from(document.querySelectorAll('.scenarioStepItem.completed')).some((item) => item.textContent?.includes('Demo mitigation recorded'))",
+    "document.querySelector('.bottomTabs [role=\"tab\"][aria-selected=\"true\"]')?.textContent?.trim() === 'Scenario' && Array.from(document.querySelectorAll('.scenarioStepItem')).some((item) => item.textContent?.includes('Demo mitigation recorded'))",
     10_000,
   );
 
@@ -499,6 +604,22 @@ async function clickButtonWithText(cdp, text) {
   await clickPoint(cdp, point.result.value);
 }
 
+async function clickBottomItemWithText(cdp, text) {
+  const clicked = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const target = Array.from(document.querySelectorAll('.bottomItem'))
+        .find((item) => item.textContent?.includes(${JSON.stringify(text)}));
+      if (!target) return false;
+      target.scrollIntoView({ block: 'center', inline: 'center' });
+      target.click();
+      return true;
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.ok(clicked.result.value, `bottom item target missing: ${text}`);
+}
+
 async function clickTabWithText(cdp, text) {
   const point = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
@@ -517,21 +638,36 @@ async function clickTabWithText(cdp, text) {
   await clickPoint(cdp, point.result.value);
 }
 
-async function clickBottomTabWithText(cdp, text) {
-  const point = await cdp.send("Runtime.evaluate", {
+async function clickLayerButtonWithText(cdp, text) {
+  const clicked = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
-      const target = Array.from(document.querySelectorAll('.bottomTabs button[role="tab"]'))
+      const target = Array.from(document.querySelectorAll('.layerSwitch button'))
         .find((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled);
-      if (!target) return null;
+      if (!target) return false;
       target.scrollIntoView({ block: 'center', inline: 'center' });
-      const rect = target.getBoundingClientRect();
-      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      target.click();
+      return true;
     })()`,
     returnByValue: true,
   });
 
-  assert.ok(point.result.value, `bottom tab target missing: ${text}`);
-  await clickPoint(cdp, point.result.value);
+  assert.ok(clicked.result.value, `layer button target missing: ${text}`);
+}
+
+async function clickBottomTabWithText(cdp, text) {
+  const clicked = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const target = Array.from(document.querySelectorAll('.bottomTabs button[role="tab"]'))
+        .find((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled);
+      if (!target) return false;
+      target.scrollIntoView({ block: 'center', inline: 'center' });
+      target.click();
+      return true;
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.ok(clicked.result.value, `bottom tab target missing: ${text}`);
 }
 
 async function clickPoint(cdp, { x, y }) {

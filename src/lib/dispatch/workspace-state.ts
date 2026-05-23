@@ -10,7 +10,7 @@ import type {
   WorkspaceState,
   WorkflowJournalEntry,
 } from "./types";
-import { byId } from "./selectors";
+import { byId, matchesStatus, matchesWorkspaceLayer } from "./selectors";
 import {
   advanceScenarioAfterCommand,
   createInitialScenarioState,
@@ -60,6 +60,82 @@ type WorkspaceAction =
   | { type: "togglePresentationScript" }
   | { type: "hydrate"; state: Partial<WorkspaceState> };
 
+function isSystemCompatibleWithLayer(
+  data: WorkspaceMockData,
+  systemId: string | undefined,
+  layer: WorkspaceLayer,
+) {
+  if (!systemId || layer === "plan" || layer === "hvac" || layer === "3d") return true;
+  const system = byId(data.systems, systemId);
+  return system?.layer === layer;
+}
+
+function getEquipmentLayerForNavigation(
+  data: WorkspaceMockData,
+  equipmentId: string | undefined,
+  currentLayer: WorkspaceLayer,
+) {
+  const equipment = byId(data.equipment, equipmentId);
+  if (!equipment || matchesWorkspaceLayer(data, equipment, currentLayer)) return currentLayer;
+  return byId(data.systems, equipment.systemId)?.layer ?? currentLayer;
+}
+
+function equipmentMatchesWorkspaceContext(
+  data: WorkspaceMockData,
+  state: WorkspaceState,
+  equipmentId: string | undefined,
+) {
+  const equipment = byId(data.equipment, equipmentId);
+  if (!equipment) return false;
+  if (state.selectedFloorId && equipment.floorId !== state.selectedFloorId) return false;
+  if (state.selectedZoneId && equipment.zoneId !== state.selectedZoneId) return false;
+  if (state.selectedSystemId && equipment.systemId !== state.selectedSystemId) return false;
+  if (!matchesWorkspaceLayer(data, equipment, state.selectedLayer)) return false;
+  if (!matchesStatus(equipment.status, state.statusFilter)) return false;
+
+  const query = state.searchQuery.trim().toLowerCase();
+  if (!query) return true;
+
+  return [
+    equipment.name,
+    equipment.displayName,
+    equipment.sourceAlias,
+    equipment.id,
+    equipment.type,
+    byId(data.zones, equipment.zoneId)?.name,
+    byId(data.systems, equipment.systemId)?.name,
+  ]
+    .filter(Boolean)
+    .some((value) => String(value).toLowerCase().includes(query));
+}
+
+function normalizeWorkspaceContext(data: WorkspaceMockData, state: WorkspaceState): WorkspaceState {
+  let nextState = state;
+
+  if (!isSystemCompatibleWithLayer(data, nextState.selectedSystemId, nextState.selectedLayer)) {
+    nextState = {
+      ...nextState,
+      selectedSystemId: undefined,
+    };
+  }
+
+  if (
+    nextState.selectedEquipmentId &&
+    !equipmentMatchesWorkspaceContext(data, nextState, nextState.selectedEquipmentId)
+  ) {
+    nextState = {
+      ...nextState,
+      selectedEquipmentId: undefined,
+      selectedAlarmId: undefined,
+      selectedWorkflowActionId: undefined,
+      inspectorTab: "overview",
+      pendingCommand: undefined,
+    };
+  }
+
+  return nextState;
+}
+
 export function createInitialWorkspaceState(data: WorkspaceMockData): WorkspaceState {
   return {
     selectedObjectId: data.object.id,
@@ -98,6 +174,7 @@ function applyPresentationNavigation(
     selectedZoneId: equipment?.zoneId ?? state.selectedZoneId,
     selectedSystemId: equipment?.systemId ?? state.selectedSystemId,
     selectedEquipmentId: equipment?.id ?? state.selectedEquipmentId,
+    selectedLayer: getEquipmentLayerForNavigation(data, equipment?.id, state.selectedLayer),
     selectedAlarmId: shouldStartIncident ? target.alarmId : state.selectedAlarmId,
     selectedWorkflowActionId: undefined,
     inspectorTab,
@@ -165,6 +242,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         selectedZoneId: equipment.zoneId,
         selectedSystemId: equipment.systemId,
         selectedEquipmentId: equipment.id,
+        selectedLayer: getEquipmentLayerForNavigation(data, equipment.id, state.selectedLayer),
         inspectorTab: action.inspectorTab ?? "overview",
         selectedAlarmId: undefined,
         selectedWorkflowActionId: undefined,
@@ -185,6 +263,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         selectedZoneId: equipment.zoneId,
         selectedSystemId: equipment.systemId,
         selectedEquipmentId: equipment.id,
+        selectedLayer: getEquipmentLayerForNavigation(data, equipment.id, state.selectedLayer),
         inspectorTab: "alarms",
         bottomTab: "alarms",
         selectedAlarmId: alarm?.id ?? action.alarmId,
@@ -194,11 +273,11 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
     }
 
     if (action.type === "setLayer") {
-      return { ...state, selectedLayer: action.layer };
+      return normalizeWorkspaceContext(data, { ...state, selectedLayer: action.layer });
     }
 
     if (action.type === "setStatusFilter") {
-      return { ...state, statusFilter: action.statusFilter };
+      return normalizeWorkspaceContext(data, { ...state, statusFilter: action.statusFilter });
     }
 
     if (action.type === "setSearchQuery") {
@@ -335,6 +414,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         selectedZoneId: equipment?.zoneId,
         selectedSystemId: equipment?.systemId,
         selectedEquipmentId: equipment?.id,
+        selectedLayer: getEquipmentLayerForNavigation(data, equipment?.id, state.selectedLayer),
         selectedAlarmId: target.alarmId,
         inspectorTab: target.equipmentId ? "alarms" : "overview",
         bottomTab: "scenario",
@@ -391,6 +471,7 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
         selectedZoneId: equipment?.zoneId ?? state.selectedZoneId,
         selectedSystemId: equipment?.systemId ?? state.selectedSystemId,
         selectedEquipmentId: equipment?.id ?? state.selectedEquipmentId,
+        selectedLayer: getEquipmentLayerForNavigation(data, equipment?.id, state.selectedLayer),
         selectedAlarmId: step?.relatedAlarmId ?? state.selectedAlarmId,
         inspectorTab: step?.relatedAlarmId ? "alarms" : state.inspectorTab,
         bottomTab: "scenario",
@@ -441,13 +522,13 @@ export function createWorkspaceReducer(data: WorkspaceMockData) {
     }
 
     if (action.type === "hydrate") {
-      return {
+      return normalizeWorkspaceContext(data, {
         ...state,
         ...action.state,
         journal: action.state.journal ?? state.journal,
         scenario: action.state.scenario ?? state.scenario,
         presentation: action.state.presentation ?? state.presentation,
-      };
+      });
     }
 
     return state;
