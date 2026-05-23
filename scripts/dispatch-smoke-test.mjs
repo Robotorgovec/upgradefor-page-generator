@@ -403,14 +403,14 @@ async function assertScenarioInvestorDemo(url) {
     10_000,
   );
 
-  await clickTabWithText(cdp, "Commands");
+  await clickBottomTabWithText(cdp, "Commands");
   await waitForEval(
     cdp,
     "document.body.innerText.includes('confirmed by simulator') && document.body.innerText.includes('No backend, BMS, PLC, or field equipment was touched')",
     10_000,
   );
 
-  await clickTabWithText(cdp, "Scenario");
+  await clickBottomTabWithText(cdp, "Scenario");
   await waitForEval(
     cdp,
     "document.querySelector('.bottomTabs [role=\"tab\"][aria-selected=\"true\"]')?.textContent?.trim() === 'Scenario' && Array.from(document.querySelectorAll('.scenarioStepItem.completed')).some((item) => item.textContent?.includes('Demo mitigation recorded'))",
@@ -514,6 +514,23 @@ async function clickTabWithText(cdp, text) {
   });
 
   assert.ok(point.result.value, `tab target missing: ${text}`);
+  await clickPoint(cdp, point.result.value);
+}
+
+async function clickBottomTabWithText(cdp, text) {
+  const point = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const target = Array.from(document.querySelectorAll('.bottomTabs button[role="tab"]'))
+        .find((button) => button.textContent?.trim() === ${JSON.stringify(text)} && !button.disabled);
+      if (!target) return null;
+      target.scrollIntoView({ block: 'center', inline: 'center' });
+      const rect = target.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    })()`,
+    returnByValue: true,
+  });
+
+  assert.ok(point.result.value, `bottom tab target missing: ${text}`);
   await clickPoint(cdp, point.result.value);
 }
 
