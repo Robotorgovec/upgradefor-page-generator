@@ -43,14 +43,16 @@ Expected coverage:
 Use the same smoke script against a preview/staging domain:
 
 ```bash
-DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 Do this after deployment and before sending the URL to investors or customers.
 
-Last deployed smoke result: passed on 2026-05-23.
+Last deployed smoke result: passed on 2026-05-23 after R012 branch reconciliation.
 
 Manual investor flow result: passed on 2026-05-23.
+
+R011 regression result: passed on deployed preview. Visible assets mismatch is fixed, FC-021 is visible in the Zone A canvas, `layer=3d` opens the fallback 2.5D layer, and invalid layer values fall back safely.
 
 ## Demo URLs
 
@@ -63,13 +65,13 @@ http://localhost:3000/dispatch?demo=investor
 Deployed:
 
 ```txt
-https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
+https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
 ```
 
 Preview/staging base URL:
 
 ```txt
-https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app
+https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app
 ```
 
 This is a temporary Vercel preview URL. Re-run deployed smoke if a new preview URL is created.
@@ -132,7 +134,7 @@ Do not claim:
 
 ## Investor Flow Go/No-Go
 
-Current status: GO for the preview URL checked on 2026-05-23.
+Current status: GO for the R012 preview URL checked on 2026-05-23.
 
 Go only if all are true:
 

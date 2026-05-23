@@ -15,18 +15,20 @@ http://localhost:3000/dispatch?demo=investor
 Deployed demo URL:
 
 ```txt
-https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
+https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
 ```
 
 Preview/staging base URL:
 
 ```txt
-https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app
+https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app
 ```
 
 This is a Vercel preview URL, not the production domain. Keep the `?demo=investor` query param for one-click presentation mode.
 
-Last deployed smoke result: passed on 2026-05-23.
+Last deployed smoke result: passed on 2026-05-23 after R012 branch reconciliation.
+
+R011 deployed regression result: passed. Visible assets now stay aligned with zone scope, `/dispatch?layer=3d` opens the workspace 2.5D fallback layer, and `/dispatch?layer=random` falls back safely.
 
 ## Pre-Demo Checklist
 
@@ -34,7 +36,7 @@ Last deployed smoke result: passed on 2026-05-23.
 - Deployed smoke passed:
 
 ```bash
-DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 - `/dispatch?demo=investor` opens the presentation overlay.
@@ -111,7 +113,7 @@ Current model sources are equipment-level assets, not a full building scene:
 - Re-run:
 
 ```bash
-DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 ## Safety Language
@@ -142,7 +144,7 @@ Avoid wording that implies:
 
 ```bash
 npm run test:dispatch
-DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-3fl4yogxk-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 Covered checks:
