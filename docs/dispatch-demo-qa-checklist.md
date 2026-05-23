@@ -43,10 +43,14 @@ Expected coverage:
 Use the same smoke script against a preview/staging domain:
 
 ```bash
-DISPATCH_BASE_URL=https://<preview-or-staging-domain> npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 Do this after deployment and before sending the URL to investors or customers.
+
+Last deployed smoke result: passed on 2026-05-23.
+
+Manual investor flow result: passed on 2026-05-23.
 
 ## Demo URLs
 
@@ -59,8 +63,16 @@ http://localhost:3000/dispatch?demo=investor
 Deployed:
 
 ```txt
-https://<preview-or-staging-domain>/dispatch?demo=investor
+https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
 ```
+
+Preview/staging base URL:
+
+```txt
+https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app
+```
+
+This is a temporary Vercel preview URL. Re-run deployed smoke if a new preview URL is created.
 
 ## API Endpoints
 
@@ -99,6 +111,8 @@ Do not claim:
 
 ## Investor Flow Go/No-Go
 
+Current status: GO for the preview URL checked on 2026-05-23.
+
 Go only if all are true:
 
 - Build and smoke checks pass.
@@ -118,3 +132,18 @@ No-go if any are true:
 - The demo implies real equipment was controlled.
 - The command modal is missing the simulation guardrail.
 - The scenario cannot be reset before the next walkthrough.
+
+## Fallback If Preview URL Is Missing
+
+If no preview/staging URL is available, keep the demo in conditional mode and run local checks:
+
+```bash
+npm run test:ci
+npm run test:dispatch
+```
+
+When a new preview URL is available, run:
+
+```bash
+DISPATCH_BASE_URL=https://<preview-or-staging-domain> npm run test:dispatch
+```

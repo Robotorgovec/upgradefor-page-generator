@@ -15,10 +15,18 @@ http://localhost:3000/dispatch?demo=investor
 Deployed demo URL:
 
 ```txt
-https://<preview-or-staging-domain>/dispatch?demo=investor
+https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app/dispatch?demo=investor
 ```
 
-Use the deployed preview/staging URL from Vercel or the release environment. Keep the `?demo=investor` query param for one-click presentation mode.
+Preview/staging base URL:
+
+```txt
+https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app
+```
+
+This is a Vercel preview URL, not the production domain. Keep the `?demo=investor` query param for one-click presentation mode.
+
+Last deployed smoke result: passed on 2026-05-23.
 
 ## Pre-Demo Checklist
 
@@ -26,7 +34,7 @@ Use the deployed preview/staging URL from Vercel or the release environment. Kee
 - Deployed smoke passed:
 
 ```bash
-DISPATCH_BASE_URL=https://<preview-or-staging-domain> npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 - `/dispatch?demo=investor` opens the presentation overlay.
@@ -87,7 +95,7 @@ If the browser state feels stale, reload:
 - Re-run:
 
 ```bash
-DISPATCH_BASE_URL=https://<preview-or-staging-domain> npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 ## Safety Language
@@ -118,7 +126,7 @@ Avoid wording that implies:
 
 ```bash
 npm run test:dispatch
-DISPATCH_BASE_URL=https://<preview-or-staging-domain> npm run test:dispatch
+DISPATCH_BASE_URL=https://upgradefor-page-generator-fbbkmtpjw-bacalimser-8615s-projects.vercel.app npm run test:dispatch
 ```
 
 Covered checks:
