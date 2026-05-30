@@ -3227,41 +3227,48 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             ))}
           </div>
         </aside>
-        <div className={styles.gatePipeline} role="tablist" aria-label="Release gate pipeline">
-          {gates.map((gate, index) => (
-            <button
-              key={gate[0]}
-              type="button"
-              role="tab"
-              aria-selected={activeGate === index}
-              aria-controls={`release-gate-${index}`}
-              data-active={activeGate === index}
-              onClick={() => setActiveGate(index)}
-            >
-              <span>{String(index).padStart(2, "0")}</span>
-              {gate[0]}
-            </button>
-          ))}
-        </div>
-        <div className={styles.gateDetails}>
-          {gates.map((gate, index) => (
-            <article key={`gate-${gate[0]}`} id={`release-gate-${index}`} role="tabpanel" tabIndex={0} className={styles.gateDetail} hidden={activeGate !== index}>
-              <h3>{gate[0]}</h3>
-              <dl>
-                <div><dt>objective</dt><dd>{gate[1]}</dd></div>
-                <div><dt>required evidence</dt><dd>{gate[2]}</dd></div>
-                <div><dt>owner</dt><dd>{gate[3]}</dd></div>
-                <div><dt>UPGRADE action</dt><dd>{gate[4]}</dd></div>
-                <div><dt>blocked if</dt><dd>{gate[5]}</dd></div>
-                <div><dt>output artifact</dt><dd>{gate[6]}</dd></div>
-                <div><dt>stop/go signal</dt><dd>{getGateStopGo(gate[0])}</dd></div>
-                <div><dt>Vault evidence</dt><dd>{getGateVaultLinks(gate[0]).join(", ") || gate[2]}</dd></div>
-                <div><dt>Risk radar links</dt><dd>{getGateRiskLinks(gate[0]).join(", ") || "service acceptance / open issues"}</dd></div>
-                <div><dt>Route handoff</dt><dd>{getGateRouteLinks(gate[0]).join(", ") || "Handover Room"}</dd></div>
-              </dl>
-            </article>
-          ))}
-        </div>
+        <details className={styles.releaseGateDetailsDisclosure}>
+          <summary>
+            <span>Release gate detail</span>
+            <strong>Открыть pipeline gates, stop/go checklist и linked evidence</strong>
+            <small>Selected gate packet остается сверху; полный pipeline раскрывается по запросу без внутреннего скролла.</small>
+          </summary>
+          <div className={styles.gatePipeline} role="tablist" aria-label="Release gate pipeline">
+            {gates.map((gate, index) => (
+              <button
+                key={gate[0]}
+                type="button"
+                role="tab"
+                aria-selected={activeGate === index}
+                aria-controls={`release-gate-${index}`}
+                data-active={activeGate === index}
+                onClick={() => setActiveGate(index)}
+              >
+                <span>{String(index).padStart(2, "0")}</span>
+                {gate[0]}
+              </button>
+            ))}
+          </div>
+          <div className={styles.gateDetails}>
+            {gates.map((gate, index) => (
+              <article key={`gate-${gate[0]}`} id={`release-gate-${index}`} role="tabpanel" tabIndex={0} className={styles.gateDetail} hidden={activeGate !== index}>
+                <h3>{gate[0]}</h3>
+                <dl>
+                  <div><dt>objective</dt><dd>{gate[1]}</dd></div>
+                  <div><dt>required evidence</dt><dd>{gate[2]}</dd></div>
+                  <div><dt>owner</dt><dd>{gate[3]}</dd></div>
+                  <div><dt>UPGRADE action</dt><dd>{gate[4]}</dd></div>
+                  <div><dt>blocked if</dt><dd>{gate[5]}</dd></div>
+                  <div><dt>output artifact</dt><dd>{gate[6]}</dd></div>
+                  <div><dt>stop/go signal</dt><dd>{getGateStopGo(gate[0])}</dd></div>
+                  <div><dt>Vault evidence</dt><dd>{getGateVaultLinks(gate[0]).join(", ") || gate[2]}</dd></div>
+                  <div><dt>Risk radar links</dt><dd>{getGateRiskLinks(gate[0]).join(", ") || "service acceptance / open issues"}</dd></div>
+                  <div><dt>Route handoff</dt><dd>{getGateRouteLinks(gate[0]).join(", ") || "Handover Room"}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.statusOfCustomer, "statusOfCustomer")} data-section="customer-status" aria-labelledby="customer-title">
