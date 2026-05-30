@@ -269,28 +269,65 @@
   text-transform: uppercase;
 }
 
-.decisionPathHeader {
-  display: flex;
+.decisionPathRail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.commandDisclosure {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--proposal-brand-soft) 54%, #ffffff);
+}
+
+.commandDisclosure summary {
+  min-height: 58px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.22fr) minmax(0, 1fr) minmax(150px, 0.28fr);
+  gap: 10px;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  cursor: pointer;
+  list-style: none;
 }
 
-.decisionPathHeader p,
-.decisionPathHeader span {
-  margin: 0;
+.commandDisclosure summary::-webkit-details-marker {
+  display: none;
 }
 
-.decisionPathHeader span {
+.commandDisclosure summary::after {
+  content: "+";
+  justify-self: end;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+}
+
+.commandDisclosure[open] summary::after {
+  content: "–";
+}
+
+.commandDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.commandDisclosure summary small {
   color: var(--proposal-text-soft);
   font-size: 13px;
   line-height: 1.35;
 }
 
-.decisionPathRail {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+.commandDisclosure .decisionPathRail {
+  padding: 0 12px 12px;
 }
 
 .decisionPathRail button {
@@ -4353,8 +4390,8 @@
     display: grid;
   }
 
-  .decisionPathHeader {
-    display: grid;
+  .commandDisclosure summary {
+    grid-template-columns: 1fr;
   }
 
   .missionCard {

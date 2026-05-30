@@ -1702,25 +1702,28 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
-        <div className={styles.decisionPathHeader}>
-          <p className={styles.eyebrow}>Decision Path</p>
-          <span>одна связанная линия: supplier → contract → delivery → work plan → handover</span>
-        </div>
-        <div className={styles.decisionPathRail} aria-label="Connected decision path">
-          {decisionPath.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              data-active={activePresentationMode === item.mode}
-              onClick={() => setActivePresentationMode(item.mode)}
-            >
-              <span>{item.label}</span>
-              <strong>{item.title}</strong>
-              <small>{item.detail}</small>
-              <em>{item.output}</em>
-            </button>
-          ))}
-        </div>
+        <details className={styles.commandDisclosure}>
+          <summary>
+            <span className={styles.eyebrow}>Decision Path</span>
+            <strong>supplier → contract → delivery → work plan → handover</strong>
+            <small>Открыть связанный сценарий</small>
+          </summary>
+          <div className={styles.decisionPathRail} aria-label="Connected decision path">
+            {decisionPath.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                data-active={activePresentationMode === item.mode}
+                onClick={() => setActivePresentationMode(item.mode)}
+              >
+                <span>{item.label}</span>
+                <strong>{item.title}</strong>
+                <small>{item.detail}</small>
+                <em>{item.output}</em>
+              </button>
+            ))}
+          </div>
+        </details>
         <div className={styles.modeEndpoint} aria-label="Current mode decision endpoint">
           <article>
             <span>что выбрано</span>

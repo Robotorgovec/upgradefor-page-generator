@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 35 self-review
+# CONTRACT-WINGPRO-2605281047-R067 / cycle 36 self-review
 
 1. Что улучшено в этом цикле?
-- В Executive Command Layer добавлены detail actions для каждого режима: пользователь может открыть релевантные подробные блоки без ручной прокрутки всей страницы.
+- Decision Path внутри Executive Command Layer переведен в нативный collapsible details. Верхний command layer стал компактнее, но сценарий supplier → contract → delivery → work plan → handover остался доступен.
 
 2. Как это помогает заказчику принять решение?
-- Страница ощущается более управляемой: сначала краткий endpoint, затем быстрый переход к нужным доказательствам по текущему режиму.
+- Сначала виден summary и endpoint, а подробную связанную линию можно открыть по требованию. Это уменьшает ощущение длинной страницы и сохраняет управляемую презентацию.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Detail actions связывают результаты режима с конкретными доказательными блоками: Supplier Request Lab, Offer Comparison Board, Contract Simulator, Route Map, Field Execution Board, Photo Evidence Wall, Handover Room.
+- Да. Endpoint остается видимым, а Decision Path открывается как дополнительный сценарный слой.
 
 4. Стало ли интерактивнее?
-- Да. Для всех 6 режимов detail links меняются вместе с active mode и ведут к нужным секциям.
+- Да. Нативный disclosure раскрывает/скрывает Decision Path; внутри него кнопки продолжают переключать presentation mode.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Тексты не добавляют гарантий поставки, монтажа, таможни или технического утверждения.
+- Нет. Текстовая позиция не изменилась: UPGRADE структурирует данные, статусы и handoff, не гарантирует внешние действия.
 
 6. Не были ли изменены forbidden files?
 - Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. QA подтвердил no horizontal scroll на 1440/1280/768/375/320. Detail actions являются обычными ссылками с наследуемым focus-visible.
+- Нет. details/summary нативно доступны, QA подтвердил no horizontal scroll на 1440/1280/768/375/320, path buttons работают после раскрытия.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=QA/DESIGN: провести визуальный pass по first-screen density и при необходимости уплотнить/смягчить command layer, чтобы он не выглядел тяжелым на мобильном.
+- MODE=QA/DESIGN: провести компактный visual polish для mobile command layer или dense data modules, если STOP не появится.
