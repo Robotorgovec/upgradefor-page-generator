@@ -484,6 +484,20 @@ const contractGateMatrix = [
   ["Contract boundary", "scope, exclusions, third-party roles", "WinGPro / counsel if engaged", "responsibility clarity", "UPGRADE prepares draft inputs"],
 ] as const;
 
+const contractValueControls = [
+  ["Price logic", "3 000 000 ₸ covers one managed IT/data and procurement-coordination contour, not a supplier contact fee", "data-room, risk register, release gates, handover packs"],
+  ["Decision quality", "payment and contract choices are linked to evidence gates, open blockers and owner-required approvals", "PI/bank/material/pressure before payment, packing/photo/video before shipment"],
+  ["Time discipline", "structured questions reduce repeated clarification loops and make late blockers visible earlier", "owner-required statuses, next-best actions and release readiness signals"],
+  ["Acceptance clarity", "service acceptance is tied to delivered artifacts, not to physical results of third parties", "delivery board, digital supplier/product card and copy-ready executive summary"],
+] as const;
+
+const acceptanceGuardrails = [
+  ["Accepted by deliverables", "приемка результата осуществляется по deliverables", "data-room index, risk register, release board, handover packs and digital supplier/product cards"],
+  ["Not accepted by third-party outcomes", "manufacturer, carrier, broker, customs, mounting side and certification actions stay external", "tracked as external dependencies, not UPGRADE service acceptance criteria"],
+  ["External costs excluded", "equipment, delivery, duties, VAT, broker, certification, mounting, PNR, inspection and bank commissions", "outside the 3 000 000 ₸ service price"],
+  ["Decision owner remains WinGPro", "payment mode, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
+] as const;
+
 const deliveryTimeline = [
   {
     id: "payment",
@@ -1815,6 +1829,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </ul>
               </div>
             </aside>
+            <div className={styles.contractValueGrid} aria-label="Contract value controls">
+              {contractValueControls.map(([title, detail, artifact]) => (
+                <section key={title}>
+                  <span>{title}</span>
+                  <strong>{detail}</strong>
+                  <p>{artifact}</p>
+                </section>
+              ))}
+            </div>
             <div className={styles.contractGateMatrix} role="table" aria-label="Contract gate matrix">
               <div role="row" className={styles.contractGateHeader}>
                 <span role="columnheader">Decision area</span>
@@ -2475,10 +2498,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <button type="button" aria-pressed={paymentMode === "full"} onClick={() => setPaymentMode("full")}>100%</button>
             </div>
             <p>{paymentMode === "split" ? "1 500 000 ₸ старт / 1 500 000 ₸ перед передачей результата." : "3 000 000 ₸ единым платежом при согласовании."}</p>
+            <dl className={styles.paymentValueList}>
+              <div><dt>что защищает цена</dt><dd>data-room, risk register, release gates, handover packs and digital product asset</dd></div>
+              <div><dt>что не покупается</dt><dd>не контакт поставщика и не физическая поставка оборудования</dd></div>
+            </dl>
           </article>
           <article>
             <h3>что считается результатом</h3>
             <ul>{["data-room index", "risk register", "release gate board", "handover packs", "digital supplier/product card", "copy-ready executive summary"].map((item) => <li key={item}>{item}</li>)}</ul>
+            <div className={styles.acceptanceGuardrails} aria-label="Acceptance guardrails">
+              {acceptanceGuardrails.map(([title, detail, proof]) => (
+                <section key={title}>
+                  <strong>{title}</strong>
+                  <p>{detail}</p>
+                  <small>{proof}</small>
+                </section>
+              ))}
+            </div>
             <div className={styles.acceptanceLink}>
               <strong>Active closeout pack</strong>
               <span>{handoverPack.name}</span>

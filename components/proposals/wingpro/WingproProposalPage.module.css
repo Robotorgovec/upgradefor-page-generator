@@ -1840,6 +1840,45 @@
   line-height: 1.45;
 }
 
+.contractValueGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.contractValueGrid section {
+  min-height: 126px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.contractValueGrid span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.contractValueGrid p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.contractValueGrid strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 .contractGateMatrix {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
@@ -3162,6 +3201,63 @@
   background: #ffffff;
 }
 
+.paymentValueList {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.paymentValueList div {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.paymentValueList dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.paymentValueList dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.acceptanceGuardrails {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.acceptanceGuardrails section {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 11px;
+  background: var(--proposal-surface-soft);
+  display: grid;
+  gap: 6px;
+}
+
+.acceptanceGuardrails strong {
+  color: var(--proposal-text);
+}
+
+.acceptanceGuardrails p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.acceptanceGuardrails small {
+  color: var(--proposal-text-muted);
+  line-height: 1.35;
+}
+
 .acceptanceLink {
   margin: 12px 0;
   background: var(--proposal-brand-soft);
@@ -3383,6 +3479,8 @@
   .metricGrid,
   .deliveryPhaseGrid,
   .deliveryReleaseChecklist,
+  .contractValueGrid,
+  .acceptanceGuardrails,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
@@ -3643,6 +3741,8 @@
   .metricGrid,
   .deliveryPhaseGrid,
   .deliveryReleaseChecklist,
+  .contractValueGrid,
+  .acceptanceGuardrails,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
