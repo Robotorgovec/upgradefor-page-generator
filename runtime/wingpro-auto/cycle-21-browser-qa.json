@@ -1,0 +1,84 @@
+{
+  "cb": 1780139192,
+  "pageUrl": "http://localhost:3078/cp/2605281047-wingpro?cb=1780139192",
+  "pageStatus": 200,
+  "assetUrl": "http://localhost:3078/assets/logo/logo-black-only.png?cb=1780139192",
+  "assetStatus": {
+    "status": 200,
+    "ok": true
+  },
+  "diagnostics": {
+    "href": "http://localhost:3078/cp/2605281047-wingpro?cb=1780139192#layer-equipment",
+    "viewport": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "currentSrc": "http://localhost:3078/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "imageComplete": true,
+    "supplierSignals": 4,
+    "offerGates": 4,
+    "noindex": true,
+    "nofollow": true
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "noHorizontalScroll": true,
+      "supplierSignalsVisible": true,
+      "offerGatesVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-21/wingpro-cycle-21-1440.png"
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "noHorizontalScroll": true,
+      "supplierSignalsVisible": true,
+      "offerGatesVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-21/wingpro-cycle-21-1280.png"
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "noHorizontalScroll": true,
+      "supplierSignalsVisible": true,
+      "offerGatesVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-21/wingpro-cycle-21-768.png"
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "noHorizontalScroll": true,
+      "supplierSignalsVisible": true,
+      "offerGatesVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-21/wingpro-cycle-21-375.png"
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "noHorizontalScroll": true,
+      "supplierSignalsVisible": true,
+      "offerGatesVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-21/wingpro-cycle-21-320.png"
+    }
+  ],
+  "interaction": {
+    "supplierSelected": [
+      "Candidate B67reserve"
+    ],
+    "offerSelected": [
+      "Price-led"
+    ],
+    "supplierPacket": "Selected supplier decision packetCandidate Bdecision signalreserve path for price benchmark and fallback negotiationnext evidence requestmanufacturer clarification, bank details confirmation, delivery terms EXW/FCA/DAPWinGPro handoff valueWinGPro видит, почему канал нельзя вести как основной без дополнительных доказательствblockers before releasemanufacturer/trader rolebank detailsdrawing and factory contact",
+    "offerSurface": "Selected offer decision surfacePrice-ledrequires cautionowner decisionWinGPro может использовать цену как benchmark, но не как единственный критерий releasehandoff outputcommercial delta-list + reserve supplier notes + payment risk memorisks controlledlow-price trapunclear trader marginbank/details gap"
+  },
+  "reducedMotion": {
+    "stable": true,
+    "query": true
+  }
+}

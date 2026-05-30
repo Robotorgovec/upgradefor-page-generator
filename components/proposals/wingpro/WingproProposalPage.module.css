@@ -1338,6 +1338,49 @@
   font-weight: 850;
 }
 
+.supplierSignalGrid,
+.offerGateStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.supplierSignalGrid section,
+.offerGateStrip section {
+  min-height: 130px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 54%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+.supplierSignalGrid span,
+.offerGateStrip span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.supplierSignalGrid strong,
+.offerGateStrip strong {
+  color: var(--proposal-text);
+  line-height: 1.35;
+}
+
+.supplierSignalGrid p,
+.offerGateStrip p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
 .supplierWorkbench {
   display: grid;
   grid-template-columns: minmax(250px, 0.38fr) minmax(190px, 0.24fr) minmax(0, 1fr);
@@ -3216,6 +3259,8 @@
 
   .protectionGrid,
   .requestQueue,
+  .supplierSignalGrid,
+  .offerGateStrip,
   .scoreGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -3330,6 +3375,8 @@
   .fieldColumns,
   .candidateGrid,
   .requestQueue,
+  .supplierSignalGrid,
+  .offerGateStrip,
   .scoreGrid,
   .workPlanGrid,
   .evidenceGrid,
@@ -3588,6 +3635,8 @@
   .fieldColumns,
   .candidateGrid,
   .requestQueue,
+  .supplierSignalGrid,
+  .offerGateStrip,
   .scoreGrid,
   .workPlanGrid,
   .evidenceGrid,

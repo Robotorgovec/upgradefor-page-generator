@@ -315,6 +315,13 @@ const supplierRequestQueue = [
   ["Evidence", "photo/video/nameplate, packing list, weight/dimensions", "before shipment"],
 ] as const;
 
+const supplierOperatingSignals = [
+  ["Source clarity", "manufacturer/trader role is separated before shortlist", "prevents hidden channel assumptions"],
+  ["Evidence gap", "material, pressure, bank and shipment media are tracked as open requests", "keeps payment readiness visible"],
+  ["Release readiness", "shortlist is conditional until Gate 1 and Gate 3 evidence is visible", "turns selection into stop/go logic"],
+  ["WinGPro value", "supplier rationale and blockers are ready for internal discussion", "reduces repeat questions inside the team"],
+] as const;
+
 const offerComparison = [
   {
     metric: "Technical fit",
@@ -356,6 +363,13 @@ const offerComparison = [
     decisionSignal: "select A only through evidence-led release gates",
     owner: "decision log",
   },
+] as const;
+
+const offerDecisionGates = [
+  ["Technical gate", "model, material, pressure and drawing evidence", "responsible technical specialist"],
+  ["Payment gate", "PI, bank details, payment scenario and unresolved blockers", "WinGPro decision owner"],
+  ["Shipment gate", "packing, dimensions, photo/video/nameplate and invoice draft", "supplier / logistics"],
+  ["Handoff gate", "comparison board, recommendation note and open questions", "UPGRADE transfers structure"],
 ] as const;
 
 const offerDecisionModes = [
@@ -1583,6 +1597,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </section>
               ))}
             </div>
+            <div className={styles.supplierSignalGrid} aria-label="Supplier operating signals">
+              {supplierOperatingSignals.map(([signal, detail, value]) => (
+                <section key={signal}>
+                  <span>{signal}</span>
+                  <strong>{detail}</strong>
+                  <p>{value}</p>
+                </section>
+              ))}
+            </div>
             <div className={styles.supplierWorkbench}>
               <aside className={styles.supplierDecisionPacket} aria-live="polite" aria-label="Selected supplier decision packet">
                 <p className={styles.eyebrow}>Selected supplier decision packet</p>
@@ -1681,6 +1704,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <h4>{mode.title}</h4>
                   <p>{mode.summary}</p>
                   <strong>{mode.impact}</strong>
+                </section>
+              ))}
+            </div>
+            <div className={styles.offerGateStrip} aria-label="Offer decision gates">
+              {offerDecisionGates.map(([gate, evidence, owner]) => (
+                <section key={gate}>
+                  <span>{gate}</span>
+                  <strong>{evidence}</strong>
+                  <p>{owner}</p>
                 </section>
               ))}
             </div>

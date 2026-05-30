@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R065 / cycle 20 self-review
+# CONTRACT-WINGPRO-2605281047-R065 / cycle 21 self-review
 
 1. Что улучшено в этом цикле?
-   Верхний Project Control Scale стал более похож на procurement cockpit: добавлен snapshot из 4 контуров и расширены HTML-first panels с status, owner, next action и handoff output.
+   Supplier Request Lab получил operating signals, а Offer Comparison Board получил decision gates. Эти полосы показывают source clarity, evidence gap, release readiness, WinGPro value, technical/payment/shipment/handoff gates.
 
 2. Как это помогает заказчику принять решение?
-   WinGPro быстрее видит управленческий масштаб: supplier visibility, decision quality, contract release и implementation path до погружения в детальные boards.
+   WinGPro быстрее понимает, что выбор поставщика и условий ведется через evidence и gates, а не через субъективную переписку или одну цену.
 
 3. Стало ли понятнее, что получает WinGPro?
-   Да. Каждый этап control scale теперь показывает не только общий результат, но и владельца, ближайшее действие и конкретный handoff.
+   Да. Стало явнее, какие сигналы и gates становятся входом в shortlist, comparison board, payment decision и handoff.
 
 4. Стало ли интерактивнее?
-   Небольшое усиление: при переключении Project Control tab теперь меняется более содержательный active panel и command panel.
+   Да. Основные tabs сохранились; browser QA подтвердил переключение Candidate B и Price-led decision mode с обновлением live surfaces.
 
 5. Не расширилась ли ответственность UPGRADE?
-   Нет. Новые тексты остаются в рамках evidence/status/handoff/decision support и не обещают поставку, монтаж, таможню или техническое утверждение.
+   Нет. Новые тексты описывают tracking, evidence, stop/go logic, decision support и handoff structure; финальные решения остаются за WinGPro и профильными участниками.
 
 6. Не были ли изменены forbidden files?
-   Нет. Изменены только page-specific TSX/CSS и runtime QA/self-review files. Unrelated dispatch/AGENTS изменения оставлены нетронутыми.
+   Нет. Изменены только page-specific TSX/CSS и runtime QA/self-review/report files.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-   Нет. Local browser QA прошел на 1440/1280/768/375/320 без horizontal scroll; control snapshot виден; Project Control tabs остаются button/role=tab.
+   Нет. 1440/1280/768/375/320 прошли без horizontal scroll; новые strips видимы; interactive controls остаются native buttons/tabs.
 
 8. Что следующий самый полезный micro-goal?
-   MODE=DESIGN: визуально усилить Supplier Request Lab и Offer Comparison Board как две главные decision-панели после Project Control snapshot.
+   MODE=CONTENT/LIABILITY: пройти текстовый слой Contract Decision Simulator и Payment/Acceptance на предмет более сильной защиты цены без расширения ответственности.
