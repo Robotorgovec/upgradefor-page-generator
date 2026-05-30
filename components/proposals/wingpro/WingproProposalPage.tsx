@@ -213,6 +213,10 @@ const supplierCandidates = [
     status: "shortlist",
     recommendation: "selected candidate after evidence gates",
     rationale: "лучший баланс model fit, прямого канала и готовности к структурированному evidence request",
+    decisionSignal: "selected path if evidence gates close before payment",
+    blockers: ["pressure class evidence", "packing dimensions", "pre-shipment nameplate/photo/video"],
+    nextEvidence: "material + pressure confirmation, then PI/payment terms delta-list",
+    handoffValue: "WinGPro получает shortlist rationale и список вопросов, которые надо закрыть до оплаты",
     criteria: [
       ["technical fit", "BB150B-307H / 2 units", "86"],
       ["document readiness", "PI + specification draft", "72"],
@@ -229,6 +233,10 @@ const supplierCandidates = [
     status: "reserve",
     recommendation: "reserve until commercial delta-list is closed",
     rationale: "может быть полезен как price check, но роль трейдера, bank details и delivery evidence требуют отдельной проверки",
+    decisionSignal: "reserve path for price benchmark and fallback negotiation",
+    blockers: ["manufacturer/trader role", "bank details", "drawing and factory contact"],
+    nextEvidence: "manufacturer clarification, bank details confirmation, delivery terms EXW/FCA/DAP",
+    handoffValue: "WinGPro видит, почему канал нельзя вести как основной без дополнительных доказательств",
     criteria: [
       ["technical fit", "model match requires factory confirmation", "71"],
       ["document readiness", "PI received, drawing missing", "54"],
@@ -245,6 +253,10 @@ const supplierCandidates = [
     status: "watch",
     recommendation: "watch only until response speed improves",
     rationale: "канал может дать альтернативу, но текущий response time создает риск для сроков согласования и handoff",
+    decisionSignal: "watch path only if response SLA and technical sheet arrive",
+    blockers: ["response SLA", "technical sheet", "export document checklist"],
+    nextEvidence: "supplier profile, pressure evidence and export document checklist",
+    handoffValue: "WinGPro получает ранний сигнал, что канал может замедлить согласования",
     criteria: [
       ["technical fit", "pressure evidence required", "60"],
       ["document readiness", "documents not structured", "38"],
@@ -261,6 +273,10 @@ const supplierCandidates = [
   status: string;
   recommendation: string;
   rationale: string;
+  decisionSignal: string;
+  blockers: ReadonlyArray<string>;
+  nextEvidence: string;
+  handoffValue: string;
   criteria: ReadonlyArray<readonly [string, string, string]>;
   openRequests: ReadonlyArray<string>;
 }>;
@@ -1162,6 +1178,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               ))}
             </div>
             <div className={styles.supplierWorkbench}>
+              <aside className={styles.supplierDecisionPacket} aria-live="polite" aria-label="Selected supplier decision packet">
+                <p className={styles.eyebrow}>Selected supplier decision packet</p>
+                <h4>{supplier.name}</h4>
+                <dl>
+                  <div><dt>decision signal</dt><dd>{supplier.decisionSignal}</dd></div>
+                  <div><dt>next evidence request</dt><dd>{supplier.nextEvidence}</dd></div>
+                  <div><dt>WinGPro handoff value</dt><dd>{supplier.handoffValue}</dd></div>
+                </dl>
+                <div>
+                  <strong>blockers before release</strong>
+                  <ul>
+                    {supplier.blockers.map((blocker) => <li key={blocker}>{blocker}</li>)}
+                  </ul>
+                </div>
+              </aside>
               <div className={styles.candidateStack} role="tablist" aria-label="Supplier candidates">
                 {supplierCandidates.map((candidate) => (
                   <button

@@ -1257,8 +1257,67 @@
 
 .supplierWorkbench {
   display: grid;
-  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  grid-template-columns: minmax(250px, 0.38fr) minmax(190px, 0.24fr) minmax(0, 1fr);
   gap: 12px;
+}
+
+.supplierDecisionPacket {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 11px;
+  align-content: start;
+}
+
+.supplierDecisionPacket h4 {
+  margin: 0;
+  color: var(--proposal-text);
+  font-size: 24px;
+}
+
+.supplierDecisionPacket dl {
+  display: grid;
+  gap: 8px;
+}
+
+.supplierDecisionPacket dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.supplierDecisionPacket dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.supplierDecisionPacket dd {
+  margin: 5px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.38;
+  font-weight: 820;
+}
+
+.supplierDecisionPacket strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--proposal-text);
+}
+
+.supplierDecisionPacket ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
 }
 
 .candidateStack {

@@ -1,0 +1,96 @@
+{
+  "cb": 1780133849,
+  "localUrl": "http://localhost:3070/cp/2605281047-wingpro?cb=1780133849",
+  "base": {
+    "url": "http://localhost:3070/cp/2605281047-wingpro?cb=1780133849#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1425,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://localhost:3070/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "missing": [],
+    "packetText": "Selected supplier decision packetCandidate Adecision signalselected path if evidence gates close before paymentnext evidence requestmaterial + pressure confirmation, then PI/payment terms delta-listWinGPro handoff valueWinGPro получает shortlist rationale и список вопросов, которые надо закрыть до оплатыblockers before releasepressure class evidencepacking dimensionspre-shipment nameplate/photo/video",
+    "caseInsensitivePacketCheck": {
+      "required": [
+        "selected supplier decision packet",
+        "decision signal",
+        "next evidence request",
+        "wingpro handoff value",
+        "blockers before release"
+      ],
+      "missing": []
+    },
+    "missingNote": "Visible supplier packet labels are transformed by CSS; case-insensitive packet check passes."
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "packetVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "packetVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "packetVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "packetVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "packetVisible": true
+    }
+  ],
+  "interaction": {
+    "reserveClicked": true,
+    "before": "Selected supplier decision packetCandidate Adecision signalselected path if evidence gates close before paymentnext evidence requestmaterial + pressure confirmation, then PI/payment terms delta-listWinGPro handoff valueWinGPro получает shortlist rationale и список вопросов, которые надо закрыть до оплатыblockers before releasepressure class evidencepacking dimensionspre-shipment nameplate/photo/video",
+    "after": "Selected supplier decision packetCandidate Bdecision signalreserve path for price benchmark and fallback negotiationnext evidence requestmanufacturer clarification, bank details confirmation, delivery terms EXW/FCA/DAPWinGPro handoff valueWinGPro видит, почему канал нельзя вести как основной без дополнительных доказательствblockers before releasemanufacturer/trader rolebank detailsdrawing and factory contact",
+    "packetUpdated": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-10/wingpro-c10-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-10/wingpro-c10-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-10/wingpro-c10-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-10/wingpro-c10-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-10/wingpro-c10-320.png"
+  ]
+}
