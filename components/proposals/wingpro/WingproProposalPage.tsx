@@ -1209,6 +1209,7 @@ const presentationModes: Array<{
     confirm: string;
     receives: string;
   };
+  detailActions: ReadonlyArray<readonly [string, string]>;
   copyVariant: CopyVariant;
   sections: string[];
 }> = [
@@ -1223,6 +1224,7 @@ const presentationModes: Array<{
       confirm: "scope, price, payment mode and acceptance by deliverables",
       receives: "mission summary, control room, release board, handover packs and Digital Product Asset",
     },
+    detailActions: [["Открыть Digital Twin", "#digital-twin"], ["Решение к согласованию", "#acceptance-title"]],
     copyVariant: "executive",
     sections: ["hero", "digitalTwin", "valueOs", "statusOfCustomer", "acceptance", "copyPackage"],
   },
@@ -1237,6 +1239,7 @@ const presentationModes: Array<{
       confirm: "manufacturer/trader role, material/pressure evidence and open requests",
       receives: "supplier profile, comparison board, recommendation note and evidence request list",
     },
+    detailActions: [["Supplier Request Lab", "#supplier-request-lab"], ["Offer Comparison Board", "#offer-comparison-board"]],
     copyVariant: "command",
     sections: ["projectControl", "filmstrip", "controlRoom", "vault", "riskRadar"],
   },
@@ -1251,6 +1254,7 @@ const presentationModes: Array<{
       confirm: "50/50 or 100%, before-payment evidence and boundary wording",
       receives: "draft terms summary, payment readiness board and acceptance guardrails",
     },
+    detailActions: [["Contract Simulator", "#contract-decision-simulator"], ["Acceptance", "#acceptance-title"]],
     copyVariant: "payment",
     sections: ["projectControl", "valueOs", "vault", "releaseGates", "acceptance"],
   },
@@ -1265,6 +1269,7 @@ const presentationModes: Array<{
       confirm: "packing data, dimensions, pickup contact, invoice draft and broker inputs",
       receives: "delivery timeline, route map, logistics data-pack and customs handoff inputs",
     },
+    detailActions: [["Delivery Timeline", "#delivery-timeline"], ["Route Map", "#route-title"]],
     copyVariant: "command",
     sections: ["digitalTwin", "controlRoom", "routeMap", "vault", "releaseGates"],
   },
@@ -1279,6 +1284,7 @@ const presentationModes: Array<{
       confirm: "connection points, access/service space and technical approval owner",
       receives: "mounting coordination pack, field execution preview and open questions checklist",
     },
+    detailActions: [["Work Plan Builder", "#work-plan-builder"], ["Field Execution Board", "#field-execution-board"]],
     copyVariant: "boundary",
     sections: ["projectControl", "controlRoom", "statusOfCustomer", "handoverRoom", "releaseGates"],
   },
@@ -1293,6 +1299,7 @@ const presentationModes: Array<{
       confirm: "deliverables acceptance, open issues register and service closeout package",
       receives: "photo evidence register, closeout index, digital supplier card and product line card",
     },
+    detailActions: [["Photo Evidence Wall", "#photo-evidence-wall"], ["Handover Room", "#handover"]],
     copyVariant: "deliverables",
     sections: ["riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
   },
@@ -1730,6 +1737,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <button type="button" onClick={() => copyBoardText(activePresentation.copyVariant)}>
             Скопировать summary режима
           </button>
+        </div>
+        <div className={styles.modeDetailActions} aria-label="Current mode detail actions">
+          <span>открыть детали режима</span>
+          {activePresentation.detailActions.map(([label, href]) => (
+            <a key={href} href={href}>{label}</a>
+          ))}
         </div>
       </section>
 
@@ -2341,7 +2354,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.evidenceWall}>
+          <article className={styles.evidenceWall} id="photo-evidence-wall">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Photo Evidence Wall</p>
               <h3>Evidence register без server upload</h3>
