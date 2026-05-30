@@ -1,0 +1,223 @@
+{
+  "timestamp": "2026-05-30T15:15:54.090Z",
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "innerWidth": 1440,
+    "bodyScrollWidth": 1425,
+    "documentScrollWidth": 1425,
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "imgProof": {
+      "index": 0,
+      "alt": "UPGRADE Innovations",
+      "src": "/assets/logo/logo-black-only.png",
+      "currentSrc": "http://127.0.0.1:3102/assets/logo/logo-black-only.png",
+      "complete": true,
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "offerBoard": {
+      "width": 1050,
+      "height": 1444,
+      "clientWidth": 1048,
+      "scrollWidth": 1048,
+      "noClip": true,
+      "display": "grid",
+      "gridTemplateColumns": "1012px",
+      "overflowY": "visible"
+    },
+    "offerMatrix": {
+      "width": 1012,
+      "height": 526,
+      "clientWidth": 1012,
+      "scrollWidth": 1012,
+      "noClip": true,
+      "display": "grid",
+      "gridTemplateColumns": "1012px",
+      "overflowY": "visible"
+    },
+    "offerRows": [
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixHeader",
+        "width": 1012,
+        "height": 57,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      },
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixRow",
+        "width": 1012,
+        "height": 103,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      },
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixRow",
+        "width": 1012,
+        "height": 72,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      },
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixRow",
+        "width": 1012,
+        "height": 87,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      },
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixRow",
+        "width": 1012,
+        "height": 70,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      },
+      {
+        "className": "WingproProposalPage-module__pm2b_G__offerMatrixRow",
+        "width": 1012,
+        "height": 87,
+        "clientWidth": 1010,
+        "scrollWidth": 1010,
+        "noClip": true,
+        "cells": 6
+      }
+    ],
+    "offerLabelsDisplay": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "unexpectedScrollContainers": 0,
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "requestedWidth": 1440,
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "documentScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "offerBoardWidth": 1050,
+      "offerMatrixNoClip": true,
+      "offerRowMaxHeight": 103,
+      "offerRowsNoClip": true,
+      "offerHeaderVisible": true,
+      "offerLabelsVisibleCount": 0,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 1280,
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "documentScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "offerBoardWidth": 890,
+      "offerMatrixNoClip": true,
+      "offerRowMaxHeight": 103,
+      "offerRowsNoClip": true,
+      "offerHeaderVisible": true,
+      "offerLabelsVisibleCount": 0,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 768,
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "documentScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "offerBoardWidth": 692,
+      "offerMatrixNoClip": true,
+      "offerRowMaxHeight": 218,
+      "offerRowsNoClip": true,
+      "offerHeaderVisible": false,
+      "offerLabelsVisibleCount": 30,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 375,
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "documentScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "offerBoardWidth": 319,
+      "offerMatrixNoClip": true,
+      "offerRowMaxHeight": 331,
+      "offerRowsNoClip": true,
+      "offerHeaderVisible": false,
+      "offerLabelsVisibleCount": 30,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 320,
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "documentScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "offerBoardWidth": 278,
+      "offerMatrixNoClip": true,
+      "offerRowMaxHeight": 428,
+      "offerRowsNoClip": true,
+      "offerHeaderVisible": false,
+      "offerLabelsVisibleCount": 30,
+      "unexpectedScrollContainers": 0
+    }
+  ],
+  "interaction": {
+    "selected": [
+      "Price-led"
+    ],
+    "panelText": "Selected offer decision surfacePrice-ledrequires cautionowner decisionWinGPro может использовать цену как benchmark, но не как единственный критерий releasehandoff outputcommercial"
+  }
+}
