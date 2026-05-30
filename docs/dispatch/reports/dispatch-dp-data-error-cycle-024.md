@@ -14,7 +14,9 @@ Micro-goal: mark physically impossible DP telemetry as `DATA_ERROR`.
 
 ## Preview
 
-Final preview URL is written in the runtime report after deployment.
+Preview deploy was not created for this commit. Vercel Preview deploy blocked by project daily limit: api-deployments-free-per-day. Retry after the quota resets.
+
+Local production view for review: http://127.0.0.1:3060/dispatch
 
 ## Screenshots
 
@@ -41,3 +43,11 @@ This remains a demo/read-only digital twin layer over existing BMS/SCADA. The da
 ## Next Recommended Micro-goal
 
 MODE=CONTENT: alarm severity/SLA presentation or equipment passport KPI top row.
+
+
+## Deployment
+
+- Preview status: blocked by Vercel daily deployment quota.
+- Blocker: `Vercel Preview deploy blocked by project daily limit: api-deployments-free-per-day. Retry after the quota resets.`
+- Local production view: `http://127.0.0.1:3060/dispatch`
+- External smoke command after quota reset: `DISPATCH_BASE_URL=https://<new-preview-url> node scripts/asset-qa/verify-dispatch-preview-suite.mjs`
