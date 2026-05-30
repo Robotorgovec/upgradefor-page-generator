@@ -736,7 +736,7 @@ export default function DispatchDashboard() {
               const isSelected = node.id === selectedEquipment.id;
               const hasAlarm = node.relatedAlarmIds.some((id) => alarmEvents.find((alarm) => alarm.id === id)?.severity === "critical");
               const placementClass =
-                node.x > 66 ? "labelLeft" : node.y > 78 ? "labelTop" : node.y < 22 ? "labelBottom" : "";
+                node.x > 60 ? "labelLeft" : node.y > 78 ? "labelTop" : node.y < 22 ? "labelBottom" : "";
               const toneClass =
                 node.visualTone === "ahu" ? "isAhu" : node.visualTone === "anomaly" ? "isAnomaly" : "";
 
@@ -1885,9 +1885,9 @@ export default function DispatchDashboard() {
           position: absolute;
           left: 50%;
           top: 24%;
-          width: min(88%, 820px);
+          width: min(76%, 700px);
           aspect-ratio: 1.32;
-          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(1.08);
+          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(0.96);
           transform-style: preserve-3d;
         }
 
@@ -1965,7 +1965,10 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          flex-wrap: wrap;
+          gap: 6px;
+          min-width: 0;
+          overflow: hidden;
           transform: translateZ(22px);
         }
 
@@ -1973,6 +1976,7 @@ export default function DispatchDashboard() {
           border: 1px solid rgba(34, 211, 238, 0.42);
           color: #cffafe;
           font-size: 11px;
+          line-height: 1.1;
           padding: 6px;
         }
 
@@ -1982,25 +1986,29 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           gap: 8px;
+          max-width: min(218px, 44%);
           border: 0;
           background: transparent;
           color: #dbeafe;
           cursor: pointer;
-          transform: translate(-50%, -50%);
+          transform: translate(0, -50%);
         }
 
         .equipmentNode.labelLeft {
           flex-direction: row-reverse;
+          transform: translate(-100%, -50%);
         }
 
         .equipmentNode.labelTop {
           flex-direction: column-reverse;
           gap: 6px;
+          transform: translate(-50%, -100%);
         }
 
         .equipmentNode.labelBottom {
           flex-direction: column;
           gap: 6px;
+          transform: translate(-50%, 0);
         }
 
         .nodeCore {
@@ -2023,7 +2031,9 @@ export default function DispatchDashboard() {
         }
 
         .nodeLabel {
-          min-width: 118px;
+          box-sizing: border-box;
+          min-width: 0;
+          width: min(156px, 36vw);
           max-width: 168px;
           border: 1px solid rgba(125, 211, 252, 0.26);
           border-radius: 8px;
@@ -2031,11 +2041,18 @@ export default function DispatchDashboard() {
           padding: 8px 10px;
           text-align: left;
           box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+          overflow-wrap: anywhere;
         }
 
         .nodeLabel strong,
         .nodeLabel small {
           display: block;
+          min-width: 0;
+        }
+
+        .nodeLabel strong {
+          font-size: 12px;
+          line-height: 1.18;
         }
 
         .nodeLabel small {
@@ -2052,9 +2069,10 @@ export default function DispatchDashboard() {
         .equipmentNode.isSelected::before {
           content: "";
           position: absolute;
-          inset: -10px;
-          border: 1px solid rgba(34, 211, 238, 0.58);
+          inset: 0;
           border-radius: 10px;
+          outline: 1px solid rgba(34, 211, 238, 0.58);
+          outline-offset: 6px;
           box-shadow: 0 0 34px rgba(34, 211, 238, 0.22);
           pointer-events: none;
         }
