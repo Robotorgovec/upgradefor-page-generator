@@ -1265,6 +1265,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const handoverVaultLinks = getHandoverVaultLinks(handoverPack);
   const handoverRiskLinks = getHandoverRiskLinks(handoverPack);
   const handoverRouteLinks = getHandoverRouteLinks(handoverPack);
+  const handoverCommandSequence = [
+    ["1. Gate closeout", handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate],
+    ["2. Vault evidence", uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence],
+    ["3. Risk response", uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"],
+    ["4. Route / data-flow", uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"],
+    ["5. Acceptance / payment", handoverPack.paymentLink],
+    ["6. Reusable asset", handoverPack.reusable],
+  ] as const;
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -2564,6 +2572,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
             <div><dt>acceptance logic</dt><dd>Acceptance is based on delivered pack evidence, not physical work or third-party outcomes.</dd></div>
           </dl>
+          <div className={styles.handoverCommandStrip} aria-label="Selected handover command sequence">
+            {handoverCommandSequence.map(([label, value]) => (
+              <section key={label}>
+                <span>{label}</span>
+                <p>{value}</p>
+              </section>
+            ))}
+          </div>
         </aside>
         <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
           {handoverPacks.map((item) => (

@@ -3374,6 +3374,10 @@
 }
 
 .handoverControlLead {
+  grid-row: span 2;
+}
+
+.handoverControlLead {
   display: grid;
   gap: 10px;
 }
@@ -3419,6 +3423,35 @@
   margin: 6px 0 0;
   color: var(--proposal-text-soft);
   line-height: 1.45;
+}
+
+.handoverCommandStrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.handoverCommandStrip section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 11px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+}
+
+.handoverCommandStrip span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.handoverCommandStrip p {
+  margin: 7px 0 0;
+  color: var(--proposal-text);
+  font-weight: 820;
+  line-height: 1.38;
 }
 
 .packHero {
@@ -3747,6 +3780,7 @@
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
+  .handoverCommandStrip,
   .evidenceHandoffShell,
   .radarGrid,
   .controlBoardGrid,
@@ -3802,6 +3836,7 @@
   .gateControlSurface dl,
   .gateCommandStrip,
   .handoverControlSurface dl,
+  .handoverCommandStrip,
   .evidenceHandoffTabs,
   .evidenceHandoffSummary dl,
   .evidenceHandoffPanels dl,
@@ -4076,6 +4111,8 @@
   .riskVaultLinks ul,
   .gateControlSurface dl,
   .gateCommandStrip,
+  .handoverControlSurface dl,
+  .handoverCommandStrip,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
