@@ -125,6 +125,8 @@ const projectControlScale = [
     owner: "UPGRADE procurement/data",
     nextAction: "сверить manufacturer/trader status и запросить material/pressure evidence",
     handoff: "shortlist rationale + open questions",
+    anchor: "supplier-request-lab",
+    spineSignal: "source request active",
   },
   {
     id: "offer",
@@ -136,6 +138,8 @@ const projectControlScale = [
     owner: "WinGPro decision owner",
     nextAction: "сопоставить technical fit, payment risk и document readiness перед выбором",
     handoff: "comparison board + recommendation note",
+    anchor: "offer-comparison-board",
+    spineSignal: "selection logic visible",
   },
   {
     id: "contract",
@@ -147,6 +151,8 @@ const projectControlScale = [
     owner: "WinGPro / counsel if engaged",
     nextAction: "выбрать payment scenario и evidence gates до оплаты/отгрузки",
     handoff: "draft terms + boundary notes",
+    anchor: "contract-decision-simulator",
+    spineSignal: "terms require owner decision",
   },
   {
     id: "delivery",
@@ -158,6 +164,8 @@ const projectControlScale = [
     owner: "supplier / logistics / broker",
     nextAction: "запросить packing data, pickup contacts и photo/video/nameplate до отгрузки",
     handoff: "shipment readiness board",
+    anchor: "delivery-timeline",
+    spineSignal: "shipment blockers visible",
   },
   {
     id: "workplan",
@@ -169,6 +177,8 @@ const projectControlScale = [
     owner: "mounting / technical side",
     nextAction: "передать connection points, dimensions, access/service questions профильной стороне",
     handoff: "ППР skeleton, не официальный ППР",
+    anchor: "work-plan-builder",
+    spineSignal: "coordination draft only",
   },
   {
     id: "field",
@@ -180,6 +190,8 @@ const projectControlScale = [
     owner: "mounting contractor lead",
     nextAction: "зафиксировать tasks, blockers и required photo evidence без принятия монтажных работ UPGRADE",
     handoff: "field task log + evidence checklist",
+    anchor: "field-execution-board",
+    spineSignal: "external execution tracked",
   },
   {
     id: "closeout",
@@ -191,6 +203,8 @@ const projectControlScale = [
     owner: "UPGRADE / WinGPro",
     nextAction: "собрать data-room index, risk register, handover packs и digital product card",
     handoff: "closeout pack + reusable sales asset",
+    anchor: "handover",
+    spineSignal: "acceptance package",
   },
 ] as const satisfies ReadonlyArray<{
   id: ControlStepId;
@@ -202,6 +216,8 @@ const projectControlScale = [
   owner: string;
   nextAction: string;
   handoff: string;
+  anchor: string;
+  spineSignal: string;
 }>;
 
 const controlSnapshot = [
@@ -1586,6 +1602,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div>
             <p className={styles.eyebrow}>Active control state</p>
             <h3>{activeControl.artifact}</h3>
+            <a className={styles.controlModuleLink} href={`#${activeControl.anchor}`}>Open active module</a>
           </div>
           <dl>
             <div><dt>status</dt><dd>{activeControl.status}</dd></div>
@@ -1595,8 +1612,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </dl>
         </aside>
 
+        <nav className={styles.moduleHandoffSpine} aria-label="Project control module navigation">
+          {projectControlScale.map((step, index) => (
+            <a
+              key={step.id}
+              href={`#${step.anchor}`}
+              aria-current={activeControlStep === step.id ? "step" : undefined}
+              onClick={() => setActiveControlStep(step.id)}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{step.artifact}</strong>
+              <small>{step.spineSignal}</small>
+            </a>
+          ))}
+        </nav>
+
         <div className={styles.controlBoardGrid}>
-          <article className={styles.supplierLab}>
+          <article className={styles.supplierLab} id="supplier-request-lab">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Supplier Request Lab</p>
               <h3>Запросы, scoring, shortlist и selected rationale</h3>
@@ -1691,7 +1723,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.offerBoard}>
+          <article className={styles.offerBoard} id="offer-comparison-board">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Offer Comparison Board</p>
               <h3>Выбор условий не прячется в переписке</h3>
@@ -1773,7 +1805,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.contractSimulator}>
+          <article className={styles.contractSimulator} id="contract-decision-simulator">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Contract Decision Simulator</p>
               <h3>Оплата, evidence gates и delivery terms как decision board</h3>
@@ -1862,7 +1894,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.deliveryTimeline}>
+          <article className={styles.deliveryTimeline} id="delivery-timeline">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Delivery Timeline</p>
               <h3>Поставка как release-control pipeline</h3>
@@ -1939,7 +1971,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p className={styles.deliverySummary}>Current release focus: {deliveryPhase.phase} → {deliveryPhase.output}. UPGRADE фиксирует status и evidence request; профильные участники подтверждают фактические действия и решения.</p>
           </article>
 
-          <article className={styles.workPlanBuilder}>
+          <article className={styles.workPlanBuilder} id="work-plan-builder">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Work Plan Builder</p>
               <h3>ППР skeleton для coordination draft</h3>
@@ -1966,7 +1998,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.fieldBoard}>
+          <article className={styles.fieldBoard} id="field-execution-board">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Field Execution Board</p>
               <h3>Задачи монтажной стороны в своей зоне ответственности</h3>
