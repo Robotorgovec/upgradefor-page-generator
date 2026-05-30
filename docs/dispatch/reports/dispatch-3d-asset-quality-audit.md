@@ -72,3 +72,9 @@ Follow-up status: the focused multi-split visual review is recorded in:
 ```text
 docs/dispatch/reports/dispatch-3d-multi-split-visual-review.md
 ```
+
+Cooling tower follow-up status: the focused CT-1 visual review is recorded in:
+
+```text
+docs/dispatch/reports/dispatch-3d-cooling-tower-visual-review.md
+```
