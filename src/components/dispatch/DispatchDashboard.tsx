@@ -1143,16 +1143,25 @@ export default function DispatchDashboard() {
       </div>
 
       <nav className="dispatchBottomNav" aria-label="Навигация диспетчерской">
-        {dispatchSections.map((section) => (
-          <button
-            key={section.id}
-            type="button"
-            className={activeSectionId === section.id ? "isActive" : undefined}
-            onClick={() => selectSection(section.id)}
-          >
-            {section.label}
-          </button>
-        ))}
+        <div className="bottomNavSections" aria-label="Разделы диспетчерской">
+          {dispatchSections.map((section) => {
+            const detail =
+              dispatchSectionDetails.find((item) => item.id === section.id) ?? dispatchSectionDetails[0];
+            const sectionAlarmCount = detail.relatedAlarmIds.length;
+
+            return (
+              <button
+                key={section.id}
+                type="button"
+                className={activeSectionId === section.id ? "isActive" : undefined}
+                onClick={() => selectSection(section.id)}
+              >
+                <span>{section.label}</span>
+                {sectionAlarmCount ? <small aria-label={`${sectionAlarmCount} active events`}>{sectionAlarmCount}</small> : null}
+              </button>
+            );
+          })}
+        </div>
         <div className="bottomMeta">
           <span>Связь с объектом: Онлайн / Simulated gateway</span>
           <span>Пользователь: Диспетчер</span>
@@ -1219,7 +1228,7 @@ export default function DispatchDashboard() {
         .dispatchShell {
           min-height: 100vh;
           margin: 0;
-          padding: 14px 14px 88px;
+          padding: 14px 14px 148px;
           color: #dbeafe;
           background:
             radial-gradient(circle at 48% 18%, rgba(14, 165, 233, 0.18), transparent 34%),
@@ -1280,7 +1289,7 @@ export default function DispatchDashboard() {
           justify-content: flex-end;
           gap: 10px;
           color: #93c5fd;
-          font-size: 12px;
+          font-size: 11px;
         }
 
         .headerStatus b,
@@ -1316,7 +1325,7 @@ export default function DispatchDashboard() {
 
         .sectionList {
           display: grid;
-          gap: 7px;
+          gap: 6px;
         }
 
         .sectionItem {
@@ -2678,27 +2687,76 @@ export default function DispatchDashboard() {
           left: 0;
           right: 0;
           bottom: 0;
-          display: flex;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
           align-items: center;
-          gap: 8px;
+          gap: 12px;
           border-top: 1px solid rgba(56, 189, 248, 0.28);
           background: rgba(2, 8, 23, 0.94);
           box-shadow: 0 -18px 44px rgba(0,0,0,0.36);
-          overflow-x: auto;
-          overflow-y: hidden;
+          overflow: visible;
           padding: 10px 14px;
           scrollbar-width: thin;
           backdrop-filter: blur(18px);
         }
 
+        .bottomNavSections {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: stretch;
+          gap: 7px;
+          min-width: 0;
+          max-height: 128px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          padding-right: 2px;
+          scrollbar-width: thin;
+        }
+
         .dispatchBottomNav button {
-          flex: 0 0 auto;
-          max-width: 220px;
-          min-height: 44px;
-          overflow-wrap: anywhere;
+          flex: 1 1 150px;
+          display: inline-flex;
+          position: relative;
+          align-items: center;
+          justify-content: center;
+          gap: 0;
+          min-width: 148px;
+          max-width: 210px;
+          min-height: 42px;
+          overflow-wrap: normal;
+          word-break: normal;
           text-align: center;
           white-space: normal;
           line-height: 1.2;
+          font-size: 12px;
+          padding: 9px 30px 9px 9px;
+        }
+
+        .dispatchBottomNav button span {
+          display: block;
+          min-width: 0;
+          max-width: 100%;
+          white-space: normal;
+          overflow-wrap: anywhere;
+          word-break: normal;
+        }
+
+        .dispatchBottomNav button small {
+          display: inline-grid;
+          position: absolute;
+          top: 5px;
+          right: 6px;
+          place-items: center;
+          min-width: 20px;
+          height: 20px;
+          border: 1px solid rgba(251, 191, 36, 0.38);
+          border-radius: 999px;
+          background: rgba(251, 191, 36, 0.14);
+          color: #fde68a;
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1;
+          padding: 0 5px;
         }
 
         .dispatchBottomNav button.isActive {
@@ -2710,11 +2768,14 @@ export default function DispatchDashboard() {
         .bottomMeta {
           flex: 0 0 auto;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
+          justify-content: flex-end;
           gap: 10px;
-          margin-left: auto;
+          max-width: 420px;
+          margin-left: 0;
           color: #93c5fd;
-          font-size: 12px;
+          font-size: 11px;
           white-space: nowrap;
         }
 
@@ -2780,7 +2841,7 @@ export default function DispatchDashboard() {
         @media (max-width: 980px) {
           .dispatchShell {
             margin: -16px;
-            padding: 16px 16px 120px;
+            padding: 16px 16px 184px;
           }
 
           .dispatchGrid {
@@ -2798,15 +2859,25 @@ export default function DispatchDashboard() {
             min-height: 680px;
           }
 
-          .dispatchBottomNav,
+          .dispatchBottomNav {
+            grid-template-columns: 1fr;
+            overflow: visible;
+          }
+
+          .bottomNavSections {
+            max-height: 132px;
+          }
+
           .bottomMeta {
-            overflow-x: auto;
+            justify-content: center;
+            overflow: hidden;
+            white-space: normal;
           }
         }
 
         @media (max-width: 760px) {
           .dispatchShell {
-            padding-bottom: 232px;
+            padding-bottom: 248px;
           }
 
           .dispatchHeader {
@@ -2853,23 +2924,39 @@ export default function DispatchDashboard() {
 
           .dispatchBottomNav {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: 1fr;
             align-items: stretch;
             gap: 6px;
+            overflow: visible;
+            padding: 8px;
+          }
+
+          .bottomNavSections {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            max-height: 174px;
             overflow-x: hidden;
             overflow-y: auto;
-            padding: 8px;
+            padding-right: 0;
           }
 
           .dispatchBottomNav button {
             min-width: 0;
             min-height: 40px;
+            max-width: none;
             width: 100%;
             white-space: normal;
             overflow-wrap: anywhere;
+            word-break: normal;
             padding: 8px 6px;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1.15;
+          }
+
+          .dispatchBottomNav button small {
+            top: 4px;
+            right: 4px;
           }
 
           .bottomMeta {
