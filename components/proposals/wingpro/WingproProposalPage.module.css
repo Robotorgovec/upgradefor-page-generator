@@ -692,6 +692,7 @@
 .routeFlow button[data-active="true"],
 .modeSwitch button[aria-pressed="true"],
 .riskFilters button[aria-pressed="true"],
+.evidenceHandoffTabs button[data-active="true"],
 .gatePipeline button[data-active="true"],
 .packTabs button[aria-pressed="true"],
 .paymentSwitch button[aria-pressed="true"],
@@ -2047,6 +2048,105 @@
     repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.06) 0 1px, transparent 1px 18px);
 }
 
+.evidenceHandoff {
+  grid-column: 1 / -1;
+  border-color: var(--proposal-brand-border) !important;
+  background:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--proposal-brand-soft) 82%, #ffffff), transparent 28%),
+    #ffffff !important;
+}
+
+.evidenceHandoffShell {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.72fr) 1.28fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.evidenceHandoffTabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.evidenceHandoffTabs button {
+  min-height: 88px;
+  padding: 10px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  color: var(--proposal-text-soft);
+  border-color: var(--proposal-border);
+  background: #ffffff;
+  display: grid;
+  gap: 8px;
+}
+
+.evidenceHandoffTabs button span {
+  color: var(--proposal-brand);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.evidenceHandoffSummary,
+.evidenceHandoffPanels section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--proposal-brand-soft);
+}
+
+.evidenceHandoffSummary {
+  display: grid;
+  gap: 11px;
+  align-content: start;
+}
+
+.evidenceHandoffSummary h4,
+.evidenceHandoffPanels h4 {
+  margin: 0;
+  color: var(--proposal-text);
+}
+
+.evidenceHandoffSummary dl,
+.evidenceHandoffPanels dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.evidenceHandoffSummary dl div,
+.evidenceHandoffPanels dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.evidenceHandoffSummary dt,
+.evidenceHandoffPanels dt {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.evidenceHandoffSummary dd,
+.evidenceHandoffPanels dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.evidenceHandoffPanels section {
+  margin-top: 12px;
+  background: #ffffff;
+  display: grid;
+  gap: 12px;
+}
+
 .metricGrid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -3093,6 +3193,7 @@
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
+  .evidenceHandoffShell,
   .radarGrid,
   .controlBoardGrid,
   .acceptanceGrid {
@@ -3137,6 +3238,9 @@
   .riskResponseSurface dl,
   .gateControlSurface dl,
   .handoverControlSurface dl,
+  .evidenceHandoffTabs,
+  .evidenceHandoffSummary dl,
+  .evidenceHandoffPanels dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -3478,6 +3582,12 @@
   }
 
   .handoverMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .evidenceHandoffTabs,
+  .evidenceHandoffSummary dl,
+  .evidenceHandoffPanels dl {
     grid-template-columns: 1fr;
   }
 }

@@ -648,6 +648,66 @@ const evidenceCards = [
   ["Handover", "completion notes, open issues, photo evidence register", "WinGPro / mounting side"],
 ] as const;
 
+const evidenceHandoffLinks = [
+  {
+    phase: "Before shipment",
+    gate: "Gate 3 — Before shipment",
+    fieldTasks: "nameplate checked, photo report",
+    evidenceInput: "photo/video/nameplate, packing state, cargo dimensions",
+    handoverPack: "Supplier Communication Pack / Logistics Pack",
+    riskLink: "no nameplate/photo/video before shipment + missing packing data",
+    owner: "supplier provides evidence; UPGRADE tracks status",
+    closeoutOutput: "shipment evidence note and unresolved shipment blockers",
+    boundary: "UPGRADE requests and records media evidence; supplier provides source materials.",
+  },
+  {
+    phase: "Receiving",
+    gate: "Gate 5 — Before mounting handoff",
+    fieldTasks: "received, photo report",
+    evidenceInput: "arrival photo, package condition, issue note",
+    handoverPack: "Logistics Pack / WinGPro Executive Pack",
+    riskLink: "unclear arrival state or missing receiving evidence",
+    owner: "WinGPro / logistics records receiving state",
+    closeoutOutput: "receiving evidence note and open issue register",
+    boundary: "responsible parties receive cargo; UPGRADE structures evidence and status links.",
+  },
+  {
+    phase: "Installation preparation",
+    gate: "Gate 5 — Before mounting handoff",
+    fieldTasks: "access path, connection points, mounting location",
+    evidenceInput: "access path, location, dimensions, connection points",
+    handoverPack: "Mounting Coordination Pack",
+    riskLink: "late mounting inputs",
+    owner: "mounting side / responsible technical specialist",
+    closeoutOutput: "coordination draft evidence and installer question list",
+    boundary: "UPGRADE prepares coordination inputs; profile parties approve field decisions.",
+  },
+  {
+    phase: "Work progress",
+    gate: "Gate 6 — Before service acceptance",
+    fieldTasks: "installation started, blockers, owner updates",
+    evidenceInput: "field task notes, blocker owner, status update",
+    handoverPack: "Mounting Coordination Pack / WinGPro Executive Pack",
+    riskLink: "field blockers remain invisible until closeout",
+    owner: "mounting side updates its execution status",
+    closeoutOutput: "field execution log and blocker register",
+    boundary: "UPGRADE does not supervise or accept mounting; it records the information contour.",
+  },
+  {
+    phase: "Handover",
+    gate: "Gate 6 — Before service acceptance",
+    fieldTasks: "handover, photo evidence register",
+    evidenceInput: "completion notes, open issues, photo evidence register",
+    handoverPack: "WinGPro Executive Pack / Future Sales Pack",
+    riskLink: "closeout without reusable evidence trail",
+    owner: "WinGPro accepts service deliverables",
+    closeoutOutput: "handover register, photo evidence register and reusable product notes",
+    boundary: "acceptance covers delivered UPGRADE artifacts, not third-party physical outcomes.",
+  },
+] as const;
+
+type EvidencePhase = (typeof evidenceHandoffLinks)[number]["phase"];
+
 const implementationMetrics = [
   ["Supplier selection readiness", "62%", "shortlist active"],
   ["Contract readiness", "44%", "terms under review"],
@@ -1076,6 +1136,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [offerDecisionMode, setOfferDecisionMode] = useState<OfferDecisionMode>("evidence");
   const [activeContractScenario, setActiveContractScenario] = useState<ContractScenarioId>("balanced");
   const [activeDeliveryPhase, setActiveDeliveryPhase] = useState<DeliveryPhaseId>("payment");
+  const [activeEvidencePhase, setActiveEvidencePhase] = useState<EvidencePhase>("Before shipment");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
   const [activeRoute, setActiveRoute] = useState(routePoints[0].title);
   const [vaultCategory, setVaultCategory] = useState("all");
@@ -1101,6 +1162,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
+  const evidenceHandoff = evidenceHandoffLinks.find((item) => item.phase === activeEvidencePhase) ?? evidenceHandoffLinks[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
   const gate = gates[activeGate] ?? gates[0];
@@ -1840,6 +1902,62 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <strong>{phase}</strong>
                   <p>{evidence}</p>
                   <em>{owner}</em>
+                </section>
+              ))}
+            </div>
+          </article>
+
+          <article className={styles.evidenceHandoff}>
+            <div className={styles.boardHeader}>
+              <p className={styles.eyebrow}>Evidence handoff layer</p>
+              <h3>Как field evidence попадает в closeout packs</h3>
+              <p>Фотоотчеты, receiving notes и field task updates становятся не медиа-архивом, а evidence register: они связываются с release gate, risk radar, handover pack и владельцем следующего решения.</p>
+            </div>
+            <div className={styles.evidenceHandoffShell}>
+              <div className={styles.evidenceHandoffTabs} role="tablist" aria-label="Evidence handoff phases">
+                {evidenceHandoffLinks.map((item) => (
+                  <button
+                    key={item.phase}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeEvidencePhase === item.phase}
+                    aria-controls={`evidence-handoff-${item.phase.toLowerCase().replaceAll(" ", "-")}`}
+                    data-active={activeEvidencePhase === item.phase}
+                    onClick={() => setActiveEvidencePhase(item.phase)}
+                  >
+                    <span>{item.gate.split(" — ")[0]}</span>
+                    {item.phase}
+                  </button>
+                ))}
+              </div>
+              <aside className={styles.evidenceHandoffSummary} aria-live="polite" aria-label="Selected evidence handoff summary">
+                <p className={styles.eyebrow}>Selected evidence path</p>
+                <h4>{evidenceHandoff.phase}</h4>
+                <dl>
+                  <div><dt>release gate</dt><dd>{evidenceHandoff.gate}</dd></div>
+                  <div><dt>field tasks</dt><dd>{evidenceHandoff.fieldTasks}</dd></div>
+                  <div><dt>handover pack</dt><dd>{evidenceHandoff.handoverPack}</dd></div>
+                  <div><dt>closeout output</dt><dd>{evidenceHandoff.closeoutOutput}</dd></div>
+                </dl>
+              </aside>
+            </div>
+            <div className={styles.evidenceHandoffPanels}>
+              {evidenceHandoffLinks.map((item) => (
+                <section
+                  key={`evidence-handoff-${item.phase}`}
+                  id={`evidence-handoff-${item.phase.toLowerCase().replaceAll(" ", "-")}`}
+                  role="tabpanel"
+                  tabIndex={0}
+                  hidden={activeEvidencePhase !== item.phase}
+                >
+                  <h4>{item.phase}</h4>
+                  <dl>
+                    <div><dt>evidence input</dt><dd>{item.evidenceInput}</dd></div>
+                    <div><dt>risk link</dt><dd>{item.riskLink}</dd></div>
+                    <div><dt>owner</dt><dd>{item.owner}</dd></div>
+                    <div><dt>closeout output</dt><dd>{item.closeoutOutput}</dd></div>
+                    <div><dt>UPGRADE boundary</dt><dd>{item.boundary}</dd></div>
+                  </dl>
                 </section>
               ))}
             </div>

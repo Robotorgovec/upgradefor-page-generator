@@ -1,0 +1,76 @@
+{
+  "cb": 1780138347,
+  "pageUrl": "http://localhost:3078/cp/2605281047-wingpro?cb=1780138347",
+  "pageStatus": 200,
+  "assetUrl": "http://localhost:3078/assets/logo/logo-black-only.png?cb=1780138347",
+  "assetStatus": {
+    "status": 200,
+    "ok": true
+  },
+  "diagnostics": {
+    "href": "http://localhost:3078/cp/2605281047-wingpro?cb=1780138347#layer-equipment",
+    "viewport": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "currentSrc": "http://localhost:3078/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "imageComplete": true,
+    "evidenceHandoff": true,
+    "evidencePanels": 5,
+    "noindex": true,
+    "nofollow": true
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "noHorizontalScroll": true,
+      "evidenceHandoffVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-19/wingpro-cycle-19-1440.png"
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "noHorizontalScroll": true,
+      "evidenceHandoffVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-19/wingpro-cycle-19-1280.png"
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "noHorizontalScroll": true,
+      "evidenceHandoffVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-19/wingpro-cycle-19-768.png"
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "noHorizontalScroll": true,
+      "evidenceHandoffVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-19/wingpro-cycle-19-375.png"
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "noHorizontalScroll": true,
+      "evidenceHandoffVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-19/wingpro-cycle-19-320.png"
+    }
+  ],
+  "interaction": {
+    "selected": [
+      "Gate 5Installation preparation"
+    ],
+    "summary": "Selected evidence pathInstallation preparationrelease gateGate 5 — Before mounting handofffield tasksaccess path, connection points, mounting locationhandover packMounting Coordination Packcloseout outputcoordination draft evidence and installer question list",
+    "activePanel": "Installation preparationevidence inputaccess path, location, dimensions, connection pointsrisk linklate mounting inputsownermounting side / responsible technical specialistcloseout outputcoordination draft evidence and installer question listUPGRADE boundaryUPGRADE prepares coordination inputs; profile parties approve field decisions."
+  },
+  "reducedMotion": {
+    "stable": true,
+    "query": true
+  }
+}

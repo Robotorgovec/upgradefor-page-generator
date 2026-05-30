@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R065 / cycle 18 self-review
+# CONTRACT-WINGPRO-2605281047-R065 / cycle 19 self-review
 
 1. Что улучшено в этом цикле?
-   Handover Room получил selected control packet: активный pack теперь связан с release gates, vault evidence, risk responses, route/data-flow points, output artifact и acceptance logic.
+   Добавлен Evidence handoff layer между Field Execution Board, Photo Evidence Wall и Handover Room. Каждая evidence-фаза теперь связана с release gate, field tasks, handover pack, risk link, owner, closeout output и boundary.
 
 2. Как это помогает заказчику принять решение?
-   WinGPro видит не просто перечень пакетов, а управляемую схему передачи результата: какие доказательства питают каждый pack и почему приемка строится по deliverables.
+   WinGPro видит, как фото, receiving notes и field updates становятся управляемым evidence register и попадают в приемочный пакет, а не остаются разрозненными файлами.
 
 3. Стало ли понятнее, что получает WinGPro?
-   Да. Каждый handover pack теперь показывает содержимое, владельца, gate, vault evidence, route point, risk response, reusable value и boundary.
+   Да. Стало видно, какие closeout artifacts формируются из before-shipment, receiving, installation preparation, work progress и handover evidence.
 
 4. Стало ли интерактивнее?
-   Да. Переключение pack tabs обновляет live control surface; browser recheck подтвердил переключение на Mounting Coordination Pack.
+   Да. Evidence handoff phases работают как tablist; выбранная фаза обновляет live summary и физически присутствующие tabpanels.
 
 5. Не расширилась ли ответственность UPGRADE?
-   Нет. Тексты сохраняют позицию: UPGRADE структурирует данные и coordination drafts, а профильные участники исполняют, проверяют и утверждают свои зоны.
+   Нет. В каждом phase panel указано, что UPGRADE структурирует evidence/status links, а поставщик, логистика, монтажная сторона, WinGPro и профильные специалисты исполняют и утверждают свои зоны.
 
 6. Не были ли изменены forbidden files?
-   Нет. Изменены только page-specific TSX/CSS и runtime QA/self-review files. Существующие unrelated изменения в dispatch/AGENTS не трогались.
+   Нет. Изменены только `components/proposals/wingpro/WingproProposalPage.tsx`, `components/proposals/wingpro/WingproProposalPage.module.css` и runtime QA/self-review files.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-   Нет. 1440/1280/768/375/320 прошли без horizontal scroll; handover surface адаптируется в одну колонку; tabs остаются button/role=tab с aria-selected.
+   Нет. Local QA прошел на 1440/1280/768/375/320 без horizontal scroll; tablist uses buttons with `aria-selected`; summary has `aria-live`.
 
 8. Что следующий самый полезный micro-goal?
-   MODE=CONTENT или INTERACTIVE: усилить связь Field Execution Board и Photo Evidence Wall с Handover Room, чтобы evidence по фазам явно попадал в closeout packs.
+   MODE=DESIGN: визуально отполировать Project Control Scale / Supplier Request Lab / Offer Comparison Board так, чтобы верхняя половина страницы сильнее ощущалась как procurement cockpit.
