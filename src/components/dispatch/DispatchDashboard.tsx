@@ -50,9 +50,9 @@ type ReadonlyAuditEntry = {
 };
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
-  if (severity === "critical") return "Авария";
-  if (severity === "warning") return "Предупреждение";
-  return "ТО";
+  if (severity === "critical") return "Critical";
+  if (severity === "warning") return "Warning";
+  return "Info";
 }
 
 function statusTone(status: string) {
@@ -180,7 +180,7 @@ export default function DispatchDashboard() {
 
   const notificationItems = useMemo(() => {
     const relatedIds = new Set(relatedAlarms.map((alarm) => alarm.id));
-    return [...relatedAlarms, ...alarmEvents.filter((alarm) => !relatedIds.has(alarm.id))].slice(0, 3);
+    return [...relatedAlarms, ...alarmEvents.filter((alarm) => !relatedIds.has(alarm.id))].slice(0, 4);
   }, [relatedAlarms]);
 
   const relatedNodes = useMemo(
@@ -412,14 +412,27 @@ export default function DispatchDashboard() {
                   className={`eventItem ${alarm.severity} ${
                     relatedAlarms.some((related) => related.id === alarm.id) ? "isRelated" : ""
                   } ${alarm.quality === "DATA_ERROR" ? "isDataError" : ""}`}
+                  data-alarm-severity={alarm.severity}
+                  data-alarm-sla-status={alarm.sla.status}
                   data-testid={alarm.quality === "DATA_ERROR" ? "dispatch-data-error-alarm" : undefined}
                   key={alarm.id}
                   type="button"
                   onClick={() => openAlarm(alarm)}
                 >
-                  <span>{severityLabel(alarm.severity)} · {alarm.time}</span>
+                  <span className="eventMeta">
+                    <b className={`severityBadge ${alarm.severity}`}>{severityLabel(alarm.severity)}</b>
+                    <time>{alarm.time}</time>
+                  </span>
                   <strong>{alarm.title}</strong>
                   <small>{alarm.description}</small>
+                  <span
+                    className={`slaTimer ${alarm.sla.status}`}
+                    data-testid={`dispatch-alarm-sla-${alarm.id}`}
+                  >
+                    <span>SLA</span>
+                    <b>{alarm.sla.label}</b>
+                    <small>{alarm.sla.target}</small>
+                  </span>
                   {alarm.quality === "DATA_ERROR" ? <em>DATA_ERROR · tag quarantined</em> : null}
                 </button>
               ))}
@@ -616,6 +629,7 @@ export default function DispatchDashboard() {
                 <div>
                   {relatedAlarms.map((alarm) => (
                     <button key={alarm.id} type="button" className={alarm.severity} onClick={() => openAlarm(alarm)}>
+                      <span>{severityLabel(alarm.severity)} · SLA {alarm.sla.label}</span>
                       {alarm.title}
                     </button>
                   ))}
@@ -871,7 +885,7 @@ export default function DispatchDashboard() {
           </div>
           {notificationItems.map((alarm) => (
             <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>
-              <span>{severityLabel(alarm.severity)}</span>
+              <span>{severityLabel(alarm.severity)} · SLA {alarm.sla.label}</span>
               <strong>{alarm.title.replace(" на ШУ-2", "")}</strong>
             </button>
           ))}
@@ -1253,10 +1267,55 @@ export default function DispatchDashboard() {
           transform: translateY(-1px);
         }
 
-        .eventItem span,
+        .eventItem > span,
         .notificationsPanel span {
           color: #67e8f9;
           font-size: 11px;
+        }
+
+        .eventMeta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .eventMeta time {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .severityBadge {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          border-radius: 999px;
+          color: #dbeafe;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0;
+          padding: 3px 7px;
+          text-transform: uppercase;
+        }
+
+        .severityBadge.critical {
+          border-color: rgba(248, 113, 113, 0.66);
+          color: #fecaca;
+          background: rgba(127, 29, 29, 0.4);
+        }
+
+        .severityBadge.warning {
+          border-color: rgba(251, 191, 36, 0.62);
+          color: #fde68a;
+          background: rgba(120, 53, 15, 0.34);
+        }
+
+        .severityBadge.info {
+          border-color: rgba(125, 211, 252, 0.48);
+          color: #bae6fd;
+          background: rgba(8, 47, 73, 0.38);
         }
 
         .eventItem strong,
@@ -1269,6 +1328,63 @@ export default function DispatchDashboard() {
 
         .eventItem.critical {
           border-color: rgba(248, 113, 113, 0.45);
+        }
+
+        .eventItem.warning {
+          border-color: rgba(251, 191, 36, 0.36);
+        }
+
+        .eventItem.info {
+          border-color: rgba(125, 211, 252, 0.24);
+        }
+
+        .slaTimer {
+          display: grid;
+          grid-template-columns: auto auto 1fr;
+          gap: 6px;
+          align-items: center;
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.55);
+          margin-top: 8px;
+          padding: 7px 8px;
+        }
+
+        .slaTimer > span {
+          color: #93c5fd;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .slaTimer > b {
+          color: #f8fafc;
+          font-size: 12px;
+        }
+
+        .slaTimer > small {
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.25;
+          text-align: right;
+        }
+
+        .slaTimer.due_soon {
+          border-color: rgba(248, 113, 113, 0.46);
+          background: rgba(127, 29, 29, 0.22);
+        }
+
+        .slaTimer.due_soon > b {
+          color: #fecaca;
+        }
+
+        .slaTimer.on_track {
+          border-color: rgba(251, 191, 36, 0.32);
+        }
+
+        .slaTimer.monitoring {
+          border-style: dashed;
         }
 
         .eventItem.isDataError {
@@ -1851,9 +1967,9 @@ export default function DispatchDashboard() {
           color: #fde68a;
         }
 
-        .sectionAlarmSummary button.service {
-          border-color: rgba(34, 197, 94, 0.36);
-          color: #bbf7d0;
+        .sectionAlarmSummary button.info {
+          border-color: rgba(125, 211, 252, 0.36);
+          color: #bae6fd;
         }
 
         .sectionAlarmSummary small {

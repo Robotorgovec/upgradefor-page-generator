@@ -117,6 +117,8 @@ export type DispatchTrendKey = "temperature" | "pressure" | "flow" | "energy";
 export type EquipmentStatus = "В работе" | "Предупреждение" | "Авария" | "TO VERIFY" | "Demo";
 
 export type DataQualityStatus = "VALID" | "DATA_ERROR";
+export type AlarmSeverity = "critical" | "warning" | "info";
+export type AlarmSlaStatus = "due_soon" | "on_track" | "monitoring";
 
 export type DispatchTrendPoint = {
   label: string;
@@ -145,9 +147,14 @@ export type DispatchAlarmEvent = {
   id: string;
   title: string;
   equipmentId: string;
-  severity: "critical" | "warning" | "service";
+  severity: AlarmSeverity;
   time: string;
   description: string;
+  sla: {
+    label: string;
+    target: string;
+    status: AlarmSlaStatus;
+  };
   quality?: DataQualityStatus;
 };
 
@@ -771,11 +778,11 @@ export const dispatchSectionDetails: DispatchSectionDetail[] = [
     nodeId: "pump-shu2",
     description: "Контекст аварий с приоритетом data-quality события DP DATA_ERROR.",
     equipmentCount: "4 активных события",
-    activeAlarms: "1 critical / 2 warning / 1 service",
+    activeAlarms: "1 Critical / 2 Warning / 1 Info",
     keyMetrics: [
       { label: "Critical", value: "1" },
       { label: "Warning", value: "2" },
-      { label: "Service", value: "1" },
+      { label: "Info", value: "1" },
     ],
     relatedNodeIds: ["pump-shu2", "cooling-circuits", "ventilation-vc13", "chiller-ch1"],
     trendKey: "pressure",
@@ -862,6 +869,11 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     severity: "critical",
     time: "10:42",
     description: "Raw DP tag вышел за диапазон 0–16 bar, требуется верификация scaling/register.",
+    sla: {
+      label: "18 мин",
+      target: "Critical SLA 30 мин",
+      status: "due_soon",
+    },
     quality: "DATA_ERROR",
   },
   {
@@ -871,6 +883,11 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     severity: "warning",
     time: "10:18",
     description: "Контур холодоснабжения показывает рост обратки.",
+    sla: {
+      label: "42 мин",
+      target: "Warning SLA 2 часа",
+      status: "on_track",
+    },
   },
   {
     id: "alarm-ventilation-manual",
@@ -879,14 +896,24 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     severity: "warning",
     time: "10:05",
     description: "Событие вентиляции: требуется сверка локального щита, команды оператора и BMS/SCADA тега.",
+    sla: {
+      label: "55 мин",
+      target: "Warning SLA 2 часа",
+      status: "on_track",
+    },
   },
   {
     id: "alarm-chiller-service",
     title: "Плановое обслуживание чиллера CH-1",
     equipmentId: "chiller-ch1",
-    severity: "service",
+    severity: "info",
     time: "09:30",
     description: "Нужно сформировать demo-заявку на сервисное окно.",
+    sla: {
+      label: "Мониторинг",
+      target: "Info · без аварийного SLA",
+      status: "monitoring",
+    },
   },
 ];
 

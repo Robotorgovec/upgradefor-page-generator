@@ -34,6 +34,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-data-quality.mjs",
     usesBrowser: true,
   },
+  {
+    id: "alarm-severity-sla",
+    script: "scripts/asset-qa/verify-dispatch-alarm-severity-sla.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {
