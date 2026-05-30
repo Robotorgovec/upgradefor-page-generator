@@ -384,6 +384,10 @@ const contractScenarios = [
     contractStrength: "high if evidence gates and responsibility boundary are attached",
     acceptanceImpact: "acceptance is based on deliverables: data-room, risk register, release board, handover packs",
     decisionSignal: "recommended decision frame for current КП",
+    ownerRequiredDecision: "approve 50/50 service terms and attach evidence gates to the service contract",
+    evidenceGateStrength: "balanced: payment can start while before-shipment blockers remain visible",
+    unresolvedBlockers: ["packing dimensions before shipment", "photo/video/nameplate before release", "broker/logistics input owner"],
+    acceptanceHandoff: "service contract summary + payment readiness board + deliverables acceptance list",
   },
   {
     id: "evidence-first",
@@ -395,6 +399,10 @@ const contractScenarios = [
     contractStrength: "strongest for risk visibility, slower if supplier response is weak",
     acceptanceImpact: "best fit when WinGPro wants maximum document traceability before release gates",
     decisionSignal: "use when technical or payment risk is higher than speed pressure",
+    ownerRequiredDecision: "delay payment release until supplier identity, bank and technical evidence are stronger",
+    evidenceGateStrength: "strongest: before-payment blockers become explicit stop/go conditions",
+    unresolvedBlockers: ["technical owner questions", "bank details confirmation", "material/pressure evidence"],
+    acceptanceHandoff: "evidence-first release memo + stronger risk register + open questions escalation list",
   },
   {
     id: "speed-sensitive",
@@ -406,6 +414,10 @@ const contractScenarios = [
     contractStrength: "conditional: speed improves coordination only if blockers are not hidden",
     acceptanceImpact: "useful when schedule pressure exists, but profile owners still approve final decisions",
     decisionSignal: "use only with visible risk register and WinGPro approval owner",
+    ownerRequiredDecision: "approve faster commercial movement while keeping unresolved evidence visible as blockers",
+    evidenceGateStrength: "conditional: speed is acceptable only when hidden-risk shortcuts are not used",
+    unresolvedBlockers: ["minimum PI/bank evidence", "explicit unresolved list", "shipment evidence before handoff"],
+    acceptanceHandoff: "fast-track decision note + owner-required blockers + shipment handoff checklist",
   },
 ] as const satisfies ReadonlyArray<{
   id: ContractScenarioId;
@@ -417,6 +429,10 @@ const contractScenarios = [
   contractStrength: string;
   acceptanceImpact: string;
   decisionSignal: string;
+  ownerRequiredDecision: string;
+  evidenceGateStrength: string;
+  unresolvedBlockers: ReadonlyArray<string>;
+  acceptanceHandoff: string;
 }>;
 
 const contractGateMatrix = [
@@ -1371,6 +1387,24 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </section>
               ))}
             </div>
+            <aside className={styles.contractReleaseSurface} aria-live="polite" aria-label="Selected contract release decision">
+              <div>
+                <p className={styles.eyebrow}>Contract release decision</p>
+                <h4>{contractScenario.title}</h4>
+                <StatusPill value={contractScenario.decisionSignal} />
+              </div>
+              <dl>
+                <div><dt>owner-required decision</dt><dd>{contractScenario.ownerRequiredDecision}</dd></div>
+                <div><dt>evidence gate strength</dt><dd>{contractScenario.evidenceGateStrength}</dd></div>
+                <div><dt>acceptance handoff</dt><dd>{contractScenario.acceptanceHandoff}</dd></div>
+              </dl>
+              <div>
+                <strong>unresolved blockers</strong>
+                <ul>
+                  {contractScenario.unresolvedBlockers.map((blocker) => <li key={blocker}>{blocker}</li>)}
+                </ul>
+              </div>
+            </aside>
             <div className={styles.contractGateMatrix} role="table" aria-label="Contract gate matrix">
               <div role="row" className={styles.contractGateHeader}>
                 <span role="columnheader">Decision area</span>

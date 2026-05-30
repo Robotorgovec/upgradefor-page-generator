@@ -1,0 +1,85 @@
+{
+  "cb": 1780134603,
+  "localUrl": "http://localhost:3072/cp/2605281047-wingpro?cb=1780134603",
+  "base": {
+    "url": "http://localhost:3072/cp/2605281047-wingpro?cb=1780134603#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1425,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://localhost:3072/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "missing": [],
+    "surfaceText": "Contract release decisionBalanced 50/50recommended decision frame for current КПowner-required decisionapprove 50/50 service terms and attach evidence gates to the service contractevidence gate strengthbalanced: payment can start while before-shipment blockers remain visibleacceptance handoffservice contract summary + payment readiness board + deliverables acceptance listunresolved blockerspacking dimensions before shipmentphoto/video/nameplate before releasebroker/logistics input owner"
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "evidenceClicked": true,
+    "before": "Contract release decisionBalanced 50/50recommended decision frame for current КПowner-required decisionapprove 50/50 service terms and attach evidence gates to the service contractevidence gate strengthbalanced: payment can start while before-shipment blockers remain visibleacceptance handoffservice contract summary + payment readiness board + deliverables acceptance listunresolved blockerspacking dimensions before shipmentphoto/video/nameplate before releasebroker/logistics input owner",
+    "after": "Contract release decisionEvidence-firstuse when technical or payment risk is higher than speed pressureowner-required decisiondelay payment release until supplier identity, bank and technical evidence are strongerevidence gate strengthstrongest: before-payment blockers become explicit stop/go conditionsacceptance handoffevidence-first release memo + stronger risk register + open questions escalation listunresolved blockerstechnical owner questionsbank details confirmationmaterial/pressure evidence",
+    "surfaceUpdated": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-12/wingpro-c12-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-12/wingpro-c12-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-12/wingpro-c12-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-12/wingpro-c12-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-12/wingpro-c12-320.png"
+  ]
+}
