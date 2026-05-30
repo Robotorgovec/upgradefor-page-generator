@@ -66,6 +66,8 @@ Browser automation also checked specific equipment cards on the deployed preview
 | --- | --- | ---: | --- | --- | --- |
 | Chiller CH-1 | `chiller` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-010/dispatch-chiller-visual-qa.png` |
 | Fan coil FC-92 | `fancoil-fc92` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-010/dispatch-fancoil-visual-qa.png` |
+| Cooling tower CT-1 | `cooling-tower-small` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-011/dispatch-cooling-tower-visual-qa.png` |
+| Multi-split MS-1 | `multi-split-system` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-011/dispatch-multi-split-visual-qa.png` |
 
 These checks prove that the card selection state updates to the selected equipment and the 3D viewer remains mounted
 without showing a fallback message. They do not validate production telemetry or real control.
