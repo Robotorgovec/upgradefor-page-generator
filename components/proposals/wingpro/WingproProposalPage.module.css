@@ -7082,6 +7082,16 @@
     gap: 13px;
   }
 
+  .commandLayer {
+    gap: 8px;
+    padding: 14px;
+  }
+
+  .commandLayerHeader > p,
+  .cockpitSummaryHeader > p {
+    display: none;
+  }
+
   .eyebrow {
     font-size: 11px;
     letter-spacing: 0.06em;
@@ -7095,7 +7105,8 @@
   }
 
   .cockpitSummaryGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
   }
 
   .lead {
@@ -7124,24 +7135,55 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .presentationModeTabs button {
+    min-height: 42px;
+    padding: 8px;
     justify-items: start;
     text-align: left;
+    font-size: 11px;
   }
 
   .cockpitSummaryGrid button {
-    min-height: 112px;
+    min-height: 92px;
+    gap: 5px;
+    padding: 9px;
   }
 
   .cockpitSummaryGrid strong {
-    font-size: 13.5px;
+    font-size: 12.5px;
   }
 
   .cockpitSummaryGrid em {
-    font-size: 11px;
+    display: -webkit-box;
+    max-height: 2.6em;
+    overflow: hidden;
+    font-size: 10.5px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .presentationModePanel {
+    padding: 11px;
+    gap: 8px;
+  }
+
+  .cockpitSummaryBoard {
+    padding: 10px;
+  }
+
+  .cockpitDecisionDock article,
+  .cockpitAddonDisclosure,
+  .cockpitAddonDisclosure summary {
+    min-height: 72px;
+  }
+
+  .modeEndpoint article,
+  .modeEndpoint button {
+    min-height: 60px;
   }
 
   .candidateStack {
