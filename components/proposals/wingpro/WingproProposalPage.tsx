@@ -2574,53 +2574,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>Поставка как release-control pipeline</h3>
               <p>UPGRADE ведет календарь информационной готовности: evidence, owner, blocker, handoff и release gate. Физические производственные, транспортные, таможенные и монтажные сроки остаются у профильных участников.</p>
             </div>
-            <div className={styles.timelineRows} role="tablist" aria-label="Delivery release phases">
-              {deliveryTimeline.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeDeliveryPhase === item.id}
-                  aria-controls={`delivery-phase-${item.id}`}
-                  data-active={activeDeliveryPhase === item.id}
-                  onClick={() => setActiveDeliveryPhase(item.id)}
-                >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <StatusPill value={item.status} />
-                  <strong>{item.phase}</strong>
-                  <em>{item.releaseGate}</em>
-                </button>
-              ))}
-            </div>
-            <div className={styles.deliveryPhasePanels}>
-              {deliveryTimeline.map((item) => (
-                <section key={`delivery-${item.id}`} id={`delivery-phase-${item.id}`} role="tabpanel" tabIndex={0} hidden={activeDeliveryPhase !== item.id}>
-                  <div className={styles.deliveryPhaseHero}>
-                    <div>
-                      <p className={styles.eyebrow}>Active release phase</p>
-                      <h4>{item.phase}</h4>
-                      <p>{item.targetOutcome}</p>
-                    </div>
-                    <StatusPill value={item.status} />
-                  </div>
-                  <dl className={styles.deliveryPhaseGrid}>
-                    <div><dt>Required evidence</dt><dd>{item.evidence}</dd></div>
-                    <div><dt>Owner</dt><dd>{item.owner}</dd></div>
-                    <div><dt>UPGRADE action</dt><dd>{item.upgradeAction}</dd></div>
-                    <div><dt>Blocked if</dt><dd>{item.blocker}</dd></div>
-                    <div><dt>Output artifact</dt><dd>{item.output}</dd></div>
-                    <div><dt>Boundary</dt><dd>{item.boundary}</dd></div>
-                  </dl>
-                  <div className={styles.deliveryReleaseChecklist} aria-label={`${item.phase} release board`}>
-                    <div><span>release decision</span><strong>{item.releaseDecision}</strong></div>
-                    <div><span>evidence packet</span><strong>{item.evidencePacket}</strong></div>
-                    <div><span>escalation owner</span><strong>{item.escalationOwner}</strong></div>
-                    <div><span>handoff output</span><strong>{item.handoff}</strong></div>
-                    <div><span>status control</span><strong>{item.statusControl}</strong></div>
-                  </div>
-                </section>
-              ))}
-            </div>
             <aside className={styles.deliveryReleaseSurface} aria-live="polite" aria-label="Selected delivery release board">
               <div>
                 <p className={styles.eyebrow}>Selected release board</p>
@@ -2643,6 +2596,60 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <span>mounting handoff</span>
             </div>
             <p className={styles.deliverySummary}>Current release focus: {deliveryPhase.phase} → {deliveryPhase.output}. UPGRADE фиксирует status и evidence request; профильные участники подтверждают фактические действия и решения.</p>
+            <details className={styles.deliveryDetailsDisclosure}>
+              <summary>
+                <span>Delivery phase detail</span>
+                <strong>Открыть release phases, evidence checklist и blockers</strong>
+                <small>Подробности раскрываются по запросу; UPGRADE ведет status/evidence board, а физические сроки и действия остаются у профильных участников.</small>
+              </summary>
+              <div className={styles.timelineRows} role="tablist" aria-label="Delivery release phases">
+                {deliveryTimeline.map((item, index) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeDeliveryPhase === item.id}
+                    aria-controls={`delivery-phase-${item.id}`}
+                    data-active={activeDeliveryPhase === item.id}
+                    onClick={() => setActiveDeliveryPhase(item.id)}
+                  >
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <StatusPill value={item.status} />
+                    <strong>{item.phase}</strong>
+                    <em>{item.releaseGate}</em>
+                  </button>
+                ))}
+              </div>
+              <div className={styles.deliveryPhasePanels}>
+                {deliveryTimeline.map((item) => (
+                  <section key={`delivery-${item.id}`} id={`delivery-phase-${item.id}`} role="tabpanel" tabIndex={0} hidden={activeDeliveryPhase !== item.id}>
+                    <div className={styles.deliveryPhaseHero}>
+                      <div>
+                        <p className={styles.eyebrow}>Active release phase</p>
+                        <h4>{item.phase}</h4>
+                        <p>{item.targetOutcome}</p>
+                      </div>
+                      <StatusPill value={item.status} />
+                    </div>
+                    <dl className={styles.deliveryPhaseGrid}>
+                      <div><dt>Required evidence</dt><dd>{item.evidence}</dd></div>
+                      <div><dt>Owner</dt><dd>{item.owner}</dd></div>
+                      <div><dt>UPGRADE action</dt><dd>{item.upgradeAction}</dd></div>
+                      <div><dt>Blocked if</dt><dd>{item.blocker}</dd></div>
+                      <div><dt>Output artifact</dt><dd>{item.output}</dd></div>
+                      <div><dt>Boundary</dt><dd>{item.boundary}</dd></div>
+                    </dl>
+                    <div className={styles.deliveryReleaseChecklist} aria-label={`${item.phase} release board`}>
+                      <div><span>release decision</span><strong>{item.releaseDecision}</strong></div>
+                      <div><span>evidence packet</span><strong>{item.evidencePacket}</strong></div>
+                      <div><span>escalation owner</span><strong>{item.escalationOwner}</strong></div>
+                      <div><span>handoff output</span><strong>{item.handoff}</strong></div>
+                      <div><span>status control</span><strong>{item.statusControl}</strong></div>
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </details>
           </article>
 
           <article className={styles.workPlanBuilder} id="work-plan-builder" data-section="work-plan-builder">

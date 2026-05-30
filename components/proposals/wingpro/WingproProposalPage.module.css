@@ -3281,6 +3281,81 @@
   margin-top: 0;
 }
 
+.deliveryDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.deliveryDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.deliveryDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.deliveryDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.deliveryDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.deliveryDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.deliveryDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.deliveryDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.deliveryDetailsDisclosure .timelineRows,
+.deliveryDetailsDisclosure .deliveryPhasePanels {
+  margin: 0 18px 18px;
+}
+
+.deliveryDetailsDisclosure .timelineRows {
+  margin-top: 0;
+}
+
 .contractValueGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5656,6 +5731,7 @@
   .vaultCardsDisclosure summary,
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
+  .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {
@@ -5749,6 +5825,7 @@
   .vaultCardsDisclosure summary,
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
+  .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary,
@@ -5766,7 +5843,8 @@
   }
 
   .contractDetailsDisclosure summary,
-  .controlBoardsDisclosure summary {
+  .controlBoardsDisclosure summary,
+  .deliveryDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
   }
 
@@ -5776,6 +5854,9 @@
   .controlBoardsDisclosure summary span,
   .controlBoardsDisclosure summary strong,
   .controlBoardsDisclosure summary small,
+  .deliveryDetailsDisclosure summary span,
+  .deliveryDetailsDisclosure summary strong,
+  .deliveryDetailsDisclosure summary small,
   .handoverDetailsDisclosure summary span,
   .handoverDetailsDisclosure summary strong,
   .handoverDetailsDisclosure summary small,
@@ -5790,6 +5871,7 @@
 
   .contractDetailsDisclosure summary::after,
   .controlBoardsDisclosure summary::after,
+  .deliveryDetailsDisclosure summary::after,
   .handoverDetailsDisclosure summary::after,
   .riskDetailsDisclosure summary::after,
   .supplierDetailsDisclosure summary::after {
@@ -5798,6 +5880,7 @@
   }
 
   .contractDetailsDisclosure summary,
+  .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {
