@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:3091/cp/2605281047-wingpro?cb=1780146891",
+  "wheel": [
+    {
+      "selector": "[class*=\"missionCard\"]",
+      "before": 0,
+      "after": 420,
+      "delta": 420
+    },
+    {
+      "selector": "#supplier-request-lab",
+      "before": 9331,
+      "after": 9751,
+      "delta": 420
+    },
+    {
+      "selector": "#contract-decision-simulator",
+      "before": 15069,
+      "after": 15489,
+      "delta": 420
+    }
+  ]
+}

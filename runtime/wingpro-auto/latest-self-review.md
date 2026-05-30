@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 38 self-review
+# CONTRACT-WINGPRO-2605281047-R067 / cycle 39 self-review
 
 1. Что улучшено в этом цикле?
-- Digital Twin presentation mode усилен как trust visual: добавлен верхний presentation HUD, state readout по объекту/layer/readiness/gate, отдельный layer rail и decision strip с readiness, owner и deliverable.
+- Executive Command Layer получил arrow-key navigation для 6 presentation tabs: ArrowRight/ArrowDown, ArrowLeft/ArrowUp, Home и End меняют active mode и переводят фокус. Также устранен page-specific nested-scroll offender: hero `missionCard` больше не создает `overflow:hidden` scroll mechanism.
 
 2. Как это помогает заказчику принять решение?
-- В режиме презентации видно не просто схему теплообменника, а управляемый цифровой объект: какой слой открыт, какие evidence нужны, какой risk закрывается и что получает WinGPro.
+- Command Layer теперь ведет себя как настоящий presentation controller, а hero commercial card перестает создавать конкурирующий scroll context. Пользователь остается в одном page flow и быстрее переключается между режимами решения.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Layer panel явно показывает `WinGPro получает`, `Evidence request`, `Risk закрывается`, `Owner` и deliverable по каждому Digital Twin layer.
+- Да. Режимы Executive/Supplier/Contract/Delivery/Work Plan/Handover быстрее доступны с клавиатуры, а верхний hero сохраняет цену и mission card без скрытого переполнения.
 
 4. Стало ли интерактивнее?
-- Да. В overlay появились 6 layer buttons; переключение на Documents меняет selected layer, side panel и `data-layer` у stage. Escape закрывает presentation mode.
+- Да. Keyboard smoke подтвердил переход Executive → Supplier, Home → Executive, End/ArrowLeft → Evidence & Handover. Roving tabindex оставляет один активный tab в tab order.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Новый текст говорит о conceptual digital twin preview и прямо сохраняет, что визуализация не заменяет инженерную модель, проектную документацию или утвержденные чертежи.
+- Нет. Новых liability-текстов не добавлено. Grep показал только безопасные отрицания: UPGRADE не утверждает технические параметры, не выполняет монтаж, ППР skeleton не официальный ППР.
 
 6. Не были ли изменены forbidden files?
-- Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
+- Нет. Изменены только page-specific TSX/CSS и runtime/wingpro-auto artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. QA подтвердил 200 OK, asset 200, img.currentSrc + naturalWidth=2000, h1=1, noindex, Escape close, reduced-motion smoke и отсутствие horizontal scroll на 1440/1280/768/375/320.
+- Нет. Typecheck/build прошли; browser QA подтвердил page 200, asset 200, img.currentSrc + naturalWidth=2000, h1=1, noindex, no horizontal scroll на 1440/1280/768/375/320. Scroll audit внутри `[data-proposal-root]` показал `unexpectedScrollContainers: []`.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=INTERACTIVE: добавить arrow-key navigation для presentation mode tabs или связать selected supplier/contract/delivery state в один executive outcome без добавления длинных секций.
+- MODE=INTERACTIVE/QA: продолжить scroll-in-scroll remediation по advisory, особенно разобрать horizontal clipped matrices (`offerMatrix`, `contractGateMatrix`) в responsive card/detail pattern или добавить detail-on-demand для самого длинного inline board.

@@ -1,5 +1,6 @@
 "use client";
 
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import styles from "./WingproProposalPage.module.css";
@@ -1354,6 +1355,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [copyStatus, setCopyStatus] = useState("Ready");
   const [copyVariant, setCopyVariant] = useState<CopyVariant>("short");
   const copyRef = useRef<HTMLTextAreaElement>(null);
+  const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
   const activeControl = projectControlScale.find((item) => item.id === activeControlStep) ?? projectControlScale[0];
@@ -1519,6 +1521,32 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     const next = scenes.find((item) => item.id === id);
     setActiveScene(id);
     if (next) setActiveLayer(next.layer as TwinLayerId);
+  }
+
+  function focusPresentationTab(index: number) {
+    const boundedIndex = (index + presentationModes.length) % presentationModes.length;
+    const nextMode = presentationModes[boundedIndex];
+    setActivePresentationMode(nextMode.id);
+    window.requestAnimationFrame(() => presentationTabRefs.current[boundedIndex]?.focus());
+  }
+
+  function onPresentationTabKeyDown(event: ReactKeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      focusPresentationTab(index + 1);
+    }
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      event.preventDefault();
+      focusPresentationTab(index - 1);
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      focusPresentationTab(0);
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      focusPresentationTab(presentationModes.length - 1);
+    }
   }
 
   function isPresentationSection(section: string) {
@@ -1696,15 +1724,20 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p>Переключите фокус: страница подсветит нужные блоки, покажет краткий вывод и следующий шаг для согласования.</p>
         </div>
         <div className={styles.presentationModeTabs} role="tablist" aria-label="Presentation modes">
-          {presentationModes.map((item) => (
+          {presentationModes.map((item, index) => (
             <button
               key={item.id}
+              ref={(node) => {
+                presentationTabRefs.current[index] = node;
+              }}
               type="button"
               role="tab"
               aria-selected={activePresentationMode === item.id}
               aria-controls="presentation-mode-panel"
               data-active={activePresentationMode === item.id}
+              tabIndex={activePresentationMode === item.id ? 0 : -1}
               onClick={() => setActivePresentationMode(item.id)}
+              onKeyDown={(event) => onPresentationTabKeyDown(event, index)}
             >
               {item.label}
             </button>

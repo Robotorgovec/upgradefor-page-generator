@@ -787,14 +787,16 @@
   display: grid;
   align-content: start;
   gap: 18px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .missionCard::after {
   content: "";
   position: absolute;
-  inset: auto -18% -24% 18%;
-  height: 260px;
+  right: 18px;
+  bottom: 18px;
+  left: 18%;
+  height: 220px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 50%;
   background: radial-gradient(circle, color-mix(in srgb, var(--proposal-brand) 16%, transparent), transparent 60%);
@@ -4893,8 +4895,10 @@
   }
 
   .missionCard::after {
-    inset: auto -22% -32% 10%;
-    height: 190px;
+    right: 14px;
+    bottom: 14px;
+    left: 10%;
+    height: 170px;
   }
 
   .missionCard strong,

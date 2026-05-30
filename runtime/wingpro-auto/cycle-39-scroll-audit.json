@@ -1,0 +1,67 @@
+{
+  "unexpectedScrollContainers": [],
+  "sticky": [
+    {
+      "selector": "nav.WingproProposalPage-module__pm2b_G__miniNav",
+      "className": "WingproProposalPage-module__pm2b_G__miniNav",
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "sticky",
+      "clientHeight": 53,
+      "scrollHeight": 53,
+      "clientWidth": 1118,
+      "scrollWidth": 1118,
+      "createsScrollY": false,
+      "createsScrollX": false,
+      "scrollingY": false,
+      "scrollingX": false,
+      "text": "MissionDigital TwinControl ScaleControl RoomVaultRisk RadarHandover"
+    },
+    {
+      "selector": "section.WingproProposalPage-module__pm2b_G__commandLayer",
+      "className": "WingproProposalPage-module__pm2b_G__commandLayer",
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "sticky",
+      "clientHeight": 695,
+      "scrollHeight": 695,
+      "clientWidth": 1118,
+      "scrollWidth": 1118,
+      "createsScrollY": false,
+      "createsScrollX": false,
+      "scrollingY": false,
+      "scrollingX": false,
+      "text": "Executive Command LayerРежим презентации сделкиПереключите фокус: страница подсв"
+    }
+  ],
+  "missionCard": {
+    "selector": "aside.WingproProposalPage-module__pm2b_G__missionCard",
+    "className": "WingproProposalPage-module__pm2b_G__missionCard",
+    "overflowY": "visible",
+    "overflowX": "visible",
+    "position": "relative",
+    "clientHeight": 910,
+    "scrollHeight": 910,
+    "clientWidth": 370,
+    "scrollWidth": 370,
+    "createsScrollY": false,
+    "createsScrollX": false,
+    "scrollingY": false,
+    "scrollingX": false,
+    "text": "commercial proposal / private3 000 000 ₸ без НДСединый комплекс сопровожденияобъ"
+  },
+  "horizontalClips": [
+    {
+      "selector": "div.WingproProposalPage-module__pm2b_G__offerMatrix",
+      "overflowX": "hidden",
+      "clientWidth": 478,
+      "scrollWidth": 790
+    },
+    {
+      "selector": "div.WingproProposalPage-module__pm2b_G__contractGateMatrix",
+      "overflowX": "hidden",
+      "clientWidth": 478,
+      "scrollWidth": 780
+    }
+  ]
+}
