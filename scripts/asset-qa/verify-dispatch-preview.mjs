@@ -24,6 +24,20 @@ const expectedAssets = [
   "/models/dispatch/multi-split-system.glb",
 ];
 
+const requiredSafetyCopy = [
+  "Read-only / control locked",
+  "DEMO MODE",
+  "BMS/SCADA",
+];
+
+const forbiddenSafetyClaims = [
+  "real command executed",
+  "equipment fixed",
+  "production control complete",
+  "guaranteed savings",
+  "live production control",
+];
+
 function normalizeBaseUrl(value) {
   return value.replace(/\/+$/, "");
 }
@@ -73,6 +87,14 @@ for (const cardId of expectedCards) {
   );
 }
 
+for (const copy of requiredSafetyCopy) {
+  assert(dispatchHtml.includes(copy), `/dispatch is missing required safety copy: ${copy}`);
+}
+
+for (const claim of forbiddenSafetyClaims) {
+  assert(!dispatchHtml.toLowerCase().includes(claim), `/dispatch includes forbidden safety claim: ${claim}`);
+}
+
 const assets = [];
 for (const path of expectedAssets) {
   const result = await fetchBytes(path);
@@ -97,6 +119,10 @@ console.log(
         status: dispatchResponse.status,
       },
       equipmentCards: expectedCards.length,
+      safetyCopy: {
+        required: requiredSafetyCopy.length,
+        forbidden: forbiddenSafetyClaims.length,
+      },
       assets,
       ok: true,
     },

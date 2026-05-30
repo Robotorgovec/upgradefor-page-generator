@@ -35,8 +35,11 @@ checked: 6
 Reusable deployed smoke command for this branch:
 
 ```text
-DISPATCH_BASE_URL=https://upgradefor-page-generator-d4wrhir94-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview.mjs
+DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview.mjs
 ```
+
+The preview smoke checks `/dispatch`, all 3D equipment GLB URLs, equipment-card selection metadata, required read-only
+safety copy, and the absence of forbidden real-control claims.
 
 ## Browser Evidence
 
