@@ -2197,61 +2197,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="control-scale-title">От поиска поставщика до Handover & Closeout</h2>
           <p>Этот слой показывает результат для WinGPro до деталей процесса: как выбирается поставщик, сравниваются условия, готовится договорная логика, ведется Delivery Timeline, формируется Work Plan Builder / ППР skeleton, собирается evidence и закрывается handover.</p>
         </div>
-        <div className={styles.moduleIndex} aria-label="Project control modules">
-          {[
-            "Supplier Request Lab",
-            "Offer Comparison Board",
-            "Contract Decision Simulator",
-            "Delivery Timeline",
-            "Work Plan Builder",
-            "Field Execution Board",
-            "Photo Evidence Wall",
-            "Implementation Status Dashboard",
-            "Handover & Closeout"
-          ].map((item) => <span key={item}>{item}</span>)}
-        </div>
-        <div className={styles.controlSnapshot} aria-label="Procurement cockpit snapshot">
-          {controlSnapshot.map((item) => (
-            <article key={item.label}>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p>{item.detail}</p>
-              <em>{item.signal}</em>
-            </article>
-          ))}
-        </div>
-
-        <div className={styles.controlScale} role="tablist" aria-label="Project control scale">
-          {projectControlScale.map((step, index) => (
-            <button
-              key={step.id}
-              type="button"
-              role="tab"
-              aria-selected={activeControlStep === step.id}
-              aria-controls={`control-step-${step.id}`}
-              onClick={() => setActiveControlStep(step.id)}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {step.title}
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.controlStepPanels}>
-          {projectControlScale.map((step) => (
-            <article key={step.id} id={`control-step-${step.id}`} role="tabpanel" className={styles.controlStepPanel} hidden={activeControlStep !== step.id}>
-              <h3>{step.artifact}</h3>
-              <dl>
-                <div><dt>что собирается</dt><dd>{step.result}</dd></div>
-                <div><dt>как помогает решению</dt><dd>{step.decision}</dd></div>
-                <div><dt>status</dt><dd>{step.status}</dd></div>
-                <div><dt>owner</dt><dd>{step.owner}</dd></div>
-                <div><dt>next action</dt><dd>{step.nextAction}</dd></div>
-                <div><dt>handoff output</dt><dd>{step.handoff}</dd></div>
-              </dl>
-            </article>
-          ))}
-        </div>
         <aside className={styles.controlCommandPanel} aria-live="polite" aria-label="Active project control command panel">
           <div>
             <p className={styles.eyebrow}>Active control state</p>
@@ -2266,20 +2211,83 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </dl>
         </aside>
 
-        <nav className={styles.moduleHandoffSpine} aria-label="Project control module navigation">
-          {projectControlScale.map((step, index) => (
-            <a
-              key={step.id}
-              href={`#${step.anchor}`}
-              aria-current={activeControlStep === step.id ? "step" : undefined}
-              onClick={() => setActiveControlStep(step.id)}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{step.artifact}</strong>
-              <small>{step.spineSignal}</small>
-            </a>
-          ))}
-        </nav>
+        <details className={styles.projectControlDetailsDisclosure}>
+          <summary>
+            <span>Control path detail</span>
+            <strong>Открыть project modules, readiness snapshot и handoff spine</strong>
+            <small>Сводка активного этапа остается сверху; полный маршрут раскрывается по запросу без внутреннего скролла.</small>
+          </summary>
+          <div className={styles.moduleIndex} aria-label="Project control modules">
+            {[
+              "Supplier Request Lab",
+              "Offer Comparison Board",
+              "Contract Decision Simulator",
+              "Delivery Timeline",
+              "Work Plan Builder",
+              "Field Execution Board",
+              "Photo Evidence Wall",
+              "Implementation Status Dashboard",
+              "Handover & Closeout"
+            ].map((item) => <span key={item}>{item}</span>)}
+          </div>
+          <div className={styles.controlSnapshot} aria-label="Procurement cockpit snapshot">
+            {controlSnapshot.map((item) => (
+              <article key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.detail}</p>
+                <em>{item.signal}</em>
+              </article>
+            ))}
+          </div>
+
+          <div className={styles.controlScale} role="tablist" aria-label="Project control scale">
+            {projectControlScale.map((step, index) => (
+              <button
+                key={step.id}
+                type="button"
+                role="tab"
+                aria-selected={activeControlStep === step.id}
+                aria-controls={`control-step-${step.id}`}
+                onClick={() => setActiveControlStep(step.id)}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {step.title}
+              </button>
+            ))}
+          </div>
+
+          <div className={styles.controlStepPanels}>
+            {projectControlScale.map((step) => (
+              <article key={step.id} id={`control-step-${step.id}`} role="tabpanel" className={styles.controlStepPanel} hidden={activeControlStep !== step.id}>
+                <h3>{step.artifact}</h3>
+                <dl>
+                  <div><dt>что собирается</dt><dd>{step.result}</dd></div>
+                  <div><dt>как помогает решению</dt><dd>{step.decision}</dd></div>
+                  <div><dt>status</dt><dd>{step.status}</dd></div>
+                  <div><dt>owner</dt><dd>{step.owner}</dd></div>
+                  <div><dt>next action</dt><dd>{step.nextAction}</dd></div>
+                  <div><dt>handoff output</dt><dd>{step.handoff}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+
+          <nav className={styles.moduleHandoffSpine} aria-label="Project control module navigation">
+            {projectControlScale.map((step, index) => (
+              <a
+                key={step.id}
+                href={`#${step.anchor}`}
+                aria-current={activeControlStep === step.id ? "step" : undefined}
+                onClick={() => setActiveControlStep(step.id)}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{step.artifact}</strong>
+                <small>{step.spineSignal}</small>
+              </a>
+            ))}
+          </nav>
+        </details>
 
         <details className={styles.controlBoardsDisclosure}>
           <summary>
