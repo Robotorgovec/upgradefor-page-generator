@@ -44,6 +44,12 @@ safety copy, and the absence of forbidden real-control claims.
 The card-state smoke opens the preview in a browser, clicks each equipment twin card, and verifies exclusive active
 selection, `aria-current`, mounted 3D canvas, no fallback state, and required read-only safety copy.
 
+Structural GLB metrics and model-quality risks are tracked separately in:
+
+```text
+docs/dispatch/reports/dispatch-3d-asset-quality-audit.md
+```
+
 ## Browser Evidence
 
 Browser automation opened the preview `/dispatch` page and captured:
@@ -101,5 +107,4 @@ This PR branch still predates some later QA infrastructure:
 
 - `scripts/dispatch-smoke-test.mjs` is missing on this branch.
 - `test:dispatch` is missing on this branch.
-- `test:layout` still expects the old `components/layout/LayoutShell.tsx`.
 - TypeScript still reports known legacy non-dispatch errors in account, selector, beauty grid, and manufacturers files.
