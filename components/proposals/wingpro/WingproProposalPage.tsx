@@ -1932,73 +1932,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </details>
           </div>
         </section>
-        <section className={styles.executiveOutcomeBoard} aria-labelledby="executive-outcome-title">
-          <div className={styles.executiveOutcomeHeader}>
-            <div>
-              <span className={styles.eyebrow}>Selected Outcome</span>
-              <h3 id="executive-outcome-title">Что уже собрано в один decision path</h3>
-            </div>
-            <button type="button" onClick={copyDecisionOutcome}>Скопировать selected outcome</button>
-          </div>
-          <div className={styles.executiveOutcomeGrid}>
-            {executiveOutcomeCards.map((item) => (
-              <a key={item.label} href={item.href}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-                <small>{item.detail}</small>
-              </a>
-            ))}
-          </div>
-          <div className={styles.executiveOutcomeFooter}>
-            <article>
-              <span>blocker queue</span>
-              <p>{decisionBlockerQueue.join(" / ")}</p>
-            </article>
-            <article>
-              <span>next action</span>
-              <p>{activePresentation.nextAction}</p>
-            </article>
-            <article>
-              <span>Service boundary</span>
-              <p>UPGRADE ведет информационный контур и coordination draft; ППР skeleton — не официальный ППР, а технические, логистические, таможенные и монтажные решения утверждают профильные участники.</p>
-            </article>
-          </div>
-        </section>
-        <div className={styles.presentationSpotlightMap} aria-label="Active presentation spotlight map">
-          <span>In focus now</span>
-          {activePresentation.sections.map((section) => {
-            const item = sectionSpotlightLabels[section];
-            if (!item) return null;
-            return (
-              <a key={section} href={item.href}>
-                <strong>{item.label}</strong>
-                <small>{item.signal}</small>
-              </a>
-            );
-          })}
-        </div>
-        <details className={styles.commandDisclosure}>
-          <summary>
-            <span className={styles.eyebrow}>Decision Path</span>
-            <strong>supplier → contract → delivery → work plan → handover</strong>
-            <small>Открыть связанный сценарий</small>
-          </summary>
-          <div className={styles.decisionPathRail} aria-label="Connected decision path">
-            {decisionPath.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                data-active={activePresentationMode === item.mode}
-                onClick={() => setActivePresentationMode(item.mode)}
-              >
-                <span>{item.label}</span>
-                <strong>{item.title}</strong>
-                <small>{item.detail}</small>
-                <em>{item.output}</em>
-              </button>
-            ))}
-          </div>
-        </details>
         <div className={styles.modeEndpoint} aria-label="Current mode decision endpoint">
           <article>
             <span>что выбрано</span>
@@ -2016,12 +1949,86 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             Скопировать summary режима
           </button>
         </div>
-        <div className={styles.modeDetailActions} aria-label="Current mode detail actions">
-          <span>открыть детали режима</span>
-          {activePresentation.detailActions.map(([label, href]) => (
-            <a key={href} href={href}>{label}</a>
-          ))}
-        </div>
+        <details className={styles.executiveCommandDetailsDisclosure}>
+          <summary>
+            <span>Executive detail</span>
+            <strong>Открыть selected outcome, spotlight map и decision path</strong>
+            <small>Верхний слой оставляет summary и next action видимыми; подробные ссылки раскрываются по запросу.</small>
+          </summary>
+          <section className={styles.executiveOutcomeBoard} aria-labelledby="executive-outcome-title">
+            <div className={styles.executiveOutcomeHeader}>
+              <div>
+                <span className={styles.eyebrow}>Selected Outcome</span>
+                <h3 id="executive-outcome-title">Что уже собрано в один decision path</h3>
+              </div>
+              <button type="button" onClick={copyDecisionOutcome}>Скопировать selected outcome</button>
+            </div>
+            <div className={styles.executiveOutcomeGrid}>
+              {executiveOutcomeCards.map((item) => (
+                <a key={item.label} href={item.href}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <small>{item.detail}</small>
+                </a>
+              ))}
+            </div>
+            <div className={styles.executiveOutcomeFooter}>
+              <article>
+                <span>blocker queue</span>
+                <p>{decisionBlockerQueue.join(" / ")}</p>
+              </article>
+              <article>
+                <span>next action</span>
+                <p>{activePresentation.nextAction}</p>
+              </article>
+              <article>
+                <span>Service boundary</span>
+                <p>UPGRADE ведет информационный контур и coordination draft; ППР skeleton — не официальный ППР, а технические, логистические, таможенные и монтажные решения утверждают профильные участники.</p>
+              </article>
+            </div>
+          </section>
+          <div className={styles.presentationSpotlightMap} aria-label="Active presentation spotlight map">
+            <span>In focus now</span>
+            {activePresentation.sections.map((section) => {
+              const item = sectionSpotlightLabels[section];
+              if (!item) return null;
+              return (
+                <a key={section} href={item.href}>
+                  <strong>{item.label}</strong>
+                  <small>{item.signal}</small>
+                </a>
+              );
+            })}
+          </div>
+          <details className={styles.commandDisclosure}>
+            <summary>
+              <span className={styles.eyebrow}>Decision Path</span>
+              <strong>supplier → contract → delivery → work plan → handover</strong>
+              <small>Открыть связанный сценарий</small>
+            </summary>
+            <div className={styles.decisionPathRail} aria-label="Connected decision path">
+              {decisionPath.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  data-active={activePresentationMode === item.mode}
+                  onClick={() => setActivePresentationMode(item.mode)}
+                >
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                  <small>{item.detail}</small>
+                  <em>{item.output}</em>
+                </button>
+              ))}
+            </div>
+          </details>
+          <div className={styles.modeDetailActions} aria-label="Current mode detail actions">
+            <span>открыть детали режима</span>
+            {activePresentation.detailActions.map(([label, href]) => (
+              <a key={href} href={href}>{label}</a>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" data-section="digital-twin" aria-labelledby="twin-title">

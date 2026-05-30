@@ -469,6 +469,83 @@
   line-height: 1.25;
 }
 
+.executiveCommandDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.executiveCommandDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.executiveCommandDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.executiveCommandDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.executiveCommandDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.executiveCommandDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.executiveCommandDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.executiveCommandDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.executiveCommandDetailsDisclosure .executiveOutcomeBoard,
+.executiveCommandDetailsDisclosure .presentationSpotlightMap,
+.executiveCommandDetailsDisclosure .commandDisclosure,
+.executiveCommandDetailsDisclosure .modeDetailActions {
+  margin: 0 18px 18px;
+}
+
+.executiveCommandDetailsDisclosure .executiveOutcomeBoard {
+  margin-top: 0;
+}
+
 .executiveOutcomeBoard {
   display: grid;
   gap: 8px;
@@ -5887,6 +5964,7 @@
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
+  .executiveCommandDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -5983,6 +6061,7 @@
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
+  .executiveCommandDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6004,6 +6083,7 @@
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
+  .executiveCommandDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
@@ -6018,6 +6098,9 @@
   .deliveryDetailsDisclosure summary span,
   .deliveryDetailsDisclosure summary strong,
   .deliveryDetailsDisclosure summary small,
+  .executiveCommandDetailsDisclosure summary span,
+  .executiveCommandDetailsDisclosure summary strong,
+  .executiveCommandDetailsDisclosure summary small,
   .handoverDetailsDisclosure summary span,
   .handoverDetailsDisclosure summary strong,
   .handoverDetailsDisclosure summary small,
@@ -6039,6 +6122,7 @@
   .contractDetailsDisclosure summary::after,
   .controlBoardsDisclosure summary::after,
   .deliveryDetailsDisclosure summary::after,
+  .executiveCommandDetailsDisclosure summary::after,
   .handoverDetailsDisclosure summary::after,
   .offerDetailsDisclosure summary::after,
   .projectControlDetailsDisclosure summary::after,
@@ -6050,6 +6134,7 @@
 
   .contractDetailsDisclosure summary,
   .deliveryDetailsDisclosure summary,
+  .executiveCommandDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
