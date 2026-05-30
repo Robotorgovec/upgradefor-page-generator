@@ -2,29 +2,72 @@
 
 Date: 2026-05-30  
 Branch: `fix/dispatch-3d-equipment-models-and-selection`  
-Preview checked: <https://upgradefor-page-generator-4g9m48g82-bacalimser-8615s-projects.vercel.app/dispatch>  
+Preview checked: <https://upgradefor-page-generator-2l9sdi5k6-bacalimser-8615s-projects.vercel.app/dispatch>
 Asset: `public/models/dispatch/multi-split-system.glb`
+Approved Drive source: `Не терять, не удалять, хранить!/Мульти сплит система 05.11.2022/Multi split system.blend`
 
 ## Scope
 
-This is a focused visual/material review for the current multi-split model used in the read-only dispatch demo. It does
-not replace the source geometry, does not add production control, and does not claim live telemetry.
+This is a focused visual/material acceptance pass for the current multi-split / кондиционер model used in the read-only
+dispatch demo. It does not replace source geometry, does not invent a procedural model, does not add production control,
+and does not claim live BMS/SCADA telemetry.
+
+No re-export was performed in this cycle. The current GLB remains unchanged because it is browser-visible, has real
+multi-split elements, and is acceptable for the demo with caveats.
+
+## Approved Source Evidence
+
+Drive folder inspected:
+
+```text
+/Users/m1/Library/CloudStorage/GoogleDrive-bacalim.ser@gmail.com/Мой диск/Не терять, не удалять, хранить!/Мульти сплит система 05.11.2022
+```
+
+Files found:
+
+```text
+002.png
+168.png
+169.png
+Multi split system.blend
+assets/materials/brick_wall_paint_b0a5dda8-6ccd-43cd-aced-4514ef7a299a/brick_wall_paint_30e680d5-800e-4d1e-b547-137a9a0ed642.blend
+assets/models/air_conditioner_996de5e5-1102-4392-a268-e02cfb27ec4c/air_conditioner_1K_f3d54383-8cc0-491d-8bdd-9da42ffa9078.blend
+desktop.ini
+```
+
+Blender source inspection confirmed the source contains multi-split relevant objects/material groups, including indoor
+unit bodies, face covers, grille/fan objects, copper pipe objects, and air-conditioner source assets. The inspection log
+is kept locally at:
+
+```text
+/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/asset-audit/cycle-019/multi-split-blender-inspect.log
+```
 
 ## Evidence
+
+Serving check with cache busting:
+
+```text
+/dispatch?cb=<timestamp> -> 200
+/models/dispatch/multi-split-system.glb?cb=<timestamp> -> 200 model/gltf-binary 307264 bytes
+```
 
 Browser check:
 
 ```text
 active=multi-split-system
+aria-current=true
 heading=Мультисплит система MS-1
-canvas=1
+canvasCount=2
 fallback=false
+explodedGate=true
+safetyReadOnly=true
 ```
 
-Screenshot:
+Screenshot committed for external review:
 
 ```text
-/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-014/multi-split-lower-twin-verified.png
+docs/dispatch/reports/screenshots/cycle-019/multi-split-fresh-preview-viewer.png
 ```
 
 GLB structure:
@@ -52,21 +95,47 @@ dispatch_copper_pipe
 
 ## Visual Decision
 
-Current status: **conditional demo acceptance**.
+Current status: **ACCEPTED_FOR_DEMO_WITH_CAVEATS**.
 
-Why:
+Why it can stay in the current demo:
 
+- The approved Drive source folder exists and was inspected.
 - The model is browser-visible in the lower 3D equipment twin block.
-- The card selection is correct: the selected card is `multi-split-system`, the heading changes to `Мультисплит система MS-1`, and the viewer does not show fallback.
-- The model reads as a simplified multi-split concept: two indoor units, copper pipe runs, dark grille/fan detail, and cool blue accent surfaces.
-- It is lightweight enough for the current preview and has no missing-normal warning.
+- The selected card is `multi-split-system`, the heading changes to `Мультисплит система MS-1`, and the viewer does not
+  show fallback.
+- The model reads as a simplified assembled multi-split: outdoor fan/grille detail, two indoor units, copper pipe runs,
+  and cool blue/white casing materials.
+- The GLB has no missing-normal warning and remains lightweight for the current preview.
+- Exploded view is gated with `Разборка модели в подготовке`, which is correct for this asset.
 
 Limits:
 
 - Metadata still contains `TO VERIFY`.
 - The GLB is off-center, so future scene-level placement should normalize origin or define an explicit transform.
-- The model is visually simple and should not be presented as final manufacturer-accurate equipment.
-- Outdoor condenser accuracy and final material realism require source approval before client-facing polish.
+- It is visually simplified and should not be presented as a final manufacturer-accurate equipment twin.
+- If client-facing material fidelity becomes a priority, re-export only from the approved Drive source or another
+  user-approved original source. Do not substitute procedural/generated geometry.
+
+## Narrow Viewport QA Note
+
+The clean 375px check did not show document-level horizontal overflow:
+
+```text
+innerWidth=375
+document.scrollWidth=360
+body.scrollWidth=360
+horizontalOverflow=false
+```
+
+However, nested dispatch containers still report overflow (`dispatchShell`, `dispatchGrid`, `dispatchHeader`, and
+`twinStage`) and the top PV-1 viewer appears visually cropped/zoomed on the narrow screenshot. This is not fixed in this
+3D cycle and should become a separate `MODE=DESIGN` or `MODE=QA` micro-goal.
+
+Screenshot:
+
+```text
+docs/dispatch/reports/screenshots/cycle-019/narrow-overflow-observation.png
+```
 
 ## Product Copy Rule
 
@@ -75,7 +144,8 @@ Use only safe phrasing around this asset:
 - `Demo/read-only`
 - `No real equipment control`
 - `TO VERIFY`
-- `Conditional 3D visual`
+- `ACCEPTED_FOR_DEMO_WITH_CAVEATS`
+- `Разборка модели в подготовке`
 
 Avoid:
 
@@ -86,5 +156,5 @@ Avoid:
 
 ## Next Step
 
-If the user wants this model to become final, replace or refine it only from a user-approved original source model. Do not
-invent a new procedural multi-split as a substitute.
+Keep the current multi-split GLB in the demo. The next recommended cycle should be `MODE=QA` for all five equipment
+twins, including active/related selection states and lower PV-1 proof, or `MODE=DESIGN` for the narrow viewport crop.

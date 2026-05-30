@@ -37,14 +37,14 @@ Raw JSON reports for this cycle were saved locally under:
 | `chiller.glb` | 1.07 MB | 16 | 16 | 5 | 40,918 | 1.0385 x 1.1837 x 4.15 | missing normals, tiny meshes | Temporary assembled-only; keep exploded gated |
 | `fancoil-fc92.glb` | 3.33 MB | 1 | 6 | 6 | 77,140 | 3.2 x 0.5133 x 1.0702 | none | Best current candidate for demo-ready equipment |
 | `cooling-tower-small.glb` | 323.3 KB | 7 | 7 | 4 | 59,794 | 0.75 x 0.824 x 3.15 | none | Structurally clean; needs visual/material acceptance |
-| `multi-split-system.glb` | 300.1 KB | 20 | 20 | 5 | 102,268 | 3.2472 x 1.6214 x 0.6046 | off-origin center | Served/clickable; needs visual/material acceptance |
+| `multi-split-system.glb` | 300.1 KB | 20 | 20 | 5 | 102,268 | 3.2472 x 1.6214 x 0.6046 | off-origin center | Accepted for demo with caveats |
 
 ## Findings
 
 - All six registered GLB assets are below the 10 MB preferred target and far below the 25 MB hard MVP limit.
 - `fancoil-fc92.glb` and `cooling-tower-small.glb` have no structural warnings from the GLB inspector.
-- `multi-split-system.glb` is lightweight and browser-safe, but its bounding box center is offset from origin. Keep it
-  accepted only as served/clickable until a visual placement pass confirms framing.
+- `multi-split-system.glb` is lightweight and browser-safe. Its bounding box center is offset from origin, but the
+  focused visual pass confirms it is acceptable for the current demo with caveats.
 - `chiller.glb` has no normals on all primitives. Keep it as a temporary assembled-only asset and keep exploded view
   gated with `Разборка модели в подготовке`.
 - PV-1 assets are real and detailed, but have tiny meshes and off-origin bounds. This is acceptable for the current
@@ -63,9 +63,9 @@ For the current investor/demo branch:
 
 ## Next Recommended 3D Micro-Goal
 
-Run a focused visual/material pass on `multi-split-system.glb` first, because it is structurally served and clickable
-but has an off-origin warning and currently carries `TO VERIFY` metadata. If the model itself is not acceptable, replace
-it only with a user-approved original source model.
+Run a final PR #292 review across all five equipment twins, including lower PV-1 proof, active/related selection states,
+passport switching, and the narrow viewport crop note. If the multi-split model needs future material polish, re-export
+it only from the approved Drive source recorded in the focused visual review.
 
 Follow-up status: the focused multi-split visual review is recorded in:
 
