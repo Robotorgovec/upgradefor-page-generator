@@ -17,10 +17,12 @@ Micro-goal: add a dedicated SCADA/I-O tags tab to the equipment passport.
 
 Local production view during QA: http://127.0.0.1:3062/dispatch
 
-Vercel Preview is attempted after commit/push. If quota is still exhausted, run later:
+Vercel Preview: https://upgradefor-page-generator-ehigypank-bacalimser-8615s-projects.vercel.app/dispatch
+
+External smoke command:
 
 ```bash
-DISPATCH_BASE_URL=https://<preview-url> node scripts/asset-qa/verify-dispatch-preview-suite.mjs
+DISPATCH_BASE_URL=https://upgradefor-page-generator-ehigypank-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs
 ```
 
 ## Screenshots
@@ -40,6 +42,8 @@ DISPATCH_BASE_URL=https://<preview-url> node scripts/asset-qa/verify-dispatch-pr
 - `npm run build` — passed
 - `git diff --check` — passed
 - Dispatch TypeScript check — clean; full `tsc` still has known legacy non-dispatch errors on this PR branch.
+- Vercel Preview deploy — passed
+- External preview suite — passed
 
 ## Safety
 
