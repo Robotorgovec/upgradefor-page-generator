@@ -58,6 +58,18 @@ Screenshot artifact:
 /Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-006/dispatch-3d-equipment-review.png
 ```
 
+## Equipment Visual QA
+
+Browser automation also checked specific equipment cards on the deployed preview:
+
+| Equipment | Selected id | Canvas count | Fallback visible | Safety copy visible | Screenshot |
+| --- | --- | ---: | --- | --- | --- |
+| Chiller CH-1 | `chiller` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-010/dispatch-chiller-visual-qa.png` |
+| Fan coil FC-92 | `fancoil-fc92` | 2 | no | yes | `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-010/dispatch-fancoil-visual-qa.png` |
+
+These checks prove that the card selection state updates to the selected equipment and the 3D viewer remains mounted
+without showing a fallback message. They do not validate production telemetry or real control.
+
 ## Equipment State Notes
 
 - PV-1 uses the real assembled GLB by default and has an exploded GLB available.
