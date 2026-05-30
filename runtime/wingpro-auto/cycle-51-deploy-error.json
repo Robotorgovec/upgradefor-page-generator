@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-05-30T15:30:52.715Z",
+  "status": "error",
+  "reason": "deploy_failed",
+  "code": "api-deployments-free-per-day",
+  "message": "Resource is limited - try again in 24 hours (more than 100, code: \"api-deployments-free-per-day\").",
+  "previewUpdated": false,
+  "impact": "Cycle 51 local QA/build/commit/push succeeded, but required Vercel preview update and external canonical QA cannot be completed until the Vercel deployment quota resets."
+}
