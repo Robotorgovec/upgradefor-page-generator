@@ -1,0 +1,89 @@
+{
+  "cb": 1780142185,
+  "url": "http://127.0.0.1:3078/cp/2605281047-wingpro?cb=1780142185",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3078/assets/logo/logo-black-only.png?cb=1780142185",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3078/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "responsive": [
+    {
+      "width": 1440,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-29/1440.png",
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 1280,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-29/1280.png",
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 768,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-29/768.png",
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 375,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-29/375.png",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 320,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-29/320.png",
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true,
+      "max768": true
+    }
+  ],
+  "copyProof": {
+    "previewTitle": "Command-center summary",
+    "previewText": "Структура КП построена как procurement command center: Document Vault показывает owner queue и next evidence request, Risk Radar переводит риски в response sequence, Release Gates фиксируют readiness перед оплатой/отгрузкой/handover, а Handover Room собирает closeout packs и reusable Digital Product Asset. UPGRADE управляет информационным контуром, evidence и handoff-пакетами; профильные участники утверждают и исполняют решения в своих зонах ответственности.",
+    "commandActive": "true",
+    "copyStatus": "Copied with fallback",
+    "hasCommandText": true
+  },
+  "content": {
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  }
+}

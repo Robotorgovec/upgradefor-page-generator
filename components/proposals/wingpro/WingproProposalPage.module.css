@@ -3646,6 +3646,34 @@
   background: #ffffff;
 }
 
+.copyPreview {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 12px;
+}
+
+.copyPreview h3,
+.copyPreview p {
+  margin: 0;
+}
+
+.copyPreview h3 {
+  color: var(--proposal-text);
+  font-size: 22px;
+}
+
+.copyPreview > p {
+  color: var(--proposal-text-soft);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
 .copySource {
   width: 100%;
   min-height: 150px;

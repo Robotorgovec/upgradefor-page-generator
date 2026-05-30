@@ -13,7 +13,7 @@ type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
 type DeliveryPhaseId = "payment" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
-type CopyVariant = "short" | "executive" | "boundary" | "deliverables" | "payment" | "next";
+type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next";
 
 const twinLayers = [
   {
@@ -1185,6 +1185,8 @@ const copyTexts: Record<CopyVariant, string> = {
     "UPGRADE предлагает WinGPro не разовую помощь с поставщиком, а цифровой контур поставки оборудования: data-room, risk radar, release gates, контроль документов и статусов, handover-пакеты для логиста/брокера/монтажной стороны и цифровую товарную линию для повторного использования.",
   executive:
     "Стоимость 3 000 000 ₸ без НДС относится к единому комплексу IT/data и закупочно-координационного сопровождения. Результат — не контакт поставщика, а управляемая система качества, сроков, документов, рисков и передачи данных участникам проекта.",
+  command:
+    "Структура КП построена как procurement command center: Document Vault показывает owner queue и next evidence request, Risk Radar переводит риски в response sequence, Release Gates фиксируют readiness перед оплатой/отгрузкой/handover, а Handover Room собирает closeout packs и reusable Digital Product Asset. UPGRADE управляет информационным контуром, evidence и handoff-пакетами; профильные участники утверждают и исполняют решения в своих зонах ответственности.",
   boundary:
     "UPGRADE структурирует данные, документы, вопросы, статусы и handover-пакеты. UPGRADE не является поставщиком, производителем, проектировщиком, монтажной организацией, брокером, перевозчиком, технадзором или сертификационным органом.",
   deliverables:
@@ -2700,12 +2702,20 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           {[
             ["short", "Copy 30-second summary"],
             ["executive", "Copy executive message"],
+            ["command", "Copy command-center summary"],
             ["boundary", "Copy scope boundary"],
             ["deliverables", "Copy deliverables list"],
             ["payment", "Copy payment terms"],
             ["next", "Copy next step"],
           ].map(([variant, label]) => <button key={variant} type="button" data-active={copyVariant === variant} onClick={() => copyBoardText(variant as CopyVariant)}>{label}</button>)}
         </div>
+        <article className={styles.copyPreview} aria-label="Selected copy package preview">
+          <div>
+            <p className={styles.eyebrow}>Selected message</p>
+            <h3>{copyVariant === "command" ? "Command-center summary" : copyVariant}</h3>
+          </div>
+          <p>{copyTexts[copyVariant]}</p>
+        </article>
         <textarea ref={copyRef} className={styles.copySource} value={copyTexts[copyVariant]} readOnly hidden />
         <p aria-live="polite" data-copy-status>{copyStatus}</p>
         <p className={styles.legalNote}>UPGRADE — IT/data и закупочно-координационный партнер. UPGRADE не является поставщиком оборудования; не является производителем; не является проектировщиком; не является монтажной организацией; не является ПНР-подрядчиком; не является техническим надзором; не является брокером; не является перевозчиком; не является сертификационным органом и не является юридическим консультантом.</p>
