@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
-import Header from "../components/layout/Header";
-import Sidebar from "../components/layout/Sidebar";
-import MobileBottomNav from "../components/layout/MobileBottomNav";
+import fs from "fs";
+import path from "path";
+import AppShell from "../components/layout/AppShell";
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const headerHtml = fs.readFileSync(path.join(process.cwd(), "public", "includes", "header.html"), "utf8");
+  const sidebarHtml = fs.readFileSync(path.join(process.cwd(), "public", "includes", "menu.html"), "utf8");
   return (
     <html lang="ru" suppressHydrationWarning>
       <head>
@@ -16,16 +18,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script src="/assets/theme/theme-system.js?v=20260311-5" />
       </head>
       <body>
-        <a className="skip" href="#main">
-          К содержанию
-        </a>
-        <Header />
-        <Sidebar />
-        <main id="main" className="app-content">
+        <AppShell headerHtml={headerHtml} sidebarHtml={sidebarHtml}>
           {children}
-        </main>
-        <MobileBottomNav />
-        <script src="/assets/load-layout.js?v=20260311-5" defer />
+        </AppShell>
       </body>
     </html>
   );

@@ -12,14 +12,26 @@ model User {
   email            String      @unique
   passwordHash     String
   role             String      @default("user")
+  accountType      AccountType @default(BUYER)
   emailVerified    DateTime?
   profileCompleted Boolean     @default(false)
+  onboardingCompleted Boolean  @default(false)
   welcomeSeen      Boolean     @default(false)
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 
   profile Profile?
   tokens  EmailToken[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum AccountType {
+  BUYER
+  VENDOR
 }
 
 model Profile {

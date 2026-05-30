@@ -27,15 +27,11 @@ if (process.env.UPDATE_SNAPSHOT === "1" || !fs.existsSync(snapshotPath)) {
   assert.equal(snapshot, existing, "Layout snapshot mismatch");
 }
 
-assert.match(rootLayoutSource, /import Header\b/, "Header import missing in root layout");
-assert.match(rootLayoutSource, /import Sidebar\b/, "Sidebar import missing in root layout");
-assert.match(rootLayoutSource, /import MobileBottomNav\b/, "MobileBottomNav import missing in root layout");
-assert.match(rootLayoutSource, /<Header\s*\/>/, "Header missing in root layout");
-assert.match(rootLayoutSource, /<Sidebar\s*\/>/, "Sidebar missing in root layout");
-assert.match(rootLayoutSource, /<main\s+id="main"\s+className="app-content"/, "Main content wrapper missing");
-assert.match(rootLayoutSource, /<MobileBottomNav\s*\/>/, "MobileBottomNav missing in root layout");
+assert.match(rootLayoutSource, /import AppShell\b/, "AppShell import missing in root layout");
+assert.match(rootLayoutSource, /headerHtml/, "Header HTML loader missing in root layout");
+assert.match(rootLayoutSource, /sidebarHtml/, "Sidebar HTML loader missing in root layout");
+assert.match(rootLayoutSource, /<AppShell\s+headerHtml=\{headerHtml\}\s+sidebarHtml=\{sidebarHtml\}/, "AppShell wrapper missing");
 assert.match(rootLayoutSource, /\/assets\/layout\.css/, "Global layout stylesheet missing");
-assert.match(rootLayoutSource, /\/assets\/load-layout\.js/, "Legacy layout loader script missing");
 
 assert.match(homePageSource, /export default function/, "Home page export missing");
 assert.ok(!homePageSource.includes("<html"), "Home page should not render <html>");

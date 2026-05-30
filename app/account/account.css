@@ -63,6 +63,43 @@
   color: var(--muted);
 }
 
+.account-kicker {
+  margin: 0 0 6px !important;
+  color: var(--neutral-500) !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.account-status-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin: 22px 0;
+}
+
+.account-status-grid div {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--soft);
+}
+
+.account-status-grid dt {
+  color: var(--neutral-500);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.account-status-grid dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
 .account-banner {
   margin-bottom: 20px;
   padding: 14px 16px;
@@ -94,6 +131,10 @@
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.account-feature-grid {
+  margin-top: 20px;
 }
 
 .account-form {
