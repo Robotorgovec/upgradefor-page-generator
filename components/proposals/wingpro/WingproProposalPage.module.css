@@ -5264,7 +5264,7 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cockpitSummaryGrid {
@@ -5379,6 +5379,10 @@
 
   .commandLayerHeader {
     display: grid;
+  }
+
+  .presentationModeTabs button {
+    min-height: 44px;
   }
 
   .executiveOutcomeHeader {
@@ -5636,7 +5640,24 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .presentationModeTabs button {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .cockpitSummaryGrid button {
+    min-height: 112px;
+  }
+
+  .cockpitSummaryGrid strong {
+    font-size: 13.5px;
+  }
+
+  .cockpitSummaryGrid em {
+    font-size: 11px;
   }
 
   .candidateStack {
