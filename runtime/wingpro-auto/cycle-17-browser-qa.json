@@ -1,0 +1,104 @@
+{
+  "cb": 1780137026,
+  "localUrl": "http://127.0.0.1:3077/cp/2605281047-wingpro?cb=1780137026",
+  "base": {
+    "url": "http://127.0.0.1:3077/cp/2605281047-wingpro?cb=1780137026#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "max768": false,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1440,
+    "scrollOk": true,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://127.0.0.1:3077/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "gateSurfaceVisible": true,
+    "gateSurfaceText": "SELECTED GATE PACKET\n\nGate 0 — Deal setup\n\nGo only when supplier identity, object and participant map are visible.\n\nVAULT EVIDENCE\nsupplier profile\nRISK RADAR LINKS\nsupplier identity unclear\nROUTE HANDOFF\nFactory China\nOUTPUT\nmission card",
+    "gatePanelsWithStopGo": 8,
+    "gatePanelsWithVault": 8,
+    "contentMissing": [
+      "Release gates",
+      "Selected gate packet",
+      "stop/go signal",
+      "Risk radar links"
+    ],
+    "focusCheck": {
+      "tag": "BUTTON",
+      "controls": "release-gate-0",
+      "outlineWidth": "3px",
+      "boxShadow": "rgba(140, 121, 232, 0.28) 0px 0px 0px 2px"
+    },
+    "liveRegions": 11,
+    "contentMissingCaseInsensitive": []
+  },
+  "assetStatus": 200,
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "scrollOk": true,
+      "h1Count": 1,
+      "gateSurfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "scrollOk": true,
+      "h1Count": 1,
+      "gateSurfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "gateSurfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "gateSurfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "gateSurfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "before": "SELECTED GATE PACKET\n\nGate 0 — Deal setup\n\nGo only when supplier identity, object and participant map are visible.\n\nVAULT EVIDENCE\nsupplier profile\nRISK RADAR LINKS\nsupplier identity unclear\nROUTE HANDOFF\nFactory China\nOUTPUT\nmission card",
+    "after": "SELECTED GATE PACKET\n\nGate 3 — Before shipment\n\nStop shipment readiness when packing data or photo/video/nameplate evidence is missing.\n\nVAULT EVIDENCE\npacking list, photo/video/nameplate\nRISK RADAR LINKS\nmissing packing data, no nameplate/photo/video before shipment\nROUTE HANDOFF\nPickup\nOUTPUT\nshipment pack",
+    "gateSurfaceUpdated": true,
+    "selectedPanelVisible": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "gateSurfaceVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-17/wingpro-c17-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-17/wingpro-c17-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-17/wingpro-c17-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-17/wingpro-c17-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-17/wingpro-c17-320.png"
+  ],
+  "note": "contentMissing was case-sensitive against CSS text-transform/innerText; case-insensitive label check passes."
+}

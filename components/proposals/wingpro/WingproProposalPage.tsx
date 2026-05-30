@@ -874,6 +874,37 @@ const gates = [
   ["Gate 7 — Reuse in sales pipeline", "позиция готова к повторному использованию", "supplier card, product card, links, notes", "WinGPro / UPGRADE", "создать digital product asset", "нет reusable card", "sales asset"],
 ] as const;
 
+function getGateKey(gateTitle: string) {
+  return gateTitle.match(/Gate \d/)?.[0] ?? gateTitle;
+}
+
+function getGateVaultLinks(gateTitle: string) {
+  const key = getGateKey(gateTitle);
+  return vaultDocs.filter((doc) => doc[3].includes(key)).map((doc) => doc[1]);
+}
+
+function getGateRiskLinks(gateTitle: string) {
+  const key = getGateKey(gateTitle);
+  return risks.filter((item) => item.releaseGate.includes(key)).map((item) => item.title);
+}
+
+function getGateRouteLinks(gateTitle: string) {
+  const key = getGateKey(gateTitle);
+  return routePoints.filter((point) => point.gate.includes(key)).map((point) => point.title);
+}
+
+function getGateStopGo(gateTitle: string) {
+  const key = getGateKey(gateTitle);
+  if (key === "Gate 0") return "Go only when supplier identity, object and participant map are visible.";
+  if (key === "Gate 1") return "Stop if payment evidence, PI, bank, material or pressure confirmations remain unresolved.";
+  if (key === "Gate 2") return "Go when specification, drawing request and technical decision owner are visible.";
+  if (key === "Gate 3") return "Stop shipment readiness when packing data or photo/video/nameplate evidence is missing.";
+  if (key === "Gate 4") return "Go only when broker/logistics input package and external document owners are visible.";
+  if (key === "Gate 5") return "Stop mounting handoff if owner, access inputs or technical question path is unclear.";
+  if (key === "Gate 7") return "Go when supplier/product card and reusable notes are linked for future commercial use.";
+  return "Service acceptance is based on deliverables, open issue register and handover packs.";
+}
+
 const handoverPacks = [
   {
     name: "WinGPro Executive Pack",
@@ -1003,6 +1034,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
+  const gate = gates[activeGate] ?? gates[0];
+  const gateVaultLinks = getGateVaultLinks(gate[0]);
+  const gateRiskLinks = getGateRiskLinks(gate[0]);
+  const gateRouteLinks = getGateRouteLinks(gate[0]);
   const handoverPack = handoverPacks.find((item) => item.name === activePack) ?? handoverPacks[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
@@ -2005,6 +2040,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="gates-title">Поставка как pipeline готовности данных</h2>
           <p>UPGRADE контролирует готовность данных и статусный контур, а не принимает на себя действия третьих лиц.</p>
         </div>
+        <aside className={styles.gateControlSurface} aria-live="polite" aria-label="Selected release gate control packet">
+          <div>
+            <p className={styles.eyebrow}>Selected gate packet</p>
+            <h3>{gate[0]}</h3>
+            <p>{getGateStopGo(gate[0])}</p>
+          </div>
+          <dl>
+            <div><dt>Vault evidence</dt><dd>{gateVaultLinks.length > 0 ? gateVaultLinks.join(", ") : gate[2]}</dd></div>
+            <div><dt>Risk radar links</dt><dd>{gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "service acceptance / open issues"}</dd></div>
+            <div><dt>Route handoff</dt><dd>{gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"}</dd></div>
+            <div><dt>Output</dt><dd>{gate[6]}</dd></div>
+          </dl>
+        </aside>
         <div className={styles.gatePipeline} role="tablist" aria-label="Release gate pipeline">
           {gates.map((gate, index) => (
             <button
@@ -2032,6 +2080,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <div><dt>UPGRADE action</dt><dd>{gate[4]}</dd></div>
                 <div><dt>blocked if</dt><dd>{gate[5]}</dd></div>
                 <div><dt>output artifact</dt><dd>{gate[6]}</dd></div>
+                <div><dt>stop/go signal</dt><dd>{getGateStopGo(gate[0])}</dd></div>
+                <div><dt>Vault evidence</dt><dd>{getGateVaultLinks(gate[0]).join(", ") || gate[2]}</dd></div>
+                <div><dt>Risk radar links</dt><dd>{getGateRiskLinks(gate[0]).join(", ") || "service acceptance / open issues"}</dd></div>
+                <div><dt>Route handoff</dt><dd>{getGateRouteLinks(gate[0]).join(", ") || "Handover Room"}</dd></div>
               </dl>
             </article>
           ))}
