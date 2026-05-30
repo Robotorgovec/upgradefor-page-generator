@@ -36,10 +36,13 @@ Reusable deployed smoke command for this branch:
 
 ```text
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview.mjs
+DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-equipment-card-states.mjs
 ```
 
 The preview smoke checks `/dispatch`, all 3D equipment GLB URLs, equipment-card selection metadata, required read-only
 safety copy, and the absence of forbidden real-control claims.
+The card-state smoke opens the preview in a browser, clicks each equipment twin card, and verifies exclusive active
+selection, `aria-current`, mounted 3D canvas, no fallback state, and required read-only safety copy.
 
 ## Browser Evidence
 
