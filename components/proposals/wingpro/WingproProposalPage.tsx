@@ -1474,6 +1474,40 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     detail: string;
     output: string;
   }>;
+  const decisionBlockerQueue = uniqueList([
+    ...supplier.blockers.slice(0, 2),
+    ...contractScenario.unresolvedBlockers.slice(0, 2),
+    deliveryPhase.blocker,
+    evidenceHandoff.riskLink,
+    handoverRiskLinks[0]?.title ?? "",
+  ]).slice(0, 5);
+  const executiveOutcomeCards = [
+    {
+      label: "Selected route",
+      value: `${supplier.name} / ${supplier.status}`,
+      detail: supplier.decisionSignal,
+      href: "#offer-comparison-board",
+    },
+    {
+      label: "Contract frame",
+      value: contractScenario.title,
+      detail: contractScenario.evidenceGateStrength,
+      href: "#contract-decision-simulator",
+    },
+    {
+      label: "Release focus",
+      value: deliveryPhase.releaseGate,
+      detail: deliveryPhase.statusControl,
+      href: "#delivery-timeline",
+    },
+    {
+      label: "Handover package",
+      value: handoverPack.name,
+      detail: handoverPack.acceptance,
+      href: "#handover",
+    },
+  ] as const;
+  const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -1557,13 +1591,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     return `${baseClass} ${isPresentationSection(section) ? styles.presentationSectionActive : ""}`;
   }
 
-  async function copyBoardText(variant: CopyVariant) {
-    setCopyVariant(variant);
-    const text = copyTexts[variant];
+  async function copyPlainText(text: string, status = "Copied") {
     if (window.isSecureContext && navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(text);
-        setCopyStatus("Copied");
+        setCopyStatus(status);
         return;
       } catch {
         // Fallback below keeps file/preview contexts usable.
@@ -1576,8 +1608,18 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       copyRef.current.select();
       const ok = document.execCommand("copy");
       copyRef.current.hidden = ok;
-      setCopyStatus(ok ? "Copied with fallback" : "Text is open for manual copy");
+      setCopyStatus(ok ? `${status} with fallback` : "Text is open for manual copy");
     }
+  }
+
+  async function copyBoardText(variant: CopyVariant) {
+    setCopyVariant(variant);
+    await copyPlainText(copyTexts[variant], "Copied");
+  }
+
+  async function copyDecisionOutcome() {
+    setCopyVariant("command");
+    await copyPlainText(decisionOutcomeText, "Decision outcome copied");
   }
 
   const twinStage = (
@@ -1752,6 +1794,38 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
+        <section className={styles.executiveOutcomeBoard} aria-labelledby="executive-outcome-title">
+          <div className={styles.executiveOutcomeHeader}>
+            <div>
+              <span className={styles.eyebrow}>Selected Outcome</span>
+              <h3 id="executive-outcome-title">Что уже собрано в один decision path</h3>
+            </div>
+            <button type="button" onClick={copyDecisionOutcome}>Скопировать selected outcome</button>
+          </div>
+          <div className={styles.executiveOutcomeGrid}>
+            {executiveOutcomeCards.map((item) => (
+              <a key={item.label} href={item.href}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <small>{item.detail}</small>
+              </a>
+            ))}
+          </div>
+          <div className={styles.executiveOutcomeFooter}>
+            <article>
+              <span>blocker queue</span>
+              <p>{decisionBlockerQueue.join(" / ")}</p>
+            </article>
+            <article>
+              <span>next action</span>
+              <p>{activePresentation.nextAction}</p>
+            </article>
+            <article>
+              <span>Service boundary</span>
+              <p>UPGRADE ведет информационный контур и coordination draft; ППР skeleton — не официальный ППР, а технические, логистические, таможенные и монтажные решения утверждают профильные участники.</p>
+            </article>
+          </div>
+        </section>
         <div className={styles.presentationSpotlightMap} aria-label="Active presentation spotlight map">
           <span>In focus now</span>
           {activePresentation.sections.map((section) => {

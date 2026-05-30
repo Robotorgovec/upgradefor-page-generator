@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 40 self-review
+# Cycle 41 self-review
 
 1. Что улучшено в этом цикле?
-- Offer Comparison Board и Contract Decision Simulator больше не используют широкие clipped matrices. Строки перепакованы в responsive card/detail rows, а cell labels находятся в DOM через `matrixCellLabel`.
+Добавлен компактный Executive Outcome Board внутри Executive Command Layer. Он связывает выбранного supplier candidate, contract frame, release focus и handover package в один decision path без добавления длинной новой секции.
 
 2. Как это помогает заказчику принять решение?
-- Сравнение поставщиков и contract gate logic теперь читаются как decision cards, а не как обрезанные таблицы в узкой колонке. Это снижает когнитивную нагрузку и сохраняет один page-flow без horizontal/inner scroll.
+WinGPro видит не отдельные карточки, а краткий выбранный маршрут: какой поставщик лидирует, какие условия договора используются, какой release gate сейчас важен, какие blockers остаются и какой handover pack будет результатом.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Candidate A/B/C, Decision signal, Owner и UPGRADE role теперь видны рядом с каждым decision row, а не только в header, который мог теряться или обрезаться.
+Да. Новый board показывает Selected route, Contract frame, Release focus, Handover package, blocker queue, next action и service boundary прямо в верхнем command layer.
 
 4. Стало ли интерактивнее?
-- Не добавлял новый интерактив, но улучшил operator readability: существующие данные стали detail-on-demand-like cards внутри текущих модулей.
+Да. Board использует текущие интерактивные состояния supplier / offer decision / contract scenario / delivery phase / work plan / evidence / handover и дает copy-ready selected outcome.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Тексты ответственности не усилены. Grep показал только безопасные отрицания: UPGRADE не утверждает технические параметры, не выполняет монтаж, ППР skeleton не официальный ППР.
+Нет. Текст явно фиксирует: UPGRADE ведет информационный контур и coordination draft; ППР skeleton не является официальным ППР; профильные участники утверждают технические, логистические, таможенные и монтажные решения.
 
 6. Не были ли изменены forbidden files?
-- Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
+Нет. Изменены только page component, page CSS module и runtime QA/report artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. QA подтвердил typecheck/build, canonical local 200, asset 200, img.currentSrc + naturalWidth=2000, h1=1, noindex, no horizontal scroll на 1440/1280/768/375/320, `offerMatrix` и `contractGateMatrix` без horizontal clipping.
+Локальный QA: no horizontal scroll на 1440/1280/768/375/320; unexpected in-flow scroll containers пустые; outcome board не клиппится; tab roles сохранены; copy status работает через data-copy-status/aria-live.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=INTERACTIVE/STRUCTURE: объединить selected supplier + contract scenario + delivery/workplan/handover в единый executive outcome summary без добавления длинных секций.
+MODE=INTERACTIVE/QA: сжать или перевести следующий самый длинный inline detail board в overview + details-on-demand, сохранив один основной page scroll и не добавляя новых секций.
