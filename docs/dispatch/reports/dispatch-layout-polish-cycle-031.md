@@ -7,7 +7,8 @@ Micro-goal: fix local text and spacing tight spots from the cycle 030 full-page 
 ## View Links
 
 - Local review target: <http://127.0.0.1:3064/dispatch>
-- Preview URL: pending Git/Vercel branch deployment for this commit
+- Vercel preview `/dispatch`: <https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch>
+- Vercel deployment URL: <https://upgradefor-page-generator-h5xivremt-bacalimser-8615s-projects.vercel.app>
 
 ## What Changed
 
@@ -40,6 +41,7 @@ Micro-goal: fix local text and spacing tight spots from the cycle 030 full-page 
 ## QA Findings
 
 - Full-page screenshots captured: 14.
+- External preview full-page screenshots captured: 14.
 - Dispatch sections clicked and verified active: 12/12.
 - Desktop global horizontal overflow: false.
 - Mobile global horizontal overflow: false.
@@ -61,10 +63,20 @@ Micro-goal: fix local text and spacing tight spots from the cycle 030 full-page 
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false 2>&1 | rg 'dispatch|Dispatch' || true` — no dispatch TypeScript output after build
 - `git diff --check` — passed
+- `curl -s -o /dev/null -w '%{http_code}' https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch?cb=cycle031` — 200
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/capture-dispatch-fullpage-review.mjs ...` — passed
+
+## Preview Result
+
+- Vercel deployment state: READY.
+- Preview smoke: passed, 9/9 checks.
+- Preview full-page review: passed, 12/12 sections captured plus mobile.
+- Preview screenshots: `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-031-preview/`.
+- Remaining known UI candidates: local twin node label overflow samples and intentionally scrollable bottom navigation.
 
 ## Next Recommended Cycle
 
 Mode: QA
 
 Micro-goal: button/action audit for all primary section actions, passport drawer actions, read-only modal, demo ticket modal, trend buttons, and AI insight buttons.
-
