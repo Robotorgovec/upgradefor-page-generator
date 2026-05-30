@@ -2281,7 +2281,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           ))}
         </nav>
 
-        <div className={styles.controlBoardGrid}>
+        <details className={styles.controlBoardsDisclosure}>
+          <summary>
+            <span>Операционные доски проекта</span>
+            <strong>Открыть Supplier / Contract / Delivery / Work Plan / Evidence boards</strong>
+            <small>Детали остаются в HTML и раскрываются по запросу, без внутреннего скролла внутри страницы.</small>
+          </summary>
+          <div className={styles.controlBoardGrid}>
           <article className={styles.supplierLab} id="supplier-request-lab" data-section="supplier-lab">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Supplier Request Lab</p>
@@ -2844,7 +2850,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               ))}
             </div>
           </article>
-        </div>
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.controlRoom, "controlRoom")} id="control-room" data-section="control-room" aria-labelledby="control-title">

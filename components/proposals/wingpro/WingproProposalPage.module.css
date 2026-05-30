@@ -2419,6 +2419,76 @@
   gap: 14px;
 }
 
+.controlBoardsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.controlBoardsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(140px, 0.28fr) minmax(0, 1fr) minmax(170px, 0.32fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.controlBoardsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.controlBoardsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.controlBoardsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.controlBoardsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.controlBoardsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.controlBoardsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.controlBoardsDisclosure .controlBoardGrid {
+  padding: 0 18px 18px;
+}
+
 .supplierLab,
 .offerBoard,
 .contractSimulator,
@@ -5259,8 +5329,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .vaultCardsDisclosure summary {
-    grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr);
+  .vaultCardsDisclosure summary,
+  .controlBoardsDisclosure summary {
+    grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr) 38px;
   }
 
   .presentationModeTabs {
@@ -5348,6 +5419,7 @@
   .vaultReadinessBoard,
   .vaultCommandStrip,
   .vaultCardsDisclosure summary,
+  .controlBoardsDisclosure summary,
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
@@ -5359,6 +5431,21 @@
   .controlBoardGrid,
   .acceptanceGrid {
     grid-template-columns: 1fr;
+  }
+
+  .controlBoardsDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 38px;
+  }
+
+  .controlBoardsDisclosure summary span,
+  .controlBoardsDisclosure summary strong,
+  .controlBoardsDisclosure summary small {
+    grid-column: 1;
+  }
+
+  .controlBoardsDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
 
   .hero {
