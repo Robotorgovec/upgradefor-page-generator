@@ -1236,6 +1236,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const evidenceHandoff = evidenceHandoffLinks.find((item) => item.phase === activeEvidencePhase) ?? evidenceHandoffLinks[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
+  const riskVaultDocs = vaultDocs.filter((doc) => (
+    risk.vaultEvidence.toLowerCase().includes(doc[1].toLowerCase())
+    || doc[1].toLowerCase().includes(risk.vaultEvidence.toLowerCase())
+    || risk.evidence.toLowerCase().includes(doc[1].toLowerCase())
+    || doc[8].toLowerCase().includes(risk.impact)
+    || doc[9].toLowerCase().includes(risk.title)
+  )).slice(0, 4);
+  const riskResponseSequence = [
+    ["1. Evidence request", risk.evidence],
+    ["2. Owner decision", risk.decision],
+    ["3. Release gate action", risk.releaseGate],
+    ["4. Route / handoff signal", risk.routeHandoff],
+  ] as const;
   const gate = gates[activeGate] ?? gates[0];
   const gateVaultLinks = getGateVaultLinks(gate[0]);
   const gateRiskLinks = getGateRiskLinks(gate[0]);
@@ -2379,6 +2392,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>Route handoff</dt><dd>{risk.routeHandoff}</dd></div>
             <div><dt>Decision owner</dt><dd>{risk.decision}</dd></div>
           </dl>
+          <div className={styles.riskCommandStrip} aria-label="Risk response sequence">
+            {riskResponseSequence.map(([label, value]) => (
+              <section key={label}>
+                <span>{label}</span>
+                <p>{value}</p>
+              </section>
+            ))}
+          </div>
+          <div className={styles.riskVaultLinks} aria-label="Risk linked vault cards">
+            <strong>Linked vault cards</strong>
+            {riskVaultDocs.length > 0 ? (
+              <ul>
+                {riskVaultDocs.map((doc) => (
+                  <li key={`risk-link-${doc[1]}`}>
+                    <span>{doc[1]}</span>
+                    <em>{doc[3]} / {doc[5]}</em>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No direct vault card match; keep as response note.</p>
+            )}
+          </div>
         </aside>
         <div className={styles.radarGrid}>
           <div className={styles.radarPlane} aria-label="Risk impact matrix">
