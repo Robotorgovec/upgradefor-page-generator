@@ -1,25 +1,25 @@
-# Cycle 51 self-review
+# CONTRACT-WINGPRO-2605281047-R070 / local cycle 1 self-review
 
-1. Что улучшено в этом цикле?
-Project Control mobile rhythm tightened after the Offer and Contract boards became full-width. Mobile card padding, gaps and line-height were reduced only inside the project-control boards and their Offer/Contract matrices.
+1. What improved in this cycle?
+   - Reduced the remaining page-specific scroll-trap risk in the Digital Twin presentation overlay by bounding the fixed overlay with `100dvh`, clipping desktop overflow, and containing overscroll in the secondary surface.
 
-2. Как это помогает заказчику принять решение?
-На 320/375 WinGPro видит меньше вертикальной “вязкости” в матрицах выбора и договора, но все evidence/owner/decision fields остаются в DOM и остаются читаемыми.
+2. How does this help the customer decide?
+   - The presentation mode now behaves more like a controlled product surface instead of a panel that can leak scroll into the page, which keeps the proposal feeling like a cockpit rather than a long document with nested scroll zones.
 
-3. Стало ли понятнее, что получает WinGPro?
-Да. Offer Comparison и Contract Decision теперь сохраняют board-level структуру на desktop и становятся менее тяжёлыми на mobile.
+3. Is it clearer what WinGPro receives?
+   - Content was not expanded in this cycle; the improvement protects the delivery of the existing Digital Twin / presentation experience.
 
-4. Стало ли интерактивнее?
-Интерактивная модель не расширялась; цикл был UX-density pass. Tabs, live panels and HTML-first content remain unchanged.
+4. Is it more interactive?
+   - The interaction model is steadier: the overlay remains a deliberate secondary surface, while the default page flow keeps a single vertical page scroll.
 
-5. Не расширилась ли ответственность UPGRADE?
-Нет. Цикл был CSS-only. Liability copy не менялась.
+5. Did UPGRADE responsibility expand?
+   - No. This was CSS/QA only and did not change commercial or liability copy.
 
-6. Не были ли изменены forbidden files?
-Нет. Изменен только `components/proposals/wingpro/WingproProposalPage.module.css` и runtime QA artifacts/screenshots.
+6. Were forbidden files changed?
+   - No forbidden files were edited by this cycle. The only page change is `components/proposals/wingpro/WingproProposalPage.module.css`, plus runtime QA artifacts.
 
-7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. QA: local canonical 200, asset 200, image proof `currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0. Offer row max height on 375 dropped to 288px; Contract row max height on 375 dropped to 258px; 320 remains stable at 333px/306px without clipping.
+7. Did mobile/responsive/accessibility regress?
+   - Local browser QA passed no horizontal scroll at 1440 / 1280 / 768 / 375 / 320. Copy live-region smoke passed on the final copy package. Typecheck remains blocked by an unrelated out-of-scope HeatX file.
 
-8. Что следующий самый полезный micro-goal?
-MODE=DESIGN/QA: audit Delivery Timeline or Supplier Request Lab for remaining tall button/card clusters and apply the same overview-first density rules if measurable height issues remain.
+8. Next most useful micro-goal?
+   - MODE=INTERACTIVE: add or tighten the near-top Cockpit Summary so the page presents the selected supplier/contract/delivery/work-plan/evidence state before the longer detail modules.
