@@ -24,12 +24,18 @@ export default function EquipmentTwinCard({
   onToggleState,
 }: EquipmentTwinCardProps) {
   const isChillerExplodedLocked = equipment.id === "chiller";
+  const isRelated = isHighlighted && !isActive;
 
   return (
     <article
-      className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isHighlighted ? "isHighlighted" : ""}`}
+      className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isRelated ? "isRelated" : ""}`}
+      data-testid={`equipment-twin-card-${equipment.id}`}
+      data-state={isActive ? "active" : isRelated ? "related" : "idle"}
     >
       <button className="equipmentTwinCardBody" type="button" onClick={onSelect}>
+        <span className={`equipmentTwinSelection ${isActive ? "isActive" : isRelated ? "isRelated" : ""}`}>
+          {isActive ? "Выбрано" : isRelated ? "Связано" : "Модуль"}
+        </span>
         <span className="equipmentTwinStatus">{equipment.status}</span>
         <strong>{equipment.title}</strong>
         <small>{equipmentTwinSystemLabels[equipment.system]} · {equipment.location}</small>
@@ -69,15 +75,16 @@ export default function EquipmentTwinCard({
           transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .equipmentTwinCard.isActive,
-        .equipmentTwinCard.isHighlighted {
+        .equipmentTwinCard.isActive {
           border-color: rgba(34, 211, 238, 0.64);
           background: rgba(14, 165, 233, 0.14);
-          box-shadow: 0 0 26px rgba(34, 211, 238, 0.12);
+          box-shadow: 0 0 34px rgba(34, 211, 238, 0.2);
         }
 
-        .equipmentTwinCard.isActive {
-          box-shadow: 0 0 34px rgba(34, 211, 238, 0.2);
+        .equipmentTwinCard.isRelated {
+          border-color: rgba(125, 211, 252, 0.32);
+          background: rgba(14, 165, 233, 0.07);
+          box-shadow: inset 3px 0 0 rgba(125, 211, 252, 0.34);
         }
 
         .equipmentTwinCardBody {
@@ -104,6 +111,7 @@ export default function EquipmentTwinCard({
           line-height: 1.35;
         }
 
+        .equipmentTwinSelection,
         .equipmentTwinStatus,
         .equipmentTwinMiniStatus {
           width: fit-content;
@@ -113,6 +121,24 @@ export default function EquipmentTwinCard({
           font-size: 10px;
           font-weight: 800;
           padding: 4px 7px;
+        }
+
+        .equipmentTwinSelection {
+          border-color: rgba(148, 163, 184, 0.24);
+          color: #cbd5e1;
+          background: rgba(15, 23, 42, 0.72);
+        }
+
+        .equipmentTwinSelection.isActive {
+          border-color: rgba(34, 211, 238, 0.56);
+          color: #67e8f9;
+          background: rgba(14, 165, 233, 0.16);
+        }
+
+        .equipmentTwinSelection.isRelated {
+          border-color: rgba(125, 211, 252, 0.32);
+          color: #93c5fd;
+          background: rgba(30, 41, 59, 0.56);
         }
 
         .equipmentTwinMiniStatus {

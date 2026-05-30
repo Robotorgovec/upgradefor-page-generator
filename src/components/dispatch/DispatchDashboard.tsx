@@ -208,16 +208,10 @@ export default function DispatchDashboard() {
   const selectSection = (sectionId: DispatchSection) => {
     const section = dispatchSectionDetails.find((item) => item.id === sectionId) ?? dispatchSectionDetails[0];
     const node = dispatchEquipmentNodes.find((item) => item.id === section.nodeId) ?? selectedEquipment;
-    const sectionTwinIds = equipmentTwinSectionMap[section.id] ?? [];
 
     setActiveSectionId(section.id);
     setSelectedId(node.id);
-    if (sectionTwinIds[0]) {
-      setSelectedTwinId(sectionTwinIds[0]);
-      setPassportSource("twin");
-    } else {
-      setPassportSource("node");
-    }
+    setPassportSource("node");
     setSelectedTrendKey(section.trendKey);
     setPassportTab(passportTabs[0]);
     setIsDrawerOpen(true);
