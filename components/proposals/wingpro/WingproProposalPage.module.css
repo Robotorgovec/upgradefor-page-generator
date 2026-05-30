@@ -4290,6 +4290,75 @@
   width: fit-content;
 }
 
+.vaultCardsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff), #ffffff 62%),
+    #ffffff;
+}
+
+.vaultCardsDisclosure summary {
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: minmax(140px, 0.22fr) minmax(0, 1fr) minmax(170px, 0.28fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px 48px 14px 14px;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+}
+
+.vaultCardsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.vaultCardsDisclosure summary::after {
+  content: "+";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-weight: 950;
+  transform: translateY(-50%);
+}
+
+.vaultCardsDisclosure[open] summary::after {
+  content: "–";
+}
+
+.vaultCardsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.vaultCardsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.22;
+}
+
+.vaultCardsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.vaultCardsDisclosure .vaultGrid {
+  padding: 0 12px 12px;
+}
+
 .vaultGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5190,6 +5259,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .vaultCardsDisclosure summary {
+    grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr);
+  }
+
   .presentationModeTabs {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -5274,6 +5347,7 @@
   .routeDataSurface,
   .vaultReadinessBoard,
   .vaultCommandStrip,
+  .vaultCardsDisclosure summary,
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,

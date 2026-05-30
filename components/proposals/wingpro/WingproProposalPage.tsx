@@ -2999,34 +2999,41 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.modeSwitch} role="group" aria-label="vault mode">
           {(["vault", "timeline", "owner", "missing"] as VaultMode[]).map((mode) => <button key={mode} type="button" aria-pressed={vaultMode === mode} onClick={() => setVaultMode(mode)}>{mode}</button>)}
         </div>
-        <div className={styles.vaultGrid} data-mode={vaultMode}>
-          {vaultDocs.map((doc) => {
-            const [category, title, type, gate, owner, status, impact, quality, time, risk, action] = doc;
-            const releaseLane = getVaultReleaseLane(gate);
-            const routeLink = getVaultRouteLink(category, gate);
-            const operationalCue = getVaultOperationalCue(status, impact);
-            return (
-            <article key={`${category}-${title}`} hidden={!isDocVisible(doc)}>
-              <div className={styles.docTop}><span>{category}</span><StatusPill value={status} /></div>
-              <h3>{title}</h3>
-              <dl>
-                <div><dt>type</dt><dd>{type}</dd></div>
-                <div><dt>release gate</dt><dd>{gate}</dd></div>
-                <div><dt>release lane</dt><dd>{releaseLane}</dd></div>
-                <div><dt>route link</dt><dd>{routeLink}</dd></div>
-                <div><dt>owner</dt><dd>{owner}</dd></div>
-                <div><dt>quality impact</dt><dd>{quality}</dd></div>
-                <div><dt>time impact</dt><dd>{time}</dd></div>
-                <div><dt>risk if absent</dt><dd>{risk}</dd></div>
-                <div><dt>UPGRADE action</dt><dd>{action}</dd></div>
-                <div><dt>operational cue</dt><dd>{operationalCue}</dd></div>
-                <div><dt>impact</dt><dd>{impact}</dd></div>
-              </dl>
-            </article>
-          );
-          })}
-          <p className={styles.emptyState} hidden={visibleDocs.length > 0}>No vault cards match the selected filters.</p>
-        </div>
+        <details className={styles.vaultCardsDisclosure}>
+          <summary>
+            <span>Document card detail</span>
+            <strong>{visibleDocs.length} visible cards / {visibleOpenDocs.length} open evidence items</strong>
+            <small>Открыть полный card-level data-room без внутреннего scroll</small>
+          </summary>
+          <div className={styles.vaultGrid} data-mode={vaultMode}>
+            {vaultDocs.map((doc) => {
+              const [category, title, type, gate, owner, status, impact, quality, time, risk, action] = doc;
+              const releaseLane = getVaultReleaseLane(gate);
+              const routeLink = getVaultRouteLink(category, gate);
+              const operationalCue = getVaultOperationalCue(status, impact);
+              return (
+              <article key={`${category}-${title}`} hidden={!isDocVisible(doc)}>
+                <div className={styles.docTop}><span>{category}</span><StatusPill value={status} /></div>
+                <h3>{title}</h3>
+                <dl>
+                  <div><dt>type</dt><dd>{type}</dd></div>
+                  <div><dt>release gate</dt><dd>{gate}</dd></div>
+                  <div><dt>release lane</dt><dd>{releaseLane}</dd></div>
+                  <div><dt>route link</dt><dd>{routeLink}</dd></div>
+                  <div><dt>owner</dt><dd>{owner}</dd></div>
+                  <div><dt>quality impact</dt><dd>{quality}</dd></div>
+                  <div><dt>time impact</dt><dd>{time}</dd></div>
+                  <div><dt>risk if absent</dt><dd>{risk}</dd></div>
+                  <div><dt>UPGRADE action</dt><dd>{action}</dd></div>
+                  <div><dt>operational cue</dt><dd>{operationalCue}</dd></div>
+                  <div><dt>impact</dt><dd>{impact}</dd></div>
+                </dl>
+              </article>
+            );
+            })}
+            <p className={styles.emptyState} hidden={visibleDocs.length > 0}>No vault cards match the selected filters.</p>
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.riskRadar, "riskRadar")} id="risk-radar" aria-labelledby="risk-title">
