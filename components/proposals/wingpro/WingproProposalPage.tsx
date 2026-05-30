@@ -7,6 +7,8 @@ import styles from "./WingproProposalPage.module.css";
 type TwinLayerId = "equipment" | "specification" | "documents" | "delivery" | "installation" | "sales";
 type SceneId = "source" | "verify" | "negotiate" | "contract" | "produce" | "ship" | "handover" | "reuse";
 type ControlStepId = "supplier" | "offer" | "contract" | "delivery" | "workplan" | "field" | "closeout";
+type SupplierCandidateId = "candidate-a" | "candidate-b" | "candidate-c";
+type OfferDecisionMode = "evidence" | "price" | "speed";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "boundary" | "deliverables" | "payment" | "next";
@@ -132,18 +134,145 @@ const projectControlScale = [
 }>;
 
 const supplierCandidates = [
-  ["Candidate A", "manufacturer channel", "strong model match", "documents requested", "selected candidate"],
-  ["Candidate B", "trader channel", "price needs clarification", "bank details missing", "reserve"],
-  ["Candidate C", "factory contact pending", "pressure evidence required", "response slow", "watch"],
+  {
+    id: "candidate-a",
+    name: "Candidate A",
+    channel: "manufacturer channel",
+    score: 84,
+    status: "shortlist",
+    recommendation: "selected candidate after evidence gates",
+    rationale: "лучший баланс model fit, прямого канала и готовности к структурированному evidence request",
+    criteria: [
+      ["technical fit", "BB150B-307H / 2 units", "86"],
+      ["document readiness", "PI + specification draft", "72"],
+      ["payment risk", "bank/material evidence requested", "68"],
+      ["delivery readiness", "packing data pending", "58"],
+    ],
+    openRequests: ["material confirmation", "pressure class confirmation", "nameplate/photo/video before shipment", "packing list + dimensions"],
+  },
+  {
+    id: "candidate-b",
+    name: "Candidate B",
+    channel: "trader channel",
+    score: 67,
+    status: "reserve",
+    recommendation: "reserve until commercial delta-list is closed",
+    rationale: "может быть полезен как price check, но роль трейдера, bank details и delivery evidence требуют отдельной проверки",
+    criteria: [
+      ["technical fit", "model match requires factory confirmation", "71"],
+      ["document readiness", "PI received, drawing missing", "54"],
+      ["payment risk", "bank details missing", "42"],
+      ["delivery readiness", "pickup owner unclear", "46"],
+    ],
+    openRequests: ["manufacturer/trader clarification", "bank details confirmation", "factory contact", "delivery terms EXW/FCA/DAP"],
+  },
+  {
+    id: "candidate-c",
+    name: "Candidate C",
+    channel: "factory contact pending",
+    score: 52,
+    status: "watch",
+    recommendation: "watch only until response speed improves",
+    rationale: "канал может дать альтернативу, но текущий response time создает риск для сроков согласования и handoff",
+    criteria: [
+      ["technical fit", "pressure evidence required", "60"],
+      ["document readiness", "documents not structured", "38"],
+      ["payment risk", "terms unknown", "40"],
+      ["delivery readiness", "packing/logistics data absent", "32"],
+    ],
+    openRequests: ["supplier profile", "response SLA", "technical sheet", "export document checklist"],
+  },
+] as const satisfies ReadonlyArray<{
+  id: SupplierCandidateId;
+  name: string;
+  channel: string;
+  score: number;
+  status: string;
+  recommendation: string;
+  rationale: string;
+  criteria: ReadonlyArray<readonly [string, string, string]>;
+  openRequests: ReadonlyArray<string>;
+}>;
+
+const supplierRequestQueue = [
+  ["Identity", "supplier profile, manufacturer/trader role, contact map", "before shortlist"],
+  ["Technical", "material, pressure class, model BB150B-307H, drawing request", "before payment"],
+  ["Commercial", "PI, payment terms, delivery terms, commercial delta-list", "before contract decision"],
+  ["Evidence", "photo/video/nameplate, packing list, weight/dimensions", "before shipment"],
 ] as const;
 
 const offerComparison = [
-  ["Technical fit", "BB150B-307H / 2 units", "fit with confirmations", "owner required"],
-  ["Document readiness", "PI + specification + drawing request", "under review", "UPGRADE tracks"],
-  ["Payment risk", "evidence before payment", "at risk until bank/material/pressure evidence", "WinGPro decision"],
-  ["Delivery readiness", "packing, weight/dimensions, pickup data", "collecting", "supplier/logistics owner"],
-  ["Recommendation", "select only after evidence gates", "conditional", "decision log"],
+  {
+    metric: "Technical fit",
+    candidateA: "86 / model match, pressure evidence requested",
+    candidateB: "71 / factory confirmation required",
+    candidateC: "60 / pressure evidence missing",
+    decisionSignal: "Candidate A leads, but technical owner approval remains required",
+    owner: "WinGPro / technical owner",
+  },
+  {
+    metric: "Document readiness",
+    candidateA: "72 / PI + specification draft",
+    candidateB: "54 / drawing missing",
+    candidateC: "38 / documents not structured",
+    decisionSignal: "A has the best data-room entry point",
+    owner: "UPGRADE tracks",
+  },
+  {
+    metric: "Payment risk",
+    candidateA: "68 / bank and material evidence requested",
+    candidateB: "42 / bank details missing",
+    candidateC: "40 / terms unknown",
+    decisionSignal: "no payment recommendation before evidence gate",
+    owner: "WinGPro decision",
+  },
+  {
+    metric: "Delivery readiness",
+    candidateA: "58 / packing pending",
+    candidateB: "46 / pickup owner unclear",
+    candidateC: "32 / logistics data absent",
+    decisionSignal: "route handoff depends on packing data",
+    owner: "supplier / logistics",
+  },
+  {
+    metric: "Recommendation",
+    candidateA: "conditional selected candidate",
+    candidateB: "reserve",
+    candidateC: "watch",
+    decisionSignal: "select A only through evidence-led release gates",
+    owner: "decision log",
+  },
 ] as const;
+
+const offerDecisionModes = [
+  {
+    id: "evidence",
+    title: "Evidence-led",
+    score: "strongest",
+    summary: "выбор строится вокруг подтверждений до оплаты и до отгрузки",
+    impact: "снижает вероятность ошибок по материалу, давлению, документам и логистическим вводным",
+  },
+  {
+    id: "price",
+    title: "Price-led",
+    score: "requires caution",
+    summary: "цена сравнивается только вместе с PI strength, bank evidence и delivery terms",
+    impact: "низкая цена без evidence переносит риск в платежное и логистическое решение",
+  },
+  {
+    id: "speed",
+    title: "Speed-led",
+    score: "conditional",
+    summary: "скорость ответа полезна, если не пропускает quality gates и documents gate",
+    impact: "помогает сократить потери времени на согласования, но не заменяет проверки",
+  },
+] as const satisfies ReadonlyArray<{
+  id: OfferDecisionMode;
+  title: string;
+  score: string;
+  summary: string;
+  impact: string;
+}>;
 
 const deliveryTimeline = [
   ["Payment readiness", "PI, bank details, material/pressure evidence", "owner required"],
@@ -343,6 +472,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [activeLayer, setActiveLayer] = useState<TwinLayerId>("equipment");
   const [activeScene, setActiveScene] = useState<SceneId>("source");
   const [activeControlStep, setActiveControlStep] = useState<ControlStepId>("supplier");
+  const [activeSupplier, setActiveSupplier] = useState<SupplierCandidateId>("candidate-a");
+  const [offerDecisionMode, setOfferDecisionMode] = useState<OfferDecisionMode>("evidence");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
   const [activeRoute, setActiveRoute] = useState(routePoints[0].title);
   const [vaultCategory, setVaultCategory] = useState("all");
@@ -363,6 +494,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const copyRef = useRef<HTMLTextAreaElement>(null);
 
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
+  const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
+  const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -660,20 +793,71 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <article className={styles.supplierLab}>
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Supplier Request Lab</p>
-              <h3>Запросы, scoring и shortlist</h3>
+              <h3>Запросы, scoring, shortlist и selected rationale</h3>
+              <p>UPGRADE не выбирает “на ощущениях”: каждый канал проходит через request queue, evidence gates и scoring. Финальное коммерческое решение остается за WinGPro.</p>
             </div>
-            <div className={styles.candidateGrid}>
-              {supplierCandidates.map(([name, channel, fit, documents, decision]) => (
-                <section key={name}>
-                  <strong>{name}</strong>
-                  <dl>
-                    <div><dt>channel</dt><dd>{channel}</dd></div>
-                    <div><dt>fit</dt><dd>{fit}</dd></div>
-                    <div><dt>documents</dt><dd>{documents}</dd></div>
-                    <div><dt>decision</dt><dd>{decision}</dd></div>
-                  </dl>
+            <div className={styles.requestQueue} aria-label="Supplier request queue">
+              {supplierRequestQueue.map(([stage, request, gate]) => (
+                <section key={stage}>
+                  <strong>{stage}</strong>
+                  <p>{request}</p>
+                  <em>{gate}</em>
                 </section>
               ))}
+            </div>
+            <div className={styles.supplierWorkbench}>
+              <div className={styles.candidateStack} role="tablist" aria-label="Supplier candidates">
+                {supplierCandidates.map((candidate) => (
+                  <button
+                    key={candidate.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeSupplier === candidate.id}
+                    aria-controls={`candidate-panel-${candidate.id}`}
+                    onClick={() => setActiveSupplier(candidate.id)}
+                  >
+                    <span>{candidate.name}</span>
+                    <strong>{candidate.score}</strong>
+                    <StatusPill value={candidate.status} />
+                  </button>
+                ))}
+              </div>
+              <div className={styles.candidatePanels}>
+                {supplierCandidates.map((candidate) => (
+                  <section
+                    key={candidate.id}
+                    id={`candidate-panel-${candidate.id}`}
+                    role="tabpanel"
+                    className={styles.candidatePanel}
+                    hidden={activeSupplier !== candidate.id}
+                  >
+                    <div className={styles.candidateHero}>
+                      <div>
+                        <p className={styles.eyebrow}>{candidate.channel}</p>
+                        <h4>{candidate.name}</h4>
+                      </div>
+                      <strong>{candidate.score}/100</strong>
+                    </div>
+                    <p>{candidate.rationale}</p>
+                    <div className={styles.scoreGrid}>
+                      {candidate.criteria.map(([label, value, score]) => (
+                        <article key={label}>
+                          <span>{score}</span>
+                          <strong>{label}</strong>
+                          <p>{value}</p>
+                        </article>
+                      ))}
+                    </div>
+                    <div className={styles.openRequests}>
+                      <h4>Evidence requests</h4>
+                      <ul>
+                        {candidate.openRequests.map((request) => <li key={request}>{request}</li>)}
+                      </ul>
+                    </div>
+                    <p className={styles.recommendationNote}>{candidate.recommendation}</p>
+                  </section>
+                ))}
+              </div>
             </div>
           </article>
 
@@ -681,16 +865,55 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Offer Comparison Board</p>
               <h3>Выбор условий не прячется в переписке</h3>
+              <p>Board показывает, какой сценарий выбора сейчас безопаснее: evidence-led, price-led или speed-led. Это не утверждение технических параметров, а decision support для WinGPro.</p>
             </div>
-            <div className={styles.comparisonRows}>
-              {offerComparison.map(([metric, input, status, owner]) => (
-                <div key={metric}>
-                  <strong>{metric}</strong>
-                  <span>{input}</span>
-                  <StatusPill value={status} />
-                  <em>{owner}</em>
+            <div className={styles.decisionModeSwitch} role="tablist" aria-label="Offer decision modes">
+              {offerDecisionModes.map((mode) => (
+                <button
+                  key={mode.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={offerDecisionMode === mode.id}
+                  aria-controls={`decision-mode-${mode.id}`}
+                  onClick={() => setOfferDecisionMode(mode.id)}
+                >
+                  {mode.title}
+                </button>
+              ))}
+            </div>
+            <div className={styles.decisionModePanels}>
+              {offerDecisionModes.map((mode) => (
+                <section key={mode.id} id={`decision-mode-${mode.id}`} role="tabpanel" hidden={offerDecisionMode !== mode.id}>
+                  <StatusPill value={mode.score} />
+                  <h4>{mode.title}</h4>
+                  <p>{mode.summary}</p>
+                  <strong>{mode.impact}</strong>
+                </section>
+              ))}
+            </div>
+            <div className={styles.offerMatrix} role="table" aria-label="Offer comparison matrix">
+              <div role="row" className={styles.offerMatrixHeader}>
+                <span role="columnheader">Metric</span>
+                <span role="columnheader">Candidate A</span>
+                <span role="columnheader">Candidate B</span>
+                <span role="columnheader">Candidate C</span>
+                <span role="columnheader">Decision signal</span>
+                <span role="columnheader">Owner</span>
+              </div>
+              {offerComparison.map((row) => (
+                <div key={row.metric} role="row" className={styles.offerMatrixRow}>
+                  <strong role="cell">{row.metric}</strong>
+                  <span role="cell">{row.candidateA}</span>
+                  <span role="cell">{row.candidateB}</span>
+                  <span role="cell">{row.candidateC}</span>
+                  <em role="cell">{row.decisionSignal}</em>
+                  <small role="cell">{row.owner}</small>
                 </div>
               ))}
+            </div>
+            <div className={styles.selectionSummary}>
+              <h4>Selected supplier rationale</h4>
+              <p>Текущий selected path: {supplier.name} через {decisionMode.title}. UPGRADE фиксирует evidence request, owner и release gate; WinGPro утверждает коммерческое решение после проверки профильными участниками.</p>
             </div>
           </article>
 
