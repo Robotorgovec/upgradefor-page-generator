@@ -649,9 +649,9 @@ export default function DispatchDashboard() {
             </div>
             <form className="aiInput" onSubmit={handleAiSubmit}>
               <input aria-label="AI assistant" placeholder="Задайте вопрос по объекту..." />
-              <button type="submit">AI</button>
+              <button data-testid="dispatch-ai-submit" type="submit">AI</button>
             </form>
-            {aiAnswer ? <p className="aiAnswer">{aiAnswer}</p> : null}
+            {aiAnswer ? <p className="aiAnswer" data-testid="dispatch-ai-answer">{aiAnswer}</p> : null}
           </section>
         </aside>
 
@@ -813,12 +813,22 @@ export default function DispatchDashboard() {
               )}
             </div>
             <div className="sectionActions">
-              <button type="button" onClick={() => setIsDrawerOpen(true)}>Open passport</button>
-              <button type="button" onClick={() => setModal("ticket")}>Create demo ticket</button>
-              <button type="button" onClick={() => openTrendsFor(selectedSection.trendKey, selectedSection.nodeId)}>
+              <button data-testid="dispatch-section-action-passport" type="button" onClick={() => setIsDrawerOpen(true)}>
+                Open passport
+              </button>
+              <button data-testid="dispatch-section-action-ticket" type="button" onClick={() => setModal("ticket")}>
+                Create demo ticket
+              </button>
+              <button
+                data-testid="dispatch-section-action-trends"
+                type="button"
+                onClick={() => openTrendsFor(selectedSection.trendKey, selectedSection.nodeId)}
+              >
                 Show trends
               </button>
-              <button type="button" onClick={openAiDiagnostics}>AI diagnostics</button>
+              <button data-testid="dispatch-section-action-ai" type="button" onClick={openAiDiagnostics}>
+                AI diagnostics
+              </button>
             </div>
           </section>
 
@@ -1090,12 +1100,22 @@ export default function DispatchDashboard() {
           </div>
 
           <div className="drawerActions">
-            <button type="button" onClick={() => setModal("ticket")}>Создать заявку</button>
-            <button type="button" onClick={() => openTrendsFor(passportEquipment.trendKey, passportTrendNodeId)}>
+            <button data-testid="dispatch-drawer-action-ticket" type="button" onClick={() => setModal("ticket")}>
+              Создать заявку
+            </button>
+            <button
+              data-testid="dispatch-drawer-action-trends"
+              type="button"
+              onClick={() => openTrendsFor(passportEquipment.trendKey, passportTrendNodeId)}
+            >
               Открыть тренды
             </button>
-            <button type="button" onClick={openAiDiagnostics}>AI-диагностика</button>
-            <button type="button" onClick={() => setModal("readonly")}>Read-only controls</button>
+            <button data-testid="dispatch-drawer-action-ai" type="button" onClick={openAiDiagnostics}>
+              AI-диагностика
+            </button>
+            <button data-testid="dispatch-drawer-action-readonly" type="button" onClick={() => setModal("readonly")}>
+              Read-only controls
+            </button>
           </div>
         </aside>
 
@@ -1137,8 +1157,14 @@ export default function DispatchDashboard() {
 
       {modal ? (
         <div className="modalBackdrop" role="presentation" onMouseDown={() => setModal(null)}>
-          <div className="demoModal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
-            <button type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
+          <div
+            className="demoModal"
+            data-testid="dispatch-demo-modal"
+            role="dialog"
+            aria-modal="true"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button data-testid="dispatch-modal-close" type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
             {modal === "readonly" ? (
               <>
                 <h2>Управление оборудованием отключено</h2>

@@ -54,6 +54,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-ai-categories.mjs",
     usesBrowser: true,
   },
+  {
+    id: "action-flows",
+    script: "scripts/asset-qa/verify-dispatch-action-flows.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {
