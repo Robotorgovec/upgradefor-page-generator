@@ -2204,36 +2204,46 @@ export default function DispatchDashboard() {
         }
 
         .sectionDetailPanel {
+          box-sizing: border-box;
           position: relative;
           z-index: 2;
           border: 1px solid rgba(125, 211, 252, 0.2);
           border-radius: 8px;
           background: rgba(2, 8, 23, 0.54);
+          min-width: 0;
           margin-bottom: 12px;
+          overflow: hidden;
           padding: 14px;
         }
 
         .sectionDetailHeader {
           display: flex;
           align-items: flex-start;
+          flex-wrap: wrap;
           justify-content: space-between;
-          gap: 16px;
+          gap: 8px 12px;
+          min-width: 0;
           margin-bottom: 8px;
         }
 
         .sectionDetailHeader h3 {
+          flex: 1 1 180px;
+          min-width: 0;
           margin: 0;
           color: #f8fafc;
           font-size: 18px;
           line-height: 1.2;
+          overflow-wrap: anywhere;
         }
 
         .sectionDetailHeader > span {
           border: 1px solid rgba(251, 191, 36, 0.32);
           border-radius: 999px;
           color: #fde68a;
-          flex: 0 0 auto;
+          flex: 0 1 auto;
           font-size: 11px;
+          max-width: 100%;
+          overflow-wrap: anywhere;
           padding: 7px 10px;
         }
 
