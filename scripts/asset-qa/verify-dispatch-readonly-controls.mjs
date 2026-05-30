@@ -56,6 +56,9 @@ const inspectScript = `
     tooltipMatches: buttons.filter((button) => (button?.getAttribute("title") || "").includes("Управление заблокировано (Demo mode)")).length,
     hasRole: bodyText.includes("Роль: Operator"),
     hasDemoReadOnly: bodyText.includes("Read-only / Demo mode"),
+    hasVisiblePolicy: Boolean(document.querySelector('[data-testid="dispatch-readonly-policy"]')) &&
+      (document.querySelector('[data-testid="dispatch-readonly-policy"]')?.innerText || "").includes("Управление заблокировано (Demo mode)") &&
+      (document.querySelector('[data-testid="dispatch-readonly-policy"]')?.innerText || "").includes("BMS/SCADA"),
     hasAuditLog: Boolean(document.querySelector('[data-testid="dispatch-readonly-audit-log"]')),
     auditText: document.querySelector('[data-testid="dispatch-readonly-audit-log"]')?.innerText || "",
     forbiddenClaims: [
@@ -97,6 +100,7 @@ try {
   );
   assert(before.hasRole, "Missing operator role label");
   assert(before.hasDemoReadOnly, "Missing read-only demo mode label");
+  assert(before.hasVisiblePolicy, "Missing visible read-only policy banner");
   assert(before.hasAuditLog, "Missing read-only audit log");
   assert(
     before.forbiddenClaims.length === 0,
@@ -108,7 +112,9 @@ try {
 
   const after = parseEvalJson(runAgentBrowser(["eval", inspectScript]));
   assert(
-    after.auditText.includes("попытка") && after.auditText.includes("No real equipment control"),
+    after.auditText.includes("попытка") &&
+      after.auditText.includes("роль: Operator") &&
+      after.auditText.includes("No real equipment control"),
     `Read-only attempt was not logged safely: ${after.auditText}`,
   );
 } finally {

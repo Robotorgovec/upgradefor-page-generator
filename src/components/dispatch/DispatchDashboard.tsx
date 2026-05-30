@@ -33,6 +33,7 @@ const passportTabs = ["Паспорт", "Параметры", "ТО", "Доку�
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
 const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
 const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
+const readonlyUserRole = "Operator";
 const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
   "ahu-pv1": "assembled",
   chiller: "assembled",
@@ -46,6 +47,7 @@ type PassportSource = "node" | "twin";
 type ReadonlyAuditEntry = {
   action: string;
   equipment: string;
+  role: string;
   time: string;
 };
 
@@ -366,6 +368,7 @@ export default function DispatchDashboard() {
         {
           action,
           equipment: passportEquipment.shortLabel,
+          role: readonlyUserRole,
           time,
         },
         ...current,
@@ -395,7 +398,7 @@ export default function DispatchDashboard() {
           <div className="headerStatus">
             <span>Связь: Онлайн</span>
             <strong>BMS/SCADA 10.50.4.41</strong>
-            <span>Роль: Operator</span>
+            <span>Роль: {readonlyUserRole}</span>
             <span className="readOnlyBadge">Read-only / Demo mode</span>
             <b>DEMO MODE</b>
           </div>
@@ -706,6 +709,10 @@ export default function DispatchDashboard() {
           </section>
 
           <div className="commandStrip">
+            <div className="readonlyPolicyBanner" data-testid="dispatch-readonly-policy">
+              <strong>Роль: {readonlyUserRole}</strong>
+              <span>{readonlyControlTooltip}. Попытки фиксируются локально, без команд в BMS/SCADA.</span>
+            </div>
             {controlButtons.map((button) => (
               <span
                 aria-disabled="true"
@@ -738,10 +745,14 @@ export default function DispatchDashboard() {
           <div className="readonlyAuditLog" data-testid="dispatch-readonly-audit-log">
             <strong>Read-only audit</strong>
             {readonlyAuditLog.length ? (
-              <span>
-                {readonlyAuditLog[0].time} · попытка: {readonlyAuditLog[0].action} ·{" "}
-                {readonlyAuditLog[0].equipment} · No real equipment control
-              </span>
+              <ol>
+                {readonlyAuditLog.map((entry) => (
+                  <li key={`${entry.time}-${entry.action}`}>
+                    {entry.time} · роль: {entry.role} · попытка: {entry.action} · {entry.equipment} · No real
+                    equipment control
+                  </li>
+                ))}
+              </ol>
             ) : (
               <span>Попытки управления будут фиксироваться локально в demo-журнале.</span>
             )}
@@ -1002,7 +1013,7 @@ export default function DispatchDashboard() {
                     <strong>Попытка управления зафиксирована локально</strong>
                     <span>
                       {readonlyAuditLog[0].time} · {readonlyAuditLog[0].action} ·{" "}
-                      {readonlyAuditLog[0].equipment} · No real equipment control
+                      {readonlyAuditLog[0].equipment} · роль: {readonlyAuditLog[0].role} · No real equipment control
                     </span>
                   </div>
                 ) : null}
@@ -1883,6 +1894,28 @@ export default function DispatchDashboard() {
           z-index: 2;
         }
 
+        .readonlyPolicyBanner {
+          flex: 1 1 100%;
+          display: grid;
+          gap: 4px;
+          border: 1px solid rgba(251, 191, 36, 0.28);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.16);
+          color: #fde68a;
+          padding: 9px 10px;
+        }
+
+        .readonlyPolicyBanner strong {
+          color: #fef3c7;
+          font-size: 12px;
+        }
+
+        .readonlyPolicyBanner span {
+          color: #fcd34d;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
         .readonlyControl {
           display: inline-flex;
           border-radius: 8px;
@@ -1920,6 +1953,18 @@ export default function DispatchDashboard() {
 
         .readonlyAuditLog strong {
           color: #e0f2fe;
+        }
+
+        .readonlyAuditLog ol {
+          display: grid;
+          gap: 3px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .readonlyAuditLog li {
+          line-height: 1.35;
         }
 
         .modalAuditEntry {
