@@ -39,6 +39,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-alarm-severity-sla.mjs",
     usesBrowser: true,
   },
+  {
+    id: "passport-kpis",
+    script: "scripts/asset-qa/verify-dispatch-passport-kpis.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {

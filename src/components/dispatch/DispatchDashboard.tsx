@@ -61,6 +61,29 @@ function statusTone(status: string) {
   return "ok";
 }
 
+function normalizeEquipmentStatus(status: string): DispatchEquipmentNode["status"] {
+  if (
+    status === "В работе" ||
+    status === "Предупреждение" ||
+    status === "Авария" ||
+    status === "TO VERIFY" ||
+    status === "Demo"
+  ) {
+    return status;
+  }
+
+  return "TO VERIFY";
+}
+
+function findParamValue(
+  params: Array<{ label: string; value: string }>,
+  patterns: RegExp[],
+  fallback = "TO VERIFY",
+) {
+  const param = params.find((item) => patterns.some((pattern) => pattern.test(item.label)));
+  return param?.value ?? fallback;
+}
+
 function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
   if (id === "ahu-pv1") return "flow";
   if (id === "chiller" || id === "cooling-tower-small") return "energy";
@@ -125,7 +148,7 @@ export default function DispatchDashboard() {
     dispatchSectionDetails.find((section) => section.id === activeSectionId) ?? dispatchSectionDetails[0];
   const selectedTwin = getEquipmentTwinById(selectedTwinId);
   const selectedTwinTrendKey = trendKeyForTwin(selectedTwin.id);
-  const selectedTwinPassportEquipment = useMemo(
+  const selectedTwinPassportEquipment = useMemo<DispatchEquipmentNode>(
     () => ({
       id: selectedTwin.id,
       label: selectedTwin.title,
@@ -133,7 +156,7 @@ export default function DispatchDashboard() {
       countLabel: equipmentTwinSystemLabels[selectedTwin.system],
       type: equipmentTwinSystemLabels[selectedTwin.system],
       trendKey: selectedTwinTrendKey,
-      status: selectedTwin.status,
+      status: normalizeEquipmentStatus(selectedTwin.status),
       model: selectedTwin.model,
       serial: selectedTwin.serialNumber,
       inventoryNumber: selectedTwin.inventoryNumber,
@@ -197,6 +220,40 @@ export default function DispatchDashboard() {
   const passportRelatedAlarms = passportSource === "twin" ? [] : relatedAlarms;
   const passportLastEvent = passportSource === "twin" ? selectedTwin.lastEvent : selectedLastEvent;
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
+  const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
+  const passportTopKpis = [
+    {
+      id: "temperature",
+      label: "Температура",
+      value: findParamValue(passportEquipment.onlineParams, [/темпера/i, /подач/i, /обрат/i, /гликоль/i, /вода/i]),
+      helper: "BMS/SCADA tag",
+    },
+    {
+      id: "pressure",
+      label: "Давление",
+      value: findParamValue(passportEquipment.onlineParams, [/давлен/i, /\bdp\b/i, /pressure/i]),
+      helper: "range 0–16 bar",
+      quality: passportEquipment.onlineParams.find((param) => [/давлен/i, /\bdp\b/i, /pressure/i].some((pattern) => pattern.test(param.label)))?.quality,
+    },
+    {
+      id: "flow",
+      label: "Расход",
+      value: findParamValue(passportEquipment.onlineParams, [/расход/i, /flow/i, /airflow/i]),
+      helper: "simulated gateway",
+    },
+    {
+      id: "status",
+      label: "Статус",
+      value: passportEquipment.status,
+      helper: passportSource === "twin" ? "read-only twin" : "registry state",
+    },
+    {
+      id: "last-alarm",
+      label: "Последняя авария",
+      value: passportPrimaryAlarm ? `${severityLabel(passportPrimaryAlarm.severity)} · ${passportPrimaryAlarm.title}` : "Активных аварий нет",
+      helper: passportPrimaryAlarm ? `SLA ${passportPrimaryAlarm.sla.label}` : "demo/read-only",
+    },
+  ];
   const hasDpAnomalyContext =
     selectedEquipment.visualTone === "anomaly" ||
     selectedSection.relatedAlarmIds.includes("alarm-pump-pressure");
@@ -722,6 +779,20 @@ export default function DispatchDashboard() {
             <div className="qrBox">QR</div>
           </div>
 
+          <div className="passportKpiStrip" data-testid="dispatch-passport-kpi-strip">
+            {passportTopKpis.map((kpi) => (
+              <article
+                className={kpi.quality === "DATA_ERROR" ? "isDataError" : undefined}
+                data-testid={`dispatch-passport-kpi-${kpi.id}`}
+                key={kpi.id}
+              >
+                <span>{kpi.label}</span>
+                <strong>{kpi.value}</strong>
+                <small>{kpi.helper}</small>
+              </article>
+            ))}
+          </div>
+
           <div className="datasheetSnapshot">
             <div>
               <span>Тип</span>
@@ -1118,6 +1189,7 @@ export default function DispatchDashboard() {
 
         .kpiCard,
         .aiInsight,
+        .passportKpiStrip article,
         .paramGrid div,
         .serviceList article {
           border: 1px solid rgba(125, 211, 252, 0.18);
@@ -1128,6 +1200,7 @@ export default function DispatchDashboard() {
 
         .kpiCard span,
         .aiInsight span,
+        .passportKpiStrip span,
         .paramGrid span,
         .serviceList span,
         .passportList dt,
@@ -1139,6 +1212,7 @@ export default function DispatchDashboard() {
 
         .kpiCard strong,
         .aiInsight strong,
+        .passportKpiStrip strong,
         .paramGrid strong {
           display: block;
           margin: 7px 0 4px;
@@ -1147,6 +1221,7 @@ export default function DispatchDashboard() {
         }
 
         .kpiCard small,
+        .passportKpiStrip small,
         .serviceList small,
         .passportHero small,
         .relatedBlock small {
@@ -1155,6 +1230,7 @@ export default function DispatchDashboard() {
         }
 
         .kpiCard.isDataError,
+        .passportKpiStrip article.isDataError,
         .paramGrid div.isDataError,
         .sectionMetrics div.isDataError {
           border-color: rgba(248, 113, 113, 0.48);
@@ -1163,6 +1239,7 @@ export default function DispatchDashboard() {
         }
 
         .kpiCard.isDataError strong,
+        .passportKpiStrip article.isDataError strong,
         .paramGrid div.isDataError strong,
         .sectionMetrics div.isDataError strong {
           color: #fecaca;
@@ -2041,6 +2118,28 @@ export default function DispatchDashboard() {
           line-height: 1.25;
         }
 
+        .passportKpiStrip {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .passportKpiStrip article {
+          min-width: 0;
+          padding: 10px;
+        }
+
+        .passportKpiStrip article:last-child {
+          grid-column: 1 / -1;
+        }
+
+        .passportKpiStrip strong {
+          font-size: 13px;
+          line-height: 1.25;
+          overflow-wrap: anywhere;
+        }
+
         .statusDot {
           display: inline-block;
           width: 9px;
@@ -2343,6 +2442,10 @@ export default function DispatchDashboard() {
         @media (max-width: 760px) {
           .dispatchShell {
             padding-bottom: 232px;
+          }
+
+          .passportKpiStrip {
+            grid-template-columns: 1fr;
           }
 
           .dispatchBottomNav {
