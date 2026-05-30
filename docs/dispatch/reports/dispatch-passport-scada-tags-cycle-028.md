@@ -17,7 +17,10 @@ Micro-goal: add a dedicated SCADA/I-O tags tab to the equipment passport.
 
 Local production view during QA: http://127.0.0.1:3062/dispatch
 
-Vercel Preview: https://upgradefor-page-generator-ehigypank-bacalimser-8615s-projects.vercel.app/dispatch
+Vercel Preview for UI commit `45f6913c`: https://upgradefor-page-generator-ehigypank-bacalimser-8615s-projects.vercel.app/dispatch
+
+The final docs-only HEAD redeploy was attempted after this report update and then blocked by the Vercel daily
+deployment quota `api-deployments-free-per-day`. The verified UI code is present in the preview above.
 
 External smoke command:
 
@@ -44,6 +47,7 @@ DISPATCH_BASE_URL=https://upgradefor-page-generator-ehigypank-bacalimser-8615s-p
 - Dispatch TypeScript check — clean; full `tsc` still has known legacy non-dispatch errors on this PR branch.
 - Vercel Preview deploy — passed
 - External preview suite — passed
+- Final docs-only HEAD redeploy — blocked by Vercel quota `api-deployments-free-per-day`.
 
 ## Safety
 
