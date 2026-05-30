@@ -119,6 +119,7 @@
 }
 
 .hero,
+.commandLayer,
 .digitalTwin,
 .filmstrip,
 .valueOs,
@@ -138,6 +139,134 @@
   border-radius: 8px;
   background: var(--proposal-surface);
   box-shadow: var(--proposal-shadow-sm);
+}
+
+.presentationSectionActive {
+  border-color: color-mix(in srgb, var(--proposal-brand-border-strong) 76%, var(--proposal-border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--proposal-brand-border) 56%, transparent),
+    var(--proposal-shadow-md);
+}
+
+.commandLayer {
+  position: sticky;
+  top: 128px;
+  z-index: 7;
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 78%, #ffffff), transparent 58%),
+    rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+}
+
+.commandLayerHeader {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.commandLayerHeader h2,
+.commandLayerHeader p {
+  margin: 0;
+}
+
+.commandLayerHeader h2 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.08;
+}
+
+.commandLayerHeader > p {
+  max-width: 520px;
+  color: var(--proposal-text-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.presentationModeTabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.presentationModeTabs button {
+  min-height: 46px;
+  padding: 10px 9px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.12;
+  cursor: pointer;
+}
+
+.presentationModeTabs button:hover,
+.presentationModeTabs button[data-active="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
+.presentationModePanel {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.22fr) minmax(170px, 0.22fr) minmax(0, 1fr) minmax(210px, 0.34fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 14px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.presentationModePanel span {
+  align-self: start;
+  justify-self: start;
+  padding: 6px 9px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.presentationModePanel h3,
+.presentationModePanel p {
+  margin: 0;
+}
+
+.presentationModePanel h3 {
+  color: var(--proposal-text);
+  font-size: 18px;
+}
+
+.presentationModePanel > p,
+.presentationModePanel div p {
+  color: var(--proposal-text-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.presentationModePanel div {
+  display: grid;
+  gap: 5px;
+  padding-left: 12px;
+  border-left: 2px solid var(--proposal-brand-border);
+}
+
+.presentationModePanel div strong {
+  color: var(--proposal-text);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .hero {
@@ -3812,6 +3941,22 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .presentationModeTabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .presentationModePanel {
+    grid-template-columns: minmax(120px, 0.25fr) minmax(170px, 0.3fr) minmax(0, 1fr);
+  }
+
+  .presentationModePanel div {
+    grid-column: 1 / -1;
+    padding-top: 10px;
+    padding-left: 0;
+    border-top: 1px solid var(--proposal-brand-border);
+    border-left: 0;
+  }
+
   .controlBoardGrid {
     grid-template-columns: 1fr;
   }
@@ -3840,6 +3985,7 @@
   }
 
   .hero,
+  .commandLayer,
   .twinShell,
   .heroMissionBridge,
   .controlCommandPanel,
@@ -3864,6 +4010,19 @@
 
   .hero {
     min-height: auto;
+  }
+
+  .commandLayer {
+    position: static;
+  }
+
+  .commandLayerHeader,
+  .presentationModePanel {
+    grid-template-columns: 1fr;
+  }
+
+  .commandLayerHeader {
+    display: grid;
   }
 
   .missionCard {
@@ -4001,6 +4160,7 @@
   }
 
   .hero,
+  .commandLayer,
   .digitalTwin,
   .filmstrip,
   .valueOs,
@@ -4056,6 +4216,10 @@
   .copyButtons button,
   .packTabs button {
     width: 100%;
+  }
+
+  .presentationModeTabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .heroActions {
@@ -4252,6 +4416,7 @@
   }
 
   .hero,
+  .commandLayer,
   .digitalTwin,
   .filmstrip,
   .valueOs,
@@ -4294,6 +4459,10 @@
   }
 
   .copyCommandStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .presentationModeTabs {
     grid-template-columns: 1fr;
   }
 }

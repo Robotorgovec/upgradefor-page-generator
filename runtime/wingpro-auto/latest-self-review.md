@@ -1,25 +1,26 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 30 self-review
+# CONTRACT-WINGPRO-2605281047-R067 / cycle 31 self-review
 
 1. Что улучшено в этом цикле?
-- Финальный Board Pack получил compact decision strip: outcome, acceptance basis, responsibility boundary and next step. Copy package теперь выглядит как board-level closeout card, а не просто ряд copy-кнопок.
+- Добавлен Executive Command Layer с 6 режимами презентации: Executive Summary, Supplier Decision, Contract Terms, Delivery Control, Work Plan, Evidence & Handover.
+- Каждый режим показывает selected summary, next action и подсвечивает релевантные секции страницы.
 
 2. Как это помогает заказчику принять решение?
-- В конце страницы сразу видно, что именно согласуется, по каким deliverables принимается результат, где граница ответственности и какой следующий шаг после approval.
+- Страница меньше ощущается как длинная лента: заказчик может смотреть КП по конкретному управленческому сценарию и видеть, что важно сейчас.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Верхний summary финального блока фиксирует data-room, risk radar, release gates, handover packs and Digital Product Asset как результат, а не как разрозненные элементы страницы.
+- Да. В верхней части появились режимы, которые группируют результат: выбранный маршрут, supplier decision, contract terms, delivery control, work plan coordination draft, evidence and handover.
 
 4. Стало ли интерактивнее?
-- Небольшое усиление: интерактив copy package теперь поддержан видимым decision summary. Основной интерактивный скачок нужен в следующем цикле через Executive Command Layer.
+- Да. Переключение режимов меняет summary, next action и визуальную подсветку связанных блоков без backend и без скрытия основного HTML-контента.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Новый текст прямо разделяет: UPGRADE структурирует данные и статусы, а профильные участники утверждают технические, таможенные, логистические и монтажные решения.
+- Нет. Тексты сохраняют роль UPGRADE как IT/data и закупочно-координационного партнера. Work Plan описан как coordination draft / ППР skeleton для проверки профильной стороной.
 
 6. Не были ли изменены forbidden files?
 - Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. Local QA подтвердил no horizontal scroll на 1440/1280/768/375/320. Strip адаптируется 4 -> 2 -> 1 columns, copy status остается aria-live.
+- Нет. QA подтвердил 6 tabs, aria-selected, aria-live summary, h1=1, viewport meta, noindex/nofollow, no horizontal scroll на 1440/1280/768/375/320.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=INTERACTIVE: добавить Executive Command Layer с режимами презентации, selected summary, next action и подсветкой релевантных секций, чтобы страница ощущалась как presentation product, а не длинная лента.
+- MODE=INTERACTIVE/DESIGN: усилить связность Decision Path, чтобы выбор supplier candidate, contract scenario, delivery plan, work plan и handover summary ощущались одним сценарием.

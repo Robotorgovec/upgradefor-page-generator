@@ -14,6 +14,7 @@ type DeliveryPhaseId = "payment" | "production" | "factory" | "preshipment" | "l
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next";
+type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover";
 
 const twinLayers = [
   {
@@ -1197,6 +1198,64 @@ const copyTexts: Record<CopyVariant, string> = {
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
 };
 
+const presentationModes: Array<{
+  id: PresentationModeId;
+  label: string;
+  summary: string;
+  nextAction: string;
+  focus: string;
+  sections: string[];
+}> = [
+  {
+    id: "executive",
+    label: "Executive Summary",
+    summary: "WinGPro получает выбранный закупочный маршрут, Digital Twin, status board, release gates, handover packs и Digital Product Asset как единый контур решения.",
+    nextAction: "Сначала подтвердить, что услуга принимается как единый IT/data и закупочно-координационный комплекс.",
+    focus: "что получает заказчик",
+    sections: ["hero", "digitalTwin", "valueOs", "statusOfCustomer", "acceptance", "copyPackage"],
+  },
+  {
+    id: "supplier",
+    label: "Supplier Decision",
+    summary: "Supplier Request Lab и Offer Comparison Board показывают shortlist, выбранного кандидата, причины отклонения альтернатив и evidence before payment.",
+    nextAction: "Проверить выбранный supplier profile, открытые вопросы и recommendation для WinGPro decision owner.",
+    focus: "выбор поставщика",
+    sections: ["projectControl", "filmstrip", "controlRoom", "vault", "riskRadar"],
+  },
+  {
+    id: "contract",
+    label: "Contract Terms",
+    summary: "Contract Decision Simulator связывает сценарий оплаты, условия поставки, evidence before payment/shipment и силу договорного пакета.",
+    nextAction: "Согласовать payment mode, contract draft RU/EN и список документов, которые должны быть получены до платежа.",
+    focus: "условия договора",
+    sections: ["projectControl", "valueOs", "vault", "releaseGates", "acceptance"],
+  },
+  {
+    id: "delivery",
+    label: "Delivery Control",
+    summary: "Delivery Timeline, Route Map и Release Gates показывают контроль информационной готовности маршрута China → Kazakhstan.",
+    nextAction: "Сверить before shipment пакет: packing data, weight/dimensions, pickup contact, invoice draft и broker input list.",
+    focus: "контроль поставки",
+    sections: ["digitalTwin", "controlRoom", "routeMap", "vault", "releaseGates"],
+  },
+  {
+    id: "workplan",
+    label: "Work Plan",
+    summary: "Work Plan Builder / ППР skeleton, Field Execution Board и участники проекта показывают coordination draft для проверки монтажной стороной.",
+    nextAction: "Передать mounting questions, connection points и service access вводные ответственному техническому специалисту.",
+    focus: "подготовка реализации",
+    sections: ["projectControl", "controlRoom", "statusOfCustomer", "handoverRoom", "releaseGates"],
+  },
+  {
+    id: "handover",
+    label: "Evidence & Handover",
+    summary: "Photo Evidence Wall, Handover Room и Copy Package собирают evidence register, closeout packs и reusable Digital Product Asset.",
+    nextAction: "Скопировать executive summary и зафиксировать договор услуг, deliverables, оплату и границы ответственности.",
+    focus: "закрытие и повторное использование",
+    sections: ["riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
+  },
+];
+
 function StatusPill({ value }: { value: string }) {
   return <span className={styles.statusPill} data-status={value}>{value}</span>;
 }
@@ -1225,6 +1284,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [paymentMode, setPaymentMode] = useState<"split" | "full">("split");
   const [isRotating, setIsRotating] = useState(true);
   const [presentationMode, setPresentationMode] = useState(false);
+  const [activePresentationMode, setActivePresentationMode] = useState<PresentationModeId>("executive");
   const [copyStatus, setCopyStatus] = useState("Ready");
   const [copyVariant, setCopyVariant] = useState<CopyVariant>("short");
   const copyRef = useRef<HTMLTextAreaElement>(null);
@@ -1302,6 +1362,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["ready for handoff", String(visibleReadyDocs), "items already usable in packs"],
     ["route links", String(new Set(visibleDocs.map((doc) => getVaultRouteLink(doc[0], doc[3]))).size), "delivery points connected to vault"],
   ] as const;
+  const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -1349,6 +1410,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     const next = scenes.find((item) => item.id === id);
     setActiveScene(id);
     if (next) setActiveLayer(next.layer as TwinLayerId);
+  }
+
+  function isPresentationSection(section: string) {
+    return activePresentation.sections.includes(section);
+  }
+
+  function sectionClass(baseClass: string, section: string) {
+    return `${baseClass} ${isPresentationSection(section) ? styles.presentationSectionActive : ""}`;
   }
 
   async function copyBoardText(variant: CopyVariant) {
@@ -1443,7 +1512,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         ))}
       </nav>
 
-      <section className={styles.hero} id="mission" aria-labelledby="proposal-title">
+      <section className={sectionClass(styles.hero, "hero")} id="mission" aria-labelledby="proposal-title">
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>WinGPro × UPGRADE</p>
           <h1 id="proposal-title">Цифровой контур поставки пластинчатых теплообменников</h1>
@@ -1491,7 +1560,41 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </aside>
       </section>
 
-      <section className={styles.digitalTwin} id="digital-twin" aria-labelledby="twin-title">
+      <section className={styles.commandLayer} aria-labelledby="command-layer-title" data-active-mode={activePresentationMode}>
+        <div className={styles.commandLayerHeader}>
+          <div>
+            <p className={styles.eyebrow}>Executive Command Layer</p>
+            <h2 id="command-layer-title">Режим презентации сделки</h2>
+          </div>
+          <p>Переключите фокус: страница подсветит нужные блоки, покажет краткий вывод и следующий шаг для согласования.</p>
+        </div>
+        <div className={styles.presentationModeTabs} role="tablist" aria-label="Presentation modes">
+          {presentationModes.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={activePresentationMode === item.id}
+              aria-controls="presentation-mode-panel"
+              data-active={activePresentationMode === item.id}
+              onClick={() => setActivePresentationMode(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <article className={styles.presentationModePanel} id="presentation-mode-panel" role="tabpanel" aria-live="polite">
+          <span>{activePresentation.focus}</span>
+          <h3>{activePresentation.label}</h3>
+          <p>{activePresentation.summary}</p>
+          <div>
+            <strong>Next action</strong>
+            <p>{activePresentation.nextAction}</p>
+          </div>
+        </article>
+      </section>
+
+      <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" aria-labelledby="twin-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Digital Twin сделки</p>
           <h2 id="twin-title">Digital Twin: товарная позиция как управляемый цифровой объект</h2>
@@ -1565,7 +1668,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       ) : null}
 
-      <section className={styles.filmstrip} id="filmstrip" aria-labelledby="film-title">
+      <section className={sectionClass(styles.filmstrip, "filmstrip")} id="filmstrip" aria-labelledby="film-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Procurement filmstrip</p>
           <h2 id="film-title">Сделка как операционный сценарий</h2>
@@ -1594,7 +1697,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.valueOs} aria-labelledby="value-title">
+      <section className={sectionClass(styles.valueOs, "valueOs")} aria-labelledby="value-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Value operating system</p>
           <h2 id="value-title">Что покупает WinGPro за 3 000 000 ₸</h2>
@@ -1618,7 +1721,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.projectControl} id="project-control" aria-labelledby="control-scale-title">
+      <section className={sectionClass(styles.projectControl, "projectControl")} id="project-control" aria-labelledby="control-scale-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Project Control Scale</p>
           <h2 id="control-scale-title">От поиска поставщика до Handover & Closeout</h2>
@@ -2190,7 +2293,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.controlRoom} id="control-room" aria-labelledby="control-title">
+      <section className={sectionClass(styles.controlRoom, "controlRoom")} id="control-room" aria-labelledby="control-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Control Room поставки</p>
           <h2 id="control-title">Живой центр управления данными, статусами и handoff</h2>
@@ -2232,7 +2335,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.routeMap} aria-labelledby="route-title">
+      <section className={sectionClass(styles.routeMap, "routeMap")} aria-labelledby="route-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Route Map</p>
           <h2 id="route-title">Маршрут поставки как управляемый data-flow</h2>
@@ -2297,7 +2400,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.vault} id="vault" aria-labelledby="vault-title">
+      <section className={sectionClass(styles.vault, "vault")} id="vault" aria-labelledby="vault-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Document Vault</p>
           <h2 id="vault-title">Data-room как хранилище статусов, владельцев и evidence</h2>
@@ -2389,7 +2492,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.riskRadar} id="risk-radar" aria-labelledby="risk-title">
+      <section className={sectionClass(styles.riskRadar, "riskRadar")} id="risk-radar" aria-labelledby="risk-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Risk Radar</p>
           <h2 id="risk-title">Риски как координационный response pack</h2>
@@ -2473,7 +2576,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.releaseGates} id="release-gates" aria-labelledby="gates-title">
+      <section className={sectionClass(styles.releaseGates, "releaseGates")} id="release-gates" aria-labelledby="gates-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Release gates</p>
           <h2 id="gates-title">Поставка как pipeline готовности данных</h2>
@@ -2537,7 +2640,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.statusOfCustomer} aria-labelledby="customer-title">
+      <section className={sectionClass(styles.statusOfCustomer, "statusOfCustomer")} aria-labelledby="customer-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>WinGPro как заказчик высокого уровня</p>
           <h2 id="customer-title">Процесс выглядит как зрелый procurement management</h2>
@@ -2548,7 +2651,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.handoverRoom} id="handover" aria-labelledby="handover-title">
+      <section className={sectionClass(styles.handoverRoom, "handoverRoom")} id="handover" aria-labelledby="handover-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Handover Room</p>
           <h2 id="handover-title">Что получает каждая сторона</h2>
@@ -2652,7 +2755,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <p className={styles.handoverSummary}>Active closeout focus: {handoverPack.name} → {handoverPack.acceptance}. UPGRADE передает структурированный пакет; профильные участники проверяют и утверждают решения в своей зоне ответственности.</p>
       </section>
 
-      <section className={styles.acceptance} aria-labelledby="acceptance-title">
+      <section className={sectionClass(styles.acceptance, "acceptance")} aria-labelledby="acceptance-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Решение к согласованию</p>
           <h2 id="acceptance-title">Acceptance is based on deliverables</h2>
@@ -2693,7 +2796,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.copyPackage} aria-labelledby="copy-title">
+      <section className={sectionClass(styles.copyPackage, "copyPackage")} aria-labelledby="copy-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Board Pack</p>
           <h2 id="copy-title">Сообщения для отправки</h2>
