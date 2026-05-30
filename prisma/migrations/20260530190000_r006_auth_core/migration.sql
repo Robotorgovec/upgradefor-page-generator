@@ -1,0 +1,5 @@
+CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "AccountType" AS ENUM ('BUYER', 'VENDOR');
+
+ALTER TABLE "User" ADD COLUMN "accountType" "AccountType" NOT NULL DEFAULT 'BUYER';
+ALTER TABLE "User" ADD COLUMN "onboardingCompleted" BOOLEAN NOT NULL DEFAULT false;

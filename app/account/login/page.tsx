@@ -4,22 +4,24 @@ import { redirect } from "next/navigation";
 import { authOptions } from "../../../lib/auth";
 import LoginForm from "./login-form";
 
+function getSafeRedirect(value?: string) {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/account";
+  }
+
+  return value;
+}
+
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams?: { next?: string };
+  searchParams?: { callbackUrl?: string; next?: string };
 }) {
   const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect(searchParams?.next || "/account");
+    redirect(getSafeRedirect(searchParams?.callbackUrl || searchParams?.next));
   }
 
-  return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <LoginForm />
-      </div>
-    </div>
-  );
+  return <LoginForm />;
 }
