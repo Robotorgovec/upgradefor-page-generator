@@ -1396,6 +1396,20 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <span key={item}>{item}</span>
             ))}
           </div>
+          <div className={styles.heroMissionBridge} aria-label="Mission operating model">
+            {[
+              ["01", "Digital Twin", "equipment object + evidence layers"],
+              ["02", "Control Room", "owners, blockers, next actions"],
+              ["03", "Release Gates", "before payment / shipment / handover"],
+              ["04", "Handover Room", "packs for logistics, broker, mounting, sales"],
+            ].map(([index, title, detail]) => (
+              <a key={title} href={title === "Digital Twin" ? "#digital-twin" : title === "Control Room" ? "#control-room" : title === "Release Gates" ? "#release-gates" : "#handover"}>
+                <span>{index}</span>
+                <strong>{title}</strong>
+                <small>{detail}</small>
+              </a>
+            ))}
+          </div>
         </div>
         <aside className={styles.missionCard}>
           <span className={styles.privateStatus}>commercial proposal / private</span>
@@ -1407,6 +1421,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>scope</dt><dd>IT/data + procurement coordination</dd></div>
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
+          <div className={styles.missionCardFooter}>
+            <span>live proposal view</span>
+            <p>Digital Twin, Control Room, Release Gates and Handover stay connected as one operating model.</p>
+          </div>
         </aside>
       </section>
 
@@ -2353,7 +2371,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={styles.releaseGates} aria-labelledby="gates-title">
+      <section className={styles.releaseGates} id="release-gates" aria-labelledby="gates-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Release gates</p>
           <h2 id="gates-title">Поставка как pipeline готовности данных</h2>
