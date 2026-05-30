@@ -5040,6 +5040,78 @@
   line-height: 1.5;
 }
 
+.handoverDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 44%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.handoverDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.handoverDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.handoverDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.handoverDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.handoverDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.handoverDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.handoverDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.handoverDetailsDisclosure .packTabs,
+.handoverDetailsDisclosure .packDetails,
+.handoverDetailsDisclosure .closeoutMatrix {
+  margin: 0 18px 18px;
+}
+
 .acceptance {
   background: linear-gradient(180deg, #ffffff, #fbfdff);
 }
@@ -5330,7 +5402,8 @@
   }
 
   .vaultCardsDisclosure summary,
-  .controlBoardsDisclosure summary {
+  .controlBoardsDisclosure summary,
+  .handoverDetailsDisclosure summary {
     grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr) 38px;
   }
 
@@ -5420,6 +5493,7 @@
   .vaultCommandStrip,
   .vaultCardsDisclosure summary,
   .controlBoardsDisclosure summary,
+  .handoverDetailsDisclosure summary,
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
@@ -5439,13 +5513,21 @@
 
   .controlBoardsDisclosure summary span,
   .controlBoardsDisclosure summary strong,
-  .controlBoardsDisclosure summary small {
+  .controlBoardsDisclosure summary small,
+  .handoverDetailsDisclosure summary span,
+  .handoverDetailsDisclosure summary strong,
+  .handoverDetailsDisclosure summary small {
     grid-column: 1;
   }
 
-  .controlBoardsDisclosure summary::after {
+  .controlBoardsDisclosure summary::after,
+  .handoverDetailsDisclosure summary::after {
     grid-column: 2;
     grid-row: 1 / span 3;
+  }
+
+  .handoverDetailsDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 38px;
   }
 
   .hero {

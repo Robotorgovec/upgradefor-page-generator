@@ -3254,72 +3254,79 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             ))}
           </div>
         </aside>
-        <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
-          {handoverPacks.map((item) => (
-            <button
-              key={item.name}
-              type="button"
-              role="tab"
-              aria-selected={activePack === item.name}
-              aria-controls={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
-              data-active={activePack === item.name}
-              onClick={() => setActivePack(item.name)}
-            >
-              {item.name}
-            </button>
-          ))}
-        </div>
-        <div className={styles.packDetails}>
-          {handoverPacks.map((item) => (
-            <article
-              key={`pack-${item.name}`}
-              id={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
-              role="tabpanel"
-              tabIndex={0}
-              className={styles.packDetail}
-              hidden={activePack !== item.name}
-            >
-              <div className={styles.packHero}>
-                <div>
-                  <p className={styles.eyebrow}>Selected closeout pack</p>
-                  <h3>{item.name}</h3>
-                  <p>{item.value}</p>
-                </div>
-                <StatusPill value={item.gate} />
-              </div>
-              <dl>
-                <div><dt>what is inside</dt><dd>{item.inside}</dd></div>
-                <div><dt>format</dt><dd>{item.format}</dd></div>
-                <div><dt>recipient</dt><dd>{item.recipient}</dd></div>
-                <div><dt>linked release gates</dt><dd>{getHandoverGateLinks(item).map((gate) => gate[0]).join(", ") || item.gate}</dd></div>
-                <div><dt>vault evidence</dt><dd>{uniqueList(getHandoverVaultLinks(item).map((doc) => doc[1])).join(", ") || item.evidence}</dd></div>
-                <div><dt>risk response link</dt><dd>{uniqueList(getHandoverRiskLinks(item).map((risk) => risk.title)).join(", ") || "open issues register"}</dd></div>
-                <div><dt>route/data-flow point</dt><dd>{uniqueList(getHandoverRouteLinks(item).map((point) => point.title)).join(", ") || "Handover Room"}</dd></div>
-                <div><dt>acceptance signal</dt><dd>{item.acceptance}</dd></div>
-                <div><dt>payment link</dt><dd>{item.paymentLink}</dd></div>
-                <div><dt>evidence register</dt><dd>{item.evidence}</dd></div>
-                <div><dt>reusable value</dt><dd>{item.reusable}</dd></div>
-                <div><dt>UPGRADE boundary</dt><dd>{getHandoverOwnerCue(item)}</dd></div>
-              </dl>
-            </article>
-          ))}
-        </div>
-        <div className={styles.closeoutMatrix} role="table" aria-label="Closeout acceptance matrix">
-          <div role="row" className={styles.closeoutHeader}>
-            <span role="columnheader">Pack</span>
-            <span role="columnheader">Recipient</span>
-            <span role="columnheader">Gate</span>
-            <span role="columnheader">Acceptance signal</span>
+        <details className={styles.handoverDetailsDisclosure}>
+          <summary>
+            <span>Closeout details</span>
+            <strong>Открыть handover packs и acceptance matrix</strong>
+            <small>Подробности раскрываются по запросу; приемка остается привязанной к deliverables и evidence, а не к действиям третьих лиц.</small>
+          </summary>
+          <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
+            {handoverPacks.map((item) => (
+              <button
+                key={item.name}
+                type="button"
+                role="tab"
+                aria-selected={activePack === item.name}
+                aria-controls={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
+                data-active={activePack === item.name}
+                onClick={() => setActivePack(item.name)}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
-          {handoverPacks.map((item) => (
-            <div key={`closeout-${item.name}`} role="row" className={styles.closeoutRow}>
-              <strong role="cell" data-label="Pack">{item.name}</strong>
-              <span role="cell" data-label="Recipient">{item.recipient}</span>
-              <span role="cell" data-label="Gate">{item.gate}</span>
-              <em role="cell" data-label="Acceptance signal">{item.acceptance}</em>
+          <div className={styles.packDetails}>
+            {handoverPacks.map((item) => (
+              <article
+                key={`pack-${item.name}`}
+                id={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
+                role="tabpanel"
+                tabIndex={0}
+                className={styles.packDetail}
+                hidden={activePack !== item.name}
+              >
+                <div className={styles.packHero}>
+                  <div>
+                    <p className={styles.eyebrow}>Selected closeout pack</p>
+                    <h3>{item.name}</h3>
+                    <p>{item.value}</p>
+                  </div>
+                  <StatusPill value={item.gate} />
+                </div>
+                <dl>
+                  <div><dt>what is inside</dt><dd>{item.inside}</dd></div>
+                  <div><dt>format</dt><dd>{item.format}</dd></div>
+                  <div><dt>recipient</dt><dd>{item.recipient}</dd></div>
+                  <div><dt>linked release gates</dt><dd>{getHandoverGateLinks(item).map((gate) => gate[0]).join(", ") || item.gate}</dd></div>
+                  <div><dt>vault evidence</dt><dd>{uniqueList(getHandoverVaultLinks(item).map((doc) => doc[1])).join(", ") || item.evidence}</dd></div>
+                  <div><dt>risk response link</dt><dd>{uniqueList(getHandoverRiskLinks(item).map((risk) => risk.title)).join(", ") || "open issues register"}</dd></div>
+                  <div><dt>route/data-flow point</dt><dd>{uniqueList(getHandoverRouteLinks(item).map((point) => point.title)).join(", ") || "Handover Room"}</dd></div>
+                  <div><dt>acceptance signal</dt><dd>{item.acceptance}</dd></div>
+                  <div><dt>payment link</dt><dd>{item.paymentLink}</dd></div>
+                  <div><dt>evidence register</dt><dd>{item.evidence}</dd></div>
+                  <div><dt>reusable value</dt><dd>{item.reusable}</dd></div>
+                  <div><dt>UPGRADE boundary</dt><dd>{getHandoverOwnerCue(item)}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+          <div className={styles.closeoutMatrix} role="table" aria-label="Closeout acceptance matrix">
+            <div role="row" className={styles.closeoutHeader}>
+              <span role="columnheader">Pack</span>
+              <span role="columnheader">Recipient</span>
+              <span role="columnheader">Gate</span>
+              <span role="columnheader">Acceptance signal</span>
             </div>
-          ))}
-        </div>
+            {handoverPacks.map((item) => (
+              <div key={`closeout-${item.name}`} role="row" className={styles.closeoutRow}>
+                <strong role="cell" data-label="Pack">{item.name}</strong>
+                <span role="cell" data-label="Recipient">{item.recipient}</span>
+                <span role="cell" data-label="Gate">{item.gate}</span>
+                <em role="cell" data-label="Acceptance signal">{item.acceptance}</em>
+              </div>
+            ))}
+          </div>
+        </details>
         <p className={styles.handoverSummary}>Active closeout focus: {handoverPack.name} → {handoverPack.acceptance}. UPGRADE передает структурированный пакет; профильные участники проверяют и утверждают решения в своей зоне ответственности.</p>
       </section>
 
