@@ -1,0 +1,1037 @@
+[
+  {
+    "innerWidth": 1440,
+    "bodyScrollWidth": 1425,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#mission",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "WingproProposalPage-module__pm2b_G__heroCopy",
+            "scrollWidth": 647,
+            "clientWidth": 630,
+            "text": "WinGPro × UPGRADEЦифровой контур поставки пластинчатых теплообменниковОт выбора поставщика"
+          },
+          {
+            "tag": "H1",
+            "id": "proposal-title",
+            "className": "",
+            "scrollWidth": 647,
+            "clientWidth": 630,
+            "text": "Цифровой контур поставки пластинчатых теплообменников"
+          }
+        ]
+      },
+      {
+        "selector": "[aria-labelledby=\"command-layer-title\"]",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#digital-twin",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 147,
+            "clientWidth": 129,
+            "text": "materialmaterial confirmation"
+          },
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 125,
+            "clientWidth": 109,
+            "text": "connectionsmounting input"
+          }
+        ]
+      },
+      {
+        "selector": "#filmstrip",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#value-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#project-control",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 11,
+            "clientWidth": 6,
+            "text": "owner decision"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 16,
+            "clientWidth": 6,
+            "text": "WinGPro выбирает поставщика после закрытия evidence gates профильными участниками"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 6,
+            "text": "handoff output"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 6,
+            "text": "offer comparison board + evidence-led recommendation + open questions list"
+          }
+        ]
+      },
+      {
+        "selector": "#control-room",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#route-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#vault",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#risk-radar",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#release-gates",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#customer-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#handover",
+        "exists": true,
+        "scrollWidth": 1118,
+        "clientWidth": 1118,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#acceptance-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#copy-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "allClips": [
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "WingproProposalPage-module__pm2b_G__heroCopy",
+        "scrollWidth": 647,
+        "clientWidth": 630,
+        "text": "WinGPro × UPGRADEЦифровой контур поставки пластинчатых теплообменниковОт выбора поставщика до handov"
+      },
+      {
+        "tag": "H1",
+        "id": "proposal-title",
+        "className": "",
+        "scrollWidth": 647,
+        "clientWidth": 630,
+        "text": "Цифровой контур поставки пластинчатых теплообменников"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 147,
+        "clientWidth": 129,
+        "text": "materialmaterial confirmation"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 125,
+        "clientWidth": 109,
+        "text": "connectionsmounting input"
+      },
+      {
+        "tag": "DT",
+        "id": "",
+        "className": "",
+        "scrollWidth": 11,
+        "clientWidth": 6,
+        "text": "owner decision"
+      },
+      {
+        "tag": "DD",
+        "id": "",
+        "className": "",
+        "scrollWidth": 16,
+        "clientWidth": 6,
+        "text": "WinGPro выбирает поставщика после закрытия evidence gates профильными участниками"
+      },
+      {
+        "tag": "DT",
+        "id": "",
+        "className": "",
+        "scrollWidth": 9,
+        "clientWidth": 6,
+        "text": "handoff output"
+      },
+      {
+        "tag": "DD",
+        "id": "",
+        "className": "",
+        "scrollWidth": 15,
+        "clientWidth": 6,
+        "text": "offer comparison board + evidence-led recommendation + open questions list"
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 1280,
+    "bodyScrollWidth": 1265,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#mission",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "WingproProposalPage-module__pm2b_G__heroCopy",
+            "scrollWidth": 583,
+            "clientWidth": 518,
+            "text": "WinGPro × UPGRADEЦифровой контур поставки пластинчатых теплообменниковОт выбора поставщика"
+          },
+          {
+            "tag": "H1",
+            "id": "proposal-title",
+            "className": "",
+            "scrollWidth": 583,
+            "clientWidth": 518,
+            "text": "Цифровой контур поставки пластинчатых теплообменников"
+          }
+        ]
+      },
+      {
+        "selector": "[aria-labelledby=\"command-layer-title\"]",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#digital-twin",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "WingproProposalPage-module__pm2b_G__twinStage",
+            "scrollWidth": 542,
+            "clientWidth": 536,
+            "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocum"
+          },
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 147,
+            "clientWidth": 129,
+            "text": "materialmaterial confirmation"
+          },
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 125,
+            "clientWidth": 109,
+            "text": "connectionsmounting input"
+          }
+        ]
+      },
+      {
+        "selector": "#filmstrip",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#value-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#project-control",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DL",
+            "id": "",
+            "className": "",
+            "scrollWidth": 34,
+            "clientWidth": 0,
+            "text": "owner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участн"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 26,
+            "clientWidth": 20,
+            "text": "owner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участн"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 11,
+            "clientWidth": 0,
+            "text": "owner decision"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 16,
+            "clientWidth": 0,
+            "text": "WinGPro выбирает поставщика после закрытия evidence gates профильными участниками"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "handoff outputoffer comparison board + evidence-led recommendation + open questions list"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 0,
+            "text": "handoff output"
+          }
+        ]
+      },
+      {
+        "selector": "#control-room",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#route-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#vault",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#risk-radar",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#release-gates",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#customer-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#handover",
+        "exists": true,
+        "scrollWidth": 958,
+        "clientWidth": 958,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#acceptance-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#copy-title",
+        "exists": true,
+        "scrollWidth": 880,
+        "clientWidth": 880,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "allClips": [
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "WingproProposalPage-module__pm2b_G__heroCopy",
+        "scrollWidth": 583,
+        "clientWidth": 518,
+        "text": "WinGPro × UPGRADEЦифровой контур поставки пластинчатых теплообменниковОт выбора поставщика до handov"
+      },
+      {
+        "tag": "H1",
+        "id": "proposal-title",
+        "className": "",
+        "scrollWidth": 583,
+        "clientWidth": 518,
+        "text": "Цифровой контур поставки пластинчатых теплообменников"
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "WingproProposalPage-module__pm2b_G__twinStage",
+        "scrollWidth": 542,
+        "clientWidth": 536,
+        "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocumentsDelive"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 147,
+        "clientWidth": 129,
+        "text": "materialmaterial confirmation"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 125,
+        "clientWidth": 109,
+        "text": "connectionsmounting input"
+      },
+      {
+        "tag": "DL",
+        "id": "",
+        "className": "",
+        "scrollWidth": 34,
+        "clientWidth": 0,
+        "text": "owner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участникамиhando"
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "",
+        "scrollWidth": 26,
+        "clientWidth": 20,
+        "text": "owner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участниками"
+      },
+      {
+        "tag": "DT",
+        "id": "",
+        "className": "",
+        "scrollWidth": 11,
+        "clientWidth": 0,
+        "text": "owner decision"
+      },
+      {
+        "tag": "DD",
+        "id": "",
+        "className": "",
+        "scrollWidth": 16,
+        "clientWidth": 0,
+        "text": "WinGPro выбирает поставщика после закрытия evidence gates профильными участниками"
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "",
+        "scrollWidth": 25,
+        "clientWidth": 20,
+        "text": "handoff outputoffer comparison board + evidence-led recommendation + open questions list"
+      },
+      {
+        "tag": "DT",
+        "id": "",
+        "className": "",
+        "scrollWidth": 9,
+        "clientWidth": 0,
+        "text": "handoff output"
+      },
+      {
+        "tag": "DD",
+        "id": "",
+        "className": "",
+        "scrollWidth": 15,
+        "clientWidth": 0,
+        "text": "offer comparison board + evidence-led recommendation + open questions list"
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 768,
+    "bodyScrollWidth": 753,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#mission",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "[aria-labelledby=\"command-layer-title\"]",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#digital-twin",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 143,
+            "clientWidth": 125,
+            "text": "materialmaterial confirmation"
+          },
+          {
+            "tag": "BUTTON",
+            "id": "",
+            "className": "",
+            "scrollWidth": 121,
+            "clientWidth": 105,
+            "text": "connectionsmounting input"
+          }
+        ]
+      },
+      {
+        "selector": "#filmstrip",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#value-title",
+        "exists": true,
+        "scrollWidth": 692,
+        "clientWidth": 692,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#project-control",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#control-room",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#route-title",
+        "exists": true,
+        "scrollWidth": 692,
+        "clientWidth": 692,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#vault",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#risk-radar",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#release-gates",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#customer-title",
+        "exists": true,
+        "scrollWidth": 692,
+        "clientWidth": 692,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#handover",
+        "exists": true,
+        "scrollWidth": 738,
+        "clientWidth": 738,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#acceptance-title",
+        "exists": true,
+        "scrollWidth": 692,
+        "clientWidth": 692,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#copy-title",
+        "exists": true,
+        "scrollWidth": 692,
+        "clientWidth": 692,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "allClips": [
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 143,
+        "clientWidth": 125,
+        "text": "materialmaterial confirmation"
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "className": "",
+        "scrollWidth": 121,
+        "clientWidth": 105,
+        "text": "connectionsmounting input"
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 375,
+    "bodyScrollWidth": 375,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#mission",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "[aria-labelledby=\"command-layer-title\"]",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#digital-twin",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "WingproProposalPage-module__pm2b_G__twinStage",
+            "scrollWidth": 324,
+            "clientWidth": 317,
+            "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocum"
+          }
+        ]
+      },
+      {
+        "selector": "#filmstrip",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#value-title",
+        "exists": true,
+        "scrollWidth": 319,
+        "clientWidth": 319,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#project-control",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#control-room",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#route-title",
+        "exists": true,
+        "scrollWidth": 319,
+        "clientWidth": 319,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#vault",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#risk-radar",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#release-gates",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#customer-title",
+        "exists": true,
+        "scrollWidth": 319,
+        "clientWidth": 319,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#handover",
+        "exists": true,
+        "scrollWidth": 355,
+        "clientWidth": 355,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#acceptance-title",
+        "exists": true,
+        "scrollWidth": 319,
+        "clientWidth": 319,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#copy-title",
+        "exists": true,
+        "scrollWidth": 319,
+        "clientWidth": 319,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "allClips": [
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "WingproProposalPage-module__pm2b_G__twinStage",
+        "scrollWidth": 324,
+        "clientWidth": 317,
+        "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocumentsDelive"
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 320,
+    "bodyScrollWidth": 320,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#mission",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "[aria-labelledby=\"command-layer-title\"]",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#digital-twin",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "WingproProposalPage-module__pm2b_G__twinStage",
+            "scrollWidth": 305,
+            "clientWidth": 276,
+            "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocum"
+          }
+        ]
+      },
+      {
+        "selector": "#filmstrip",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#value-title",
+        "exists": true,
+        "scrollWidth": 278,
+        "clientWidth": 278,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#project-control",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#control-room",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#route-title",
+        "exists": true,
+        "scrollWidth": 278,
+        "clientWidth": 278,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#vault",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#risk-radar",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#release-gates",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#customer-title",
+        "exists": true,
+        "scrollWidth": 278,
+        "clientWidth": 278,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#handover",
+        "exists": true,
+        "scrollWidth": 306,
+        "clientWidth": 306,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#acceptance-title",
+        "exists": true,
+        "scrollWidth": 278,
+        "clientWidth": 278,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#copy-title",
+        "exists": true,
+        "scrollWidth": 278,
+        "clientWidth": 278,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "allClips": [
+      {
+        "tag": "DIV",
+        "id": "",
+        "className": "WingproProposalPage-module__pm2b_G__twinStage",
+        "scrollWidth": 305,
+        "clientWidth": 276,
+        "text": "Conceptual Digital Twin PreviewEquipmentGate 1 — Before paymentEquipmentSpecificationDocumentsDelive"
+      }
+    ],
+    "unexpectedScrollContainers": []
+  }
+]

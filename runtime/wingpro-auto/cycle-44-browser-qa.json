@@ -1,0 +1,154 @@
+{
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "url": "http://127.0.0.1:3096/cp/2605281047-wingpro?cb=1780150336959#layer-equipment",
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "styleSheets": [
+      "http://127.0.0.1:3096/_next/static/chunks/051056fe773a2b5a.css",
+      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+      "http://127.0.0.1:3096/assets/layout.css?v=20260311-5"
+    ],
+    "bodyScrollWidth": 1425,
+    "innerWidth": 1440,
+    "twinStage": {
+      "tag": "DIV",
+      "cls": "WingproProposalPage-module__pm2b_G__twinStage",
+      "text": "CONCEPTUAL DIGITAL TWIN PREVIEW Equipment GATE 1 — BEFORE PAYMENT Equipment Specification ",
+      "left": 318,
+      "right": 954,
+      "top": 2561,
+      "width": 637,
+      "clientWidth": 635,
+      "scrollWidth": 635,
+      "clientHeight": 1110,
+      "scrollHeight": 1110,
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+      "noClip": true
+    },
+    "twinObject": {
+      "tag": "DIV",
+      "cls": "WingproProposalPage-module__pm2b_G__twinObject",
+      "text": "",
+      "left": 393,
+      "right": 913,
+      "top": 3018,
+      "width": 519,
+      "clientWidth": 430,
+      "scrollWidth": 432,
+      "clientHeight": 320,
+      "scrollHeight": 320,
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "noClip": false
+    },
+    "clips": [],
+    "unexpectedScrollContainers": [],
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3096/assets/logo/logo-black-only.png",
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "twinStageNoClip": true,
+      "twinObjectInside": true,
+      "clipCount": 0,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "twinStageNoClip": true,
+      "twinObjectInside": true,
+      "clipCount": 0,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "twinStageNoClip": true,
+      "twinObjectInside": true,
+      "clipCount": 0,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "twinStageNoClip": true,
+      "twinObjectInside": true,
+      "clipCount": 0,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "twinStageNoClip": true,
+      "twinObjectInside": true,
+      "clipCount": 0,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    }
+  ],
+  "interaction": {
+    "focusedBefore": true,
+    "copyButtonText": "Скопировать executive summary",
+    "live": [
+      "Selected gate packetGate 0 — Deal setupGo only when supplier identity, object and participant map are visible.Vault evidencesupplier profileRisk radar linkssupplier identity unclearRoute handoffFactory ChinaOutputmission card1. Owner decisionUPGRADE / WinGPro2. Evidence boardsupplier profile3. Risk checksupplier identity unclear4. Route handoffFactory China5. Output artifactmission card",
+      "Selected handover packetWinGPro Executive Packexecutive summary and closeout index are ready to review. WinGPro accepts service deliverables; UPGRADE transfers the structured closeout package.release gatesGate 6 — Before service acceptancevault evidencedecision log, release board, open issues registerrisk responsesopen issues registerroute / data-flowKazakhstan, Mounting handoffoutput artifactacceptance registeracceptance logicAcceptance is based on delivered pack evidence, not physical work or third-party outcomes.1. Gate closeoutGate 6 — Before service acceptance2. Vault evidencedecision log, release board, open issues register3. Risk responseopen issues register4. Route / data-flowKazakhstan, Mounting handoff5. Acceptance / paymentsupports final service acceptance package6. Reusable assetmanagement view for repeated procurement decisions",
+      "Text is open for manual copy"
+    ],
+    "expanderChanged": true,
+    "before": "false",
+    "after": "true",
+    "tabPattern": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "twinAnimationDuration": "1e-06s"
+  },
+  "screenshots": [
+    "runtime/wingpro-auto/screenshots/cycle-44/1440.png",
+    "runtime/wingpro-auto/screenshots/cycle-44/1280.png",
+    "runtime/wingpro-auto/screenshots/cycle-44/768.png",
+    "runtime/wingpro-auto/screenshots/cycle-44/375.png",
+    "runtime/wingpro-auto/screenshots/cycle-44/320.png"
+  ]
+}

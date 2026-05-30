@@ -1340,11 +1340,12 @@
 
 .twinHotspots button {
   position: absolute;
+  width: min(156px, 100%);
   max-width: 156px;
   min-height: 48px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 8px 9px;
+  padding: 8px 22px 8px 9px;
   color: var(--proposal-text-soft);
   background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--proposal-shadow-sm);
@@ -1368,6 +1369,8 @@
 .twinHotspots strong {
   color: var(--proposal-text);
   font-size: 12px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -1375,6 +1378,7 @@
   color: var(--proposal-text-muted);
   font-size: 11px;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .twinHotspots button[data-layer="equipment"] {
@@ -1383,8 +1387,8 @@
 }
 
 .twinHotspots button[data-layer="equipment"]::before {
-  right: -18px;
-  top: 50%;
+  right: 9px;
+  top: 9px;
 }
 
 .twinHotspots button[data-layer="specification"] {
@@ -1393,8 +1397,8 @@
 }
 
 .twinHotspots button[data-layer="specification"]::before {
-  left: -16px;
-  bottom: -8px;
+  right: 9px;
+  top: 9px;
 }
 
 .twinHotspots button[data-layer="documents"] {
@@ -1403,8 +1407,8 @@
 }
 
 .twinHotspots button[data-layer="documents"]::before {
-  left: -16px;
-  top: 14px;
+  right: 9px;
+  top: 9px;
 }
 
 .twinHotspots button[data-layer="delivery"] {
@@ -1413,8 +1417,8 @@
 }
 
 .twinHotspots button[data-layer="delivery"]::before {
-  left: -16px;
-  top: 50%;
+  right: 9px;
+  top: 9px;
 }
 
 .twinHotspots button[data-layer="installation"] {
@@ -1423,8 +1427,8 @@
 }
 
 .twinHotspots button[data-layer="installation"]::before {
-  right: -16px;
-  top: 12px;
+  right: 9px;
+  top: 9px;
 }
 
 .twinHotspots button[data-layer="sales"] {
@@ -1433,8 +1437,8 @@
 }
 
 .twinHotspots button[data-layer="sales"]::before {
-  left: -16px;
-  bottom: 12px;
+  right: 9px;
+  top: 9px;
 }
 
 .orbitNode[data-active="true"],
@@ -4614,6 +4618,14 @@
   }
 }
 
+@media (max-width: 1340px) and (min-width: 901px) {
+  .twinObject {
+    width: min(390px, 64vw);
+    height: 300px;
+    transform: rotateX(58deg) rotateZ(-36deg) scale(0.94);
+  }
+}
+
 @media (max-width: 1220px) {
   .page {
     width: min(100%, calc(100vw - 48px));
@@ -4803,9 +4815,10 @@
   }
 
   .twinHotspots button {
-    max-width: 132px;
+    width: min(150px, 100%);
+    max-width: 150px;
     min-height: 44px;
-    padding: 7px;
+    padding: 7px 22px 7px 7px;
   }
 
   .twinReadout {
@@ -5116,11 +5129,14 @@
 
   .twinStage {
     min-height: 560px;
+    overflow: clip;
+    overflow-clip-margin: 1px;
   }
 
   .twinObject {
-    width: 250px;
-    height: 230px;
+    width: min(220px, 62vw);
+    height: 214px;
+    transform: rotateX(58deg) rotateZ(-36deg) scale(0.88);
   }
 
   .twinStageHeader {
@@ -5292,6 +5308,12 @@
   .missionCard strong,
   .decisionCard strong {
     font-size: 28px;
+  }
+
+  .twinObject {
+    width: min(202px, 61vw);
+    height: 204px;
+    transform: rotateX(58deg) rotateZ(-36deg) scale(0.84);
   }
 
   .handoverMetrics {

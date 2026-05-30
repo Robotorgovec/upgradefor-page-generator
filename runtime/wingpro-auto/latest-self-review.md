@@ -1,25 +1,25 @@
-# Cycle 43 self-review
+# Cycle 44 self-review
 
 1. Что улучшено в этом цикле?
-Contract release surface перестал схлопывать owner/evidence/acceptance карточки внутри узкого Contract Decision Simulator. Surface теперь идет overview-first в одну колонку, а внутренний dl адаптируется через auto-fit.
+Digital Twin прошел broad clip cleanup: мобильный pseudo-3D объект больше не вылезает за stage на 320/375, hotspot markers перенесены внутрь кнопок, а stage использует `overflow: clip` на узких экранах вместо scroll-mechanism.
 
 2. Как это помогает заказчику принять решение?
-WinGPro видит contract scenario, evidence gate strength и unresolved blockers без визуального сжатия, особенно на desktop shell ширине 1280, где модуль живет в половине control board.
+Визуальный trust-блок перестает выглядеть как технически зажатая схема на mobile и 1280 shell-width. WinGPro видит Digital Twin как аккуратный объект сделки, а не как элемент с обрезанными слоями.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Contract release decision читается как самостоятельный decision packet, а не как таблица с зажатыми ячейками.
+Да. Слой Digital Twin остался на месте, но теперь его hotspots и evidence labels читаются без скрытого overflow и без визуального шума вокруг кнопок.
 
 4. Стало ли интерактивнее?
-Интерактив не расширялся, но contract tabs теперь раскрывают более стабильный и читаемый release surface.
+Интерактив не расширялся, но существующие layer controls стали стабильнее: кнопки не создают внутреннее clipping, остаются keyboard-accessible и сохраняют активные состояния.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Тексты ответственности не менялись: UPGRADE структурирует status/evidence/boundary, WinGPro и профильные участники принимают финальные решения.
+Нет. Контент и liability copy не менялись; UPGRADE по-прежнему описан как IT/data и procurement-coordination партнер, без ответственности за поставщика, проектирование, монтаж, брокера или перевозчика.
 
 6. Не были ли изменены forbidden files?
-Нет. Изменен только page-scoped CSS module и runtime QA artifacts.
+Нет. Изменен только page-scoped CSS module и runtime QA artifacts/screenshots.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Локальный QA: contract, contract release surface, release dl and delivery all noClip=true на 1440/1280/768/375/320; unexpected scroll containers=[]; no horizontal scroll на всех проверенных ширинах.
+Нет. QA: canonical local 200, asset 200, `img.currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0, Digital Twin clipCount=0, copy live-region обновляется, accordion aria-expanded меняется, reduced-motion active.
 
 8. Что следующий самый полезный micro-goal?
-MODE=QA/DESIGN: пройти глобальный clip audit по оставшимся non-critical surfaces и приоритизировать следующий самый заметный визуальный долг без добавления секций.
+MODE=INTERACTIVE/DESIGN: сжать следующий самый длинный operator board в overview + detail-on-demand, чтобы уменьшать ощущение длинной ленты без потери underlying data.
