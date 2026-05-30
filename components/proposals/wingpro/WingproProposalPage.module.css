@@ -7556,6 +7556,53 @@
     font-size: 12px;
   }
 
+  .handoverMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .handoverMetrics span,
+  .acceptanceLink {
+    min-height: 72px;
+    gap: 4px;
+    padding: 9px;
+  }
+
+  .handoverMetrics strong {
+    font-size: 20px;
+  }
+
+  .handoverControlSurface {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .handoverControlLead {
+    gap: 8px;
+  }
+
+  .handoverControlLead h3 {
+    font-size: 22px;
+  }
+
+  .handoverControlLead p:not(.eyebrow) {
+    line-height: 1.42;
+  }
+
+  .handoverControlSurface dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .handoverControlSurface dl div {
+    padding: 9px;
+  }
+
+  .handoverSummary {
+    padding: 10px;
+    line-height: 1.38;
+  }
+
   .copyCommandStrip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -7660,10 +7707,6 @@
 
   .twinStage {
     min-height: 500px;
-  }
-
-  .handoverMetrics {
-    grid-template-columns: 1fr;
   }
 
   .fieldStatusRail {
