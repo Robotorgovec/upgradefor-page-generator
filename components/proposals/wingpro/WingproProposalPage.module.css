@@ -2068,6 +2068,141 @@
   font-size: 18px;
 }
 
+.sceneDecisionSurface {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--proposal-brand-soft) 92%, #ffffff), transparent 38%),
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 36%, #ffffff));
+  box-shadow: var(--proposal-shadow-md);
+  display: grid;
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.sceneDecisionSurface > div:first-child {
+  min-height: 100%;
+  border-right: 1px solid var(--proposal-brand-border);
+  padding-right: 14px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  justify-items: start;
+}
+
+.sceneDecisionSurface h3 {
+  margin: 0;
+  color: var(--proposal-text);
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 0.98;
+}
+
+.sceneDecisionSurface dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.sceneDecisionSurface dl div {
+  min-height: 92px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.sceneDecisionSurface dt {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sceneDecisionSurface dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.42;
+}
+
+.filmstripDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.filmstripDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.filmstripDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.filmstripDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.filmstripDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.filmstripDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.filmstripDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.filmstripDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.filmstripDetailsDisclosure .sceneRail,
+.filmstripDetailsDisclosure .sceneDetails {
+  margin: 0 18px 18px;
+}
+
+.filmstripDetailsDisclosure .sceneRail {
+  margin-top: 0;
+}
+
 .sceneDetail,
 .controlDetail,
 .routeCard,
@@ -6115,6 +6250,7 @@
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
+  .filmstripDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6201,6 +6337,7 @@
   .twinShell,
   .heroMissionBridge,
   .controlCommandPanel,
+  .sceneDecisionSurface,
   .supplierWorkbench,
   .offerDecisionSurface,
   .contractReleaseSurface,
@@ -6214,6 +6351,7 @@
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
+  .filmstripDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6238,6 +6376,7 @@
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
+  .filmstripDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
@@ -6257,6 +6396,9 @@
   .executiveCommandDetailsDisclosure summary span,
   .executiveCommandDetailsDisclosure summary strong,
   .executiveCommandDetailsDisclosure summary small,
+  .filmstripDetailsDisclosure summary span,
+  .filmstripDetailsDisclosure summary strong,
+  .filmstripDetailsDisclosure summary small,
   .handoverDetailsDisclosure summary span,
   .handoverDetailsDisclosure summary strong,
   .handoverDetailsDisclosure summary small,
@@ -6285,6 +6427,7 @@
   .controlBoardsDisclosure summary::after,
   .deliveryDetailsDisclosure summary::after,
   .executiveCommandDetailsDisclosure summary::after,
+  .filmstripDetailsDisclosure summary::after,
   .handoverDetailsDisclosure summary::after,
   .offerDetailsDisclosure summary::after,
   .projectControlDetailsDisclosure summary::after,
@@ -6299,6 +6442,7 @@
   .contractDetailsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
+  .filmstripDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6347,6 +6491,13 @@
 
   .commandDisclosure summary {
     grid-template-columns: 1fr;
+  }
+
+  .sceneDecisionSurface > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--proposal-brand-border);
+    padding-right: 0;
+    padding-bottom: 14px;
   }
 
   .missionCard {
@@ -6434,6 +6585,7 @@
   .statusLine,
   .gatePipeline,
   .routeFlow,
+  .sceneDecisionSurface dl,
   .routeDataSurface dl,
   .protectionGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6835,6 +6987,7 @@
   .statusLine,
   .gatePipeline,
   .routeFlow,
+  .sceneDecisionSurface dl,
   .routeDataSurface dl,
   .protectionGrid {
     grid-template-columns: 1fr;

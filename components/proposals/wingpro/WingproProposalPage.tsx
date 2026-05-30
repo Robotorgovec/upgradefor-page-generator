@@ -1397,6 +1397,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
+  const scene = scenes.find((item) => item.id === activeScene) ?? scenes[0];
+  const activeSceneIndex = scenes.findIndex((item) => item.id === scene.id) + 1;
   const activeControl = projectControlScale.find((item) => item.id === activeControlStep) ?? projectControlScale[0];
   const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
@@ -2150,28 +2152,48 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>Procurement filmstrip</p>
           <h2 id="film-title">Сделка как операционный сценарий</h2>
         </div>
-        <div className={styles.sceneRail}>
-          {scenes.map((item) => (
-            <button key={item.id} type="button" data-active={activeScene === item.id} onClick={() => selectScene(item.id)}>
-              <svg viewBox="0 0 120 70" aria-hidden="true"><rect x="10" y="12" width="100" height="46" rx="8" /><path d="M26 44h68M28 28h38M74 28h18" /></svg>
-              <span>{item.title}</span>
-              <StatusPill value={item.status} />
-            </button>
-          ))}
-        </div>
-        <div className={styles.sceneDetails}>
-          {scenes.map((item) => (
-            <article key={`detail-${item.id}`} className={styles.sceneDetail} hidden={activeScene !== item.id}>
-              <h3>{item.title}</h3>
-              <dl>
-                <div><dt>what UPGRADE controls</dt><dd>{item.control}</dd></div>
-                <div><dt>what WinGPro receives</dt><dd>{item.receives}</dd></div>
-                <div><dt>risk if skipped</dt><dd>{item.risk}</dd></div>
-                <div><dt>related Digital Twin layer</dt><dd>{item.layer}</dd></div>
-              </dl>
-            </article>
-          ))}
-        </div>
+        <aside className={styles.sceneDecisionSurface} aria-live="polite" aria-label="Selected procurement scene">
+          <div>
+            <p className={styles.eyebrow}>Active scene {activeSceneIndex} / {scenes.length}</p>
+            <h3>{scene.title}</h3>
+            <StatusPill value={scene.status} />
+          </div>
+          <dl>
+            <div><dt>что контролирует UPGRADE</dt><dd>{scene.control}</dd></div>
+            <div><dt>что получает WinGPro</dt><dd>{scene.receives}</dd></div>
+            <div><dt>risk if skipped</dt><dd>{scene.risk}</dd></div>
+            <div><dt>Digital Twin layer</dt><dd>{scene.layer}</dd></div>
+          </dl>
+        </aside>
+        <details className={styles.filmstripDetailsDisclosure}>
+          <summary>
+            <span>Scenario film detail</span>
+            <strong>Открыть 8 кадров сделки Source → Reuse</strong>
+            <small>Активный кадр остается сверху; полный operational filmstrip раскрывается по запросу без внутреннего скролла.</small>
+          </summary>
+          <div className={styles.sceneRail}>
+            {scenes.map((item) => (
+              <button key={item.id} type="button" data-active={activeScene === item.id} onClick={() => selectScene(item.id)}>
+                <svg viewBox="0 0 120 70" aria-hidden="true"><rect x="10" y="12" width="100" height="46" rx="8" /><path d="M26 44h68M28 28h38M74 28h18" /></svg>
+                <span>{item.title}</span>
+                <StatusPill value={item.status} />
+              </button>
+            ))}
+          </div>
+          <div className={styles.sceneDetails}>
+            {scenes.map((item) => (
+              <article key={`detail-${item.id}`} className={styles.sceneDetail} hidden={activeScene !== item.id}>
+                <h3>{item.title}</h3>
+                <dl>
+                  <div><dt>what UPGRADE controls</dt><dd>{item.control}</dd></div>
+                  <div><dt>what WinGPro receives</dt><dd>{item.receives}</dd></div>
+                  <div><dt>risk if skipped</dt><dd>{item.risk}</dd></div>
+                  <div><dt>related Digital Twin layer</dt><dd>{item.layer}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.valueOs, "valueOs")} data-section="value-os" aria-labelledby="value-title">
