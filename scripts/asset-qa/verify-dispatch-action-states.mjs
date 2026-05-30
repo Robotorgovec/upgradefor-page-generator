@@ -139,12 +139,16 @@ function actionInventory() {
       };
     });
   const missingActionState = controls.filter((control) => !control.actionState);
+  const primaryDisassemblyCtas = controls.filter((control) =>
+    /^(Разобрать установку|Собрать установку)$/.test(control.text),
+  );
 
   return JSON.stringify({
     url: window.location.href,
     totalControls: controls.length,
     explicitActionStates: controls.filter((control) => control.explicitActionState).length,
     missingActionState,
+    primaryDisassemblyCtas,
     actionStates: Array.from(new Set(controls.map((control) => control.actionState).filter(Boolean))).sort(),
     safetyCopy: {
       readOnly: document.body.innerText.includes("Read-only"),
@@ -185,6 +189,10 @@ try {
     initial.missingActionState.length === 0,
     `Found controls without action state: ${JSON.stringify(initial.missingActionState.slice(0, 10), null, 2)}`,
   );
+  assert(
+    initial.primaryDisassemblyCtas.length <= 1,
+    `Found duplicated primary disassembly CTAs: ${JSON.stringify(initial.primaryDisassemblyCtas, null, 2)}`,
+  );
 
   clickSelector('.chipBlock button[data-action-state="opens-passport-context"]', "primary PV-1 passport chip");
   let attempt = readonlyAttemptText();
@@ -215,6 +223,7 @@ try {
         checked: "dispatch-action-states",
         totalControls: finalInventory.totalControls,
         explicitActionStates: finalInventory.explicitActionStates,
+        primaryDisassemblyCtas: finalInventory.primaryDisassemblyCtas.length,
         actionStates: finalInventory.actionStates,
         ok: true,
       },
