@@ -22,7 +22,13 @@ Micro-goal: structure AI insights by operational categories.
 
 Local production view during QA: http://127.0.0.1:3063/dispatch
 
-Vercel Preview is attempted after commit/push.
+Vercel Preview: https://upgradefor-page-generator-gep1eg22p-bacalimser-8615s-projects.vercel.app/dispatch
+
+External smoke command:
+
+```bash
+DISPATCH_BASE_URL=https://upgradefor-page-generator-gep1eg22p-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs
+```
 
 ## Screenshots
 
@@ -59,6 +65,8 @@ Full-page / section review screenshots:
 - `npm run build` — passed
 - `git diff --check` — passed
 - Dispatch TypeScript check — clean; full `tsc` still has known legacy non-dispatch errors on this PR branch.
+- Vercel Preview deploy — passed
+- External preview suite — passed
 
 ## Full-Page Review Notes
 
