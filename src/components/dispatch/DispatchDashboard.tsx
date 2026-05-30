@@ -29,7 +29,7 @@ import {
   getEquipmentTwinById,
 } from "./equipmentTwins.config";
 
-const passportTabs = ["Паспорт", "Параметры", "ТО", "Документы"];
+const passportTabs = ["Паспорт", "Параметры", "SCADA-теги", "ТО", "Документы"];
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
 const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
 const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
@@ -49,6 +49,15 @@ type ReadonlyAuditEntry = {
   equipment: string;
   role: string;
   time: string;
+};
+
+type ScadaTagRow = {
+  tag: string;
+  signalType: "AI" | "DI" | "DO" | "AO";
+  register: string;
+  scaling: string;
+  unit: string;
+  quality: "VALID" | "DATA_ERROR" | "TO VERIFY";
 };
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
@@ -84,6 +93,63 @@ function findParamValue(
 ) {
   const param = params.find((item) => patterns.some((pattern) => pattern.test(item.label)));
   return param?.value ?? fallback;
+}
+
+function getScadaSignalType(tag: string): ScadaTagRow["signalType"] {
+  if (/WRITE|CONTROL|LOCKED|COMMAND/i.test(tag)) return "DO";
+  if (/STATUS|ONLINE|ALARM|MODE/i.test(tag)) return "DI";
+  if (/SETPOINT|VALVE|DRIVE/i.test(tag)) return "AO";
+  return "AI";
+}
+
+function getScadaUnit(tag: string) {
+  if (/TEMP|GLYCOL|WATER/i.test(tag)) return "°C";
+  if (/(^|[._-])DP([._-]|$)|PRESSURE/i.test(tag)) return "bar";
+  if (/AIRFLOW|FLOW/i.test(tag)) return "м³/ч";
+  if (/ENERGY|POWER/i.test(tag)) return "кВт·ч";
+  if (/VALVE|LOAD/i.test(tag)) return "%";
+  if (/STATUS|ONLINE|ALARM|MODE|LOCKED/i.test(tag)) return "state";
+  return "TO VERIFY";
+}
+
+function getScadaScaling(tag: string, unit: string) {
+  if (/(^|[._-])DP([._-]|$)|PRESSURE/i.test(tag)) return "0–16 bar";
+  if (/TEMP|GLYCOL|WATER/i.test(tag)) return "0.1 °C";
+  if (/AIRFLOW|FLOW/i.test(tag)) return "engineering units";
+  if (/STATUS|ONLINE|ALARM|MODE|LOCKED/i.test(tag)) return "boolean";
+  return unit === "TO VERIFY" ? "TO VERIFY" : "normalized";
+}
+
+function getScadaRegister(tag: string) {
+  const parts = tag.split(".");
+  const candidate = parts.slice(-2).join(".");
+  if (/TO_VERIFY/i.test(tag)) return "TO VERIFY";
+  if (/DISPATCH|AI\.ANOMALY/i.test(tag)) return "derived";
+  if (/BMS\.ALARM/i.test(tag)) return "event route";
+  return candidate || "TO VERIFY";
+}
+
+function buildScadaTagRows(equipment: DispatchEquipmentNode): ScadaTagRow[] {
+  const hasDataError = equipment.onlineParams.some((param) => param.quality === "DATA_ERROR");
+  const tags = equipment.scadaTags.length ? equipment.scadaTags : ["TO VERIFY"];
+
+  return tags.map((tag) => {
+    const unit = getScadaUnit(tag);
+    const quality = /TO_VERIFY|TO VERIFY/i.test(tag)
+      ? "TO VERIFY"
+      : hasDataError && (/(^|[._-])DP([._-]|$)/i.test(tag) || /6553/i.test(tag))
+        ? "DATA_ERROR"
+        : "VALID";
+
+    return {
+      tag,
+      signalType: getScadaSignalType(tag),
+      register: getScadaRegister(tag),
+      scaling: getScadaScaling(tag, unit),
+      unit,
+      quality,
+    };
+  });
 }
 
 function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
@@ -223,6 +289,7 @@ export default function DispatchDashboard() {
   const passportLastEvent = passportSource === "twin" ? selectedTwin.lastEvent : selectedLastEvent;
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
   const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
+  const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
   const passportTopKpis = [
     {
       id: "temperature",
@@ -887,6 +954,37 @@ export default function DispatchDashboard() {
             </div>
           ) : null}
 
+          {passportTab === "SCADA-теги" ? (
+            <div className="scadaTagTable" data-testid="dispatch-passport-scada-tags">
+              <div className="scadaTagSummary">
+                <span>Read-only SCADA/BMS mapping</span>
+                <strong>{passportScadaRows.length} tags · gateway 10.50.4.41 · no write commands</strong>
+              </div>
+              <div className="scadaTagHeader" aria-hidden="true">
+                <span>Tag</span>
+                <span>Type</span>
+                <span>Register</span>
+                <span>Scaling</span>
+                <span>Unit</span>
+                <span>Quality</span>
+              </div>
+              {passportScadaRows.map((row) => (
+                <article
+                  className={row.quality === "DATA_ERROR" ? "isDataError" : undefined}
+                  data-testid="dispatch-passport-scada-tag-row"
+                  key={row.tag}
+                >
+                  <code>{row.tag}</code>
+                  <span>{row.signalType}</span>
+                  <span>{row.register}</span>
+                  <span>{row.scaling}</span>
+                  <span>{row.unit}</span>
+                  <strong>{row.quality}</strong>
+                </article>
+              ))}
+            </div>
+          ) : null}
+
           {passportTab === "ТО" ? (
             <>
               <div className="serviceNote">
@@ -907,12 +1005,6 @@ export default function DispatchDashboard() {
 
           {passportTab === "Документы" ? (
             <>
-              <div className="tagList">
-                <span>SCADA/BMS tags</span>
-                {(passportEquipment.scadaTags.length ? passportEquipment.scadaTags : ["TO VERIFY"]).map((tag) => (
-                  <code key={tag}>{tag}</code>
-                ))}
-              </div>
               <div className="documentList">
                 {passportEquipment.documents.map((document) => (
                   <button
@@ -2249,7 +2341,7 @@ export default function DispatchDashboard() {
 
         .passportTabs {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(5, minmax(0, 1fr));
           gap: 6px;
           margin: 12px 0;
         }
@@ -2331,6 +2423,75 @@ export default function DispatchDashboard() {
           font-size: 11px;
           padding: 8px;
           white-space: normal;
+        }
+
+        .scadaTagTable {
+          display: grid;
+          gap: 7px;
+        }
+
+        .scadaTagSummary {
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.52);
+          padding: 10px;
+        }
+
+        .scadaTagSummary span,
+        .scadaTagHeader span,
+        .scadaTagTable article span {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .scadaTagSummary strong {
+          display: block;
+          margin-top: 4px;
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .scadaTagHeader,
+        .scadaTagTable article {
+          display: grid;
+          grid-template-columns: minmax(130px, 1.4fr) 42px minmax(72px, 0.8fr) minmax(82px, 0.9fr) 52px 78px;
+          gap: 7px;
+          align-items: center;
+        }
+
+        .scadaTagHeader {
+          padding: 0 8px;
+        }
+
+        .scadaTagTable article {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.62);
+          padding: 8px;
+        }
+
+        .scadaTagTable article.isDataError {
+          border-color: rgba(248, 113, 113, 0.48);
+          background: rgba(127, 29, 29, 0.18);
+        }
+
+        .scadaTagTable code {
+          min-width: 0;
+          color: #bae6fd;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 11px;
+          overflow-wrap: anywhere;
+        }
+
+        .scadaTagTable strong {
+          color: #bbf7d0;
+          font-size: 11px;
+        }
+
+        .scadaTagTable article.isDataError strong {
+          color: #fecaca;
         }
 
         .documentList button span {
@@ -2491,6 +2652,26 @@ export default function DispatchDashboard() {
 
           .passportKpiStrip {
             grid-template-columns: 1fr;
+          }
+
+          .passportTabs {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .passportTabs button {
+            overflow-wrap: anywhere;
+          }
+
+          .scadaTagHeader {
+            display: none;
+          }
+
+          .scadaTagTable article {
+            grid-template-columns: 1fr 1fr;
+          }
+
+          .scadaTagTable article code {
+            grid-column: 1 / -1;
           }
 
           .dispatchBottomNav {
