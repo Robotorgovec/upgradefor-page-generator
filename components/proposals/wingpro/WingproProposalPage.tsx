@@ -10,6 +10,7 @@ type ControlStepId = "supplier" | "offer" | "contract" | "delivery" | "workplan"
 type SupplierCandidateId = "candidate-a" | "candidate-b" | "candidate-c";
 type OfferDecisionMode = "evidence" | "price" | "speed";
 type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
+type DeliveryPhaseId = "payment" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "boundary" | "deliverables" | "payment" | "next";
@@ -330,15 +331,123 @@ const contractGateMatrix = [
 ] as const;
 
 const deliveryTimeline = [
-  ["Payment readiness", "PI, bank details, material/pressure evidence", "owner required"],
-  ["Production confirmation", "confirmed specification, drawing request, open technical questions", "planned"],
-  ["Factory status", "supplier status, evidence request, escalation log", "collecting"],
-  ["Pre-shipment evidence", "photo/video/nameplate, packing list", "at risk"],
-  ["Logistics handoff", "pickup contact, weight/dimensions, route data", "collecting"],
-  ["Broker handoff", "invoice draft, export docs, broker input list", "external dependency"],
-  ["Arrival", "receiving status, issue log, photo evidence", "planned"],
-  ["Mounting handoff", "coordination draft, questions, responsible owner", "planned"],
-] as const;
+  {
+    id: "payment",
+    phase: "Payment readiness",
+    releaseGate: "Gate 1 — Before payment",
+    status: "owner required",
+    targetOutcome: "WinGPro sees whether the payment decision has minimum evidence before release.",
+    evidence: "PI, bank details, material confirmation, pressure class, open questions list",
+    owner: "WinGPro decision owner / supplier",
+    upgradeAction: "UPGRADE prepares payment readiness board and evidence request.",
+    blocker: "material or pressure evidence is missing, or bank details are not confirmed",
+    output: "before-payment checklist",
+    boundary: "UPGRADE tracks evidence and open questions; WinGPro approves the payment decision.",
+  },
+  {
+    id: "production",
+    phase: "Production confirmation",
+    releaseGate: "Gate 2 — Before production confirmation",
+    status: "planned",
+    targetOutcome: "Production inputs become a visible confirmation package instead of scattered messages.",
+    evidence: "confirmed specification, drawing request, technical questions, approval owner",
+    owner: "supplier / responsible technical specialist",
+    upgradeAction: "UPGRADE maintains confirmation tracker and decision log.",
+    blocker: "technical owner or drawing request is unclear",
+    output: "production confirmation board",
+    boundary: "UPGRADE structures technical questions; profile specialists approve technical decisions.",
+  },
+  {
+    id: "factory",
+    phase: "Factory status",
+    releaseGate: "Gate 2 / Gate 3 bridge",
+    status: "collecting",
+    targetOutcome: "Factory response time, open answers and escalation points stay visible.",
+    evidence: "supplier status, factory contact, response log, unresolved data requests",
+    owner: "supplier coordinator",
+    upgradeAction: "UPGRADE records status, response delays and next evidence requests.",
+    blocker: "supplier responses do not close the evidence list",
+    output: "factory status log",
+    boundary: "UPGRADE does not control factory production; it controls the information status and escalation trail.",
+  },
+  {
+    id: "preshipment",
+    phase: "Pre-shipment evidence",
+    releaseGate: "Gate 3 — Before shipment",
+    status: "at risk",
+    targetOutcome: "Shipment readiness is checked before cargo leaves the supplier side.",
+    evidence: "photo/video/nameplate, packing list, weight/dimensions, commercial invoice draft",
+    owner: "supplier",
+    upgradeAction: "UPGRADE builds shipment readiness pack and highlights missing evidence.",
+    blocker: "packing data, nameplate photo or invoice draft is absent",
+    output: "shipment evidence pack",
+    boundary: "UPGRADE requests and tracks evidence; supplier confirms and provides shipment materials.",
+  },
+  {
+    id: "logistics",
+    phase: "Logistics handoff",
+    releaseGate: "Gate 4 — Before customs/logistics handoff",
+    status: "collecting",
+    targetOutcome: "Logistics receives pickup and cargo data as a handoff pack.",
+    evidence: "pickup contact, weight/dimensions, packing, route data, delivery terms",
+    owner: "logistics provider / supplier",
+    upgradeAction: "UPGRADE maps data-flow from supplier to logistics and flags gaps.",
+    blocker: "pickup contact or cargo dimensions are incomplete",
+    output: "logistics data-pack",
+    boundary: "UPGRADE prepares logistics inputs; actual transportation remains with logistics/carrier.",
+  },
+  {
+    id: "broker",
+    phase: "Broker handoff",
+    releaseGate: "Gate 4 — Before customs/logistics handoff",
+    status: "external dependency",
+    targetOutcome: "Broker/customs questions are visible before the documents are urgently needed.",
+    evidence: "commercial invoice draft, export docs checklist, HS/TN VED owner, certificate status",
+    owner: "broker / supplier / WinGPro",
+    upgradeAction: "UPGRADE prepares broker input list and customs document status board.",
+    blocker: "invoice/export document status is unclear",
+    output: "broker/customs input list",
+    boundary: "UPGRADE structures customs inputs; broker/profile parties make customs decisions.",
+  },
+  {
+    id: "arrival",
+    phase: "Arrival",
+    releaseGate: "Gate 5 — Before mounting handoff",
+    status: "planned",
+    targetOutcome: "Receiving status and issue evidence are connected to the handover room.",
+    evidence: "arrival status, receiving photo, package condition, issue log",
+    owner: "WinGPro / logistics",
+    upgradeAction: "UPGRADE links receiving evidence to issue register and handover pack.",
+    blocker: "arrival state or receiving evidence is not recorded",
+    output: "receiving evidence note",
+    boundary: "UPGRADE records the information contour; physical receiving is handled by responsible parties.",
+  },
+  {
+    id: "mounting",
+    phase: "Mounting handoff",
+    releaseGate: "Gate 5 — Before mounting handoff",
+    status: "planned",
+    targetOutcome: "Mounting side receives inputs early enough to ask questions before implementation.",
+    evidence: "coordination draft, connection points, dimensions, access/service space, mounting questions",
+    owner: "mounting side / responsible technical specialist",
+    upgradeAction: "UPGRADE prepares mounting coordination pack and open questions register.",
+    blocker: "mounting owner or technical approval path is missing",
+    output: "mounting handoff pack",
+    boundary: "UPGRADE does not perform or accept mounting; profile parties execute and approve field work.",
+  },
+] as const satisfies ReadonlyArray<{
+  id: DeliveryPhaseId;
+  phase: string;
+  releaseGate: string;
+  status: string;
+  targetOutcome: string;
+  evidence: string;
+  owner: string;
+  upgradeAction: string;
+  blocker: string;
+  output: string;
+  boundary: string;
+}>;
 
 const workPlanItems = [
   ["Work zones", "receiving area, access path, mounting location, connection points", "WinGPro / mounting side"],
@@ -530,6 +639,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [activeSupplier, setActiveSupplier] = useState<SupplierCandidateId>("candidate-a");
   const [offerDecisionMode, setOfferDecisionMode] = useState<OfferDecisionMode>("evidence");
   const [activeContractScenario, setActiveContractScenario] = useState<ContractScenarioId>("balanced");
+  const [activeDeliveryPhase, setActiveDeliveryPhase] = useState<DeliveryPhaseId>("payment");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
   const [activeRoute, setActiveRoute] = useState(routePoints[0].title);
   const [vaultCategory, setVaultCategory] = useState("all");
@@ -553,6 +663,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
+  const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -1039,17 +1150,58 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <article className={styles.deliveryTimeline}>
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Delivery Timeline</p>
-              <h3>Поставка как статусный pipeline</h3>
+              <h3>Поставка как release-control pipeline</h3>
+              <p>UPGRADE ведет календарь информационной готовности: evidence, owner, blocker, handoff и release gate. Физические производственные, транспортные, таможенные и монтажные сроки остаются у профильных участников.</p>
             </div>
-            <div className={styles.timelineRows}>
-              {deliveryTimeline.map(([phase, evidence, status]) => (
-                <section key={phase}>
-                  <StatusPill value={status} />
-                  <strong>{phase}</strong>
-                  <p>{evidence}</p>
+            <div className={styles.timelineRows} role="tablist" aria-label="Delivery release phases">
+              {deliveryTimeline.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeDeliveryPhase === item.id}
+                  aria-controls={`delivery-phase-${item.id}`}
+                  data-active={activeDeliveryPhase === item.id}
+                  onClick={() => setActiveDeliveryPhase(item.id)}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <StatusPill value={item.status} />
+                  <strong>{item.phase}</strong>
+                  <em>{item.releaseGate}</em>
+                </button>
+              ))}
+            </div>
+            <div className={styles.deliveryPhasePanels}>
+              {deliveryTimeline.map((item) => (
+                <section key={`delivery-${item.id}`} id={`delivery-phase-${item.id}`} role="tabpanel" tabIndex={0} hidden={activeDeliveryPhase !== item.id}>
+                  <div className={styles.deliveryPhaseHero}>
+                    <div>
+                      <p className={styles.eyebrow}>Active release phase</p>
+                      <h4>{item.phase}</h4>
+                      <p>{item.targetOutcome}</p>
+                    </div>
+                    <StatusPill value={item.status} />
+                  </div>
+                  <dl className={styles.deliveryPhaseGrid}>
+                    <div><dt>Required evidence</dt><dd>{item.evidence}</dd></div>
+                    <div><dt>Owner</dt><dd>{item.owner}</dd></div>
+                    <div><dt>UPGRADE action</dt><dd>{item.upgradeAction}</dd></div>
+                    <div><dt>Blocked if</dt><dd>{item.blocker}</dd></div>
+                    <div><dt>Output artifact</dt><dd>{item.output}</dd></div>
+                    <div><dt>Boundary</dt><dd>{item.boundary}</dd></div>
+                  </dl>
                 </section>
               ))}
             </div>
+            <div className={styles.deliveryReleaseMap} aria-label="Delivery release map">
+              <span>payment readiness</span>
+              <span>production confirmation</span>
+              <span>pre-shipment evidence</span>
+              <span>logistics / broker handoff</span>
+              <span>arrival evidence</span>
+              <span>mounting handoff</span>
+            </div>
+            <p className={styles.deliverySummary}>Current release focus: {deliveryPhase.phase} → {deliveryPhase.output}. UPGRADE фиксирует status и evidence request; профильные участники подтверждают фактические действия и решения.</p>
           </article>
 
           <article className={styles.workPlanBuilder}>
@@ -1294,12 +1446,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="gates-title">Поставка как pipeline готовности данных</h2>
           <p>UPGRADE контролирует готовность данных и статусный контур, а не принимает на себя действия третьих лиц.</p>
         </div>
-        <div className={styles.gatePipeline}>
-          {gates.map((gate, index) => <button key={gate[0]} type="button" data-active={activeGate === index} onClick={() => setActiveGate(index)}>{gate[0]}</button>)}
+        <div className={styles.gatePipeline} role="tablist" aria-label="Release gate pipeline">
+          {gates.map((gate, index) => (
+            <button
+              key={gate[0]}
+              type="button"
+              role="tab"
+              aria-selected={activeGate === index}
+              aria-controls={`release-gate-${index}`}
+              data-active={activeGate === index}
+              onClick={() => setActiveGate(index)}
+            >
+              <span>{String(index).padStart(2, "0")}</span>
+              {gate[0]}
+            </button>
+          ))}
         </div>
         <div className={styles.gateDetails}>
           {gates.map((gate, index) => (
-            <article key={`gate-${gate[0]}`} className={styles.gateDetail} hidden={activeGate !== index}>
+            <article key={`gate-${gate[0]}`} id={`release-gate-${index}`} role="tabpanel" tabIndex={0} className={styles.gateDetail} hidden={activeGate !== index}>
               <h3>{gate[0]}</h3>
               <dl>
                 <div><dt>objective</dt><dd>{gate[1]}</dd></div>

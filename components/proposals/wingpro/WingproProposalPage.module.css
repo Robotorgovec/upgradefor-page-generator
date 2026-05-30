@@ -221,6 +221,7 @@
 .twinControls button,
 .segmented button,
 .sceneRail button,
+.timelineRows button,
 .participantMap button,
 .routeFlow button,
 .modeSwitch button,
@@ -272,6 +273,7 @@
 .segmented button,
 .modeSwitch button,
 .riskFilters button,
+.timelineRows button,
 .gatePipeline button,
 .packTabs button,
 .paymentSwitch button,
@@ -287,6 +289,7 @@
 .segmented button:hover,
 .modeSwitch button:hover,
 .riskFilters button:hover,
+.timelineRows button:hover,
 .gatePipeline button:hover,
 .packTabs button:hover,
 .paymentSwitch button:hover,
@@ -574,6 +577,7 @@
 .orbitNode[data-active="true"],
 .segmented button[aria-selected="true"],
 .sceneRail button[data-active="true"],
+.timelineRows button[data-active="true"],
 .participantMap button[data-active="true"],
 .routeFlow button[data-active="true"],
 .modeSwitch button[aria-pressed="true"],
@@ -1356,15 +1360,142 @@
   gap: 8px;
 }
 
-.timelineRows section {
-  min-height: 170px;
-  border: 1px solid var(--proposal-border);
-  border-radius: 8px;
+.timelineRows button {
+  min-height: 184px;
+  border-color: var(--proposal-border);
   padding: 12px;
+  color: var(--proposal-text-soft);
   background: var(--proposal-surface-soft);
   display: grid;
   gap: 8px;
   align-content: start;
+  justify-items: start;
+  text-align: left;
+}
+
+.timelineRows button > span:first-child,
+.gatePipeline button > span:first-child {
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.timelineRows strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+}
+
+.timelineRows em {
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.deliveryPhasePanels section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 82%, #ffffff), #ffffff 62%);
+  display: grid;
+  gap: 14px;
+}
+
+.deliveryPhaseHero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.deliveryPhaseHero h4,
+.deliveryPhaseHero p {
+  margin: 0;
+}
+
+.deliveryPhaseHero h4 {
+  color: var(--proposal-text);
+  font-size: 22px;
+}
+
+.deliveryPhaseHero p:not(.eyebrow) {
+  max-width: 760px;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.deliveryPhaseGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.deliveryPhaseGrid div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.deliveryPhaseGrid dt {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.deliveryPhaseGrid dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.deliveryReleaseMap {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  position: relative;
+}
+
+.deliveryReleaseMap::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 1px;
+  background: var(--proposal-brand-border);
+}
+
+.deliveryReleaseMap span {
+  position: relative;
+  min-height: 52px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--proposal-text-soft);
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.25;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.deliverySummary {
+  margin: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 13px 14px;
+  color: var(--proposal-text-soft);
+  background: var(--proposal-brand-soft);
+  line-height: 1.5;
 }
 
 .roleGrid {
@@ -1769,6 +1900,8 @@
   color: var(--proposal-text-soft);
   border-color: var(--proposal-border);
   background: #ffffff;
+  display: grid;
+  gap: 8px;
   align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
@@ -1919,12 +2052,17 @@
   .workPlanGrid,
   .evidenceGrid,
   .metricGrid,
+  .deliveryPhaseGrid,
   .simulatorGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .routeFlow {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .deliveryReleaseMap {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .vaultGrid {
@@ -1996,11 +2134,16 @@
   .workPlanGrid,
   .evidenceGrid,
   .metricGrid,
+  .deliveryPhaseGrid,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
   .routeFlow,
   .protectionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .deliveryReleaseMap {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2104,12 +2247,21 @@
   .workPlanGrid,
   .evidenceGrid,
   .metricGrid,
+  .deliveryPhaseGrid,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
   .routeFlow,
   .protectionGrid {
     grid-template-columns: 1fr;
+  }
+
+  .deliveryReleaseMap {
+    grid-template-columns: 1fr;
+  }
+
+  .deliveryReleaseMap::before {
+    display: none;
   }
 
   .sceneRail button {
