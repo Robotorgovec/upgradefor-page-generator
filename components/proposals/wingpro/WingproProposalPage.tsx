@@ -1488,11 +1488,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
   const twinStage = (
     <div className={styles.twinStage} data-layer={activeLayer}>
+      <div className={styles.twinStageHeader}>
+        <span>Conceptual Digital Twin Preview</span>
+        <strong>{layer.title}</strong>
+        <small>{layer.gate}</small>
+      </div>
       <div className={styles.twinObject} aria-hidden="true">
+        <span className={styles.twinShadow} />
+        <span className={styles.endPlateA} />
+        <span className={styles.endPlateB} />
         <span className={styles.plateStack} />
         <span className={styles.coreBlock} />
         <span className={styles.connectionA} />
         <span className={styles.connectionB} />
+        <span className={styles.tieRodA} />
+        <span className={styles.tieRodB} />
+        <span className={styles.tieRodC} />
+        <span className={styles.dimensionRail} />
       </div>
       <svg className={styles.twinBlueprint} viewBox="0 0 720 420" role="img" aria-label="Conceptual digital twin preview">
         <path d="M90 210 C180 80 330 70 430 170 S570 330 650 210" />
@@ -1529,6 +1541,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <span>{item.note}</span>
           </button>
         ))}
+      </div>
+      <div className={styles.twinStageFooter} aria-label="Digital Twin selected evidence">
+        <span className={styles.twinFooterLabel}><strong>Digital Twin selected evidence</strong><small>current layer</small></span>
+        <span className={styles.twinReadinessMetric}><strong>{layer.readiness}</strong><small>readiness</small></span>
+        <span><strong>{layer.owner}</strong><small>approval owner</small></span>
+        <span><strong>{layer.deliverable}</strong><small>WinGPro receives</small></span>
       </div>
     </div>
   );

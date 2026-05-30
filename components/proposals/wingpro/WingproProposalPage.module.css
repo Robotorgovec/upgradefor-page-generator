@@ -743,26 +743,65 @@
 
 .twinStage {
   position: relative;
-  min-height: 560px;
+  min-height: 620px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), transparent 44%),
     linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
     linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
-    radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--proposal-brand) 15%, transparent), transparent 48%),
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--proposal-brand) 18%, transparent), transparent 46%),
+    radial-gradient(ellipse at 50% 70%, rgba(15, 23, 42, 0.1), transparent 44%),
     #fbfdff;
-  background-size: 26px 26px, 26px 26px, auto, auto;
+  background-size: auto, 26px 26px, 26px 26px, auto, auto, auto;
   overflow: hidden;
   perspective: 900px;
   display: grid;
   place-items: center;
 }
 
+.twinStageHeader,
+.twinStageFooter {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.twinStageHeader {
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  grid-template-columns: minmax(160px, 0.34fr) minmax(0, 1fr) minmax(140px, 0.3fr);
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.twinStageHeader span,
+.twinStageHeader small,
+.twinStageFooter small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.twinStageHeader strong {
+  color: var(--proposal-text);
+  font-size: 18px;
+  line-height: 1.15;
+}
+
 .twinBlueprint {
   position: absolute;
-  inset: 8%;
-  width: 84%;
-  height: 84%;
+  inset: 11% 7% 15%;
+  width: 86%;
+  height: 74%;
   fill: none;
   stroke: color-mix(in srgb, var(--proposal-brand-active) 34%, #94a3b8);
   stroke-width: 2;
@@ -774,11 +813,11 @@
 .twinObject {
   position: relative;
   z-index: 2;
-  width: min(340px, 68vw);
-  height: 260px;
+  width: min(430px, 72vw);
+  height: 320px;
   transform: rotateX(58deg) rotateZ(-36deg);
   transform-style: preserve-3d;
-  filter: drop-shadow(0 34px 30px rgba(15, 23, 42, 0.16));
+  filter: drop-shadow(0 42px 34px rgba(15, 23, 42, 0.18));
 }
 
 .twinShell[data-rotating="true"] .twinObject {
@@ -788,49 +827,167 @@
 .plateStack,
 .coreBlock,
 .connectionA,
-.connectionB {
+.connectionB,
+.endPlateA,
+.endPlateB,
+.tieRodA,
+.tieRodB,
+.tieRodC,
+.dimensionRail,
+.twinShadow {
   position: absolute;
   display: block;
 }
 
+.twinShadow {
+  inset: 54px 26px 40px;
+  border-radius: 36px;
+  background: rgba(15, 23, 42, 0.12);
+  filter: blur(18px);
+  transform: translateZ(-10px);
+}
+
+.endPlateA,
+.endPlateB {
+  top: 30px;
+  bottom: 34px;
+  width: 46px;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border-strong) 80%, var(--proposal-border));
+  border-radius: 9px;
+  background:
+    linear-gradient(120deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 76%, #ffffff)),
+    #ffffff;
+  transform: translateZ(58px);
+}
+
+.endPlateA {
+  left: 36px;
+}
+
+.endPlateB {
+  right: 36px;
+}
+
 .coreBlock {
-  inset: 42px 72px;
+  inset: 52px 98px 60px;
   border: 1px solid var(--proposal-brand-border-strong);
   border-radius: 8px;
   background:
-    repeating-linear-gradient(90deg, #ffffff 0 8px, color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff) 8px 15px),
+    repeating-linear-gradient(90deg, #ffffff 0 7px, color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff) 7px 13px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
     #ffffff;
-  transform: translateZ(34px);
+  transform: translateZ(40px);
 }
 
 .plateStack {
-  inset: 24px 46px;
+  inset: 32px 64px 38px;
   border: 1px solid var(--proposal-border-strong);
   border-radius: 8px;
   background:
-    repeating-linear-gradient(90deg, #e9f3fb 0 7px, #ffffff 7px 12px),
+    repeating-linear-gradient(90deg, #e9f3fb 0 6px, #ffffff 6px 11px),
     #ffffff;
-  transform: translateZ(16px);
+  transform: translateZ(22px);
 }
 
 .connectionA,
 .connectionB {
-  width: 82px;
-  height: 42px;
+  width: 96px;
+  height: 48px;
   border: 1px solid var(--proposal-brand-border-strong);
   border-radius: 999px;
-  background: #ffffff;
-  transform: translateZ(52px);
+  background:
+    radial-gradient(circle at 28% 50%, #ffffff 0 13px, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff) 14px 23px, #ffffff 24px),
+    #ffffff;
+  transform: translateZ(70px);
 }
 
 .connectionA {
-  top: 24px;
-  right: 4px;
+  top: 38px;
+  right: -2px;
 }
 
 .connectionB {
-  left: 4px;
-  bottom: 30px;
+  left: -2px;
+  bottom: 42px;
+}
+
+.tieRodA,
+.tieRodB,
+.tieRodC {
+  left: 42px;
+  right: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--proposal-brand-active) 46%, #94a3b8);
+  transform: translateZ(78px);
+}
+
+.tieRodA { top: 54px; }
+.tieRodB { top: 154px; }
+.tieRodC { bottom: 62px; }
+
+.dimensionRail {
+  left: 68px;
+  right: 68px;
+  bottom: 12px;
+  height: 28px;
+  border-top: 1px dashed color-mix(in srgb, var(--proposal-brand-active) 42%, #94a3b8);
+  transform: translateZ(84px);
+}
+
+.dimensionRail::before,
+.dimensionRail::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  width: 1px;
+  height: 14px;
+  background: color-mix(in srgb, var(--proposal-brand-active) 42%, #94a3b8);
+}
+
+.dimensionRail::before { left: 0; }
+.dimensionRail::after { right: 0; }
+
+.twinStageFooter {
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  grid-template-columns: 0.32fr 0.18fr 0.25fr 0.25fr;
+  gap: 8px;
+  padding: 10px;
+}
+
+.twinStageFooter span {
+  min-height: 58px;
+  padding: 9px 10px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: #ffffff;
+  display: grid;
+  gap: 3px;
+  align-content: center;
+}
+
+.twinStageFooter strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.twinStageFooter span:first-child strong {
+  color: var(--proposal-brand-contrast);
+}
+
+.twinReadinessMetric strong {
+  font-size: 22px;
+}
+
+.twinFooterLabel {
+  background: var(--proposal-brand-soft) !important;
+}
+
+.twinFooterLabel strong {
+  font-size: 13px !important;
 }
 
 .orbitGrid {
@@ -4122,6 +4279,11 @@
     min-height: 560px;
   }
 
+  .twinStageHeader,
+  .twinStageFooter {
+    grid-template-columns: 1fr;
+  }
+
   .twinHotspots button {
     max-width: 132px;
     min-height: 44px;
@@ -4378,12 +4540,34 @@
   }
 
   .twinStage {
-    min-height: 480px;
+    min-height: 560px;
   }
 
   .twinObject {
-    width: 230px;
-    height: 210px;
+    width: 250px;
+    height: 230px;
+  }
+
+  .twinStageHeader {
+    padding: 10px;
+  }
+
+  .twinStageHeader strong {
+    font-size: 15px;
+  }
+
+  .twinStageFooter {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .twinStageFooter span {
+    min-height: 48px;
+    padding: 7px;
+  }
+
+  .twinStageFooter span:first-child strong {
+    font-size: 18px;
   }
 
   .orbitNode {
