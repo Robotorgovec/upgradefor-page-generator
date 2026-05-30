@@ -1,25 +1,25 @@
-CONTRACT-WINGPRO-2605281047-R065 / cycle 12 self-review
+CONTRACT-WINGPRO-2605281047-R065 / cycle 13 self-review
 
 1. Что улучшено в этом цикле?
-Contract Decision Simulator получил Contract release decision surface: выбранный сценарий теперь показывает owner-required decision, evidence gate strength, acceptance handoff и unresolved blockers.
+Delivery Timeline усилен до selected release board: каждая фаза теперь показывает release decision, evidence packet, escalation owner, handoff output и status control.
 
 2. Как это помогает заказчику принять решение?
-WinGPro видит, что договорное решение — это не только 50/50, evidence-first или speed-sensitive, а набор explicit approval choices, blockers и handoff artifacts.
+WinGPro видит поставку как управляемую последовательность решений и handoff-пакетов, а не как общий календарь ожиданий.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Для balanced сценария виден service contract summary + payment readiness board + deliverables acceptance list; для evidence-first — release memo, stronger risk register и escalation list.
+Да. Для payment, production, pre-shipment, logistics, broker, arrival и mounting фаз теперь видно, какие evidence и outputs остаются в data/control contour.
 
 4. Стало ли интерактивнее?
-Да. Surface обновляется при переключении contract сценария. Browser QA подтвердил Balanced 50/50 -> Evidence-first и обновление на stronger risk register / before-payment blockers.
+Да. При переключении delivery phase обновляется отдельный selected release board; browser QA подтвердил переход Payment readiness -> Pre-shipment evidence.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Новые тексты оставляют решения за WinGPro/профильными участниками; UPGRADE структурирует evidence gates, blockers, handoff и acceptance list.
+Нет. Тексты фиксируют, что UPGRADE структурирует evidence, handoff и status control; фактические действия, технические решения, перевозка, таможня и монтаж остаются у профильных участников.
 
 6. Не были ли изменены forbidden files?
-Нет. Изменены только page-scoped TSX/CSS и runtime QA/report файлы.
+Нет. Изменены только page-scoped component/CSS и runtime QA/report файлы. Route-entry, layout, header/sidebar/footer, public index и соседние страницы не менялись.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. Browser QA на 1440, 1280, 768, 375 и 320 показал scrollOk=true, h1Count=1, surfaceVisible=true. Surface использует aria-live=polite.
+Нет. Typecheck/build прошли. Browser QA на 1440, 1280, 768, 375 и 320 показал no horizontal scroll, h1Count=1, visible delivery board и focus-visible на delivery tab.
 
 8. Что следующий самый полезный micro-goal?
-MODE=INTERACTIVE: усилить Delivery Timeline как shipment release board с pre-shipment evidence packet и route handoff owner summary.
+MODE=INTERACTIVE или DESIGN: усилить Route Map / China -> Kazakhstan data-flow, чтобы связать logistics/broker readiness с release board и Document Vault.

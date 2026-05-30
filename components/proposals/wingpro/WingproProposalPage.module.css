@@ -1860,6 +1860,90 @@
   line-height: 1.45;
 }
 
+.deliveryReleaseChecklist {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.deliveryReleaseChecklist div {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff));
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.deliveryReleaseChecklist span,
+.deliveryReleaseSurface dt {
+  display: block;
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.deliveryReleaseChecklist strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.deliveryReleaseSurface {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-surface-soft) 84%, #ffffff));
+  box-shadow: var(--proposal-shadow-md);
+  display: grid;
+  grid-template-columns: minmax(240px, 0.78fr) 1.22fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.deliveryReleaseSurface h4,
+.deliveryReleaseSurface p {
+  margin: 0;
+}
+
+.deliveryReleaseSurface h4 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.deliveryReleaseSurface p:not(.eyebrow) {
+  margin-top: 10px;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.deliveryReleaseSurface dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.deliveryReleaseSurface dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.deliveryReleaseSurface dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
 .deliveryReleaseMap {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -2574,6 +2658,7 @@
   .evidenceGrid,
   .metricGrid,
   .deliveryPhaseGrid,
+  .deliveryReleaseChecklist,
   .simulatorGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2629,6 +2714,7 @@
   .supplierWorkbench,
   .offerDecisionSurface,
   .contractReleaseSurface,
+  .deliveryReleaseSurface,
   .controlGrid,
   .radarGrid,
   .controlBoardGrid,
@@ -2669,6 +2755,7 @@
   .controlCommandPanel dl,
   .offerDecisionSurface dl,
   .contractReleaseSurface dl,
+  .deliveryReleaseSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -2678,6 +2765,7 @@
   .evidenceGrid,
   .metricGrid,
   .deliveryPhaseGrid,
+  .deliveryReleaseChecklist,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
@@ -2916,6 +3004,7 @@
   .controlCommandPanel dl,
   .offerDecisionSurface dl,
   .contractReleaseSurface dl,
+  .deliveryReleaseSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -2925,6 +3014,7 @@
   .evidenceGrid,
   .metricGrid,
   .deliveryPhaseGrid,
+  .deliveryReleaseChecklist,
   .simulatorGrid,
   .statusLine,
   .gatePipeline,

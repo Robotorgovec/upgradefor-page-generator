@@ -455,6 +455,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE prepares payment readiness board and evidence request.",
     blocker: "material or pressure evidence is missing, or bank details are not confirmed",
     output: "before-payment checklist",
+    releaseDecision: "payment can be discussed only after minimum commercial, bank and technical evidence is visible",
+    evidencePacket: "PI snapshot, bank check note, material / pressure evidence, open item delta-list",
+    escalationOwner: "WinGPro decision owner",
+    handoff: "commercial approval note + unresolved evidence list",
+    statusControl: "owner required until payment evidence is complete enough for WinGPro review",
     boundary: "UPGRADE tracks evidence and open questions; WinGPro approves the payment decision.",
   },
   {
@@ -468,6 +473,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE maintains confirmation tracker and decision log.",
     blocker: "technical owner or drawing request is unclear",
     output: "production confirmation board",
+    releaseDecision: "production confirmation should not move as an informal message without a visible approval path",
+    evidencePacket: "specification snapshot, drawing request, technical question owner, decision log",
+    escalationOwner: "responsible technical specialist",
+    handoff: "production input tracker + approval owner note",
+    statusControl: "planned until technical questions and drawing request are assigned",
     boundary: "UPGRADE structures technical questions; profile specialists approve technical decisions.",
   },
   {
@@ -481,6 +491,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE records status, response delays and next evidence requests.",
     blocker: "supplier responses do not close the evidence list",
     output: "factory status log",
+    releaseDecision: "supplier progress is tracked as response evidence, not assumed from optimistic wording",
+    evidencePacket: "factory contact, response history, open answers, escalation trail",
+    escalationOwner: "supplier coordinator",
+    handoff: "factory status log + next evidence request",
+    statusControl: "collecting while responses do not close the agreed evidence list",
     boundary: "UPGRADE does not control factory production; it controls the information status and escalation trail.",
   },
   {
@@ -494,6 +509,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE builds shipment readiness pack and highlights missing evidence.",
     blocker: "packing data, nameplate photo or invoice draft is absent",
     output: "shipment evidence pack",
+    releaseDecision: "shipment readiness is visible only when cargo, documents and pre-shipment evidence are connected",
+    evidencePacket: "photo/video/nameplate, packing list, dimensions, invoice draft, certificate status",
+    escalationOwner: "supplier representative",
+    handoff: "shipment evidence pack + blocked / ready status",
+    statusControl: "at risk while packing or nameplate evidence is absent",
     boundary: "UPGRADE requests and tracks evidence; supplier confirms and provides shipment materials.",
   },
   {
@@ -507,6 +527,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE maps data-flow from supplier to logistics and flags gaps.",
     blocker: "pickup contact or cargo dimensions are incomplete",
     output: "logistics data-pack",
+    releaseDecision: "handoff to logistics should happen with pickup, cargo and delivery terms in one data-pack",
+    evidencePacket: "pickup map, contact chain, cargo dimensions, packing data, delivery terms",
+    escalationOwner: "logistics provider / supplier",
+    handoff: "logistics data-pack + pickup question list",
+    statusControl: "collecting until cargo dimensions and pickup owner are clear",
     boundary: "UPGRADE prepares logistics inputs; actual transportation remains with logistics/carrier.",
   },
   {
@@ -520,6 +545,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE prepares broker input list and customs document status board.",
     blocker: "invoice/export document status is unclear",
     output: "broker/customs input list",
+    releaseDecision: "broker questions should be visible before they become an urgent customs blocker",
+    evidencePacket: "invoice draft, export checklist, HS/TN VED owner, certificate status, broker questions",
+    escalationOwner: "broker / WinGPro",
+    handoff: "broker input list + customs document status board",
+    statusControl: "external dependency while broker and supplier documents are not aligned",
     boundary: "UPGRADE structures customs inputs; broker/profile parties make customs decisions.",
   },
   {
@@ -533,6 +563,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE links receiving evidence to issue register and handover pack.",
     blocker: "arrival state or receiving evidence is not recorded",
     output: "receiving evidence note",
+    releaseDecision: "arrival status becomes useful only when receiving evidence and issue notes are captured",
+    evidencePacket: "arrival note, receiving photos, package condition, issue log, owner comments",
+    escalationOwner: "WinGPro receiving owner",
+    handoff: "receiving evidence note + open issue register",
+    statusControl: "planned until cargo status and receiving evidence are recorded",
     boundary: "UPGRADE records the information contour; physical receiving is handled by responsible parties.",
   },
   {
@@ -546,6 +581,11 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE prepares mounting coordination pack and open questions register.",
     blocker: "mounting owner or technical approval path is missing",
     output: "mounting handoff pack",
+    releaseDecision: "mounting handoff is useful when installers receive structured inputs before implementation questions become late blockers",
+    evidencePacket: "coordination draft, connection points, dimensions, access notes, mounting questions checklist",
+    escalationOwner: "mounting side / technical approval owner",
+    handoff: "mounting coordination pack + installer question register",
+    statusControl: "planned until mounting owner and technical approval path are visible",
     boundary: "UPGRADE does not perform or accept mounting; profile parties execute and approve field work.",
   },
 ] as const satisfies ReadonlyArray<{
@@ -559,6 +599,11 @@ const deliveryTimeline = [
   upgradeAction: string;
   blocker: string;
   output: string;
+  releaseDecision: string;
+  evidencePacket: string;
+  escalationOwner: string;
+  handoff: string;
+  statusControl: string;
   boundary: string;
 }>;
 
@@ -1472,9 +1517,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                     <div><dt>Output artifact</dt><dd>{item.output}</dd></div>
                     <div><dt>Boundary</dt><dd>{item.boundary}</dd></div>
                   </dl>
+                  <div className={styles.deliveryReleaseChecklist} aria-label={`${item.phase} release board`}>
+                    <div><span>release decision</span><strong>{item.releaseDecision}</strong></div>
+                    <div><span>evidence packet</span><strong>{item.evidencePacket}</strong></div>
+                    <div><span>escalation owner</span><strong>{item.escalationOwner}</strong></div>
+                    <div><span>handoff output</span><strong>{item.handoff}</strong></div>
+                    <div><span>status control</span><strong>{item.statusControl}</strong></div>
+                  </div>
                 </section>
               ))}
             </div>
+            <aside className={styles.deliveryReleaseSurface} aria-live="polite" aria-label="Selected delivery release board">
+              <div>
+                <p className={styles.eyebrow}>Selected release board</p>
+                <h4>{deliveryPhase.phase}</h4>
+                <p>{deliveryPhase.releaseDecision}</p>
+              </div>
+              <dl>
+                <div><dt>evidence packet</dt><dd>{deliveryPhase.evidencePacket}</dd></div>
+                <div><dt>handoff output</dt><dd>{deliveryPhase.handoff}</dd></div>
+                <div><dt>escalation owner</dt><dd>{deliveryPhase.escalationOwner}</dd></div>
+                <div><dt>status control</dt><dd>{deliveryPhase.statusControl}</dd></div>
+              </dl>
+            </aside>
             <div className={styles.deliveryReleaseMap} aria-label="Delivery release map">
               <span>payment readiness</span>
               <span>production confirmation</span>

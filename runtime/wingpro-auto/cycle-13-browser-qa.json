@@ -1,0 +1,105 @@
+{
+  "cb": 1780135181,
+  "localUrl": "http://127.0.0.1:3073/cp/2605281047-wingpro?cb=1780135181",
+  "base": {
+    "url": "http://127.0.0.1:3073/cp/2605281047-wingpro?cb=1780135181#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "max768": false,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "styleSheets": [
+      "http://127.0.0.1:3073/_next/static/chunks/d26c00c92365b358.css",
+      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+      "http://127.0.0.1:3073/assets/layout.css?v=20260311-5"
+    ],
+    "scrollWidth": 1440,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://127.0.0.1:3073/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "deliverySurfaceVisible": true,
+    "deliverySurfaceText": "SELECTED RELEASE BOARD\n\nPayment readiness\n\npayment can be discussed only after minimum commercial, bank and technical evidence is visible\n\nEVIDENCE PACKET\nPI snapshot, bank check note, material / pressure evidence, open item delta-list\nHANDOFF OUTPUT\ncommercial approval note + unresolved evidence list\nESCALATION OWNER\nWinGPro decision owner\nSTATUS CONTROL\nowner required until payment evidence is complete enough for WinGPro review",
+    "contentMissing": [],
+    "focusCheck": {
+      "activeTag": "BUTTON",
+      "activeControls": "delivery-phase-payment",
+      "outlineWidth": "3px",
+      "boxShadow": "rgba(140, 121, 232, 0.28) 0px 0px 0px 2px"
+    },
+    "liveRegions": 7
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "scrollOk": true,
+      "h1Count": 1,
+      "deliverySurfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "scrollOk": true,
+      "h1Count": 1,
+      "deliverySurfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "deliverySurfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "deliverySurfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "deliverySurfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "before": "SELECTED RELEASE BOARD\n\nPayment readiness\n\npayment can be discussed only after minimum commercial, bank and technical evidence is visible\n\nEVIDENCE PACKET\nPI snapshot, bank check note, material / pressure evidence, open item delta-list\nHANDOFF OUTPUT\ncommercial approval note + unresolved evidence list\nESCALATION OWNER\nWinGPro decision owner\nSTATUS CONTROL\nowner required until payment evidence is complete enough for WinGPro review",
+    "after": "SELECTED RELEASE BOARD\n\nPre-shipment evidence\n\nshipment readiness is visible only when cargo, documents and pre-shipment evidence are connected\n\nEVIDENCE PACKET\nphoto/video/nameplate, packing list, dimensions, invoice draft, certificate status\nHANDOFF OUTPUT\nshipment evidence pack + blocked / ready status\nESCALATION OWNER\nsupplier representative\nSTATUS CONTROL\nat risk while packing or nameplate evidence is absent",
+    "deliverySurfaceUpdated": true,
+    "selectedPanelVisible": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "deliverySurfaceVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-13/wingpro-c13-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-13/wingpro-c13-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-13/wingpro-c13-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-13/wingpro-c13-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-13/wingpro-c13-320.png"
+  ],
+  "upgr03Curl": {
+    "pageStatus": 200,
+    "assetStatus": 200,
+    "note": "curl statuses verified with fresh cache-busting after local browser QA"
+  }
+}
