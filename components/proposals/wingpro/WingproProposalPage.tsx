@@ -204,6 +204,33 @@ const projectControlScale = [
   handoff: string;
 }>;
 
+const controlSnapshot = [
+  {
+    label: "Supplier visibility",
+    value: "3 channels",
+    detail: "shortlist / reserve / watch separated by evidence quality",
+    signal: "source request active",
+  },
+  {
+    label: "Decision quality",
+    value: "5 criteria",
+    detail: "technical fit, documents, payment risk, delivery readiness, recommendation",
+    signal: "owner decision required",
+  },
+  {
+    label: "Contract release",
+    value: "3 scenarios",
+    detail: "balanced, evidence-first and speed-sensitive compared without hiding blockers",
+    signal: "evidence gates attached",
+  },
+  {
+    label: "Implementation path",
+    value: "7 boards",
+    detail: "delivery, work plan draft, field tasks, evidence, closeout and reuse",
+    signal: "handover-ready contour",
+  },
+] as const;
+
 const supplierCandidates = [
   {
     id: "candidate-a",
@@ -1485,6 +1512,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             "Handover & Closeout"
           ].map((item) => <span key={item}>{item}</span>)}
         </div>
+        <div className={styles.controlSnapshot} aria-label="Procurement cockpit snapshot">
+          {controlSnapshot.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.detail}</p>
+              <em>{item.signal}</em>
+            </article>
+          ))}
+        </div>
 
         <div className={styles.controlScale} role="tablist" aria-label="Project control scale">
           {projectControlScale.map((step, index) => (
@@ -1509,6 +1546,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <dl>
                 <div><dt>что собирается</dt><dd>{step.result}</dd></div>
                 <div><dt>как помогает решению</dt><dd>{step.decision}</dd></div>
+                <div><dt>status</dt><dd>{step.status}</dd></div>
+                <div><dt>owner</dt><dd>{step.owner}</dd></div>
+                <div><dt>next action</dt><dd>{step.nextAction}</dd></div>
+                <div><dt>handoff output</dt><dd>{step.handoff}</dd></div>
               </dl>
             </article>
           ))}

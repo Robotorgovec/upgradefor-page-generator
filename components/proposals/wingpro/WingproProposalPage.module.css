@@ -984,6 +984,8 @@
 
 .projectControl {
   background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(180deg, rgba(15, 23, 42, 0.028) 1px, transparent 1px) 0 0 / 44px 44px,
     linear-gradient(180deg, #ffffff, #f8fbff),
     var(--proposal-surface);
 }
@@ -1002,6 +1004,57 @@
   background: rgba(255, 255, 255, 0.76);
   font-size: 12px;
   font-weight: 850;
+}
+
+.controlSnapshot {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.controlSnapshot article {
+  min-height: 154px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.controlSnapshot span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.controlSnapshot strong {
+  color: var(--proposal-text);
+  font-size: 28px;
+  line-height: 1.05;
+}
+
+.controlSnapshot p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.controlSnapshot em {
+  width: fit-content;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 5px 8px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
 }
 
 .controlScale {
@@ -1051,12 +1104,41 @@
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   padding: 18px;
-  background: #ffffff;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 36%, #ffffff)),
+    #ffffff;
   box-shadow: var(--proposal-shadow-sm);
 }
 
 .controlStepPanels {
   min-width: 0;
+}
+
+.controlStepPanel dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.controlStepPanel dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.controlStepPanel dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.controlStepPanel dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
 }
 
 .controlCommandPanel {
@@ -3114,6 +3196,7 @@
 
   .sceneRail,
   .controlScale,
+  .controlSnapshot,
   .timelineRows,
   .fieldColumns,
   .statusLine,
@@ -3230,7 +3313,9 @@
 
   .sceneRail,
   .controlScale,
+  .controlSnapshot,
   .controlCommandPanel dl,
+  .controlStepPanel dl,
   .offerDecisionSurface dl,
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
@@ -3429,6 +3514,11 @@
 
   .missionCard dl div {
     padding: 9px;
+  }
+
+  .controlSnapshot,
+  .controlStepPanel dl {
+    grid-template-columns: 1fr;
   }
 
   .missionCard dt {

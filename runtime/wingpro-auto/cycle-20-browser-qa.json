@@ -1,0 +1,76 @@
+{
+  "cb": 1780138770,
+  "pageUrl": "http://localhost:3078/cp/2605281047-wingpro?cb=1780138770",
+  "pageStatus": 200,
+  "assetUrl": "http://localhost:3078/assets/logo/logo-black-only.png?cb=1780138770",
+  "assetStatus": {
+    "status": 200,
+    "ok": true
+  },
+  "diagnostics": {
+    "href": "http://localhost:3078/cp/2605281047-wingpro?cb=1780138770#layer-equipment",
+    "viewport": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "currentSrc": "http://localhost:3078/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "imageComplete": true,
+    "controlSnapshotCards": 4,
+    "controlPanelsWithHandoff": 7,
+    "noindex": true,
+    "nofollow": true
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "noHorizontalScroll": true,
+      "controlSnapshotVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-20/wingpro-cycle-20-1440.png"
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "noHorizontalScroll": true,
+      "controlSnapshotVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-20/wingpro-cycle-20-1280.png"
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "noHorizontalScroll": true,
+      "controlSnapshotVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-20/wingpro-cycle-20-768.png"
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "noHorizontalScroll": true,
+      "controlSnapshotVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-20/wingpro-cycle-20-375.png"
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "noHorizontalScroll": true,
+      "controlSnapshotVisible": true,
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-20/wingpro-cycle-20-320.png"
+    }
+  ],
+  "interaction": {
+    "selected": [
+      "03Contract Decision"
+    ],
+    "command": "Active control stateContract Decision Simulatorstatusowner requiredownerWinGPro / counsel if engagednext actionвыбрать payment scenario и evidence gates до оплаты/отгрузкиhandoffdraft terms + boundary notes",
+    "activePanel": "Contract Decision Simulatorчто собираетсяpayment scenario, delivery terms, evidence before payment/shipment, contract strengthкак помогает решениюWinGPro согласует не только цену, но и условия, снижающие операционные рискиstatusowner requiredownerWinGPro / counsel if engagednext actionвыбрать payment scenario и evidence gates до оплаты/отгрузкиhandoff outputdraft terms + boundary notes"
+  },
+  "reducedMotion": {
+    "stable": true,
+    "query": true
+  }
+}

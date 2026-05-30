@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R065 / cycle 19 self-review
+# CONTRACT-WINGPRO-2605281047-R065 / cycle 20 self-review
 
 1. Что улучшено в этом цикле?
-   Добавлен Evidence handoff layer между Field Execution Board, Photo Evidence Wall и Handover Room. Каждая evidence-фаза теперь связана с release gate, field tasks, handover pack, risk link, owner, closeout output и boundary.
+   Верхний Project Control Scale стал более похож на procurement cockpit: добавлен snapshot из 4 контуров и расширены HTML-first panels с status, owner, next action и handoff output.
 
 2. Как это помогает заказчику принять решение?
-   WinGPro видит, как фото, receiving notes и field updates становятся управляемым evidence register и попадают в приемочный пакет, а не остаются разрозненными файлами.
+   WinGPro быстрее видит управленческий масштаб: supplier visibility, decision quality, contract release и implementation path до погружения в детальные boards.
 
 3. Стало ли понятнее, что получает WinGPro?
-   Да. Стало видно, какие closeout artifacts формируются из before-shipment, receiving, installation preparation, work progress и handover evidence.
+   Да. Каждый этап control scale теперь показывает не только общий результат, но и владельца, ближайшее действие и конкретный handoff.
 
 4. Стало ли интерактивнее?
-   Да. Evidence handoff phases работают как tablist; выбранная фаза обновляет live summary и физически присутствующие tabpanels.
+   Небольшое усиление: при переключении Project Control tab теперь меняется более содержательный active panel и command panel.
 
 5. Не расширилась ли ответственность UPGRADE?
-   Нет. В каждом phase panel указано, что UPGRADE структурирует evidence/status links, а поставщик, логистика, монтажная сторона, WinGPro и профильные специалисты исполняют и утверждают свои зоны.
+   Нет. Новые тексты остаются в рамках evidence/status/handoff/decision support и не обещают поставку, монтаж, таможню или техническое утверждение.
 
 6. Не были ли изменены forbidden files?
-   Нет. Изменены только `components/proposals/wingpro/WingproProposalPage.tsx`, `components/proposals/wingpro/WingproProposalPage.module.css` и runtime QA/self-review files.
+   Нет. Изменены только page-specific TSX/CSS и runtime QA/self-review files. Unrelated dispatch/AGENTS изменения оставлены нетронутыми.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-   Нет. Local QA прошел на 1440/1280/768/375/320 без horizontal scroll; tablist uses buttons with `aria-selected`; summary has `aria-live`.
+   Нет. Local browser QA прошел на 1440/1280/768/375/320 без horizontal scroll; control snapshot виден; Project Control tabs остаются button/role=tab.
 
 8. Что следующий самый полезный micro-goal?
-   MODE=DESIGN: визуально отполировать Project Control Scale / Supplier Request Lab / Offer Comparison Board так, чтобы верхняя половина страницы сильнее ощущалась как procurement cockpit.
+   MODE=DESIGN: визуально усилить Supplier Request Lab и Offer Comparison Board как две главные decision-панели после Project Control snapshot.
