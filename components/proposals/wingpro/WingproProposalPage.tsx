@@ -980,6 +980,75 @@ const handoverPacks = [
   },
 ] as const;
 
+type HandoverPack = (typeof handoverPacks)[number];
+
+function uniqueList(items: string[]) {
+  return Array.from(new Set(items.filter(Boolean)));
+}
+
+function getHandoverGateKeys(pack: HandoverPack) {
+  const range = pack.gate.match(/Gate (\d)-(\d)/);
+  if (range) {
+    const start = Number(range[1]);
+    const end = Number(range[2]);
+    return Array.from({ length: end - start + 1 }, (_, index) => `Gate ${start + index}`);
+  }
+
+  const keys = pack.gate.match(/Gate \d/g);
+  return keys ?? [pack.gate];
+}
+
+function getHandoverGateLinks(pack: HandoverPack) {
+  const keys = getHandoverGateKeys(pack);
+  return gates.filter((gate) => keys.some((key) => gate[0].includes(key)));
+}
+
+function getHandoverVaultLinks(pack: HandoverPack) {
+  const keys = getHandoverGateKeys(pack);
+  const evidence = pack.evidence.toLowerCase();
+  const inside = pack.inside.toLowerCase();
+
+  return vaultDocs.filter((doc) => (
+    keys.some((key) => doc[3].includes(key))
+    || evidence.includes(doc[1].toLowerCase())
+    || inside.includes(doc[1].toLowerCase())
+    || inside.includes(doc[0].toLowerCase())
+  ));
+}
+
+function getHandoverRiskLinks(pack: HandoverPack) {
+  const keys = getHandoverGateKeys(pack);
+  const evidence = pack.evidence.toLowerCase();
+  const name = pack.name.toLowerCase();
+
+  return risks.filter((item) => (
+    keys.some((key) => item.releaseGate.includes(key))
+    || evidence.includes(item.vaultEvidence.toLowerCase())
+    || item.routeHandoff.toLowerCase().includes(name.split(" ")[0])
+  ));
+}
+
+function getHandoverRouteLinks(pack: HandoverPack) {
+  const keys = getHandoverGateKeys(pack);
+  const evidence = pack.evidence.toLowerCase();
+  const recipient = pack.recipient.toLowerCase();
+
+  return routePoints.filter((point) => (
+    keys.some((key) => point.gate.includes(key))
+    || evidence.includes(point.title.toLowerCase())
+    || point.owner.toLowerCase().includes(recipient)
+  ));
+}
+
+function getHandoverOwnerCue(pack: HandoverPack) {
+  if (pack.name.includes("Broker")) return "broker/customs parties review and decide customs actions; UPGRADE structures the input list.";
+  if (pack.name.includes("Logistics")) return "logistics/carrier side reviews route execution; UPGRADE prepares cargo data and pickup status.";
+  if (pack.name.includes("Mounting")) return "mounting side and technical specialists approve field decisions; UPGRADE prepares the coordination draft.";
+  if (pack.name.includes("Supplier")) return "supplier responds to evidence requests; UPGRADE keeps open items visible.";
+  if (pack.name.includes("Future")) return "WinGPro decides commercial reuse; UPGRADE structures supplier and product data.";
+  return "WinGPro accepts service deliverables; UPGRADE transfers the structured closeout package.";
+}
+
 const copyTexts: Record<CopyVariant, string> = {
   short:
     "UPGRADE предлагает WinGPro не разовую помощь с поставщиком, а цифровой контур поставки оборудования: data-room, risk radar, release gates, контроль документов и статусов, handover-пакеты для логиста/брокера/монтажной стороны и цифровую товарную линию для повторного использования.",
@@ -1039,6 +1108,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const gateRiskLinks = getGateRiskLinks(gate[0]);
   const gateRouteLinks = getGateRouteLinks(gate[0]);
   const handoverPack = handoverPacks.find((item) => item.name === activePack) ?? handoverPacks[0];
+  const handoverGateLinks = getHandoverGateLinks(handoverPack);
+  const handoverVaultLinks = getHandoverVaultLinks(handoverPack);
+  const handoverRiskLinks = getHandoverRiskLinks(handoverPack);
+  const handoverRouteLinks = getHandoverRouteLinks(handoverPack);
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -2113,6 +2186,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <span><strong>Gate 7</strong><small>reuse asset</small></span>
           <span><strong>{paymentMode === "split" ? "50/50" : "100%"}</strong><small>payment mode</small></span>
         </div>
+        <aside className={styles.handoverControlSurface} aria-live="polite" aria-label="Selected handover pack control packet">
+          <div className={styles.handoverControlLead}>
+            <p className={styles.eyebrow}>Selected handover packet</p>
+            <h3>{handoverPack.name}</h3>
+            <p>{handoverPack.acceptance}. {getHandoverOwnerCue(handoverPack)}</p>
+          </div>
+          <dl>
+            <div><dt>release gates</dt><dd>{handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate}</dd></div>
+            <div><dt>vault evidence</dt><dd>{uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence}</dd></div>
+            <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
+            <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
+            <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
+            <div><dt>acceptance logic</dt><dd>Acceptance is based on delivered pack evidence, not physical work or third-party outcomes.</dd></div>
+          </dl>
+        </aside>
         <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
           {handoverPacks.map((item) => (
             <button
@@ -2150,10 +2238,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <div><dt>what is inside</dt><dd>{item.inside}</dd></div>
                 <div><dt>format</dt><dd>{item.format}</dd></div>
                 <div><dt>recipient</dt><dd>{item.recipient}</dd></div>
+                <div><dt>linked release gates</dt><dd>{getHandoverGateLinks(item).map((gate) => gate[0]).join(", ") || item.gate}</dd></div>
+                <div><dt>vault evidence</dt><dd>{uniqueList(getHandoverVaultLinks(item).map((doc) => doc[1])).join(", ") || item.evidence}</dd></div>
+                <div><dt>risk response link</dt><dd>{uniqueList(getHandoverRiskLinks(item).map((risk) => risk.title)).join(", ") || "open issues register"}</dd></div>
+                <div><dt>route/data-flow point</dt><dd>{uniqueList(getHandoverRouteLinks(item).map((point) => point.title)).join(", ") || "Handover Room"}</dd></div>
                 <div><dt>acceptance signal</dt><dd>{item.acceptance}</dd></div>
                 <div><dt>payment link</dt><dd>{item.paymentLink}</dd></div>
                 <div><dt>evidence register</dt><dd>{item.evidence}</dd></div>
                 <div><dt>reusable value</dt><dd>{item.reusable}</dd></div>
+                <div><dt>UPGRADE boundary</dt><dd>{getHandoverOwnerCue(item)}</dd></div>
               </dl>
             </article>
           ))}
