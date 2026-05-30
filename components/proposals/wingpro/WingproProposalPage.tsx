@@ -9,6 +9,7 @@ type SceneId = "source" | "verify" | "negotiate" | "contract" | "produce" | "shi
 type ControlStepId = "supplier" | "offer" | "contract" | "delivery" | "workplan" | "field" | "closeout";
 type SupplierCandidateId = "candidate-a" | "candidate-b" | "candidate-c";
 type OfferDecisionMode = "evidence" | "price" | "speed";
+type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "boundary" | "deliverables" | "payment" | "next";
@@ -274,6 +275,60 @@ const offerDecisionModes = [
   impact: string;
 }>;
 
+const contractScenarios = [
+  {
+    id: "balanced",
+    title: "Balanced 50/50",
+    payment: "50/50: старт сопровождения + передача структурированного результата",
+    deliveryTerms: "FCA/DAP logic сравнивается с pickup responsibility и broker input",
+    evidenceBeforePayment: "PI, bank details, material confirmation, pressure class, open questions list",
+    evidenceBeforeShipment: "packing list, weight/dimensions, nameplate/photo/video, commercial invoice draft",
+    contractStrength: "high if evidence gates and responsibility boundary are attached",
+    acceptanceImpact: "acceptance is based on deliverables: data-room, risk register, release board, handover packs",
+    decisionSignal: "recommended decision frame for current КП",
+  },
+  {
+    id: "evidence-first",
+    title: "Evidence-first",
+    payment: "payment decision waits for stronger before-payment evidence",
+    deliveryTerms: "delivery terms stay open until pickup/export documents are mapped",
+    evidenceBeforePayment: "supplier profile, bank details, material/pressure evidence, technical owner questions",
+    evidenceBeforeShipment: "photo/video/nameplate and packing data become shipment blockers",
+    contractStrength: "strongest for risk visibility, slower if supplier response is weak",
+    acceptanceImpact: "best fit when WinGPro wants maximum document traceability before release gates",
+    decisionSignal: "use when technical or payment risk is higher than speed pressure",
+  },
+  {
+    id: "speed-sensitive",
+    title: "Speed-sensitive",
+    payment: "commercial decision can move faster, but evidence gaps stay visible as blockers",
+    deliveryTerms: "delivery terms prioritize logistics handoff and pickup readiness",
+    evidenceBeforePayment: "minimum PI/bank/material/pressure evidence, with explicit unresolved list",
+    evidenceBeforeShipment: "packing list and photo/nameplate remain mandatory handoff inputs",
+    contractStrength: "conditional: speed improves coordination only if blockers are not hidden",
+    acceptanceImpact: "useful when schedule pressure exists, but profile owners still approve final decisions",
+    decisionSignal: "use only with visible risk register and WinGPro approval owner",
+  },
+] as const satisfies ReadonlyArray<{
+  id: ContractScenarioId;
+  title: string;
+  payment: string;
+  deliveryTerms: string;
+  evidenceBeforePayment: string;
+  evidenceBeforeShipment: string;
+  contractStrength: string;
+  acceptanceImpact: string;
+  decisionSignal: string;
+}>;
+
+const contractGateMatrix = [
+  ["Payment scenario", "50/50 or 100%", "WinGPro", "commercial approval", "UPGRADE structures options"],
+  ["Delivery terms", "EXW / FCA / DAP", "Supplier / logistics", "pickup and handoff clarity", "UPGRADE maps data impact"],
+  ["Evidence before payment", "PI, bank, material, pressure", "Supplier / WinGPro", "payment readiness", "UPGRADE prepares request board"],
+  ["Evidence before shipment", "packing, dimensions, photo/video/nameplate", "Supplier", "shipment readiness", "UPGRADE tracks blockers"],
+  ["Contract boundary", "scope, exclusions, third-party roles", "WinGPro / counsel if engaged", "responsibility clarity", "UPGRADE prepares draft inputs"],
+] as const;
+
 const deliveryTimeline = [
   ["Payment readiness", "PI, bank details, material/pressure evidence", "owner required"],
   ["Production confirmation", "confirmed specification, drawing request, open technical questions", "planned"],
@@ -474,6 +529,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [activeControlStep, setActiveControlStep] = useState<ControlStepId>("supplier");
   const [activeSupplier, setActiveSupplier] = useState<SupplierCandidateId>("candidate-a");
   const [offerDecisionMode, setOfferDecisionMode] = useState<OfferDecisionMode>("evidence");
+  const [activeContractScenario, setActiveContractScenario] = useState<ContractScenarioId>("balanced");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
   const [activeRoute, setActiveRoute] = useState(routePoints[0].title);
   const [vaultCategory, setVaultCategory] = useState("all");
@@ -496,6 +552,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
   const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
+  const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -920,18 +977,62 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <article className={styles.contractSimulator}>
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Contract Decision Simulator</p>
-              <h3>Договорная логика как decision board</h3>
+              <h3>Оплата, evidence gates и delivery terms как decision board</h3>
+              <p>Симулятор показывает, что меняется при разных сценариях согласования. Это не юридическая консультация и не утверждение условий за WinGPro; UPGRADE готовит структуру решения, evidence board и open questions.</p>
             </div>
-            <div className={styles.simulatorGrid}>
-              {[
-                ["payment scenario", "50/50 или 100% по согласованию"],
-                ["delivery terms", "EXW / FCA / DAP как точки проверки"],
-                ["evidence before payment", "bank details, material, pressure, PI delta-list"],
-                ["evidence before shipment", "packing list, photo/video/nameplate"],
-                ["contract strength", "draft RU/EN + boundary + open questions"],
-              ].map(([label, value]) => (
-                <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+            <div className={styles.contractScenarioTabs} role="tablist" aria-label="Contract decision scenarios">
+              {contractScenarios.map((scenario) => (
+                <button
+                  key={scenario.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeContractScenario === scenario.id}
+                  aria-controls={`contract-scenario-${scenario.id}`}
+                  onClick={() => setActiveContractScenario(scenario.id)}
+                >
+                  {scenario.title}
+                </button>
               ))}
+            </div>
+            <div className={styles.contractScenarioPanels}>
+              {contractScenarios.map((scenario) => (
+                <section key={scenario.id} id={`contract-scenario-${scenario.id}`} role="tabpanel" hidden={activeContractScenario !== scenario.id}>
+                  <div className={styles.scenarioHero}>
+                    <h4>{scenario.title}</h4>
+                    <StatusPill value={scenario.decisionSignal} />
+                  </div>
+                  <dl className={styles.simulatorGrid}>
+                    <div><dt>Payment scenario</dt><dd>{scenario.payment}</dd></div>
+                    <div><dt>Delivery terms</dt><dd>{scenario.deliveryTerms}</dd></div>
+                    <div><dt>Evidence before payment</dt><dd>{scenario.evidenceBeforePayment}</dd></div>
+                    <div><dt>Evidence before shipment</dt><dd>{scenario.evidenceBeforeShipment}</dd></div>
+                    <div><dt>Contract strength</dt><dd>{scenario.contractStrength}</dd></div>
+                    <div><dt>Acceptance impact</dt><dd>{scenario.acceptanceImpact}</dd></div>
+                  </dl>
+                </section>
+              ))}
+            </div>
+            <div className={styles.contractGateMatrix} role="table" aria-label="Contract gate matrix">
+              <div role="row" className={styles.contractGateHeader}>
+                <span role="columnheader">Decision area</span>
+                <span role="columnheader">Options / evidence</span>
+                <span role="columnheader">Owner</span>
+                <span role="columnheader">Readiness signal</span>
+                <span role="columnheader">UPGRADE role</span>
+              </div>
+              {contractGateMatrix.map(([area, options, owner, signal, role]) => (
+                <div key={area} role="row" className={styles.contractGateRow}>
+                  <strong role="cell">{area}</strong>
+                  <span role="cell">{options}</span>
+                  <span role="cell">{owner}</span>
+                  <em role="cell">{signal}</em>
+                  <small role="cell">{role}</small>
+                </div>
+              ))}
+            </div>
+            <div className={styles.contractDecisionSummary}>
+              <h4>Current decision frame</h4>
+              <p>{contractScenario.title}: {contractScenario.decisionSignal}. UPGRADE фиксирует status, evidence request и boundary; WinGPro и профильные участники принимают финальные коммерческие, технические, юридические и операционные решения.</p>
             </div>
           </article>
 

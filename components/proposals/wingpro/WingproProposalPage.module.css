@@ -1014,7 +1014,9 @@
 .candidatePanel p,
 .scoreGrid p,
 .decisionModePanels p,
-.selectionSummary p {
+.selectionSummary p,
+.contractScenarioPanels p,
+.contractDecisionSummary p {
   margin: 0;
   color: var(--proposal-text-soft);
   line-height: 1.5;
@@ -1249,8 +1251,103 @@
 
 .simulatorGrid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.contractScenarioTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.contractScenarioTabs button {
+  min-height: 44px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px 13px;
+  color: var(--proposal-text-soft);
+  background: #ffffff;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.contractScenarioTabs button[aria-selected="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
+.contractScenarioPanels section,
+.contractDecisionSummary {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--proposal-brand-soft);
+  display: grid;
+  gap: 12px;
+}
+
+.scenarioHero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.scenarioHero h4,
+.contractDecisionSummary h4 {
+  margin: 0;
+  color: var(--proposal-text);
+}
+
+.contractGateMatrix {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.contractGateHeader,
+.contractGateRow {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.9fr) minmax(180px, 1.4fr) minmax(140px, 0.9fr) minmax(160px, 1fr) minmax(160px, 1fr);
+}
+
+.contractGateHeader {
+  color: var(--proposal-text);
+  background: var(--proposal-surface-soft);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.contractGateHeader span,
+.contractGateRow > * {
+  border-right: 1px solid var(--proposal-border);
+  border-bottom: 1px solid var(--proposal-border);
+  padding: 11px;
+}
+
+.contractGateHeader span:last-child,
+.contractGateRow > *:last-child {
+  border-right: 0;
+}
+
+.contractGateRow strong {
+  color: var(--proposal-text);
+}
+
+.contractGateRow span,
+.contractGateRow em,
+.contractGateRow small {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.45;
 }
 
 .timelineRows {
@@ -1912,6 +2009,8 @@
   .comparisonRows div,
   .offerMatrixHeader,
   .offerMatrixRow,
+  .contractGateHeader,
+  .contractGateRow,
   .vaultGrid,
   .vaultGrid[data-mode="timeline"] {
     grid-template-columns: 1fr;
@@ -1925,7 +2024,12 @@
     display: none;
   }
 
-  .offerMatrixRow > * {
+  .contractGateHeader {
+    display: none;
+  }
+
+  .offerMatrixRow > *,
+  .contractGateRow > * {
     border-right: 0;
   }
 }
