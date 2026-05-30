@@ -172,7 +172,7 @@
   top: 128px;
   z-index: 7;
   display: grid;
-  gap: 14px;
+  gap: 10px;
   padding: 16px;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 78%, #ffffff), transparent 58%),
@@ -290,8 +290,8 @@
 
 .executiveOutcomeBoard {
   display: grid;
-  gap: 10px;
-  padding: 12px;
+  gap: 8px;
+  padding: 10px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background:
@@ -342,15 +342,15 @@
 }
 
 .executiveOutcomeGrid a {
-  min-height: 118px;
+  min-height: 78px;
   display: grid;
   align-content: start;
-  gap: 7px;
-  padding: 12px;
-  border: 1px solid var(--proposal-border);
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--proposal-border) 76%, transparent);
   border-radius: 8px;
   color: var(--proposal-text);
-  background: color-mix(in srgb, #ffffff 88%, var(--proposal-brand-soft));
+  background: rgba(255, 255, 255, 0.76);
   text-decoration: none;
 }
 
@@ -371,27 +371,27 @@
 
 .executiveOutcomeGrid strong {
   color: var(--proposal-text);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.22;
 }
 
 .executiveOutcomeGrid small {
   color: var(--proposal-text-soft);
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.28;
 }
 
 .executiveOutcomeFooter {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: 8px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(0, 1.3fr);
+  gap: 7px;
 }
 
 .executiveOutcomeFooter article {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   align-content: start;
-  padding: 11px;
+  padding: 9px 10px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   background: #ffffff;
@@ -400,23 +400,23 @@
 .executiveOutcomeFooter p {
   margin: 0;
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.42;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .presentationSpotlightMap {
   display: grid;
-  grid-template-columns: minmax(112px, 0.18fr) repeat(6, minmax(0, 1fr));
+  grid-template-columns: minmax(104px, 0.16fr) repeat(6, minmax(0, 1fr));
   gap: 7px;
   align-items: stretch;
-  padding: 8px;
+  padding: 7px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   background: color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff);
 }
 
 .presentationSpotlightMap > span {
-  min-height: 46px;
+  min-height: 38px;
   display: grid;
   place-items: center start;
   padding: 8px 10px;
@@ -428,11 +428,11 @@
 }
 
 .presentationSpotlightMap a {
-  min-height: 46px;
+  min-height: 38px;
   display: grid;
-  gap: 3px;
+  gap: 2px;
   align-content: center;
-  padding: 8px 10px;
+  padding: 7px 9px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   color: var(--proposal-text);
@@ -447,14 +447,14 @@
 }
 
 .presentationSpotlightMap strong {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.15;
 }
 
 .presentationSpotlightMap small {
   color: var(--proposal-text-soft);
-  font-size: 11px;
-  line-height: 1.25;
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 .decisionPathRail {
@@ -571,14 +571,14 @@
 
 .modeEndpoint {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, 0.4fr);
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(170px, 0.36fr);
+  gap: 7px;
   align-items: stretch;
 }
 
 .modeEndpoint article,
 .modeEndpoint button {
-  min-height: 92px;
+  min-height: 74px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background: #ffffff;
@@ -586,9 +586,9 @@
 
 .modeEndpoint article {
   display: grid;
-  gap: 7px;
+  gap: 5px;
   align-content: start;
-  padding: 12px;
+  padding: 10px;
 }
 
 .modeEndpoint span {
@@ -601,8 +601,8 @@
 
 .modeEndpoint strong {
   color: var(--proposal-text);
-  font-size: 14px;
-  line-height: 1.35;
+  font-size: 13px;
+  line-height: 1.28;
 }
 
 .modeEndpoint button {

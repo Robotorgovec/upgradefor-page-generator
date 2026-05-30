@@ -1,0 +1,243 @@
+{
+  "timestamp": "2026-05-30T14:53:15.867Z",
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "bodyScrollWidth": 1440,
+    "command": {
+      "className": "WingproProposalPage-module__pm2b_G__commandLayer",
+      "clientHeight": 960,
+      "clientWidth": 1118,
+      "height": 962,
+      "noClip": true,
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "position": "sticky",
+      "scrollHeight": 960,
+      "scrollWidth": 1118,
+      "tag": "SECTION",
+      "top": "128px"
+    },
+    "documentScrollWidth": 1440,
+    "endpoint": {
+      "className": "WingproProposalPage-module__pm2b_G__modeEndpoint",
+      "clientHeight": 103,
+      "clientWidth": 1086,
+      "height": 103,
+      "noClip": true,
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "scrollHeight": 103,
+      "scrollWidth": 1086,
+      "tag": "DIV",
+      "top": "auto"
+    },
+    "h1": 1,
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3096/assets/logo/logo-black-only.png",
+      "naturalHeight": 501,
+      "naturalWidth": 2000
+    },
+    "innerWidth": 1440,
+    "liveRegion": {
+      "ariaLive": "polite",
+      "role": null,
+      "text": ""
+    },
+    "outcome": {
+      "className": "WingproProposalPage-module__pm2b_G__executiveOutcomeBoard",
+      "clientHeight": 296,
+      "clientWidth": 1084,
+      "height": 298,
+      "noClip": true,
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "scrollHeight": 296,
+      "scrollWidth": 1084,
+      "tag": "SECTION",
+      "top": "auto"
+    },
+    "panelLabelledby": null,
+    "panelRole": "tabpanel",
+    "panelText": "что получает заказчикExecutive SummaryWinGPro получает выбранный закупочный маршрут, Digital Twin, status board, release gates, handover packs и Digital Product Asset как единый ко",
+    "reducedMotionCssPresent": true,
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Digital Twin": true,
+      "Field Execution Board": true,
+      "Handover & Closeout": true,
+      "IT/data": true,
+      "Implementation Status Dashboard": true,
+      "Offer Comparison Board": true,
+      "Photo Evidence Wall": true,
+      "Supplier Request Lab": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "не заменяет официальный ППР": true,
+      "не комиссия за контакт поставщика": true,
+      "не является брокером": true,
+      "не является монтажной организацией": true,
+      "не является перевозчиком": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true
+    },
+    "robots": "noindex, nofollow",
+    "spotlight": {
+      "className": "WingproProposalPage-module__pm2b_G__presentationSpotlightMap",
+      "clientHeight": 62,
+      "clientWidth": 1084,
+      "height": 64,
+      "noClip": true,
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "position": "static",
+      "scrollHeight": 62,
+      "scrollWidth": 1084,
+      "tag": "DIV",
+      "top": "auto"
+    },
+    "tabs": [
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "true",
+        "tabIndex": "0",
+        "text": "Executive Summary"
+      },
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "false",
+        "tabIndex": "-1",
+        "text": "Supplier Decision"
+      },
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "false",
+        "tabIndex": "-1",
+        "text": "Contract Terms"
+      },
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "false",
+        "tabIndex": "-1",
+        "text": "Delivery Control"
+      },
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "false",
+        "tabIndex": "-1",
+        "text": "Work Plan"
+      },
+      {
+        "controls": "presentation-mode-panel",
+        "selected": "false",
+        "tabIndex": "-1",
+        "text": "Evidence & Handover"
+      }
+    ],
+    "unexpectedScrollContainers": [],
+    "viewportMeta": true
+  },
+  "responsive": [
+    {
+      "requestedWidth": 1440,
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "documentScrollWidth": 1440,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "commandHeight": 962,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "requestedWidth": 1280,
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "documentScrollWidth": 1280,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "commandHeight": 1017,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "requestedWidth": 768,
+      "innerWidth": 768,
+      "bodyScrollWidth": 768,
+      "documentScrollWidth": 768,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "commandHeight": 1804,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "requestedWidth": 375,
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "documentScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "commandHeight": 2590,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "requestedWidth": 320,
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "documentScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "commandHeight": 2855,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": []
+    }
+  ],
+  "interaction": {
+    "activeElement": {
+      "tag": "BUTTON",
+      "text": "Delivery Control"
+    },
+    "panelText": "контроль поставкиDelivery ControlDelivery Timeline, Route Map и Release Gates показывают контроль информационной готовности маршрута China → Kazakhstan.Next actionСверить before sh",
+    "selected": [
+      "Delivery Control"
+    ]
+  },
+  "reducedMotion": {
+    "cssPresent": true,
+    "note": "Browser plugin did not expose media emulation in this cycle; CSS reduced-motion rule presence checked and earlier cycles verified runtime smoke."
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-47/local-1440-chrome.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-47/local-1280-chrome.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-47/local-768-chrome.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-47/local-375-chrome.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-47/local-320-chrome.png"
+  ],
+  "screenshotNote": "in-app browser CDP screenshot timed out; screenshots captured with clean headless Chrome profiles and cache-busted canonical URL."
+}

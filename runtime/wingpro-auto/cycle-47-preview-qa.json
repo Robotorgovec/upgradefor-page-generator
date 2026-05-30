@@ -1,0 +1,210 @@
+{
+  "timestamp": "2026-05-30T15:00:12.826Z",
+  "previewUrl": "https://upgradefor-page-generator-j786o42hu-bacalimser-8615s-projects.vercel.app/cp/2605281047-wingpro",
+  "cacheBustedUrl": "https://upgradefor-page-generator-j786o42hu-bacalimser-8615s-projects.vercel.app/cp/2605281047-wingpro?cb=1780153203234",
+  "pageStatus": 200,
+  "assetUrl": "https://upgradefor-page-generator-j786o42hu-bacalimser-8615s-projects.vercel.app/assets/logo/logo-black-only.png?cb=1780153203234",
+  "assetStatus": 200,
+  "readyState": "READY from vercel deploy output",
+  "qa": {
+    "innerWidth": 1440,
+    "bodyScrollWidth": 1425,
+    "documentScrollWidth": 1425,
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "imgProof": {
+      "index": 0,
+      "alt": "UPGRADE Innovations",
+      "src": "/assets/logo/logo-black-only.png",
+      "currentSrc": "https://upgradefor-page-generator-j786o42hu-bacalimser-8615s-projects.vercel.app/assets/logo/logo-black-only.png",
+      "complete": true,
+      "naturalWidth": 2000,
+      "naturalHeight": 501,
+      "loading": "lazy"
+    },
+    "images": [
+      {
+        "index": 0,
+        "alt": "UPGRADE Innovations",
+        "src": "/assets/logo/logo-black-only.png",
+        "currentSrc": "https://upgradefor-page-generator-j786o42hu-bacalimser-8615s-projects.vercel.app/assets/logo/logo-black-only.png",
+        "complete": true,
+        "naturalWidth": 2000,
+        "naturalHeight": 501,
+        "loading": "lazy"
+      }
+    ],
+    "command": {
+      "clientWidth": 1118,
+      "scrollWidth": 1118,
+      "noClip": true,
+      "height": 962,
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "sticky"
+    },
+    "outcome": {
+      "clientWidth": 1084,
+      "scrollWidth": 1084,
+      "noClip": true,
+      "height": 298,
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "static"
+    },
+    "spotlight": {
+      "clientWidth": 1084,
+      "scrollWidth": 1084,
+      "noClip": true,
+      "height": 64,
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "static"
+    },
+    "endpoint": {
+      "clientWidth": 1086,
+      "scrollWidth": 1086,
+      "noClip": true,
+      "height": 103,
+      "overflowY": "visible",
+      "overflowX": "visible",
+      "position": "static"
+    },
+    "tabs": [
+      {
+        "text": "Executive Summary",
+        "selected": "true"
+      },
+      {
+        "text": "Supplier Decision",
+        "selected": "false"
+      },
+      {
+        "text": "Contract Terms",
+        "selected": "false"
+      },
+      {
+        "text": "Delivery Control",
+        "selected": "false"
+      },
+      {
+        "text": "Work Plan",
+        "selected": "false"
+      },
+      {
+        "text": "Evidence & Handover",
+        "selected": "false"
+      }
+    ],
+    "unexpectedScrollContainers": [],
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "requestedWidth": 1440,
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "documentScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 1280,
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "documentScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 768,
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "documentScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 375,
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "documentScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 320,
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "documentScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "commandNoClip": true,
+      "outcomeNoClip": true,
+      "spotlightNoClip": true,
+      "endpointNoClip": true,
+      "presentationTabs": 6,
+      "selectedPresentationTabs": 1,
+      "unexpectedScrollContainers": 0
+    }
+  ],
+  "interaction": {
+    "selected": [
+      "Delivery Control"
+    ],
+    "panelText": "контроль поставкиDelivery ControlDelivery Timeline, Route Map и Release Gates показывают контроль информационной готовности маршрута China → Kazakhstan.Next actionСверить before sh",
+    "activeElement": {
+      "tag": "BODY",
+      "text": "К содержанию search notifications Тема дня ВоскресеньеПонедельникВторникСредаЧет"
+    }
+  },
+  "cdpCleanContext": {
+    "profile": "/var/folders/r8/1qwmmr296fd73y2js4rcxc600000gn/T/wingpro-cycle47-cdp-b0UT0N",
+    "cacheBusted": true
+  }
+}
