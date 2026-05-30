@@ -577,7 +577,114 @@
 .orbitNode:nth-of-type(5) { left: 14%; bottom: 12%; }
 .orbitNode:nth-of-type(6) { top: 42%; left: 6%; }
 
+.twinHotspots {
+  position: absolute;
+  inset: 16px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.twinHotspots button {
+  position: absolute;
+  max-width: 156px;
+  min-height: 48px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 8px 9px;
+  color: var(--proposal-text-soft);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--proposal-shadow-sm);
+  pointer-events: auto;
+  display: grid;
+  gap: 3px;
+  justify-items: start;
+  text-align: left;
+}
+
+.twinHotspots button::before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--proposal-brand);
+  box-shadow: 0 0 0 4px var(--proposal-focus);
+}
+
+.twinHotspots strong {
+  color: var(--proposal-text);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.twinHotspots span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.twinHotspots button[data-layer="equipment"] {
+  top: 35%;
+  left: 36%;
+}
+
+.twinHotspots button[data-layer="equipment"]::before {
+  right: -18px;
+  top: 50%;
+}
+
+.twinHotspots button[data-layer="specification"] {
+  top: 23%;
+  left: 52%;
+}
+
+.twinHotspots button[data-layer="specification"]::before {
+  left: -16px;
+  bottom: -8px;
+}
+
+.twinHotspots button[data-layer="documents"] {
+  top: 57%;
+  left: 54%;
+}
+
+.twinHotspots button[data-layer="documents"]::before {
+  left: -16px;
+  top: 14px;
+}
+
+.twinHotspots button[data-layer="delivery"] {
+  right: 9%;
+  bottom: 24%;
+}
+
+.twinHotspots button[data-layer="delivery"]::before {
+  left: -16px;
+  top: 50%;
+}
+
+.twinHotspots button[data-layer="installation"] {
+  left: 8%;
+  bottom: 26%;
+}
+
+.twinHotspots button[data-layer="installation"]::before {
+  right: -16px;
+  top: 12px;
+}
+
+.twinHotspots button[data-layer="sales"] {
+  right: 11%;
+  top: 22%;
+}
+
+.twinHotspots button[data-layer="sales"]::before {
+  left: -16px;
+  bottom: 12px;
+}
+
 .orbitNode[data-active="true"],
+.twinHotspots button[data-active="true"],
 .segmented button[aria-selected="true"],
 .sceneRail button[data-active="true"],
 .timelineRows button[data-active="true"],
@@ -605,6 +712,19 @@
   align-content: start;
 }
 
+.layerHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.layerHeader > div {
+  display: grid;
+  gap: 5px;
+}
+
 .segmented {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -622,6 +742,41 @@
   border-radius: 8px;
   padding: 14px;
   background: var(--proposal-surface-soft);
+}
+
+.twinReadout {
+  display: grid;
+  grid-template-columns: 0.55fr 1fr 1fr;
+  gap: 8px;
+}
+
+.twinReadout span {
+  min-height: 76px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 11px;
+  background: #ffffff;
+  display: grid;
+  gap: 5px;
+  align-content: center;
+}
+
+.twinReadout strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.22;
+}
+
+.twinReadout span:first-child strong {
+  color: color-mix(in srgb, var(--proposal-brand-active) 82%, var(--proposal-text));
+  font-size: 24px;
+}
+
+.twinReadout small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .twinPanel h3,
@@ -2127,6 +2282,16 @@
     min-height: 560px;
   }
 
+  .twinHotspots button {
+    max-width: 132px;
+    min-height: 44px;
+    padding: 7px;
+  }
+
+  .twinReadout {
+    grid-template-columns: 1fr;
+  }
+
   .sceneRail,
   .controlScale,
   .timelineRows,
@@ -2318,6 +2483,35 @@
     min-height: 36px;
     padding: 7px;
     font-size: 11px;
+  }
+
+  .twinHotspots {
+    inset: 10px;
+  }
+
+  .twinHotspots button {
+    max-width: 110px;
+    min-height: 40px;
+    padding: 6px;
+  }
+
+  .twinHotspots strong {
+    font-size: 10px;
+  }
+
+  .twinHotspots span {
+    display: none;
+  }
+
+  .twinHotspots button[data-layer="equipment"] { top: 35%; left: 39%; }
+  .twinHotspots button[data-layer="specification"] { top: 18%; left: 48%; }
+  .twinHotspots button[data-layer="documents"] { top: 56%; left: 51%; }
+  .twinHotspots button[data-layer="delivery"] { right: 2%; bottom: 22%; }
+  .twinHotspots button[data-layer="installation"] { left: 2%; bottom: 23%; }
+  .twinHotspots button[data-layer="sales"] { right: 2%; top: 23%; }
+
+  .twinHotspots button::before {
+    display: none;
   }
 
   .segmented,
