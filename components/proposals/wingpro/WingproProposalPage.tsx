@@ -1531,6 +1531,58 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       href: "#handover",
     },
   ] as const;
+  const cockpitSummaryCards = [
+    {
+      mode: "supplier",
+      label: "Selected supplier",
+      value: supplier.name,
+      status: supplier.status,
+      detail: supplier.blockers[0] ?? supplier.decisionSignal,
+    },
+    {
+      mode: "contract",
+      label: "Contract scenario",
+      value: contractScenario.title,
+      status: "acceptance by deliverables",
+      detail: contractScenario.evidenceGateStrength,
+    },
+    {
+      mode: "delivery",
+      label: "Delivery readiness",
+      value: deliveryPhase.releaseGate,
+      status: deliveryPhase.statusControl,
+      detail: deliveryPhase.blocker,
+    },
+    {
+      mode: "workplan",
+      label: "Work plan readiness",
+      value: "ППР skeleton",
+      status: activeControl.title,
+      detail: activeControl.nextAction,
+    },
+    {
+      mode: "handover",
+      label: "Evidence readiness",
+      value: evidenceHandoff.phase,
+      status: evidenceHandoff.gate,
+      detail: evidenceHandoff.riskLink,
+    },
+    {
+      mode: "handover",
+      label: "Handover readiness",
+      value: handoverPack.name,
+      status: "Digital Product Asset",
+      detail: handoverPack.acceptance,
+    },
+  ] as const;
+  const cockpitAddonOpportunities = [
+    "3D product visualization package",
+    "supplier/product card expansion",
+    "broker/logistics data-pack coordination",
+    "mounting coordination pack expansion",
+    "photo/evidence reporting setup",
+    "future sales catalog preparation",
+  ] as const;
   const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
 
   useEffect(() => {
@@ -1818,6 +1870,51 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
+        <section className={styles.cockpitSummaryBoard} aria-labelledby="cockpit-summary-title">
+          <div className={styles.cockpitSummaryHeader}>
+            <div>
+              <span className={styles.eyebrow}>Project Cockpit Summary</span>
+              <h3 id="cockpit-summary-title">Что получает WinGPro сейчас</h3>
+            </div>
+            <p>Один верхний слой показывает выбранный маршрут, сценарий договора, readiness, blocker queue, следующий шаг и optional extensions без отдельной длинной секции.</p>
+          </div>
+          <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
+            {cockpitSummaryCards.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                data-active={activePresentationMode === item.mode}
+                onClick={() => setActivePresentationMode(item.mode)}
+              >
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <small>{item.status}</small>
+                <em>{item.detail}</em>
+              </button>
+            ))}
+          </div>
+          <div className={styles.cockpitDecisionDock}>
+            <article>
+              <span>next best action</span>
+              <strong>{activePresentation.nextAction}</strong>
+            </article>
+            <article>
+              <span>nearest blocker</span>
+              <strong>{decisionBlockerQueue[0]}</strong>
+            </article>
+            <details className={styles.cockpitAddonDisclosure}>
+              <summary>
+                <span>optional extensions</span>
+                <strong>Дополнительные опции можно согласовать отдельно</strong>
+              </summary>
+              <div>
+                {cockpitAddonOpportunities.map((item) => (
+                  <p key={item}>{item}</p>
+                ))}
+              </div>
+            </details>
+          </div>
+        </section>
         <section className={styles.executiveOutcomeBoard} aria-labelledby="executive-outcome-title">
           <div className={styles.executiveOutcomeHeader}>
             <div>

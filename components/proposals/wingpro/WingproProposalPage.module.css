@@ -288,6 +288,187 @@
   text-transform: uppercase;
 }
 
+.cockpitSummaryBoard {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 70%, #ffffff), #ffffff 58%),
+    #ffffff;
+}
+
+.cockpitSummaryHeader {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: end;
+}
+
+.cockpitSummaryHeader h3,
+.cockpitSummaryHeader p {
+  margin: 0;
+}
+
+.cockpitSummaryHeader h3 {
+  color: var(--proposal-text);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.cockpitSummaryHeader p {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cockpitSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cockpitSummaryGrid button {
+  min-height: 136px;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  background: rgba(255, 255, 255, 0.84);
+  text-align: left;
+  cursor: pointer;
+}
+
+.cockpitSummaryGrid button:hover,
+.cockpitSummaryGrid button[data-active="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 62%, #ffffff));
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
+.cockpitSummaryGrid span,
+.cockpitDecisionDock span,
+.cockpitAddonDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cockpitSummaryGrid strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.22;
+}
+
+.cockpitSummaryGrid small {
+  color: var(--proposal-brand-contrast);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1.24;
+}
+
+.cockpitSummaryGrid em {
+  margin-top: auto;
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.3;
+}
+
+.cockpitDecisionDock {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 0.72fr) minmax(260px, 0.8fr);
+  gap: 8px;
+}
+
+.cockpitDecisionDock article,
+.cockpitAddonDisclosure {
+  min-height: 86px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cockpitDecisionDock article {
+  display: grid;
+  gap: 5px;
+  align-content: start;
+  padding: 11px;
+}
+
+.cockpitDecisionDock strong,
+.cockpitAddonDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.cockpitAddonDisclosure {
+  background: color-mix(in srgb, var(--proposal-brand-soft) 50%, #ffffff);
+}
+
+.cockpitAddonDisclosure summary {
+  min-height: 86px;
+  display: grid;
+  gap: 5px;
+  align-content: center;
+  padding: 11px 42px 11px 11px;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+}
+
+.cockpitAddonDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.cockpitAddonDisclosure summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-weight: 950;
+}
+
+.cockpitAddonDisclosure[open] summary::after {
+  content: "–";
+}
+
+.cockpitAddonDisclosure div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0 11px 11px;
+}
+
+.cockpitAddonDisclosure p {
+  margin: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  background: #ffffff;
+  font-size: 11.5px;
+  line-height: 1.25;
+}
+
 .executiveOutcomeBoard {
   display: grid;
   gap: 8px;
@@ -5013,6 +5194,14 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .cockpitSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cockpitDecisionDock {
+    grid-template-columns: 1fr;
+  }
+
   .executiveOutcomeGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -5107,6 +5296,7 @@
   }
 
   .commandLayerHeader,
+  .cockpitSummaryHeader,
   .executiveOutcomeHeader,
   .presentationModePanel,
   .presentationSpotlightMap {
@@ -5119,6 +5309,14 @@
 
   .executiveOutcomeHeader {
     display: grid;
+  }
+
+  .cockpitSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cockpitAddonDisclosure div {
+    grid-template-columns: 1fr;
   }
 
   .commandDisclosure summary {
@@ -5332,6 +5530,10 @@
     font-size: clamp(29px, 8.4vw, 34px);
     line-height: 1.04;
     text-wrap: pretty;
+  }
+
+  .cockpitSummaryGrid {
+    grid-template-columns: 1fr;
   }
 
   .lead {
@@ -5750,6 +5952,10 @@
   }
 
   .presentationModeTabs {
+    grid-template-columns: 1fr;
+  }
+
+  .cockpitSummaryGrid {
     grid-template-columns: 1fr;
   }
 }
