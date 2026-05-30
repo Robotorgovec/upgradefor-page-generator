@@ -32,6 +32,12 @@ node scripts/asset-qa/verify-dispatch-equipment-models.mjs
 checked: 6
 ```
 
+Reusable deployed smoke command for this branch:
+
+```text
+DISPATCH_BASE_URL=https://upgradefor-page-generator-d4wrhir94-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview.mjs
+```
+
 ## Browser Evidence
 
 Browser automation opened the preview `/dispatch` page and captured:
@@ -77,4 +83,3 @@ This PR branch still predates some later QA infrastructure:
 - `test:dispatch` is missing on this branch.
 - `test:layout` still expects the old `components/layout/LayoutShell.tsx`.
 - TypeScript still reports known legacy non-dispatch errors in account, selector, beauty grid, and manufacturers files.
-
