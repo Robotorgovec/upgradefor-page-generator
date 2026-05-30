@@ -5882,6 +5882,76 @@
   line-height: 1.38;
 }
 
+.handoverCommandDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 38%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.handoverCommandDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.handoverCommandDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.handoverCommandDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.handoverCommandDisclosure[open] summary::after {
+  content: "−";
+}
+
+.handoverCommandDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.handoverCommandDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.handoverCommandDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.handoverCommandDisclosure .handoverCommandStrip {
+  margin: 0 18px 18px;
+}
+
 .packHero {
   display: flex;
   align-items: flex-start;
@@ -6327,6 +6397,7 @@
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
   .filmstripDetailsDisclosure summary,
+  .handoverCommandDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6430,6 +6501,7 @@
   .executiveCommandDetailsDisclosure summary,
   .filmstripDetailsDisclosure summary,
   .vaultFilterDisclosure summary,
+  .handoverCommandDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
@@ -6455,6 +6527,7 @@
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
   .filmstripDetailsDisclosure summary,
+  .handoverCommandDisclosure summary,
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
@@ -6477,6 +6550,9 @@
   .filmstripDetailsDisclosure summary span,
   .filmstripDetailsDisclosure summary strong,
   .filmstripDetailsDisclosure summary small,
+  .handoverCommandDisclosure summary span,
+  .handoverCommandDisclosure summary strong,
+  .handoverCommandDisclosure summary small,
   .vaultFilterDisclosure summary span,
   .vaultFilterDisclosure summary strong,
   .vaultFilterDisclosure summary small,
@@ -6509,6 +6585,7 @@
   .deliveryDetailsDisclosure summary::after,
   .executiveCommandDetailsDisclosure summary::after,
   .filmstripDetailsDisclosure summary::after,
+  .handoverCommandDisclosure summary::after,
   .vaultFilterDisclosure summary::after,
   .handoverDetailsDisclosure summary::after,
   .offerDetailsDisclosure summary::after,
@@ -6525,6 +6602,7 @@
   .deliveryDetailsDisclosure summary,
   .executiveCommandDetailsDisclosure summary,
   .filmstripDetailsDisclosure summary,
+  .handoverCommandDisclosure summary,
   .vaultFilterDisclosure summary,
   .handoverDetailsDisclosure summary,
   .offerDetailsDisclosure summary,

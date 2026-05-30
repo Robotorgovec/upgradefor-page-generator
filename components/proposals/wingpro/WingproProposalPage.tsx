@@ -3344,6 +3344,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
             <div><dt>acceptance logic</dt><dd>Acceptance is based on delivered pack evidence, not physical work or third-party outcomes.</dd></div>
           </dl>
+        </aside>
+        <details className={styles.handoverCommandDisclosure}>
+          <summary>
+            <span>Command sequence</span>
+            <strong>Открыть 6 шагов closeout-пакета</strong>
+            <small>Gate, Vault, Risk, Route, Acceptance и reusable asset раскрываются по запросу.</small>
+          </summary>
           <div className={styles.handoverCommandStrip} aria-label="Selected handover command sequence">
             {handoverCommandSequence.map(([label, value]) => (
               <section key={label}>
@@ -3352,7 +3359,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </section>
             ))}
           </div>
-        </aside>
+        </details>
         <details className={styles.handoverDetailsDisclosure}>
           <summary>
             <span>Closeout details</span>
