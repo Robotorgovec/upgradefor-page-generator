@@ -14,8 +14,8 @@ type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
 type DeliveryPhaseId = "payment" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
-type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next";
-type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover";
+type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next" | "addons";
+type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover" | "addons";
 
 const twinLayers = [
   {
@@ -1218,6 +1218,8 @@ const copyTexts: Record<CopyVariant, string> = {
     "Коммерческое решение: 3 000 000 ₸ без НДС за единый комплекс сопровождения. Оплата 50/50 или 100% по согласованию. Acceptance is based on deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
   next:
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
+  addons:
+    "Дополнительные опции могут быть согласованы отдельно: расширенный 3D / digital twin товара, инспекция или видео-проверка через профильного подрядчика, расширенный mounting coordination pack, post-delivery evidence report, цифровая карточка товара для повторных продаж и отдельный logistics / broker document checklist. Эти опции не включаются автоматически в базовые 3 000 000 ₸ без отдельного письменного согласования.",
 };
 
 const presentationModes: Array<{
@@ -1324,6 +1326,21 @@ const presentationModes: Array<{
     detailActions: [["Photo Evidence Wall", "#photo-evidence-wall"], ["Handover Room", "#handover"]],
     copyVariant: "deliverables",
     sections: ["riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
+  },
+  {
+    id: "addons",
+    label: "Доп. услуги",
+    summary: "Optional extensions показывают, какие дополнительные пакеты можно согласовать отдельно, если WinGPro хочет усилить визуализацию, evidence, logistics/broker handoff или повторные продажи.",
+    nextAction: "Выбрать, какие extension-пакеты нужны после базового КП, и вынести их в отдельное согласование без смешения с 3 000 000 ₸.",
+    focus: "дополнительные опции",
+    endpoint: {
+      selected: "optional extension menu, not included automatically",
+      confirm: "which add-ons are useful, separate budget and separate written agreement",
+      receives: "clear menu of add-on opportunities without expanding base responsibility",
+    },
+    detailActions: [["Copy Package", "#copy-title"], ["Handover Room", "#handover"]],
+    copyVariant: "addons",
+    sections: ["digitalTwin", "vault", "handoverRoom", "acceptance", "copyPackage"],
   },
 ];
 
@@ -3367,6 +3384,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             ["boundary", "Copy scope boundary"],
             ["deliverables", "Copy deliverables list"],
             ["payment", "Copy payment terms"],
+            ["addons", "Copy optional extensions"],
             ["next", "Copy next step"],
           ].map(([variant, label]) => <button key={variant} type="button" data-active={copyVariant === variant} onClick={() => copyBoardText(variant as CopyVariant)}>{label}</button>)}
         </div>
