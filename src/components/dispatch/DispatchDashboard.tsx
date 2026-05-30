@@ -8,6 +8,7 @@ import {
   dispatchEquipmentNodes,
   dispatchSectionDetails,
   dispatchSections,
+  objectSummary,
   realtimeMetrics,
   trendSeries,
   type DispatchAlarmEvent,
@@ -317,6 +318,18 @@ export default function DispatchDashboard() {
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
   const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
   const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
+  const selectedSectionLabel =
+    dispatchSections.find((section) => section.id === selectedSection.id)?.label ?? selectedSection.id;
+  const ticketSourceAlarm = relatedAlarms[0] ?? passportPrimaryAlarm;
+  const ticketSourceTag =
+    passportScadaRows.find((row) => row.quality === "DATA_ERROR")?.tag ??
+    passportScadaRows[0]?.tag ??
+    "TO VERIFY";
+  const ticketSeverity = ticketSourceAlarm ? severityLabel(ticketSourceAlarm.severity) : "Info";
+  const ticketRecommendation =
+    passportEquipment.aiRecommendations[0] ??
+    ticketSourceAlarm?.description ??
+    selectedSection.lastEvent;
   const passportTopKpis = [
     {
       id: "temperature",
@@ -1200,11 +1213,52 @@ export default function DispatchDashboard() {
               </>
             ) : (
               <>
-                <h2>Demo-заявка создана</h2>
+                <div className="ticketModalHeader">
+                  <span>DEMO</span>
+                  <h2>Demo-заявка подготовлена локально</h2>
+                </div>
                 <p>
-                  Заявка по оборудованию {passportEquipment.shortLabel} сформирована в demo/read-only режиме и не
-                  отправлена во внешнюю систему.
+                  Это read-only payload для внешней CMMS/Service Desk интеграции. Заявка не отправлена во внешнюю
+                  систему и не создает команду в BMS/SCADA.
                 </p>
+                <dl className="ticketPayload" data-testid="dispatch-demo-ticket-payload">
+                  <div>
+                    <dt>Объект</dt>
+                    <dd>{objectSummary.name}</dd>
+                  </div>
+                  <div>
+                    <dt>Раздел</dt>
+                    <dd>{selectedSectionLabel}</dd>
+                  </div>
+                  <div>
+                    <dt>Оборудование</dt>
+                    <dd>{passportEquipment.shortLabel}</dd>
+                  </div>
+                  <div>
+                    <dt>Источник / tag</dt>
+                    <dd>{ticketSourceTag}</dd>
+                  </div>
+                  <div>
+                    <dt>Severity</dt>
+                    <dd>{ticketSeverity}</dd>
+                  </div>
+                  <div>
+                    <dt>Timestamp</dt>
+                    <dd>{demoTime}</dd>
+                  </div>
+                  <div>
+                    <dt>Контекст события</dt>
+                    <dd>{ticketSourceAlarm ? ticketSourceAlarm.title : selectedSection.lastEvent}</dd>
+                  </div>
+                  <div>
+                    <dt>AI recommendation</dt>
+                    <dd>{ticketRecommendation}</dd>
+                  </div>
+                  <div>
+                    <dt>Статус отправки</dt>
+                    <dd>Prepared locally · not sent · No real equipment control</dd>
+                  </div>
+                </dl>
               </>
             )}
           </div>
@@ -2815,6 +2869,60 @@ export default function DispatchDashboard() {
           margin: 0;
           color: #bfdbfe;
           line-height: 1.55;
+        }
+
+        .ticketModalHeader {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          margin: 0 36px 12px 0;
+        }
+
+        .ticketModalHeader span {
+          flex: 0 0 auto;
+          border: 1px solid rgba(251, 191, 36, 0.4);
+          border-radius: 999px;
+          background: rgba(113, 63, 18, 0.24);
+          color: #fde68a;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          padding: 5px 8px;
+        }
+
+        .ticketModalHeader h2 {
+          margin: 0;
+        }
+
+        .ticketPayload {
+          display: grid;
+          gap: 8px;
+          margin: 16px 0 0;
+        }
+
+        .ticketPayload div {
+          display: grid;
+          grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+          gap: 10px;
+          border: 1px solid rgba(125, 211, 252, 0.14);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.52);
+          padding: 9px 10px;
+        }
+
+        .ticketPayload dt {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .ticketPayload dd {
+          margin: 0;
+          color: #e0f2fe;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
         }
 
         @keyframes dashFlow {

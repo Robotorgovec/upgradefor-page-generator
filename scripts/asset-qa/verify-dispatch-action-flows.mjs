@@ -208,8 +208,15 @@ try {
 
   clickSelector('[data-testid="dispatch-section-action-ticket"]', "section Create demo ticket");
   current = state();
-  assert(current.dialogText.includes("Demo-заявка создана"), "Create demo ticket did not open the ticket modal");
-  assert(current.dialogText.includes("не отправлена"), "Ticket modal is missing read-only/no-send copy");
+  assert(current.dialogText.includes("Demo-заявка подготовлена локально"), "Create demo ticket did not open the contextual ticket modal");
+  assert(current.dialogText.includes("Asia Park Astana"), "Ticket modal is missing object context");
+  assert(current.dialogText.includes("Раздел"), "Ticket modal is missing section context");
+  assert(current.dialogText.includes("Оборудование"), "Ticket modal is missing equipment context");
+  assert(current.dialogText.includes("Источник / tag"), "Ticket modal is missing source tag context");
+  assert(current.dialogText.includes("Severity"), "Ticket modal is missing severity context");
+  assert(current.dialogText.includes("AI recommendation"), "Ticket modal is missing AI recommendation context");
+  assert(current.dialogText.includes("not sent"), "Ticket modal is missing not-sent copy");
+  assert(current.dialogText.includes("No real equipment control"), "Ticket modal is missing no-real-control copy");
   screenshot("action-01-ticket-modal.png");
   closeModalIfOpen();
 
@@ -251,7 +258,8 @@ try {
 
   clickSelector('[data-testid="dispatch-drawer-action-ticket"]', "drawer Create ticket");
   current = state();
-  assert(current.dialogText.includes("Demo-заявка создана"), "Drawer ticket action did not open ticket modal");
+  assert(current.dialogText.includes("Demo-заявка подготовлена локально"), "Drawer ticket action did not open contextual ticket modal");
+  assert(current.dialogText.includes("No real equipment control"), "Drawer ticket modal is missing no-real-control copy");
   closeModalIfOpen();
 
   clickSelector('[data-testid="dispatch-drawer-action-readonly"]', "drawer Read-only controls");
