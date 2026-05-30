@@ -2028,6 +2028,47 @@ export default function DispatchDashboard() {
             overflow-x: auto;
           }
         }
+
+        @media (max-width: 760px) {
+          .dispatchShell {
+            padding-bottom: 232px;
+          }
+
+          .dispatchBottomNav {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: stretch;
+            gap: 6px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 8px;
+          }
+
+          .dispatchBottomNav button {
+            min-width: 0;
+            min-height: 40px;
+            width: 100%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            padding: 8px 6px;
+            font-size: 12px;
+            line-height: 1.15;
+          }
+
+          .bottomMeta {
+            grid-column: 1 / -1;
+            justify-content: center;
+            margin-left: 0;
+            min-width: 0;
+            overflow: hidden;
+            white-space: normal;
+          }
+
+          .bottomMeta span,
+          .bottomMeta input {
+            display: none;
+          }
+        }
       `}</style>
     </div>
   );
