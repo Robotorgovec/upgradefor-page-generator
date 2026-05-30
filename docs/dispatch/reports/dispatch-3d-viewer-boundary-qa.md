@@ -38,10 +38,13 @@ data-related-twin-ids="<comma-separated related twin ids>"
 Run:
 
 ```text
-DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-3d-viewer-boundaries.mjs
+DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview-suite.mjs
 ```
 
-The verifier opens `/dispatch`, clicks `multi-split-system`, and confirms:
+The suite runs the static preview smoke, the equipment card-state smoke, and this boundary verifier sequentially.
+This matters because the browser-based checks share one `agent-browser` context and should not be launched in parallel.
+
+The boundary verifier opens `/dispatch`, clicks `multi-split-system`, and confirms:
 
 - primary PV-1 viewer still exists and remains PV-1;
 - lower equipment twin selector switches to `Мультисплит система MS-1`;

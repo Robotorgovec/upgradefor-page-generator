@@ -35,6 +35,13 @@ checked: 6
 Reusable deployed smoke command for this branch:
 
 ```text
+DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview-suite.mjs
+```
+
+The suite above is the preferred command because it serializes browser checks and prevents multiple `agent-browser`
+sessions from fighting over one browser context. The suite currently runs:
+
+```text
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview.mjs
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-equipment-card-states.mjs
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-3d-viewer-boundaries.mjs
