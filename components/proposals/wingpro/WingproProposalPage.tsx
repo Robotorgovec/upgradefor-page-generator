@@ -1253,6 +1253,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const gateVaultLinks = getGateVaultLinks(gate[0]);
   const gateRiskLinks = getGateRiskLinks(gate[0]);
   const gateRouteLinks = getGateRouteLinks(gate[0]);
+  const gateCommandSequence = [
+    ["1. Owner decision", gate[3]],
+    ["2. Evidence board", gateVaultLinks.length > 0 ? gateVaultLinks.join(", ") : gate[2]],
+    ["3. Risk check", gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "service acceptance / open issues"],
+    ["4. Route handoff", gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"],
+    ["5. Output artifact", gate[6]],
+  ] as const;
   const handoverPack = handoverPacks.find((item) => item.name === activePack) ?? handoverPacks[0];
   const handoverGateLinks = getHandoverGateLinks(handoverPack);
   const handoverVaultLinks = getHandoverVaultLinks(handoverPack);
@@ -2474,6 +2481,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>Route handoff</dt><dd>{gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"}</dd></div>
             <div><dt>Output</dt><dd>{gate[6]}</dd></div>
           </dl>
+          <div className={styles.gateCommandStrip} aria-label="Selected release gate command sequence">
+            {gateCommandSequence.map(([label, value]) => (
+              <section key={label}>
+                <span>{label}</span>
+                <p>{value}</p>
+              </section>
+            ))}
+          </div>
         </aside>
         <div className={styles.gatePipeline} role="tablist" aria-label="Release gate pipeline">
           {gates.map((gate, index) => (

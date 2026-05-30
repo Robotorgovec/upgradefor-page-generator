@@ -3199,6 +3199,10 @@
   align-items: start;
 }
 
+.gateControlSurface > div:first-child {
+  grid-row: span 2;
+}
+
 .gateControlSurface h3,
 .gateControlSurface p {
   margin: 0;
@@ -3241,6 +3245,35 @@
   margin: 6px 0 0;
   color: var(--proposal-text-soft);
   line-height: 1.45;
+}
+
+.gateCommandStrip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.gateCommandStrip section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 11px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 56%, #ffffff)),
+    #ffffff;
+}
+
+.gateCommandStrip span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.gateCommandStrip p {
+  margin: 7px 0 0;
+  color: var(--proposal-text);
+  font-weight: 820;
+  line-height: 1.38;
 }
 
 .gatePipeline {
@@ -3767,6 +3800,7 @@
   .riskCommandStrip,
   .riskVaultLinks ul,
   .gateControlSurface dl,
+  .gateCommandStrip,
   .handoverControlSurface dl,
   .evidenceHandoffTabs,
   .evidenceHandoffSummary dl,
@@ -4041,6 +4075,7 @@
   .riskCommandStrip,
   .riskVaultLinks ul,
   .gateControlSurface dl,
+  .gateCommandStrip,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
