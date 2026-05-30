@@ -1,0 +1,106 @@
+{
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "url": "http://127.0.0.1:3095/cp/2605281047-wingpro?cb=1780150521#layer-equipment",
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3095/assets/logo/logo-black-only.png",
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "bodyScrollWidth": 1425,
+    "innerWidth": 1440,
+    "contract": {
+      "scrollWidth": 516,
+      "clientWidth": 516,
+      "noClip": true
+    },
+    "releaseSurface": {
+      "scrollWidth": 478,
+      "clientWidth": 478,
+      "noClip": true,
+      "grid": "450px"
+    },
+    "releaseDl": {
+      "scrollWidth": 450,
+      "clientWidth": 450,
+      "noClip": true,
+      "grid": "144.656px 144.672px 144.672px"
+    },
+    "delivery": {
+      "scrollWidth": 1048,
+      "clientWidth": 1048,
+      "noClip": true
+    },
+    "unexpectedScrollContainers": [],
+    "requiredTexts": {
+      "Contract Decision Simulator": true,
+      "Contract release decision": true,
+      "owner-required decision": true,
+      "Delivery Timeline": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true
+    }
+  },
+  "responsive": [
+    {
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "contractNoClip": true,
+      "releaseNoClip": true,
+      "releaseDlNoClip": true,
+      "deliveryNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "contractNoClip": true,
+      "releaseNoClip": true,
+      "releaseDlNoClip": true,
+      "deliveryNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "contractNoClip": true,
+      "releaseNoClip": true,
+      "releaseDlNoClip": true,
+      "deliveryNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "contractNoClip": true,
+      "releaseNoClip": true,
+      "releaseDlNoClip": true,
+      "deliveryNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "contractNoClip": true,
+      "releaseNoClip": true,
+      "releaseDlNoClip": true,
+      "deliveryNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    }
+  ]
+}

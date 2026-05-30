@@ -2794,7 +2794,7 @@
     #ffffff;
   box-shadow: var(--proposal-shadow-sm);
   display: grid;
-  grid-template-columns: minmax(170px, 0.38fr) minmax(0, 1fr) minmax(190px, 0.42fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   align-items: stretch;
 }
@@ -2807,7 +2807,7 @@
 
 .contractReleaseSurface dl {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
   gap: 8px;
 }
 

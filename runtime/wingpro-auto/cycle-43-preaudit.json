@@ -1,0 +1,274 @@
+[
+  {
+    "innerWidth": 1440,
+    "bodyScrollWidth": 1425,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#contract-decision-simulator",
+        "scrollWidth": 516,
+        "clientWidth": 516,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DL",
+            "id": "",
+            "className": "",
+            "scrollWidth": 75,
+            "clientWidth": 66,
+            "text": "owner-required decisionapprove 50/50 service terms and attach evidence gates to the servic"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "owner-required decisionapprove 50/50 service terms and attach evidence gates to the servic"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 11,
+            "clientWidth": 0,
+            "text": "owner-required decision"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "approve 50/50 service terms and attach evidence gates to the service contract"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "evidence gate strengthbalanced: payment can start while before-shipment blockers remain vi"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 0,
+            "text": "evidence gate strength"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "balanced: payment can start while before-shipment blockers remain visible"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "acceptance handoffservice contract summary + payment readiness board + deliverables accept"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 0,
+            "text": "acceptance handoff"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "service contract summary + payment readiness board + deliverables acceptance list"
+          }
+        ]
+      },
+      {
+        "selector": "#delivery-timeline",
+        "scrollWidth": 1048,
+        "clientWidth": 1048,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 1280,
+    "bodyScrollWidth": 1265,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#contract-decision-simulator",
+        "scrollWidth": 436,
+        "clientWidth": 436,
+        "noClip": true,
+        "clips": [
+          {
+            "tag": "DL",
+            "id": "",
+            "className": "",
+            "scrollWidth": 42,
+            "clientWidth": 0,
+            "text": "owner-required decisionapprove 50/50 service terms and attach evidence gates to the servic"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "owner-required decisionapprove 50/50 service terms and attach evidence gates to the servic"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 11,
+            "clientWidth": 0,
+            "text": "owner-required decision"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "approve 50/50 service terms and attach evidence gates to the service contract"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "evidence gate strengthbalanced: payment can start while before-shipment blockers remain vi"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 0,
+            "text": "evidence gate strength"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "balanced: payment can start while before-shipment blockers remain visible"
+          },
+          {
+            "tag": "DIV",
+            "id": "",
+            "className": "",
+            "scrollWidth": 25,
+            "clientWidth": 20,
+            "text": "acceptance handoffservice contract summary + payment readiness board + deliverables accept"
+          },
+          {
+            "tag": "DT",
+            "id": "",
+            "className": "",
+            "scrollWidth": 9,
+            "clientWidth": 0,
+            "text": "acceptance handoff"
+          },
+          {
+            "tag": "DD",
+            "id": "",
+            "className": "",
+            "scrollWidth": 15,
+            "clientWidth": 0,
+            "text": "service contract summary + payment readiness board + deliverables acceptance list"
+          }
+        ]
+      },
+      {
+        "selector": "#delivery-timeline",
+        "scrollWidth": 888,
+        "clientWidth": 888,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 768,
+    "bodyScrollWidth": 753,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#contract-decision-simulator",
+        "scrollWidth": 690,
+        "clientWidth": 690,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#delivery-timeline",
+        "scrollWidth": 690,
+        "clientWidth": 690,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 375,
+    "bodyScrollWidth": 375,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#contract-decision-simulator",
+        "scrollWidth": 317,
+        "clientWidth": 317,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#delivery-timeline",
+        "scrollWidth": 317,
+        "clientWidth": 317,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "unexpectedScrollContainers": []
+  },
+  {
+    "innerWidth": 320,
+    "bodyScrollWidth": 320,
+    "noHorizontalScroll": true,
+    "modules": [
+      {
+        "selector": "#contract-decision-simulator",
+        "scrollWidth": 276,
+        "clientWidth": 276,
+        "noClip": true,
+        "clips": []
+      },
+      {
+        "selector": "#delivery-timeline",
+        "scrollWidth": 276,
+        "clientWidth": 276,
+        "noClip": true,
+        "clips": []
+      }
+    ],
+    "unexpectedScrollContainers": []
+  }
+]
