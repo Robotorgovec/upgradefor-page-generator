@@ -3371,6 +3371,137 @@
     repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.06) 0 1px, transparent 1px 18px);
 }
 
+.evidenceWallSurface {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.62fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.evidencePhaseRail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.evidencePhaseRail button {
+  min-height: 164px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--proposal-text-soft);
+  background: var(--proposal-surface-soft);
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  text-align: left;
+}
+
+.evidencePhaseRail button[data-active="true"] {
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(180deg, #ffffff, var(--proposal-brand-soft)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.evidencePhaseRail span[aria-hidden="true"] {
+  height: 54px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), #ffffff),
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.06) 0 1px, transparent 1px 16px);
+}
+
+.evidencePhaseRail strong {
+  color: var(--proposal-text);
+  line-height: 1.25;
+}
+
+.evidencePhaseRail small {
+  color: var(--proposal-text-muted);
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.evidencePhaseRail em {
+  color: var(--proposal-text-soft);
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.evidencePhasePanel,
+.evidenceWallPanels section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.evidencePhasePanel {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.evidencePhasePanel h4,
+.evidenceWallPanels h4 {
+  margin: 0;
+  color: var(--proposal-text);
+}
+
+.evidencePhasePanel p:not(.eyebrow) {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.5;
+}
+
+.evidencePhasePanel dl,
+.evidenceWallPanels dl {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.evidencePhasePanel dl div,
+.evidenceWallPanels dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+}
+
+.evidencePhasePanel dt,
+.evidenceWallPanels dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.evidencePhasePanel dd,
+.evidenceWallPanels dd {
+  margin: 4px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.42;
+}
+
+.evidenceWallPanels {
+  display: grid;
+}
+
+.evidenceWallPanels section {
+  padding: 14px;
+}
+
+.evidenceWallPanels section:not([hidden]) {
+  display: grid;
+  gap: 9px;
+}
+
 .evidenceHandoff {
   grid-column: 1 / -1;
   border-color: var(--proposal-brand-border) !important;
@@ -4833,6 +4964,10 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .evidencePhaseRail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .modeEndpoint {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -4894,6 +5029,7 @@
   .handoverControlSurface,
   .handoverCommandStrip,
   .fieldCommandSurface,
+  .evidenceWallSurface,
   .evidenceHandoffShell,
   .radarGrid,
   .controlBoardGrid,
@@ -5417,6 +5553,10 @@
   .fieldStatusRail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .evidencePhaseRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 360px) {
@@ -5468,6 +5608,10 @@
   }
 
   .fieldStatusRail {
+    grid-template-columns: 1fr;
+  }
+
+  .evidencePhaseRail {
     grid-template-columns: 1fr;
   }
 

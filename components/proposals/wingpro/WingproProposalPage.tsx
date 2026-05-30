@@ -1386,6 +1386,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
   const activeFieldTasks = fieldTasks.filter((task) => task[1] === activeFieldStatus);
+  const evidenceCard = evidenceCards.find(([phase]) => phase === activeEvidencePhase) ?? evidenceCards[0];
   const evidenceHandoff = evidenceHandoffLinks.find((item) => item.phase === activeEvidencePhase) ?? evidenceHandoffLinks[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
@@ -2605,14 +2606,54 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Photo Evidence Wall</p>
               <h3>Evidence register без server upload</h3>
+              <p>Evidence Wall показывает не галерею ради галереи, а фазу evidence, owner, риск и связь с handover. Файлы не загружаются на сервер; это локальный preview контур для статусов, фотоотчетов и closeout.</p>
             </div>
-            <div className={styles.evidenceGrid}>
+            <div className={styles.evidenceWallSurface}>
+              <div className={styles.evidencePhaseRail} role="tablist" aria-label="Photo evidence phases">
+                {evidenceCards.map(([phase, evidence, owner]) => (
+                  <button
+                    key={phase}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeEvidencePhase === phase}
+                    aria-controls={`evidence-wall-${phase.toLowerCase().replaceAll(" ", "-")}`}
+                    data-active={activeEvidencePhase === phase}
+                    onClick={() => setActiveEvidencePhase(phase)}
+                  >
+                    <span aria-hidden="true" />
+                    <strong>{phase}</strong>
+                    <small>{owner}</small>
+                    <em>{evidence}</em>
+                  </button>
+                ))}
+              </div>
+              <aside className={styles.evidencePhasePanel} aria-live="polite" aria-label="Selected evidence phase summary">
+                <p className={styles.eyebrow}>Selected evidence phase</p>
+                <h4>{evidenceCard[0]}</h4>
+                <p>{evidenceCard[1]}</p>
+                <dl>
+                  <div><dt>owner</dt><dd>{evidenceCard[2]}</dd></div>
+                  <div><dt>release gate</dt><dd>{evidenceHandoff.gate}</dd></div>
+                  <div><dt>handover pack</dt><dd>{evidenceHandoff.handoverPack}</dd></div>
+                  <div><dt>risk link</dt><dd>{evidenceHandoff.riskLink}</dd></div>
+                </dl>
+              </aside>
+            </div>
+            <div className={styles.evidenceWallPanels}>
               {evidenceCards.map(([phase, evidence, owner]) => (
-                <section key={phase}>
-                  <span aria-hidden="true" />
-                  <strong>{phase}</strong>
-                  <p>{evidence}</p>
-                  <em>{owner}</em>
+                <section
+                  key={`evidence-wall-${phase}`}
+                  id={`evidence-wall-${phase.toLowerCase().replaceAll(" ", "-")}`}
+                  role="tabpanel"
+                  tabIndex={0}
+                  hidden={activeEvidencePhase !== phase}
+                >
+                  <h4>{phase}</h4>
+                  <dl>
+                    <div><dt>evidence</dt><dd>{evidence}</dd></div>
+                    <div><dt>owner</dt><dd>{owner}</dd></div>
+                    <div><dt>handover link</dt><dd>{evidenceHandoff.handoverPack}</dd></div>
+                  </dl>
                 </section>
               ))}
             </div>

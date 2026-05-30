@@ -1,0 +1,181 @@
+{
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "bodyScrollWidth": 1425,
+    "innerWidth": 1440,
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3096/assets/logo/logo-black-only.png",
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "evidence": {
+      "clientWidth": 516,
+      "scrollWidth": 516,
+      "noClip": true,
+      "clientHeight": 2140,
+      "scrollHeight": 2140,
+      "overflowY": "visible"
+    },
+    "tabs": [
+      {
+        "text": "Before shipmentsupplierphoto/video/nameplate, packing state",
+        "selected": "true",
+        "controls": "evidence-wall-before-shipment"
+      },
+      {
+        "text": "ReceivingWinGPro / logisticsarrival photo, package condition, issue note",
+        "selected": "false",
+        "controls": "evidence-wall-receiving"
+      },
+      {
+        "text": "Installation preparationmounting sideaccess path, location, connection points",
+        "selected": "false",
+        "controls": "evidence-wall-installation-preparation"
+      },
+      {
+        "text": "Work progressmounting sidefield task notes, blockers, owner updates",
+        "selected": "false",
+        "controls": "evidence-wall-work-progress"
+      },
+      {
+        "text": "HandoverWinGPro / mounting sidecompletion notes, open issues, photo evidence register",
+        "selected": "false",
+        "controls": "evidence-wall-handover"
+      }
+    ],
+    "panels": [
+      {
+        "id": "evidence-wall-before-shipment",
+        "hidden": false,
+        "text": "Before shipmentevidencephoto/video/nameplate, packing stateownersupplierhandover"
+      },
+      {
+        "id": "evidence-wall-receiving",
+        "hidden": true,
+        "text": "Receivingevidencearrival photo, package condition, issue noteownerWinGPro / logi"
+      },
+      {
+        "id": "evidence-wall-installation-preparation",
+        "hidden": true,
+        "text": "Installation preparationevidenceaccess path, location, connection pointsownermou"
+      },
+      {
+        "id": "evidence-wall-work-progress",
+        "hidden": true,
+        "text": "Work progressevidencefield task notes, blockers, owner updatesownermounting side"
+      },
+      {
+        "id": "evidence-wall-handover",
+        "hidden": true,
+        "text": "Handoverevidencecompletion notes, open issues, photo evidence registerownerWinGP"
+      }
+    ],
+    "unexpectedScrollContainers": [],
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "evidenceNoClip": true,
+      "evidenceTabs": 5,
+      "selectedEvidenceTabs": 1,
+      "visibleEvidencePanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "evidenceNoClip": true,
+      "evidenceTabs": 5,
+      "selectedEvidenceTabs": 1,
+      "visibleEvidencePanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "evidenceNoClip": true,
+      "evidenceTabs": 5,
+      "selectedEvidenceTabs": 1,
+      "visibleEvidencePanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "evidenceNoClip": true,
+      "evidenceTabs": 5,
+      "selectedEvidenceTabs": 1,
+      "visibleEvidencePanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "evidenceNoClip": true,
+      "evidenceTabs": 5,
+      "selectedEvidenceTabs": 1,
+      "visibleEvidencePanels": 1,
+      "unexpectedScrollContainers": []
+    }
+  ],
+  "interaction": {
+    "focusedBefore": true,
+    "selected": [
+      "ReceivingWinGPro / logisticsarrival photo, package condition, issue note"
+    ],
+    "wallPanel": {
+      "id": "evidence-wall-receiving",
+      "text": "Receivingevidencearrival photo, package condition, issue noteownerWinGPro / logisticshandover linkLo"
+    },
+    "handoffSelected": [
+      "Gate 5Receiving"
+    ]
+  },
+  "reducedMotion": {
+    "matches": true,
+    "animated": [
+      "1e-06s"
+    ]
+  },
+  "screenshots": [
+    "runtime/wingpro-auto/screenshots/cycle-46/1440.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/1280.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/768.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/375.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/320.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/evidence-1280.png",
+    "runtime/wingpro-auto/screenshots/cycle-46/evidence-375.png"
+  ]
+}
