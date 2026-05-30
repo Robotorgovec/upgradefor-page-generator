@@ -1835,20 +1835,60 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
       {presentationMode ? (
         <div className={styles.presentationOverlay} role="dialog" aria-modal="true" aria-label="Digital Twin presentation mode">
-          <button
-            className={styles.closePresentation}
-            type="button"
-            onClick={() => setPresentationMode(false)}
-            onMouseDown={() => setPresentationMode(false)}
-            onPointerDown={() => setPresentationMode(false)}
-          >
-            Close
-          </button>
+          <div className={styles.presentationHud}>
+            <div>
+              <p className={styles.eyebrow}>Digital Twin presentation mode</p>
+              <h2>Conceptual twin для решения WinGPro</h2>
+            </div>
+            <dl aria-label="Current Digital Twin presentation state">
+              <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
+              <div><dt>layer</dt><dd>{layer.title}</dd></div>
+              <div><dt>readiness</dt><dd>{layer.readiness}</dd></div>
+              <div><dt>gate</dt><dd>{layer.gate}</dd></div>
+            </dl>
+            <button
+              className={styles.closePresentation}
+              type="button"
+              onClick={() => setPresentationMode(false)}
+              onMouseDown={() => setPresentationMode(false)}
+              onPointerDown={() => setPresentationMode(false)}
+            >
+              Close
+            </button>
+          </div>
           <div className={styles.presentationStage}>{twinStage}</div>
           <article className={styles.presentationPanel}>
-            <h2>{layer.title}</h2>
-            <p>{layer.value}</p>
-            <p>{layer.risk}</p>
+            <div className={styles.presentationLayerRail} role="tablist" aria-label="Digital Twin presentation layers">
+              {twinLayers.map((item) => (
+                <button
+                  key={`presentation-${item.id}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeLayer === item.id}
+                  aria-controls={`presentation-layer-${item.id}`}
+                  onClick={() => setActiveLayer(item.id)}
+                >
+                  {item.title}
+                </button>
+              ))}
+            </div>
+            <section id={`presentation-layer-${layer.id}`} role="tabpanel" className={styles.presentationLayerPanel}>
+              <span>{layer.gate}</span>
+              <h2>{layer.title}</h2>
+              <p>{layer.value}</p>
+              <dl>
+                <div><dt>WinGPro получает</dt><dd>{layer.deliverable}</dd></div>
+                <div><dt>Evidence request</dt><dd>{layer.evidence}</dd></div>
+                <div><dt>Risk закрывается</dt><dd>{layer.risk}</dd></div>
+                <div><dt>Owner</dt><dd>{layer.owner}</dd></div>
+              </dl>
+            </section>
+            <div className={styles.presentationDecisionStrip} aria-label="Digital Twin decision strip">
+              <span><strong>{layer.readiness}</strong><small>readiness</small></span>
+              <span><strong>{layer.owner}</strong><small>approval owner</small></span>
+              <span><strong>{layer.deliverable}</strong><small>deliverable</small></span>
+            </div>
+            <p className={styles.legalNote}>Conceptual digital twin preview: визуализация не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
           </article>
         </div>
       ) : null}

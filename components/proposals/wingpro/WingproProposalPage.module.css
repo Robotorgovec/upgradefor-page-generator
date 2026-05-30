@@ -674,6 +674,7 @@
 
 .secondaryAction,
 .twinControls button,
+.presentationLayerRail button,
 .segmented button,
 .modeSwitch button,
 .riskFilters button,
@@ -690,6 +691,7 @@
 
 .secondaryAction:hover,
 .twinControls button:hover,
+.presentationLayerRail button:hover,
 .segmented button:hover,
 .modeSwitch button:hover,
 .riskFilters button:hover,
@@ -1481,15 +1483,78 @@
   background: rgba(248, 250, 252, 0.98);
   box-shadow: var(--proposal-shadow-lg);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.38fr);
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.42fr);
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 18px;
 }
 
+.presentationHud {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: stretch;
+  padding: 12px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 76%, #ffffff), #ffffff 70%),
+    #ffffff;
+}
+
+.presentationHud h2,
+.presentationHud p,
+.presentationHud dl,
+.presentationHud dt,
+.presentationHud dd {
+  margin: 0;
+}
+
+.presentationHud h2 {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.08;
+}
+
+.presentationHud dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.presentationHud dl div {
+  min-height: 58px;
+  padding: 9px 10px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: #ffffff;
+  display: grid;
+  gap: 3px;
+  align-content: center;
+}
+
+.presentationHud dt,
+.presentationLayerPanel dt,
+.presentationDecisionStrip small {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.presentationHud dd,
+.presentationLayerPanel dd {
+  color: var(--proposal-text);
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
 .closePresentation {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 2;
+  align-self: stretch;
+  min-width: 86px;
 }
 
 .presentationStage {
@@ -1504,6 +1569,84 @@
   align-self: end;
   display: grid;
   gap: 12px;
+}
+
+.presentationLayerRail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.presentationLayerRail button {
+  width: 100%;
+  justify-content: flex-start;
+  color: var(--proposal-text-soft);
+  border-color: var(--proposal-border);
+  background: #ffffff;
+  font-size: 12px;
+}
+
+.presentationLayerRail button[aria-selected="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
+.presentationLayerPanel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.presentationLayerPanel > span {
+  justify-self: start;
+  padding: 6px 9px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.presentationLayerPanel dl {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.presentationLayerPanel dl div {
+  padding: 10px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: var(--proposal-surface-soft);
+}
+
+.presentationDecisionStrip {
+  display: grid;
+  grid-template-columns: 0.3fr 0.32fr 0.38fr;
+  gap: 8px;
+}
+
+.presentationDecisionStrip span {
+  min-height: 68px;
+  padding: 10px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--proposal-brand-soft) 54%, #ffffff);
+  display: grid;
+  gap: 4px;
+  align-content: center;
+}
+
+.presentationDecisionStrip strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.22;
 }
 
 .filmstrip {
@@ -4474,7 +4617,17 @@
   .presentationOverlay {
     inset: 8px;
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     overflow-y: auto;
+  }
+
+  .presentationHud {
+    grid-template-columns: 1fr;
+  }
+
+  .presentationHud dl,
+  .presentationDecisionStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .presentationStage .twinStage {
@@ -4661,8 +4814,15 @@
 
   .heroActions > *,
   .copyButtons button,
-  .packTabs button {
+  .packTabs button,
+  .presentationLayerRail button {
     width: 100%;
+  }
+
+  .presentationLayerRail,
+  .presentationHud dl,
+  .presentationDecisionStrip {
+    grid-template-columns: 1fr;
   }
 
   .presentationModeTabs {

@@ -1,0 +1,92 @@
+{
+  "cb": 1780146294,
+  "url": "http://127.0.0.1:3090/cp/2605281047-wingpro?cb=1780146294",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3090/assets/logo/logo-black-only.png?cb=1780146294",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3090/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "overlayInitial": {
+    "exists": true,
+    "hudText": "Digital Twin presentation modeConceptual twin для решения WinGProобъект2 × BB150B-307HlayerEquipmentreadiness62%gateGate 1 — Before paymentClose",
+    "railButtons": 6,
+    "selectedLayer": "Equipment",
+    "decisionStrip": "62%readinesssupplier / WinGPro technical ownerapproval ownerequipment data carddeliverable"
+  },
+  "overlayAfterLayer": {
+    "selectedLayer": "Documents",
+    "panelText": "Gate 1-3Documentsдокументы превращаются в Document Vault с owner, status и release gateWinGPro получаетDocument Vault indexEvidence requestPI, specification, drawing, certificates, shipment photosRisk закрываетсяснижение риска позднего запроса критичных файлов перед оплатой или отгрузкойOwnersupplier / UPGRADE data coordinator",
+    "twinStageLayer": "documents"
+  },
+  "overlayRequired": {
+    "Conceptual twin для решения WinGPro": true,
+    "readiness": true,
+    "WinGPro получает": true,
+    "Evidence request": true,
+    "Risk закрывается": true
+  },
+  "escapeClosed": true,
+  "reducedMotion": true,
+  "responsive": [
+    {
+      "width": 1440,
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 1280,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 768,
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 375,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 320,
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true,
+      "max768": true
+    }
+  ],
+  "content": {
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "requiredTexts": {
+      "Digital Twin": true,
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не заменяет инженерную модель": true
+    }
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-38/1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-38/1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-38/768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-38/375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-38/320.png"
+  ]
+}
