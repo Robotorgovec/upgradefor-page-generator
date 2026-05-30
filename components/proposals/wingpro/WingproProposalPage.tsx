@@ -2945,24 +2945,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="route-title">Маршрут поставки как управляемый data-flow</h2>
           <p>UPGRADE контролирует не транспорт как перевозчик, а информационную готовность маршрута.</p>
         </div>
-        <div className={styles.routeFlow} role="tablist" aria-label="China to Kazakhstan delivery data-flow">
-          {routePoints.map((point) => (
-            <button
-              key={point.title}
-              type="button"
-              role="tab"
-              aria-selected={activeRoute === point.title}
-              aria-controls={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-              data-active={activeRoute === point.title}
-              data-status={point.status}
-              onClick={() => setActiveRoute(point.title)}
-            >
-              <StatusPill value={point.status} />
-              <span>{point.title}</span>
-              <small>{point.gate}</small>
-            </button>
-          ))}
-        </div>
         <aside className={styles.routeDataSurface} aria-live="polite" aria-label="Selected route data-flow point">
           <div>
             <p className={styles.eyebrow}>Active route point</p>
@@ -2977,31 +2959,56 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>boundary</dt><dd>{routePoint.boundary}</dd></div>
           </dl>
         </aside>
-        <div className={styles.routeCards}>
-          {routePoints.map((point) => (
-            <article
-              key={`route-${point.title}`}
-              id={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-              className={styles.routeCard}
-              role="tabpanel"
-              tabIndex={0}
-              hidden={activeRoute !== point.title}
-            >
-              <h3>{point.title}</h3>
-              <dl>
-                <div><dt>status</dt><dd><StatusPill value={point.status} /></dd></div>
-                <div><dt>required data</dt><dd>{point.data}</dd></div>
-                <div><dt>documents</dt><dd>{point.documents}</dd></div>
-                <div><dt>owner</dt><dd>{point.owner}</dd></div>
-                <div><dt>UPGRADE action</dt><dd>{point.action}</dd></div>
-                <div><dt>risk if missing</dt><dd>{point.risk}</dd></div>
-                <div><dt>release gate</dt><dd>{point.gate}</dd></div>
-                <div><dt>readiness signal</dt><dd>{point.readiness}</dd></div>
-                <div><dt>boundary</dt><dd>{point.boundary}</dd></div>
-              </dl>
-            </article>
-          ))}
-        </div>
+        <details className={styles.routeDetailsDisclosure}>
+          <summary>
+            <span>Route data-flow detail</span>
+            <strong>Открыть China → Kazakhstan route points и handoff cards</strong>
+            <small>Active route point остается сверху; полный data-flow раскрывается по запросу без внутреннего скролла.</small>
+          </summary>
+          <div className={styles.routeFlow} role="tablist" aria-label="China to Kazakhstan delivery data-flow">
+            {routePoints.map((point) => (
+              <button
+                key={point.title}
+                type="button"
+                role="tab"
+                aria-selected={activeRoute === point.title}
+                aria-controls={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                data-active={activeRoute === point.title}
+                data-status={point.status}
+                onClick={() => setActiveRoute(point.title)}
+              >
+                <StatusPill value={point.status} />
+                <span>{point.title}</span>
+                <small>{point.gate}</small>
+              </button>
+            ))}
+          </div>
+          <div className={styles.routeCards}>
+            {routePoints.map((point) => (
+              <article
+                key={`route-${point.title}`}
+                id={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                className={styles.routeCard}
+                role="tabpanel"
+                tabIndex={0}
+                hidden={activeRoute !== point.title}
+              >
+                <h3>{point.title}</h3>
+                <dl>
+                  <div><dt>status</dt><dd><StatusPill value={point.status} /></dd></div>
+                  <div><dt>required data</dt><dd>{point.data}</dd></div>
+                  <div><dt>documents</dt><dd>{point.documents}</dd></div>
+                  <div><dt>owner</dt><dd>{point.owner}</dd></div>
+                  <div><dt>UPGRADE action</dt><dd>{point.action}</dd></div>
+                  <div><dt>risk if missing</dt><dd>{point.risk}</dd></div>
+                  <div><dt>release gate</dt><dd>{point.gate}</dd></div>
+                  <div><dt>readiness signal</dt><dd>{point.readiness}</dd></div>
+                  <div><dt>boundary</dt><dd>{point.boundary}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.vault, "vault")} id="vault" data-section="document-vault" aria-labelledby="vault-title">
