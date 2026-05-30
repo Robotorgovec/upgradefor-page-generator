@@ -89,18 +89,15 @@ function inspectCardScript(cardId) {
 `;
 }
 
-function clickCardScript(cardId) {
-  return `
-(() => {
-  const card = document.querySelector('[data-testid="equipment-twin-card-${cardId}"]');
-  const button = card?.querySelector("button");
-  if (!button) {
-    return "missing";
-  }
-  button.click();
-  return "clicked";
-})()
-`;
+function cardBodySelector(cardId) {
+  return `[data-testid="equipment-twin-card-${cardId}"] .equipmentTwinCardBody`;
+}
+
+function clickEquipmentCard(cardId) {
+  const selector = cardBodySelector(cardId);
+  runAgentBrowser(["scrollintoview", selector]);
+  runAgentBrowser(["click", selector]);
+  runAgentBrowser(["wait", "500"]);
 }
 
 const dispatchUrl = `${baseUrl}/dispatch?cb=${Date.now()}`;
@@ -109,9 +106,10 @@ const results = [];
 try {
   runAgentBrowser(["open", dispatchUrl]);
   runAgentBrowser(["wait", "--load", "networkidle"]);
+  runAgentBrowser(["wait", "1000"]);
 
   for (const cardId of expectedCards) {
-    runAgentBrowser(["eval", clickCardScript(cardId)]);
+    clickEquipmentCard(cardId);
     const result = parseEvalJson(runAgentBrowser(["eval", inspectCardScript(cardId)]));
 
     assert(result.exists, `Missing equipment twin card ${cardId}`);

@@ -5,7 +5,7 @@ export default function DispatchAiPanel() {
   return (
     <section className={`${styles.card} ${styles.ai}`}>
       <span className={styles.pill}>AI Panel · mock inference</span>
-      <h2>AI-рекомендация по DP 6553.5 bar</h2>
+      <h2>AI-рекомендация по DP DATA_ERROR</h2>
       <p>Вероятная причина — не гидравлическая авария, а ошибка преобразования значения: неправильный scaling, смещённый Modbus register, неверный диапазон sensor или некорректная formula в SCADA.</p>
       <ol>
         <li>Сверить raw value регистра <span className={styles.mono}>4x40117</span> с Modbus map.</li>

@@ -88,7 +88,7 @@ export const ventilationUnits = [
 ];
 
 export const alarms = [
-  { id: "ALM-6553", severity: "critical", system: "Холодоснабжение", equipment: "DP-SENS-CHW-01", message: "DP = 6553.5 bar", recommendation: "Проверить scaling, Modbus register, sensor range, формулу перепада давления", time: "21:38:11" },
+  { id: "ALM-6553", severity: "critical", system: "Холодоснабжение", equipment: "DP-SENS-CHW-01", message: "DP = DATA_ERROR", recommendation: "Проверить scaling, Modbus register, sensor range, формулу перепада давления", time: "21:38:11" },
   { id: "ALM-1040", severity: "warning", system: "Насосные группы", equipment: "ШУ-2", message: "Насосная группа удерживает 40 Hz при повышенном ΔT", recommendation: "Проверить уставку VFD и балансировку ветки фанкойлов", time: "21:31:08" },
   { id: "EVT-VC13", severity: "event", system: "Вентиляция", equipment: "VC-13-03", message: "Событие: переход заслонки в ручной режим", recommendation: "Сверить локальный щит автоматики и команду диспетчера", time: "21:26:44" },
 ];
@@ -100,12 +100,12 @@ export const equipmentPassport = {
   status: "CRITICAL / value out of physical range",
   tags: ["BMS.10.50.4.41", "SCADA.CHW.DP_01.PV", "AI.ANOMALY.DP_SCALE", "BMS.ALARM.6553"],
   documents: ["SCADA/web-HMI 10.50.4.41", "Раздел Asia Park Astana / Холодоснабжение", "Modbus/BACnet map — TO VERIFY"],
-  alarmHistory: ["13.05.2026 21:38 — DP 6553.5 bar", "12.05.2026 18:04 — DP 0.0 bar 12 sec", "03.05.2026 09:12 — signal frozen"],
+  alarmHistory: ["13.05.2026 21:38 — DP DATA_ERROR, raw tag quarantined", "12.05.2026 18:04 — DP 0.0 bar 12 sec", "03.05.2026 09:12 — signal frozen"],
   serviceHistory: ["20.04.2026 — визуальный осмотр, замечаний нет", "14.03.2026 — калибровка нуля", "28.01.2026 — замена импульсной трубки"],
 };
 
 export const aiInsights = [
-  "Значение DP 6553.5 bar физически невозможно для CHW-контура. Вероятность ошибки scaling/register: 91%.",
+  "Значение DP помечено как DATA_ERROR: raw tag вышел за диапазон 0–16 bar. Вероятность ошибки scaling/register: 91%.",
   "Профиль нагрузки чиллеров Trane нормальный, но насосная группа удерживается на 40 Hz при росте ΔT.",
   "VC-13-03 на отметке +12.600 создала event без влияния на comfort KPI, требуется подтверждение ручного режима.",
 ];
@@ -116,9 +116,13 @@ export type DispatchTrendKey = "temperature" | "pressure" | "flow" | "energy";
 
 export type EquipmentStatus = "В работе" | "Предупреждение" | "Авария" | "TO VERIFY" | "Demo";
 
+export type DataQualityStatus = "VALID" | "DATA_ERROR";
+
 export type DispatchTrendPoint = {
   label: string;
-  value: number;
+  value: number | null;
+  quality?: DataQualityStatus;
+  qualityMessage?: string;
 };
 
 export type DispatchTrendSeriesItem = {
@@ -134,6 +138,7 @@ export type DispatchMetric = {
   value: string;
   state: string;
   trend: string;
+  quality?: DataQualityStatus;
 };
 
 export type DispatchAlarmEvent = {
@@ -143,6 +148,7 @@ export type DispatchAlarmEvent = {
   severity: "critical" | "warning" | "service";
   time: string;
   description: string;
+  quality?: DataQualityStatus;
 };
 
 export type DispatchAiInsight = {
@@ -190,7 +196,7 @@ export type DispatchEquipmentNode = {
   location: string;
   manufacturer: string;
   year: string;
-  onlineParams: Array<{ label: string; value: string }>;
+  onlineParams: Array<{ label: string; value: string; quality?: DataQualityStatus }>;
   linkedSystems: string[];
   scadaTags: string[];
   serviceNote: string;
@@ -206,6 +212,37 @@ export type DispatchEquipmentNode = {
 
 const makePoints = (labels: string[], values: number[]): DispatchTrendPoint[] =>
   labels.map((label, index) => ({ label, value: values[index] ?? 0 }));
+
+const pressureRange = {
+  min: 0,
+  max: 16,
+};
+
+export function getPressureQuality(value: number): DataQualityStatus {
+  return value < pressureRange.min || value > pressureRange.max ? "DATA_ERROR" : "VALID";
+}
+
+export function normalizePressurePoint(label: string, value: number): DispatchTrendPoint {
+  const quality = getPressureQuality(value);
+
+  if (quality === "DATA_ERROR") {
+    return {
+      label,
+      value: null,
+      quality,
+      qualityMessage: "DATA_ERROR · вне диапазона 0–16 bar · raw tag quarantined",
+    };
+  }
+
+  return {
+    label,
+    value,
+    quality,
+  };
+}
+
+const makePressurePoints = (labels: string[], values: number[]): DispatchTrendPoint[] =>
+  labels.map((label, index) => normalizePressurePoint(label, values[index] ?? 0));
 
 const dayLabels = ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"];
 const weekLabels = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
@@ -229,9 +266,9 @@ export const trendSeries: DispatchTrendSeriesItem[] = [
     unit: "бар",
     color: "#38bdf8",
     periods: {
-      "24h": makePoints(dayLabels, [2.0, 2.1, 2.2, 2.1, 6553.3, 6553.5, 2.1]),
-      "7d": makePoints(weekLabels, [2.0, 2.1, 2.2, 2.3, 6553.3, 2.2, 2.1]),
-      "30d": makePoints(monthLabels, [1.9, 2.1, 2.2, 2.4, 6553.5, 2.2, 2.1]),
+      "24h": makePressurePoints(dayLabels, [2.0, 2.1, 2.2, 2.1, 6553.3, 6553.5, 2.1]),
+      "7d": makePressurePoints(weekLabels, [2.0, 2.1, 2.2, 2.3, 6553.3, 2.2, 2.1]),
+      "30d": makePressurePoints(monthLabels, [1.9, 2.1, 2.2, 2.4, 6553.5, 2.2, 2.1]),
     },
   },
   {
@@ -360,7 +397,7 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     manufacturer: "TO VERIFY",
     year: "TO VERIFY",
     onlineParams: [
-      { label: "Давление", value: "6553.3 / 6553.5 бар anomaly" },
+      { label: "Давление", value: "DATA_ERROR · вне диапазона 0–16 bar", quality: "DATA_ERROR" },
       { label: "Расход", value: "45.6 м3/ч" },
       { label: "Вибрация", value: "3.2 мм/с" },
     ],
@@ -370,7 +407,7 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     serviceHistory: commonServiceHistory,
     documents: commonDocuments,
     aiRecommendations: [
-      "DP anomaly 6553.3 / 6553.5 bar похожа на ошибку шкалы или historian tag mapping.",
+      "DP DATA_ERROR похож на ошибку шкалы или historian tag mapping.",
       "Проверить датчик давления на ШУ-2, единицы измерения и привязку Modbus/BACnet тега.",
       "До подтверждения данных не выполнять удаленный сброс аварии.",
     ],
@@ -471,7 +508,7 @@ export const dispatchEquipmentNodes: DispatchEquipmentNode[] = [
     serviceHistory: commonServiceHistory,
     documents: commonDocuments,
     aiRecommendations: [
-      "Сверить датчики давления с аномалиями DP 6553.3 / 6553.5 bar.",
+      "Сверить датчики давления с DATA_ERROR и проверить raw tag quarantine.",
       "Отметить 4 устройства как TO VERIFY в реестре паспортизации.",
     ],
     relatedAlarmIds: ["alarm-pump-pressure"],
@@ -702,16 +739,16 @@ export const dispatchSectionDetails: DispatchSectionDetail[] = [
     nodeId: "pump-shu2",
     description: "ШУ-1...ШУ-4: гликоль, вода, фанкойлы и вентиляция.",
     equipmentCount: "около 10 насосов",
-    activeAlarms: "1 critical data-quality anomaly",
+    activeAlarms: "1 critical DATA_ERROR",
     keyMetrics: [
-      { label: "DP", value: "6553.x bar" },
+      { label: "DP", value: "DATA_ERROR" },
       { label: "Flow", value: "45.6 м3/ч" },
       { label: "Vibration", value: "3.2 мм/с" },
     ],
     relatedNodeIds: ["pump-shu2", "cooling-circuits", "fan-coils"],
     trendKey: "pressure",
     relatedAlarmIds: ["alarm-pump-pressure"],
-    lastEvent: "DP anomaly 6553.3 / 6553.5 bar: проверить scaling/register.",
+    lastEvent: "DP DATA_ERROR: проверить scaling/register и диапазон 0–16 bar.",
   },
   {
     id: "heatExchangers",
@@ -732,7 +769,7 @@ export const dispatchSectionDetails: DispatchSectionDetail[] = [
   {
     id: "alarms",
     nodeId: "pump-shu2",
-    description: "Контекст аварий с приоритетом data-quality события DP 6553.x bar.",
+    description: "Контекст аварий с приоритетом data-quality события DP DATA_ERROR.",
     equipmentCount: "4 активных события",
     activeAlarms: "1 critical / 2 warning / 1 service",
     keyMetrics: [
@@ -752,7 +789,7 @@ export const dispatchSectionDetails: DispatchSectionDetail[] = [
     equipmentCount: "4 трендовых метрики",
     activeAlarms: "аномалия давления видна на графике",
     keyMetrics: [
-      { label: "Pressure spike", value: "6553.5 bar" },
+      { label: "Pressure", value: "DATA_ERROR" },
       { label: "Flow", value: "45.6 м3/ч" },
       { label: "Energy", value: "421 кВт·ч" },
     ],
@@ -807,24 +844,25 @@ export const dispatchSectionDetails: DispatchSectionDetail[] = [
     relatedNodeIds: ["pump-shu2", "sensors", "automation-cabinets"],
     trendKey: "pressure",
     relatedAlarmIds: ["alarm-pump-pressure"],
-    lastEvent: "AI помечает DP 6553.x bar как вероятную ошибку данных, а не гидравлическую аварию.",
+    lastEvent: "AI помечает DP DATA_ERROR как вероятную ошибку данных, а не гидравлическую аварию.",
   },
 ];
 
 export const realtimeMetrics: DispatchMetric[] = [
   { label: "Температура", value: "21.4 °C", state: "Норма", trend: "+0.2 °C" },
-  { label: "Давление", value: "2.1 бар", state: "Норма", trend: "stable" },
+  { label: "Давление", value: "DATA_ERROR", state: "Ошибка данных", trend: "range 0–16 bar", quality: "DATA_ERROR" },
   { label: "Расход", value: "45.6 м3/ч", state: "Норма", trend: "+1.1%" },
 ];
 
 export const alarmEvents: DispatchAlarmEvent[] = [
   {
     id: "alarm-pump-pressure",
-    title: "DP 6553.x bar на ШУ-2",
+    title: "DP DATA_ERROR на ШУ-2",
     equipmentId: "pump-shu2",
     severity: "critical",
     time: "10:42",
-    description: "DP anomaly 6553.3 / 6553.5 bar, требуется верификация тега.",
+    description: "Raw DP tag вышел за диапазон 0–16 bar, требуется верификация scaling/register.",
+    quality: "DATA_ERROR",
   },
   {
     id: "alarm-return-temp",
@@ -853,7 +891,7 @@ export const alarmEvents: DispatchAlarmEvent[] = [
 ];
 
 export const dispatchAiInsights: DispatchAiInsight[] = [
-  { id: "anomaly", title: "Data quality insight", value: "DP 6553.x bar", equipmentId: "pump-shu2" },
+  { id: "anomaly", title: "Data quality insight", value: "DP DATA_ERROR", equipmentId: "pump-shu2" },
   { id: "failure", title: "Прогнозирование отказов", value: "риск по 3 единицам оборудования" },
   { id: "energy", title: "Оптимизация энергопотребления", value: "экономия до 15%", equipmentId: "chiller-ch1" },
   { id: "recommend", title: "Рекомендации AI", value: "доступно 4 рекомендации" },

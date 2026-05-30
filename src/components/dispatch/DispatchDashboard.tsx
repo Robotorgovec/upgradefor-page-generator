@@ -383,10 +383,15 @@ export default function DispatchDashboard() {
             </div>
             <div className="kpiGrid">
               {realtimeMetrics.map((metric) => (
-                <article className="kpiCard" key={metric.label}>
+                <article
+                  className={`kpiCard ${metric.quality === "DATA_ERROR" ? "isDataError" : ""}`}
+                  data-testid={metric.quality === "DATA_ERROR" ? "dispatch-data-error-metric" : undefined}
+                  key={metric.label}
+                >
                   <span>{metric.label}</span>
                   <strong>{metric.value}</strong>
                   <small>{metric.state} · {metric.trend}</small>
+                  {metric.quality === "DATA_ERROR" ? <b>!</b> : null}
                 </article>
               ))}
             </div>
@@ -406,7 +411,8 @@ export default function DispatchDashboard() {
                 <button
                   className={`eventItem ${alarm.severity} ${
                     relatedAlarms.some((related) => related.id === alarm.id) ? "isRelated" : ""
-                  }`}
+                  } ${alarm.quality === "DATA_ERROR" ? "isDataError" : ""}`}
+                  data-testid={alarm.quality === "DATA_ERROR" ? "dispatch-data-error-alarm" : undefined}
                   key={alarm.id}
                   type="button"
                   onClick={() => openAlarm(alarm)}
@@ -414,6 +420,7 @@ export default function DispatchDashboard() {
                   <span>{severityLabel(alarm.severity)} · {alarm.time}</span>
                   <strong>{alarm.title}</strong>
                   <small>{alarm.description}</small>
+                  {alarm.quality === "DATA_ERROR" ? <em>DATA_ERROR · tag quarantined</em> : null}
                 </button>
               ))}
             </div>
@@ -490,7 +497,7 @@ export default function DispatchDashboard() {
             {hasDpAnomalyContext ? (
               <div className="anomalyCallout">
                 <span>AI insight</span>
-                DP 6553.3 / 6553.5 bar · проверить scaling/register
+                DP DATA_ERROR · вне диапазона 0–16 bar · проверить scaling/register
               </div>
             ) : null}
 
@@ -586,9 +593,10 @@ export default function DispatchDashboard() {
                 <strong>{selectedSection.equipmentCount}</strong>
               </div>
               {selectedSection.keyMetrics.map((metric) => (
-                <div key={metric.label}>
+                <div className={metric.value.includes("DATA_ERROR") ? "isDataError" : undefined} key={metric.label}>
                   <span>{metric.label}</span>
                   <strong>{metric.value}</strong>
+                  {metric.value.includes("DATA_ERROR") ? <em>range 0–16 bar</em> : null}
                 </div>
               ))}
             </div>
@@ -774,9 +782,10 @@ export default function DispatchDashboard() {
           {passportTab === "Параметры" ? (
             <div className="paramGrid">
               {passportEquipment.onlineParams.map((param) => (
-                <div key={param.label}>
+                <div className={param.quality === "DATA_ERROR" ? "isDataError" : undefined} key={param.label}>
                   <span>{param.label}</span>
                   <strong>{param.value}</strong>
+                  {param.quality === "DATA_ERROR" ? <em>DATA_ERROR · tag quarantined</em> : null}
                 </div>
               ))}
             </div>
@@ -1131,6 +1140,49 @@ export default function DispatchDashboard() {
           font-size: 11px;
         }
 
+        .kpiCard.isDataError,
+        .paramGrid div.isDataError,
+        .sectionMetrics div.isDataError {
+          border-color: rgba(248, 113, 113, 0.48);
+          background: linear-gradient(145deg, rgba(127, 29, 29, 0.28), rgba(15, 23, 42, 0.62));
+          box-shadow: inset 3px 0 0 rgba(248, 113, 113, 0.88);
+        }
+
+        .kpiCard.isDataError strong,
+        .paramGrid div.isDataError strong,
+        .sectionMetrics div.isDataError strong {
+          color: #fecaca;
+          overflow-wrap: anywhere;
+        }
+
+        .kpiCard.isDataError strong {
+          font-size: 13px;
+          letter-spacing: 0;
+          white-space: nowrap;
+        }
+
+        .kpiCard.isDataError small,
+        .paramGrid div.isDataError em,
+        .sectionMetrics div.isDataError em {
+          display: block;
+          margin-top: 4px;
+          color: #fca5a5;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 800;
+        }
+
+        .kpiCard.isDataError b {
+          display: inline-grid;
+          width: 20px;
+          height: 20px;
+          place-items: center;
+          border: 1px solid rgba(248, 113, 113, 0.58);
+          border-radius: 999px;
+          color: #fee2e2;
+          background: rgba(127, 29, 29, 0.72);
+        }
+
         button {
           font: inherit;
         }
@@ -1217,6 +1269,23 @@ export default function DispatchDashboard() {
 
         .eventItem.critical {
           border-color: rgba(248, 113, 113, 0.45);
+        }
+
+        .eventItem.isDataError {
+          border-color: rgba(248, 113, 113, 0.72);
+          background: rgba(127, 29, 29, 0.2);
+        }
+
+        .eventItem.isDataError em {
+          display: inline-flex;
+          margin-top: 8px;
+          border: 1px solid rgba(248, 113, 113, 0.38);
+          border-radius: 999px;
+          color: #fecaca;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 800;
+          padding: 4px 7px;
         }
 
         .eventItem.isRelated {

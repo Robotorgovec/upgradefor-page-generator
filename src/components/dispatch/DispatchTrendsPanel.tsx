@@ -46,7 +46,9 @@ export default function DispatchTrendsPanel({
 
   const chart = useMemo(() => {
     const points = selectedTrend?.periods[selectedPeriod] ?? [];
-    const values = points.map((point) => point.value);
+    const values = points
+      .map((point) => point.value)
+      .filter((value): value is number => typeof value === "number");
     const minValue = values.length > 0 ? Math.min(...values) : 0;
     const maxValue = values.length > 0 ? Math.max(...values) : 0;
     const range = Math.max(maxValue - minValue, 1);
@@ -57,14 +59,23 @@ export default function DispatchTrendsPanel({
       const x =
         viewBox.paddingX +
         (points.length === 1 ? innerWidth / 2 : (innerWidth / (points.length - 1)) * index);
-      const y = viewBox.paddingY + innerHeight - ((point.value - minValue) / range) * innerHeight;
+      const y =
+        typeof point.value === "number"
+          ? viewBox.paddingY + innerHeight - ((point.value - minValue) / range) * innerHeight
+          : viewBox.paddingY + 12;
 
       return { ...point, x, y };
     });
+    const validPlottedPoints = plottedPoints.filter(
+      (point): point is typeof point & { value: number } => typeof point.value === "number",
+    );
+    const invalidPoints = plottedPoints.filter((point) => point.quality === "DATA_ERROR");
 
     return {
       plottedPoints,
-      polyline: plottedPoints.map((point) => `${point.x},${point.y}`).join(" "),
+      validPlottedPoints,
+      invalidPoints,
+      polyline: validPlottedPoints.map((point) => `${point.x},${point.y}`).join(" "),
       minValue,
       maxValue,
     };
@@ -131,14 +142,18 @@ export default function DispatchTrendsPanel({
       <div className="dispatchTrendsPanel__chartWrap">
         {hoveredPoint ? (
           <div
-            className="dispatchTrendsPanel__tooltip"
+            className={`dispatchTrendsPanel__tooltip ${
+              hoveredPoint.quality === "DATA_ERROR" ? "isDataError" : ""
+            }`}
             style={{
               left: `${Math.min(Math.max((hoveredPoint.x / viewBox.width) * 100, 8), 72)}%`,
               top: `${Math.min(Math.max((hoveredPoint.y / viewBox.height) * 100, 6), 70)}%`,
             }}
           >
             <span>{hoveredPoint.label}</span>
-            {hoveredPoint.value} {selectedTrend.unit}
+            {hoveredPoint.quality === "DATA_ERROR"
+              ? hoveredPoint.qualityMessage ?? "DATA_ERROR"
+              : `${hoveredPoint.value} ${selectedTrend.unit}`}
           </div>
         ) : null}
 
@@ -161,7 +176,7 @@ export default function DispatchTrendsPanel({
 
           <rect width={viewBox.width} height={viewBox.height} rx="18" fill={`url(#${gridId})`} />
 
-          {chart.plottedPoints.length > 1 ? (
+          {chart.validPlottedPoints.length > 1 ? (
             <polygon
               points={`${viewBox.paddingX},${viewBox.height - viewBox.paddingY} ${chart.polyline} ${
                 viewBox.width - viewBox.paddingX
@@ -179,7 +194,7 @@ export default function DispatchTrendsPanel({
             strokeWidth="4"
           />
 
-          {chart.plottedPoints.map((point) => (
+          {chart.validPlottedPoints.map((point) => (
             <g key={`${point.label}-${point.value}`}>
               <circle
                 cx={point.x}
@@ -191,6 +206,29 @@ export default function DispatchTrendsPanel({
                 tabIndex={0}
               />
               <circle cx={point.x} cy={point.y} r="4" fill="#020617" stroke={selectedTrend.color} strokeWidth="3" />
+            </g>
+          ))}
+
+          {chart.invalidPoints.map((point) => (
+            <g key={`${point.label}-DATA_ERROR`}>
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r="12"
+                fill="transparent"
+                onMouseEnter={() => setHoveredPoint(point)}
+                onFocus={() => setHoveredPoint(point)}
+                tabIndex={0}
+              />
+              <path
+                d={`M ${point.x} ${point.y - 7} L ${point.x + 7} ${point.y} L ${point.x} ${point.y + 7} L ${point.x - 7} ${point.y} Z`}
+                fill="#7f1d1d"
+                stroke="#fca5a5"
+                strokeWidth="2"
+              />
+              <text x={point.x} y={point.y + 3} textAnchor="middle" className="dispatchTrendsPanel__dataErrorIcon">
+                !
+              </text>
             </g>
           ))}
 
@@ -208,6 +246,11 @@ export default function DispatchTrendsPanel({
           <span>
             max: {chart.maxValue} {selectedTrend.unit}
           </span>
+          {chart.invalidPoints.length ? (
+            <span className="dispatchTrendsPanel__quality">
+              DATA_ERROR: {chart.invalidPoints.length} point(s) excluded
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -363,6 +406,16 @@ export default function DispatchTrendsPanel({
           font-weight: 600;
         }
 
+        .dispatchTrendsPanel__tooltip.isDataError {
+          border-color: rgba(248, 113, 113, 0.72);
+          background: rgba(127, 29, 29, 0.94);
+          color: #fee2e2;
+        }
+
+        .dispatchTrendsPanel__tooltip.isDataError span {
+          color: #fecaca;
+        }
+
         .dispatchTrendsPanel__chart {
           display: block;
           width: 100%;
@@ -374,14 +427,26 @@ export default function DispatchTrendsPanel({
           font-size: 10px;
         }
 
+        .dispatchTrendsPanel__dataErrorIcon {
+          fill: #fee2e2 !important;
+          font-size: 10px !important;
+          font-weight: 900 !important;
+        }
+
         .dispatchTrendsPanel__range {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          flex-wrap: wrap;
           gap: 12px;
           margin-top: 8px;
           color: #93c5fd;
           font-size: 12px;
+        }
+
+        .dispatchTrendsPanel__quality {
+          color: #fca5a5;
+          font-weight: 800;
         }
 
         @media (max-width: 640px) {

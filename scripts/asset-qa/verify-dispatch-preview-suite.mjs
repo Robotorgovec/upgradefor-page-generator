@@ -29,6 +29,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-readonly-controls.mjs",
     usesBrowser: true,
   },
+  {
+    id: "data-quality",
+    script: "scripts/asset-qa/verify-dispatch-data-quality.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {
