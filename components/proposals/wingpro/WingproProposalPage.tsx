@@ -3069,13 +3069,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             )}
           </div>
         </div>
-        <div className={styles.vaultControls}>
-          <select aria-label="category" value={vaultCategory} onChange={(event) => setVaultCategory(event.target.value)}><option value="all">all categories</option>{categories.map((item) => <option key={item}>{item}</option>)}</select>
-          <select aria-label="status" value={vaultStatus} onChange={(event) => setVaultStatus(event.target.value)}><option value="all">all statuses</option>{["missing", "requested", "collecting", "review", "ready"].map((item) => <option key={item}>{item}</option>)}</select>
-          <select aria-label="owner" value={vaultOwner} onChange={(event) => setVaultOwner(event.target.value)}><option value="all">all owners</option>{owners.map((item) => <option key={item}>{item}</option>)}</select>
-          <select aria-label="release gate" value={vaultGate} onChange={(event) => setVaultGate(event.target.value)}><option value="all">all gates</option>{gatesList.map((item) => <option key={item}>{item}</option>)}</select>
-          <select aria-label="impact" value={vaultImpact} onChange={(event) => setVaultImpact(event.target.value)}><option value="all">all impacts</option>{["quality", "time", "commercial", "customs", "mounting"].map((item) => <option key={item}>{item}</option>)}</select>
-        </div>
         <div className={styles.vaultCommandStrip} aria-live="polite" aria-label="Document Vault active command">
           <div>
             <span>active query</span>
@@ -3092,9 +3085,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={resetVaultFilters}>Reset filters</button>
           </div>
         </div>
-        <div className={styles.modeSwitch} role="group" aria-label="vault mode">
-          {(["vault", "timeline", "owner", "missing"] as VaultMode[]).map((mode) => <button key={mode} type="button" aria-pressed={vaultMode === mode} onClick={() => setVaultMode(mode)}>{mode}</button>)}
-        </div>
+        <details className={styles.vaultFilterDisclosure}>
+          <summary>
+            <span>Filter controls</span>
+            <strong>Открыть filters и режимы Vault</strong>
+            <small>{vaultActiveQuery.length ? vaultActiveQuery.map(([label, value]) => `${label}: ${value}`).join(" / ") : "Сейчас показан общий data-room; quick actions остаются сверху."}</small>
+          </summary>
+          <div className={styles.vaultControls}>
+            <select aria-label="category" value={vaultCategory} onChange={(event) => setVaultCategory(event.target.value)}><option value="all">all categories</option>{categories.map((item) => <option key={item}>{item}</option>)}</select>
+            <select aria-label="status" value={vaultStatus} onChange={(event) => setVaultStatus(event.target.value)}><option value="all">all statuses</option>{["missing", "requested", "collecting", "review", "ready"].map((item) => <option key={item}>{item}</option>)}</select>
+            <select aria-label="owner" value={vaultOwner} onChange={(event) => setVaultOwner(event.target.value)}><option value="all">all owners</option>{owners.map((item) => <option key={item}>{item}</option>)}</select>
+            <select aria-label="release gate" value={vaultGate} onChange={(event) => setVaultGate(event.target.value)}><option value="all">all gates</option>{gatesList.map((item) => <option key={item}>{item}</option>)}</select>
+            <select aria-label="impact" value={vaultImpact} onChange={(event) => setVaultImpact(event.target.value)}><option value="all">all impacts</option>{["quality", "time", "commercial", "customs", "mounting"].map((item) => <option key={item}>{item}</option>)}</select>
+          </div>
+          <div className={styles.modeSwitch} role="group" aria-label="vault mode">
+            {(["vault", "timeline", "owner", "missing"] as VaultMode[]).map((mode) => <button key={mode} type="button" aria-pressed={vaultMode === mode} onClick={() => setVaultMode(mode)}>{mode}</button>)}
+          </div>
+        </details>
         <details className={styles.vaultCardsDisclosure}>
           <summary>
             <span>Document card detail</span>
