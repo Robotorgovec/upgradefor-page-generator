@@ -1218,6 +1218,7 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          flex-wrap: wrap;
           gap: 20px;
           padding: 16px 20px;
         }
@@ -1243,6 +1244,8 @@ export default function DispatchDashboard() {
         .headerStatus {
           display: flex;
           align-items: center;
+          flex-wrap: wrap;
+          justify-content: flex-end;
           gap: 10px;
           color: #93c5fd;
           font-size: 12px;
@@ -1333,7 +1336,7 @@ export default function DispatchDashboard() {
 
         .kpiGrid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
           gap: 8px;
         }
 
@@ -1345,6 +1348,7 @@ export default function DispatchDashboard() {
           border: 1px solid rgba(125, 211, 252, 0.18);
           border-radius: 8px;
           background: rgba(15, 23, 42, 0.62);
+          min-width: 0;
           padding: 12px;
         }
 
@@ -1368,6 +1372,8 @@ export default function DispatchDashboard() {
           margin: 7px 0 4px;
           color: #f8fafc;
           font-size: 18px;
+          line-height: 1.15;
+          overflow-wrap: anywhere;
         }
 
         .kpiCard small,
@@ -1399,7 +1405,6 @@ export default function DispatchDashboard() {
         .kpiCard.isDataError strong {
           font-size: 13px;
           letter-spacing: 0;
-          white-space: nowrap;
         }
 
         .kpiCard.isDataError small,
@@ -2222,6 +2227,7 @@ export default function DispatchDashboard() {
           color: #f8fafc;
           font-size: 13px;
           line-height: 1.25;
+          overflow-wrap: anywhere;
         }
 
         .relatedNodesRow {
@@ -2420,7 +2426,7 @@ export default function DispatchDashboard() {
 
         .passportTabs {
           display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 6px;
           margin: 12px 0;
         }
@@ -2431,7 +2437,11 @@ export default function DispatchDashboard() {
           background: rgba(2, 8, 23, 0.48);
           color: #93c5fd;
           cursor: pointer;
-          padding: 8px 6px;
+          min-height: 40px;
+          overflow-wrap: anywhere;
+          padding: 8px 7px;
+          line-height: 1.15;
+          white-space: normal;
         }
 
         .passportTabs button.isActive {
@@ -2614,12 +2624,21 @@ export default function DispatchDashboard() {
           border-top: 1px solid rgba(56, 189, 248, 0.28);
           background: rgba(2, 8, 23, 0.94);
           box-shadow: 0 -18px 44px rgba(0,0,0,0.36);
+          overflow-x: auto;
+          overflow-y: hidden;
           padding: 10px 14px;
+          scrollbar-width: thin;
           backdrop-filter: blur(18px);
         }
 
         .dispatchBottomNav button {
-          white-space: nowrap;
+          flex: 0 0 auto;
+          max-width: 220px;
+          min-height: 44px;
+          overflow-wrap: anywhere;
+          text-align: center;
+          white-space: normal;
+          line-height: 1.2;
         }
 
         .dispatchBottomNav button.isActive {
@@ -2629,6 +2648,7 @@ export default function DispatchDashboard() {
         }
 
         .bottomMeta {
+          flex: 0 0 auto;
           display: flex;
           align-items: center;
           gap: 10px;
@@ -2729,8 +2749,26 @@ export default function DispatchDashboard() {
             padding-bottom: 232px;
           }
 
+          .dispatchHeader {
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          .dispatchHeader h1 {
+            font-size: 18px;
+          }
+
+          .headerStatus {
+            justify-content: flex-start;
+            width: 100%;
+          }
+
           .passportKpiStrip {
             grid-template-columns: 1fr;
+          }
+
+          .sectionMetrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
           .passportTabs {

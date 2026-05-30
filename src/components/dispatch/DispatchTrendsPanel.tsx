@@ -324,7 +324,7 @@ export default function DispatchTrendsPanel({
 
         .dispatchTrendsPanel__tabs {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 8px;
           margin-bottom: 20px;
         }
@@ -334,6 +334,8 @@ export default function DispatchTrendsPanel({
           border-radius: 8px;
           background: rgba(2, 8, 23, 0.66);
           color: #bfdbfe;
+          min-width: 0;
+          min-height: 54px;
           padding: 10px 12px;
           text-align: left;
           transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
@@ -353,10 +355,12 @@ export default function DispatchTrendsPanel({
 
         .dispatchTrendsPanel__tabLabel {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: 8px;
           font-size: 14px;
           font-weight: 700;
+          line-height: 1.2;
+          overflow-wrap: anywhere;
         }
 
         .dispatchTrendsPanel__tabDot {
@@ -371,6 +375,8 @@ export default function DispatchTrendsPanel({
           margin-top: 4px;
           color: #93c5fd;
           font-size: 12px;
+          line-height: 1.2;
+          overflow-wrap: anywhere;
         }
 
         .dispatchTrendsPanel__tabs button.isActive .dispatchTrendsPanel__tabUnit {
