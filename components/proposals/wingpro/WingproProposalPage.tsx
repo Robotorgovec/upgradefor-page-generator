@@ -2478,38 +2478,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>Оплата, evidence gates и delivery terms как decision board</h3>
               <p>Симулятор показывает, что меняется при разных сценариях согласования. Это не юридическая консультация и не утверждение условий за WinGPro; UPGRADE готовит структуру решения, evidence board и open questions.</p>
             </div>
-            <div className={styles.contractScenarioTabs} role="tablist" aria-label="Contract decision scenarios">
-              {contractScenarios.map((scenario) => (
-                <button
-                  key={scenario.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeContractScenario === scenario.id}
-                  aria-controls={`contract-scenario-${scenario.id}`}
-                  onClick={() => setActiveContractScenario(scenario.id)}
-                >
-                  {scenario.title}
-                </button>
-              ))}
-            </div>
-            <div className={styles.contractScenarioPanels}>
-              {contractScenarios.map((scenario) => (
-                <section key={scenario.id} id={`contract-scenario-${scenario.id}`} role="tabpanel" hidden={activeContractScenario !== scenario.id}>
-                  <div className={styles.scenarioHero}>
-                    <h4>{scenario.title}</h4>
-                    <StatusPill value={scenario.decisionSignal} />
-                  </div>
-                  <dl className={styles.simulatorGrid}>
-                    <div><dt>Payment scenario</dt><dd>{scenario.payment}</dd></div>
-                    <div><dt>Delivery terms</dt><dd>{scenario.deliveryTerms}</dd></div>
-                    <div><dt>Evidence before payment</dt><dd>{scenario.evidenceBeforePayment}</dd></div>
-                    <div><dt>Evidence before shipment</dt><dd>{scenario.evidenceBeforeShipment}</dd></div>
-                    <div><dt>Contract strength</dt><dd>{scenario.contractStrength}</dd></div>
-                    <div><dt>Acceptance impact</dt><dd>{scenario.acceptanceImpact}</dd></div>
-                  </dl>
-                </section>
-              ))}
-            </div>
             <aside className={styles.contractReleaseSurface} aria-live="polite" aria-label="Selected contract release decision">
               <div>
                 <p className={styles.eyebrow}>Contract release decision</p>
@@ -2528,37 +2496,76 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </ul>
               </div>
             </aside>
-            <div className={styles.contractValueGrid} aria-label="Contract value controls">
-              {contractValueControls.map(([title, detail, artifact]) => (
-                <section key={title}>
-                  <span>{title}</span>
-                  <strong>{detail}</strong>
-                  <p>{artifact}</p>
-                </section>
-              ))}
-            </div>
-            <div className={styles.contractGateMatrix} role="table" aria-label="Contract gate matrix">
-              <div role="row" className={styles.contractGateHeader}>
-                <span role="columnheader">Decision area</span>
-                <span role="columnheader">Options / evidence</span>
-                <span role="columnheader">Owner</span>
-                <span role="columnheader">Readiness signal</span>
-                <span role="columnheader">UPGRADE role</span>
-              </div>
-              {contractGateMatrix.map(([area, options, owner, signal, role]) => (
-                <div key={area} role="row" className={styles.contractGateRow}>
-                  <strong role="cell"><span className={styles.matrixCellLabel}>Decision area</span>{area}</strong>
-                  <span role="cell"><span className={styles.matrixCellLabel}>Options / evidence</span>{options}</span>
-                  <span role="cell"><span className={styles.matrixCellLabel}>Owner</span>{owner}</span>
-                  <em role="cell"><span className={styles.matrixCellLabel}>Readiness signal</span>{signal}</em>
-                  <small role="cell"><span className={styles.matrixCellLabel}>UPGRADE role</span>{role}</small>
-                </div>
-              ))}
-            </div>
             <div className={styles.contractDecisionSummary}>
               <h4>Current decision frame</h4>
               <p>{contractScenario.title}: {contractScenario.decisionSignal}. UPGRADE фиксирует status, evidence request и boundary; WinGPro и профильные участники принимают финальные коммерческие, технические, юридические и операционные решения.</p>
             </div>
+            <details className={styles.contractDetailsDisclosure}>
+              <summary>
+                <span>Contract decision detail</span>
+                <strong>Открыть payment scenarios, evidence gates и contract matrix</strong>
+                <small>Детали условий раскрываются по запросу; UPGRADE структурирует decision board, а WinGPro и профильные участники утверждают решения.</small>
+              </summary>
+              <div className={styles.contractScenarioTabs} role="tablist" aria-label="Contract decision scenarios">
+                {contractScenarios.map((scenario) => (
+                  <button
+                    key={scenario.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeContractScenario === scenario.id}
+                    aria-controls={`contract-scenario-${scenario.id}`}
+                    onClick={() => setActiveContractScenario(scenario.id)}
+                  >
+                    {scenario.title}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.contractScenarioPanels}>
+                {contractScenarios.map((scenario) => (
+                  <section key={scenario.id} id={`contract-scenario-${scenario.id}`} role="tabpanel" hidden={activeContractScenario !== scenario.id}>
+                    <div className={styles.scenarioHero}>
+                      <h4>{scenario.title}</h4>
+                      <StatusPill value={scenario.decisionSignal} />
+                    </div>
+                    <dl className={styles.simulatorGrid}>
+                      <div><dt>Payment scenario</dt><dd>{scenario.payment}</dd></div>
+                      <div><dt>Delivery terms</dt><dd>{scenario.deliveryTerms}</dd></div>
+                      <div><dt>Evidence before payment</dt><dd>{scenario.evidenceBeforePayment}</dd></div>
+                      <div><dt>Evidence before shipment</dt><dd>{scenario.evidenceBeforeShipment}</dd></div>
+                      <div><dt>Contract strength</dt><dd>{scenario.contractStrength}</dd></div>
+                      <div><dt>Acceptance impact</dt><dd>{scenario.acceptanceImpact}</dd></div>
+                    </dl>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.contractValueGrid} aria-label="Contract value controls">
+                {contractValueControls.map(([title, detail, artifact]) => (
+                  <section key={title}>
+                    <span>{title}</span>
+                    <strong>{detail}</strong>
+                    <p>{artifact}</p>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.contractGateMatrix} role="table" aria-label="Contract gate matrix">
+                <div role="row" className={styles.contractGateHeader}>
+                  <span role="columnheader">Decision area</span>
+                  <span role="columnheader">Options / evidence</span>
+                  <span role="columnheader">Owner</span>
+                  <span role="columnheader">Readiness signal</span>
+                  <span role="columnheader">UPGRADE role</span>
+                </div>
+                {contractGateMatrix.map(([area, options, owner, signal, role]) => (
+                  <div key={area} role="row" className={styles.contractGateRow}>
+                    <strong role="cell"><span className={styles.matrixCellLabel}>Decision area</span>{area}</strong>
+                    <span role="cell"><span className={styles.matrixCellLabel}>Options / evidence</span>{options}</span>
+                    <span role="cell"><span className={styles.matrixCellLabel}>Owner</span>{owner}</span>
+                    <em role="cell"><span className={styles.matrixCellLabel}>Readiness signal</span>{signal}</em>
+                    <small role="cell"><span className={styles.matrixCellLabel}>UPGRADE role</span>{role}</small>
+                  </div>
+                ))}
+              </div>
+            </details>
           </article>
 
           <article className={styles.deliveryTimeline} id="delivery-timeline" data-section="delivery-timeline">
