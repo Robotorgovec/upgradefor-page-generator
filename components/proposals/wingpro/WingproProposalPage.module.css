@@ -2853,6 +2853,65 @@
   font-weight: 760;
 }
 
+.vaultCommandStrip {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  grid-template-columns: minmax(220px, 1.1fr) repeat(3, minmax(0, 1fr)) minmax(220px, 0.86fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.vaultCommandStrip > div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.vaultCommandStrip span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.vaultCommandStrip p {
+  margin: 6px 0 0;
+  color: var(--proposal-text);
+  font-weight: 820;
+  line-height: 1.38;
+}
+
+.vaultQuickActions {
+  display: grid;
+  gap: 8px;
+  align-content: stretch;
+}
+
+.vaultQuickActions button {
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.vaultQuickActions button:hover {
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
 .modeSwitch {
   padding: 5px;
   border: 1px solid var(--proposal-border);
@@ -3577,6 +3636,7 @@
   .controlGrid,
   .routeDataSurface,
   .vaultReadinessBoard,
+  .vaultCommandStrip,
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
@@ -3628,6 +3688,7 @@
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
   .vaultStats,
+  .vaultCommandStrip,
   .riskResponseSurface dl,
   .gateControlSurface dl,
   .handoverControlSurface dl,
@@ -3899,6 +3960,7 @@
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
   .vaultStats,
+  .vaultCommandStrip,
   .riskResponseSurface dl,
   .gateControlSurface dl,
   .timelineRows,

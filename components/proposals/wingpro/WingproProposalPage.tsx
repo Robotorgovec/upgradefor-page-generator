@@ -1251,6 +1251,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const visibleDocs = vaultDocs.filter((doc) => isDocVisible(doc));
   const visibleOpenDocs = visibleDocs.filter((doc) => doc[5] === "missing" || doc[5] === "requested");
   const visibleReadyDocs = visibleDocs.filter((doc) => doc[5] === "ready").length;
+  const vaultActiveQuery = [
+    ["category", vaultCategory],
+    ["status", vaultStatus],
+    ["owner", vaultOwner],
+    ["gate", vaultGate],
+    ["impact", vaultImpact],
+    ["mode", vaultMode],
+  ].filter(([, value]) => value !== "all" && value !== "vault");
+  const vaultOwnerQueue = uniqueList(visibleOpenDocs.map((doc) => doc[4]));
+  const vaultReleaseQueue = uniqueList(visibleOpenDocs.map((doc) => getVaultReleaseLane(doc[3])));
+  const vaultResponsePackage = [
+    ["owners", vaultOwnerQueue.length ? vaultOwnerQueue.join(" / ") : "no open owner queue"],
+    ["release focus", vaultReleaseQueue.length ? vaultReleaseQueue.join(" / ") : "filtered scope ready"],
+    ["next evidence request", visibleOpenDocs[0]?.[10] ?? "no missing/requested evidence in current filter"],
+  ] as const;
   const vaultReadinessStats = [
     ["visible documents", String(visibleDocs.length), "current filtered operating scope"],
     ["open evidence", String(visibleOpenDocs.length), "missing or requested items that need owner response"],
@@ -1280,6 +1295,24 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       (vaultImpact === "all" || doc[6] === vaultImpact) &&
       (vaultMode !== "missing" || doc[5] === "missing" || doc[5] === "requested")
     );
+  }
+
+  function resetVaultFilters() {
+    setVaultCategory("all");
+    setVaultStatus("all");
+    setVaultOwner("all");
+    setVaultGate("all");
+    setVaultImpact("all");
+    setVaultMode("vault");
+  }
+
+  function showVaultOpenItems() {
+    setVaultCategory("all");
+    setVaultStatus("all");
+    setVaultOwner("all");
+    setVaultGate("all");
+    setVaultImpact("all");
+    setVaultMode("missing");
   }
 
   function selectScene(id: SceneId) {
@@ -2276,6 +2309,22 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <select aria-label="owner" value={vaultOwner} onChange={(event) => setVaultOwner(event.target.value)}><option value="all">all owners</option>{owners.map((item) => <option key={item}>{item}</option>)}</select>
           <select aria-label="release gate" value={vaultGate} onChange={(event) => setVaultGate(event.target.value)}><option value="all">all gates</option>{gatesList.map((item) => <option key={item}>{item}</option>)}</select>
           <select aria-label="impact" value={vaultImpact} onChange={(event) => setVaultImpact(event.target.value)}><option value="all">all impacts</option>{["quality", "time", "commercial", "customs", "mounting"].map((item) => <option key={item}>{item}</option>)}</select>
+        </div>
+        <div className={styles.vaultCommandStrip} aria-live="polite" aria-label="Document Vault active command">
+          <div>
+            <span>active query</span>
+            <p>{vaultActiveQuery.length ? vaultActiveQuery.map(([label, value]) => `${label}: ${value}`).join(" / ") : "all documents / vault mode"}</p>
+          </div>
+          {vaultResponsePackage.map(([label, value]) => (
+            <div key={label}>
+              <span>{label}</span>
+              <p>{value}</p>
+            </div>
+          ))}
+          <div className={styles.vaultQuickActions}>
+            <button type="button" onClick={showVaultOpenItems}>Show missing/requested</button>
+            <button type="button" onClick={resetVaultFilters}>Reset filters</button>
+          </div>
         </div>
         <div className={styles.modeSwitch} role="group" aria-label="vault mode">
           {(["vault", "timeline", "owner", "missing"] as VaultMode[]).map((mode) => <button key={mode} type="button" aria-pressed={vaultMode === mode} onClick={() => setVaultMode(mode)}>{mode}</button>)}
