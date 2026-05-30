@@ -11,7 +11,8 @@ PR: https://github.com/Robotorgovec/upgradefor-page-generator/pull/292
 ## View Links
 
 - Local review URL: http://127.0.0.1:3066/dispatch
-- Preview URL: pending after push
+- Preview URL: https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch
+- Manual CLI preview URL: https://dispatch-3d-equipment-models-and-selection-nnn7mldxd.vercel.app/dispatch returned `401` because that deployment is Vercel-protected, so the public branch alias above is the valid review URL.
 
 ## What Changed
 
@@ -61,6 +62,8 @@ No 3D assets, equipment data, read-only command logic, backend/API, or BMS/SCADA
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false` — failed on known legacy non-dispatch groups: account searchParams, selector Prisma/logs, beauty grids, copper-aluminum manufacturers
 - `git diff --check` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed, 10/10
+- External full-page capture on the branch preview — passed; desktop/mobile global horizontal overflow `false`, and `twinStage` is absent from preview overflow samples
 
 ## What Sergey Should Review
 
