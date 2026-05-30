@@ -7,7 +7,8 @@ Micro-goal: add a repeatable action-flow audit for dispatch section actions, pas
 ## View Links
 
 - Local review target used for QA: <http://127.0.0.1:3065/dispatch>
-- Preview URL: pending Git/Vercel branch deployment for this commit
+- Vercel preview `/dispatch`: <https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch>
+- Vercel deployment URL: <https://upgradefor-page-generator-j9n7hf75j-bacalimser-8615s-projects.vercel.app>
 
 ## What Changed
 
@@ -61,6 +62,8 @@ Micro-goal: add a repeatable action-flow audit for dispatch section actions, pas
 - Mobile global horizontal overflow: false.
 - Action-flow verifier passed locally.
 - Preview suite now includes 10 checks after adding `action-flows`.
+- External preview suite passed 10/10, including `action-flows`.
+- External preview full-page review passed with 12/12 sections plus mobile capture.
 - Remaining local samples are still mostly the digital-twin stage/node map and intentionally scrollable bottom navigation.
 
 ## Commands
@@ -76,6 +79,16 @@ Micro-goal: add a repeatable action-flow audit for dispatch section actions, pas
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false 2>&1 | rg 'dispatch|Dispatch' || true` — no dispatch TypeScript output after build
 - `git diff --check` — passed
+- `npx vercel inspect https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app --wait` — READY
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed, 10/10 checks
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/capture-dispatch-fullpage-review.mjs ...` — passed
+
+## Preview Result
+
+- Vercel deployment state: READY.
+- Preview smoke: passed, 10/10 checks.
+- Preview full-page review: passed, 12/12 sections captured plus mobile.
+- Preview screenshots: `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-032-preview/`.
 
 ## Next Recommended Cycle
 
