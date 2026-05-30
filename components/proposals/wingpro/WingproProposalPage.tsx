@@ -1407,6 +1407,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const activeFieldTasks = fieldTasks.filter((task) => task[1] === activeFieldStatus);
   const evidenceCard = evidenceCards.find(([phase]) => phase === activeEvidencePhase) ?? evidenceCards[0];
   const evidenceHandoff = evidenceHandoffLinks.find((item) => item.phase === activeEvidencePhase) ?? evidenceHandoffLinks[0];
+  const participant = participants.find((item) => item.name === activeParticipant) ?? participants[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
   const riskVaultDocs = vaultDocs.filter((doc) => (
@@ -2929,6 +2930,32 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           {statusLine.map(([name, status]) => <article key={name}><span>{name}</span><StatusPill value={status} /></article>)}
         </div>
         <div className={styles.controlGrid}>
+          <article className={styles.controlActiveSurface} aria-live="polite" aria-label="Selected project participant">
+            <p className={styles.eyebrow}>Active participant</p>
+            <h3>{participant.name}</h3>
+            <p>{participant.flow}</p>
+            <dl>
+              <div><dt>UPGRADE структурирует</dt><dd>{participant.upgrade}</dd></div>
+              <div><dt>не UPGRADE утверждает</dt><dd>{participant.outside}</dd></div>
+            </dl>
+          </article>
+          <aside className={styles.nextActions}>
+            <h3>Next best actions</h3>
+            <ul>
+              {["запросить packing data", "подтвердить pressure class", "запросить nameplate photo", "сверить broker input", "передать mounting questions"].map((item) => <li key={item}>{item}</li>)}
+            </ul>
+            <h3>External dependencies</h3>
+            <ul>
+              {["supplier response time", "factory production", "logistics availability", "broker/customs", "mounting contractor", "technical approval by WinGPro"].map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </aside>
+        </div>
+        <details className={styles.controlParticipantsDisclosure}>
+          <summary>
+            <span>Participant map</span>
+            <strong>Открыть карту участников и зон ответственности</strong>
+            <small>Активный участник остается сверху; полная карта ролей раскрывается по запросу.</small>
+          </summary>
           <div className={styles.participantMap}>
             {participants.map((item) => (
               <button key={item.name} type="button" data-active={activeParticipant === item.name} onClick={() => setActiveParticipant(item.name)}>
@@ -2948,17 +2975,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <aside className={styles.nextActions}>
-            <h3>Next best actions</h3>
-            <ul>
-              {["запросить packing data", "подтвердить pressure class", "запросить nameplate photo", "сверить broker input", "передать mounting questions"].map((item) => <li key={item}>{item}</li>)}
-            </ul>
-            <h3>External dependencies</h3>
-            <ul>
-              {["supplier response time", "factory production", "logistics availability", "broker/customs", "mounting contractor", "technical approval by WinGPro"].map((item) => <li key={item}>{item}</li>)}
-            </ul>
-          </aside>
-        </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.routeMap, "routeMap")} data-section="route-map" aria-labelledby="route-title">
