@@ -49,6 +49,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-passport-scada-tags.mjs",
     usesBrowser: true,
   },
+  {
+    id: "ai-categories",
+    script: "scripts/asset-qa/verify-dispatch-ai-categories.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {

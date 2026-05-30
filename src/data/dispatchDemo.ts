@@ -160,8 +160,10 @@ export type DispatchAlarmEvent = {
 
 export type DispatchAiInsight = {
   id: string;
+  category: "data-quality" | "predictive-maintenance" | "energy-optimization" | "operational-risk";
   title: string;
   value: string;
+  description: string;
   equipmentId?: string;
 };
 
@@ -918,8 +920,34 @@ export const alarmEvents: DispatchAlarmEvent[] = [
 ];
 
 export const dispatchAiInsights: DispatchAiInsight[] = [
-  { id: "anomaly", title: "Data quality insight", value: "DP DATA_ERROR", equipmentId: "pump-shu2" },
-  { id: "failure", title: "Прогнозирование отказов", value: "риск по 3 единицам оборудования" },
-  { id: "energy", title: "Оптимизация энергопотребления", value: "экономия до 15%", equipmentId: "chiller-ch1" },
-  { id: "recommend", title: "Рекомендации AI", value: "доступно 4 рекомендации" },
+  {
+    id: "anomaly",
+    category: "data-quality",
+    title: "Data quality insight",
+    value: "DP DATA_ERROR",
+    description: "Raw DP tag is quarantined until scaling/register mapping is verified.",
+    equipmentId: "pump-shu2",
+  },
+  {
+    id: "failure",
+    category: "predictive-maintenance",
+    title: "Прогнозирование отказов",
+    value: "риск по 3 единицам оборудования",
+    description: "Frequency, event count, and DP instability are demo-only maintenance indicators.",
+  },
+  {
+    id: "energy",
+    category: "energy-optimization",
+    title: "Оптимизация энергопотребления",
+    value: "экономия до 15%",
+    description: "Savings are a demo estimate from normalized trend context, not a guarantee.",
+    equipmentId: "chiller-ch1",
+  },
+  {
+    id: "recommend",
+    category: "operational-risk",
+    title: "Рекомендации AI",
+    value: "доступно 4 рекомендации",
+    description: "Recommendations guide operator review and do not execute equipment commands.",
+  },
 ];

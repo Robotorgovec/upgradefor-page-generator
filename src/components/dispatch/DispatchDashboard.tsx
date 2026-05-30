@@ -11,6 +11,7 @@ import {
   realtimeMetrics,
   trendSeries,
   type DispatchAlarmEvent,
+  type DispatchAiInsight,
   type DispatchEquipmentNode,
   type DispatchSection,
   type DispatchTrendKey,
@@ -34,6 +35,32 @@ const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить
 const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
 const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
 const readonlyUserRole = "Operator";
+const aiInsightCategories: Array<{
+  id: DispatchAiInsight["category"];
+  title: string;
+  helper: string;
+}> = [
+  {
+    id: "data-quality",
+    title: "Data quality",
+    helper: "Tag validity, scaling and historian confidence",
+  },
+  {
+    id: "predictive-maintenance",
+    title: "Predictive maintenance",
+    helper: "Failure risk from events and unstable telemetry",
+  },
+  {
+    id: "energy-optimization",
+    title: "Energy optimization",
+    helper: "Demo estimates from normalized trend context",
+  },
+  {
+    id: "operational-risk",
+    title: "Operational risk",
+    helper: "Guidance for operator review, tickets and audit trail",
+  },
+];
 const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
   "ahu-pv1": "assembled",
   chiller: "assembled",
@@ -580,25 +607,45 @@ export default function DispatchDashboard() {
               <p className="eyebrow">AI analytics</p>
               <h2>AI-аналитика и прогнозирование</h2>
             </div>
-            <div className="aiGrid">
-              {dispatchAiInsights.map((insight) => (
-                <button
-                  className="aiInsight"
-                  key={insight.id}
-                  type="button"
-                  onClick={() => {
-                    const node = dispatchEquipmentNodes.find((item) => item.id === insight.equipmentId);
-                    if (node) {
-                      selectEquipment(node, insight.id === "anomaly" ? "ai" : undefined);
-                    } else {
-                      selectSection("ai");
-                    }
-                  }}
-                >
-                  <span>{insight.title}</span>
-                  <strong>{insight.value}</strong>
-                </button>
-              ))}
+            <div className="aiCategoryStack" data-testid="dispatch-ai-categories">
+              {aiInsightCategories.map((category) => {
+                const categoryInsights = dispatchAiInsights.filter((insight) => insight.category === category.id);
+
+                return (
+                  <section
+                    className="aiCategoryGroup"
+                    data-testid={`dispatch-ai-category-${category.id}`}
+                    key={category.id}
+                  >
+                    <div className="aiCategoryHeader">
+                      <span>{category.title}</span>
+                      <small>{category.helper}</small>
+                    </div>
+                    <div className="aiGrid">
+                      {categoryInsights.map((insight) => (
+                        <button
+                          className="aiInsight"
+                          data-testid={`dispatch-ai-insight-${insight.id}`}
+                          key={insight.id}
+                          type="button"
+                          onClick={() => {
+                            const node = dispatchEquipmentNodes.find((item) => item.id === insight.equipmentId);
+                            if (node) {
+                              selectEquipment(node, insight.id === "anomaly" ? "ai" : undefined);
+                            } else {
+                              selectSection("ai");
+                            }
+                          }}
+                        >
+                          <span>{insight.title}</span>
+                          <strong>{insight.value}</strong>
+                          <small>{insight.description}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
             <form className="aiInput" onSubmit={handleAiSubmit}>
               <input aria-label="AI assistant" placeholder="Задайте вопрос по объекту..." />
@@ -1615,8 +1662,40 @@ export default function DispatchDashboard() {
 
         .aiGrid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 8px;
+        }
+
+        .aiCategoryStack {
+          display: grid;
+          gap: 10px;
+        }
+
+        .aiCategoryGroup {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.34);
+          padding: 9px;
+        }
+
+        .aiCategoryHeader {
+          display: grid;
+          gap: 3px;
+          margin-bottom: 7px;
+        }
+
+        .aiCategoryHeader span {
+          color: #67e8f9;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .aiCategoryHeader small,
+        .aiInsight small {
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.35;
         }
 
         .aiInput {
