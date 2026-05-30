@@ -1,25 +1,25 @@
-# Cycle 49 self-review
+# Cycle 50 self-review
 
 1. Что улучшено в этом цикле?
-Offer Comparison Board переведен в full-width decision surface, а comparison matrix на desktop стала настоящей 6-column board с header row вместо карточек, растянутых в несколько строк.
+Contract Decision Simulator переведен в full-width decision surface, а Contract Gate Matrix стала компактной 5-column board на desktop с сохранением card labels на tablet/mobile.
 
 2. Как это помогает заказчику принять решение?
-WinGPro быстрее сравнивает кандидатов, видит decision signal и owner в одном горизонтальном контуре, без ощущения, что выбор условий спрятан в длинной ленте карточек.
+WinGPro быстрее видит, какие зоны решения есть в договорном контуре: payment/evidence/delivery/acceptance/boundary, кто owner и где роль UPGRADE, без длинного card-stack.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Offer Comparison теперь больше похож на decision board: selected mode, gates, risks controlled и matrix читаются как единый слой выбора маршрута.
+Да. Contract layer теперь больше похож на release decision board: scenario tabs, selected release decision, value controls и gate matrix читаются как единый блок согласования.
 
 4. Стало ли интерактивнее?
-Интерактивная модель сохранена: tabs `Evidence-led / Price-led / Speed-led` переключают selected offer decision surface. Цикл улучшил визуальную упаковку без добавления новой секции.
+Интерактивная модель сохранена: contract scenario tabs переключают selected contract release decision. Цикл улучшил упаковку и плотность без добавления новых секций.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Тексты не менялись; UPGRADE остается decision support / IT-data coordination, а финальное коммерческое и техническое решение остается за WinGPro и профильными участниками.
+Нет. Тексты не менялись; UPGRADE остается IT/data и coordination partner, не юридический консультант, не поставщик, не проектировщик и не монтажная организация.
 
 6. Не были ли изменены forbidden files?
 Нет. Изменен только `components/proposals/wingpro/WingproProposalPage.module.css` и runtime QA artifacts/screenshots.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. QA: local canonical 200, asset 200, image proof `currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0. Offer Matrix noClip=true, rows noClip=true, tabs switch to `Price-led`. Desktop row max height is 103px; 375px improved to 331px. 320px remains dense but stable and readable, so deeper mobile matrix compression should be a separate micro-goal.
+Нет. QA: local canonical 200, asset 200, image proof `currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0. Contract Matrix noClip=true, rows noClip=true, scenario tab switches to `Evidence-first`. Desktop contract row max height is 72px at 1440 and 87px at 1280.
 
 8. Что следующий самый полезный micro-goal?
-MODE=INTERACTIVE/DESIGN: tighten mobile Offer Matrix or compress Contract Gate Matrix with overview-first/detail-on-demand, without hiding critical data or introducing inner scroll.
+MODE=DESIGN/QA: review the combined Project Control area after Offer + Contract full-width changes and tighten any remaining vertical rhythm or mobile density issues without introducing hidden scroll.

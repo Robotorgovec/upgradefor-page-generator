@@ -2255,6 +2255,7 @@
 
 .deliveryTimeline,
 .offerBoard,
+.contractSimulator,
 .workPlanBuilder,
 .fieldBoard,
 .evidenceWall,
@@ -2913,21 +2914,36 @@
 
 .contractGateMatrix {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .contractGateRow {
   display: grid;
-  grid-template-columns: minmax(150px, 0.9fr) repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  padding: 12px;
+  grid-template-columns:
+    minmax(140px, 0.84fr)
+    minmax(0, 1.15fr)
+    minmax(110px, 0.62fr)
+    minmax(130px, 0.82fr)
+    minmax(150px, 0.96fr);
+  gap: 7px;
+  padding: 8px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   background: #ffffff;
 }
 
 .contractGateHeader {
-  display: none;
+  display: grid;
+  grid-template-columns:
+    minmax(140px, 0.84fr)
+    minmax(0, 1.15fr)
+    minmax(110px, 0.62fr)
+    minmax(130px, 0.82fr)
+    minmax(150px, 0.96fr);
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
   color: var(--proposal-text);
   background: var(--proposal-surface-soft);
   font-size: 12px;
@@ -2938,7 +2954,7 @@
 .contractGateHeader span,
 .contractGateRow > * {
   min-width: 0;
-  padding: 10px;
+  padding: 9px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   background: var(--proposal-surface-soft);
@@ -2958,9 +2974,18 @@
 .contractGateRow em,
 .contractGateRow small {
   color: var(--proposal-text-soft);
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
-  line-height: 1.45;
+  line-height: 1.35;
+}
+
+.contractGateRow strong {
+  font-size: 13px;
+  line-height: 1.32;
+}
+
+.contractGateMatrix .matrixCellLabel {
+  display: none;
 }
 
 .timelineRows {
@@ -5220,6 +5245,14 @@
 
   .contractGateHeader {
     display: none;
+  }
+
+  .contractGateMatrix .matrixCellLabel {
+    display: block;
+  }
+
+  .contractGateRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .closeoutHeader {
