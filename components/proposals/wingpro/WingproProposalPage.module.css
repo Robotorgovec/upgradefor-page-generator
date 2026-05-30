@@ -2527,19 +2527,22 @@
 }
 
 .offerMatrix {
+  display: grid;
+  gap: 10px;
+}
+
+.offerMatrixRow {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.8fr) repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  overflow: hidden;
   background: #ffffff;
 }
 
-.offerMatrixHeader,
-.offerMatrixRow {
-  display: grid;
-  grid-template-columns: minmax(120px, 0.75fr) repeat(3, minmax(130px, 1fr)) minmax(160px, 1.2fr) minmax(120px, 0.8fr);
-}
-
 .offerMatrixHeader {
+  display: none;
   color: var(--proposal-text);
   background: var(--proposal-surface-soft);
   font-size: 12px;
@@ -2549,14 +2552,17 @@
 
 .offerMatrixHeader span,
 .offerMatrixRow > * {
-  border-right: 1px solid var(--proposal-border);
-  border-bottom: 1px solid var(--proposal-border);
-  padding: 11px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: var(--proposal-surface-soft);
+  overflow-wrap: anywhere;
 }
 
 .offerMatrixHeader span:last-child,
 .offerMatrixRow > *:last-child {
-  border-right: 0;
+  border-right: 1px solid var(--proposal-border);
 }
 
 .offerMatrixRow span,
@@ -2566,6 +2572,21 @@
   font-size: 13px;
   font-style: normal;
   line-height: 1.45;
+}
+
+.matrixCellLabel {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.offerMatrixRow strong {
+  color: var(--proposal-text);
 }
 
 .comparisonRows div {
@@ -2745,19 +2766,22 @@
 }
 
 .contractGateMatrix {
+  display: grid;
+  gap: 10px;
+}
+
+.contractGateRow {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.9fr) repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  overflow: hidden;
   background: #ffffff;
 }
 
-.contractGateHeader,
-.contractGateRow {
-  display: grid;
-  grid-template-columns: minmax(140px, 0.9fr) minmax(180px, 1.4fr) minmax(140px, 0.9fr) minmax(160px, 1fr) minmax(160px, 1fr);
-}
-
 .contractGateHeader {
+  display: none;
   color: var(--proposal-text);
   background: var(--proposal-surface-soft);
   font-size: 12px;
@@ -2767,14 +2791,17 @@
 
 .contractGateHeader span,
 .contractGateRow > * {
-  border-right: 1px solid var(--proposal-border);
-  border-bottom: 1px solid var(--proposal-border);
-  padding: 11px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: var(--proposal-surface-soft);
+  overflow-wrap: anywhere;
 }
 
 .contractGateHeader span:last-child,
 .contractGateRow > *:last-child {
-  border-right: 0;
+  border-right: 1px solid var(--proposal-border);
 }
 
 .contractGateRow strong {

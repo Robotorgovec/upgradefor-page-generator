@@ -1,0 +1,58 @@
+{
+  "matrixAudit": {
+    "offer": {
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "clientWidth": 480,
+      "scrollWidth": 480,
+      "clientHeight": 1321,
+      "scrollHeight": 1321,
+      "rowCount": 6,
+      "labelCount": 30
+    },
+    "contract": {
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "clientWidth": 480,
+      "scrollWidth": 480,
+      "clientHeight": 1162,
+      "scrollHeight": 1162,
+      "rowCount": 6,
+      "labelCount": 25
+    }
+  },
+  "scrollAudit": {
+    "unexpectedScrollContainers": [],
+    "horizontalClips": [],
+    "sticky": [
+      {
+        "selector": "nav.WingproProposalPage-module__pm2b_G__miniNav",
+        "overflowY": "visible",
+        "overflowX": "visible",
+        "position": "sticky",
+        "clientHeight": 53,
+        "scrollHeight": 53,
+        "clientWidth": 1118,
+        "scrollWidth": 1118,
+        "createsScrollY": false,
+        "createsScrollX": false,
+        "scrollingY": false,
+        "scrollingX": false
+      },
+      {
+        "selector": "section.WingproProposalPage-module__pm2b_G__commandLayer",
+        "overflowY": "visible",
+        "overflowX": "visible",
+        "position": "sticky",
+        "clientHeight": 695,
+        "scrollHeight": 695,
+        "clientWidth": 1118,
+        "scrollWidth": 1118,
+        "createsScrollY": false,
+        "createsScrollX": false,
+        "scrollingY": false,
+        "scrollingX": false
+      }
+    ]
+  }
+}

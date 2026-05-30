@@ -2232,12 +2232,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </div>
               {offerComparison.map((row) => (
                 <div key={row.metric} role="row" className={styles.offerMatrixRow}>
-                  <strong role="cell">{row.metric}</strong>
-                  <span role="cell">{row.candidateA}</span>
-                  <span role="cell">{row.candidateB}</span>
-                  <span role="cell">{row.candidateC}</span>
-                  <em role="cell">{row.decisionSignal}</em>
-                  <small role="cell">{row.owner}</small>
+                  <strong role="cell"><span className={styles.matrixCellLabel}>Metric</span>{row.metric}</strong>
+                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate A</span>{row.candidateA}</span>
+                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate B</span>{row.candidateB}</span>
+                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate C</span>{row.candidateC}</span>
+                  <em role="cell"><span className={styles.matrixCellLabel}>Decision signal</span>{row.decisionSignal}</em>
+                  <small role="cell"><span className={styles.matrixCellLabel}>Owner</span>{row.owner}</small>
                 </div>
               ))}
             </div>
@@ -2322,11 +2322,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </div>
               {contractGateMatrix.map(([area, options, owner, signal, role]) => (
                 <div key={area} role="row" className={styles.contractGateRow}>
-                  <strong role="cell">{area}</strong>
-                  <span role="cell">{options}</span>
-                  <span role="cell">{owner}</span>
-                  <em role="cell">{signal}</em>
-                  <small role="cell">{role}</small>
+                  <strong role="cell"><span className={styles.matrixCellLabel}>Decision area</span>{area}</strong>
+                  <span role="cell"><span className={styles.matrixCellLabel}>Options / evidence</span>{options}</span>
+                  <span role="cell"><span className={styles.matrixCellLabel}>Owner</span>{owner}</span>
+                  <em role="cell"><span className={styles.matrixCellLabel}>Readiness signal</span>{signal}</em>
+                  <small role="cell"><span className={styles.matrixCellLabel}>UPGRADE role</span>{role}</small>
                 </div>
               ))}
             </div>

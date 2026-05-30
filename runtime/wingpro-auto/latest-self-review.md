@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 39 self-review
+# CONTRACT-WINGPRO-2605281047-R067 / cycle 40 self-review
 
 1. Что улучшено в этом цикле?
-- Executive Command Layer получил arrow-key navigation для 6 presentation tabs: ArrowRight/ArrowDown, ArrowLeft/ArrowUp, Home и End меняют active mode и переводят фокус. Также устранен page-specific nested-scroll offender: hero `missionCard` больше не создает `overflow:hidden` scroll mechanism.
+- Offer Comparison Board и Contract Decision Simulator больше не используют широкие clipped matrices. Строки перепакованы в responsive card/detail rows, а cell labels находятся в DOM через `matrixCellLabel`.
 
 2. Как это помогает заказчику принять решение?
-- Command Layer теперь ведет себя как настоящий presentation controller, а hero commercial card перестает создавать конкурирующий scroll context. Пользователь остается в одном page flow и быстрее переключается между режимами решения.
+- Сравнение поставщиков и contract gate logic теперь читаются как decision cards, а не как обрезанные таблицы в узкой колонке. Это снижает когнитивную нагрузку и сохраняет один page-flow без horizontal/inner scroll.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Режимы Executive/Supplier/Contract/Delivery/Work Plan/Handover быстрее доступны с клавиатуры, а верхний hero сохраняет цену и mission card без скрытого переполнения.
+- Да. Candidate A/B/C, Decision signal, Owner и UPGRADE role теперь видны рядом с каждым decision row, а не только в header, который мог теряться или обрезаться.
 
 4. Стало ли интерактивнее?
-- Да. Keyboard smoke подтвердил переход Executive → Supplier, Home → Executive, End/ArrowLeft → Evidence & Handover. Roving tabindex оставляет один активный tab в tab order.
+- Не добавлял новый интерактив, но улучшил operator readability: существующие данные стали detail-on-demand-like cards внутри текущих модулей.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Новых liability-текстов не добавлено. Grep показал только безопасные отрицания: UPGRADE не утверждает технические параметры, не выполняет монтаж, ППР skeleton не официальный ППР.
+- Нет. Тексты ответственности не усилены. Grep показал только безопасные отрицания: UPGRADE не утверждает технические параметры, не выполняет монтаж, ППР skeleton не официальный ППР.
 
 6. Не были ли изменены forbidden files?
-- Нет. Изменены только page-specific TSX/CSS и runtime/wingpro-auto artifacts.
+- Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. Typecheck/build прошли; browser QA подтвердил page 200, asset 200, img.currentSrc + naturalWidth=2000, h1=1, noindex, no horizontal scroll на 1440/1280/768/375/320. Scroll audit внутри `[data-proposal-root]` показал `unexpectedScrollContainers: []`.
+- Нет. QA подтвердил typecheck/build, canonical local 200, asset 200, img.currentSrc + naturalWidth=2000, h1=1, noindex, no horizontal scroll на 1440/1280/768/375/320, `offerMatrix` и `contractGateMatrix` без horizontal clipping.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=INTERACTIVE/QA: продолжить scroll-in-scroll remediation по advisory, особенно разобрать horizontal clipped matrices (`offerMatrix`, `contractGateMatrix`) в responsive card/detail pattern или добавить detail-on-demand для самого длинного inline board.
+- MODE=INTERACTIVE/STRUCTURE: объединить selected supplier + contract scenario + delivery/workplan/handover в единый executive outcome summary без добавления длинных секций.

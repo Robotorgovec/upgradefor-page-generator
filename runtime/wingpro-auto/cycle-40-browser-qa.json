@@ -1,0 +1,165 @@
+{
+  "cb": 1780147446,
+  "url": "http://127.0.0.1:3092/cp/2605281047-wingpro?cb=1780147446",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3092/assets/logo/logo-black-only.png?cb=1780147446",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3092/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "matrixAudit": {
+    "offer": {
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "clientWidth": 480,
+      "scrollWidth": 480,
+      "clientHeight": 1321,
+      "scrollHeight": 1321,
+      "rowCount": 6,
+      "labelCount": 30
+    },
+    "contract": {
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "clientWidth": 480,
+      "scrollWidth": 480,
+      "clientHeight": 1162,
+      "scrollHeight": 1162,
+      "rowCount": 6,
+      "labelCount": 25
+    }
+  },
+  "scrollAudit": {
+    "unexpectedScrollContainers": [],
+    "horizontalClips": [],
+    "sticky": [
+      {
+        "selector": "nav.WingproProposalPage-module__pm2b_G__miniNav",
+        "overflowY": "visible",
+        "overflowX": "visible",
+        "position": "sticky",
+        "clientHeight": 53,
+        "scrollHeight": 53,
+        "clientWidth": 1118,
+        "scrollWidth": 1118,
+        "createsScrollY": false,
+        "createsScrollX": false,
+        "scrollingY": false,
+        "scrollingX": false
+      },
+      {
+        "selector": "section.WingproProposalPage-module__pm2b_G__commandLayer",
+        "overflowY": "visible",
+        "overflowX": "visible",
+        "position": "sticky",
+        "clientHeight": 695,
+        "scrollHeight": 695,
+        "clientWidth": 1118,
+        "scrollWidth": 1118,
+        "createsScrollY": false,
+        "createsScrollX": false,
+        "scrollingY": false,
+        "scrollingX": false
+      }
+    ]
+  },
+  "responsive": [
+    {
+      "width": 1440,
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true,
+      "offer": {
+        "clientWidth": 480,
+        "scrollWidth": 480
+      },
+      "contract": {
+        "clientWidth": 480,
+        "scrollWidth": 480
+      }
+    },
+    {
+      "width": 1280,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true,
+      "offer": {
+        "clientWidth": 400,
+        "scrollWidth": 400
+      },
+      "contract": {
+        "clientWidth": 400,
+        "scrollWidth": 400
+      }
+    },
+    {
+      "width": 768,
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true,
+      "offer": {
+        "clientWidth": 654,
+        "scrollWidth": 654
+      },
+      "contract": {
+        "clientWidth": 654,
+        "scrollWidth": 654
+      }
+    },
+    {
+      "width": 375,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true,
+      "offer": {
+        "clientWidth": 281,
+        "scrollWidth": 281
+      },
+      "contract": {
+        "clientWidth": 281,
+        "scrollWidth": 281
+      }
+    },
+    {
+      "width": 320,
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true,
+      "offer": {
+        "clientWidth": 240,
+        "scrollWidth": 240
+      },
+      "contract": {
+        "clientWidth": 240,
+        "scrollWidth": 240
+      }
+    }
+  ],
+  "content": {
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "requiredTexts": {
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Candidate A": true,
+      "Decision signal": true,
+      "UPGRADE role": true,
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true
+    }
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-40/1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-40/1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-40/768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-40/375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-40/320.png"
+  ]
+}
