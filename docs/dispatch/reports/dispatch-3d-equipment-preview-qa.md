@@ -37,17 +37,21 @@ Reusable deployed smoke command for this branch:
 ```text
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-preview.mjs
 DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-equipment-card-states.mjs
+DISPATCH_BASE_URL=<preview-url> node scripts/asset-qa/verify-dispatch-3d-viewer-boundaries.mjs
 ```
 
 The preview smoke checks `/dispatch`, all 3D equipment GLB URLs, equipment-card selection metadata, required read-only
 safety copy, and the absence of forbidden real-control claims.
 The card-state smoke opens the preview in a browser, clicks each equipment twin card, and verifies exclusive active
 selection, `aria-current`, mounted 3D canvas, no fallback state, and required read-only safety copy.
+The viewer-boundary smoke verifies that the top PV-1 passport viewer and the lower equipment twin selector are distinct
+review scopes.
 
 Structural GLB metrics and model-quality risks are tracked separately in:
 
 ```text
 docs/dispatch/reports/dispatch-3d-asset-quality-audit.md
+docs/dispatch/reports/dispatch-3d-viewer-boundary-qa.md
 ```
 
 ## Browser Evidence

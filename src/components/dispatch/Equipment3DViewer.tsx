@@ -221,7 +221,12 @@ export default function Equipment3DViewer() {
   const passportButtons = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
 
   return (
-    <section className="equipment3DSection" aria-label="3D паспорт приточной вентустановки">
+    <section
+      className="equipment3DSection"
+      aria-label="Primary PV-1 3D passport"
+      data-testid="dispatch-primary-pv1-viewer"
+      data-viewer-scope="primary-pv1-passport"
+    >
       <div className="viewerPanel">
         <div className="viewerHeader">
           <div>

@@ -31,7 +31,14 @@ export default function EquipmentTwinGrid({
   const activeTwinState = isExplodedLocked ? "assembled" : twinStates[activeEquipment.id];
 
   return (
-    <section className="equipmentTwinSection" aria-label="3D equipment twins">
+    <section
+      className="equipmentTwinSection"
+      aria-label="3D equipment twins selector"
+      data-active-twin-id={selectedTwinId}
+      data-related-twin-ids={relatedTwinIds.join(",")}
+      data-testid="dispatch-equipment-twin-selector"
+      data-viewer-scope="equipment-twin-selector"
+    >
       <div className="equipmentTwinHeader">
         <div>
           <p className="eyebrow">3D equipment twins</p>
