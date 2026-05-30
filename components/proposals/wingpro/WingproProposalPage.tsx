@@ -2294,40 +2294,46 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>Запросы, scoring, shortlist и selected rationale</h3>
               <p>UPGRADE не выбирает “на ощущениях”: каждый канал проходит через request queue, evidence gates и scoring. Финальное коммерческое решение остается за WinGPro.</p>
             </div>
-            <div className={styles.requestQueue} aria-label="Supplier request queue">
-              {supplierRequestQueue.map(([stage, request, gate]) => (
-                <section key={stage}>
-                  <strong>{stage}</strong>
-                  <p>{request}</p>
-                  <em>{gate}</em>
-                </section>
-              ))}
-            </div>
-            <div className={styles.supplierSignalGrid} aria-label="Supplier operating signals">
-              {supplierOperatingSignals.map(([signal, detail, value]) => (
-                <section key={signal}>
-                  <span>{signal}</span>
-                  <strong>{detail}</strong>
-                  <p>{value}</p>
-                </section>
-              ))}
-            </div>
-            <div className={styles.supplierWorkbench}>
-              <aside className={styles.supplierDecisionPacket} aria-live="polite" aria-label="Selected supplier decision packet">
-                <p className={styles.eyebrow}>Selected supplier decision packet</p>
-                <h4>{supplier.name}</h4>
-                <dl>
-                  <div><dt>decision signal</dt><dd>{supplier.decisionSignal}</dd></div>
-                  <div><dt>next evidence request</dt><dd>{supplier.nextEvidence}</dd></div>
-                  <div><dt>WinGPro handoff value</dt><dd>{supplier.handoffValue}</dd></div>
-                </dl>
-                <div>
-                  <strong>blockers before release</strong>
-                  <ul>
-                    {supplier.blockers.map((blocker) => <li key={blocker}>{blocker}</li>)}
-                  </ul>
-                </div>
-              </aside>
+            <aside className={styles.supplierDecisionPacket} aria-live="polite" aria-label="Selected supplier decision packet">
+              <p className={styles.eyebrow}>Selected supplier decision packet</p>
+              <h4>{supplier.name}</h4>
+              <dl>
+                <div><dt>decision signal</dt><dd>{supplier.decisionSignal}</dd></div>
+                <div><dt>next evidence request</dt><dd>{supplier.nextEvidence}</dd></div>
+                <div><dt>WinGPro handoff value</dt><dd>{supplier.handoffValue}</dd></div>
+              </dl>
+              <div>
+                <strong>blockers before release</strong>
+                <ul>
+                  {supplier.blockers.map((blocker) => <li key={blocker}>{blocker}</li>)}
+                </ul>
+              </div>
+            </aside>
+            <details className={styles.supplierDetailsDisclosure}>
+              <summary>
+                <span>Supplier evidence detail</span>
+                <strong>Открыть request queue, scoring и candidate shortlist</strong>
+                <small>Детали выбора поставщика раскрываются по запросу; решение WinGPro остается owner-controlled.</small>
+              </summary>
+              <div className={styles.requestQueue} aria-label="Supplier request queue">
+                {supplierRequestQueue.map(([stage, request, gate]) => (
+                  <section key={stage}>
+                    <strong>{stage}</strong>
+                    <p>{request}</p>
+                    <em>{gate}</em>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.supplierSignalGrid} aria-label="Supplier operating signals">
+                {supplierOperatingSignals.map(([signal, detail, value]) => (
+                  <section key={signal}>
+                    <span>{signal}</span>
+                    <strong>{detail}</strong>
+                    <p>{value}</p>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.supplierWorkbench}>
               <div className={styles.candidateStack} role="tablist" aria-label="Supplier candidates">
                 {supplierCandidates.map((candidate) => (
                   <button
@@ -2381,6 +2387,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 ))}
               </div>
             </div>
+            </details>
           </article>
 
           <article className={styles.offerBoard} id="offer-comparison-board" data-section="offer-board">
