@@ -142,10 +142,29 @@
 }
 
 .presentationSectionActive {
+  position: relative;
   border-color: color-mix(in srgb, var(--proposal-brand-border-strong) 76%, var(--proposal-border));
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--proposal-brand-border) 56%, transparent),
     var(--proposal-shadow-md);
+}
+
+.presentationSectionActive::before {
+  content: "mode focus";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 5px 8px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .commandLayer {
@@ -267,6 +286,59 @@
   font-weight: 950;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.presentationSpotlightMap {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.18fr) repeat(6, minmax(0, 1fr));
+  gap: 7px;
+  align-items: stretch;
+  padding: 8px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff);
+}
+
+.presentationSpotlightMap > span {
+  min-height: 46px;
+  display: grid;
+  place-items: center start;
+  padding: 8px 10px;
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.presentationSpotlightMap a {
+  min-height: 46px;
+  display: grid;
+  gap: 3px;
+  align-content: center;
+  padding: 8px 10px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  color: var(--proposal-text);
+  background: #ffffff;
+  text-decoration: none;
+}
+
+.presentationSpotlightMap a:hover {
+  border-color: var(--proposal-brand-border-strong);
+  color: var(--proposal-brand-contrast);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
+.presentationSpotlightMap strong {
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.presentationSpotlightMap small {
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .decisionPathRail {
@@ -4382,7 +4454,8 @@
   }
 
   .commandLayerHeader,
-  .presentationModePanel {
+  .presentationModePanel,
+  .presentationSpotlightMap {
     grid-template-columns: 1fr;
   }
 
@@ -4594,6 +4667,21 @@
 
   .presentationModeTabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .presentationSpotlightMap {
+    gap: 6px;
+  }
+
+  .presentationSpotlightMap > span,
+  .presentationSpotlightMap a {
+    min-height: 42px;
+  }
+
+  .presentationSectionActive::before {
+    position: static;
+    display: inline-grid;
+    margin-bottom: 10px;
   }
 
   .decisionPathRail {

@@ -1,0 +1,93 @@
+{
+  "cb": 1780145751,
+  "url": "http://127.0.0.1:3088/cp/2605281047-wingpro?cb=1780145751",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3088/assets/logo/logo-black-only.png?cb=1780145751",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3088/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "initial": {
+    "activeMode": "executive",
+    "spotlightCount": 6,
+    "activeSections": 6,
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow"
+  },
+  "delivery": {
+    "activeMode": "delivery",
+    "selectedTab": "Delivery Control",
+    "spotlightTexts": [
+      "Digital Twinобъект сделки",
+      "Control Roomучастники и owners",
+      "Route MapChina → Kazakhstan",
+      "Document Vaultдокументы и evidence",
+      "Release Gatesготовность данных"
+    ],
+    "activeSections": 5
+  },
+  "anchorProof": {
+    "hash": "#route-title",
+    "routeTitleVisible": true
+  },
+  "copyStatus": "Copied with fallback",
+  "reducedMotion": true,
+  "responsive": [
+    {
+      "width": 1440,
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true
+    },
+    {
+      "width": 1280,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true
+    },
+    {
+      "width": 768,
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true
+    },
+    {
+      "width": 375,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true
+    },
+    {
+      "width": 320,
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true
+    }
+  ],
+  "content": {
+    "In focus now": true,
+    "Digital Twin": true,
+    "Control Room": true,
+    "Route Map": true,
+    "Document Vault": true,
+    "Risk Radar": true,
+    "Release gates": true,
+    "Handover Room": true,
+    "3 000 000 ₸ без НДС": true,
+    "не комиссия за контакт поставщика": true,
+    "не является поставщиком": true,
+    "не является проектировщиком": true,
+    "не является монтажной организацией": true
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-37/1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-37/1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-37/768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-37/375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-37/320.png"
+  ]
+}

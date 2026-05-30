@@ -1305,6 +1305,23 @@ const presentationModes: Array<{
   },
 ];
 
+const sectionSpotlightLabels: Record<string, { label: string; href: string; signal: string }> = {
+  hero: { label: "Mission Cover", href: "#mission", signal: "результат и стоимость" },
+  digitalTwin: { label: "Digital Twin", href: "#digital-twin", signal: "объект сделки" },
+  filmstrip: { label: "Filmstrip", href: "#filmstrip", signal: "сценарий сделки" },
+  valueOs: { label: "Value OS", href: "#value-title", signal: "почему 3 000 000 ₸" },
+  projectControl: { label: "Control Scale", href: "#project-control", signal: "модули управления" },
+  controlRoom: { label: "Control Room", href: "#control-room", signal: "участники и owners" },
+  routeMap: { label: "Route Map", href: "#route-title", signal: "China → Kazakhstan" },
+  vault: { label: "Document Vault", href: "#vault", signal: "документы и evidence" },
+  riskRadar: { label: "Risk Radar", href: "#risk-radar", signal: "response pack" },
+  releaseGates: { label: "Release Gates", href: "#release-gates", signal: "готовность данных" },
+  statusOfCustomer: { label: "WinGPro Status", href: "#customer-title", signal: "зрелый заказчик" },
+  handoverRoom: { label: "Handover Room", href: "#handover", signal: "пакеты передачи" },
+  acceptance: { label: "Acceptance", href: "#acceptance-title", signal: "решение и оплата" },
+  copyPackage: { label: "Board Pack", href: "#copy-title", signal: "сообщения для отправки" },
+};
+
 function StatusPill({ value }: { value: string }) {
   return <span className={styles.statusPill} data-status={value}>{value}</span>;
 }
@@ -1702,6 +1719,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
+        <div className={styles.presentationSpotlightMap} aria-label="Active presentation spotlight map">
+          <span>In focus now</span>
+          {activePresentation.sections.map((section) => {
+            const item = sectionSpotlightLabels[section];
+            if (!item) return null;
+            return (
+              <a key={section} href={item.href}>
+                <strong>{item.label}</strong>
+                <small>{item.signal}</small>
+              </a>
+            );
+          })}
+        </div>
         <details className={styles.commandDisclosure}>
           <summary>
             <span className={styles.eyebrow}>Decision Path</span>
