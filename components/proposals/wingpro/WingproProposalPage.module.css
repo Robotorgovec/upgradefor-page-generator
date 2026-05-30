@@ -1473,6 +1473,68 @@
   line-height: 1.45;
 }
 
+.offerDecisionSurface {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  grid-template-columns: minmax(160px, 0.42fr) minmax(0, 0.84fr) minmax(190px, 0.46fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.offerDecisionSurface h4 {
+  margin: 0 0 8px;
+  color: var(--proposal-text);
+  font-size: 22px;
+}
+
+.offerDecisionSurface dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.offerDecisionSurface dl div,
+.offerDecisionSurface > div:last-child {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.offerDecisionSurface dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.offerDecisionSurface dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  font-weight: 820;
+  line-height: 1.42;
+}
+
+.offerDecisionSurface strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--proposal-text);
+}
+
+.offerDecisionSurface ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
 .offerMatrix {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
@@ -2503,6 +2565,7 @@
   .twinShell,
   .controlCommandPanel,
   .supplierWorkbench,
+  .offerDecisionSurface,
   .controlGrid,
   .radarGrid,
   .controlBoardGrid,
@@ -2541,6 +2604,7 @@
   .sceneRail,
   .controlScale,
   .controlCommandPanel dl,
+  .offerDecisionSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -2786,6 +2850,7 @@
   .sceneRail,
   .controlScale,
   .controlCommandPanel dl,
+  .offerDecisionSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,

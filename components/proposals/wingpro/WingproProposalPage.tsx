@@ -338,6 +338,9 @@ const offerDecisionModes = [
     score: "strongest",
     summary: "выбор строится вокруг подтверждений до оплаты и до отгрузки",
     impact: "снижает вероятность ошибок по материалу, давлению, документам и логистическим вводным",
+    ownerDecision: "WinGPro выбирает поставщика после закрытия evidence gates профильными участниками",
+    risksControlled: ["material / pressure mismatch", "weak PI before payment", "missing shipment evidence"],
+    handoffOutput: "offer comparison board + evidence-led recommendation + open questions list",
   },
   {
     id: "price",
@@ -345,6 +348,9 @@ const offerDecisionModes = [
     score: "requires caution",
     summary: "цена сравнивается только вместе с PI strength, bank evidence и delivery terms",
     impact: "низкая цена без evidence переносит риск в платежное и логистическое решение",
+    ownerDecision: "WinGPro может использовать цену как benchmark, но не как единственный критерий release",
+    risksControlled: ["low-price trap", "unclear trader margin", "bank/details gap"],
+    handoffOutput: "commercial delta-list + reserve supplier notes + payment risk memo",
   },
   {
     id: "speed",
@@ -352,6 +358,9 @@ const offerDecisionModes = [
     score: "conditional",
     summary: "скорость ответа полезна, если не пропускает quality gates и documents gate",
     impact: "помогает сократить потери времени на согласования, но не заменяет проверки",
+    ownerDecision: "WinGPro решает, допустим ли speed-first путь без пропуска обязательных доказательств",
+    risksControlled: ["late clarifications", "rushed technical confirmation", "shipment data delay"],
+    handoffOutput: "fast-track checklist + owner-required blockers + release gate notes",
   },
 ] as const satisfies ReadonlyArray<{
   id: OfferDecisionMode;
@@ -359,6 +368,9 @@ const offerDecisionModes = [
   score: string;
   summary: string;
   impact: string;
+  ownerDecision: string;
+  risksControlled: ReadonlyArray<string>;
+  handoffOutput: string;
 }>;
 
 const contractScenarios = [
@@ -1278,6 +1290,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </section>
               ))}
             </div>
+            <aside className={styles.offerDecisionSurface} aria-live="polite" aria-label="Selected offer decision surface">
+              <div>
+                <p className={styles.eyebrow}>Selected offer decision surface</p>
+                <h4>{decisionMode.title}</h4>
+                <StatusPill value={decisionMode.score} />
+              </div>
+              <dl>
+                <div><dt>owner decision</dt><dd>{decisionMode.ownerDecision}</dd></div>
+                <div><dt>handoff output</dt><dd>{decisionMode.handoffOutput}</dd></div>
+              </dl>
+              <div>
+                <strong>risks controlled</strong>
+                <ul>
+                  {decisionMode.risksControlled.map((risk) => <li key={risk}>{risk}</li>)}
+                </ul>
+              </div>
+            </aside>
             <div className={styles.offerMatrix} role="table" aria-label="Offer comparison matrix">
               <div role="row" className={styles.offerMatrixHeader}>
                 <span role="columnheader">Metric</span>

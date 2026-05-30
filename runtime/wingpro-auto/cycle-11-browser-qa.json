@@ -1,0 +1,85 @@
+{
+  "cb": 1780134218,
+  "localUrl": "http://localhost:3071/cp/2605281047-wingpro?cb=1780134218",
+  "base": {
+    "url": "http://localhost:3071/cp/2605281047-wingpro?cb=1780134218#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1425,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://localhost:3071/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "missing": [],
+    "surfaceText": "Selected offer decision surfaceEvidence-ledstrongestowner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участникамиhandoff outputoffer comparison board + evidence-led recommendation + open questions listrisks controlledmaterial / pressure mismatchweak PI before paymentmissing shipment evidence"
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "surfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "priceClicked": true,
+    "before": "Selected offer decision surfaceEvidence-ledstrongestowner decisionWinGPro выбирает поставщика после закрытия evidence gates профильными участникамиhandoff outputoffer comparison board + evidence-led recommendation + open questions listrisks controlledmaterial / pressure mismatchweak PI before paymentmissing shipment evidence",
+    "after": "Selected offer decision surfacePrice-ledrequires cautionowner decisionWinGPro может использовать цену как benchmark, но не как единственный критерий releasehandoff outputcommercial delta-list + reserve supplier notes + payment risk memorisks controlledlow-price trapunclear trader marginbank/details gap",
+    "surfaceUpdated": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-11/wingpro-c11-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-11/wingpro-c11-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-11/wingpro-c11-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-11/wingpro-c11-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-11/wingpro-c11-320.png"
+  ]
+}
