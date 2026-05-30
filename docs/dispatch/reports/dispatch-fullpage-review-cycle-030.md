@@ -7,7 +7,7 @@ Micro-goal: make full-page dispatch review repeatable with automated section scr
 ## View Links
 
 - Local review target: <http://127.0.0.1:3063/dispatch>
-- Preview URL: pending Vercel deploy for this commit
+- Preview URL: <https://upgradefor-page-generator-16c3wo70x-bacalimser-8615s-projects.vercel.app/dispatch>
 
 ## What Changed
 
@@ -55,10 +55,16 @@ Micro-goal: make full-page dispatch review repeatable with automated section scr
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false 2>&1 | rg 'dispatch|Dispatch' || true` — no dispatch TypeScript output after build
 - `git diff --check` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-16c3wo70x-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-16c3wo70x-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/capture-dispatch-fullpage-review.mjs ...` — passed
+
+## Preview Notes
+
+- Git-based Vercel deployment for commit `4dbcb159` is `READY`.
+- Manual `vercel --yes` deploy hit the account daily limit (`api-deployments-free-per-day`), but the Git deployment was created by Vercel and passed the external smoke suite.
 
 ## Next Recommended Cycle
 
 Mode: DESIGN
 
 Micro-goal: fix local text/spacing tight spots reported by the full-page audit without changing dispatch architecture: telemetry KPI cards, trend metric buttons, passport tabs, and mobile header/status wrapping.
-
