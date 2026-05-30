@@ -4,6 +4,20 @@ import { execFileSync } from "node:child_process";
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
 const baseUrl = normalizeBaseUrl(process.argv[2] ?? process.env.DISPATCH_BASE_URL ?? DEFAULT_BASE_URL);
+const dispatchSections = [
+  "Обзор объекта",
+  "Холодоснабжение / чиллеры",
+  "Кондиционирование / фанкойлы",
+  "Вентиляция",
+  "Теплоснабжение / ИТП",
+  "Насосные группы",
+  "Теплообменники",
+  "Аварии",
+  "Тренды",
+  "Паспорта оборудования",
+  "Заявки",
+  "AI-диагностика",
+];
 
 function normalizeBaseUrl(value) {
   return value.replace(/\/+$/, "");
@@ -64,6 +78,24 @@ function clickSelector(selector, label = selector) {
 })()
 `);
   assert(result.ok, `Could not click ${label}: ${result.reason ?? "unknown"}`);
+  wait();
+  return result;
+}
+
+function clickSection(label) {
+  const result = evalJson(`
+(() => {
+  const label = ${JSON.stringify(label)};
+  const normalize = (value) => (value || "").replace(/\\s+/g, " ").trim();
+  const buttons = Array.from(document.querySelectorAll(".sectionItem, .dispatchBottomNav button"));
+  const element = buttons.find((button) => normalize(button.textContent).includes(label));
+  if (!element) return JSON.stringify({ ok: false, label, reason: "section not found" });
+  element.scrollIntoView({ block: "center", inline: "nearest" });
+  element.click();
+  return JSON.stringify({ ok: true, label, text: normalize(element.textContent) });
+})()
+`);
+  assert(result.ok, `Could not click section ${label}: ${result.reason ?? "unknown"}`);
   wait();
   return result;
 }
@@ -160,6 +192,27 @@ function actionInventory() {
 `);
 }
 
+function assertInventoryClean(label) {
+  const inventory = actionInventory();
+  assert(
+    inventory.missingActionState.length === 0,
+    `${label}: found controls without action state: ${JSON.stringify(
+      inventory.missingActionState.slice(0, 10),
+      null,
+      2,
+    )}`,
+  );
+  assert(
+    inventory.primaryDisassemblyCtas.length <= 1,
+    `${label}: found duplicated primary disassembly CTAs: ${JSON.stringify(
+      inventory.primaryDisassemblyCtas,
+      null,
+      2,
+    )}`,
+  );
+  return inventory;
+}
+
 function readonlyAttemptText() {
   return evalJson(`
 (() => JSON.stringify({
@@ -181,18 +234,15 @@ try {
   runAgentBrowser(["wait", "--load", "networkidle"]);
   wait(900);
 
-  const initial = actionInventory();
+  const initial = assertInventoryClean("initial dispatch view");
   assert(initial.safetyCopy.readOnly, "Read-only copy is missing");
   assert(initial.safetyCopy.demoMode, "DEMO MODE copy is missing");
   assert(initial.safetyCopy.noRealControl, "No-real-control safety copy is missing");
-  assert(
-    initial.missingActionState.length === 0,
-    `Found controls without action state: ${JSON.stringify(initial.missingActionState.slice(0, 10), null, 2)}`,
-  );
-  assert(
-    initial.primaryDisassemblyCtas.length <= 1,
-    `Found duplicated primary disassembly CTAs: ${JSON.stringify(initial.primaryDisassemblyCtas, null, 2)}`,
-  );
+
+  for (const section of dispatchSections) {
+    clickSection(section);
+    assertInventoryClean(`section ${section}`);
+  }
 
   clickSelector('.chipBlock button[data-action-state="opens-passport-context"]', "primary PV-1 passport chip");
   let attempt = readonlyAttemptText();
@@ -215,6 +265,13 @@ try {
     `Primary PV-1 ticket chip did not record a visible read-only action: ${attempt.text}`,
   );
 
+  clickSelector('[data-testid="dispatch-section-action-ticket"]', "section ticket action");
+  assertInventoryClean("demo ticket modal");
+  clickSelector('[data-testid="dispatch-modal-close"]', "ticket modal close");
+
+  clickSelector('[data-testid="dispatch-section-action-passport"]', "section passport action");
+  assertInventoryClean("passport drawer");
+
   const finalInventory = actionInventory();
   console.log(
     JSON.stringify(
@@ -224,6 +281,7 @@ try {
         totalControls: finalInventory.totalControls,
         explicitActionStates: finalInventory.explicitActionStates,
         primaryDisassemblyCtas: finalInventory.primaryDisassemblyCtas.length,
+        sectionsChecked: dispatchSections.length,
         actionStates: finalInventory.actionStates,
         ok: true,
       },
