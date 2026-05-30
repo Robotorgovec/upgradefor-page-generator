@@ -747,6 +747,7 @@ export default function DispatchDashboard() {
                   className={`equipmentNode ${placementClass} ${toneClass} ${isSelected ? "isSelected" : ""} ${
                     hasAlarm ? "hasAlarm" : ""
                   }`}
+                  data-testid={`dispatch-equipment-node-${node.id}`}
                   style={{ left: `${node.x}%`, top: `${node.y}%` }}
                   onClick={() => selectEquipment(node)}
                   aria-pressed={isSelected}

@@ -130,12 +130,16 @@ function state() {
   const activeTrend = normalize(document.querySelector(".dispatchTrendsPanel__tabs button[aria-selected='true']")?.textContent);
   const dialogText = normalize(document.querySelector('[data-testid="dispatch-demo-modal"], [role="dialog"]')?.textContent);
   const drawer = document.querySelector(".passportDrawer");
+  const passportTitle = normalize(document.querySelector(".passportDrawer .passportHero strong")?.textContent);
+  const passportKpiText = normalize(document.querySelector(".passportDrawer [data-testid='dispatch-passport-kpi-strip']")?.textContent);
   const bodyText = document.body.innerText || "";
 
   return JSON.stringify({
     url: window.location.href,
     activeSections,
     drawerOpen: Boolean(drawer?.classList.contains("isOpen")),
+    passportTitle,
+    passportKpiText,
     activePassportTab,
     activeTrendPeriod,
     activeTrend,
@@ -183,6 +187,19 @@ try {
   assert(initial.safetyCopy.demoMode, "DEMO MODE copy is missing");
   assert(initial.safetyCopy.noRealControl, "No-real-control safety copy is missing");
 
+  clickSelector('[data-testid="dispatch-equipment-node-pump-shu2"]', "digital twin node pump-shu2");
+  let current = state();
+  assert(current.drawerOpen, "Digital twin node click did not open the passport drawer");
+  assert(
+    current.passportTitle.includes("ШУ-1") || current.passportTitle.includes("ШУ-2"),
+    `Digital twin node click opened the wrong passport: ${current.passportTitle}`,
+  );
+  assert(
+    current.passportKpiText.includes("DATA_ERROR"),
+    "Digital twin node click did not surface the linked DATA_ERROR passport context",
+  );
+  screenshot("action-00-node-passport.png");
+
   clickSection("Насосные группы");
   assertActiveSection("Насосные группы");
 
@@ -190,7 +207,7 @@ try {
   assert(state().drawerOpen, "Open passport action did not open the passport drawer");
 
   clickSelector('[data-testid="dispatch-section-action-ticket"]', "section Create demo ticket");
-  let current = state();
+  current = state();
   assert(current.dialogText.includes("Demo-заявка создана"), "Create demo ticket did not open the ticket modal");
   assert(current.dialogText.includes("не отправлена"), "Ticket modal is missing read-only/no-send copy");
   screenshot("action-01-ticket-modal.png");

@@ -1,0 +1,1103 @@
+{
+  "baseUrl": "http://127.0.0.1:3068",
+  "dispatchUrl": "http://127.0.0.1:3068/dispatch?cb=1780174770516",
+  "outputDir": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035",
+  "screenshots": [
+    {
+      "id": "full-page",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/00-full-page.png"
+    },
+    {
+      "id": "overview",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-01-overview.png"
+    },
+    {
+      "id": "cooling",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-02-cooling.png"
+    },
+    {
+      "id": "fan-coils",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-03-fan-coils.png"
+    },
+    {
+      "id": "ventilation",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-04-ventilation.png"
+    },
+    {
+      "id": "itp",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-05-itp.png"
+    },
+    {
+      "id": "pumps",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-06-pumps.png"
+    },
+    {
+      "id": "heat-exchangers",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-07-heat-exchangers.png"
+    },
+    {
+      "id": "alarms",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-08-alarms.png"
+    },
+    {
+      "id": "trends",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-09-trends.png"
+    },
+    {
+      "id": "equipment",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-10-equipment.png"
+    },
+    {
+      "id": "tickets",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-11-tickets.png"
+    },
+    {
+      "id": "ai",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-12-ai.png"
+    },
+    {
+      "id": "mobile",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/99-mobile-full-page.png"
+    }
+  ],
+  "initialAudit": {
+    "sectionLabel": null,
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3068/dispatch?cb=1780174770516",
+    "viewportWidth": 1440,
+    "scrollWidth": 1440,
+    "horizontalOverflow": false,
+    "overflowSamples": [
+      {
+        "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+        "tag": "nav",
+        "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+        "left": 0,
+        "right": 1440,
+        "width": 1440,
+        "overflowX": 1178
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Тренды",
+        "left": 1363,
+        "right": 1445,
+        "width": 82,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Паспорта оборудования",
+        "left": 1453,
+        "right": 1662,
+        "width": 209,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Заявки",
+        "left": 1670,
+        "right": 1747,
+        "width": 77,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "AI-диагностика",
+        "left": 1755,
+        "right": 1896,
+        "width": 141,
+        "overflowX": 0
+      },
+      {
+        "selector": "div.jsx-dd67c8187c035cbf.bottomMeta",
+        "tag": "div",
+        "text": "Связь с объектом: Онлайн / Simulated gatewayПользователь: ДиспетчерDEMO MODE",
+        "left": 1904,
+        "right": 2604,
+        "width": 700,
+        "overflowX": 0
+      },
+      {
+        "selector": "span.jsx-dd67c8187c035cbf",
+        "tag": "span",
+        "text": "Связь с объектом: Онлайн / Simulated gateway",
+        "left": 1904,
+        "right": 2177,
+        "width": 273,
+        "overflowX": 0
+      },
+      {
+        "selector": "span.jsx-dd67c8187c035cbf",
+        "tag": "span",
+        "text": "Пользователь: Диспетчер",
+        "left": 2187,
+        "right": 2340,
+        "width": 152,
+        "overflowX": 0
+      },
+      {
+        "selector": "input.jsx-dd67c8187c035cbf",
+        "tag": "input",
+        "text": "",
+        "left": 2350,
+        "right": 2496,
+        "width": 146,
+        "overflowX": 0
+      },
+      {
+        "selector": "b.jsx-dd67c8187c035cbf",
+        "tag": "b",
+        "text": "DEMO MODE",
+        "left": 2506,
+        "right": 2604,
+        "width": 99,
+        "overflowX": 0
+      }
+    ],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 136,
+      "disabled": 24,
+      "links": 11,
+      "active": 6,
+      "readonlyLocked": 35
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Обзор объекта",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-01-overview.png",
+      "activeSection": [
+        "Обзор объекта42/46 систем online · no active alarm",
+        "Обзор объекта"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "cooling",
+      "label": "Холодоснабжение / чиллеры",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-02-cooling.png",
+      "activeSection": [
+        "Холодоснабжение / чиллерыLIVE5 чиллерных позиций · 2 event",
+        "Холодоснабжение / чиллеры"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 36
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "fan-coils",
+      "label": "Кондиционирование / фанкойлы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-03-fan-coils.png",
+      "activeSection": [
+        "Кондиционирование / фанкойлыточный реестр TO VERIFY · 1 event",
+        "Кондиционирование / фанкойлы"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "ventilation",
+      "label": "Вентиляция",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-04-ventilation.png",
+      "activeSection": [
+        "Вентиляция5 вентиляционных групп · 1 event",
+        "Вентиляция"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "itp",
+      "label": "Теплоснабжение / ИТП",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-05-itp.png",
+      "activeSection": [
+        "Теплоснабжение / ИТП1 тепловой ввод / TO VERIFY · no active alarm",
+        "Теплоснабжение / ИТП"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "pumps",
+      "label": "Насосные группы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-06-pumps.png",
+      "activeSection": [
+        "Насосные группыоколо 10 насосов · 1 event",
+        "Насосные группы"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "heat-exchangers",
+      "label": "Теплообменники",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-07-heat-exchangers.png",
+      "activeSection": [
+        "Теплообменникиоколо 6 узлов · 1 event",
+        "Теплообменники"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "alarms",
+      "label": "Аварии",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-08-alarms.png",
+      "activeSection": [
+        "Аварии44 активных события · 4 event",
+        "Аварии"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 145,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "trends",
+      "label": "Тренды",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-09-trends.png",
+      "activeSection": [
+        "Тренды4 трендовых метрики · 1 event",
+        "Тренды"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf.isActive",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "equipment",
+      "label": "Паспорта оборудования",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-10-equipment.png",
+      "activeSection": [
+        "Паспорта оборудования152 датчика + инженерные узлы · 1 event",
+        "Паспорта оборудования"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf.isActive",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "tickets",
+      "label": "Заявки",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-11-tickets.png",
+      "activeSection": [
+        "Заявки1 demo-заявка готова · 1 event",
+        "Заявки"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf.isActive",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "ai",
+      "label": "AI-диагностика",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-035/section-12-ai.png",
+      "activeSection": [
+        "AI-диагностикаNEW4 AI insights · 1 event",
+        "AI-диагностика"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+          "tag": "nav",
+          "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+          "left": 0,
+          "right": 1440,
+          "width": 1440,
+          "overflowX": 1178
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Тренды",
+          "left": 1363,
+          "right": 1445,
+          "width": 82,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Паспорта оборудования",
+          "left": 1453,
+          "right": 1662,
+          "width": 209,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf",
+          "tag": "button",
+          "text": "Заявки",
+          "left": 1670,
+          "right": 1747,
+          "width": 77,
+          "overflowX": 0
+        },
+        {
+          "selector": "button.jsx-dd67c8187c035cbf.isActive",
+          "tag": "button",
+          "text": "AI-диагностика",
+          "left": 1755,
+          "right": 1896,
+          "width": 141,
+          "overflowX": 0
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    }
+  ],
+  "mobileAudit": {
+    "sectionLabel": "mobile",
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3068/dispatch?cb=1780174770516",
+    "viewportWidth": 390,
+    "scrollWidth": 390,
+    "horizontalOverflow": false,
+    "overflowSamples": [],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 140,
+      "disabled": 24,
+      "links": 15,
+      "active": 6,
+      "readonlyLocked": 35
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "summary": {
+    "sectionScreenshots": 12,
+    "expectedSections": 12,
+    "desktopHorizontalOverflow": false,
+    "mobileHorizontalOverflow": false,
+    "desktopOverflowSamples": [
+      {
+        "selector": "nav.jsx-dd67c8187c035cbf.dispatchBottomNav",
+        "tag": "nav",
+        "text": "Обзор объектаХолодоснабжение / чиллерыКондиционирование / фанкойлыВентиляцияТеплоснабжение / ИТПНасо",
+        "left": 0,
+        "right": 1440,
+        "width": 1440,
+        "overflowX": 1178
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Тренды",
+        "left": 1363,
+        "right": 1445,
+        "width": 82,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Паспорта оборудования",
+        "left": 1453,
+        "right": 1662,
+        "width": 209,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "Заявки",
+        "left": 1670,
+        "right": 1747,
+        "width": 77,
+        "overflowX": 0
+      },
+      {
+        "selector": "button.jsx-dd67c8187c035cbf",
+        "tag": "button",
+        "text": "AI-диагностика",
+        "left": 1755,
+        "right": 1896,
+        "width": 141,
+        "overflowX": 0
+      }
+    ],
+    "mobileOverflowSamples": []
+  },
+  "ok": true
+}
