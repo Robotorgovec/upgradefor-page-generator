@@ -1,0 +1,118 @@
+{
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "url": "http://127.0.0.1:3094/cp/2605281047-wingpro?cb=1780149416#layer-equipment",
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3094/assets/logo/logo-black-only.png",
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "bodyScrollWidth": 1425,
+    "innerWidth": 1440,
+    "supplier": {
+      "scrollWidth": 516,
+      "clientWidth": 516,
+      "noClip": true
+    },
+    "workbench": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "noClip": true,
+      "grid": "480px"
+    },
+    "panels": {
+      "scrollWidth": 480,
+      "clientWidth": 480,
+      "noClip": true
+    },
+    "activePanel": {
+      "scrollWidth": 478,
+      "clientWidth": 478,
+      "noClip": true
+    },
+    "tabs": [
+      {
+        "text": "Candidate A84shortlist",
+        "selected": "true"
+      },
+      {
+        "text": "Candidate B67reserve",
+        "selected": "false"
+      },
+      {
+        "text": "Candidate C52watch",
+        "selected": "false"
+      }
+    ],
+    "unexpectedScrollContainers": [],
+    "requiredTexts": {
+      "Supplier Request Lab": true,
+      "Candidate A": true,
+      "Evidence requests": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true
+    }
+  },
+  "responsive": [
+    {
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "supplierNoClip": true,
+      "workbenchNoClip": true,
+      "panelsNoClip": true,
+      "activePanelNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "supplierNoClip": true,
+      "workbenchNoClip": true,
+      "panelsNoClip": true,
+      "activePanelNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "supplierNoClip": true,
+      "workbenchNoClip": true,
+      "panelsNoClip": true,
+      "activePanelNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "supplierNoClip": true,
+      "workbenchNoClip": true,
+      "panelsNoClip": true,
+      "activePanelNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "supplierNoClip": true,
+      "workbenchNoClip": true,
+      "panelsNoClip": true,
+      "activePanelNoClip": true,
+      "clips": [],
+      "unexpectedScrollContainers": []
+    }
+  ]
+}
