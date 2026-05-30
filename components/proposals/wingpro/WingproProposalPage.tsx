@@ -2698,6 +2698,20 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>Board Pack</p>
           <h2 id="copy-title">Сообщения для отправки</h2>
         </div>
+        <div className={styles.copyCommandStrip} aria-label="Board pack decision summary">
+          {[
+            ["outcome", "Decision outcome", "WinGPro получает не контакт, а цифровой контур сделки: data-room, risk radar, release gates и handover packs."],
+            ["acceptance", "Acceptance basis", "Результат принимается по deliverables: vault index, risk register, release board, closeout packs and Digital Product Asset."],
+            ["boundary", "Responsibility boundary", "UPGRADE структурирует данные и статусы; профильные участники утверждают технические, таможенные, логистические и монтажные решения."],
+            ["next", "Next step", "После согласования КП стороны фиксируют договор услуг, порядок оплаты, deliverables и передачу результатов."],
+          ].map(([label, title, text]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <strong>{title}</strong>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
         <div className={styles.copyButtons}>
           {[
             ["short", "Copy 30-second summary"],

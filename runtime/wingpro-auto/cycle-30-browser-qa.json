@@ -1,0 +1,94 @@
+{
+  "cb": 1780142590,
+  "url": "http://127.0.0.1:3079/cp/2605281047-wingpro?cb=1780142590",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3079/assets/logo/logo-black-only.png?cb=1780142590",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3079/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "responsive": [
+    {
+      "width": 1440,
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 1280,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 768,
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 375,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 320,
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true,
+      "max768": true
+    }
+  ],
+  "boardStrip": {
+    "exists": true,
+    "cards": 4,
+    "text": "outcomeDecision outcomeWinGPro получает не контакт, а цифровой контур сделки: data-room, risk radar, release gates и handover packs.acceptanceAcceptance basisРезультат принимается по deliverables: vault index, risk register, release board, closeout packs and Digital Product Asset.boundaryResponsibility boundaryUPGRADE структурирует данные и статусы; профильные участники утверждают технические, таможенные, логистические и монтажные решения.nextNext stepПосле согласования КП стороны фиксируют договор услуг, порядок оплаты, deliverables и передачу результатов."
+  },
+  "copyProof": {
+    "previewTitle": "Command-center summary",
+    "copyStatus": "Copied with fallback",
+    "commandActive": "true"
+  },
+  "content": {
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-30/1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-30/1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-30/768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-30/375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-30/320.png"
+  ]
+}

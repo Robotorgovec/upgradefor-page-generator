@@ -3639,6 +3639,52 @@
     #ffffff;
 }
 
+.copyCommandStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.copyCommandStrip article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 170px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 76%, var(--proposal-border));
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 34%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.copyCommandStrip span {
+  justify-self: start;
+  padding: 5px 8px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.copyCommandStrip strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.copyCommandStrip p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 13.5px;
+  line-height: 1.48;
+}
+
 .copyButtons button {
   flex: 1 1 210px;
   color: var(--proposal-text-soft);
@@ -4194,6 +4240,10 @@
   .vaultControls select {
     flex-basis: 100%;
   }
+
+  .copyCommandStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 360px) {
@@ -4240,6 +4290,10 @@
   .evidenceHandoffTabs,
   .evidenceHandoffSummary dl,
   .evidenceHandoffPanels dl {
+    grid-template-columns: 1fr;
+  }
+
+  .copyCommandStrip {
     grid-template-columns: 1fr;
   }
 }
