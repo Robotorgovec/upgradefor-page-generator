@@ -32,6 +32,7 @@ import {
 const passportTabs = ["Паспорт", "Параметры", "ТО", "Документы"];
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
 const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
+const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
 const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
   "ahu-pv1": "assembled",
   chiller: "assembled",
@@ -42,6 +43,11 @@ const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
 
 type ModalState = "readonly" | "ticket" | null;
 type PassportSource = "node" | "twin";
+type ReadonlyAuditEntry = {
+  action: string;
+  equipment: string;
+  time: string;
+};
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   if (severity === "critical") return "Авария";
@@ -101,6 +107,7 @@ export default function DispatchDashboard() {
   const [modal, setModal] = useState<ModalState>(null);
   const [aiAnswer, setAiAnswer] = useState("");
   const [demoTime, setDemoTime] = useState("17.05.2026 10:45");
+  const [readonlyAuditLog, setReadonlyAuditLog] = useState<ReadonlyAuditEntry[]>([]);
 
   useEffect(() => {
     document.body.classList.add("is-dispatch-demo");
@@ -290,6 +297,26 @@ export default function DispatchDashboard() {
     setIsDrawerOpen(true);
   };
 
+  const recordReadonlyAttempt = (action: string) => {
+    const time = new Intl.DateTimeFormat("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).format(new Date());
+
+    setReadonlyAuditLog((current) =>
+      [
+        {
+          action,
+          equipment: passportEquipment.shortLabel,
+          time,
+        },
+        ...current,
+      ].slice(0, 4),
+    );
+    setModal("readonly");
+  };
+
   const handleAiSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAiAnswer(
@@ -311,7 +338,8 @@ export default function DispatchDashboard() {
           <div className="headerStatus">
             <span>Связь: Онлайн</span>
             <strong>BMS/SCADA 10.50.4.41</strong>
-            <span>Operator</span>
+            <span>Роль: Operator</span>
+            <span className="readOnlyBadge">Read-only / Demo mode</span>
             <b>DEMO MODE</b>
           </div>
         </header>
@@ -600,10 +628,44 @@ export default function DispatchDashboard() {
 
           <div className="commandStrip">
             {controlButtons.map((button) => (
-              <button key={button} type="button" onClick={() => setModal("readonly")}>
-                {button}
-              </button>
+              <span
+                aria-disabled="true"
+                aria-label={`${button}: ${readonlyControlTooltip}`}
+                className="readonlyControl"
+                data-testid="dispatch-readonly-control"
+                key={button}
+                onClick={() => recordReadonlyAttempt(button)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    recordReadonlyAttempt(button);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                title={readonlyControlTooltip}
+              >
+                <button
+                  aria-label={`${button}. ${readonlyControlTooltip}`}
+                  disabled
+                  title={readonlyControlTooltip}
+                  type="button"
+                >
+                  {button}
+                </button>
+              </span>
             ))}
+          </div>
+          <div className="readonlyAuditLog" data-testid="dispatch-readonly-audit-log">
+            <strong>Read-only audit</strong>
+            {readonlyAuditLog.length ? (
+              <span>
+                {readonlyAuditLog[0].time} · попытка: {readonlyAuditLog[0].action} ·{" "}
+                {readonlyAuditLog[0].equipment} · No real equipment control
+              </span>
+            ) : (
+              <span>Попытки управления будут фиксироваться локально в demo-журнале.</span>
+            )}
           </div>
 
           <section className="recommendationPanel">
@@ -841,6 +903,15 @@ export default function DispatchDashboard() {
                   интеграция с BMS/SCADA, подтверждение прав доступа, аудит тегов и согласование с эксплуатационной
                   службой.
                 </p>
+                {readonlyAuditLog[0] ? (
+                  <div className="modalAuditEntry">
+                    <strong>Попытка управления зафиксирована локально</strong>
+                    <span>
+                      {readonlyAuditLog[0].time} · {readonlyAuditLog[0].action} ·{" "}
+                      {readonlyAuditLog[0].equipment} · No real equipment control
+                    </span>
+                  </div>
+                ) : null}
               </>
             ) : (
               <>
@@ -935,7 +1006,8 @@ export default function DispatchDashboard() {
 
         .headerStatus b,
         .bottomMeta b,
-        .readOnlyPill {
+        .readOnlyPill,
+        .readOnlyBadge {
           border: 1px solid rgba(34, 211, 238, 0.42);
           border-radius: 999px;
           color: #22d3ee;
@@ -1157,7 +1229,6 @@ export default function DispatchDashboard() {
         }
 
         .secondaryButton,
-        .commandStrip button,
         .drawerActions button,
         .sectionActions button,
         .relatedNodesRow button,
@@ -1548,6 +1619,61 @@ export default function DispatchDashboard() {
           gap: 8px;
           position: relative;
           z-index: 2;
+        }
+
+        .readonlyControl {
+          display: inline-flex;
+          border-radius: 8px;
+          cursor: not-allowed;
+        }
+
+        .readonlyControl button {
+          border: 1px solid rgba(148, 163, 184, 0.28);
+          border-radius: 8px;
+          background: rgba(51, 65, 85, 0.42);
+          color: #94a3b8;
+          cursor: not-allowed;
+          padding: 9px 11px;
+          pointer-events: none;
+        }
+
+        .readonlyControl:focus-visible {
+          outline: 2px solid rgba(125, 211, 252, 0.9);
+          outline-offset: 2px;
+        }
+
+        .readonlyAuditLog {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          align-items: center;
+          margin: 8px 0 14px;
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.52);
+          color: #cbd5e1;
+          font-size: 12px;
+          padding: 8px 10px;
+        }
+
+        .readonlyAuditLog strong {
+          color: #e0f2fe;
+        }
+
+        .modalAuditEntry {
+          display: grid;
+          gap: 6px;
+          margin-top: 14px;
+          border: 1px solid rgba(251, 191, 36, 0.34);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.2);
+          color: #fde68a;
+          padding: 10px;
+        }
+
+        .modalAuditEntry span {
+          color: #fef3c7;
+          font-size: 13px;
         }
 
         .sectionDetailPanel {

@@ -4,6 +4,8 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Bounds, Center, Html, OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
+const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
+
 const equipmentItems = [
   {
     id: "supply-vent-unit-01",
@@ -203,6 +205,7 @@ export default function Equipment3DViewer() {
   const [selectedEquipment, setSelectedEquipment] = useState(equipmentItems[0].id);
   const [isExploded, setIsExploded] = useState(false);
   const [hasWebGl, setHasWebGl] = useState<boolean | null>(null);
+  const [readonlyAttempt, setReadonlyAttempt] = useState<string | null>(null);
   const activeItem = equipmentItems.find((item) => item.id === selectedEquipment) ?? equipmentItems[0];
 
   useEffect(() => {
@@ -219,6 +222,9 @@ export default function Equipment3DViewer() {
   const selectModel = () => setSelectedEquipment(activeItem.id);
   const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
   const passportButtons = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
+  const recordReadonlyAttempt = (action: string) => {
+    setReadonlyAttempt(`${action} · ${activeItem.label} · No real equipment control`);
+  };
 
   return (
     <section
@@ -261,6 +267,8 @@ export default function Equipment3DViewer() {
             <span>{activeItem.status}</span>
             <span>{activeItem.mode}</span>
             <span>{activeItem.type}</span>
+            <span>Роль: Operator</span>
+            <span>Read-only / Demo mode</span>
           </div>
         </div>
 
@@ -292,7 +300,37 @@ export default function Equipment3DViewer() {
         </button>
         <div className="controlsLocked">
           <strong>Read-only / control locked</strong>
-          <div>{controlButtons.map((item) => <button type="button" disabled key={item}>{item}</button>)}</div>
+          <small>{readonlyControlTooltip}</small>
+          <div>
+            {controlButtons.map((item) => (
+              <span
+                aria-disabled="true"
+                aria-label={`${item}: ${readonlyControlTooltip}`}
+                className="lockedControl"
+                key={item}
+                onClick={() => recordReadonlyAttempt(item)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    recordReadonlyAttempt(item);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                title={readonlyControlTooltip}
+              >
+                <button
+                  aria-label={`${item}. ${readonlyControlTooltip}`}
+                  disabled
+                  title={readonlyControlTooltip}
+                  type="button"
+                >
+                  {item}
+                </button>
+              </span>
+            ))}
+          </div>
+          {readonlyAttempt ? <small className="readonlyAttempt">{readonlyAttempt}</small> : null}
         </div>
       </aside>
 
@@ -300,7 +338,7 @@ export default function Equipment3DViewer() {
         .modelLabel{min-width:220px;border:1px solid rgba(125,211,252,.42);border-radius:8px;background:rgba(2,8,23,.82);box-shadow:0 0 24px rgba(34,211,238,.22);padding:8px 10px;text-align:center;color:#e0f2fe;font-family:Inter,system-ui,sans-serif}.modelLabel strong,.modelLabel span,.modelLabel small{display:block}.modelLabel span{margin-top:4px;color:#bbf7d0;font-size:11px;font-weight:800}.modelLabel small{color:#93c5fd;font-size:10px}
       `}</style>
       <style jsx>{`
-        .equipment3DSection{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:14px;padding:18px;background:radial-gradient(circle at 48% 8%,rgba(14,165,233,.18),transparent 34%),linear-gradient(135deg,#020617,#06111f 48%,#020617);color:#dbeafe;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.viewerPanel,.passportPanel{border:1px solid rgba(56,189,248,.28);border-radius:8px;background:linear-gradient(145deg,rgba(8,20,38,.92),rgba(2,8,23,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 52px rgba(0,0,0,.34)}.viewerPanel{padding:14px}.viewerHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.viewerHeader p,.passportTop p{margin:0 0 6px;color:#67e8f9;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.viewerHeader h2,.passportTop h3{margin:0;color:#f8fafc;letter-spacing:0}.viewerHeader h2{font-size:clamp(18px,1.7vw,25px)}.viewerHeader small{display:block;margin-top:6px;color:#bfdbfe}.viewerHeader button,.explodeButton{border:1px solid rgba(34,211,238,.42);border-radius:8px;background:rgba(14,165,233,.14);color:#e0f2fe;font-weight:800;padding:10px 12px;cursor:pointer}.viewerHeader button:hover,.explodeButton:hover{border-color:rgba(34,211,238,.8)}.viewerViewport{height:430px;overflow:hidden;border:1px solid rgba(34,211,238,.24);border-radius:8px;background:linear-gradient(rgba(125,211,252,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,.05) 1px,transparent 1px),radial-gradient(circle at 50% 38%,rgba(34,211,238,.14),transparent 31%),#06111f;background-size:28px 28px,28px 28px,auto,auto;cursor:pointer}.viewerHints{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.viewerHints span,.statusRow span,.chipBlock span,.chipBlock button{border:1px solid rgba(125,211,252,.2);border-radius:999px;background:rgba(15,23,42,.62);color:#dbeafe;font-size:11px;font-weight:800;padding:6px 8px}.passportPanel{padding:14px}.statusRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.statusRow span:first-child{border-color:rgba(34,197,94,.42);color:#bbf7d0}.passportGrid{display:grid;gap:7px;margin:14px 0}.passportGrid div{display:grid;grid-template-columns:128px 1fr;gap:10px;border-bottom:1px solid rgba(125,211,252,.12);padding-bottom:7px}.passportGrid dt{color:#93c5fd;font-size:12px}.passportGrid dd{margin:0;color:#f8fafc;font-size:13px;line-height:1.35}.chipBlock{display:grid;gap:8px;margin-top:12px}.chipBlock strong,.controlsLocked strong{color:#e0f2fe;font-size:13px}.chipBlock div,.controlsLocked div{display:flex;flex-wrap:wrap;gap:7px}.chipBlock button{border-radius:8px;cursor:pointer}.explodeButton{width:100%;margin-top:14px}.controlsLocked{display:grid;gap:9px;margin-top:14px;border:1px solid rgba(248,113,113,.22);border-radius:8px;background:rgba(127,29,29,.12);padding:10px}.controlsLocked button{border:1px solid rgba(148,163,184,.2);border-radius:8px;background:rgba(15,23,42,.5);color:#94a3b8;padding:8px 9px}.webglFallback{height:100%;display:grid;place-items:center;text-align:center;color:#dbeafe}.webglFallback strong{display:block;margin-top:12px}.webglFallback small{color:#bfdbfe}.fallbackAhu{position:relative;width:min(420px,82%);height:140px;border:1px solid rgba(125,211,252,.34);border-radius:8px;background:linear-gradient(90deg,#9ca3af,#d1d5db);box-shadow:0 0 40px rgba(34,211,238,.18)}.fallbackAhu span,.fallbackAhu i,.fallbackAhu b{position:absolute;display:block}.fallbackAhu span{left:0;top:16px;bottom:16px;width:58px;background:repeating-linear-gradient(0deg,rgba(14,116,144,.4) 0 8px,rgba(226,232,240,.9) 8px 16px)}.fallbackAhu i{left:138px;top:20px;bottom:20px;width:32px;background:#334155}.fallbackAhu b{right:42px;top:48px;width:46px;height:46px;border-radius:50%;background:#111827}.fallbackAhu.isExploded::after{content:"";position:absolute;left:34%;right:10%;top:-26px;height:18px;border:1px solid rgba(125,211,252,.28);background:rgba(226,232,240,.45)}@media(max-width:980px){.equipment3DSection{grid-template-columns:1fr;padding:14px}.viewerHeader{display:grid}.viewerViewport{height:360px}.passportGrid div{grid-template-columns:1fr}}
+        .equipment3DSection{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:14px;padding:18px;background:radial-gradient(circle at 48% 8%,rgba(14,165,233,.18),transparent 34%),linear-gradient(135deg,#020617,#06111f 48%,#020617);color:#dbeafe;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.viewerPanel,.passportPanel{border:1px solid rgba(56,189,248,.28);border-radius:8px;background:linear-gradient(145deg,rgba(8,20,38,.92),rgba(2,8,23,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 52px rgba(0,0,0,.34)}.viewerPanel{padding:14px}.viewerHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.viewerHeader p,.passportTop p{margin:0 0 6px;color:#67e8f9;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.viewerHeader h2,.passportTop h3{margin:0;color:#f8fafc;letter-spacing:0}.viewerHeader h2{font-size:clamp(18px,1.7vw,25px)}.viewerHeader small{display:block;margin-top:6px;color:#bfdbfe}.viewerHeader button,.explodeButton{border:1px solid rgba(34,211,238,.42);border-radius:8px;background:rgba(14,165,233,.14);color:#e0f2fe;font-weight:800;padding:10px 12px;cursor:pointer}.viewerHeader button:hover,.explodeButton:hover{border-color:rgba(34,211,238,.8)}.viewerViewport{height:430px;overflow:hidden;border:1px solid rgba(34,211,238,.24);border-radius:8px;background:linear-gradient(rgba(125,211,252,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(125,211,252,.05) 1px,transparent 1px),radial-gradient(circle at 50% 38%,rgba(34,211,238,.14),transparent 31%),#06111f;background-size:28px 28px,28px 28px,auto,auto;cursor:pointer}.viewerHints{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.viewerHints span,.statusRow span,.chipBlock span,.chipBlock button{border:1px solid rgba(125,211,252,.2);border-radius:999px;background:rgba(15,23,42,.62);color:#dbeafe;font-size:11px;font-weight:800;padding:6px 8px}.passportPanel{padding:14px}.statusRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.statusRow span:first-child{border-color:rgba(34,197,94,.42);color:#bbf7d0}.passportGrid{display:grid;gap:7px;margin:14px 0}.passportGrid div{display:grid;grid-template-columns:128px 1fr;gap:10px;border-bottom:1px solid rgba(125,211,252,.12);padding-bottom:7px}.passportGrid dt{color:#93c5fd;font-size:12px}.passportGrid dd{margin:0;color:#f8fafc;font-size:13px;line-height:1.35}.chipBlock{display:grid;gap:8px;margin-top:12px}.chipBlock strong,.controlsLocked strong{color:#e0f2fe;font-size:13px}.chipBlock div,.controlsLocked div{display:flex;flex-wrap:wrap;gap:7px}.chipBlock button{border-radius:8px;cursor:pointer}.explodeButton{width:100%;margin-top:14px}.controlsLocked{display:grid;gap:9px;margin-top:14px;border:1px solid rgba(248,113,113,.22);border-radius:8px;background:rgba(127,29,29,.12);padding:10px}.controlsLocked small{color:#fca5a5;font-size:12px}.lockedControl{display:inline-flex;border-radius:8px;cursor:not-allowed}.lockedControl:focus-visible{outline:2px solid rgba(125,211,252,.9);outline-offset:2px}.controlsLocked button{border:1px solid rgba(148,163,184,.2);border-radius:8px;background:rgba(15,23,42,.5);color:#94a3b8;cursor:not-allowed;padding:8px 9px;pointer-events:none}.readonlyAttempt{border:1px solid rgba(251,191,36,.28);border-radius:8px;background:rgba(113,63,18,.2);color:#fde68a!important;padding:8px}.webglFallback{height:100%;display:grid;place-items:center;text-align:center;color:#dbeafe}.webglFallback strong{display:block;margin-top:12px}.webglFallback small{color:#bfdbfe}.fallbackAhu{position:relative;width:min(420px,82%);height:140px;border:1px solid rgba(125,211,252,.34);border-radius:8px;background:linear-gradient(90deg,#9ca3af,#d1d5db);box-shadow:0 0 40px rgba(34,211,238,.18)}.fallbackAhu span,.fallbackAhu i,.fallbackAhu b{position:absolute;display:block}.fallbackAhu span{left:0;top:16px;bottom:16px;width:58px;background:repeating-linear-gradient(0deg,rgba(14,116,144,.4) 0 8px,rgba(226,232,240,.9) 8px 16px)}.fallbackAhu i{left:138px;top:20px;bottom:20px;width:32px;background:#334155}.fallbackAhu b{right:42px;top:48px;width:46px;height:46px;border-radius:50%;background:#111827}.fallbackAhu.isExploded::after{content:"";position:absolute;left:34%;right:10%;top:-26px;height:18px;border:1px solid rgba(125,211,252,.28);background:rgba(226,232,240,.45)}@media(max-width:980px){.equipment3DSection{grid-template-columns:1fr;padding:14px}.viewerHeader{display:grid}.viewerViewport{height:360px}.passportGrid div{grid-template-columns:1fr}}
       `}</style>
     </section>
   );

@@ -24,6 +24,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-3d-viewer-boundaries.mjs",
     usesBrowser: true,
   },
+  {
+    id: "readonly-controls",
+    script: "scripts/asset-qa/verify-dispatch-readonly-controls.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {
