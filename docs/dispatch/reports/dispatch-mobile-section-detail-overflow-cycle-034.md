@@ -11,7 +11,8 @@ PR: https://github.com/Robotorgovec/upgradefor-page-generator/pull/292
 ## View Links
 
 - Local review URL: http://127.0.0.1:3067/dispatch
-- Preview URL: pending after push
+- Preview URL: https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch
+- Preview deployment: https://upgradefor-page-generator-9tdkbdgpd-bacalimser-8615s-projects.vercel.app
 
 ## What Changed
 
@@ -57,6 +58,9 @@ PR: https://github.com/Robotorgovec/upgradefor-page-generator/pull/292
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false` — failed on known legacy non-dispatch groups: account searchParams, selector Prisma/logs, beauty grids, copper-aluminum manufacturers
 - `git diff --check` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed, 10/10
+- External full-page capture on the branch preview — passed; desktop/mobile global horizontal overflow `false`, mobile overflow samples `[]`
+- Browser error check on branch preview — passed; no page errors reported
 
 ## What Sergey Should Review
 
