@@ -3187,6 +3187,148 @@
   font-weight: 850;
 }
 
+.fieldCommandSurface {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.58fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.fieldStatusRail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.fieldStatusRail button {
+  min-height: 112px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 11px;
+  color: var(--proposal-text-soft);
+  background: var(--proposal-surface-soft);
+  box-shadow: none;
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  text-align: left;
+}
+
+.fieldStatusRail button[data-active="true"] {
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(180deg, #ffffff, var(--proposal-brand-soft)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.fieldStatusRail span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fieldStatusRail strong {
+  color: var(--proposal-text);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.fieldStatusRail small {
+  color: var(--proposal-text-soft);
+  line-height: 1.35;
+}
+
+.fieldStatusPanel,
+.fieldPanels section {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.fieldStatusPanel {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.fieldStatusPanel h4,
+.fieldPanels h4 {
+  margin: 0;
+  color: var(--proposal-text);
+}
+
+.fieldStatusPanel p:not(.eyebrow) {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.5;
+}
+
+.fieldStatusPanel dl {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.fieldStatusPanel dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+}
+
+.fieldStatusPanel dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fieldStatusPanel dd {
+  margin: 4px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.fieldPanels {
+  display: grid;
+}
+
+.fieldPanels section {
+  padding: 14px;
+}
+
+.fieldPanels section:not([hidden]) {
+  display: grid;
+  gap: 9px;
+}
+
+.fieldPanels div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+  display: grid;
+  gap: 5px;
+}
+
+.fieldPanels strong {
+  margin: 0;
+  color: var(--proposal-text);
+}
+
+.fieldPanels span,
+.fieldPanels p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
 .fieldColumns {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -4751,6 +4893,7 @@
   .gateControlSurface,
   .handoverControlSurface,
   .handoverCommandStrip,
+  .fieldCommandSurface,
   .evidenceHandoffShell,
   .radarGrid,
   .controlBoardGrid,
@@ -5270,6 +5413,10 @@
   .copyCommandStrip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .fieldStatusRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 360px) {
@@ -5317,6 +5464,10 @@
   }
 
   .handoverMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .fieldStatusRail {
     grid-template-columns: 1fr;
   }
 

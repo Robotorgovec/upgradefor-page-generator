@@ -1,0 +1,199 @@
+{
+  "pageStatus": 200,
+  "assetStatus": 200,
+  "qa": {
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "bodyScrollWidth": 1425,
+    "innerWidth": 1440,
+    "imgProof": {
+      "currentSrc": "http://127.0.0.1:3096/assets/logo/logo-black-only.png",
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "field": {
+      "tag": "ARTICLE",
+      "cls": "WingproProposalPage-module__pm2b_G__fieldBoard",
+      "text": "FIELD EXECUTION BOARD Задачи монтажной стороны в своей зоне ответственности Короткий statu",
+      "left": 318,
+      "right": 1368,
+      "width": 1050,
+      "clientWidth": 1048,
+      "scrollWidth": 1048,
+      "clientHeight": 1007,
+      "scrollHeight": 1007,
+      "overflowY": "visible",
+      "noClip": true
+    },
+    "fieldTabs": [
+      {
+        "text": "Planned4задачи coordination draft видны до выхода в field execution",
+        "selected": "true",
+        "controls": "field-status-planned"
+      },
+      {
+        "text": "Ready2исходные данные есть и могут быть проверены ответственной стороной",
+        "selected": "false",
+        "controls": "field-status-ready"
+      },
+      {
+        "text": "In progress0field owner обновляет статус в своей зоне ответственности",
+        "selected": "false",
+        "controls": "field-status-in-progress"
+      },
+      {
+        "text": "Needs evidence1нужны фото, шильдик, receiving note или другое evidence",
+        "selected": "false",
+        "controls": "field-status-needs-evidence"
+      },
+      {
+        "text": "Blocked1следующее действие блокирует owner decision или недостающие вводные",
+        "selected": "false",
+        "controls": "field-status-blocked"
+      },
+      {
+        "text": "Done0evidence можно переносить в handover и closeout register",
+        "selected": "false",
+        "controls": "field-status-done"
+      }
+    ],
+    "fieldPanels": [
+      {
+        "id": "field-status-planned",
+        "hidden": false,
+        "text": "Plannedphoto reportbefore shipment / receiving / handovermounting locationcoordi"
+      },
+      {
+        "id": "field-status-ready",
+        "hidden": true,
+        "text": "Readyreceivedreceiving photo + packing stateconnection pointstechnical owner con"
+      },
+      {
+        "id": "field-status-in-progress",
+        "hidden": true,
+        "text": "In progressВ этом статусе нет активных задач. Если field owner обновит состояние"
+      },
+      {
+        "id": "field-status-needs-evidence",
+        "hidden": true,
+        "text": "Needs evidencenameplate checkednameplate/photo/video before acceptance"
+      },
+      {
+        "id": "field-status-blocked",
+        "hidden": true,
+        "text": "Blockedaccess pathsite owner required"
+      },
+      {
+        "id": "field-status-done",
+        "hidden": true,
+        "text": "DoneВ этом статусе нет активных задач. Если field owner обновит состояние, UPGRA"
+      }
+    ],
+    "unexpectedScrollContainers": [],
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Supplier Request Lab": true,
+      "Offer Comparison Board": true,
+      "Contract Decision Simulator": true,
+      "Delivery Timeline": true,
+      "Work Plan Builder": true,
+      "ППР skeleton": true,
+      "Field Execution Board": true,
+      "Photo Evidence Wall": true,
+      "Implementation Status Dashboard": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "fieldNoClip": true,
+      "fieldTabs": 6,
+      "selectedFieldTabs": 1,
+      "visibleFieldPanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "fieldNoClip": true,
+      "fieldTabs": 6,
+      "selectedFieldTabs": 1,
+      "visibleFieldPanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "fieldNoClip": true,
+      "fieldTabs": 6,
+      "selectedFieldTabs": 1,
+      "visibleFieldPanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "fieldNoClip": true,
+      "fieldTabs": 6,
+      "selectedFieldTabs": 1,
+      "visibleFieldPanels": 1,
+      "unexpectedScrollContainers": []
+    },
+    {
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "fieldNoClip": true,
+      "fieldTabs": 6,
+      "selectedFieldTabs": 1,
+      "visibleFieldPanels": 1,
+      "unexpectedScrollContainers": []
+    }
+  ],
+  "interaction": {
+    "focusedBefore": true,
+    "selected": [
+      "Needs evidence1нужны фото, шильдик, receiving note или другое evidence"
+    ],
+    "visiblePanel": {
+      "id": "field-status-needs-evidence",
+      "text": "Needs evidencenameplate checkednameplate/photo/video before acceptance"
+    },
+    "live": [
+      "Selected gate packetGate 0 — Deal setupGo only when supplier identity, object and participant map are visible.Vault evidencesupplier profileRisk radar linkssupplier identity unclearRoute handoffFactory ChinaOutputmission card1. Owner decisionUPGRADE / WinGPro2. Evidence boardsupplier profile3. Risk checksupplier identity unclear4. Route handoffFactory China5. Output artifactmission card",
+      "Selected handover packetWinGPro Executive Packexecutive summary and closeout index are ready to review. WinGPro accepts service deliverables; UPGRADE transfers the structured closeout package.release gatesGate 6 — Before service acceptancevault evidencedecision log, release board, open issues registerrisk responsesopen issues registerroute / data-flowKazakhstan, Mounting handoffoutput artifactacceptance registeracceptance logicAcceptance is based on delivered pack evidence, not physical work or third-party outcomes.1. Gate closeoutGate 6 — Before service acceptance2. Vault evidencedecision log, release board, open issues register3. Risk responseopen issues register4. Route / data-flowKazakhstan, Mounting handoff5. Acceptance / paymentsupports final service acceptance package6. Reusable assetmanagement view for repeated procurement decisions",
+      "Text is open for manual copy"
+    ]
+  },
+  "screenshots": [
+    "runtime/wingpro-auto/screenshots/cycle-45/1440.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/1280.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/768.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/375.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/320.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/field-1280.png",
+    "runtime/wingpro-auto/screenshots/cycle-45/field-375.png"
+  ],
+  "reducedMotion": {
+    "matches": true,
+    "animated": [
+      "1e-06s"
+    ]
+  }
+}

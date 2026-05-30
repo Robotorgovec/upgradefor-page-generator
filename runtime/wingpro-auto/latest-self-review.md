@@ -1,25 +1,25 @@
-# Cycle 44 self-review
+# Cycle 45 self-review
 
 1. Что улучшено в этом цикле?
-Digital Twin прошел broad clip cleanup: мобильный pseudo-3D объект больше не вылезает за stage на 320/375, hotspot markers перенесены внутрь кнопок, а stage использует `overflow: clip` на узких экранах вместо scroll-mechanism.
+Field Execution Board перестал быть длинной in-flow kanban-доской из шести колонок. Теперь это compact command surface: status tabs, selected status summary, next action, boundary и один активный details panel.
 
 2. Как это помогает заказчику принять решение?
-Визуальный trust-блок перестает выглядеть как технически зажатая схема на mobile и 1280 shell-width. WinGPro видит Digital Twin как аккуратный объект сделки, а не как элемент с обрезанными слоями.
+WinGPro быстрее видит, где есть blocker, где нужен evidence, что уже ready и какое следующее действие нужно профильной стороне. Это снижает ощущение бесконечной страницы и превращает field layer в управляемый decision surface.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Слой Digital Twin остался на месте, но теперь его hotspots и evidence labels читаются без скрытого overflow и без визуального шума вокруг кнопок.
+Да. Board теперь показывает не просто список задач, а то, как field tasks превращаются в evidence path, handover и closeout register.
 
 4. Стало ли интерактивнее?
-Интерактив не расширялся, но существующие layer controls стали стабильнее: кнопки не создают внутреннее clipping, остаются keyboard-accessible и сохраняют активные состояния.
+Да. Добавлены accessible status tabs для Planned / Ready / In progress / Needs evidence / Blocked / Done. Все панели физически присутствуют в DOM, JS переключает только active/hidden state.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Контент и liability copy не менялись; UPGRADE по-прежнему описан как IT/data и procurement-coordination партнер, без ответственности за поставщика, проектирование, монтаж, брокера или перевозчика.
+Нет. Copy прямо фиксирует: это coordination view; UPGRADE фиксирует статусы и evidence path, а профильная монтажная сторона исполняет и подтверждает работы. ППР и монтажная ответственность не расширялись.
 
 6. Не были ли изменены forbidden files?
-Нет. Изменен только page-scoped CSS module и runtime QA artifacts/screenshots.
+Нет. Изменены только `components/proposals/wingpro/WingproProposalPage.tsx`, page-scoped CSS module и runtime QA artifacts/screenshots.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. QA: canonical local 200, asset 200, `img.currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0, Digital Twin clipCount=0, copy live-region обновляется, accordion aria-expanded меняется, reduced-motion active.
+Нет. QA: local canonical 200, asset 200, image proof present, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0, field board noClip=true, exactly one selected field tab and one visible tabpanel on all widths, keyboard focus/click smoke passes, reduced-motion active.
 
 8. Что следующий самый полезный micro-goal?
-MODE=INTERACTIVE/DESIGN: сжать следующий самый длинный operator board в overview + detail-on-demand, чтобы уменьшать ощущение длинной ленты без потери underlying data.
+MODE=INTERACTIVE/DESIGN: применить тот же overview + detail-on-demand подход к следующей длинной surface, вероятно Evidence Wall / Evidence handoff, чтобы дальше сжимать vertical fatigue.

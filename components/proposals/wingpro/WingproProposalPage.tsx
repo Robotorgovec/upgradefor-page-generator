@@ -713,6 +713,27 @@ const fieldTasks = [
   ["handover", "Planned", "handover register"],
 ] as const;
 
+const fieldStatuses = ["Planned", "Ready", "In progress", "Needs evidence", "Blocked", "Done"] as const;
+type FieldStatus = (typeof fieldStatuses)[number];
+
+const fieldStatusCues: Record<FieldStatus, string> = {
+  Planned: "задачи coordination draft видны до выхода в field execution",
+  Ready: "исходные данные есть и могут быть проверены ответственной стороной",
+  "In progress": "field owner обновляет статус в своей зоне ответственности",
+  "Needs evidence": "нужны фото, шильдик, receiving note или другое evidence",
+  Blocked: "следующее действие блокирует owner decision или недостающие вводные",
+  Done: "evidence можно переносить в handover и closeout register",
+};
+
+const fieldStatusNextActions: Record<FieldStatus, string> = {
+  Planned: "подтвердить owner и required evidence перед переводом задачи",
+  Ready: "запросить подтверждение field-side и привязать evidence path",
+  "In progress": "держать статус видимым и связывать updates с evidence register",
+  "Needs evidence": "запросить фото, видео, шильдик или receiving note",
+  Blocked: "эскалировать owner decision; UPGRADE фиксирует blocker, а не исполнение",
+  Done: "перенести evidence в handover pack и closeout index",
+};
+
 const evidenceCards = [
   ["Before shipment", "photo/video/nameplate, packing state", "supplier"],
   ["Receiving", "arrival photo, package condition, issue note", "WinGPro / logistics"],
@@ -1336,6 +1357,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [activeContractScenario, setActiveContractScenario] = useState<ContractScenarioId>("balanced");
   const [activeDeliveryPhase, setActiveDeliveryPhase] = useState<DeliveryPhaseId>("payment");
   const [activeEvidencePhase, setActiveEvidencePhase] = useState<EvidencePhase>("Before shipment");
+  const [activeFieldStatus, setActiveFieldStatus] = useState<FieldStatus>("Planned");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
   const [activeRoute, setActiveRoute] = useState(routePoints[0].title);
   const [vaultCategory, setVaultCategory] = useState("all");
@@ -1363,6 +1385,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
+  const activeFieldTasks = fieldTasks.filter((task) => task[1] === activeFieldStatus);
   const evidenceHandoff = evidenceHandoffLinks.find((item) => item.phase === activeEvidencePhase) ?? evidenceHandoffLinks[0];
   const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const risk = risks.find((item) => item.id === activeRisk) ?? risks[0];
@@ -2518,19 +2541,63 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Field Execution Board</p>
               <h3>Задачи монтажной стороны в своей зоне ответственности</h3>
+              <p>Короткий status-layer показывает, где есть blocker, где нужен evidence и какие задачи можно передавать в handover. Это coordination view: UPGRADE фиксирует статусы и evidence path, а профильная монтажная сторона исполняет и подтверждает работы.</p>
             </div>
-            <div className={styles.fieldColumns}>
-              {["Planned", "Ready", "In progress", "Needs evidence", "Blocked", "Done"].map((status) => (
-                <section key={status}>
-                  <h4>{status}</h4>
-                  {fieldTasks.filter((task) => task[1] === status).map(([task, , evidence]) => (
-                    <div key={task}>
-                      <strong>{task}</strong>
-                      <span>{evidence}</span>
-                    </div>
-                  ))}
-                </section>
-              ))}
+            <div className={styles.fieldCommandSurface}>
+              <div className={styles.fieldStatusRail} role="tablist" aria-label="Field execution task statuses">
+                {fieldStatuses.map((status) => {
+                  const tasks = fieldTasks.filter((task) => task[1] === status);
+                  return (
+                    <button
+                      key={status}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeFieldStatus === status}
+                      aria-controls={`field-status-${status.toLowerCase().replaceAll(" ", "-")}`}
+                      data-active={activeFieldStatus === status}
+                      onClick={() => setActiveFieldStatus(status)}
+                    >
+                      <span>{status}</span>
+                      <strong>{tasks.length}</strong>
+                      <small>{fieldStatusCues[status]}</small>
+                    </button>
+                  );
+                })}
+              </div>
+              <aside className={styles.fieldStatusPanel} aria-live="polite" aria-label="Selected field status summary">
+                <p className={styles.eyebrow}>Selected field status</p>
+                <h4>{activeFieldStatus}</h4>
+                <p>{fieldStatusCues[activeFieldStatus]}</p>
+                <dl>
+                  <div><dt>tasks</dt><dd>{activeFieldTasks.length}</dd></div>
+                  <div><dt>next action</dt><dd>{fieldStatusNextActions[activeFieldStatus]}</dd></div>
+                  <div><dt>boundary</dt><dd>не официальный ППР и не контроль монтажа</dd></div>
+                </dl>
+              </aside>
+            </div>
+            <div className={styles.fieldPanels}>
+              {fieldStatuses.map((status) => {
+                const tasks = fieldTasks.filter((task) => task[1] === status);
+                return (
+                  <section
+                    key={status}
+                    id={`field-status-${status.toLowerCase().replaceAll(" ", "-")}`}
+                    role="tabpanel"
+                    tabIndex={0}
+                    hidden={activeFieldStatus !== status}
+                  >
+                    <h4>{status}</h4>
+                    {tasks.length > 0 ? tasks.map(([task, , evidence]) => (
+                      <div key={task}>
+                        <strong>{task}</strong>
+                        <span>{evidence}</span>
+                      </div>
+                    )) : (
+                      <p>В этом статусе нет активных задач. Если field owner обновит состояние, UPGRADE зафиксирует evidence path и связь с handover.</p>
+                    )}
+                  </section>
+                );
+              })}
             </div>
           </article>
 
