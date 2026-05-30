@@ -11,7 +11,8 @@ Reduce duplicated primary `Разобрать установку` CTA in the PV-
 ## View Links
 
 - Local QA URL: http://127.0.0.1:3070/dispatch
-- Preview URL: pending Vercel deployment after commit
+- Preview URL: https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app/dispatch
+- Stable branch preview URL: https://upgradefor-page-generator-git-204210-bacalimser-8615s-projects.vercel.app/dispatch
 
 ## What Changed
 
@@ -53,6 +54,10 @@ Reduce duplicated primary `Разобрать установку` CTA in the PV-
 - `npm run build` — passed
 - `npx tsc --noEmit --pretty false` — failed only on known non-dispatch legacy TypeScript groups
 - `git diff --check` — passed
+- `curl https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app/dispatch` — passed, HTTP 200
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-action-states.mjs` — passed, `primaryDisassemblyCtas: 1`
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed, 11/11 checks
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/capture-dispatch-fullpage-review.mjs https://upgradefor-page-generator-nmhhdendi-bacalimser-8615s-projects.vercel.app /Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-037-preview` — passed, 12/12 section screenshots
 
 ## Full-Page Review Notes
 
@@ -61,6 +66,7 @@ Reduce duplicated primary `Разобрать установку` CTA in the PV-
 - Sticky bottom navigation intentionally uses internal horizontal scroll; audit records internal scroll width but document width remains stable.
 - No dialogs were open during section sweep.
 - Safety copy remained visible: Read-only, Demo Mode, No real equipment control.
+- External preview full-page screenshots were captured to `/Users/m1/UPGRADE/upgradefor-page-generator/runtime/dispatch-continuous/screenshots/cycle-037-preview`.
 
 ## Model Decisions
 
@@ -73,4 +79,3 @@ Reduce duplicated primary `Разобрать установку` CTA in the PV-
 ## Next Cycle
 
 Recommended next micro-goal: `MODE=DESIGN` or `MODE=QA` to polish sticky bottom navigation readability and button wrapping across desktop/tablet/mobile, because the full-page audit shows the nav has large internal horizontal scroll even though it does not break page width.
-
