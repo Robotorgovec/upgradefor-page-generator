@@ -2060,17 +2060,24 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <StatusPill value={item.readiness} />
                 </div>
                 <p>{item.value}</p>
-                <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
-                  <span><strong>{item.readiness}</strong><small>readiness</small></span>
-                  <span><strong>{item.gate}</strong><small>release gate</small></span>
-                  <span><strong>{item.owner}</strong><small>owner</small></span>
-                </div>
-                <dl>
-                  <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
-                  <div><dt>evidence to request</dt><dd>{item.evidence}</dd></div>
-                  <div><dt>risk закрывается</dt><dd>{item.risk}</dd></div>
-                  <div><dt>deliverable</dt><dd>{item.deliverable}</dd></div>
-                </dl>
+                <details className={styles.twinLayerDetailsDisclosure}>
+                  <summary>
+                    <span>Layer evidence</span>
+                    <strong>{item.readiness} / {item.gate}</strong>
+                    <small>Открыть data, evidence request, risk и deliverable</small>
+                  </summary>
+                  <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
+                    <span><strong>{item.readiness}</strong><small>readiness</small></span>
+                    <span><strong>{item.gate}</strong><small>release gate</small></span>
+                    <span><strong>{item.owner}</strong><small>owner</small></span>
+                  </div>
+                  <dl>
+                    <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
+                    <div><dt>evidence to request</dt><dd>{item.evidence}</dd></div>
+                    <div><dt>risk закрывается</dt><dd>{item.risk}</dd></div>
+                    <div><dt>deliverable</dt><dd>{item.deliverable}</dd></div>
+                  </dl>
+                </details>
               </section>
             ))}
             <div className={styles.twinControls}>
