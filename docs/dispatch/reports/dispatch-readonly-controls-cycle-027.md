@@ -16,7 +16,12 @@ Micro-goal: strengthen read-only control guardrails for the Dispatch demo.
 
 Local production view during QA: http://127.0.0.1:3061/dispatch
 
-Vercel Preview is created after commit/push.
+Vercel Preview for this commit was not created because the Vercel account hit the daily deployment
+quota: `api-deployments-free-per-day`. Re-run preview deployment after the quota resets, then run:
+
+```bash
+DISPATCH_BASE_URL=https://<preview-url> node scripts/asset-qa/verify-dispatch-preview-suite.mjs
+```
 
 ## Screenshots
 
@@ -35,6 +40,7 @@ Vercel Preview is created after commit/push.
 - `npm run build` — passed
 - `git diff --check` — passed
 - Dispatch TypeScript check — clean; full `tsc` still has known legacy non-dispatch errors on this PR branch.
+- `npx vercel deploy --target preview` — blocked by Vercel quota `api-deployments-free-per-day`.
 
 ## Safety
 
