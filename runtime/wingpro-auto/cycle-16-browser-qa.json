@@ -1,0 +1,100 @@
+{
+  "cb": 1780136564,
+  "localUrl": "http://127.0.0.1:3076/cp/2605281047-wingpro?cb=1780136564",
+  "base": {
+    "url": "http://127.0.0.1:3076/cp/2605281047-wingpro?cb=1780136564#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "max768": false,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1440,
+    "scrollOk": true,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://127.0.0.1:3076/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "riskSurfaceVisible": true,
+    "riskSurfaceText": "SELECTED RISK RESPONSE\n\nsupplier identity unclear\n\nподготовить supplier identity request и зафиксировать open owner до commercial movement\n\nVAULT EVIDENCE\nsupplier profile\nRELEASE GATE\nGate 0 — Deal setup\nROUTE HANDOFF\nFactory China\nDECISION OWNER\nWinGPro confirms whether the trading channel is acceptable",
+    "riskDetailsWithVault": 11,
+    "riskDetailsWithGate": 11,
+    "contentMissing": [
+      "Selected risk response",
+      "Decision owner"
+    ],
+    "focusCheck": {
+      "tag": "BUTTON",
+      "outlineWidth": "3px",
+      "boxShadow": "rgba(140, 121, 232, 0.28) 0px 0px 0px 2px, rgba(15, 23, 42, 0.08) 0px 16px 34px 0px"
+    },
+    "liveRegions": 10,
+    "contentMissingCaseInsensitive": []
+  },
+  "assetStatus": 200,
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "scrollOk": true,
+      "h1Count": 1,
+      "riskSurfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "scrollOk": true,
+      "h1Count": 1,
+      "riskSurfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "riskSurfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "riskSurfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "riskSurfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "before": "SELECTED RISK RESPONSE\n\nsupplier identity unclear\n\nподготовить supplier identity request и зафиксировать open owner до commercial movement\n\nVAULT EVIDENCE\nsupplier profile\nRELEASE GATE\nGate 0 — Deal setup\nROUTE HANDOFF\nFactory China\nDECISION OWNER\nWinGPro confirms whether the trading channel is acceptable",
+    "after": "SELECTED RISK RESPONSE\n\nmaterial mismatch\n\nсформировать evidence request для supplier и вынести спорный материал в decision log\n\nVAULT EVIDENCE\nmaterial / specification confirmation\nRELEASE GATE\nGate 1 — Before payment\nROUTE HANDOFF\nPayment / Contract decision\nDECISION OWNER\ntechnical owner checks material evidence before payment readiness",
+    "riskSurfaceUpdated": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "riskSurfaceVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-16/wingpro-c16-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-16/wingpro-c16-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-16/wingpro-c16-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-16/wingpro-c16-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-16/wingpro-c16-320.png"
+  ],
+  "note": "contentMissing in base was case-sensitive against CSS text-transform/innerText. Case-insensitive label check passes."
+}

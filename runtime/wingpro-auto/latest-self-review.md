@@ -1,25 +1,25 @@
-CONTRACT-WINGPRO-2605281047-R065 / cycle 15 self-review
+CONTRACT-WINGPRO-2605281047-R065 / cycle 16 self-review
 
 1. Что улучшено в этом цикле?
-Document Vault получил readiness board и operational cues: видны visible documents, open evidence, ready for handoff, route links и missing/requested focus.
+Risk Radar получил selected risk response surface и расширенные risk cards: каждый риск связан с Vault evidence, release gate, route handoff, decision owner и конкретным coordination response.
 
 2. Как это помогает заказчику принять решение?
-WinGPro видит, какие документы уже пригодны для handoff, какие блокируют release readiness и куда каждый документ попадает в route/release contour.
+WinGPro видит не только точку риска на radar, а конкретный пакет реакции: какой evidence нужен, где он лежит в Vault, какой gate блокируется и кому нужно принять решение.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Data-room теперь выглядит как управляемый vault: каждый документ связан с release lane, route link, quality/time impact, risk if absent и UPGRADE action.
+Да. Risk Radar теперь показывает, что UPGRADE превращает риск в action/evidence/release handoff, а не просто перечисляет проблемы.
 
 4. Стало ли интерактивнее?
-Да. Readiness board пересчитывается при фильтрации; browser QA подтвердил смену общего scope на missing-only и обновление board 10 -> 2 visible documents.
+Да. При выборе риска обновляется selected response pack; browser QA подтвердил переключение supplier identity unclear -> material mismatch.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Новые тексты показывают, что UPGRADE структурирует evidence, readiness и handoff cues; владельцы документов и профильные решения остаются у соответствующих участников.
+Нет. Тексты фиксируют, что UPGRADE структурирует request/evidence/status; технические, платежные, customs, logistics, mounting и commercial decisions остаются у WinGPro/профильных участников.
 
 6. Не были ли изменены forbidden files?
 Нет. Изменены только page-specific TSX/CSS и runtime QA/report файлы. Route-entry, layout, global shell, public index и соседние страницы не менялись.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. Typecheck/build прошли. Browser QA на 1440, 1280, 768, 375 и 320 показал scrollOk=true. Vault board имеет `aria-live`, controls сохраняют focus-visible.
+Нет. Typecheck/build прошли. Browser QA на 1440, 1280, 768, 375 и 320 показал scrollOk=true. Risk surface имеет `aria-live`, radar buttons сохраняют focus-visible.
 
 8. Что следующий самый полезный micro-goal?
-MODE=INTERACTIVE: усилить Risk Radar response pack, чтобы выбранные риски связывались с Vault evidence, route handoff и release gates.
+MODE=INTERACTIVE: усилить Release Gates pipeline связью с Risk Radar/Vault/Route outputs, чтобы каждый gate выглядел как управляемый stop/go packet.

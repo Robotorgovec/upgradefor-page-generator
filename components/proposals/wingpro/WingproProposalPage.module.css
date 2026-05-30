@@ -2491,6 +2491,64 @@
     #ffffff;
 }
 
+.riskResponseSurface {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: var(--proposal-shadow-md);
+  display: grid;
+  grid-template-columns: minmax(240px, 0.72fr) 1.28fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.riskResponseSurface h3,
+.riskResponseSurface p {
+  margin: 0;
+}
+
+.riskResponseSurface h3 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.riskResponseSurface p:not(.eyebrow) {
+  margin-top: 10px;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.riskResponseSurface dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.riskResponseSurface dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.riskResponseSurface dt {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.riskResponseSurface dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
 .radarGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(310px, 0.44fr);
@@ -2912,6 +2970,7 @@
   .controlGrid,
   .routeDataSurface,
   .vaultReadinessBoard,
+  .riskResponseSurface,
   .radarGrid,
   .controlBoardGrid,
   .acceptanceGrid {
@@ -2953,6 +3012,7 @@
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
   .vaultStats,
+  .riskResponseSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -3204,6 +3264,7 @@
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
   .vaultStats,
+  .riskResponseSurface dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
