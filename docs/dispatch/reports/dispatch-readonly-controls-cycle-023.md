@@ -13,12 +13,20 @@ Micro-goal: make read-only equipment controls unambiguous in the `/dispatch` dem
 - Copy remains explicit: no real equipment control is performed.
 - Primary PV-1 passport controls use the same read-only tooltip and disabled visual treatment.
 
+## Preview
+
+- URL: `https://upgradefor-page-generator-4dxey57bm-bacalimser-8615s-projects.vercel.app/dispatch`
+- Status: Ready
+- Canonical `/dispatch`: HTTP 200
+- External suite: passed
+
 ## Screenshots
 
 - `docs/dispatch/reports/screenshots/cycle-023/01-readonly-controls.png`
 - `docs/dispatch/reports/screenshots/cycle-023/02-readonly-modal.png`
 - `docs/dispatch/reports/screenshots/cycle-023/03-primary-pv1-readonly.png`
 - `docs/dispatch/reports/screenshots/cycle-023/04-mobile-readonly-controls.png`
+- `docs/dispatch/reports/screenshots/cycle-023/05-preview-readonly-controls.png`
 
 ## QA
 
@@ -28,6 +36,7 @@ Micro-goal: make read-only equipment controls unambiguous in the `/dispatch` dem
 - `DISPATCH_BASE_URL=http://127.0.0.1:3057 node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed
 - `node scripts/asset-qa/verify-dispatch-equipment-models.mjs` — passed
 - `node node_modules/next/dist/bin/next build` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-4dxey57bm-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed
 - `git diff --check` — passed
 - `npx tsc --noEmit --pretty false` — failed on known legacy non-dispatch groups in account, selector, beauty grids, and copper-aluminum manufacturers.
 
