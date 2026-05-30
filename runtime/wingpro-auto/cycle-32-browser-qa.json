@@ -1,0 +1,117 @@
+{
+  "cb": 1780143458,
+  "url": "http://127.0.0.1:3082/cp/2605281047-wingpro?cb=1780143458",
+  "pageStatus": 200,
+  "assetUrl": "http://127.0.0.1:3082/assets/logo/logo-black-only.png?cb=1780143458",
+  "assetStatus": 200,
+  "imgProof": {
+    "currentSrc": "http://127.0.0.1:3082/assets/logo/logo-black-only.png",
+    "naturalWidth": 2000,
+    "naturalHeight": 501,
+    "complete": true
+  },
+  "pathProof": {
+    "exists": true,
+    "count": 5,
+    "text": "01 supplierCandidate Amanufacturer channel / score 84selected path if evidence gates close before payment02 contractBalanced 50/50balanced: payment can start while before-shipment blockers remain visibleapprove 50/50 service terms and attach evidence gates to the service contract03 deliveryPayment readinessowner required until payment evidence is complete enough for WinGPro reviewcommercial approval note + unresolved evidence list04 work planSupplier SearchSupplier Request Labсверить manufacturer/trader status и запросить material/pressure evidence05 handoverWinGPro Executive PackGate 6executive summary and closeout index are ready to review"
+  },
+  "pathClicks": [
+    {
+      "label": "01 supplier",
+      "activePath": "01 supplierCandidate Amanufacturer channel / score 84selected path if evidence gates close before payment",
+      "activeMode": "supplier",
+      "selectedTab": "Supplier Decision",
+      "activeSections": 5
+    },
+    {
+      "label": "02 contract",
+      "activePath": "02 contractBalanced 50/50balanced: payment can start while before-shipment blockers remain visibleapprove 50/50 service terms and attach evidence gates to the service contract",
+      "activeMode": "contract",
+      "selectedTab": "Contract Terms",
+      "activeSections": 5
+    },
+    {
+      "label": "03 delivery",
+      "activePath": "03 deliveryPayment readinessowner required until payment evidence is complete enough for WinGPro reviewcommercial approval note + unresolved evidence list",
+      "activeMode": "delivery",
+      "selectedTab": "Delivery Control",
+      "activeSections": 5
+    },
+    {
+      "label": "04 work plan",
+      "activePath": "04 work planSupplier SearchSupplier Request Labсверить manufacturer/trader status и запросить material/pressure evidence",
+      "activeMode": "workplan",
+      "selectedTab": "Work Plan",
+      "activeSections": 5
+    },
+    {
+      "label": "05 handover",
+      "activePath": "05 handoverWinGPro Executive PackGate 6executive summary and closeout index are ready to review",
+      "activeMode": "handover",
+      "selectedTab": "Evidence & Handover",
+      "activeSections": 5
+    }
+  ],
+  "responsive": [
+    {
+      "width": 1440,
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 1280,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "ok": true,
+      "max768": false
+    },
+    {
+      "width": 768,
+      "innerWidth": 768,
+      "scrollWidth": 768,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 375,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "ok": true,
+      "max768": true
+    },
+    {
+      "width": 320,
+      "innerWidth": 320,
+      "scrollWidth": 320,
+      "ok": true,
+      "max768": true
+    }
+  ],
+  "content": {
+    "h1Count": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "requiredTexts": {
+      "Decision Path": true,
+      "Candidate A": true,
+      "Balanced": true,
+      "Payment readiness": true,
+      "Supplier Search": true,
+      "WinGPro Executive Pack": true,
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true
+    }
+  },
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-32/1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-32/1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-32/768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-32/375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-32/320.png"
+  ]
+}

@@ -1363,6 +1363,49 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["route links", String(new Set(visibleDocs.map((doc) => getVaultRouteLink(doc[0], doc[3]))).size), "delivery points connected to vault"],
   ] as const;
   const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
+  const decisionPath = [
+    {
+      mode: "supplier",
+      label: "01 supplier",
+      title: supplier.name,
+      detail: `${supplier.channel} / score ${supplier.score}`,
+      output: supplier.decisionSignal,
+    },
+    {
+      mode: "contract",
+      label: "02 contract",
+      title: contractScenario.title,
+      detail: contractScenario.evidenceGateStrength,
+      output: contractScenario.ownerRequiredDecision,
+    },
+    {
+      mode: "delivery",
+      label: "03 delivery",
+      title: deliveryPhase.phase,
+      detail: deliveryPhase.statusControl,
+      output: deliveryPhase.handoff,
+    },
+    {
+      mode: "workplan",
+      label: "04 work plan",
+      title: activeControl.title,
+      detail: activeControl.artifact,
+      output: activeControl.nextAction,
+    },
+    {
+      mode: "handover",
+      label: "05 handover",
+      title: handoverPack.name,
+      detail: handoverPack.gate,
+      output: handoverPack.acceptance,
+    },
+  ] as const satisfies ReadonlyArray<{
+    mode: PresentationModeId;
+    label: string;
+    title: string;
+    detail: string;
+    output: string;
+  }>;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -1592,6 +1635,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
+        <div className={styles.decisionPathHeader}>
+          <p className={styles.eyebrow}>Decision Path</p>
+          <span>одна связанная линия: supplier → contract → delivery → work plan → handover</span>
+        </div>
+        <div className={styles.decisionPathRail} aria-label="Connected decision path">
+          {decisionPath.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              data-active={activePresentationMode === item.mode}
+              onClick={() => setActivePresentationMode(item.mode)}
+            >
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <small>{item.detail}</small>
+              <em>{item.output}</em>
+            </button>
+          ))}
+        </div>
       </section>
 
       <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" aria-labelledby="twin-title">

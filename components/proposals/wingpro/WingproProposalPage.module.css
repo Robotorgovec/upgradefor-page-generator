@@ -269,6 +269,81 @@
   text-transform: uppercase;
 }
 
+.decisionPathHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.decisionPathHeader p,
+.decisionPathHeader span {
+  margin: 0;
+}
+
+.decisionPathHeader span {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.decisionPathRail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.decisionPathRail button {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-height: 148px;
+  padding: 12px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.decisionPathRail button:hover,
+.decisionPathRail button[data-active="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff));
+}
+
+.decisionPathRail span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.decisionPathRail strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.decisionPathRail small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.decisionPathRail em {
+  margin-top: auto;
+  color: var(--proposal-brand-contrast);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
 .hero {
   min-height: 690px;
   display: grid;
@@ -3945,6 +4020,10 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .decisionPathRail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .presentationModePanel {
     grid-template-columns: minmax(120px, 0.25fr) minmax(170px, 0.3fr) minmax(0, 1fr);
   }
@@ -4022,6 +4101,10 @@
   }
 
   .commandLayerHeader {
+    display: grid;
+  }
+
+  .decisionPathHeader {
     display: grid;
   }
 
@@ -4220,6 +4303,10 @@
 
   .presentationModeTabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .decisionPathRail {
+    grid-template-columns: 1fr;
   }
 
   .heroActions {
