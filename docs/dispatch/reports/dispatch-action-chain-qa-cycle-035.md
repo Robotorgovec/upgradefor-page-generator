@@ -57,6 +57,16 @@ Action-flow screenshots:
 - `git diff --check` — passed
 - `npx tsc --noEmit --pretty false` — failed only on legacy non-dispatch groups already outside this cycle scope; no dispatch errors were reported.
 
+## Preview QA
+
+Preview URL: <https://upgradefor-page-generator-6iyao1aea-bacalimser-8615s-projects.vercel.app/dispatch>
+
+- Vercel status — Ready
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-6iyao1aea-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-preview-suite.mjs` — passed, 10/10 checks
+- `DISPATCH_ACTION_FLOW_OUTPUT_DIR=runtime/dispatch-continuous/screenshots/cycle-035-preview-action-flow DISPATCH_BASE_URL=https://upgradefor-page-generator-6iyao1aea-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/verify-dispatch-action-flows.mjs` — passed
+- `DISPATCH_BASE_URL=https://upgradefor-page-generator-6iyao1aea-bacalimser-8615s-projects.vercel.app node scripts/asset-qa/capture-dispatch-fullpage-review.mjs` — passed, 12/12 sections
+- Browser console error check — passed, no errors reported
+
 ## Full-page review
 
 - Desktop full-page: passed.
