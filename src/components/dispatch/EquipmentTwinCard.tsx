@@ -29,8 +29,16 @@ export default function EquipmentTwinCard({
   return (
     <article
       className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isRelated ? "isRelated" : ""}`}
+      data-equipment-twin-id={equipment.id}
+      data-selection-state={isActive ? "active" : isRelated ? "related" : "idle"}
+      data-testid={`equipment-twin-card-${equipment.id}`}
     >
-      <button className="equipmentTwinCardBody" type="button" onClick={onSelect}>
+      <button
+        aria-current={isActive ? "true" : undefined}
+        className="equipmentTwinCardBody"
+        type="button"
+        onClick={onSelect}
+      >
         <span className="equipmentTwinCardTopline">
           <span className="equipmentTwinStatus">{equipment.status}</span>
           {isActive ? <span className="equipmentTwinSelectionBadge">Выбрано</span> : null}
