@@ -1,0 +1,91 @@
+{
+  "cb": 1780133454,
+  "localUrl": "http://localhost:3069/cp/2605281047-wingpro?cb=1780133454",
+  "base": {
+    "url": "http://localhost:3069/cp/2605281047-wingpro?cb=1780133454#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1425,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://localhost:3069/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "missing": [],
+    "commandPanelText": "Active control stateSupplier Request Labstatuscollecting evidenceownerUPGRADE procurement/datanext actionсверить manufacturer/trader status и запросить material/pressure evidencehandoffshortlist rationale + open questions",
+    "activeControlStateCaseNote": "innerText renders eyebrow uppercase; recheck lower-case text confirmed Active control state is visible"
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "commandPanelVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "commandPanelVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "commandPanelVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "commandPanelVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "commandPanelVisible": true
+    }
+  ],
+  "interaction": {
+    "offerClicked": true,
+    "commandPanelUpdated": true,
+    "before": "Active control stateSupplier Request Labstatuscollecting evidenceownerUPGRADE procurement/datanext actionсверить manufacturer/trader status и запросить material/pressure evidencehandoffshortlist rationale + open questions",
+    "after": "Active control stateOffer Comparison Boardstatusdecision supportownerWinGPro decision ownernext actionсопоставить technical fit, payment risk и document readiness перед выборомhandoffcomparison board + recommendation note"
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-9/wingpro-c9-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-9/wingpro-c9-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-9/wingpro-c9-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-9/wingpro-c9-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-9/wingpro-c9-320.png"
+  ],
+  "recheck": {
+    "file": "runtime/wingpro-auto/cycle-9-interaction-recheck.json",
+    "hasActiveControlState": true,
+    "scrollOk": true
+  }
+}

@@ -121,6 +121,10 @@ const projectControlScale = [
     result: "запросы поставщикам, candidate cards, shortlist и selected logic",
     decision: "WinGPro видит, почему канал попал в shortlist и какие вопросы открыты",
     artifact: "Supplier Request Lab",
+    status: "collecting evidence",
+    owner: "UPGRADE procurement/data",
+    nextAction: "сверить manufacturer/trader status и запросить material/pressure evidence",
+    handoff: "shortlist rationale + open questions",
   },
   {
     id: "offer",
@@ -128,6 +132,10 @@ const projectControlScale = [
     result: "сравнение technical fit, document readiness, payment risk и delivery readiness",
     decision: "условия выбора видны как board, а не как фрагменты переписки",
     artifact: "Offer Comparison Board",
+    status: "decision support",
+    owner: "WinGPro decision owner",
+    nextAction: "сопоставить technical fit, payment risk и document readiness перед выбором",
+    handoff: "comparison board + recommendation note",
   },
   {
     id: "contract",
@@ -135,6 +143,10 @@ const projectControlScale = [
     result: "payment scenario, delivery terms, evidence before payment/shipment, contract strength",
     decision: "WinGPro согласует не только цену, но и условия, снижающие операционные риски",
     artifact: "Contract Decision Simulator",
+    status: "owner required",
+    owner: "WinGPro / counsel if engaged",
+    nextAction: "выбрать payment scenario и evidence gates до оплаты/отгрузки",
+    handoff: "draft terms + boundary notes",
   },
   {
     id: "delivery",
@@ -142,6 +154,10 @@ const projectControlScale = [
     result: "payment readiness, production confirmation, factory status, packing data, logistics/broker handoff",
     decision: "поставка читается как статусный контур с blockers и owners",
     artifact: "Delivery Timeline",
+    status: "release tracking",
+    owner: "supplier / logistics / broker",
+    nextAction: "запросить packing data, pickup contacts и photo/video/nameplate до отгрузки",
+    handoff: "shipment readiness board",
   },
   {
     id: "workplan",
@@ -149,6 +165,10 @@ const projectControlScale = [
     result: "work zones, stages, checklist, blockers, photo required, status",
     decision: "монтажная сторона получает coordination draft, но финальный ППР утверждают профильные участники",
     artifact: "Work Plan Builder / ППР skeleton",
+    status: "coordination draft",
+    owner: "mounting / technical side",
+    nextAction: "передать connection points, dimensions, access/service questions профильной стороне",
+    handoff: "ППР skeleton, не официальный ППР",
   },
   {
     id: "field",
@@ -156,6 +176,10 @@ const projectControlScale = [
     result: "task board, evidence required, photo report, open items",
     decision: "исполнение отмечается монтажной стороной в своей зоне ответственности",
     artifact: "Field Execution Board",
+    status: "external execution",
+    owner: "mounting contractor lead",
+    nextAction: "зафиксировать tasks, blockers и required photo evidence без принятия монтажных работ UPGRADE",
+    handoff: "field task log + evidence checklist",
   },
   {
     id: "closeout",
@@ -163,6 +187,10 @@ const projectControlScale = [
     result: "handover register, photo evidence register, open issues, digital product card",
     decision: "результат остается как Digital Product Asset для повторных закупок и продаж",
     artifact: "Handover & Closeout",
+    status: "acceptance package",
+    owner: "UPGRADE / WinGPro",
+    nextAction: "собрать data-room index, risk register, handover packs и digital product card",
+    handoff: "closeout pack + reusable sales asset",
   },
 ] as const satisfies ReadonlyArray<{
   id: ControlStepId;
@@ -170,6 +198,10 @@ const projectControlScale = [
   result: string;
   decision: string;
   artifact: string;
+  status: string;
+  owner: string;
+  nextAction: string;
+  handoff: string;
 }>;
 
 const supplierCandidates = [
@@ -763,6 +795,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const copyRef = useRef<HTMLTextAreaElement>(null);
 
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
+  const activeControl = projectControlScale.find((item) => item.id === activeControlStep) ?? projectControlScale[0];
   const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
@@ -1099,6 +1132,18 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </article>
           ))}
         </div>
+        <aside className={styles.controlCommandPanel} aria-live="polite" aria-label="Active project control command panel">
+          <div>
+            <p className={styles.eyebrow}>Active control state</p>
+            <h3>{activeControl.artifact}</h3>
+          </div>
+          <dl>
+            <div><dt>status</dt><dd>{activeControl.status}</dd></div>
+            <div><dt>owner</dt><dd>{activeControl.owner}</dd></div>
+            <div><dt>next action</dt><dd>{activeControl.nextAction}</dd></div>
+            <div><dt>handoff</dt><dd>{activeControl.handoff}</dd></div>
+          </dl>
+        </aside>
 
         <div className={styles.controlBoardGrid}>
           <article className={styles.supplierLab}>

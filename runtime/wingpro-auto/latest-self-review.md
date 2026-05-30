@@ -1,25 +1,25 @@
-CONTRACT-WINGPRO-2605281047-R065 / cycle 8 self-review
+CONTRACT-WINGPRO-2605281047-R065 / cycle 9 self-review
 
 1. Что улучшено в этом цикле?
-Усилена QA-полировка Handover & Closeout: мобильная closeout matrix получила явные cell labels, 1220px-сетки перестали становиться плотнее desktop-базы, а видимые module chips теперь явно фиксируют ключевые product-модули КП.
+Project Control Scale получил active command panel: при выборе этапа меняются status, owner, next action и handoff. Это делает шкалу похожей на живой procurement cockpit, а не только на навигацию.
 
 2. Как это помогает заказчику принять решение?
-Страница лучше удерживает структуру board-level предложения: заказчик сразу видит состав операционной системы сделки и легче считывает closeout/acceptance package на мобильных.
+WinGPro видит не абстрактные этапы, а операционное состояние каждого слоя: кто владелец, что следующий action и какой handoff будет передан.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Видимый module index показывает Supplier Request Lab, Offer Comparison Board, Contract Decision Simulator, Delivery Timeline, Work Plan Builder, Field Execution Board, Photo Evidence Wall, Implementation Status Dashboard и Handover & Closeout как единый набор результата.
+Да. Для каждого этапа теперь есть привязка к конкретному output: shortlist rationale, comparison board, draft terms, shipment readiness board, ППР skeleton, field evidence log, closeout pack и reusable sales asset.
 
 4. Стало ли интерактивнее?
-Интерактивы не расширялись намеренно; цикл был QA/design polish. Существующие accordion/copy/status interactions прошли smoke-check.
+Да. Command panel обновляется по клику на Project Control tab; browser recheck подтвердил переход Supplier Request Lab -> Offer Comparison Board и изменение state на decision support.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Legal note уточнен безопаснее: отдельными фразами указано, что UPGRADE не является брокером и не является перевозчиком, вместе с остальными исключениями.
+Нет. Новые тексты говорят о status, evidence, draft, handoff и owner; для ППР прямо сохранено "не официальный ППР", для field execution не добавлено принятие монтажных работ.
 
 6. Не были ли изменены forbidden files?
-Нет. Изменены только page-scoped TSX/CSS и runtime QA/report файлы. Unrelated dirty files в репозитории не трогались и не staged.
+Нет. Изменены только page-scoped компонент/CSS и runtime QA/report файлы. Unrelated dirty files не трогались и не staged.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. Browser QA на 1440, 1280, 768, 375 и 320 показал scrollOk=true, h1Count=1. Closeout rows остаются 7, aria/copy smoke прошел, prefers-reduced-motion не ломает страницу.
+Нет. Browser QA на 1440, 1280, 768, 375 и 320 показал scrollOk=true, h1Count=1, commandPanelVisible=true. Reduced motion не ломает layout.
 
 8. Что следующий самый полезный micro-goal?
-MODE=DESIGN или MODE=INTERACTIVE: визуально довести Project Control Scale и Supplier Request Lab, чтобы они сильнее ощущались как active procurement cockpit, а не как набор карточек.
+MODE=INTERACTIVE: добавить более выразительный selected-candidate summary в Supplier Request Lab, чтобы selected rationale, blockers и next evidence request читались как decision packet.

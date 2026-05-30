@@ -1058,6 +1058,55 @@
   min-width: 0;
 }
 
+.controlCommandPanel {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 70%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  grid-template-columns: minmax(180px, 0.58fr) minmax(0, 1.42fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.controlCommandPanel h3 {
+  margin: 0;
+  color: var(--proposal-text);
+  font-size: 22px;
+}
+
+.controlCommandPanel dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.controlCommandPanel dl div {
+  min-height: 104px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.controlCommandPanel dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.controlCommandPanel dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  font-weight: 820;
+  line-height: 1.38;
+}
+
 .controlStepPanel h3,
 .boardHeader h3,
 .candidateGrid strong,
@@ -2393,6 +2442,7 @@
 
   .hero,
   .twinShell,
+  .controlCommandPanel,
   .supplierWorkbench,
   .controlGrid,
   .radarGrid,
@@ -2431,6 +2481,7 @@
 
   .sceneRail,
   .controlScale,
+  .controlCommandPanel dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -2675,6 +2726,7 @@
   .segmented,
   .sceneRail,
   .controlScale,
+  .controlCommandPanel dl,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
