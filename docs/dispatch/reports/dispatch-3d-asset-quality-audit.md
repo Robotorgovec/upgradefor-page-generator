@@ -66,3 +66,9 @@ For the current investor/demo branch:
 Run a focused visual/material pass on `multi-split-system.glb` first, because it is structurally served and clickable
 but has an off-origin warning and currently carries `TO VERIFY` metadata. If the model itself is not acceptable, replace
 it only with a user-approved original source model.
+
+Follow-up status: the focused multi-split visual review is recorded in:
+
+```text
+docs/dispatch/reports/dispatch-3d-multi-split-visual-review.md
+```
