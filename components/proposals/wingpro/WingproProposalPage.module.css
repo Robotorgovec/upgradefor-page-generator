@@ -2098,8 +2098,112 @@
   background: #ffffff;
 }
 
+.handoverMetrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.handoverMetrics span,
+.acceptanceLink {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 5px;
+}
+
+.handoverMetrics strong {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.handoverMetrics small,
+.acceptanceLink small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.packHero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.packHero > div {
+  display: grid;
+  gap: 7px;
+}
+
+.packHero p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+}
+
 .packDetail {
   background: #ffffff;
+}
+
+.closeoutMatrix {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.closeoutHeader,
+.closeoutRow {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.1fr) minmax(120px, 0.72fr) minmax(100px, 0.55fr) minmax(220px, 1.4fr);
+}
+
+.closeoutHeader {
+  color: var(--proposal-text);
+  background: var(--proposal-surface-soft);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.closeoutHeader span,
+.closeoutRow > * {
+  border-right: 1px solid var(--proposal-border);
+  border-bottom: 1px solid var(--proposal-border);
+  padding: 11px;
+}
+
+.closeoutHeader span:last-child,
+.closeoutRow > *:last-child {
+  border-right: 0;
+}
+
+.closeoutRow strong {
+  color: var(--proposal-text);
+}
+
+.closeoutRow span,
+.closeoutRow em {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.handoverSummary {
+  margin: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 13px 14px;
+  color: var(--proposal-text-soft);
+  background: var(--proposal-brand-soft);
+  line-height: 1.5;
 }
 
 .acceptance {
@@ -2131,6 +2235,20 @@
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background: #ffffff;
+}
+
+.acceptanceLink {
+  margin: 12px 0;
+  background: var(--proposal-brand-soft);
+}
+
+.acceptanceLink strong {
+  color: var(--proposal-text);
+}
+
+.acceptanceLink span {
+  color: var(--proposal-brand-contrast);
+  font-weight: 900;
 }
 
 .copyPackage {
@@ -2322,6 +2440,8 @@
   .offerMatrixRow,
   .contractGateHeader,
   .contractGateRow,
+  .closeoutHeader,
+  .closeoutRow,
   .vaultGrid,
   .vaultGrid[data-mode="timeline"] {
     grid-template-columns: 1fr;
@@ -2339,8 +2459,13 @@
     display: none;
   }
 
+  .closeoutHeader {
+    display: none;
+  }
+
   .offerMatrixRow > *,
-  .contractGateRow > * {
+  .contractGateRow > *,
+  .closeoutRow > * {
     border-right: 0;
   }
 }
@@ -2542,6 +2667,10 @@
     display: none;
   }
 
+  .handoverMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sceneRail button {
     min-height: 120px;
   }
@@ -2596,5 +2725,9 @@
   .missionCard strong,
   .decisionCard strong {
     font-size: 28px;
+  }
+
+  .handoverMetrics {
+    grid-template-columns: 1fr;
   }
 }

@@ -642,12 +642,78 @@ const gates = [
 ] as const;
 
 const handoverPacks = [
-  ["WinGPro Executive Pack", "mission card, decision log, release gates, acceptance register", "board pack", "WinGPro", "Gate 6", "руководство видит статус и результат"],
-  ["Supplier Communication Pack", "structured questions, evidence request, open items", "request pack", "supplier", "Gate 1-3", "поставщик получает понятные запросы"],
-  ["Logistics Pack", "pickup map, weight/dimensions, packing status", "data-flow pack", "logistics", "Gate 3-4", "логист видит операционные вводные"],
-  ["Broker/Customs Pack", "broker input, export docs, HS/TN VED owner", "customs input list", "broker", "Gate 4", "брокер получает проверочный список"],
-  ["Mounting Coordination Pack", "connection points, service access, dimensions, questions", "coordination pack", "mounting side", "Gate 5", "площадка получает вводные заранее"],
-  ["Future Sales Pack", "supplier profile, product card, links, repeat purchase notes", "sales asset", "WinGPro", "Gate 7", "позиция готова к повторному использованию"],
+  {
+    name: "WinGPro Executive Pack",
+    inside: "mission card, decision log, release gates, acceptance register",
+    format: "board pack",
+    recipient: "WinGPro",
+    gate: "Gate 6",
+    value: "руководство видит статус и результат",
+    acceptance: "executive summary and closeout index are ready to review",
+    paymentLink: "supports final service acceptance package",
+    evidence: "decision log, release board, open issues register",
+    reusable: "management view for repeated procurement decisions",
+  },
+  {
+    name: "Supplier Communication Pack",
+    inside: "structured questions, evidence request, open items",
+    format: "request pack",
+    recipient: "supplier",
+    gate: "Gate 1-3",
+    value: "поставщик получает понятные запросы",
+    acceptance: "supplier questions and unresolved items are documented",
+    paymentLink: "supports before-payment and before-shipment readiness",
+    evidence: "request log, response status, missing evidence list",
+    reusable: "supplier communication pattern for future orders",
+  },
+  {
+    name: "Logistics Pack",
+    inside: "pickup map, weight/dimensions, packing status",
+    format: "data-flow pack",
+    recipient: "logistics",
+    gate: "Gate 3-4",
+    value: "логист видит операционные вводные",
+    acceptance: "handoff data is structured for logistics review",
+    paymentLink: "shows delivery data readiness without making UPGRADE the carrier",
+    evidence: "packing data, pickup contacts, weight/dimensions",
+    reusable: "route input template for repeated shipments",
+  },
+  {
+    name: "Broker/Customs Pack",
+    inside: "broker input, export docs, HS/TN VED owner",
+    format: "customs input list",
+    recipient: "broker",
+    gate: "Gate 4",
+    value: "брокер получает проверочный список",
+    acceptance: "broker/customs questions are visible with owners",
+    paymentLink: "documents handoff status, not customs outcome",
+    evidence: "invoice draft, certificate/export checklist, broker input list",
+    reusable: "customs readiness pattern for similar product lines",
+  },
+  {
+    name: "Mounting Coordination Pack",
+    inside: "connection points, service access, dimensions, questions",
+    format: "coordination pack",
+    recipient: "mounting side",
+    gate: "Gate 5",
+    value: "площадка получает вводные заранее",
+    acceptance: "mounting questions and technical owner path are listed",
+    paymentLink: "confirms coordination inputs were transferred, not field execution",
+    evidence: "connection points, service access, dimensions, open questions",
+    reusable: "mounting input checklist for future implementation",
+  },
+  {
+    name: "Future Sales Pack",
+    inside: "supplier profile, product card, links, repeat purchase notes",
+    format: "sales asset",
+    recipient: "WinGPro",
+    gate: "Gate 7",
+    value: "позиция готова к повторному использованию",
+    acceptance: "supplier and product cards are ready as digital product asset",
+    paymentLink: "part of the delivered reusable commercial base",
+    evidence: "supplier card, product card, document links, future sales brief",
+    reusable: "digital product asset for repeat purchase and resale offers",
+  },
 ] as const;
 
 const copyTexts: Record<CopyVariant, string> = {
@@ -688,7 +754,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [riskImpact, setRiskImpact] = useState<RiskImpact | "all">("all");
   const [activeRisk, setActiveRisk] = useState<(typeof risks)[number]["id"]>(risks[0].id);
   const [activeGate, setActiveGate] = useState(0);
-  const [activePack, setActivePack] = useState<(typeof handoverPacks)[number][0]>(handoverPacks[0][0]);
+  const [activePack, setActivePack] = useState<(typeof handoverPacks)[number]["name"]>(handoverPacks[0].name);
   const [paymentMode, setPaymentMode] = useState<"split" | "full">("split");
   const [isRotating, setIsRotating] = useState(true);
   const [presentationMode, setPresentationMode] = useState(false);
@@ -701,6 +767,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
+  const handoverPack = handoverPacks.find((item) => item.name === activePack) ?? handoverPacks[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -1557,24 +1624,76 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Handover Room</p>
           <h2 id="handover-title">Что получает каждая сторона</h2>
+          <p>Closeout строится как acceptance package: каждый handover pack связан с release gate, evidence, владельцем и практической ценностью. Приемка результата осуществляется по deliverables, а не по действиям производителя, перевозчика, брокера, монтажной организации или иных третьих лиц.</p>
         </div>
-        <div className={styles.packTabs}>
-          {handoverPacks.map((item) => <button key={item[0]} type="button" aria-pressed={activePack === item[0]} onClick={() => setActivePack(item[0])}>{item[0]}</button>)}
+        <div className={styles.handoverMetrics} aria-label="Closeout readiness summary">
+          <span><strong>6</strong><small>handover packs</small></span>
+          <span><strong>Gate 6</strong><small>service acceptance</small></span>
+          <span><strong>Gate 7</strong><small>reuse asset</small></span>
+          <span><strong>{paymentMode === "split" ? "50/50" : "100%"}</strong><small>payment mode</small></span>
+        </div>
+        <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
+          {handoverPacks.map((item) => (
+            <button
+              key={item.name}
+              type="button"
+              role="tab"
+              aria-selected={activePack === item.name}
+              aria-controls={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
+              data-active={activePack === item.name}
+              onClick={() => setActivePack(item.name)}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
         <div className={styles.packDetails}>
           {handoverPacks.map((item) => (
-            <article key={`pack-${item[0]}`} className={styles.packDetail} hidden={activePack !== item[0]}>
-              <h3>{item[0]}</h3>
+            <article
+              key={`pack-${item.name}`}
+              id={`handover-pack-${item.name.replaceAll(" ", "-").replaceAll("/", "-").toLowerCase()}`}
+              role="tabpanel"
+              tabIndex={0}
+              className={styles.packDetail}
+              hidden={activePack !== item.name}
+            >
+              <div className={styles.packHero}>
+                <div>
+                  <p className={styles.eyebrow}>Selected closeout pack</p>
+                  <h3>{item.name}</h3>
+                  <p>{item.value}</p>
+                </div>
+                <StatusPill value={item.gate} />
+              </div>
               <dl>
-                <div><dt>what is inside</dt><dd>{item[1]}</dd></div>
-                <div><dt>format</dt><dd>{item[2]}</dd></div>
-                <div><dt>owner</dt><dd>{item[3]}</dd></div>
-                <div><dt>when delivered</dt><dd>{item[4]}</dd></div>
-                <div><dt>practical value</dt><dd>{item[5]}</dd></div>
+                <div><dt>what is inside</dt><dd>{item.inside}</dd></div>
+                <div><dt>format</dt><dd>{item.format}</dd></div>
+                <div><dt>recipient</dt><dd>{item.recipient}</dd></div>
+                <div><dt>acceptance signal</dt><dd>{item.acceptance}</dd></div>
+                <div><dt>payment link</dt><dd>{item.paymentLink}</dd></div>
+                <div><dt>evidence register</dt><dd>{item.evidence}</dd></div>
+                <div><dt>reusable value</dt><dd>{item.reusable}</dd></div>
               </dl>
             </article>
           ))}
         </div>
+        <div className={styles.closeoutMatrix} role="table" aria-label="Closeout acceptance matrix">
+          <div role="row" className={styles.closeoutHeader}>
+            <span role="columnheader">Pack</span>
+            <span role="columnheader">Recipient</span>
+            <span role="columnheader">Gate</span>
+            <span role="columnheader">Acceptance signal</span>
+          </div>
+          {handoverPacks.map((item) => (
+            <div key={`closeout-${item.name}`} role="row" className={styles.closeoutRow}>
+              <strong role="cell">{item.name}</strong>
+              <span role="cell">{item.recipient}</span>
+              <span role="cell">{item.gate}</span>
+              <em role="cell">{item.acceptance}</em>
+            </div>
+          ))}
+        </div>
+        <p className={styles.handoverSummary}>Active closeout focus: {handoverPack.name} → {handoverPack.acceptance}. UPGRADE передает структурированный пакет; профильные участники проверяют и утверждают решения в своей зоне ответственности.</p>
       </section>
 
       <section className={styles.acceptance} aria-labelledby="acceptance-title">
@@ -1595,6 +1714,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <article>
             <h3>что считается результатом</h3>
             <ul>{["data-room index", "risk register", "release gate board", "handover packs", "digital supplier/product card", "copy-ready executive summary"].map((item) => <li key={item}>{item}</li>)}</ul>
+            <div className={styles.acceptanceLink}>
+              <strong>Active closeout pack</strong>
+              <span>{handoverPack.name}</span>
+              <small>{handoverPack.paymentLink}</small>
+            </div>
             <p>Оборудование, доставка, пошлины, брокер, сертификация, монтаж, ПНР, инспекция и банковские комиссии не входят.</p>
           </article>
         </div>

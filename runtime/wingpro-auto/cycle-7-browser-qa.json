@@ -1,0 +1,172 @@
+{
+  "url": "http://localhost:3000/cp/2605281047-wingpro?cb=1780131913",
+  "generatedAt": "2026-05-30T09:05:22.181Z",
+  "cleanContext": true,
+  "cacheBust": 1780131913,
+  "results": [
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/1440.png",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": false,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "missingRequired": [],
+      "cycle7Ok": true,
+      "missingCycle7": [],
+      "futureSalesSelected": "true",
+      "futureSalesHidden": false,
+      "closeoutRows": 6,
+      "activeElementTag": "BODY",
+      "focusOutline": "none"
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/1280.png",
+      "width": 1280,
+      "scrollWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": false,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "missingRequired": [],
+      "cycle7Ok": true,
+      "missingCycle7": [],
+      "futureSalesSelected": "true",
+      "futureSalesHidden": false,
+      "closeoutRows": 6,
+      "activeElementTag": "BODY",
+      "focusOutline": "none"
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/768.png",
+      "width": 768,
+      "scrollWidth": 753,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "missingRequired": [],
+      "cycle7Ok": true,
+      "missingCycle7": [],
+      "futureSalesSelected": "true",
+      "futureSalesHidden": false,
+      "closeoutRows": 6,
+      "activeElementTag": "BODY",
+      "focusOutline": "none"
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/375.png",
+      "width": 375,
+      "scrollWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "missingRequired": [],
+      "cycle7Ok": true,
+      "missingCycle7": [],
+      "futureSalesSelected": "true",
+      "futureSalesHidden": false,
+      "closeoutRows": 6,
+      "activeElementTag": "A",
+      "focusOutline": "solid"
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/320.png",
+      "width": 320,
+      "scrollWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "missingRequired": [],
+      "cycle7Ok": true,
+      "missingCycle7": [],
+      "futureSalesSelected": "true",
+      "futureSalesHidden": false,
+      "closeoutRows": 6,
+      "activeElementTag": "BODY",
+      "focusOutline": "none"
+    }
+  ],
+  "handoverTargetedCheck": {
+    "checkedAt": "2026-05-30T09:05:48.363Z",
+    "cleanContext": true,
+    "cacheBust": 1780131946,
+    "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-7/handover-1440.png",
+    "url": "http://localhost:3000/cp/2605281047-wingpro?cb=1780131946#layer-equipment",
+    "futureSalesSelected": "true",
+    "futureSalesHidden": false,
+    "closeoutRows": 6,
+    "activeSummary": "Active closeout focus: Future Sales Pack → supplier and product cards are ready as digital product asset. UPGRADE передает структурированный пакет; профильные участники проверяют и утверждают решения в своей зоне ответственности.",
+    "acceptanceLink": "Active closeout packFuture Sales Packpart of the delivered reusable commercial base",
+    "top": 0,
+    "height": 1629
+  }
+}
