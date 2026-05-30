@@ -225,6 +225,19 @@ export default function Equipment3DViewer() {
   const recordReadonlyAttempt = (action: string) => {
     setReadonlyAttempt(`${action} · ${activeItem.label} · No real equipment control`);
   };
+  const handlePassportAction = (action: string) => {
+    if (action === "Создать заявку") {
+      recordReadonlyAttempt("Demo-заявка подготовлена локально");
+      return;
+    }
+
+    if (action === "Открыть тренды") {
+      recordReadonlyAttempt("Открыт demo-контекст трендов");
+      return;
+    }
+
+    recordReadonlyAttempt(`${action} открыт в read-only паспорте`);
+  };
 
   return (
     <section
@@ -240,7 +253,7 @@ export default function Equipment3DViewer() {
             <h2>3D digital twin — {activeItem.label}</h2>
             <small>Presentation MVP поверх существующей BMS/SCADA. Demo/read-only, без реальных команд управления.</small>
           </div>
-          <button type="button" onClick={() => setIsExploded((value) => !value)}>
+          <button data-action-state="toggles-model-state" type="button" onClick={() => setIsExploded((value) => !value)}>
             {isExploded ? "Собрать установку" : "Разобрать установку"}
           </button>
         </div>
@@ -293,9 +306,32 @@ export default function Equipment3DViewer() {
         </div>
         <div className="chipBlock">
           <strong>Документы и действия</strong>
-          <div>{passportButtons.map((item) => <button type="button" key={item}>{item}</button>)}</div>
+          <div>
+            {passportButtons.map((item) => (
+              <button
+                aria-label={`${item}: read-only demo action for ${activeItem.label}`}
+                data-action-state={
+                  item === "Создать заявку"
+                    ? "opens-demo-ticket"
+                    : item === "Открыть тренды"
+                      ? "opens-trends-context"
+                      : "opens-passport-context"
+                }
+                onClick={() => handlePassportAction(item)}
+                type="button"
+                key={item}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
-        <button className="explodeButton" type="button" onClick={() => setIsExploded((value) => !value)}>
+        <button
+          className="explodeButton"
+          data-action-state="toggles-model-state"
+          type="button"
+          onClick={() => setIsExploded((value) => !value)}
+        >
           {isExploded ? "Собрать установку" : "Разобрать установку"}
         </button>
         <div className="controlsLocked">
@@ -316,11 +352,13 @@ export default function Equipment3DViewer() {
                   }
                 }}
                 role="button"
+                data-action-state="read-only-locked"
                 tabIndex={0}
                 title={readonlyControlTooltip}
               >
                 <button
                   aria-label={`${item}. ${readonlyControlTooltip}`}
+                  data-action-state="read-only-locked"
                   disabled
                   title={readonlyControlTooltip}
                   type="button"

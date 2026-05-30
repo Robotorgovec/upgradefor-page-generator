@@ -591,7 +591,12 @@ export default function DispatchDashboard() {
                 </button>
               ))}
             </div>
-            <button className="secondaryButton full" type="button" onClick={() => setModal("ticket")}>
+            <button
+              className="secondaryButton full"
+              data-action-state="opens-demo-ticket"
+              type="button"
+              onClick={() => setModal("ticket")}
+            >
               Создать заявку
             </button>
           </section>

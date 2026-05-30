@@ -59,6 +59,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-action-flows.mjs",
     usesBrowser: true,
   },
+  {
+    id: "action-states",
+    script: "scripts/asset-qa/verify-dispatch-action-states.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {
