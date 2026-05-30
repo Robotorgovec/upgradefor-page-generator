@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R067 / cycle 33 self-review
+# CONTRACT-WINGPRO-2605281047-R067 / cycle 34 self-review
 
 1. Что улучшено в этом цикле?
-- Усилен Digital Twin как trust visual: добавлен видимый Conceptual Digital Twin Preview header, крупнее pseudo-3D модель теплообменника, end plates, tie rods, dimension rail and selected evidence strip.
+- В Executive Command Layer добавлен Current mode decision endpoint: что выбрано, что подтвердить, что получит WinGPro и quick copy summary для активного режима.
 
 2. Как это помогает заказчику принять решение?
-- Digital Twin теперь выглядит как коммерческий технический asset, а не просто схема. Он показывает selected layer, release gate, readiness, approval owner и deliverable для WinGPro.
+- Заказчик может получить короткий decision endpoint без прокрутки через всю страницу. Это уменьшает ощущение длинной ленты и делает страницу ближе к presentation product.
 
 3. Стало ли понятнее, что получает WinGPro?
-- Да. Нижний strip прямо показывает WinGPro receives для каждого слоя, а header связывает слой с release gate.
+- Да. Для каждого режима явно указано, какой результат получает WinGPro: supplier profile, draft terms, logistics pack, mounting coordination pack, photo evidence register, Digital Product Asset.
 
 4. Стало ли интерактивнее?
-- Да. При переключении 6 слоев меняются stage header, selected evidence footer, active hotspot and side panel.
+- Да. Endpoint меняется вместе с presentation mode, а copy button копирует соответствующий summary variant.
 
 5. Не расширилась ли ответственность UPGRADE?
-- Нет. Визуализация остается подписанной как conceptual digital twin preview и не заменяет инженерную модель, проектную документацию или утвержденные чертежи.
+- Нет. Work Plan остается coordination draft / ППР skeleton, technical approval owner явно остается отдельной стороной.
 
 6. Не были ли изменены forbidden files?
 - Нет. Изменены только WingproProposalPage.tsx, WingproProposalPage.module.css и runtime/wingpro-auto artifacts.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-- Нет. QA подтвердил no horizontal scroll на 1440/1280/768/375/320, layer tabs остаются button/aria-selected, visible labels добавлены.
+- Нет. QA подтвердил no horizontal scroll на 1440/1280/768/375/320. Endpoint использует article + button, focus styles наследуются.
 
 8. Что следующий самый полезный micro-goal?
-- MODE=DESIGN/INTERACTIVE: сократить ощущение длинной страницы через compact detail drawers/summary endpoints в наиболее плотных блоках, не добавляя новые секции.
+- MODE=DESIGN/INTERACTIVE: продолжить уменьшать long-page feel через compact summaries/details в самых плотных блоках, либо усилить presentation mode визуально.

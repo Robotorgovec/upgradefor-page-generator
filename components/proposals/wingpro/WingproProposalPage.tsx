@@ -1204,6 +1204,12 @@ const presentationModes: Array<{
   summary: string;
   nextAction: string;
   focus: string;
+  endpoint: {
+    selected: string;
+    confirm: string;
+    receives: string;
+  };
+  copyVariant: CopyVariant;
   sections: string[];
 }> = [
   {
@@ -1212,6 +1218,12 @@ const presentationModes: Array<{
     summary: "WinGPro получает выбранный закупочный маршрут, Digital Twin, status board, release gates, handover packs и Digital Product Asset как единый контур решения.",
     nextAction: "Сначала подтвердить, что услуга принимается как единый IT/data и закупочно-координационный комплекс.",
     focus: "что получает заказчик",
+    endpoint: {
+      selected: "единый procurement-to-implementation контур",
+      confirm: "scope, price, payment mode and acceptance by deliverables",
+      receives: "mission summary, control room, release board, handover packs and Digital Product Asset",
+    },
+    copyVariant: "executive",
     sections: ["hero", "digitalTwin", "valueOs", "statusOfCustomer", "acceptance", "copyPackage"],
   },
   {
@@ -1220,6 +1232,12 @@ const presentationModes: Array<{
     summary: "Supplier Request Lab и Offer Comparison Board показывают shortlist, выбранного кандидата, причины отклонения альтернатив и evidence before payment.",
     nextAction: "Проверить выбранный supplier profile, открытые вопросы и recommendation для WinGPro decision owner.",
     focus: "выбор поставщика",
+    endpoint: {
+      selected: "shortlist logic and selected supplier candidate",
+      confirm: "manufacturer/trader role, material/pressure evidence and open requests",
+      receives: "supplier profile, comparison board, recommendation note and evidence request list",
+    },
+    copyVariant: "command",
     sections: ["projectControl", "filmstrip", "controlRoom", "vault", "riskRadar"],
   },
   {
@@ -1228,6 +1246,12 @@ const presentationModes: Array<{
     summary: "Contract Decision Simulator связывает сценарий оплаты, условия поставки, evidence before payment/shipment и силу договорного пакета.",
     nextAction: "Согласовать payment mode, contract draft RU/EN и список документов, которые должны быть получены до платежа.",
     focus: "условия договора",
+    endpoint: {
+      selected: "contract scenario, evidence gates and payment readiness frame",
+      confirm: "50/50 or 100%, before-payment evidence and boundary wording",
+      receives: "draft terms summary, payment readiness board and acceptance guardrails",
+    },
+    copyVariant: "payment",
     sections: ["projectControl", "valueOs", "vault", "releaseGates", "acceptance"],
   },
   {
@@ -1236,6 +1260,12 @@ const presentationModes: Array<{
     summary: "Delivery Timeline, Route Map и Release Gates показывают контроль информационной готовности маршрута China → Kazakhstan.",
     nextAction: "Сверить before shipment пакет: packing data, weight/dimensions, pickup contact, invoice draft и broker input list.",
     focus: "контроль поставки",
+    endpoint: {
+      selected: "delivery data-flow and release-readiness path",
+      confirm: "packing data, dimensions, pickup contact, invoice draft and broker inputs",
+      receives: "delivery timeline, route map, logistics data-pack and customs handoff inputs",
+    },
+    copyVariant: "command",
     sections: ["digitalTwin", "controlRoom", "routeMap", "vault", "releaseGates"],
   },
   {
@@ -1244,6 +1274,12 @@ const presentationModes: Array<{
     summary: "Work Plan Builder / ППР skeleton, Field Execution Board и участники проекта показывают coordination draft для проверки монтажной стороной.",
     nextAction: "Передать mounting questions, connection points и service access вводные ответственному техническому специалисту.",
     focus: "подготовка реализации",
+    endpoint: {
+      selected: "coordination draft / ППР skeleton input path",
+      confirm: "connection points, access/service space and technical approval owner",
+      receives: "mounting coordination pack, field execution preview and open questions checklist",
+    },
+    copyVariant: "boundary",
     sections: ["projectControl", "controlRoom", "statusOfCustomer", "handoverRoom", "releaseGates"],
   },
   {
@@ -1252,6 +1288,12 @@ const presentationModes: Array<{
     summary: "Photo Evidence Wall, Handover Room и Copy Package собирают evidence register, closeout packs и reusable Digital Product Asset.",
     nextAction: "Скопировать executive summary и зафиксировать договор услуг, deliverables, оплату и границы ответственности.",
     focus: "закрытие и повторное использование",
+    endpoint: {
+      selected: "evidence register, handover packs and reusable product asset",
+      confirm: "deliverables acceptance, open issues register and service closeout package",
+      receives: "photo evidence register, closeout index, digital supplier card and product line card",
+    },
+    copyVariant: "deliverables",
     sections: ["riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
   },
 ];
@@ -1671,6 +1713,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <em>{item.output}</em>
             </button>
           ))}
+        </div>
+        <div className={styles.modeEndpoint} aria-label="Current mode decision endpoint">
+          <article>
+            <span>что выбрано</span>
+            <strong>{activePresentation.endpoint.selected}</strong>
+          </article>
+          <article>
+            <span>что подтвердить</span>
+            <strong>{activePresentation.endpoint.confirm}</strong>
+          </article>
+          <article>
+            <span>что получит WinGPro</span>
+            <strong>{activePresentation.endpoint.receives}</strong>
+          </article>
+          <button type="button" onClick={() => copyBoardText(activePresentation.copyVariant)}>
+            Скопировать summary режима
+          </button>
         </div>
       </section>
 

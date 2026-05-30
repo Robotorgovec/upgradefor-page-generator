@@ -344,6 +344,56 @@
   line-height: 1.35;
 }
 
+.modeEndpoint {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, 0.4fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.modeEndpoint article,
+.modeEndpoint button {
+  min-height: 92px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.modeEndpoint article {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  padding: 12px;
+}
+
+.modeEndpoint span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.modeEndpoint strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.modeEndpoint button {
+  padding: 12px;
+  color: var(--proposal-brand-contrast);
+  background:
+    linear-gradient(180deg, #ffffff, var(--proposal-brand-soft));
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modeEndpoint button:hover {
+  border-color: var(--proposal-brand-border-strong);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
 .hero {
   min-height: 690px;
   display: grid;
@@ -4181,6 +4231,10 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .modeEndpoint {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .presentationModePanel {
     grid-template-columns: minmax(120px, 0.25fr) minmax(170px, 0.3fr) minmax(0, 1fr);
   }
@@ -4468,6 +4522,10 @@
   }
 
   .decisionPathRail {
+    grid-template-columns: 1fr;
+  }
+
+  .modeEndpoint {
     grid-template-columns: 1fr;
   }
 
