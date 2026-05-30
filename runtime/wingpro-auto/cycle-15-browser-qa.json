@@ -1,0 +1,107 @@
+{
+  "cb": 1780136123,
+  "localUrl": "http://127.0.0.1:3075/cp/2605281047-wingpro?cb=1780136123",
+  "base": {
+    "url": "http://127.0.0.1:3075/cp/2605281047-wingpro?cb=1780136123#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "max768": false,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "scrollWidth": 1440,
+    "scrollOk": true,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://127.0.0.1:3075/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "vaultBoardVisible": true,
+    "vaultBoardText": "VAULT READINESS\n\nДокументы связаны с release gates и route handoff\n\nКаждая карточка показывает не только файл, но и где он влияет на качество, время, маршрут, customs/logistics handoff, монтажные вводные или digital product asset.\n\n10\nVISIBLE DOCUMENTS\ncurrent filtered operating scope\n5\nOPEN EVIDENCE\nmissing or requested items that need owner response\n1\nREADY FOR HANDOFF\nitems already usable in packs\n6\nROUTE LINKS\ndelivery points connected to vault\nMISSING / REQUESTED FOCUS\nbank details confirmation\nbefore payment readiness\npressure class confirmation\nbefore payment readiness\ndrawing\nproduction confirmation readiness\npacking list\nshipment readiness\nphoto/video/nameplate\nshipment readiness",
+    "cardsWithReleaseLane": 0,
+    "cardsWithRouteLink": 0,
+    "contentMissing": [
+      "Vault readiness",
+      "release lane",
+      "route link",
+      "operational cue",
+      "Missing / requested focus"
+    ],
+    "focusCheck": {
+      "tag": "SELECT",
+      "label": "status",
+      "outlineWidth": "3px",
+      "boxShadow": "none"
+    },
+    "liveRegions": 9,
+    "contentMissingCaseInsensitive": [],
+    "cardsWithReleaseLaneCaseInsensitive": 10,
+    "cardsWithRouteLinkCaseInsensitive": 10
+  },
+  "assetStatus": 200,
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "scrollOk": true,
+      "h1Count": 1,
+      "vaultBoardVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "scrollOk": true,
+      "h1Count": 1,
+      "vaultBoardVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "vaultBoardVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "vaultBoardVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "vaultBoardVisible": true
+    }
+  ],
+  "interaction": {
+    "before": "VAULT READINESS\n\nДокументы связаны с release gates и route handoff\n\nКаждая карточка показывает не только файл, но и где он влияет на качество, время, маршрут, customs/logistics handoff, монтажные вводные или digital product asset.\n\n10\nVISIBLE DOCUMENTS\ncurrent filtered operating scope\n5\nOPEN EVIDENCE\nmissing or requested items that need owner response\n1\nREADY FOR HANDOFF\nitems already usable in packs\n6\nROUTE LINKS\ndelivery points connected to vault\nMISSING / REQUESTED FOCUS\nbank details confirmation\nbefore payment readiness\npressure class confirmation\nbefore payment readiness\ndrawing\nproduction confirmation readiness\npacking list\nshipment readiness\nphoto/video/nameplate\nshipment readiness",
+    "after": "VAULT READINESS\n\nДокументы связаны с release gates и route handoff\n\nКаждая карточка показывает не только файл, но и где он влияет на качество, время, маршрут, customs/logistics handoff, монтажные вводные или digital product asset.\n\n2\nVISIBLE DOCUMENTS\ncurrent filtered operating scope\n2\nOPEN EVIDENCE\nmissing or requested items that need owner response\n0\nREADY FOR HANDOFF\nitems already usable in packs\n2\nROUTE LINKS\ndelivery points connected to vault\nMISSING / REQUESTED FOCUS\nbank details confirmation\nbefore payment readiness\npressure class confirmation\nbefore payment readiness",
+    "vaultBoardUpdated": true,
+    "visibleCards": 2
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "vaultBoardVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-15/wingpro-c15-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-15/wingpro-c15-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-15/wingpro-c15-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-15/wingpro-c15-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-15/wingpro-c15-320.png"
+  ],
+  "note": "contentMissing/cardsWith* in first pass were case-sensitive against CSS text-transform/innerText. Source and rendered labels are present; case-insensitive label check passes."
+}

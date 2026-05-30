@@ -2299,6 +2299,119 @@
     var(--proposal-surface);
 }
 
+.vaultReadinessBoard {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: var(--proposal-shadow-md);
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr) minmax(220px, 0.7fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.vaultReadinessBoard h3,
+.vaultReadinessBoard p {
+  margin: 0;
+}
+
+.vaultReadinessBoard h3 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.vaultReadinessBoard p:not(.eyebrow) {
+  margin-top: 10px;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.vaultStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.vaultStats span {
+  min-height: 116px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.vaultStats strong {
+  color: var(--proposal-brand-contrast);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.vaultStats small {
+  color: var(--proposal-text);
+  font-size: 12px;
+  font-weight: 920;
+  text-transform: uppercase;
+}
+
+.vaultStats em {
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.vaultOpenList {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 13px;
+  background: #ffffff;
+  display: grid;
+  gap: 10px;
+}
+
+.vaultOpenList strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.vaultOpenList ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.vaultOpenList li {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: var(--proposal-brand-soft);
+  display: grid;
+  gap: 3px;
+}
+
+.vaultOpenList li span {
+  color: var(--proposal-text);
+  font-weight: 880;
+}
+
+.vaultOpenList li em,
+.vaultOpenList p {
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
 .vaultControls {
   align-items: stretch;
 }
@@ -2798,6 +2911,7 @@
   .deliveryReleaseSurface,
   .controlGrid,
   .routeDataSurface,
+  .vaultReadinessBoard,
   .radarGrid,
   .controlBoardGrid,
   .acceptanceGrid {
@@ -2838,6 +2952,7 @@
   .offerDecisionSurface dl,
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
+  .vaultStats,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,
@@ -3088,6 +3203,7 @@
   .offerDecisionSurface dl,
   .contractReleaseSurface dl,
   .deliveryReleaseSurface dl,
+  .vaultStats,
   .timelineRows,
   .fieldColumns,
   .candidateGrid,

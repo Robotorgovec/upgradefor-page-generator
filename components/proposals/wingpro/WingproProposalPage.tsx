@@ -822,6 +822,34 @@ const vaultDocs = [
   ["Digital Sales Asset", "digital product card", "asset", "Gate 7", "UPGRADE", "collecting", "commercial", "создает reusable sales base", "ускоряет повторное предложение", "нет product card", "связать documents and notes"],
 ] as const;
 
+function getVaultReleaseLane(gate: string) {
+  if (gate.includes("Gate 0")) return "source readiness";
+  if (gate.includes("Gate 1")) return "before payment readiness";
+  if (gate.includes("Gate 2")) return "production confirmation readiness";
+  if (gate.includes("Gate 3")) return "shipment readiness";
+  if (gate.includes("Gate 4")) return "customs / logistics handoff readiness";
+  if (gate.includes("Gate 5")) return "mounting handoff readiness";
+  if (gate.includes("Gate 7")) return "digital product asset readiness";
+  return "service acceptance readiness";
+}
+
+function getVaultRouteLink(category: string, gate: string) {
+  if (category === "Supplier Identity") return "Factory China";
+  if (category === "Delivery Pack" || gate.includes("Gate 3")) return "Pickup / Export docs";
+  if (category === "Customs/Broker Inputs" || gate.includes("Gate 4")) return "Border / customs";
+  if (category === "Mounting Inputs" || gate.includes("Gate 5")) return "Project site / Mounting handoff";
+  if (category === "Digital Sales Asset") return "Handover Room / Future Sales";
+  return "Payment / Contract decision";
+}
+
+function getVaultOperationalCue(status: string, impact: string) {
+  if (status === "ready") return "can be used in the next handoff pack";
+  if (status === "missing") return `blocks ${impact} readiness until owner response is visible`;
+  if (status === "requested") return `requires follow-up before ${impact} readiness can be treated as stable`;
+  if (status === "review") return "needs decision owner review before release gate movement";
+  return "collecting evidence and owner response inside the data-room";
+}
+
 const risks = [
   { id: "identity", title: "supplier identity unclear", severity: "medium", impact: "dependency", x: 18, y: 34, evidence: "supplier profile, role clarification", owner: "WinGPro / supplier", escalation: "source request", boundary: "UPGRADE фиксирует статус ответа поставщика, но не отвечает за его действия" },
   { id: "material", title: "material mismatch", severity: "high", impact: "quality", x: 35, y: 18, evidence: "material confirmation, technical sheet", owner: "technical owner", escalation: "evidence before payment", boundary: "UPGRADE не утверждает технические параметры" },
@@ -979,6 +1007,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
   const visibleDocs = vaultDocs.filter((doc) => isDocVisible(doc));
+  const visibleOpenDocs = visibleDocs.filter((doc) => doc[5] === "missing" || doc[5] === "requested");
+  const visibleReadyDocs = visibleDocs.filter((doc) => doc[5] === "ready").length;
+  const vaultReadinessStats = [
+    ["visible documents", String(visibleDocs.length), "current filtered operating scope"],
+    ["open evidence", String(visibleOpenDocs.length), "missing or requested items that need owner response"],
+    ["ready for handoff", String(visibleReadyDocs), "items already usable in packs"],
+    ["route links", String(new Set(visibleDocs.map((doc) => getVaultRouteLink(doc[0], doc[3]))).size), "delivery points connected to vault"],
+  ] as const;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -1830,6 +1866,37 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>Document Vault</p>
           <h2 id="vault-title">Data-room как хранилище статусов, владельцев и evidence</h2>
         </div>
+        <div className={styles.vaultReadinessBoard} aria-live="polite" aria-label="Document Vault readiness board">
+          <div>
+            <p className={styles.eyebrow}>Vault readiness</p>
+            <h3>Документы связаны с release gates и route handoff</h3>
+            <p>Каждая карточка показывает не только файл, но и где он влияет на качество, время, маршрут, customs/logistics handoff, монтажные вводные или digital product asset.</p>
+          </div>
+          <div className={styles.vaultStats}>
+            {vaultReadinessStats.map(([label, value, note]) => (
+              <span key={label}>
+                <strong>{value}</strong>
+                <small>{label}</small>
+                <em>{note}</em>
+              </span>
+            ))}
+          </div>
+          <div className={styles.vaultOpenList}>
+            <strong>Missing / requested focus</strong>
+            {visibleOpenDocs.length > 0 ? (
+              <ul>
+                {visibleOpenDocs.map((doc) => (
+                  <li key={`open-${doc[1]}`}>
+                    <span>{doc[1]}</span>
+                    <em>{getVaultReleaseLane(doc[3])}</em>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Filtered scope has no missing/requested documents.</p>
+            )}
+          </div>
+        </div>
         <div className={styles.vaultControls}>
           <select aria-label="category" value={vaultCategory} onChange={(event) => setVaultCategory(event.target.value)}><option value="all">all categories</option>{categories.map((item) => <option key={item}>{item}</option>)}</select>
           <select aria-label="status" value={vaultStatus} onChange={(event) => setVaultStatus(event.target.value)}><option value="all">all statuses</option>{["missing", "requested", "collecting", "review", "ready"].map((item) => <option key={item}>{item}</option>)}</select>
@@ -1843,6 +1910,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.vaultGrid} data-mode={vaultMode}>
           {vaultDocs.map((doc) => {
             const [category, title, type, gate, owner, status, impact, quality, time, risk, action] = doc;
+            const releaseLane = getVaultReleaseLane(gate);
+            const routeLink = getVaultRouteLink(category, gate);
+            const operationalCue = getVaultOperationalCue(status, impact);
             return (
             <article key={`${category}-${title}`} hidden={!isDocVisible(doc)}>
               <div className={styles.docTop}><span>{category}</span><StatusPill value={status} /></div>
@@ -1850,11 +1920,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <dl>
                 <div><dt>type</dt><dd>{type}</dd></div>
                 <div><dt>release gate</dt><dd>{gate}</dd></div>
+                <div><dt>release lane</dt><dd>{releaseLane}</dd></div>
+                <div><dt>route link</dt><dd>{routeLink}</dd></div>
                 <div><dt>owner</dt><dd>{owner}</dd></div>
                 <div><dt>quality impact</dt><dd>{quality}</dd></div>
                 <div><dt>time impact</dt><dd>{time}</dd></div>
                 <div><dt>risk if absent</dt><dd>{risk}</dd></div>
                 <div><dt>UPGRADE action</dt><dd>{action}</dd></div>
+                <div><dt>operational cue</dt><dd>{operationalCue}</dd></div>
                 <div><dt>impact</dt><dd>{impact}</dd></div>
               </dl>
             </article>
