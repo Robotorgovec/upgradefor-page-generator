@@ -3068,6 +3068,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.riskFilters} role="group" aria-label="risk impact filter">
           {(["all", "quality", "time", "financial", "dependency"] as Array<RiskImpact | "all">).map((item) => <button key={item} type="button" aria-pressed={riskImpact === item} onClick={() => setRiskImpact(item)}>{item}</button>)}
         </div>
+        <div className={styles.riskSummaryRail} aria-label="Risk radar summary">
+          <span><strong>{risks.filter((item) => item.severity === "high").length}</strong><small>high risks</small></span>
+          <span><strong>{riskImpact}</strong><small>active impact filter</small></span>
+          <span><strong>{risk.releaseGate.split(" — ")[0]}</strong><small>selected gate</small></span>
+          <span><strong>{risk.owner}</strong><small>escalation owner</small></span>
+        </div>
         <aside className={styles.riskResponseSurface} aria-live="polite" aria-label="Selected risk response pack">
           <div>
             <p className={styles.eyebrow}>Selected risk response</p>
@@ -3104,44 +3110,51 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             )}
           </div>
         </aside>
-        <div className={styles.radarGrid}>
-          <div className={styles.radarPlane} aria-label="Risk impact matrix">
-            <span>Quality impact</span><span>Time impact</span><span>Financial exposure</span><span>Dependency risk</span>
-            {risks.map((item) => (
-              <button key={item.id} type="button" hidden={riskImpact !== "all" && item.impact !== riskImpact} style={{ left: `${item.x}%`, top: `${item.y}%` }} data-severity={item.severity} aria-pressed={activeRisk === item.id} onClick={() => setActiveRisk(item.id)}>
-                {item.title}
-              </button>
-            ))}
+        <details className={styles.riskDetailsDisclosure}>
+          <summary>
+            <span>Risk radar detail</span>
+            <strong>Открыть impact matrix и response pack</strong>
+            <small>Матрица раскрывается по запросу; по умолчанию видны выбранный риск, owner, gate и evidence request.</small>
+          </summary>
+          <div className={styles.radarGrid}>
+            <div className={styles.radarPlane} aria-label="Risk impact matrix">
+              <span>Quality impact</span><span>Time impact</span><span>Financial exposure</span><span>Dependency risk</span>
+              {risks.map((item) => (
+                <button key={item.id} type="button" hidden={riskImpact !== "all" && item.impact !== riskImpact} style={{ left: `${item.x}%`, top: `${item.y}%` }} data-severity={item.severity} aria-pressed={activeRisk === item.id} onClick={() => setActiveRisk(item.id)}>
+                  {item.title}
+                </button>
+              ))}
+            </div>
+            <div className={styles.riskDetails}>
+              {risks.map((item) => (
+                <article key={`risk-${item.id}`} className={styles.riskDetail} hidden={activeRisk !== item.id}>
+                  <StatusPill value={item.severity} />
+                  <h3>{item.title}</h3>
+                  <dl>
+                    <div><dt>impact group</dt><dd>{item.impact}</dd></div>
+                    <div><dt>evidence request</dt><dd>{item.evidence}</dd></div>
+                    <div><dt>owner</dt><dd>{item.owner}</dd></div>
+                    <div><dt>escalation</dt><dd>{item.escalation}</dd></div>
+                    <div><dt>Vault evidence</dt><dd>{item.vaultEvidence}</dd></div>
+                    <div><dt>Release gate</dt><dd>{item.releaseGate}</dd></div>
+                    <div><dt>Route handoff</dt><dd>{item.routeHandoff}</dd></div>
+                    <div><dt>Decision owner</dt><dd>{item.decision}</dd></div>
+                    <div><dt>UPGRADE boundary</dt><dd>{item.boundary}</dd></div>
+                  </dl>
+                  <div className={styles.responsePack}>
+                    <h4>Risk response pack</h4>
+                    <ul>
+                      <li>{item.response}</li>
+                      <li>Vault evidence: {item.vaultEvidence}</li>
+                      <li>Release gate: {item.releaseGate}</li>
+                      <li>Route handoff: {item.routeHandoff}</li>
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className={styles.riskDetails}>
-            {risks.map((item) => (
-              <article key={`risk-${item.id}`} className={styles.riskDetail} hidden={activeRisk !== item.id}>
-                <StatusPill value={item.severity} />
-                <h3>{item.title}</h3>
-                <dl>
-                  <div><dt>impact group</dt><dd>{item.impact}</dd></div>
-                  <div><dt>evidence request</dt><dd>{item.evidence}</dd></div>
-                  <div><dt>owner</dt><dd>{item.owner}</dd></div>
-                  <div><dt>escalation</dt><dd>{item.escalation}</dd></div>
-                  <div><dt>Vault evidence</dt><dd>{item.vaultEvidence}</dd></div>
-                  <div><dt>Release gate</dt><dd>{item.releaseGate}</dd></div>
-                  <div><dt>Route handoff</dt><dd>{item.routeHandoff}</dd></div>
-                  <div><dt>Decision owner</dt><dd>{item.decision}</dd></div>
-                  <div><dt>UPGRADE boundary</dt><dd>{item.boundary}</dd></div>
-                </dl>
-                <div className={styles.responsePack}>
-                  <h4>Risk response pack</h4>
-                  <ul>
-                    <li>{item.response}</li>
-                    <li>Vault evidence: {item.vaultEvidence}</li>
-                    <li>Release gate: {item.releaseGate}</li>
-                    <li>Route handoff: {item.routeHandoff}</li>
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        </details>
       </section>
 
       <section className={sectionClass(styles.releaseGates, "releaseGates")} id="release-gates" data-section="release-gates" aria-labelledby="gates-title">

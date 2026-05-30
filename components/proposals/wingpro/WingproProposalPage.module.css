@@ -4499,6 +4499,35 @@
   align-items: start;
 }
 
+.riskSummaryRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.riskSummaryRail span {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 5px;
+}
+
+.riskSummaryRail strong {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.riskSummaryRail small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .riskResponseSurface > div:first-child {
   grid-row: span 3;
 }
@@ -4615,6 +4644,76 @@
   color: var(--proposal-text-muted);
   font-size: 12px;
   font-style: normal;
+}
+
+.riskDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 44%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.riskDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.riskDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.riskDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.riskDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.riskDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.riskDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.riskDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.riskDetailsDisclosure .radarGrid {
+  padding: 0 18px 18px;
 }
 
 .radarGrid {
@@ -5403,7 +5502,8 @@
 
   .vaultCardsDisclosure summary,
   .controlBoardsDisclosure summary,
-  .handoverDetailsDisclosure summary {
+  .handoverDetailsDisclosure summary,
+  .riskDetailsDisclosure summary {
     grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr) 38px;
   }
 
@@ -5494,6 +5594,7 @@
   .vaultCardsDisclosure summary,
   .controlBoardsDisclosure summary,
   .handoverDetailsDisclosure summary,
+  .riskDetailsDisclosure summary,
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
@@ -5516,17 +5617,22 @@
   .controlBoardsDisclosure summary small,
   .handoverDetailsDisclosure summary span,
   .handoverDetailsDisclosure summary strong,
-  .handoverDetailsDisclosure summary small {
+  .handoverDetailsDisclosure summary small,
+  .riskDetailsDisclosure summary span,
+  .riskDetailsDisclosure summary strong,
+  .riskDetailsDisclosure summary small {
     grid-column: 1;
   }
 
   .controlBoardsDisclosure summary::after,
-  .handoverDetailsDisclosure summary::after {
+  .handoverDetailsDisclosure summary::after,
+  .riskDetailsDisclosure summary::after {
     grid-column: 2;
     grid-row: 1 / span 3;
   }
 
-  .handoverDetailsDisclosure summary {
+  .handoverDetailsDisclosure summary,
+  .riskDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
   }
 
