@@ -1,0 +1,173 @@
+{
+  "url": "http://localhost:3000/cp/2605281047-wingpro?cb=1780130910",
+  "generatedAt": "2026-05-30T08:48:38.213Z",
+  "cleanContext": true,
+  "cacheBust": 1780130910,
+  "results": [
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-5/1440.png",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": false,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "h1Text": "Цифровой контур поставки пластинчатых теплообменников",
+      "h1HasOrphanOv": false,
+      "heroMetrics": {
+        "heroHeight": 840,
+        "h1Height": 290,
+        "h1Width": 630,
+        "h1FontSize": "74px",
+        "h1LineHeight": "72.52px",
+        "cardTop": 253,
+        "cardHeight": 750
+      }
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-5/1280.png",
+      "width": 1280,
+      "scrollWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": false,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "h1Text": "Цифровой контур поставки пластинчатых теплообменников",
+      "h1HasOrphanOv": false,
+      "heroMetrics": {
+        "heroHeight": 936,
+        "h1Height": 326,
+        "h1Width": 518,
+        "h1FontSize": "66.56px",
+        "h1LineHeight": "65.2288px",
+        "cardTop": 250,
+        "cardHeight": 852
+      }
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-5/768.png",
+      "width": 768,
+      "scrollWidth": 753,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "h1Text": "Цифровой контур поставки пластинчатых теплообменников",
+      "h1HasOrphanOv": false,
+      "heroMetrics": {
+        "heroHeight": 1175,
+        "h1Height": 157,
+        "h1Width": 393,
+        "h1FontSize": "40px",
+        "h1LineHeight": "39.2px",
+        "cardTop": 838,
+        "cardHeight": 499
+      }
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-5/375.png",
+      "width": 375,
+      "scrollWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "h1Text": "Цифровой контур поставки пластинчатых теплообменников",
+      "h1HasOrphanOv": false,
+      "heroMetrics": {
+        "heroHeight": 1276,
+        "h1Height": 131,
+        "h1Width": 319,
+        "h1FontSize": "31.5px",
+        "h1LineHeight": "32.76px",
+        "cardTop": 1054,
+        "cardHeight": 468
+      }
+    },
+    {
+      "screenshot": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-5/320.png",
+      "width": 320,
+      "scrollWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "mobile": true,
+      "styleSheets": [
+        "http://localhost:3000/_next/static/chunks/components_proposals_wingpro_WingproProposalPage_module_b85b759f.css",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+        "http://localhost:3000/assets/layout.css?v=20260311-5",
+        "INLINE"
+      ],
+      "imgProof": {
+        "currentSrc": "http://localhost:3000/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      },
+      "requiredOk": true,
+      "h1Text": "Цифровой контур поставки пластинчатых теплообменников",
+      "h1HasOrphanOv": false,
+      "heroMetrics": {
+        "heroHeight": 1297,
+        "h1Height": 119,
+        "h1Width": 278,
+        "h1FontSize": "28.5px",
+        "h1LineHeight": "29.64px",
+        "cardTop": 1064,
+        "cardHeight": 483
+      }
+    }
+  ]
+}

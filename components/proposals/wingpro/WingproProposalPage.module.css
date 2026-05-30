@@ -176,6 +176,9 @@
   line-height: 0.98;
   letter-spacing: 0;
   text-wrap: balance;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .lead,
@@ -2181,6 +2184,7 @@
   .page {
     width: min(100%, calc(100vw - 18px));
     padding-bottom: 72px;
+    gap: 14px;
   }
 
   .hero,
@@ -2200,13 +2204,39 @@
     padding: 18px;
   }
 
+  .hero {
+    gap: 16px;
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--proposal-brand-soft) 70%, transparent), transparent 54%),
+      linear-gradient(180deg, #ffffff, #f8fbff 74%, color-mix(in srgb, var(--proposal-brand-soft) 82%, #ffffff));
+  }
+
+  .heroCopy {
+    gap: 13px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
   .hero h1 {
     max-width: 100%;
-    font-size: 38px;
+    font-size: clamp(29px, 8.4vw, 34px);
+    line-height: 1.04;
+    text-wrap: pretty;
   }
 
   .lead {
-    font-size: 16px;
+    font-size: 15.5px;
+    line-height: 1.56;
+  }
+
+  .sublead {
+    padding-left: 12px;
+    font-size: 14px;
+    line-height: 1.55;
+    border-left-width: 2px;
   }
 
   .heroActions > *,
@@ -2215,9 +2245,63 @@
     width: 100%;
   }
 
+  .heroActions {
+    gap: 8px;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    min-height: 46px;
+    padding: 11px 14px;
+  }
+
+  .indicators {
+    gap: 7px;
+    margin-top: 4px;
+  }
+
+  .indicators span {
+    padding: 5px 8px;
+    font-size: 11px;
+    line-height: 1.12;
+  }
+
+  .missionCard {
+    min-height: auto;
+    padding: 18px;
+    gap: 13px;
+  }
+
+  .missionCard::after {
+    inset: auto -22% -32% 10%;
+    height: 190px;
+  }
+
   .missionCard strong,
   .decisionCard strong {
-    font-size: 34px;
+    font-size: clamp(29px, 8.2vw, 34px);
+    line-height: 1.02;
+  }
+
+  .missionCard p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .missionCard dl {
+    gap: 8px;
+  }
+
+  .missionCard dl div {
+    padding: 9px;
+  }
+
+  .missionCard dt {
+    font-size: 10px;
+  }
+
+  .missionCard dd {
+    font-size: 13px;
   }
 
   .twinStage {
@@ -2306,6 +2390,17 @@
   }
 
   .hero h1 {
-    font-size: 34px;
+    max-width: 100%;
+    font-size: 28.5px;
+  }
+
+  .lead,
+  .sublead {
+    font-size: 13.5px;
+  }
+
+  .missionCard strong,
+  .decisionCard strong {
+    font-size: 28px;
   }
 }
