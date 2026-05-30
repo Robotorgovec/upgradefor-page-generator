@@ -2256,6 +2256,7 @@
 .deliveryTimeline,
 .workPlanBuilder,
 .fieldBoard,
+.evidenceWall,
 .statusDashboard {
   grid-column: 1 / -1;
 }
@@ -3381,18 +3382,25 @@
 .evidencePhaseRail {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: max-content;
   gap: 8px;
+  align-self: start;
+  align-items: start;
+  align-content: start;
+  min-width: 0;
 }
 
 .evidencePhaseRail button {
-  min-height: 164px;
+  min-height: 112px;
+  align-self: start;
+  min-width: 0;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   padding: 10px;
   color: var(--proposal-text-soft);
   background: var(--proposal-surface-soft);
   display: grid;
-  gap: 7px;
+  gap: 6px;
   align-content: start;
   text-align: left;
 }
@@ -3406,7 +3414,7 @@
 }
 
 .evidencePhaseRail span[aria-hidden="true"] {
-  height: 54px;
+  height: 32px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background:
@@ -3428,7 +3436,11 @@
 .evidencePhaseRail em {
   color: var(--proposal-text-soft);
   font-style: normal;
-  line-height: 1.35;
+  line-height: 1.28;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .evidencePhasePanel,

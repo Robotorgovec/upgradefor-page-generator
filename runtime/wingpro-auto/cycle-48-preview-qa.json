@@ -1,0 +1,166 @@
+{
+  "timestamp": "2026-05-30T15:11:12.432Z",
+  "previewUrl": "https://upgradefor-page-generator-h1hctf0oz-bacalimser-8615s-projects.vercel.app/cp/2605281047-wingpro",
+  "cacheBustedUrl": "https://upgradefor-page-generator-h1hctf0oz-bacalimser-8615s-projects.vercel.app/cp/2605281047-wingpro?cb=1780153864173",
+  "pageStatus": 200,
+  "assetUrl": "https://upgradefor-page-generator-h1hctf0oz-bacalimser-8615s-projects.vercel.app/assets/logo/logo-black-only.png?cb=1780153864173",
+  "assetStatus": 200,
+  "readyState": "READY from vercel deploy output",
+  "qa": {
+    "innerWidth": 1440,
+    "bodyScrollWidth": 1425,
+    "documentScrollWidth": 1425,
+    "h1": 1,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "imgProof": {
+      "index": 0,
+      "alt": "UPGRADE Innovations",
+      "src": "/assets/logo/logo-black-only.png",
+      "currentSrc": "https://upgradefor-page-generator-h1hctf0oz-bacalimser-8615s-projects.vercel.app/assets/logo/logo-black-only.png",
+      "complete": true,
+      "naturalWidth": 2000,
+      "naturalHeight": 501
+    },
+    "evidenceWall": {
+      "width": 1050,
+      "height": 915,
+      "clientWidth": 1048,
+      "scrollWidth": 1048,
+      "noClip": true,
+      "overflowY": "visible"
+    },
+    "evidenceRail": {
+      "width": 635,
+      "height": 170,
+      "clientWidth": 635,
+      "scrollWidth": 635,
+      "noClip": true,
+      "overflowY": "visible"
+    },
+    "evidenceButtons": [
+      {
+        "selected": "true",
+        "height": 170,
+        "width": 121,
+        "scrollHeight": 168,
+        "clientHeight": 168,
+        "noClip": true
+      },
+      {
+        "selected": "false",
+        "height": 168,
+        "width": 121,
+        "scrollHeight": 166,
+        "clientHeight": 166,
+        "noClip": true
+      },
+      {
+        "selected": "false",
+        "height": 170,
+        "width": 121,
+        "scrollHeight": 168,
+        "clientHeight": 168,
+        "noClip": true
+      },
+      {
+        "selected": "false",
+        "height": 170,
+        "width": 121,
+        "scrollHeight": 168,
+        "clientHeight": 168,
+        "noClip": true
+      },
+      {
+        "selected": "false",
+        "height": 168,
+        "width": 121,
+        "scrollHeight": 166,
+        "clientHeight": 166,
+        "noClip": true
+      }
+    ],
+    "unexpectedScrollContainers": 0,
+    "requiredTexts": {
+      "3 000 000 ₸ без НДС": true,
+      "не комиссия за контакт поставщика": true,
+      "IT/data": true,
+      "Digital Twin": true,
+      "Photo Evidence Wall": true,
+      "Handover & Closeout": true,
+      "не является поставщиком": true,
+      "не является проектировщиком": true,
+      "не является монтажной организацией": true,
+      "не является брокером": true,
+      "не является перевозчиком": true,
+      "не заменяет официальный ППР": true
+    }
+  },
+  "responsive": [
+    {
+      "requestedWidth": 1440,
+      "innerWidth": 1440,
+      "bodyScrollWidth": 1425,
+      "documentScrollWidth": 1425,
+      "noHorizontalScroll": true,
+      "evidenceWallWidth": 1050,
+      "evidenceRailWidth": 635,
+      "evidenceRailNoClip": true,
+      "evidenceButtonMaxHeight": 170,
+      "evidenceButtonsNoClip": true,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 1280,
+      "innerWidth": 1280,
+      "bodyScrollWidth": 1265,
+      "documentScrollWidth": 1265,
+      "noHorizontalScroll": true,
+      "evidenceWallWidth": 890,
+      "evidenceRailWidth": 534,
+      "evidenceRailNoClip": true,
+      "evidenceButtonMaxHeight": 228,
+      "evidenceButtonsNoClip": true,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 768,
+      "innerWidth": 768,
+      "bodyScrollWidth": 753,
+      "documentScrollWidth": 753,
+      "noHorizontalScroll": true,
+      "evidenceWallWidth": 692,
+      "evidenceRailWidth": 654,
+      "evidenceRailNoClip": true,
+      "evidenceButtonMaxHeight": 150,
+      "evidenceButtonsNoClip": true,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 375,
+      "innerWidth": 375,
+      "bodyScrollWidth": 375,
+      "documentScrollWidth": 375,
+      "noHorizontalScroll": true,
+      "evidenceWallWidth": 319,
+      "evidenceRailWidth": 281,
+      "evidenceRailNoClip": true,
+      "evidenceButtonMaxHeight": 170,
+      "evidenceButtonsNoClip": true,
+      "unexpectedScrollContainers": 0
+    },
+    {
+      "requestedWidth": 320,
+      "innerWidth": 320,
+      "bodyScrollWidth": 320,
+      "documentScrollWidth": 320,
+      "noHorizontalScroll": true,
+      "evidenceWallWidth": 278,
+      "evidenceRailWidth": 240,
+      "evidenceRailNoClip": true,
+      "evidenceButtonMaxHeight": 150,
+      "evidenceButtonsNoClip": true,
+      "unexpectedScrollContainers": 0
+    }
+  ]
+}

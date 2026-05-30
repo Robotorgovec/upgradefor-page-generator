@@ -1,25 +1,25 @@
-# Cycle 47 self-review
+# Cycle 48 self-review
 
 1. Что улучшено в этом цикле?
-Верхний Executive Command Layer стал плотнее и спокойнее: outcome cards, spotlight map и mode endpoint теперь занимают меньше вертикального места и меньше похожи на стену однотипных карточек.
+Photo Evidence Wall перестал жить как сжатый half-column блок. Evidence Wall переведен в full-width control surface, а phase rail стал компактнее: меньше placeholder, clamped summary и no stretch rows.
 
 2. Как это помогает заказчику принять решение?
-WinGPro быстрее видит выбранный маршрут, активный режим презентации и следующий шаг без ощущения, что страница сразу проваливается в длинный card-stack.
+Evidence теперь выглядит как управляемый этап handover, а не как тесная колонка с длинными карточками. Заказчик быстрее видит фазы evidence и открывает детали в selected panel.
 
 3. Стало ли понятнее, что получает WinGPro?
-Да. Верхний слой лучше работает как board-level summary: результат, выбранный режим, related modules и endpoint остаются рядом и читаются компактнее.
+Да. Связка evidence phase → release gate → handover pack стала читаться как операционный контур, а не как длинная галерея.
 
 4. Стало ли интерактивнее?
-Интерактивная модель не расширялась, но QA подтвердил, что 6 presentation tabs сохраняют корректный active state; переключение на Delivery Control обновляет selected tab и panel.
+Интерактивная модель сохранена: phase tabs переключают selected evidence summary. В цикле улучшена UX-упаковка без добавления новых секций.
 
 5. Не расширилась ли ответственность UPGRADE?
-Нет. Цикл был CSS-only; юридическая позиция и liability copy не менялись.
+Нет. Тексты не менялись; UPGRADE по-прежнему фиксирует evidence/status/handover, а не выполняет монтаж, ППР или приемку работ третьих лиц.
 
 6. Не были ли изменены forbidden files?
 Нет. Изменен только `components/proposals/wingpro/WingproProposalPage.module.css` и runtime QA artifacts/screenshots.
 
 7. Не ухудшились ли mobile/responsive/accessibility?
-Нет. QA: local canonical 200, asset 200, image proof `currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0, command/outcome/spotlight/endpoint noClip=true, 6 tabs and one selected tab, keyboard/click smoke passes. Screenshots captured at 1440/1280/768/375/320 with clean headless Chrome profiles.
+Нет. QA: local canonical 200, asset 200, image proof `currentSrc` + `naturalWidth=2000`, `h1=1`, `noindex,nofollow`, no horizontal scroll на 1440/1280/768/375/320, unexpected scroll containers=0. Evidence Rail noClip=true; max phase button height reduced from 781px to 170px at 1440 after full-width fix.
 
 8. Что следующий самый полезный micro-goal?
-MODE=INTERACTIVE/QA: убрать следующий источник ощущения длинной страницы через overview + details-on-demand для самого высокого in-flow module, сохраняя один основной page scroll и zero unexpected scroll containers.
+MODE=INTERACTIVE/DESIGN: применить тот же overview-first принцип к Offer Comparison или Contract Matrix: оставить compact decision summary сверху, а длинные строки переводить в раскрываемый detail layer без inner scroll.
