@@ -2206,6 +2206,83 @@
   border-color: var(--proposal-border);
   background: #ffffff;
   box-shadow: var(--proposal-shadow-sm);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: start;
+  text-align: left;
+}
+
+.routeFlow button > span:not(.statusPill) {
+  color: var(--proposal-text);
+  font-size: 14px;
+  font-weight: 920;
+  line-height: 1.2;
+}
+
+.routeFlow button small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.routeDataSurface {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 36%),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: var(--proposal-shadow-md);
+  display: grid;
+  grid-template-columns: minmax(220px, 0.68fr) 1.32fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.routeDataSurface h3,
+.routeDataSurface p {
+  margin: 0;
+}
+
+.routeDataSurface h3 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.routeDataSurface p:not(.eyebrow) {
+  margin-top: 10px;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.routeDataSurface dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.routeDataSurface dl div {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.routeDataSurface dt {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.routeDataSurface dd {
+  margin: 6px 0 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
 }
 
 .routeCards,
@@ -2673,6 +2750,10 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .routeDataSurface dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .deliveryReleaseMap {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2716,6 +2797,7 @@
   .contractReleaseSurface,
   .deliveryReleaseSurface,
   .controlGrid,
+  .routeDataSurface,
   .radarGrid,
   .controlBoardGrid,
   .acceptanceGrid {
@@ -2770,6 +2852,7 @@
   .statusLine,
   .gatePipeline,
   .routeFlow,
+  .routeDataSurface dl,
   .protectionGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3019,6 +3102,7 @@
   .statusLine,
   .gatePipeline,
   .routeFlow,
+  .routeDataSurface dl,
   .protectionGrid {
     grid-template-columns: 1fr;
   }

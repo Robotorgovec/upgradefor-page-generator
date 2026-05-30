@@ -1,0 +1,107 @@
+{
+  "cb": 1780135688,
+  "localUrl": "http://127.0.0.1:3074/cp/2605281047-wingpro?cb=1780135688",
+  "base": {
+    "url": "http://127.0.0.1:3074/cp/2605281047-wingpro?cb=1780135688#layer-equipment",
+    "status": 200,
+    "innerWidth": 1440,
+    "max768": false,
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "styleSheets": [
+      "http://127.0.0.1:3074/_next/static/chunks/338483a16bcad0e2.css",
+      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+      "http://127.0.0.1:3074/assets/layout.css?v=20260311-5"
+    ],
+    "scrollWidth": 1440,
+    "scrollOk": true,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://127.0.0.1:3074/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "routeSurfaceVisible": true,
+    "routeSurfaceText": "ACTIVE ROUTE POINT\n\nFactory China\n\nfactory contact and supplier identity are visible before commercial movement\n\nSTATUS\nCOLLECTING\nRELEASE GATE\nGate 0\nDOCUMENTS\nsupplier profile, BB150B-307H confirmation, source request\nDATA GAP RESPONSE\nUPGRADE turns supplier messages into a traceable source request and open evidence list.\nBOUNDARY\nsupplier confirms factory data; UPGRADE structures the request and traceability.",
+    "routeTabs": 0,
+    "contentMissing": [
+      "Route Map",
+      "data gap response"
+    ],
+    "focusCheck": {
+      "tag": "BUTTON",
+      "controls": "route-point-factory-china",
+      "outlineWidth": "3px",
+      "boxShadow": "rgba(140, 121, 232, 0.28) 0px 0px 0px 2px"
+    },
+    "liveRegions": 8,
+    "routeTabsByAria": 7,
+    "contentMissingCaseInsensitive": []
+  },
+  "assetStatus": 200,
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "scrollOk": true,
+      "h1Count": 1,
+      "routeSurfaceVisible": true
+    },
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "scrollOk": true,
+      "h1Count": 1,
+      "routeSurfaceVisible": true
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "routeSurfaceVisible": true
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "routeSurfaceVisible": true
+    },
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "routeSurfaceVisible": true
+    }
+  ],
+  "interaction": {
+    "before": "ACTIVE ROUTE POINT\n\nFactory China\n\nfactory contact and supplier identity are visible before commercial movement\n\nSTATUS\nCOLLECTING\nRELEASE GATE\nGate 0\nDOCUMENTS\nsupplier profile, BB150B-307H confirmation, source request\nDATA GAP RESPONSE\nUPGRADE turns supplier messages into a traceable source request and open evidence list.\nBOUNDARY\nsupplier confirms factory data; UPGRADE structures the request and traceability.",
+    "after": "ACTIVE ROUTE POINT\n\nBorder / customs\n\nbroker has the input list and can see what remains supplier-owned or WinGPro-owned\n\nSTATUS\nEXTERNAL DEPENDENCY\nRELEASE GATE\nGate 4\nDOCUMENTS\nbroker input list, HS/TN VED check owner, customs document status\nDATA GAP RESPONSE\nUPGRADE packages customs inputs for broker review and records decisions that are outside UPGRADE.\nBOUNDARY\nbroker/profile parties make customs decisions; UPGRADE does not act as broker.",
+    "routeSurfaceUpdated": true,
+    "selectedPanelVisible": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "routeSurfaceVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-14/wingpro-c14-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-14/wingpro-c14-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-14/wingpro-c14-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-14/wingpro-c14-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-14/wingpro-c14-320.png"
+  ],
+  "note": "routeTabs=0 used an un-hashed CSS-module selector in the QA script. The rendered route controls were verified by aria-controls and interaction Border/customs; routeTabsByAria=7. Case-sensitive missing items are uppercase in rendered text due CSS text-transform."
+}

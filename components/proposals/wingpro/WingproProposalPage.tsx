@@ -716,13 +716,97 @@ const participants = [
 ];
 
 const routePoints = [
-  { title: "Factory China", data: "factory contact, model, evidence request", owner: "supplier", action: "создать source request", risk: "неясный источник данных", gate: "Gate 0" },
-  { title: "Pickup", data: "pickup contact map, packing, dimensions", owner: "logistics", action: "подготовить pickup handoff", risk: "задержка маршрута", gate: "Gate 3" },
-  { title: "Export docs", data: "commercial invoice, certificate, export checklist", owner: "supplier / broker", action: "собрать export document board", risk: "разрыв в документах", gate: "Gate 4" },
-  { title: "Border / customs", data: "broker input list, HS/TN VED owner, document status", owner: "broker", action: "передать customs input list", risk: "оформление без полного пакета", gate: "Gate 4" },
-  { title: "Kazakhstan", data: "arrival status, handoff owner, issue log", owner: "WinGPro / logistics", action: "обновить release status", risk: "неясный статус прибытия", gate: "Gate 5" },
-  { title: "Project site", data: "connection points, service access, mounting questions", owner: "mounting side", action: "передать coordination pack", risk: "площадка получает вводные поздно", gate: "Gate 5" },
-  { title: "Mounting handoff", data: "open questions, technical approval owner, handover register", owner: "WinGPro / mounting", action: "закрыть handover room", risk: "нет приемочного контура", gate: "Gate 6" },
+  {
+    title: "Factory China",
+    status: "collecting",
+    data: "factory contact, model, evidence request",
+    documents: "supplier profile, BB150B-307H confirmation, source request",
+    owner: "supplier",
+    action: "создать source request",
+    risk: "неясный источник данных",
+    gate: "Gate 0",
+    readiness: "factory contact and supplier identity are visible before commercial movement",
+    response: "UPGRADE turns supplier messages into a traceable source request and open evidence list.",
+    boundary: "supplier confirms factory data; UPGRADE structures the request and traceability.",
+  },
+  {
+    title: "Pickup",
+    status: "planned",
+    data: "pickup contact map, packing, dimensions",
+    documents: "packing list, cargo dimensions, pickup contact chain",
+    owner: "logistics",
+    action: "подготовить pickup handoff",
+    risk: "задержка маршрута",
+    gate: "Gate 3",
+    readiness: "pickup contact, cargo dimensions and delivery terms are ready for logistics review",
+    response: "UPGRADE prepares a pickup handoff board and flags missing packing data before route planning.",
+    boundary: "carrier/logistics executes transport; UPGRADE prepares the information package.",
+  },
+  {
+    title: "Export docs",
+    status: "owner required",
+    data: "commercial invoice, certificate, export checklist",
+    documents: "commercial invoice draft, certificate status, export document checklist",
+    owner: "supplier / broker",
+    action: "собрать export document board",
+    risk: "разрыв в документах",
+    gate: "Gate 4",
+    readiness: "export document owner and missing-document list are visible before shipment handoff",
+    response: "UPGRADE keeps export documents in one board and escalates missing certificates or invoice gaps.",
+    boundary: "supplier and broker provide/approve export documents; UPGRADE tracks readiness and gaps.",
+  },
+  {
+    title: "Border / customs",
+    status: "external dependency",
+    data: "broker input list, HS/TN VED owner, document status",
+    documents: "broker input list, HS/TN VED check owner, customs document status",
+    owner: "broker",
+    action: "передать customs input list",
+    risk: "оформление без полного пакета",
+    gate: "Gate 4",
+    readiness: "broker has the input list and can see what remains supplier-owned or WinGPro-owned",
+    response: "UPGRADE packages customs inputs for broker review and records decisions that are outside UPGRADE.",
+    boundary: "broker/profile parties make customs decisions; UPGRADE does not act as broker.",
+  },
+  {
+    title: "Kazakhstan",
+    status: "planned",
+    data: "arrival status, handoff owner, issue log",
+    documents: "arrival note, receiving photos, package condition, issue register",
+    owner: "WinGPro / logistics",
+    action: "обновить release status",
+    risk: "неясный статус прибытия",
+    gate: "Gate 5",
+    readiness: "arrival status and receiving evidence connect delivery to handover room",
+    response: "UPGRADE links receiving evidence to issue register so blockers are visible before closeout.",
+    boundary: "responsible parties receive cargo; UPGRADE records information status and evidence links.",
+  },
+  {
+    title: "Project site",
+    status: "at risk",
+    data: "connection points, service access, mounting questions",
+    documents: "coordination draft, dimensions, access/service space, mounting questions",
+    owner: "mounting side",
+    action: "передать coordination pack",
+    risk: "площадка получает вводные поздно",
+    gate: "Gate 5",
+    readiness: "mounting side receives structured inputs before implementation questions become late blockers",
+    response: "UPGRADE prepares coordination pack and separates open questions for technical approval owners.",
+    boundary: "mounting side and technical specialists approve/execute field decisions; UPGRADE does not perform mounting.",
+  },
+  {
+    title: "Mounting handoff",
+    status: "owner required",
+    data: "open questions, technical approval owner, handover register",
+    documents: "handover register, open issue register, digital product card links",
+    owner: "WinGPro / mounting",
+    action: "закрыть handover room",
+    risk: "нет приемочного контура",
+    gate: "Gate 6",
+    readiness: "handover package shows what was delivered, what remains open and which owners approve next steps",
+    response: "UPGRADE closes the information contour with handover register and reusable product data links.",
+    boundary: "WinGPro accepts service deliverables; third parties remain responsible for their physical work.",
+  },
 ];
 
 const vaultDocs = [
@@ -889,6 +973,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
   const contractScenario = contractScenarios.find((item) => item.id === activeContractScenario) ?? contractScenarios[0];
   const deliveryPhase = deliveryTimeline.find((item) => item.id === activeDeliveryPhase) ?? deliveryTimeline[0];
+  const routePoint = routePoints.find((item) => item.title === activeRoute) ?? routePoints[0];
   const handoverPack = handoverPacks.find((item) => item.name === activePack) ?? handoverPacks[0];
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
@@ -1681,23 +1766,59 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="route-title">Маршрут поставки как управляемый data-flow</h2>
           <p>UPGRADE контролирует не транспорт как перевозчик, а информационную готовность маршрута.</p>
         </div>
-        <div className={styles.routeFlow}>
+        <div className={styles.routeFlow} role="tablist" aria-label="China to Kazakhstan delivery data-flow">
           {routePoints.map((point) => (
-            <button key={point.title} type="button" data-active={activeRoute === point.title} onClick={() => setActiveRoute(point.title)}>
+            <button
+              key={point.title}
+              type="button"
+              role="tab"
+              aria-selected={activeRoute === point.title}
+              aria-controls={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+              data-active={activeRoute === point.title}
+              data-status={point.status}
+              onClick={() => setActiveRoute(point.title)}
+            >
+              <StatusPill value={point.status} />
               <span>{point.title}</span>
+              <small>{point.gate}</small>
             </button>
           ))}
         </div>
+        <aside className={styles.routeDataSurface} aria-live="polite" aria-label="Selected route data-flow point">
+          <div>
+            <p className={styles.eyebrow}>Active route point</p>
+            <h3>{routePoint.title}</h3>
+            <p>{routePoint.readiness}</p>
+          </div>
+          <dl>
+            <div><dt>status</dt><dd><StatusPill value={routePoint.status} /></dd></div>
+            <div><dt>release gate</dt><dd>{routePoint.gate}</dd></div>
+            <div><dt>documents</dt><dd>{routePoint.documents}</dd></div>
+            <div><dt>data gap response</dt><dd>{routePoint.response}</dd></div>
+            <div><dt>boundary</dt><dd>{routePoint.boundary}</dd></div>
+          </dl>
+        </aside>
         <div className={styles.routeCards}>
           {routePoints.map((point) => (
-            <article key={`route-${point.title}`} className={styles.routeCard} hidden={activeRoute !== point.title}>
+            <article
+              key={`route-${point.title}`}
+              id={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+              className={styles.routeCard}
+              role="tabpanel"
+              tabIndex={0}
+              hidden={activeRoute !== point.title}
+            >
               <h3>{point.title}</h3>
               <dl>
+                <div><dt>status</dt><dd><StatusPill value={point.status} /></dd></div>
                 <div><dt>required data</dt><dd>{point.data}</dd></div>
+                <div><dt>documents</dt><dd>{point.documents}</dd></div>
                 <div><dt>owner</dt><dd>{point.owner}</dd></div>
                 <div><dt>UPGRADE action</dt><dd>{point.action}</dd></div>
                 <div><dt>risk if missing</dt><dd>{point.risk}</dd></div>
                 <div><dt>release gate</dt><dd>{point.gate}</dd></div>
+                <div><dt>readiness signal</dt><dd>{point.readiness}</dd></div>
+                <div><dt>boundary</dt><dd>{point.boundary}</dd></div>
               </dl>
             </article>
           ))}
