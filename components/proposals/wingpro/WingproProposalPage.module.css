@@ -7501,6 +7501,61 @@
     font-size: 12px;
   }
 
+  .statusLine {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .statusLine article {
+    min-height: 70px;
+    gap: 6px;
+    padding: 9px;
+  }
+
+  .statusLine article > span {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .controlActiveSurface {
+    gap: 9px;
+    padding: 14px;
+  }
+
+  .controlActiveSurface h3 {
+    font-size: 24px;
+  }
+
+  .controlActiveSurface > p:not(.eyebrow) {
+    line-height: 1.42;
+  }
+
+  .controlActiveSurface dl div {
+    padding: 10px;
+  }
+
+  .nextActions {
+    gap: 9px;
+    padding: 14px;
+  }
+
+  .nextActions ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    padding: 0;
+    list-style: none;
+    line-height: 1.28;
+  }
+
+  .nextActions li {
+    padding: 8px;
+    border: 1px solid var(--proposal-border);
+    border-radius: 8px;
+    background: var(--proposal-surface-soft);
+    font-size: 12px;
+  }
+
   .copyCommandStrip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
