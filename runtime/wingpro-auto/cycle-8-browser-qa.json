@@ -1,0 +1,125 @@
+{
+  "cb": 1780132933,
+  "pageStatus": 200,
+  "localUrl": "http://localhost:3068/cp/2605281047-wingpro?cb=1780132933",
+  "base": {
+    "url": "http://localhost:3068/cp/2605281047-wingpro?cb=1780132933#layer-equipment",
+    "innerWidth": 1440,
+    "mobile768": false,
+    "stylesheets": [
+      "http://localhost:3068/_next/static/chunks/c042300d87df4ac9.css",
+      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0",
+      "http://localhost:3068/assets/layout.css?v=20260311-5"
+    ],
+    "viewportMeta": true,
+    "robots": "noindex, nofollow",
+    "h1Count": 1,
+    "bodyScrollWidth": 1425,
+    "scrollOk": true,
+    "imageCount": 1,
+    "images": [
+      {
+        "alt": "UPGRADE Innovations",
+        "currentSrc": "http://localhost:3068/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    ],
+    "missingVisibleContent": [],
+    "missingDomContent": [],
+    "closeoutRows": 7,
+    "closeoutLabels": [
+      "Pack",
+      "Recipient",
+      "Gate",
+      "Acceptance signal"
+    ],
+    "forbiddenCopy": false
+  },
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "height": 1200,
+      "scrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollOk": true,
+      "h1Count": 1,
+      "mobile768": false,
+      "twinVisible": true,
+      "closeoutRows": 7
+    },
+    {
+      "width": 1280,
+      "height": 1200,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollOk": true,
+      "h1Count": 1,
+      "mobile768": false,
+      "twinVisible": true,
+      "closeoutRows": 7
+    },
+    {
+      "width": 768,
+      "height": 1200,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "scrollOk": true,
+      "h1Count": 1,
+      "mobile768": true,
+      "twinVisible": true,
+      "closeoutRows": 7
+    },
+    {
+      "width": 375,
+      "height": 1200,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "scrollOk": true,
+      "h1Count": 1,
+      "mobile768": true,
+      "twinVisible": true,
+      "closeoutRows": 7
+    },
+    {
+      "width": 320,
+      "height": 1200,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "scrollOk": true,
+      "h1Count": 1,
+      "mobile768": true,
+      "twinVisible": true,
+      "closeoutRows": 7
+    }
+  ],
+  "interaction": {
+    "activeAfterTab": {
+      "tag": "A",
+      "text": "К содержанию"
+    },
+    "expandedBefore": "false",
+    "expandedAfter": "true",
+    "selectedLayer": [
+      "vault",
+      "all",
+      "supplier identity unclear",
+      "50/50"
+    ],
+    "liveStatus": "Copied",
+    "copyButtonFound": true
+  },
+  "reducedMotion": {
+    "matches": true,
+    "scrollOk": true,
+    "twinStageVisible": true
+  },
+  "failedRequests": [],
+  "screenshots": [
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-8/wingpro-c8-1440.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-8/wingpro-c8-1280.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-8/wingpro-c8-768.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-8/wingpro-c8-375.png",
+    "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/screenshots/cycle-8/wingpro-c8-320.png"
+  ]
+}

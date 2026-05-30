@@ -987,6 +987,22 @@
     var(--proposal-surface);
 }
 
+.moduleIndex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.moduleIndex span {
+  border: 1px solid var(--proposal-border);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: var(--proposal-text-soft);
+  background: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+  font-weight: 850;
+}
+
 .controlScale {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -2321,15 +2337,18 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .protectionGrid,
   .candidateGrid,
-  .requestQueue,
-  .scoreGrid,
   .workPlanGrid,
   .evidenceGrid,
   .metricGrid,
   .deliveryPhaseGrid,
   .simulatorGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .protectionGrid,
+  .requestQueue,
+  .scoreGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
@@ -2467,6 +2486,20 @@
   .contractGateRow > *,
   .closeoutRow > * {
     border-right: 0;
+  }
+
+  .closeoutRow > * {
+    display: grid;
+    gap: 4px;
+  }
+
+  .closeoutRow > *::before {
+    content: attr(data-label);
+    color: var(--proposal-text-muted);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 }
 

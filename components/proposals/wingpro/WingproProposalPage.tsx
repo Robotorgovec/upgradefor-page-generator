@@ -928,7 +928,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       <section className={styles.digitalTwin} id="digital-twin" aria-labelledby="twin-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Digital Twin сделки</p>
-          <h2 id="twin-title">Товарная позиция как управляемый цифровой объект</h2>
+          <h2 id="twin-title">Digital Twin: товарная позиция как управляемый цифровой объект</h2>
           <p>UPGRADE превращает товарную позицию из набора сообщений и файлов в управляемый цифровой объект. Такой объект можно проверять, передавать логисту/брокеру/монтажной стороне и повторно использовать в продажах.</p>
         </div>
         <div className={styles.twinShell} data-rotating={isRotating && !presentationMode}>
@@ -1057,6 +1057,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>Project Control Scale</p>
           <h2 id="control-scale-title">От поиска поставщика до Handover & Closeout</h2>
           <p>Этот слой показывает результат для WinGPro до деталей процесса: как выбирается поставщик, сравниваются условия, готовится договорная логика, ведется Delivery Timeline, формируется Work Plan Builder / ППР skeleton, собирается evidence и закрывается handover.</p>
+        </div>
+        <div className={styles.moduleIndex} aria-label="Project control modules">
+          {[
+            "Supplier Request Lab",
+            "Offer Comparison Board",
+            "Contract Decision Simulator",
+            "Delivery Timeline",
+            "Work Plan Builder",
+            "Field Execution Board",
+            "Photo Evidence Wall",
+            "Implementation Status Dashboard",
+            "Handover & Closeout"
+          ].map((item) => <span key={item}>{item}</span>)}
         </div>
 
         <div className={styles.controlScale} role="tablist" aria-label="Project control scale">
@@ -1686,10 +1699,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           {handoverPacks.map((item) => (
             <div key={`closeout-${item.name}`} role="row" className={styles.closeoutRow}>
-              <strong role="cell">{item.name}</strong>
-              <span role="cell">{item.recipient}</span>
-              <span role="cell">{item.gate}</span>
-              <em role="cell">{item.acceptance}</em>
+              <strong role="cell" data-label="Pack">{item.name}</strong>
+              <span role="cell" data-label="Recipient">{item.recipient}</span>
+              <span role="cell" data-label="Gate">{item.gate}</span>
+              <em role="cell" data-label="Acceptance signal">{item.acceptance}</em>
             </div>
           ))}
         </div>
@@ -1741,7 +1754,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
         <textarea ref={copyRef} className={styles.copySource} value={copyTexts[copyVariant]} readOnly hidden />
         <p aria-live="polite" data-copy-status>{copyStatus}</p>
-        <p className={styles.legalNote}>UPGRADE — IT/data и закупочно-координационный партнер. UPGRADE не является поставщиком оборудования; не является производителем; не является проектировщиком; не является монтажной организацией; не является ПНР-подрядчиком, техническим надзором, брокером, перевозчиком, сертификационным органом или юридическим консультантом.</p>
+        <p className={styles.legalNote}>UPGRADE — IT/data и закупочно-координационный партнер. UPGRADE не является поставщиком оборудования; не является производителем; не является проектировщиком; не является монтажной организацией; не является ПНР-подрядчиком; не является техническим надзором; не является брокером; не является перевозчиком; не является сертификационным органом и не является юридическим консультантом.</p>
         <p className={styles.pathNote}>Canonical: {proposalPath}</p>
       </section>
     </div>
