@@ -2396,39 +2396,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>Выбор условий не прячется в переписке</h3>
               <p>Board показывает, какой сценарий выбора сейчас безопаснее: evidence-led, price-led или speed-led. Это не утверждение технических параметров, а decision support для WinGPro.</p>
             </div>
-            <div className={styles.decisionModeSwitch} role="tablist" aria-label="Offer decision modes">
-              {offerDecisionModes.map((mode) => (
-                <button
-                  key={mode.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={offerDecisionMode === mode.id}
-                  aria-controls={`decision-mode-${mode.id}`}
-                  onClick={() => setOfferDecisionMode(mode.id)}
-                >
-                  {mode.title}
-                </button>
-              ))}
-            </div>
-            <div className={styles.decisionModePanels}>
-              {offerDecisionModes.map((mode) => (
-                <section key={mode.id} id={`decision-mode-${mode.id}`} role="tabpanel" hidden={offerDecisionMode !== mode.id}>
-                  <StatusPill value={mode.score} />
-                  <h4>{mode.title}</h4>
-                  <p>{mode.summary}</p>
-                  <strong>{mode.impact}</strong>
-                </section>
-              ))}
-            </div>
-            <div className={styles.offerGateStrip} aria-label="Offer decision gates">
-              {offerDecisionGates.map(([gate, evidence, owner]) => (
-                <section key={gate}>
-                  <span>{gate}</span>
-                  <strong>{evidence}</strong>
-                  <p>{owner}</p>
-                </section>
-              ))}
-            </div>
             <aside className={styles.offerDecisionSurface} aria-live="polite" aria-label="Selected offer decision surface">
               <div>
                 <p className={styles.eyebrow}>Selected offer decision surface</p>
@@ -2446,30 +2413,70 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </ul>
               </div>
             </aside>
-            <div className={styles.offerMatrix} role="table" aria-label="Offer comparison matrix">
-              <div role="row" className={styles.offerMatrixHeader}>
-                <span role="columnheader">Metric</span>
-                <span role="columnheader">Candidate A</span>
-                <span role="columnheader">Candidate B</span>
-                <span role="columnheader">Candidate C</span>
-                <span role="columnheader">Decision signal</span>
-                <span role="columnheader">Owner</span>
-              </div>
-              {offerComparison.map((row) => (
-                <div key={row.metric} role="row" className={styles.offerMatrixRow}>
-                  <strong role="cell"><span className={styles.matrixCellLabel}>Metric</span>{row.metric}</strong>
-                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate A</span>{row.candidateA}</span>
-                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate B</span>{row.candidateB}</span>
-                  <span role="cell"><span className={styles.matrixCellLabel}>Candidate C</span>{row.candidateC}</span>
-                  <em role="cell"><span className={styles.matrixCellLabel}>Decision signal</span>{row.decisionSignal}</em>
-                  <small role="cell"><span className={styles.matrixCellLabel}>Owner</span>{row.owner}</small>
-                </div>
-              ))}
-            </div>
             <div className={styles.selectionSummary}>
               <h4>Selected supplier rationale</h4>
               <p>Текущий selected path: {supplier.name} через {decisionMode.title}. UPGRADE фиксирует evidence request, owner и release gate; WinGPro утверждает коммерческое решение после проверки профильными участниками.</p>
             </div>
+            <details className={styles.offerDetailsDisclosure}>
+              <summary>
+                <span>Offer comparison detail</span>
+                <strong>Открыть decision modes, gates и comparison matrix</strong>
+                <small>Детали сравнения раскрываются по запросу; UPGRADE структурирует evidence и decision support, а WinGPro утверждает коммерческий маршрут.</small>
+              </summary>
+              <div className={styles.decisionModeSwitch} role="tablist" aria-label="Offer decision modes">
+                {offerDecisionModes.map((mode) => (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={offerDecisionMode === mode.id}
+                    aria-controls={`decision-mode-${mode.id}`}
+                    onClick={() => setOfferDecisionMode(mode.id)}
+                  >
+                    {mode.title}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.decisionModePanels}>
+                {offerDecisionModes.map((mode) => (
+                  <section key={mode.id} id={`decision-mode-${mode.id}`} role="tabpanel" hidden={offerDecisionMode !== mode.id}>
+                    <StatusPill value={mode.score} />
+                    <h4>{mode.title}</h4>
+                    <p>{mode.summary}</p>
+                    <strong>{mode.impact}</strong>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.offerGateStrip} aria-label="Offer decision gates">
+                {offerDecisionGates.map(([gate, evidence, owner]) => (
+                  <section key={gate}>
+                    <span>{gate}</span>
+                    <strong>{evidence}</strong>
+                    <p>{owner}</p>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.offerMatrix} role="table" aria-label="Offer comparison matrix">
+                <div role="row" className={styles.offerMatrixHeader}>
+                  <span role="columnheader">Metric</span>
+                  <span role="columnheader">Candidate A</span>
+                  <span role="columnheader">Candidate B</span>
+                  <span role="columnheader">Candidate C</span>
+                  <span role="columnheader">Decision signal</span>
+                  <span role="columnheader">Owner</span>
+                </div>
+                {offerComparison.map((row) => (
+                  <div key={row.metric} role="row" className={styles.offerMatrixRow}>
+                    <strong role="cell"><span className={styles.matrixCellLabel}>Metric</span>{row.metric}</strong>
+                    <span role="cell"><span className={styles.matrixCellLabel}>Candidate A</span>{row.candidateA}</span>
+                    <span role="cell"><span className={styles.matrixCellLabel}>Candidate B</span>{row.candidateB}</span>
+                    <span role="cell"><span className={styles.matrixCellLabel}>Candidate C</span>{row.candidateC}</span>
+                    <em role="cell"><span className={styles.matrixCellLabel}>Decision signal</span>{row.decisionSignal}</em>
+                    <small role="cell"><span className={styles.matrixCellLabel}>Owner</span>{row.owner}</small>
+                  </div>
+                ))}
+              </div>
+            </details>
           </article>
 
           <article className={styles.contractSimulator} id="contract-decision-simulator" data-section="contract-simulator">

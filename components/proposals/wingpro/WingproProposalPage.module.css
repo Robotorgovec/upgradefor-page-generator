@@ -2659,6 +2659,83 @@
   margin-top: 0;
 }
 
+.offerDetailsDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.offerDetailsDisclosure summary {
+  min-height: 76px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(180px, 0.34fr) 38px;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+}
+
+.offerDetailsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.offerDetailsDisclosure summary::after {
+  content: "+";
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.offerDetailsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.offerDetailsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.offerDetailsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.offerDetailsDisclosure summary small {
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.offerDetailsDisclosure .decisionModeSwitch,
+.offerDetailsDisclosure .decisionModePanels,
+.offerDetailsDisclosure .offerGateStrip,
+.offerDetailsDisclosure .offerMatrix {
+  margin: 0 18px 18px;
+}
+
+.offerDetailsDisclosure .decisionModeSwitch {
+  margin-top: 0;
+}
+
 .supplierSignalGrid,
 .offerGateStrip {
   display: grid;
@@ -5733,6 +5810,7 @@
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
+  .offerDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {
     grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr) 38px;
@@ -5827,6 +5905,7 @@
   .controlBoardsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
+  .offerDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary,
   .riskResponseSurface,
@@ -5844,7 +5923,8 @@
 
   .contractDetailsDisclosure summary,
   .controlBoardsDisclosure summary,
-  .deliveryDetailsDisclosure summary {
+  .deliveryDetailsDisclosure summary,
+  .offerDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
   }
 
@@ -5860,6 +5940,9 @@
   .handoverDetailsDisclosure summary span,
   .handoverDetailsDisclosure summary strong,
   .handoverDetailsDisclosure summary small,
+  .offerDetailsDisclosure summary span,
+  .offerDetailsDisclosure summary strong,
+  .offerDetailsDisclosure summary small,
   .riskDetailsDisclosure summary span,
   .riskDetailsDisclosure summary strong,
   .riskDetailsDisclosure summary small,
@@ -5873,6 +5956,7 @@
   .controlBoardsDisclosure summary::after,
   .deliveryDetailsDisclosure summary::after,
   .handoverDetailsDisclosure summary::after,
+  .offerDetailsDisclosure summary::after,
   .riskDetailsDisclosure summary::after,
   .supplierDetailsDisclosure summary::after {
     grid-column: 2;
@@ -5882,6 +5966,7 @@
   .contractDetailsDisclosure summary,
   .deliveryDetailsDisclosure summary,
   .handoverDetailsDisclosure summary,
+  .offerDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
