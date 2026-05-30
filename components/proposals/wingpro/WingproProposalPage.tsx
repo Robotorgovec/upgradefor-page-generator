@@ -1781,7 +1781,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   );
 
   return (
-    <div className={styles.page} data-proposal-root data-theme-scope="light" data-proposal-id="wingpro-2605281047">
+    <div className={styles.page} data-proposal-root data-wingpro-proposal-root data-theme-scope="light" data-proposal-id="wingpro-2605281047">
       <nav className={styles.breadcrumbs} aria-label="Навигация">
         <a href="/">UPGRADE</a>
         <span>HVAC</span>
@@ -1802,7 +1802,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         ))}
       </nav>
 
-      <section className={sectionClass(styles.hero, "hero")} id="mission" aria-labelledby="proposal-title">
+      <section className={sectionClass(styles.hero, "hero")} id="mission" data-section="hero" aria-labelledby="proposal-title">
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>WinGPro × UPGRADE</p>
           <h1 id="proposal-title">Цифровой контур поставки пластинчатых теплообменников</h1>
@@ -1850,7 +1850,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </aside>
       </section>
 
-      <section className={styles.commandLayer} aria-labelledby="command-layer-title" data-active-mode={activePresentationMode}>
+      <section className={styles.commandLayer} data-section="executive-command" aria-labelledby="command-layer-title" data-active-mode={activePresentationMode}>
         <div className={styles.commandLayerHeader}>
           <div>
             <p className={styles.eyebrow}>Executive Command Layer</p>
@@ -1887,7 +1887,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>{activePresentation.nextAction}</p>
           </div>
         </article>
-        <section className={styles.cockpitSummaryBoard} aria-labelledby="cockpit-summary-title">
+        <section className={styles.cockpitSummaryBoard} data-section="cockpit-summary" aria-labelledby="cockpit-summary-title">
           <div className={styles.cockpitSummaryHeader}>
             <div>
               <span className={styles.eyebrow}>Project Cockpit Summary</span>
@@ -2024,7 +2024,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" aria-labelledby="twin-title">
+      <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" data-section="digital-twin" aria-labelledby="twin-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Digital Twin сделки</p>
           <h2 id="twin-title">Digital Twin: товарная позиция как управляемый цифровой объект</h2>
@@ -2138,7 +2138,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       ) : null}
 
-      <section className={sectionClass(styles.filmstrip, "filmstrip")} id="filmstrip" aria-labelledby="film-title">
+      <section className={sectionClass(styles.filmstrip, "filmstrip")} id="filmstrip" data-section="filmstrip" aria-labelledby="film-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Procurement filmstrip</p>
           <h2 id="film-title">Сделка как операционный сценарий</h2>
@@ -2167,7 +2167,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.valueOs, "valueOs")} aria-labelledby="value-title">
+      <section className={sectionClass(styles.valueOs, "valueOs")} data-section="value-os" aria-labelledby="value-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Value operating system</p>
           <h2 id="value-title">Что покупает WinGPro за 3 000 000 ₸</h2>
@@ -2191,7 +2191,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.projectControl, "projectControl")} id="project-control" aria-labelledby="control-scale-title">
+      <section className={sectionClass(styles.projectControl, "projectControl")} id="project-control" data-section="project-control" aria-labelledby="control-scale-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Project Control Scale</p>
           <h2 id="control-scale-title">От поиска поставщика до Handover & Closeout</h2>
@@ -2282,7 +2282,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </nav>
 
         <div className={styles.controlBoardGrid}>
-          <article className={styles.supplierLab} id="supplier-request-lab">
+          <article className={styles.supplierLab} id="supplier-request-lab" data-section="supplier-lab">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Supplier Request Lab</p>
               <h3>Запросы, scoring, shortlist и selected rationale</h3>
@@ -2377,7 +2377,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.offerBoard} id="offer-comparison-board">
+          <article className={styles.offerBoard} id="offer-comparison-board" data-section="offer-board">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Offer Comparison Board</p>
               <h3>Выбор условий не прячется в переписке</h3>
@@ -2459,7 +2459,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.contractSimulator} id="contract-decision-simulator">
+          <article className={styles.contractSimulator} id="contract-decision-simulator" data-section="contract-simulator">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Contract Decision Simulator</p>
               <h3>Оплата, evidence gates и delivery terms как decision board</h3>
@@ -2548,7 +2548,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.deliveryTimeline} id="delivery-timeline">
+          <article className={styles.deliveryTimeline} id="delivery-timeline" data-section="delivery-timeline">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Delivery Timeline</p>
               <h3>Поставка как release-control pipeline</h3>
@@ -2625,7 +2625,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p className={styles.deliverySummary}>Current release focus: {deliveryPhase.phase} → {deliveryPhase.output}. UPGRADE фиксирует status и evidence request; профильные участники подтверждают фактические действия и решения.</p>
           </article>
 
-          <article className={styles.workPlanBuilder} id="work-plan-builder">
+          <article className={styles.workPlanBuilder} id="work-plan-builder" data-section="work-plan-builder">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Work Plan Builder</p>
               <h3>ППР skeleton для coordination draft</h3>
@@ -2652,7 +2652,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.fieldBoard} id="field-execution-board">
+          <article className={styles.fieldBoard} id="field-execution-board" data-section="field-execution-board">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Field Execution Board</p>
               <h3>Задачи монтажной стороны в своей зоне ответственности</h3>
@@ -2716,7 +2716,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.evidenceWall} id="photo-evidence-wall">
+          <article className={styles.evidenceWall} id="photo-evidence-wall" data-section="photo-evidence-wall">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Photo Evidence Wall</p>
               <h3>Evidence register без server upload</h3>
@@ -2829,7 +2829,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.statusDashboard}>
+          <article className={styles.statusDashboard} data-section="implementation-status-dashboard">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Implementation Status Dashboard</p>
               <h3>Готовность проекта по ключевым контурам</h3>
@@ -2847,7 +2847,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.controlRoom, "controlRoom")} id="control-room" aria-labelledby="control-title">
+      <section className={sectionClass(styles.controlRoom, "controlRoom")} id="control-room" data-section="control-room" aria-labelledby="control-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Control Room поставки</p>
           <h2 id="control-title">Живой центр управления данными, статусами и handoff</h2>
@@ -2889,7 +2889,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.routeMap, "routeMap")} aria-labelledby="route-title">
+      <section className={sectionClass(styles.routeMap, "routeMap")} data-section="route-map" aria-labelledby="route-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Route Map</p>
           <h2 id="route-title">Маршрут поставки как управляемый data-flow</h2>
@@ -2954,7 +2954,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.vault, "vault")} id="vault" aria-labelledby="vault-title">
+      <section className={sectionClass(styles.vault, "vault")} id="vault" data-section="document-vault" aria-labelledby="vault-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Document Vault</p>
           <h2 id="vault-title">Data-room как хранилище статусов, владельцев и evidence</h2>
@@ -3053,7 +3053,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </details>
       </section>
 
-      <section className={sectionClass(styles.riskRadar, "riskRadar")} id="risk-radar" aria-labelledby="risk-title">
+      <section className={sectionClass(styles.riskRadar, "riskRadar")} id="risk-radar" data-section="risk-radar" aria-labelledby="risk-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Risk Radar</p>
           <h2 id="risk-title">Риски как координационный response pack</h2>
@@ -3137,7 +3137,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.releaseGates, "releaseGates")} id="release-gates" aria-labelledby="gates-title">
+      <section className={sectionClass(styles.releaseGates, "releaseGates")} id="release-gates" data-section="release-gates" aria-labelledby="gates-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Release gates</p>
           <h2 id="gates-title">Поставка как pipeline готовности данных</h2>
@@ -3201,7 +3201,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.statusOfCustomer, "statusOfCustomer")} aria-labelledby="customer-title">
+      <section className={sectionClass(styles.statusOfCustomer, "statusOfCustomer")} data-section="customer-status" aria-labelledby="customer-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>WinGPro как заказчик высокого уровня</p>
           <h2 id="customer-title">Процесс выглядит как зрелый procurement management</h2>
@@ -3212,7 +3212,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.handoverRoom, "handoverRoom")} id="handover" aria-labelledby="handover-title">
+      <section className={sectionClass(styles.handoverRoom, "handoverRoom")} id="handover" data-section="handover-room" aria-labelledby="handover-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Handover Room</p>
           <h2 id="handover-title">Что получает каждая сторона</h2>
@@ -3316,7 +3316,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <p className={styles.handoverSummary}>Active closeout focus: {handoverPack.name} → {handoverPack.acceptance}. UPGRADE передает структурированный пакет; профильные участники проверяют и утверждают решения в своей зоне ответственности.</p>
       </section>
 
-      <section className={sectionClass(styles.acceptance, "acceptance")} aria-labelledby="acceptance-title">
+      <section className={sectionClass(styles.acceptance, "acceptance")} data-section="acceptance" aria-labelledby="acceptance-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Решение к согласованию</p>
           <h2 id="acceptance-title">Acceptance is based on deliverables</h2>
@@ -3357,7 +3357,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
       </section>
 
-      <section className={sectionClass(styles.copyPackage, "copyPackage")} aria-labelledby="copy-title">
+      <section className={sectionClass(styles.copyPackage, "copyPackage")} data-section="board-pack" aria-labelledby="copy-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Board Pack</p>
           <h2 id="copy-title">Сообщения для отправки</h2>
