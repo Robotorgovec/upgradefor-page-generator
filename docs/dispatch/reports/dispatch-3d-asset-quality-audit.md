@@ -78,3 +78,9 @@ Cooling tower follow-up status: the focused CT-1 visual review is recorded in:
 ```text
 docs/dispatch/reports/dispatch-3d-cooling-tower-visual-review.md
 ```
+
+Chiller follow-up status: the focused CH-1 temporary asset review is recorded in:
+
+```text
+docs/dispatch/reports/dispatch-3d-chiller-temporary-asset-review.md
+```
