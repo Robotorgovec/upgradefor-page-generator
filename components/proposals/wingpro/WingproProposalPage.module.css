@@ -57,7 +57,7 @@
   overflow-wrap: anywhere;
 }
 
-.page :where(a, button, select, textarea):focus-visible {
+.page :where(a, button, select, textarea, summary):focus-visible {
   outline: 3px solid var(--proposal-focus);
   outline-offset: 3px;
 }
@@ -6597,6 +6597,70 @@
   line-height: 1.48;
 }
 
+.copyActionDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.copyActionDisclosure summary {
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.2fr) minmax(0, 0.5fr) minmax(190px, 0.3fr) 34px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.copyActionDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.copyActionDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.copyActionDisclosure[open] summary::after {
+  content: "–";
+}
+
+.copyActionDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.copyActionDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.copyActionDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.copyActionDisclosure .copyButtons {
+  padding: 0 10px 10px;
+}
+
 .copyButtons button {
   flex: 1 1 210px;
   color: var(--proposal-text-soft);
@@ -7020,6 +7084,21 @@
 
   .modeEndpointDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 34px;
+  }
+
+  .copyActionDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 34px;
+  }
+
+  .copyActionDisclosure summary span,
+  .copyActionDisclosure summary strong,
+  .copyActionDisclosure summary small {
+    grid-column: 1;
+  }
+
+  .copyActionDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
 
   .modeEndpointDisclosure summary span,
@@ -8916,6 +8995,46 @@
     line-height: 1.25;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+
+  .copyActionDisclosure summary {
+    min-height: 58px;
+    gap: 5px;
+    padding: 9px 40px 9px 9px;
+    position: relative;
+  }
+
+  .copyActionDisclosure summary::after {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .copyActionDisclosure summary strong,
+  .copyActionDisclosure summary small {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+  }
+
+  .copyActionDisclosure summary strong {
+    max-height: 2.5em;
+    font-size: 12.5px;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+  }
+
+  .copyActionDisclosure summary small {
+    max-height: 2.6em;
+    font-size: 10.5px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+  }
+
+  .copyActionDisclosure .copyButtons {
+    padding: 0 8px 8px;
   }
 
   .copyButtons {
