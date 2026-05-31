@@ -2326,12 +2326,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </details>
 
-        <div className={styles.sourceDocsRelated} aria-label="Связать исходные документы с разделами страницы">
-          <a href="#digital-twin">Связать с Digital Twin</a>
-          <a href="#vault">Связать с Document Vault</a>
-          <a href="#work-plan-builder">Связать с Work Plan / ППР skeleton</a>
-          <a href="#handover">Связать с Handover Pack</a>
-        </div>
+        <details className={styles.sourceDocsRelatedDisclosure}>
+          <summary>
+            <span>links</span>
+            <strong>Связать с разделами страницы</strong>
+            <small>4 links</small>
+          </summary>
+          <div className={styles.sourceDocsRelated} aria-label="Связать исходные документы с разделами страницы">
+            <a href="#digital-twin">Связать с Digital Twin</a>
+            <a href="#vault">Связать с Document Vault</a>
+            <a href="#work-plan-builder">Связать с Work Plan / ППР skeleton</a>
+            <a href="#handover">Связать с Handover Pack</a>
+          </div>
+        </details>
 
         <details className={styles.sourceDisclaimer}>
           <summary>

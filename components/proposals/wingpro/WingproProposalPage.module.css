@@ -3908,6 +3908,7 @@
 .sourceDocDetails:not([open]) > :not(summary),
 .sourceDocsIntelligence:not([open]) > :not(summary),
 .sourceTraceability:not([open]) > :not(summary),
+.sourceDocsRelatedDisclosure:not([open]) > :not(summary),
 .sourceDisclaimer:not([open]) > :not(summary),
 .twinLayerDetailsDisclosure:not([open]) > :not(summary),
 .filmstripDetailsDisclosure:not([open]) > :not(summary),
@@ -6117,6 +6118,7 @@
 .sourceDocsPackage,
 .sourceDocsIntelligence,
 .sourceTraceability,
+.sourceDocsRelatedDisclosure,
 .sourceDisclaimer {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
@@ -6175,6 +6177,7 @@
 .sourceDocMeta dt,
 .sourceDocsIntelligence summary span,
 .sourceTraceabilityHeader span,
+.sourceDocsRelatedDisclosure summary span,
 .sourceTraceabilityHead span {
   color: var(--proposal-text-muted);
   font-size: 10px;
@@ -6579,6 +6582,67 @@
 
 .sourceDocsRelated {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sourceDocsRelatedDisclosure {
+  padding: 0;
+  overflow: visible;
+}
+
+.sourceDocsRelatedDisclosure summary {
+  min-height: 44px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.2fr) minmax(0, 1fr) minmax(82px, auto) 32px;
+  gap: 10px;
+  align-items: center;
+  list-style: none;
+}
+
+.sourceDocsRelatedDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.sourceDocsRelatedDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.sourceDocsRelatedDisclosure[open] summary::after {
+  content: "−";
+}
+
+.sourceDocsRelatedDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.sourceDocsRelatedDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.sourceDocsRelatedDisclosure .sourceDocsRelated {
+  margin-top: 0;
+  padding: 0 12px 12px;
 }
 
 .sourceDisclaimer {
@@ -8626,6 +8690,28 @@
     grid-template-columns: 1fr;
   }
 
+  .sourceDocsRelatedDisclosure summary {
+    min-height: 44px;
+    padding: 6px 10px;
+    grid-template-columns: minmax(0, 1fr) 32px;
+  }
+
+  .sourceDocsRelatedDisclosure summary strong {
+    grid-column: 1;
+    font-size: 13px;
+    line-height: 1.18;
+  }
+
+  .sourceDocsRelatedDisclosure summary span,
+  .sourceDocsRelatedDisclosure summary small {
+    display: none;
+  }
+
+  .sourceDocsRelatedDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+
   .sourceDocsStatusGrid,
   .sourceDocMeta,
   .sourceDocDetailGrid,
@@ -8700,6 +8786,7 @@
   .sourceDocCard,
   .sourceDocsPackage,
   .sourceTraceability,
+  .sourceDocsRelatedDisclosure,
   .sourceDisclaimer {
     padding: 12px;
   }
