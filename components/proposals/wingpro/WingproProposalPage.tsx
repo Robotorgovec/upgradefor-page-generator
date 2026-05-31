@@ -109,10 +109,10 @@ const twinHotspots = [
 }>;
 
 const twinConnectionCues = [
-  { label: "4 flanged nozzles", detail: "connection points to verify", tone: "ports", x: "70%", y: "36%" },
-  { label: "EG 40%", detail: "5/10°C source input", tone: "warm", x: "67%", y: "55%" },
-  { label: "Water loop", detail: "7/12°C source input", tone: "cold", x: "31%", y: "63%" },
-  { label: "Service clearance", detail: "mounting side approves", tone: "clearance", x: "34%", y: "31%" },
+  { label: "4 nozzles", detail: "flanged connection points", tone: "ports", x: "73%", y: "39%" },
+  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "70%", y: "61%" },
+  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "31%", y: "61%" },
+  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "31%", y: "33%" },
 ] as const;
 
 const scenes = [
@@ -1553,8 +1553,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [modeEndpointOpen, setModeEndpointOpen] = useState(false);
   const [executiveDetailsOpen, setExecutiveDetailsOpen] = useState(false);
   const [copyActionsOpen, setCopyActionsOpen] = useState(false);
-  const [commercialTermsOpen, setCommercialTermsOpen] = useState(false);
-  const [commercialStatus, setCommercialStatus] = useState("Коммерческие условия скрыты");
+  const [commercialStatus, setCommercialStatus] = useState("Коммерческий контур раскрыт отдельно от технического экрана");
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -1938,18 +1937,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyPlainText(cockpitSummaryText, "Технический summary скопирован");
   }
 
-  function toggleCommercialTerms(nextOpen = !commercialTermsOpen) {
-    setCommercialTermsOpen(nextOpen);
-    setCommercialStatus(nextOpen ? "Коммерческие условия раскрыты" : "Коммерческие условия скрыты");
-    if (nextOpen) {
-      window.requestAnimationFrame(() => {
-        document.querySelector("#commercial-terms")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
-  }
-
   async function copyCommercialMessage(variant: CopyVariant) {
-    setCommercialTermsOpen(true);
+    setCopyActionsOpen(true);
     setCommercialStatus("Коммерческое сообщение скопировано");
     await copyBoardText(variant);
   }
@@ -1996,7 +1985,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <span>service access envelope</span>
         </div>
         <div className={styles.twinConnectionCues} role="list" aria-label="Plate heat exchanger connection cues">
-          {twinConnectionCues.map((item) => (
+          {twinConnectionCues.map((item, index) => (
             <span
               key={item.label}
               className={styles.twinConnectionCue}
@@ -2004,6 +1993,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               role="listitem"
               style={{ ["--x" as string]: item.x, ["--y" as string]: item.y }}
             >
+              <em>{index + 1}</em>
               <strong>{item.label}</strong>
               <small>{item.detail}</small>
             </span>
@@ -2114,7 +2104,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </div>
         <aside className={styles.missionCard}>
-          <span className={styles.privateStatus}>technical cockpit / private</span>
+          <span className={styles.privateStatus}>technical operating view</span>
           <strong>Technical cockpit + data-room</strong>
           <p>Основной экран показывает техническое состояние закупки: выбранный маршрут, предложения поставщиков, экономию, evidence, сроки, риски и handover.</p>
           <dl>
@@ -3991,29 +3981,17 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="commercial-terms-title">Коммерческие условия</h2>
           <p>Финансовая часть вынесена отдельно, чтобы основной экран оставался технической панелью управления проектом.</p>
         </div>
-        <div className={styles.commercialIntro}>
-          <p>Коммерческие условия не меняют технические границы роли UPGRADE: UPGRADE оказывает IT/data и закупочно-координационное сопровождение, не является поставщиком, проектировщиком, монтажной организацией, брокером, перевозчиком или технадзором.</p>
-          <div className={styles.commercialActions}>
-            <button
-              type="button"
-              aria-expanded={commercialTermsOpen}
-              aria-controls="commercial-terms-panel"
-              onClick={() => toggleCommercialTerms()}
-            >
-              Коммерческие условия
-            </button>
-            <button
-              type="button"
-              aria-expanded={commercialTermsOpen}
-              aria-controls="commercial-terms-panel"
-              onClick={() => toggleCommercialTerms(true)}
-            >
-              Показать оплату и стоимость
-            </button>
-          </div>
-          <p className={styles.commercialStatus} aria-live="polite">{commercialStatus}</p>
-        </div>
-        <div id="commercial-terms-panel" className={styles.commercialPanel} hidden={!commercialTermsOpen}>
+        <details className={styles.commercialDisclosure}>
+          <summary aria-controls="commercial-terms-panel">
+            <span>Коммерческие условия</span>
+            <strong>Показать оплату и стоимость</strong>
+            <small>Финансовая часть раскрывается здесь; основной экран остается техническим.</small>
+          </summary>
+          <div id="commercial-terms-panel" className={styles.commercialPanel}>
+            <div className={styles.commercialIntro}>
+              <p>Коммерческие условия не меняют технические границы роли UPGRADE: UPGRADE оказывает IT/data и закупочно-координационное сопровождение, не является поставщиком, проектировщиком, монтажной организацией, брокером, перевозчиком или технадзором.</p>
+              <p className={styles.commercialStatus} aria-live="polite">{commercialStatus}</p>
+            </div>
           <div className={styles.acceptanceGrid}>
             <article className={styles.decisionCard}>
               <strong>3 000 000 ₸ без НДС</strong>
@@ -4062,13 +4040,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <details className={styles.copyActionDisclosure} open={commercialTermsOpen || copyActionsOpen} onToggle={(event) => setCopyActionsOpen(event.currentTarget.open)}>
+          <details className={styles.copyActionDisclosure} open={copyActionsOpen} onToggle={(event) => setCopyActionsOpen(event.currentTarget.open)}>
             <summary>
               <span>Сообщения для отправки</span>
               <strong>{copyVariantTitles[copyVariant]}</strong>
               <small>{copyStatus}</small>
             </summary>
-            {commercialTermsOpen || copyActionsOpen ? (
+            {copyActionsOpen ? (
               <div className={styles.copyButtons}>
                 {[
                   ["payment", "Скопировать коммерческое сообщение"],
@@ -4090,7 +4068,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p aria-live="polite" data-copy-status>{copyStatus}</p>
           <p className={styles.legalNote}>UPGRADE — IT/data и закупочно-координационный партнер. UPGRADE не является поставщиком оборудования; не является производителем; не является проектировщиком; не является монтажной организацией; не является ПНР-подрядчиком; не является техническим надзором; не является брокером; не является перевозчиком; не является сертификационным органом и не является юридическим консультантом.</p>
           <p className={styles.pathNote}>Canonical: {proposalPath}</p>
-        </div>
+          </div>
+        </details>
       </section>
     </div>
   );

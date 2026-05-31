@@ -1576,11 +1576,12 @@
   position: absolute;
   left: var(--x);
   top: var(--y);
-  width: min(148px, 26%);
-  min-height: 42px;
-  padding: 8px 10px;
+  min-width: 118px;
+  max-width: 152px;
+  min-height: 34px;
+  padding: 6px 8px 6px 34px;
   border: 1px solid var(--proposal-brand-border);
-  border-radius: 8px;
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--proposal-shadow-sm);
   color: var(--proposal-text);
@@ -1598,6 +1599,24 @@
   transform: translateX(-50%);
 }
 
+.twinConnectionCue em {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: color-mix(in srgb, var(--proposal-brand-active) 86%, #1e293b);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
 .twinConnectionCue strong,
 .twinConnectionCue small {
   display: block;
@@ -1605,18 +1624,20 @@
 }
 
 .twinConnectionCue strong {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 950;
   line-height: 1.1;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .twinConnectionCue small {
-  margin-top: 3px;
+  margin-top: 1px;
   color: var(--proposal-text-muted);
-  font-size: 10px;
+  font-size: 8.5px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.05;
+  white-space: nowrap;
 }
 
 .twinConnectionCue[data-tone="warm"] {
@@ -7861,9 +7882,79 @@
   background: linear-gradient(180deg, #ffffff, #fbfdff);
 }
 
+.commercialDisclosure {
+  margin-top: 14px;
+  overflow: visible;
+}
+
+.commercialDisclosure > summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(170px, auto) minmax(220px, auto) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  min-height: 56px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px 52px 12px 14px;
+  color: var(--proposal-brand-contrast);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff), #ffffff),
+    #ffffff;
+  cursor: pointer;
+}
+
+.commercialDisclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.commercialDisclosure > summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  font-weight: 950;
+  transform: translateY(-50%);
+}
+
+.commercialDisclosure[open] > summary::after {
+  content: "-";
+}
+
+.commercialDisclosure > summary:focus-visible {
+  outline: 2px solid var(--proposal-brand-contrast);
+  outline-offset: 3px;
+}
+
+.commercialDisclosure > summary span {
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.commercialDisclosure > summary strong {
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.commercialDisclosure > summary small {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
 .commercialIntro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, auto) minmax(220px, 0.28fr);
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.32fr);
   gap: 12px;
   align-items: center;
   border: 1px solid var(--proposal-brand-border);
@@ -8409,11 +8500,12 @@
   .sourceDocsHeader,
   .sourceDocsSummaryCard,
   .sourceDocsPackage,
-  .sourceDisclaimer,
-  .sourceTraceabilityHead,
-	  .sourceTraceabilityRow,
-	  .commercialIntro,
-	  .projectSourcesHeader,
+	  .sourceDisclaimer,
+	  .sourceTraceabilityHead,
+		  .sourceTraceabilityRow,
+		  .commercialDisclosure > summary,
+		  .commercialIntro,
+		  .projectSourcesHeader,
   .projectSourcesBoundary,
   .projectSourceGroupHeader,
   .projectSourceCard,
@@ -9908,17 +10000,25 @@
   }
 
   .twinConnectionCue {
-    width: min(116px, 30%);
-    min-height: 34px;
-    padding: 6px 7px;
+    min-width: 88px;
+    max-width: 104px;
+    min-height: 28px;
+    padding: 5px 6px 5px 28px;
   }
 
   .twinConnectionCue::before {
     height: 14px;
   }
 
-  .twinConnectionCue strong {
+  .twinConnectionCue em {
+    left: 6px;
+    width: 17px;
+    height: 17px;
     font-size: 9px;
+  }
+
+  .twinConnectionCue strong {
+    font-size: 8px;
   }
 
   .twinConnectionCue small {
