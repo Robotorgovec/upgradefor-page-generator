@@ -3921,6 +3921,7 @@
 .routeDetailsDisclosure:not([open]) > :not(summary),
 .vaultFilterDisclosure:not([open]) > :not(summary),
 .vaultCardsDisclosure:not([open]) > :not(summary),
+.riskResponseDisclosure:not([open]) > :not(summary),
 .riskDetailsDisclosure:not([open]) > :not(summary),
 .releaseGateDetailsDisclosure:not([open]) > :not(summary),
 .gateCommandDisclosure:not([open]) > :not(summary),
@@ -6696,7 +6697,7 @@
 }
 
 .riskResponseSurface > div:first-child {
-  grid-row: span 3;
+  grid-row: span 2;
 }
 
 .riskResponseSurface h3,
@@ -6811,6 +6812,81 @@
   color: var(--proposal-text-muted);
   font-size: 12px;
   font-style: normal;
+}
+
+.riskResponseDisclosure {
+  grid-column: 2;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff)),
+    #ffffff;
+  overflow: visible;
+}
+
+.riskResponseDisclosure summary {
+  min-height: 48px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.28fr) minmax(0, 1fr) minmax(150px, 0.32fr) 32px;
+  gap: 10px;
+  align-items: center;
+  list-style: none;
+}
+
+.riskResponseDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.riskResponseDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.riskResponseDisclosure[open] summary::after {
+  content: "−";
+}
+
+.riskResponseDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.riskResponseDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.riskResponseDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  font-weight: 780;
+  line-height: 1.32;
+}
+
+.riskResponseDetailGrid {
+  display: grid;
+  gap: 10px;
+  padding: 0 12px 12px;
 }
 
 .riskDetailsDisclosure {
@@ -7953,6 +8029,7 @@
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
+  .riskResponseDisclosure summary,
   .riskDetailsDisclosure summary,
   .routeDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {
@@ -8065,6 +8142,7 @@
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
+  .riskResponseDisclosure summary,
   .riskDetailsDisclosure summary,
   .routeDetailsDisclosure summary,
   .supplierDetailsDisclosure summary,
@@ -8092,7 +8170,8 @@
     grid-template-columns: 1fr;
   }
 
-  .gateCommandDisclosure {
+  .gateCommandDisclosure,
+  .riskResponseDisclosure {
     grid-column: auto;
   }
 
@@ -8107,6 +8186,7 @@
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
+  .riskResponseDisclosure summary,
   .routeDetailsDisclosure summary {
     grid-template-columns: minmax(0, 1fr) 38px;
   }
@@ -8150,6 +8230,9 @@
   .releaseGateDetailsDisclosure summary span,
   .releaseGateDetailsDisclosure summary strong,
   .releaseGateDetailsDisclosure summary small,
+  .riskResponseDisclosure summary span,
+  .riskResponseDisclosure summary strong,
+  .riskResponseDisclosure summary small,
   .routeDetailsDisclosure summary span,
   .routeDetailsDisclosure summary strong,
   .routeDetailsDisclosure summary small,
@@ -8175,6 +8258,7 @@
   .offerDetailsDisclosure summary::after,
   .projectControlDetailsDisclosure summary::after,
   .releaseGateDetailsDisclosure summary::after,
+  .riskResponseDisclosure summary::after,
   .routeDetailsDisclosure summary::after,
   .riskDetailsDisclosure summary::after,
   .supplierDetailsDisclosure summary::after {
@@ -8194,6 +8278,7 @@
   .offerDetailsDisclosure summary,
   .projectControlDetailsDisclosure summary,
   .releaseGateDetailsDisclosure summary,
+  .riskResponseDisclosure summary,
   .routeDetailsDisclosure summary,
   .riskDetailsDisclosure summary,
   .supplierDetailsDisclosure summary {

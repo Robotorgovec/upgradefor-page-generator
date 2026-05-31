@@ -3510,29 +3510,38 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>Route handoff</dt><dd>{risk.routeHandoff}</dd></div>
             <div><dt>Decision owner</dt><dd>{risk.decision}</dd></div>
           </dl>
-          <div className={styles.riskCommandStrip} aria-label="Risk response sequence">
-            {riskResponseSequence.map(([label, value]) => (
-              <section key={label}>
-                <span>{label}</span>
-                <p>{value}</p>
-              </section>
-            ))}
-          </div>
-          <div className={styles.riskVaultLinks} aria-label="Risk linked vault cards">
-            <strong>Linked vault cards</strong>
-            {riskVaultDocs.length > 0 ? (
-              <ul>
-                {riskVaultDocs.map((doc) => (
-                  <li key={`risk-link-${doc[1]}`}>
-                    <span>{doc[1]}</span>
-                    <em>{doc[3]} / {doc[5]}</em>
-                  </li>
+          <details className={styles.riskResponseDisclosure}>
+            <summary>
+              <span>Response sequence</span>
+              <strong>Открыть actions и linked vault cards</strong>
+              <small>{riskResponseSequence.length} actions / {riskVaultDocs.length || "no"} linked vault cards</small>
+            </summary>
+            <div className={styles.riskResponseDetailGrid}>
+              <div className={styles.riskCommandStrip} aria-label="Risk response sequence">
+                {riskResponseSequence.map(([label, value]) => (
+                  <section key={label}>
+                    <span>{label}</span>
+                    <p>{value}</p>
+                  </section>
                 ))}
-              </ul>
-            ) : (
-              <p>No direct vault card match; keep as response note.</p>
-            )}
-          </div>
+              </div>
+              <div className={styles.riskVaultLinks} aria-label="Risk linked vault cards">
+                <strong>Linked vault cards</strong>
+                {riskVaultDocs.length > 0 ? (
+                  <ul>
+                    {riskVaultDocs.map((doc) => (
+                      <li key={`risk-link-${doc[1]}`}>
+                        <span>{doc[1]}</span>
+                        <em>{doc[3]} / {doc[5]}</em>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No direct vault card match; keep as response note.</p>
+                )}
+              </div>
+            </div>
+          </details>
         </aside>
         <details className={styles.riskDetailsDisclosure}>
           <summary>
