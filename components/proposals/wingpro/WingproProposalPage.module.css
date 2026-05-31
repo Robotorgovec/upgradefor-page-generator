@@ -8677,7 +8677,7 @@
   }
 
   .sourceDocsSection {
-    gap: 12px;
+    gap: 10px;
   }
 
   .sourceDocsHeader,
@@ -8720,16 +8720,24 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .sourceDocsStatusGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+  }
+
   .sourceDocsStatusGrid article {
-    min-height: 78px;
+    min-height: 56px;
+    gap: 3px;
+    padding: 7px;
   }
 
   .sourceDocsSummaryCard {
     gap: 10px;
+    padding: 12px;
   }
 
   .sourceDocsSummaryCard h3 {
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .sourceDocsSummaryCard p,
@@ -8743,12 +8751,58 @@
     padding: 10px;
   }
 
+  .sourceDocsHeader p:not(.eyebrow),
+  .sourceDocsLegalLine,
+  .sourceDocsSummaryCard p,
+  .sourceDisclaimer span {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .sourceDocsStatusGrid strong {
+    display: -webkit-box;
+    max-height: 2.45em;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .sourceDocsStatusGrid small {
+    display: none;
+  }
+
+  .sourceDocsStatusGrid span {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+    line-height: 1.08;
+  }
+
   .sourceDocTopline span:nth-child(n + 3) {
     display: none;
   }
 
   .sourceDocTitleRow {
     grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .sourceDocTitleRow h3 {
+    display: -webkit-box;
+    max-height: 2.35em;
+    overflow: hidden;
+    font-size: 18px;
+    line-height: 1.18;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .sourceDocTitleRow p {
+    font-size: 13px;
+    line-height: 1.28;
   }
 
   .sourceDocMeta {
@@ -8760,8 +8814,15 @@
     padding: 7px;
   }
 
-  .sourceDocActions a:nth-child(3) {
-    grid-column: 1 / -1;
+  .sourceDocActions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .sourceDocActions a {
+    min-height: 44px;
+    padding: 8px 6px;
+    font-size: 11.5px;
   }
 
   .sourceDocDetails summary {
@@ -8788,7 +8849,25 @@
   .sourceTraceability,
   .sourceDocsRelatedDisclosure,
   .sourceDisclaimer {
-    padding: 12px;
+    padding: 10px;
+  }
+
+  .sourceDocsPackage {
+    gap: 8px;
+  }
+
+  .sourceDocsPackage p {
+    display: -webkit-box;
+    max-height: 2.6em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .sourceDocsPackage button {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 10px;
   }
 
   .projectSourceGroup,
