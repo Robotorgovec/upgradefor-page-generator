@@ -1583,13 +1583,14 @@
   left: var(--x);
   top: var(--y);
   min-width: 118px;
-  max-width: 152px;
+  max-width: 146px;
   min-height: 34px;
   padding: 6px 8px 6px 34px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: var(--proposal-shadow-sm);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
+  backdrop-filter: blur(8px);
   color: var(--proposal-text);
   transform: translate(-50%, -50%);
 }
@@ -1648,12 +1649,12 @@
 
 .twinConnectionCue[data-tone="warm"] {
   border-color: color-mix(in srgb, var(--proposal-brand-active) 46%, #fca5a5);
-  background: rgba(255, 244, 245, 0.92);
+  background: rgba(255, 244, 245, 0.86);
 }
 
 .twinConnectionCue[data-tone="cold"] {
   border-color: rgba(125, 199, 242, 0.72);
-  background: rgba(239, 248, 255, 0.92);
+  background: rgba(239, 248, 255, 0.86);
 }
 
 .twinConnectionCue[data-tone="ports"] {
@@ -1662,6 +1663,7 @@
 
 .twinConnectionCue[data-tone="clearance"] {
   border-style: dashed;
+  transform: translate(-78%, -50%);
 }
 
 .twinStage[data-label-density="focus"] .orbitGrid,
@@ -1670,7 +1672,16 @@
 }
 
 .twinStage[data-label-density="focus"] .twinConnectionCue {
-  transform: translate(-50%, -50%) scale(0.94);
+  opacity: 0.92;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.twinStage[data-label-density="focus"] .twinConnectionCue[data-tone="ports"] {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.twinStage[data-label-density="focus"] .twinConnectionCue[data-tone="clearance"] {
+  transform: translate(-82%, -50%) scale(0.9);
 }
 
 .twinStage[data-label-density="focus"] .twinServiceEnvelope {

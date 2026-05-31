@@ -109,10 +109,10 @@ const twinHotspots = [
 }>;
 
 const twinConnectionCues = [
-  { label: "Патрубки", detail: "4 фланцевых вывода", tone: "ports", x: "76%", y: "47%" },
-  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "70%", y: "63%" },
-  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "29%", y: "63%" },
-  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "28%", y: "34%" },
+  { label: "Патрубки", detail: "4 фланцевых вывода", tone: "ports", x: "83%", y: "48%" },
+  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "77%", y: "69%" },
+  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "22%", y: "69%" },
+  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "22%", y: "34%" },
 ] as const;
 
 const twinInterfaceRows = [
@@ -2123,7 +2123,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           ))}
         </div>
         <div className={styles.twinModelLegend}>
-          <span>34 plates</span>
+          <span>42 plates</span>
           <span>4 flanged ports</span>
           <span>tie rods</span>
           <span>mounting inputs</span>
