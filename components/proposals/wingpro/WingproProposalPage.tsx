@@ -1847,18 +1847,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <circle cx="462" cy="174" r="6" />
         <circle cx="586" cy="276" r="6" />
       </svg>
-      <div className={styles.orbitGrid}>
+      <div className={styles.orbitGrid} aria-hidden="true">
         {twinLayers.map((item, index) => (
-          <button
+          <span
             key={item.id}
-            type="button"
             className={styles.orbitNode}
             data-active={activeLayer === item.id}
             style={{ ["--i" as string]: index }}
-            onClick={() => setActiveLayer(item.id)}
           >
             {item.title}
-          </button>
+          </span>
         ))}
       </div>
       <div className={styles.twinHotspots} aria-label="Digital Twin evidence hotspots">

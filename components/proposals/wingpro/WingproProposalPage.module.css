@@ -1725,6 +1725,7 @@
   border-color: var(--proposal-border);
   background: rgba(255, 255, 255, 0.92);
   box-shadow: var(--proposal-shadow-sm);
+  cursor: default;
 }
 
 .orbitNode:nth-of-type(1) { top: 11%; left: 10%; }
