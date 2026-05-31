@@ -100,6 +100,13 @@ type ScadaTagRow = {
   quality: "VALID" | "DATA_ERROR" | "TO VERIFY";
 };
 
+type PassportField = {
+  id: string;
+  label: string;
+  requiredForCompletion: boolean;
+  value: string;
+};
+
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   if (severity === "critical") return "Critical";
   if (severity === "warning") return "Warning";
@@ -149,6 +156,10 @@ function formatVerifiedDisplayValue(value: string) {
   const normalized = value.trim();
   if (/^TO VERIFY$/i.test(normalized)) return "Не заполнено";
   return normalized.replace(/TO VERIFY/gi, "требует верификации");
+}
+
+function isPassportFieldComplete(field: PassportField) {
+  return !needsVerification(field.value) && field.value.trim().length > 0;
 }
 
 function getScadaSignalType(tag: string): ScadaTagRow["signalType"] {
@@ -281,6 +292,7 @@ export default function DispatchDashboard() {
   const [selectedAlarmId, setSelectedAlarmId] = useState<string | null>(null);
   const [readonlyAuditLog, setReadonlyAuditLog] = useState<ReadonlyAuditEntry[]>([]);
   const [ticketJournal, setTicketJournal] = useState<DemoTicketEntry[]>([]);
+  const [showOnlyIncompletePassportFields, setShowOnlyIncompletePassportFields] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("is-dispatch-demo");
@@ -372,6 +384,54 @@ export default function DispatchDashboard() {
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
   const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
   const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
+  const passportFields = useMemo<PassportField[]>(
+    () => [
+      { id: "label", label: "Название", value: passportEquipment.label, requiredForCompletion: false },
+      { id: "status", label: "Статус", value: passportEquipment.status, requiredForCompletion: false },
+      {
+        id: "mode",
+        label: "Режим",
+        value: passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked",
+        requiredForCompletion: false,
+      },
+      { id: "system", label: "Система", value: passportEquipment.type, requiredForCompletion: true },
+      { id: "model", label: "Модель", value: passportEquipment.model, requiredForCompletion: true },
+      { id: "serial", label: "Серийный номер", value: passportEquipment.serial, requiredForCompletion: true },
+      { id: "inventory", label: "Инвентарный номер", value: passportEquipment.inventoryNumber, requiredForCompletion: true },
+      { id: "location", label: "Местоположение", value: passportEquipment.location, requiredForCompletion: true },
+      { id: "manufacturer", label: "Производитель", value: passportEquipment.manufacturer, requiredForCompletion: true },
+      { id: "year", label: "Год выпуска", value: passportEquipment.year, requiredForCompletion: true },
+      { id: "last-event", label: "Последнее событие", value: passportLastEvent, requiredForCompletion: false },
+      { id: "service", label: "Сервис", value: passportEquipment.serviceNote, requiredForCompletion: true },
+      {
+        id: "scada-tags",
+        label: "SCADA-теги",
+        value: passportScadaRows.some((row) => row.quality === "TO VERIFY")
+          ? "TO VERIFY"
+          : `${passportScadaRows.length} тегов нормализовано`,
+        requiredForCompletion: true,
+      },
+      {
+        id: "service-history",
+        label: "История ТО",
+        value: passportEquipment.serviceHistory.some((item) =>
+          [item.date, item.title, item.result].some((value) => needsVerification(value)),
+        )
+          ? "TO VERIFY"
+          : `${passportEquipment.serviceHistory.length} записей`,
+        requiredForCompletion: true,
+      },
+    ],
+    [passportEquipment, passportLastEvent, passportScadaRows, passportSource],
+  );
+  const requiredPassportFields = passportFields.filter((field) => field.requiredForCompletion);
+  const completedPassportFieldCount = requiredPassportFields.filter(isPassportFieldComplete).length;
+  const incompletePassportFields = passportFields.filter((field) => !isPassportFieldComplete(field));
+  const incompleteRequiredPassportFields = requiredPassportFields.filter((field) => !isPassportFieldComplete(field));
+  const passportCompleteness = Math.round(
+    (completedPassportFieldCount / Math.max(1, requiredPassportFields.length)) * 100,
+  );
+  const visiblePassportFields = showOnlyIncompletePassportFields ? incompletePassportFields : passportFields;
   const selectedAlarm = selectedAlarmId ? alarmEvents.find((alarm) => alarm.id === selectedAlarmId) : undefined;
   const selectedAlarmSourceTag = selectedAlarm?.sourceTagId;
   const selectedSectionLabel =
@@ -1116,20 +1176,44 @@ export default function DispatchDashboard() {
 
           {passportTab === "Паспорт" ? (
             <>
-              <dl className="passportList">
-                <div><dt>Название</dt><dd>{renderPassportValue(passportEquipment.label)}</dd></div>
-                <div><dt>Статус</dt><dd>{renderPassportValue(passportEquipment.status)}</dd></div>
-                <div><dt>Режим</dt><dd>{passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked"}</dd></div>
-                <div><dt>Система</dt><dd>{renderPassportValue(passportEquipment.type)}</dd></div>
-                <div><dt>Модель</dt><dd>{renderPassportValue(passportEquipment.model)}</dd></div>
-                <div><dt>Серийный номер</dt><dd>{renderPassportValue(passportEquipment.serial)}</dd></div>
-                <div><dt>Инвентарный номер</dt><dd>{renderPassportValue(passportEquipment.inventoryNumber)}</dd></div>
-                <div><dt>Местоположение</dt><dd>{renderPassportValue(passportEquipment.location)}</dd></div>
-                <div><dt>Производитель</dt><dd>{renderPassportValue(passportEquipment.manufacturer)}</dd></div>
-                <div><dt>Год выпуска</dt><dd>{renderPassportValue(passportEquipment.year)}</dd></div>
-                <div><dt>Последнее событие</dt><dd>{renderPassportValue(passportLastEvent)}</dd></div>
-                <div><dt>Сервис</dt><dd>{renderPassportValue(passportEquipment.serviceNote)}</dd></div>
+              <div className="passportCompleteness" data-testid="dispatch-passport-completeness-score">
+                <div>
+                  <span>Completeness score</span>
+                  <strong>Паспорт заполнен на {passportCompleteness}%</strong>
+                  <small>
+                    {completedPassportFieldCount}/{requiredPassportFields.length} обязательных полей ·{" "}
+                    {incompleteRequiredPassportFields.length} требуют проверки
+                  </small>
+                </div>
+                <button
+                  aria-label="Фильтровать паспорт: показать незаполненные или все поля"
+                  aria-pressed={showOnlyIncompletePassportFields}
+                  data-action-state="filters-passport-verification-fields"
+                  data-testid="dispatch-passport-incomplete-filter"
+                  onClick={() => setShowOnlyIncompletePassportFields((current) => !current)}
+                  title="Фильтр паспорта: показать только поля, требующие обхода или верификации."
+                  type="button"
+                >
+                  {showOnlyIncompletePassportFields ? "Показать все поля" : "Показать незаполненные"}
+                </button>
+              </div>
+              <dl className="passportList" data-testid="dispatch-passport-list">
+                {visiblePassportFields.map((field) => (
+                  <div
+                    data-passport-field-status={isPassportFieldComplete(field) ? "verified" : "needs-verification"}
+                    data-testid={`dispatch-passport-field-${field.id}`}
+                    key={field.id}
+                  >
+                    <dt>{field.label}</dt>
+                    <dd>{renderPassportValue(field.value)}</dd>
+                  </div>
+                ))}
               </dl>
+              {showOnlyIncompletePassportFields && visiblePassportFields.length === 0 ? (
+                <div className="passportEmptyState" data-testid="dispatch-passport-empty-verification-state">
+                  Все паспортные поля заполнены. Режим остается read-only/demo.
+                </div>
+              ) : null}
               <div className="linkedSystemsBlock">
                 <span>Связанные системы</span>
                 <div>
@@ -2899,6 +2983,61 @@ export default function DispatchDashboard() {
           background: rgba(14, 165, 233, 0.18);
         }
 
+        .passportCompleteness {
+          display: flex;
+          align-items: stretch;
+          flex-direction: column;
+          gap: 12px;
+          border: 1px solid rgba(34, 211, 238, 0.22);
+          border-radius: 8px;
+          background: rgba(8, 47, 73, 0.34);
+          margin: 0 0 12px;
+          padding: 12px;
+        }
+
+        .passportCompleteness div {
+          min-width: 0;
+        }
+
+        .passportCompleteness span,
+        .passportEmptyState {
+          color: #93c5fd;
+          font-size: 11px;
+        }
+
+        .passportCompleteness strong {
+          display: block;
+          margin-top: 5px;
+          color: #f8fafc;
+          font-size: 16px;
+          line-height: 1.2;
+          overflow-wrap: anywhere;
+        }
+
+        .passportCompleteness small {
+          display: block;
+          margin-top: 5px;
+          color: #fde68a;
+          font-size: 11px;
+          line-height: 1.25;
+          overflow-wrap: anywhere;
+          white-space: normal;
+        }
+
+        .passportCompleteness button {
+          width: 100%;
+          min-height: 40px;
+          border: 1px solid rgba(251, 191, 36, 0.36);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.22);
+          color: #fde68a;
+          cursor: pointer;
+          font-weight: 900;
+          line-height: 1.2;
+          padding: 8px 10px;
+          white-space: normal;
+        }
+
         .passportList {
           display: grid;
           gap: 8px;
@@ -2917,6 +3056,20 @@ export default function DispatchDashboard() {
           margin: 0;
           color: #f8fafc;
           font-size: 13px;
+        }
+
+        .passportList div[data-passport-field-status="needs-verification"] {
+          border-color: rgba(251, 191, 36, 0.24);
+          background: rgba(113, 63, 18, 0.1);
+          border-radius: 8px;
+          padding: 8px;
+        }
+
+        .passportEmptyState {
+          border: 1px dashed rgba(125, 211, 252, 0.22);
+          border-radius: 8px;
+          margin-top: 10px;
+          padding: 12px;
         }
 
         .linkedSystemsBlock {

@@ -50,6 +50,11 @@ const checks = [
     usesBrowser: true,
   },
   {
+    id: "passport-completeness",
+    script: "scripts/asset-qa/verify-dispatch-passport-completeness.mjs",
+    usesBrowser: true,
+  },
+  {
     id: "passport-scada-tags",
     script: "scripts/asset-qa/verify-dispatch-passport-scada-tags.mjs",
     usesBrowser: true,
