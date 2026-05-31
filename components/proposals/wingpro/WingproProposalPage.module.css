@@ -2445,19 +2445,20 @@
 
 .twinLayerDecisionStrip span {
   min-width: 0;
-  min-height: 0;
-  padding: 8px 9px;
+  min-height: 42px;
+  padding: 7px 9px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
   background: color-mix(in srgb, var(--proposal-surface-soft) 78%, #ffffff);
   display: grid;
-  gap: 5px;
-  align-content: start;
+  grid-template-columns: minmax(92px, 0.36fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
 }
 
 .twinLayerDecisionStrip strong {
   color: var(--proposal-text);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 950;
   line-height: 1.15;
   text-transform: uppercase;
@@ -2465,14 +2466,14 @@
 
 .twinLayerDecisionStrip small {
   color: var(--proposal-text-soft);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 750;
-  line-height: 1.28;
+  line-height: 1.25;
   display: -webkit-box;
-  max-height: 2.56em;
+  max-height: 1.25em;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
 }
 
 .twinInterfaceMap {
@@ -2499,10 +2500,10 @@
   font-size: 13px;
   line-height: 1.45;
   display: -webkit-box;
-  max-height: 4.35em;
+  max-height: 2.9em;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .twinInterfaceMap dl {
@@ -2567,8 +2568,8 @@
 }
 
 .twinInterfaceChips span {
-  min-height: 28px;
-  padding: 6px 8px;
+  min-height: 26px;
+  padding: 5px 8px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 999px;
   color: var(--proposal-brand-contrast);
@@ -10754,13 +10755,13 @@
   }
 
   .twinStage {
-    min-height: 412px;
+    min-height: 390px;
     overflow: clip;
     overflow-clip-margin: 1px;
   }
 
   .twinCanvasWrap {
-    inset: 54px 9px 84px;
+    inset: 54px 9px 78px;
   }
 
   .twinConnectionCue {
@@ -10899,7 +10900,7 @@
   }
 
   .twinPanel {
-    gap: 9px;
+    gap: 8px;
     padding: 12px;
   }
 
@@ -10916,7 +10917,7 @@
   }
 
   .twinPanel section {
-    padding: 10px;
+    padding: 9px;
   }
 
   .layerHeader {
@@ -12578,11 +12579,11 @@
   }
 
   .twinStage {
-    min-height: 338px;
+    min-height: 318px;
   }
 
   .twinCanvasWrap {
-    inset: 48px 7px 66px;
+    inset: 46px 6px 58px;
   }
 
   .twinStageHeader {
@@ -12597,21 +12598,21 @@
     bottom: 8px;
     left: 8px;
     gap: 4px;
-    padding: 6px;
+    padding: 5px;
   }
 
   .twinStageFooter span {
-    min-height: 36px;
-    padding: 5px;
+    min-height: 32px;
+    padding: 4px;
   }
 
   .twinStageFooter strong,
   .twinStageFooter span:first-child strong {
-    font-size: 10.5px !important;
+    font-size: 9.5px !important;
   }
 
   .twinStageFooter small {
-    font-size: 8px;
+    font-size: 7.5px;
   }
 
   .twinPanel {
@@ -12654,7 +12655,7 @@
   }
 
   .twinLayerGuide article:first-child strong {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .twinInterfaceMap {
@@ -12719,6 +12720,14 @@
 
   .sourceDocsStatusGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .twinStage {
+    min-height: 300px;
+  }
+
+  .twinCanvasWrap {
+    inset: 44px 5px 56px;
   }
 
   .hero h1 {
