@@ -237,6 +237,7 @@ export default function DispatchDashboard() {
   const [modal, setModal] = useState<ModalState>(null);
   const [aiAnswer, setAiAnswer] = useState("");
   const [demoTime, setDemoTime] = useState("17.05.2026 10:45");
+  const [selectedAlarmId, setSelectedAlarmId] = useState<string | null>(null);
   const [readonlyAuditLog, setReadonlyAuditLog] = useState<ReadonlyAuditEntry[]>([]);
   const [ticketJournal, setTicketJournal] = useState<DemoTicketEntry[]>([]);
 
@@ -330,6 +331,8 @@ export default function DispatchDashboard() {
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
   const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
   const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
+  const selectedAlarm = selectedAlarmId ? alarmEvents.find((alarm) => alarm.id === selectedAlarmId) : undefined;
+  const selectedAlarmSourceTag = selectedAlarm?.sourceTagId;
   const selectedSectionLabel =
     dispatchSections.find((section) => section.id === selectedSection.id)?.label ?? selectedSection.id;
   const ticketSourceAlarm = relatedAlarms[0] ?? passportPrimaryAlarm;
@@ -398,6 +401,7 @@ export default function DispatchDashboard() {
     }
     setSelectedTrendKey(nextSection?.trendKey ?? node.trendKey);
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -413,6 +417,7 @@ export default function DispatchDashboard() {
     setSelectedId(node?.id ?? selectedId);
     setSelectedTrendKey(node?.trendKey ?? trendKeyForTwin(twinId));
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -440,6 +445,7 @@ export default function DispatchDashboard() {
     }
     setSelectedTrendKey(section.trendKey);
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -449,6 +455,9 @@ export default function DispatchDashboard() {
     if (node) {
       selectEquipment(node, section?.id);
     }
+    setSelectedAlarmId(alarm.id);
+    setSelectedTrendKey(alarm.trendKey);
+    setPassportTab("SCADA-теги");
   };
 
   const openAiDiagnostics = () => {
@@ -1024,6 +1033,19 @@ export default function DispatchDashboard() {
             </div>
           </div>
 
+          {selectedAlarm ? (
+            <div className="selectedAlarmContext" data-testid="dispatch-selected-alarm-context">
+              <span className={`severityBadge ${selectedAlarm.severity}`}>{severityLabel(selectedAlarm.severity)}</span>
+              <div>
+                <strong>{selectedAlarm.title}</strong>
+                <small>
+                  Source tag: <code>{selectedAlarm.sourceTagId}</code> · Related trend: {selectedAlarm.trendKey} · SLA{" "}
+                  {selectedAlarm.sla.label}
+                </small>
+              </div>
+            </div>
+          ) : null}
+
           <div className="passportTabs" role="tablist" aria-label="Разделы паспорта">
             {passportTabs.map((tab) => (
               <button
@@ -1102,20 +1124,28 @@ export default function DispatchDashboard() {
                 <span>Unit</span>
                 <span>Quality</span>
               </div>
-              {passportScadaRows.map((row) => (
-                <article
-                  className={row.quality === "DATA_ERROR" ? "isDataError" : undefined}
-                  data-testid="dispatch-passport-scada-tag-row"
-                  key={row.tag}
-                >
-                  <code>{row.tag}</code>
-                  <span>{row.signalType}</span>
-                  <span>{row.register}</span>
-                  <span>{row.scaling}</span>
-                  <span>{row.unit}</span>
-                  <strong>{row.quality}</strong>
-                </article>
-              ))}
+              {passportScadaRows.map((row) => {
+                const isSelectedAlarmSource = row.tag === selectedAlarmSourceTag;
+
+                return (
+                  <article
+                    className={`${row.quality === "DATA_ERROR" ? "isDataError" : ""} ${
+                      isSelectedAlarmSource ? "isAlarmSource" : ""
+                    }`}
+                    data-testid={
+                      isSelectedAlarmSource ? "dispatch-selected-alarm-source-tag" : "dispatch-passport-scada-tag-row"
+                    }
+                    key={row.tag}
+                  >
+                    <code>{row.tag}</code>
+                    <span>{row.signalType}</span>
+                    <span>{row.register}</span>
+                    <span>{row.scaling}</span>
+                    <span>{row.unit}</span>
+                    <strong>{isSelectedAlarmSource ? `${row.quality} · SOURCE` : row.quality}</strong>
+                  </article>
+                );
+              })}
             </div>
           ) : null}
 
@@ -2698,6 +2728,39 @@ export default function DispatchDashboard() {
           line-height: 1.35;
         }
 
+        .selectedAlarmContext {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 10px;
+          align-items: start;
+          margin-top: 12px;
+          border: 1px solid rgba(251, 191, 36, 0.32);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.18);
+          padding: 10px;
+        }
+
+        .selectedAlarmContext strong {
+          display: block;
+          color: #fef3c7;
+          font-size: 13px;
+          line-height: 1.3;
+          margin-bottom: 3px;
+        }
+
+        .selectedAlarmContext small {
+          color: #fde68a;
+          font-size: 12px;
+          line-height: 1.4;
+          overflow-wrap: anywhere;
+        }
+
+        .selectedAlarmContext code {
+          color: #fecaca;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          overflow-wrap: anywhere;
+        }
+
         .passportTabs {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2838,6 +2901,11 @@ export default function DispatchDashboard() {
         .scadaTagTable article.isDataError {
           border-color: rgba(248, 113, 113, 0.48);
           background: rgba(127, 29, 29, 0.18);
+        }
+
+        .scadaTagTable article.isAlarmSource {
+          border-color: rgba(251, 191, 36, 0.82);
+          box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.22), 0 0 28px rgba(251, 191, 36, 0.12);
         }
 
         .scadaTagTable code {

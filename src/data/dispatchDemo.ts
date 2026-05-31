@@ -147,6 +147,8 @@ export type DispatchAlarmEvent = {
   id: string;
   title: string;
   equipmentId: string;
+  sourceTagId: string;
+  trendKey: DispatchTrendKey;
   severity: AlarmSeverity;
   time: string;
   description: string;
@@ -868,6 +870,8 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     id: "alarm-pump-pressure",
     title: "DP DATA_ERROR на ШУ-2",
     equipmentId: "pump-shu2",
+    sourceTagId: "SCADA.CHW.DP_01.PV",
+    trendKey: "pressure",
     severity: "critical",
     time: "10:42",
     description: "Raw DP tag вышел за диапазон 0–16 bar, требуется верификация scaling/register.",
@@ -882,6 +886,8 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     id: "alarm-return-temp",
     title: "Превышение температуры обратки",
     equipmentId: "cooling-circuits",
+    sourceTagId: "SCADA.CHW.RETURN_TEMP",
+    trendKey: "temperature",
     severity: "warning",
     time: "10:18",
     description: "Контур холодоснабжения показывает рост обратки.",
@@ -895,6 +901,8 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     id: "alarm-ventilation-manual",
     title: "VC-13-03: заслонка в ручном режиме",
     equipmentId: "ventilation-vc13",
+    sourceTagId: "SCADA.VC13.STATUS",
+    trendKey: "flow",
     severity: "warning",
     time: "10:05",
     description: "Событие вентиляции: требуется сверка локального щита, команды оператора и BMS/SCADA тега.",
@@ -908,6 +916,8 @@ export const alarmEvents: DispatchAlarmEvent[] = [
     id: "alarm-chiller-service",
     title: "Плановое обслуживание чиллера CH-1",
     equipmentId: "chiller-ch1",
+    sourceTagId: "SCADA.CHW.CHILLER.STATUS",
+    trendKey: "energy",
     severity: "info",
     time: "09:30",
     description: "Нужно сформировать demo-заявку на сервисное окно.",

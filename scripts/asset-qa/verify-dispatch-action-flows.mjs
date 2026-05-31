@@ -132,6 +132,8 @@ function state() {
   const drawer = document.querySelector(".passportDrawer");
   const passportTitle = normalize(document.querySelector(".passportDrawer .passportHero strong")?.textContent);
   const passportKpiText = normalize(document.querySelector(".passportDrawer [data-testid='dispatch-passport-kpi-strip']")?.textContent);
+  const selectedAlarmContextText = normalize(document.querySelector('[data-testid="dispatch-selected-alarm-context"]')?.textContent);
+  const selectedAlarmSourceTagText = normalize(document.querySelector('[data-testid="dispatch-selected-alarm-source-tag"]')?.textContent);
   const ticketJournalText = normalize(document.querySelector('[data-testid="dispatch-demo-ticket-journal"]')?.textContent);
   const bodyText = document.body.innerText || "";
 
@@ -141,6 +143,8 @@ function state() {
     drawerOpen: Boolean(drawer?.classList.contains("isOpen")),
     passportTitle,
     passportKpiText,
+    selectedAlarmContextText,
+    selectedAlarmSourceTagText,
     activePassportTab,
     activeTrendPeriod,
     activeTrend,
@@ -189,8 +193,19 @@ try {
   assert(initial.safetyCopy.demoMode, "DEMO MODE copy is missing");
   assert(initial.safetyCopy.noRealControl, "No-real-control safety copy is missing");
 
-  clickSelector('[data-testid="dispatch-equipment-node-pump-shu2"]', "digital twin node pump-shu2");
+  clickSelector('[data-testid="dispatch-data-error-alarm"]', "DATA_ERROR alarm event");
   let current = state();
+  assert(current.drawerOpen, "Alarm click did not open the passport drawer");
+  assert(current.activePassportTab === "SCADA-теги", `Alarm click did not open SCADA tags tab: ${current.activePassportTab}`);
+  assert(current.selectedAlarmContextText.includes("DP DATA_ERROR"), "Alarm click did not show the selected alarm context card");
+  assert(current.selectedAlarmContextText.includes("SCADA.CHW.DP_01.PV"), "Alarm context is missing source tag");
+  assert(current.selectedAlarmSourceTagText.includes("SCADA.CHW.DP_01.PV"), "Source SCADA tag row is not highlighted");
+  assert(current.selectedAlarmSourceTagText.includes("SOURCE"), "Source SCADA tag row is missing SOURCE marker");
+  assert(current.activeTrend.includes("Давление"), `Alarm click did not switch related trend to pressure: ${current.activeTrend}`);
+  screenshot("action-00a-alarm-source-context.png");
+
+  clickSelector('[data-testid="dispatch-equipment-node-pump-shu2"]', "digital twin node pump-shu2");
+  current = state();
   assert(current.drawerOpen, "Digital twin node click did not open the passport drawer");
   assert(
     current.passportTitle.includes("ШУ-1") || current.passportTitle.includes("ШУ-2"),

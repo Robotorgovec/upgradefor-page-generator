@@ -56,9 +56,14 @@ const clickScadaTabScript = `
 const inspectScript = `
 (() => {
   const table = document.querySelector('[data-testid="dispatch-passport-scada-tags"]');
-  const rows = Array.from(document.querySelectorAll('[data-testid="dispatch-passport-scada-tag-row"]')).map((row) => ({
+  const rows = Array.from(
+    document.querySelectorAll(
+      '[data-testid="dispatch-passport-scada-tag-row"], [data-testid="dispatch-selected-alarm-source-tag"]',
+    ),
+  ).map((row) => ({
     text: row.textContent || "",
     isDataError: row.classList.contains("isDataError"),
+    isAlarmSource: row.classList.contains("isAlarmSource"),
   }));
   const bodyText = document.body.innerText || "";
 
@@ -101,6 +106,10 @@ try {
   assert(
     alarmContext.rows.some((row) => row.text.includes("DATA_ERROR") && row.isDataError),
     "DATA_ERROR SCADA tag row is not highlighted",
+  );
+  assert(
+    alarmContext.rows.some((row) => row.text.includes("SOURCE") && row.isAlarmSource),
+    "Selected alarm source SCADA tag row is not marked as source",
   );
   assert(
     alarmContext.rows.some((row) => row.text.includes("0–16 bar")),
