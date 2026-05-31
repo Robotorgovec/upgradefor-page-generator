@@ -115,6 +115,33 @@ const twinConnectionCues = [
   { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "31%", y: "33%" },
 ] as const;
 
+const twinInterfaceRows = [
+  {
+    label: "EG 40% · 5/10°C",
+    input: "исходный режим холодоносителя из ХС-схем",
+    action: "передать поставщику для сверки подбора и pressure/material evidence",
+    owner: "WinGPro technical owner / supplier",
+  },
+  {
+    label: "Water · 7/12°C",
+    input: "входной температурный контур для проверки применимости ПТО",
+    action: "связать с specification request и открытыми technical questions",
+    owner: "responsible technical specialist",
+  },
+  {
+    label: "4 flanged ports",
+    input: "точки подключения: DN/PN, orientation, drawing, gasket/material",
+    action: "запросить connection drawing и packing/dimensions до handoff",
+    owner: "supplier / mounting side",
+  },
+  {
+    label: "Service envelope",
+    input: "габариты, доступ и зона обслуживания вокруг теплообменника",
+    action: "передать как mounting coordination input, не как утвержденный ППР",
+    owner: "mounting contractor / technical owner",
+  },
+] as const;
+
 const scenes = [
   { id: "source", layer: "equipment", title: "Source", status: "collecting", control: "канал поставщика и контактная карта", receives: "supplier profile", risk: "неясная роль производителя/трейдера" },
   { id: "verify", layer: "specification", title: "Verify", status: "owner required", control: "material, pressure, model, drawing questions", receives: "technical evidence checklist", risk: "параметры теряются в переписке" },
@@ -1405,7 +1432,7 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
 
   useFrame((state) => {
     if (!groupRef.current) return;
-    const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.55) * 0.42 : 0;
+    const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.55) * 0.3 : 0;
     groupRef.current.rotation.y = -0.42 + orbit;
     groupRef.current.rotation.x = -0.16;
     groupRef.current.rotation.z = 0.04;
@@ -1413,7 +1440,7 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
   });
 
   return (
-    <group ref={groupRef} position={[-0.22, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.72}>
+    <group ref={groupRef} position={[-0.1, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.62}>
       <mesh position={[0, -1.28, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[2.15, 72]} />
         <meshStandardMaterial color="#dce6ef" transparent opacity={0.34} roughness={0.9} />
@@ -1998,6 +2025,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <pointLight position={[0, 1.8, 2.6]} intensity={0.9} color="#ffdbe0" />
           <PlateHeatExchangerModel activeLayer={activeLayer} rotating={isRotating && !presentationMode} />
         </Canvas>
+        <div className={styles.twinObject} aria-hidden="true">
+          <span className={styles.twinShadow} />
+          <span className={styles.endPlateA} />
+          <span className={styles.endPlateB} />
+          <span className={styles.coreBlock} />
+          <span className={styles.plateStack} />
+          <span className={`${styles.connectionA} ${styles.connectionWarm}`} />
+          <span className={`${styles.connectionB} ${styles.connectionCold}`} />
+          <span className={`${styles.connectionC} ${styles.connectionCold}`} />
+          <span className={`${styles.connectionD} ${styles.connectionWarm}`} />
+          <span className={styles.tieRodA} />
+          <span className={styles.tieRodB} />
+          <span className={styles.tieRodC} />
+          <span className={styles.dimensionRail} />
+        </div>
         <div className={styles.twinServiceEnvelope} aria-hidden="true">
           <span>service access envelope</span>
         </div>
@@ -2598,6 +2640,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </details>
               </section>
             ))}
+            <div className={styles.twinInterfaceMap} aria-label="Hydraulic interface handoff map">
+              <div>
+                <p className={styles.eyebrow}>Hydraulic interface</p>
+                <h3>Патрубки и режимы: что подтверждать</h3>
+                <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
+              </div>
+              <dl>
+                {twinInterfaceRows.map((item) => (
+                  <div key={item.label}>
+                    <dt>{item.label}</dt>
+                    <dd>
+                      <strong>{item.input}</strong>
+                      <span>{item.action}</span>
+                      <small>{item.owner}</small>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
             <div className={styles.twinControls}>
               <button type="button" onClick={() => setPresentationMode(true)}>Open presentation mode</button>
               <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Pause" : "Rotate"}</button>
