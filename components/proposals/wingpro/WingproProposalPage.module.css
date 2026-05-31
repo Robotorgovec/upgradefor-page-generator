@@ -140,6 +140,7 @@
 .controlRoom,
 .routeMap,
 .vault,
+.projectSources,
 .riskRadar,
 .releaseGates,
 .statusOfCustomer,
@@ -5566,6 +5567,404 @@
   background: #ffffff;
 }
 
+.projectSources {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--proposal-brand-soft) 86%, #ffffff), transparent 34%),
+    linear-gradient(180deg, #ffffff, #fbfdff);
+}
+
+.projectSourcesHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+  gap: 18px;
+  align-items: end;
+}
+
+.projectSourcesHeader h2,
+.projectSourcesHeader p {
+  margin: 0;
+}
+
+.projectSourcesHeader h2 {
+  color: var(--proposal-text);
+  font-size: 32px;
+  line-height: 1.08;
+}
+
+.projectSourcesHeader p:not(.eyebrow) {
+  margin-top: 8px;
+  color: var(--proposal-text-soft);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.projectSourcesHeader aside {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+  display: grid;
+  gap: 7px;
+}
+
+.projectSourcesHeader aside span,
+.projectSourcesStats span,
+.projectSourceGroupHeader span,
+.projectSourceTitleRow > span,
+.projectSourceMeta dt {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.projectSourcesHeader code {
+  color: var(--proposal-brand-contrast);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.projectSourcesStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.projectSourcesStats article,
+.projectSourcesBoundary,
+.projectSourceGroup {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.projectSourcesStats article {
+  min-height: 112px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.projectSourcesStats strong {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.projectSourcesStats small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.projectSourcesBoundary {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.28fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+}
+
+.projectSourcesBoundary strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+}
+
+.projectSourcesBoundary p,
+.projectSourcesFootnote {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
+.projectSourcesGroups {
+  display: grid;
+  gap: 12px;
+  overflow: visible;
+}
+
+.projectSourceGroup {
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+  overflow: visible;
+}
+
+.projectSourceGroupHeader {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.projectSourceGroupHeader h3,
+.projectSourceGroupHeader p {
+  margin: 0;
+}
+
+.projectSourceGroupHeader h3 {
+  color: var(--proposal-text);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.projectSourceGroupHeader p {
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.projectSourcesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: visible;
+}
+
+.projectSourceCard {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: color-mix(in srgb, var(--proposal-surface-soft) 55%, #ffffff);
+  overflow: visible;
+}
+
+.projectSourceCard[data-status="missing"] {
+  border-color: color-mix(in srgb, var(--proposal-danger) 28%, var(--proposal-border));
+  background: color-mix(in srgb, #fff1f2 58%, #ffffff);
+}
+
+.projectSourceIcon {
+  min-height: 48px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.projectSourceBody {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.projectSourceTitleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.projectSourceBody h4,
+.projectSourceBody p {
+  margin: 0;
+}
+
+.projectSourceBody h4 {
+  color: var(--proposal-text);
+  font-size: 18px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.projectSourceBody p {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.projectSourceMeta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+}
+
+.projectSourceMeta div {
+  min-height: 54px;
+  border: 1px solid color-mix(in srgb, var(--proposal-border) 80%, transparent);
+  border-radius: 8px;
+  padding: 8px;
+  background: #ffffff;
+}
+
+.projectSourceMeta dd {
+  margin: 4px 0 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.projectSourceActions,
+.projectPreviewActions {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.projectSourceActions {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.projectSourceActions button,
+.projectSourceActions a,
+.projectPreviewActions button,
+.projectPreviewActions a {
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projectSourceActions button:hover:not(:disabled),
+.projectSourceActions a:hover,
+.projectPreviewActions button:hover,
+.projectPreviewActions a:hover {
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
+.projectSourceActions button:disabled {
+  color: var(--proposal-text-muted);
+  border-color: var(--proposal-border);
+  background: var(--proposal-surface-soft);
+  cursor: not-allowed;
+}
+
+.projectSourcesFootnote {
+  padding: 12px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 13px;
+}
+
+.projectPreviewOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  height: 100dvh;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.58);
+  overflow-y: auto;
+}
+
+.projectPreviewDialog {
+  width: min(1120px, calc(100vw - 36px));
+  margin: 0 auto;
+  border: 1px solid var(--proposal-border-strong);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-lg);
+}
+
+.projectPreviewHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+  border-bottom: 1px solid var(--proposal-border);
+}
+
+.projectPreviewHeader span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.projectPreviewHeader h3,
+.projectPreviewHeader p {
+  margin: 0;
+}
+
+.projectPreviewHeader h3 {
+  margin-top: 4px;
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.16;
+}
+
+.projectPreviewHeader p {
+  margin-top: 5px;
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.projectPreviewActions {
+  grid-template-columns: repeat(2, minmax(120px, auto));
+}
+
+.projectPreviewBody {
+  padding: 14px;
+}
+
+.projectPreviewFrame {
+  width: 100%;
+  min-height: 78dvh;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: var(--proposal-surface-soft);
+}
+
+.projectPreviewImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.projectPreviewFallback {
+  min-height: 240px;
+  border: 1px dashed var(--proposal-border-strong);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
 .riskRadar {
   background:
     radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--proposal-brand-soft) 72%, transparent), transparent 36%),
@@ -6932,6 +7331,10 @@
   .fieldCommandSurface,
   .evidenceWallSurface,
   .evidenceHandoffShell,
+  .projectSourcesHeader,
+  .projectSourcesBoundary,
+  .projectSourceGroupHeader,
+  .projectSourceCard,
   .radarGrid,
   .controlBoardGrid,
   .acceptanceGrid {
@@ -7211,7 +7614,17 @@
   .controlActiveSurface dl,
   .sceneDecisionSurface dl,
   .routeDataSurface dl,
+  .projectSourcesStats,
+  .projectSourceMeta,
   .protectionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projectSourceIcon {
+    width: 58px;
+  }
+
+  .projectSourceActions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -7302,6 +7715,7 @@
   .controlRoom,
   .routeMap,
   .vault,
+  .projectSources,
   .riskRadar,
   .releaseGates,
   .statusOfCustomer,
@@ -7309,6 +7723,42 @@
   .acceptance,
   .copyPackage {
     padding: 18px;
+  }
+
+  .projectSourcesHeader,
+  .projectSourcesStats,
+  .projectSourcesBoundary,
+  .projectSourceGroupHeader,
+  .projectSourceMeta,
+  .projectSourceActions,
+  .projectPreviewHeader,
+  .projectPreviewActions {
+    grid-template-columns: 1fr;
+  }
+
+  .projectSources {
+    gap: 12px;
+  }
+
+  .projectSourceGroup,
+  .projectSourceCard {
+    padding: 12px;
+  }
+
+  .projectSourceIcon {
+    width: 52px;
+  }
+
+  .projectPreviewOverlay {
+    padding: 8px;
+  }
+
+  .projectPreviewDialog {
+    width: min(100%, calc(100vw - 16px));
+  }
+
+  .projectPreviewFrame {
+    min-height: 70dvh;
   }
 
   .hero {
@@ -9553,6 +10003,7 @@
   .controlRoom,
   .routeMap,
   .vault,
+  .projectSources,
   .riskRadar,
   .releaseGates,
   .statusOfCustomer,

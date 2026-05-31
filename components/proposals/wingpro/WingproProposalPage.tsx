@@ -2,8 +2,10 @@
 
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import styles from "./WingproProposalPage.module.css";
+import { wingproProjectSources, type ProjectSourceAsset, type ProjectSourceGroup } from "./wingproProjectSources";
 
 type TwinLayerId = "equipment" | "specification" | "documents" | "delivery" | "installation" | "sales";
 type SceneId = "source" | "verify" | "negotiate" | "contract" | "produce" | "ship" | "handover" | "reuse";
@@ -16,6 +18,45 @@ type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next" | "addons";
 type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover" | "addons";
+
+const projectSourceGroups: Array<{ id: ProjectSourceGroup; title: string; note: string }> = [
+  {
+    id: "project-basis",
+    title: "Проектная основа по узлу",
+    note: "Только листы и альбомы, которые помогают понять установку, подключение, габариты, трассы и монтажный контекст ПТО.",
+  },
+  {
+    id: "supplier-package",
+    title: "Поставочный пакет ПТО",
+    note: "Supplier-side документы, которые закрывают модель, параметры, packing, factory evidence и приемку перед оплатой/отгрузкой.",
+  },
+  {
+    id: "handover-mounting",
+    title: "Монтажный и handover контекст",
+    note: "Материалы для передачи профильным участникам: подключение, сервисные зазоры, фото evidence и closeout pack.",
+  },
+];
+
+const projectSourceDocTypeLabels: Record<ProjectSourceAsset["docType"], string> = {
+  "project-basis": "Проектная основа",
+  spec: "Спецификация",
+  datasheet: "Паспорт / datasheet",
+  "ga-drawing": "Габаритный чертеж",
+  "connection-drawing": "Чертеж подключения",
+  "node-scheme": "Схема узла",
+  bom: "Комплект поставки",
+  certificate: "Сертификат",
+  "material-certificate": "Сертификат материалов",
+  proforma: "Proforma",
+  "packing-list": "Packing list",
+  "test-report": "Test report",
+  photo: "Фото оборудования",
+  "nameplate-photo": "Шильдик",
+  cad: "CAD / STEP",
+  "contact-card": "Карточка поставщика",
+  warranty: "Гарантия",
+  manual: "Инструкция",
+};
 
 const twinLayers = [
   {
@@ -1265,7 +1306,7 @@ const presentationModes: Array<{
     },
     detailActions: [["Supplier Request Lab", "#supplier-request-lab"], ["Offer Comparison Board", "#offer-comparison-board"]],
     copyVariant: "command",
-    sections: ["projectControl", "filmstrip", "controlRoom", "vault", "riskRadar"],
+    sections: ["projectControl", "filmstrip", "controlRoom", "vault", "projectSources", "riskRadar"],
   },
   {
     id: "contract",
@@ -1280,7 +1321,7 @@ const presentationModes: Array<{
     },
     detailActions: [["Contract Simulator", "#contract-decision-simulator"], ["Acceptance", "#acceptance-title"]],
     copyVariant: "payment",
-    sections: ["projectControl", "valueOs", "vault", "releaseGates", "acceptance"],
+    sections: ["projectControl", "valueOs", "vault", "projectSources", "releaseGates", "acceptance"],
   },
   {
     id: "delivery",
@@ -1310,7 +1351,7 @@ const presentationModes: Array<{
     },
     detailActions: [["Work Plan Builder", "#work-plan-builder"], ["Field Execution Board", "#field-execution-board"]],
     copyVariant: "boundary",
-    sections: ["projectControl", "controlRoom", "statusOfCustomer", "handoverRoom", "releaseGates"],
+    sections: ["projectControl", "controlRoom", "projectSources", "statusOfCustomer", "handoverRoom", "releaseGates"],
   },
   {
     id: "handover",
@@ -1325,7 +1366,7 @@ const presentationModes: Array<{
     },
     detailActions: [["Photo Evidence Wall", "#photo-evidence-wall"], ["Handover Room", "#handover"]],
     copyVariant: "deliverables",
-    sections: ["riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
+    sections: ["projectSources", "riskRadar", "releaseGates", "handoverRoom", "acceptance", "copyPackage"],
   },
   {
     id: "addons",
@@ -1353,6 +1394,7 @@ const sectionSpotlightLabels: Record<string, { label: string; href: string; sign
   controlRoom: { label: "Control Room", href: "#control-room", signal: "участники и owners" },
   routeMap: { label: "Route Map", href: "#route-title", signal: "China → Kazakhstan" },
   vault: { label: "Document Vault", href: "#vault", signal: "документы и evidence" },
+  projectSources: { label: "Source Assets", href: "#project-sources", signal: "исходные файлы ПТО" },
   riskRadar: { label: "Risk Radar", href: "#risk-radar", signal: "response pack" },
   releaseGates: { label: "Release Gates", href: "#release-gates", signal: "готовность данных" },
   statusOfCustomer: { label: "WinGPro Status", href: "#customer-title", signal: "зрелый заказчик" },
@@ -1363,6 +1405,45 @@ const sectionSpotlightLabels: Record<string, { label: string; href: string; sign
 
 function StatusPill({ value }: { value: string }) {
   return <span className={styles.statusPill} data-status={value}>{value}</span>;
+}
+
+function formatBytes(bytes?: number) {
+  if (!bytes || Number.isNaN(bytes)) return "—";
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb.toFixed(1)} KB`;
+  const mb = kb / 1024;
+  if (mb < 1024) return `${mb.toFixed(1)} MB`;
+  return `${(mb / 1024).toFixed(1)} GB`;
+}
+
+function formatSourceDate(value: string) {
+  const [year, month, day] = value.split("-");
+  if (!year || !month || !day) return value;
+  return `${day}.${month}.${year}`;
+}
+
+function isProjectSourcePdf(asset: ProjectSourceAsset) {
+  return asset.mimeType === "application/pdf";
+}
+
+function isProjectSourceImage(asset: ProjectSourceAsset) {
+  return asset.mimeType.startsWith("image/");
+}
+
+function canPreviewProjectSource(asset: ProjectSourceAsset) {
+  return asset.status === "ready" && asset.previewable && (isProjectSourcePdf(asset) || isProjectSourceImage(asset));
+}
+
+function formatProjectSourceChecksum(value?: string) {
+  if (!value) return "—";
+  return `sha256: ${value.slice(0, 10)}…${value.slice(-6)}`;
+}
+
+function projectSourceStatusLabel(asset: ProjectSourceAsset) {
+  if (asset.status === "missing") return "Файл временно недоступен";
+  if (!asset.previewable || (!isProjectSourcePdf(asset) && !isProjectSourceImage(asset))) return "Предпросмотр не поддерживается";
+  return asset.required ? "Обязательный / готов" : "Optional / ready";
 }
 
 export default function WingproProposalPage({ proposalPath }: { proposalPath: string }) {
@@ -1396,6 +1477,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [modeEndpointOpen, setModeEndpointOpen] = useState(false);
   const [executiveDetailsOpen, setExecutiveDetailsOpen] = useState(false);
   const [copyActionsOpen, setCopyActionsOpen] = useState(false);
+  const [activeProjectSource, setActiveProjectSource] = useState<ProjectSourceAsset | null>(null);
+  const [previewPortalReady, setPreviewPortalReady] = useState(false);
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -1476,6 +1559,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["open evidence", String(visibleOpenDocs.length), "missing or requested items that need owner response"],
     ["ready for handoff", String(visibleReadyDocs), "items already usable in packs"],
     ["route links", String(new Set(visibleDocs.map((doc) => getVaultRouteLink(doc[0], doc[3]))).size), "delivery points connected to vault"],
+  ] as const;
+  const readyProjectSources = wingproProjectSources.filter((asset) => asset.status === "ready");
+  const missingProjectSources = wingproProjectSources.filter((asset) => asset.status === "missing");
+  const requiredProjectSources = wingproProjectSources.filter((asset) => asset.required);
+  const projectSourceStats = [
+    ["ready files", String(readyProjectSources.length), "локально отдаются как source assets"],
+    ["required gaps", String(missingProjectSources.filter((asset) => asset.required).length), "supplier-side пакет еще нужно закрыть"],
+    ["required scope", String(requiredProjectSources.length), "только документы, влияющие на ПТО"],
+    ["checksum", "sha256", "фиксируется по готовым файлам"],
   ] as const;
   const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
   const decisionPath = [
@@ -1647,12 +1739,43 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   }, [activeLayer]);
 
   useEffect(() => {
+    wingproProjectSources
+      .filter((asset) => asset.status === "missing")
+      .forEach((asset) => {
+        console.warn("[wingpro-project-sources] missing source asset", {
+          id: asset.id,
+          title: asset.title,
+          assetUrl: asset.assetUrl,
+          originalFileName: asset.originalFileName,
+        });
+      });
+  }, []);
+
+  useEffect(() => {
+    setPreviewPortalReady(true);
+  }, []);
+
+  useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setPresentationMode(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => {
+    if (!activeProjectSource) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActiveProjectSource(null);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [activeProjectSource]);
 
   function isDocVisible(doc: (typeof vaultDocs)[number]) {
     return (
@@ -1759,6 +1882,26 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyPlainText(cockpitSummaryText, "Cockpit summary copied");
   }
 
+  function openProjectSourcePreview(asset: ProjectSourceAsset) {
+    if (asset.status !== "ready") {
+      console.warn("[wingpro-project-sources] source asset unavailable", {
+        id: asset.id,
+        title: asset.title,
+        assetUrl: asset.assetUrl,
+      });
+      return;
+    }
+    if (!canPreviewProjectSource(asset)) {
+      console.warn("[wingpro-project-sources] preview not supported", {
+        id: asset.id,
+        title: asset.title,
+        mimeType: asset.mimeType,
+      });
+      return;
+    }
+    setActiveProjectSource(asset);
+  }
+
   const twinStage = (
     <div className={styles.twinStage} data-layer={activeLayer}>
       <div className={styles.twinStageHeader}>
@@ -1839,6 +1982,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           ["#project-control", "Control Scale"],
           ["#control-room", "Control Room"],
           ["#vault", "Vault"],
+          ["#project-sources", "Sources"],
           ["#risk-radar", "Risk Radar"],
           ["#handover", "Handover"],
         ].map(([href, label]) => (
@@ -3231,6 +3375,142 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p className={styles.emptyState} hidden={visibleDocs.length > 0}>No vault cards match the selected filters.</p>
           </div>
         </details>
+      </section>
+
+      <section className={sectionClass(styles.projectSources, "projectSources")} id="project-sources" data-section="project-sources" aria-labelledby="project-sources-title" data-project-sources-panel="true">
+        <div className={styles.projectSourcesHeader}>
+          <div>
+            <p className={styles.eyebrow}>PROJECT SOURCE ASSETS</p>
+            <h2 id="project-sources-title">Исходные данные проекта</h2>
+            <p>Документы по текущему оборудованию, узлу поставки и монтажному контексту. Панель показывает не архив всего объекта, а только source assets, которые помогают принять решение по ПТО.</p>
+          </div>
+          <aside>
+            <span>canonical local QA</span>
+            <code>{`http://127.0.0.1:3105${proposalPath}?cb=<unix_ts>`}</code>
+          </aside>
+        </div>
+        <div className={styles.projectSourcesStats} aria-label="Project source readiness summary">
+          {projectSourceStats.map(([label, value, note]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+              <small>{note}</small>
+            </article>
+          ))}
+        </div>
+        <div className={styles.projectSourcesBoundary}>
+          <strong>Отбор по бизнес-контексту</strong>
+          <p>Готовые исходные PDF отмечены как проектная основа по узлу ПТО. Supplier-side документы показаны только если они нужны для поставки, проверки, монтажа или приемки; отсутствующие required files остаются blocker items, а не ломают страницу.</p>
+        </div>
+        <div className={styles.projectSourcesGroups}>
+          {projectSourceGroups.map((group) => {
+            const groupAssets = wingproProjectSources.filter((asset) => asset.group === group.id);
+            if (groupAssets.length === 0) return null;
+            return (
+              <section key={group.id} className={styles.projectSourceGroup} aria-labelledby={`project-source-group-${group.id}`}>
+                <div className={styles.projectSourceGroupHeader}>
+                  <div>
+                    <span>{groupAssets.length} assets</span>
+                    <h3 id={`project-source-group-${group.id}`}>{group.title}</h3>
+                  </div>
+                  <p>{group.note}</p>
+                </div>
+                <ul className={styles.projectSourcesList} role="list">
+                  {groupAssets.map((asset) => {
+                    const previewable = canPreviewProjectSource(asset);
+                    const unavailable = asset.status !== "ready";
+                    return (
+                      <li key={asset.id} className={styles.projectSourceCard} data-status={asset.status}>
+                        <div className={styles.projectSourceIcon} aria-hidden="true">
+                          {isProjectSourcePdf(asset) ? "PDF" : isProjectSourceImage(asset) ? "IMG" : "FILE"}
+                        </div>
+                        <div className={styles.projectSourceBody}>
+                          <div className={styles.projectSourceTitleRow}>
+                            <span>{asset.displayLabel}</span>
+                            <StatusPill value={projectSourceStatusLabel(asset)} />
+                          </div>
+                          <h4>{asset.title}</h4>
+                          <p>{asset.decisionUse}</p>
+                          <dl className={styles.projectSourceMeta}>
+                            <div><dt>Проект</dt><dd>{asset.projectId} / {asset.customer}</dd></div>
+                            <div><dt>Поставщик</dt><dd>{asset.supplier ?? "—"}</dd></div>
+                            <div><dt>Тип</dt><dd>{projectSourceDocTypeLabels[asset.docType]}</dd></div>
+                            <div><dt>Дата</dt><dd>{formatSourceDate(asset.documentDate)}</dd></div>
+                            <div><dt>Размер</dt><dd>{formatBytes(asset.bytes)}</dd></div>
+                            <div><dt>Язык</dt><dd>{asset.language}</dd></div>
+                            <div><dt>Версия</dt><dd>{asset.version ?? asset.revision ?? "—"}</dd></div>
+                            <div><dt>Checksum</dt><dd>{formatProjectSourceChecksum(asset.checksumSha256)}</dd></div>
+                            <div><dt>Original</dt><dd>{asset.originalFileName ?? "—"}</dd></div>
+                          </dl>
+                        </div>
+                        <div className={styles.projectSourceActions}>
+                          <button
+                            type="button"
+                            disabled={!previewable}
+                            onClick={() => openProjectSourcePreview(asset)}
+                            aria-label={`Просмотреть документ ${asset.title}`}
+                          >
+                            {unavailable ? "Файл временно недоступен" : previewable ? "Просмотреть" : "Предпросмотр не поддерживается"}
+                          </button>
+                          {unavailable ? (
+                            <button type="button" disabled aria-label={`Скачать документ ${asset.title}`}>
+                              Скачать
+                            </button>
+                          ) : (
+                            <a href={asset.assetUrl} download={asset.downloadFileName} aria-label={`Скачать документ ${asset.title}`}>
+                              Скачать
+                            </a>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            );
+          })}
+        </div>
+        <p className={styles.projectSourcesFootnote}>UPGRADE структурирует source assets, фиксирует статусы и передает материалы профильным участникам; финальные проектные, монтажные, логистические и приемочные решения утверждают заказчик и профильные подрядчики.</p>
+        {activeProjectSource && previewPortalReady ? createPortal((
+          <div
+            className={styles.projectPreviewOverlay}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-preview-title"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setActiveProjectSource(null);
+            }}
+          >
+            <div className={styles.projectPreviewDialog}>
+              <header className={styles.projectPreviewHeader}>
+                <div>
+                  <span>{activeProjectSource.displayLabel}</span>
+                  <h3 id="project-preview-title">{activeProjectSource.title}</h3>
+                  <p>{activeProjectSource.downloadFileName}</p>
+                </div>
+                <div className={styles.projectPreviewActions}>
+                  <a href={activeProjectSource.assetUrl} download={activeProjectSource.downloadFileName} aria-label={`Скачать документ ${activeProjectSource.title}`}>
+                    Скачать
+                  </a>
+                  <button type="button" onClick={() => setActiveProjectSource(null)} aria-label="Закрыть предпросмотр">
+                    Закрыть
+                  </button>
+                </div>
+              </header>
+              <div className={styles.projectPreviewBody}>
+                {isProjectSourcePdf(activeProjectSource) ? (
+                  <iframe title={activeProjectSource.title} src={activeProjectSource.assetUrl} className={styles.projectPreviewFrame} />
+                ) : isProjectSourceImage(activeProjectSource) ? (
+                  <img src={activeProjectSource.assetUrl} alt={activeProjectSource.title} className={styles.projectPreviewImage} />
+                ) : (
+                  <div className={styles.projectPreviewFallback}>
+                    <p>Предпросмотр не поддерживается. Используйте скачивание файла.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ), document.body) : null}
       </section>
 
       <section className={sectionClass(styles.riskRadar, "riskRadar")} id="risk-radar" data-section="risk-radar" aria-labelledby="risk-title">
