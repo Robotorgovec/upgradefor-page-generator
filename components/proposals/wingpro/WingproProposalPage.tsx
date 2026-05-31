@@ -1403,7 +1403,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [modeEndpointOpen, setModeEndpointOpen] = useState(false);
   const [executiveDetailsOpen, setExecutiveDetailsOpen] = useState(false);
   const [copyActionsOpen, setCopyActionsOpen] = useState(false);
-  const [sourceDownloadStatus, setSourceDownloadStatus] = useState("Source documents ready");
+  const [sourceDownloadStatus, setSourceDownloadStatus] = useState("Исходные документы готовы");
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -2230,10 +2230,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.sourceDownloadStatus} aria-live="polite">{sourceDownloadStatus}</p>
         </div>
 
-        <details className={styles.sourceDocsIntelligence} open>
+        <details className={styles.sourceDocsIntelligence}>
           <summary>
             <span>source intelligence layer</span>
-            <strong>Какие данные из этих PDF полезны именно для теплообменников</strong>
+            <strong>Какие данные из этих PDF полезны именно для теплообменников <small>5 extracted cards</small></strong>
           </summary>
           <div className={styles.sourceInsightGrid}>
             {sourceDocumentInsights.map((item) => (
@@ -2245,11 +2245,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </details>
 
-        <div className={styles.sourceTraceability} aria-label="Source to data-room action map">
-          <div className={styles.sourceTraceabilityHeader}>
+        <details className={styles.sourceTraceability} aria-label="Source to data-room action map">
+          <summary className={styles.sourceTraceabilityHeader}>
             <span>Traceability / source map</span>
-            <h3>Source → Data-room → Action</h3>
-          </div>
+            <strong>Source → Data-room → Action <small>5 owner-mapped rows</small></strong>
+          </summary>
           <div className={styles.sourceTraceabilityGrid} role="table" aria-label="Source traceability matrix">
             <div role="row" className={styles.sourceTraceabilityHead}>
               <span role="columnheader">Source file</span>
@@ -2266,7 +2266,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </div>
             ))}
           </div>
-        </div>
+        </details>
 
         <div className={styles.sourceDocsRelated} aria-label="Связать исходные документы с разделами страницы">
           <button type="button" onClick={() => scrollToSourceTarget("#digital-twin")}>Связать с Digital Twin</button>

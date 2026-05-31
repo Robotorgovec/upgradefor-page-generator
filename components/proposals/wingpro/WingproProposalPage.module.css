@@ -5989,7 +5989,7 @@
 .sourceDocsSummaryCard p,
 .sourceDocsPackage p,
 .sourceDisclaimer p,
-.sourceTraceabilityHeader h3 {
+.sourceTraceabilityHeader strong {
   margin: 0;
 }
 
@@ -6055,7 +6055,7 @@
 }
 
 .sourceDocsStatusGrid article {
-  min-height: 104px;
+  min-height: 88px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   padding: 10px;
@@ -6200,10 +6200,28 @@
 .sourceDocUtility ul,
 .sourceDocBoundary ul {
   margin-top: 8px;
-  padding-left: 18px;
   color: var(--proposal-text-soft);
   font-size: 13px;
   line-height: 1.4;
+}
+
+.sourceDocUtility ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.sourceDocUtility li {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: #ffffff;
+}
+
+.sourceDocBoundary ul {
+  padding-left: 18px;
 }
 
 .sourceDocBoundary {
@@ -6214,10 +6232,12 @@
 }
 
 .sourceDocBoundary summary {
+  min-height: 44px;
   color: var(--proposal-text);
   cursor: pointer;
   font-size: 13px;
   font-weight: 900;
+  align-content: center;
 }
 
 .sourceDocActions,
@@ -6298,7 +6318,9 @@
   overflow: visible;
 }
 
-.sourceDocsIntelligence summary {
+.sourceDocsIntelligence summary,
+.sourceTraceabilityHeader {
+  min-height: 44px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(160px, 0.22fr) minmax(0, 1fr);
@@ -6306,9 +6328,20 @@
   align-items: center;
 }
 
-.sourceDocsIntelligence summary strong {
+.sourceDocsIntelligence summary strong,
+.sourceTraceabilityHeader strong {
   color: var(--proposal-text);
   font-size: 18px;
+  line-height: 1.18;
+}
+
+.sourceDocsIntelligence summary small,
+.sourceTraceabilityHeader small {
+  margin-left: 8px;
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .sourceInsightGrid {
@@ -6344,21 +6377,15 @@
 }
 
 .sourceTraceability {
-  padding: 14px;
+  padding: 12px;
   display: grid;
-  gap: 12px;
-}
-
-.sourceTraceabilityHeader h3 {
-  margin-top: 4px;
-  color: var(--proposal-text);
-  font-size: 20px;
-  line-height: 1.18;
+  gap: 10px;
 }
 
 .sourceTraceabilityGrid {
   display: grid;
   gap: 7px;
+  margin-top: 10px;
 }
 
 .sourceTraceabilityHead,
@@ -8230,6 +8257,7 @@
   .sourceDocActions,
   .sourceDocsPackage,
   .sourceDocsIntelligence summary,
+  .sourceTraceabilityHeader,
   .sourceInsightGrid,
   .sourceDocsRelated {
     grid-template-columns: 1fr;
