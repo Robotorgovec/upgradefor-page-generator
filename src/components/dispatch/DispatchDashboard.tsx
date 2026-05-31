@@ -135,6 +135,22 @@ function findParamValue(
   return param?.value ?? fallback;
 }
 
+function needsVerification(value: string) {
+  return /TO VERIFY/i.test(value);
+}
+
+function passportVerificationLabel(value: string) {
+  const normalized = value.trim();
+  if (/^TO VERIFY$/i.test(normalized)) return "Требует обхода";
+  return "Частично не заполнено";
+}
+
+function formatVerifiedDisplayValue(value: string) {
+  const normalized = value.trim();
+  if (/^TO VERIFY$/i.test(normalized)) return "Не заполнено";
+  return normalized.replace(/TO VERIFY/gi, "требует верификации");
+}
+
 function getScadaSignalType(tag: string): ScadaTagRow["signalType"] {
   if (/WRITE|CONTROL|LOCKED|COMMAND/i.test(tag)) return "DO";
   if (/STATUS|ONLINE|ALARM|MODE/i.test(tag)) return "DI";
@@ -407,6 +423,16 @@ export default function DispatchDashboard() {
   const hasDpAnomalyContext =
     selectedEquipment.visualTone === "anomaly" ||
     selectedSection.relatedAlarmIds.includes("alarm-pump-pressure");
+  const renderPassportValue = (value: string) => {
+    if (!needsVerification(value)) return value;
+
+    return (
+      <span className="verificationValue" data-testid="dispatch-passport-verification-badge">
+        <span>{formatVerifiedDisplayValue(value)}</span>
+        <small>{passportVerificationLabel(value)}</small>
+      </span>
+    );
+  };
 
   const selectEquipment = (node: DispatchEquipmentNode, sectionId?: DispatchSection) => {
     const nextSection = sectionId
@@ -1091,18 +1117,18 @@ export default function DispatchDashboard() {
           {passportTab === "Паспорт" ? (
             <>
               <dl className="passportList">
-                <div><dt>Название</dt><dd>{passportEquipment.label}</dd></div>
-                <div><dt>Статус</dt><dd>{passportEquipment.status}</dd></div>
+                <div><dt>Название</dt><dd>{renderPassportValue(passportEquipment.label)}</dd></div>
+                <div><dt>Статус</dt><dd>{renderPassportValue(passportEquipment.status)}</dd></div>
                 <div><dt>Режим</dt><dd>{passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked"}</dd></div>
-                <div><dt>Система</dt><dd>{passportEquipment.type}</dd></div>
-                <div><dt>Модель</dt><dd>{passportEquipment.model}</dd></div>
-                <div><dt>Серийный номер</dt><dd>{passportEquipment.serial}</dd></div>
-                <div><dt>Инвентарный номер</dt><dd>{passportEquipment.inventoryNumber}</dd></div>
-                <div><dt>Местоположение</dt><dd>{passportEquipment.location}</dd></div>
-                <div><dt>Производитель</dt><dd>{passportEquipment.manufacturer}</dd></div>
-                <div><dt>Год выпуска</dt><dd>{passportEquipment.year}</dd></div>
-                <div><dt>Последнее событие</dt><dd>{passportLastEvent}</dd></div>
-                <div><dt>Сервис</dt><dd>{passportEquipment.serviceNote}</dd></div>
+                <div><dt>Система</dt><dd>{renderPassportValue(passportEquipment.type)}</dd></div>
+                <div><dt>Модель</dt><dd>{renderPassportValue(passportEquipment.model)}</dd></div>
+                <div><dt>Серийный номер</dt><dd>{renderPassportValue(passportEquipment.serial)}</dd></div>
+                <div><dt>Инвентарный номер</dt><dd>{renderPassportValue(passportEquipment.inventoryNumber)}</dd></div>
+                <div><dt>Местоположение</dt><dd>{renderPassportValue(passportEquipment.location)}</dd></div>
+                <div><dt>Производитель</dt><dd>{renderPassportValue(passportEquipment.manufacturer)}</dd></div>
+                <div><dt>Год выпуска</dt><dd>{renderPassportValue(passportEquipment.year)}</dd></div>
+                <div><dt>Последнее событие</dt><dd>{renderPassportValue(passportLastEvent)}</dd></div>
+                <div><dt>Сервис</dt><dd>{renderPassportValue(passportEquipment.serviceNote)}</dd></div>
               </dl>
               <div className="linkedSystemsBlock">
                 <span>Связанные системы</span>
@@ -1638,6 +1664,33 @@ export default function DispatchDashboard() {
         .relatedBlock small {
           color: #86efac;
           font-size: 11px;
+        }
+
+        :global(.verificationValue) {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        :global(.verificationValue > span) {
+          color: #e0f2fe;
+          overflow-wrap: anywhere;
+        }
+
+        :global(.verificationValue small) {
+          display: inline-flex;
+          width: fit-content;
+          border: 1px solid rgba(251, 191, 36, 0.34);
+          border-radius: 999px;
+          padding: 4px 8px;
+          color: #fde68a;
+          background: rgba(113, 63, 18, 0.34);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+          text-transform: uppercase;
         }
 
         .kpiCard.isDataError,
