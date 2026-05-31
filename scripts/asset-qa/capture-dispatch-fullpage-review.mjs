@@ -108,6 +108,35 @@ function inspectPageScript(sectionLabel = null) {
       ariaLabel: element.getAttribute("aria-label"),
       active: element.classList.contains("isActive") || element.getAttribute("aria-current") === "true" || element.getAttribute("aria-selected") === "true",
     }));
+  const visibleControlElements = Array.from(document.querySelectorAll("button, a[href], [role='button']"))
+    .filter((element) => {
+      const rect = element.getBoundingClientRect();
+      const style = window.getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+    });
+  const controlTextFitIssues = visibleControlElements
+    .map((element) => {
+      const labelElement = element.matches(".dispatchBottomNav button")
+        ? element.querySelector("span") ?? element
+        : element;
+      const rect = element.getBoundingClientRect();
+      const labelRect = labelElement.getBoundingClientRect();
+      const text = (element.textContent || element.getAttribute("aria-label") || "").replace(/\\s+/g, " ").trim();
+      const widthOverflow = Math.max(0, labelElement.scrollWidth - labelElement.clientWidth);
+      const heightOverflow = Math.max(0, labelElement.scrollHeight - labelElement.clientHeight);
+      return {
+        selector: elementSelector(element),
+        text: text.slice(0, 120),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        labelWidth: Math.round(labelRect.width),
+        labelHeight: Math.round(labelRect.height),
+        widthOverflow,
+        heightOverflow,
+      };
+    })
+    .filter((item) => item.text && (item.widthOverflow > 3 || item.heightOverflow > 3))
+    .slice(0, 20);
   const activeSection = Array.from(document.querySelectorAll(".sectionItem.isActive, .dispatchBottomNav button.isActive"))
     .map((element) => (element.textContent || "").replace(/\\s+/g, " ").trim());
   const visibleDialogs = Array.from(document.querySelectorAll("[role='dialog']"))
@@ -129,6 +158,7 @@ function inspectPageScript(sectionLabel = null) {
       links: controls.filter((item) => item.href).length,
       active: controls.filter((item) => item.active).length,
       readonlyLocked: controls.filter((item) => item.disabled || /read-only|demo|control locked|заблок/i.test([item.text, item.title, item.ariaLabel].filter(Boolean).join(" "))).length,
+      textFitIssues: controlTextFitIssues,
     },
     visibleDialogs,
     safetyCopy: {
@@ -215,9 +245,19 @@ try {
       activeSection: audit.activeSection,
       horizontalOverflow: audit.horizontalOverflow,
       overflowSamples: audit.overflowSamples.slice(0, 5),
+      controlTextFitIssues: audit.controls.textFitIssues.slice(0, 5),
       controls: audit.controls,
       visibleDialogs: audit.visibleDialogs,
       safetyCopy: audit.safetyCopy,
+      checklist: {
+        activeSection: audit.activeSection.some((activeLabel) => activeLabel.includes(section.label)) ? "checked" : "failed",
+        horizontalOverflow: audit.horizontalOverflow ? "failed" : "checked",
+        buttonTextFit: audit.controls.textFitIssues.length ? "failed" : "checked",
+        safetyCopy:
+          audit.safetyCopy.readOnly && audit.safetyCopy.demoMode && audit.safetyCopy.noRealControl
+            ? "checked"
+            : "failed",
+      },
     });
   }
 
@@ -250,6 +290,59 @@ const report = {
     mobileHorizontalOverflow: Boolean(mobileAudit?.horizontalOverflow),
     desktopOverflowSamples: initialAudit?.overflowSamples?.slice(0, 5) ?? [],
     mobileOverflowSamples: mobileAudit?.overflowSamples?.slice(0, 5) ?? [],
+    desktopButtonTextFitIssues: initialAudit?.controls?.textFitIssues?.slice(0, 5) ?? [],
+    mobileButtonTextFitIssues: mobileAudit?.controls?.textFitIssues?.slice(0, 5) ?? [],
+    sectionButtonTextFitFailures: sectionResults
+      .filter((section) => section.controlTextFitIssues.length)
+      .map((section) => ({
+        id: section.id,
+        label: section.label,
+        issues: section.controlTextFitIssues,
+        screenshot: section.screenshot,
+      })),
+    checklist: [
+      {
+        item: "full-page screenshot captured",
+        status: screenshots.some((item) => item.id === "full-page") ? "checked" : "failed",
+        screenshot: screenshots.find((item) => item.id === "full-page")?.path ?? null,
+      },
+      {
+        item: "all dispatch sections captured",
+        status: sectionResults.length === dispatchSections.length ? "checked" : "failed",
+        expected: dispatchSections.length,
+        actual: sectionResults.length,
+      },
+      {
+        item: "desktop horizontal overflow",
+        status: initialAudit?.horizontalOverflow ? "failed" : "checked",
+        screenshot: screenshots.find((item) => item.id === "full-page")?.path ?? null,
+      },
+      {
+        item: "mobile horizontal overflow",
+        status: mobileAudit?.horizontalOverflow ? "failed" : "checked",
+        screenshot: screenshots.find((item) => item.id === "mobile")?.path ?? null,
+      },
+      {
+        item: "button text fits in all captured states",
+        status:
+          (initialAudit?.controls?.textFitIssues?.length ?? 0) ||
+          (mobileAudit?.controls?.textFitIssues?.length ?? 0) ||
+          sectionResults.some((section) => section.controlTextFitIssues.length)
+            ? "failed"
+            : "checked",
+        suggestedFix:
+          "Use normal wrapping, overflow-wrap:anywhere, stable min-height, and responsive button/grid constraints.",
+      },
+      {
+        item: "read-only/demo/no-real-control safety copy",
+        status:
+          initialAudit?.safetyCopy?.readOnly &&
+          initialAudit?.safetyCopy?.demoMode &&
+          initialAudit?.safetyCopy?.noRealControl
+            ? "checked"
+            : "failed",
+      },
+    ],
   },
   ok: true,
 };
@@ -257,6 +350,10 @@ const report = {
 assert(
   sectionResults.length === dispatchSections.length,
   `Captured ${sectionResults.length} sections, expected ${dispatchSections.length}`,
+);
+assert(
+  report.summary.checklist.every((item) => item.status === "checked"),
+  `Full-page review checklist failed: ${JSON.stringify(report.summary.checklist.filter((item) => item.status !== "checked"), null, 2)}`,
 );
 
 writeFileSync(path.join(outputDir, "fullpage-review-report.json"), `${JSON.stringify(report, null, 2)}\n`);
