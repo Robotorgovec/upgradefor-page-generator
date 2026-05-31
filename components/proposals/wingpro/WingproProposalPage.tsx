@@ -1455,11 +1455,6 @@ function PlateHeatExchangerModel({
 
   return (
     <group ref={groupRef} position={[-0.18, 0.14, 0]} rotation={[-0.18, -0.46, 0.03]} scale={0.72}>
-      <mesh position={[0, -1.34, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <circleGeometry args={[2.28, 72]} />
-        <meshStandardMaterial color="#dce6ef" transparent opacity={0.34} roughness={0.9} />
-      </mesh>
-
       {Array.from({ length: plateCount }, (_, index) => {
         const x = -plateSpan / 2 + index * (plateSpan / (plateCount - 1));
         const isWarm = index % 2 === 0;

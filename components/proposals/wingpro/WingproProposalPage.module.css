@@ -9720,6 +9720,116 @@
     line-height: 1.04;
   }
 
+  .routeMap,
+  .vault {
+    gap: 10px;
+  }
+
+  .routeMap .sectionHeader,
+  .vault .sectionHeader {
+    gap: 5px;
+  }
+
+  .routeMap .sectionHeader h2,
+  .vault .sectionHeader h2 {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
+  .routeMap .sectionHeader p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 2.7em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .routeDataSurface {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .routeDataSurface h3 {
+    font-size: 18px;
+    line-height: 1.12;
+  }
+
+  .routeDataSurface p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 2.7em;
+    overflow: hidden;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .routeDataSurface dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .routeDataSurface dl div {
+    padding: 7px;
+  }
+
+  .routeDataSurface dt {
+    font-size: 9.5px;
+  }
+
+  .routeDataSurface dd {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .routeDetailsDisclosure summary {
+    min-height: 54px;
+    gap: 5px;
+    padding: 9px 42px 9px 10px;
+  }
+
+  .routeDetailsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.22;
+  }
+
+  .routeDetailsDisclosure summary small {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .routeDetailsDisclosure summary::after {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .vaultReadinessBoard {
+    padding: 10px;
+  }
+
+  .vaultOpenList {
+    padding: 8px;
+  }
+
+  .vaultCommandStrip {
+    padding: 8px;
+  }
+
   .twinLayerDecisionStrip {
     grid-template-columns: 1fr;
     gap: 5px;
@@ -12688,6 +12798,30 @@
   }
 }
 
+@media (min-width: 361px) and (max-width: 560px) {
+  .vaultStats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .vaultStats span {
+    min-height: 50px;
+    padding: 6px;
+  }
+
+  .vaultStats strong {
+    font-size: 18px;
+  }
+
+  .vaultStats small {
+    font-size: 8.5px;
+    line-height: 1.12;
+  }
+
+  .vaultOpenList ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 360px) {
   .page {
     width: min(100%, calc(100vw - 12px));
@@ -12720,6 +12854,15 @@
 
   .sourceDocsStatusGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routeDataSurface dl {
+    grid-template-columns: 1fr;
+  }
+
+  .routeDataSurface dd {
+    max-height: 2.5em;
+    -webkit-line-clamp: 2;
   }
 
   .twinStage {
