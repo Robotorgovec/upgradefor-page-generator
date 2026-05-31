@@ -2087,23 +2087,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             onReady={() => setTwinModelReady(true)}
           />
         </Canvas>
-        {!twinModelReady ? (
-          <div className={styles.twinObject} aria-hidden="true">
-            <span className={styles.twinShadow} />
-            <span className={styles.endPlateA} />
-            <span className={styles.endPlateB} />
-            <span className={styles.coreBlock} />
-            <span className={styles.plateStack} />
-            <span className={`${styles.connectionA} ${styles.connectionWarm}`} />
-            <span className={`${styles.connectionB} ${styles.connectionCold}`} />
-            <span className={`${styles.connectionC} ${styles.connectionCold}`} />
-            <span className={`${styles.connectionD} ${styles.connectionWarm}`} />
-            <span className={styles.tieRodA} />
-            <span className={styles.tieRodB} />
-            <span className={styles.tieRodC} />
-            <span className={styles.dimensionRail} />
-          </div>
-        ) : null}
         <div className={styles.twinServiceEnvelope} aria-hidden="true">
           <span>service access envelope</span>
         </div>
@@ -2656,23 +2639,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.value}</p>
                 <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
                   <article>
-                    <span>evidence board</span>
-                    <strong>Показывает готовность выбранного слоя, открытые запросы и кому передать результат.</strong>
+                    <span>что здесь видно</span>
+                    <strong>{item.readiness} readiness · {item.gate}</strong>
                   </article>
                   <article>
-                    <span>следующий запрос</span>
+                    <span>что запросить</span>
                     <strong>{item.evidence}</strong>
                   </article>
                   <article>
-                    <span>handoff</span>
+                    <span>кому передать</span>
                     <strong>{item.deliverable} → {item.owner}</strong>
                   </article>
                 </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
-                    <span>Layer evidence checklist</span>
-                    <strong>{item.title}: данные, риск, deliverable и release gate</strong>
-                    <small>Открыть полный список · {item.readiness} readiness · {item.gate}</small>
+                    <span>чек-лист слоя</span>
+                    <strong>{item.title}: какие данные есть, что запросить и кто подтверждает</strong>
+                    <small>Открыть полный список · risk / deliverable / owner</small>
                   </summary>
                   <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
                     <article>
