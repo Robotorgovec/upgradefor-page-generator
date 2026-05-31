@@ -5498,14 +5498,14 @@
 .vaultReadinessBoard {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 18px;
+  padding: 14px;
   background:
     radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
     linear-gradient(135deg, #ffffff, #f8fbff);
   box-shadow: var(--proposal-shadow-md);
   display: grid;
-  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr) minmax(220px, 0.7fr);
-  gap: 16px;
+  grid-template-columns: minmax(240px, 0.66fr) minmax(0, 1fr) minmax(220px, 0.56fr);
+  gap: 12px;
   align-items: start;
 }
 
@@ -5516,14 +5516,14 @@
 
 .vaultReadinessBoard h3 {
   color: var(--proposal-text);
-  font-size: 24px;
+  font-size: 21px;
   line-height: 1.12;
 }
 
 .vaultReadinessBoard p:not(.eyebrow) {
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--proposal-text-soft);
-  line-height: 1.55;
+  line-height: 1.42;
 }
 
 .vaultStats {
@@ -5533,10 +5533,10 @@
 }
 
 .vaultStats span {
-  min-height: 116px;
+  min-height: 88px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background: rgba(255, 255, 255, 0.78);
   display: grid;
   gap: 6px;
@@ -5545,20 +5545,20 @@
 
 .vaultStats strong {
   color: var(--proposal-brand-contrast);
-  font-size: 30px;
+  font-size: 26px;
   line-height: 1;
 }
 
 .vaultStats small {
   color: var(--proposal-text);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 920;
   text-transform: uppercase;
 }
 
 .vaultStats em {
   color: var(--proposal-text-muted);
-  font-size: 12px;
+  font-size: 11px;
   font-style: normal;
   line-height: 1.35;
 }
@@ -5566,10 +5566,10 @@
 .vaultOpenList {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 13px;
+  padding: 11px;
   background: #ffffff;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .vaultOpenList strong {
@@ -5583,13 +5583,13 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 7px;
+  gap: 6px;
 }
 
 .vaultOpenList li {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 9px;
+  padding: 8px;
   background: var(--proposal-brand-soft);
   display: grid;
   gap: 3px;
@@ -5626,21 +5626,21 @@
 .vaultCommandStrip {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background:
     linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff)),
     #ffffff;
   box-shadow: var(--proposal-shadow-sm);
   display: grid;
-  grid-template-columns: minmax(220px, 1.1fr) repeat(3, minmax(0, 1fr)) minmax(220px, 0.86fr);
-  gap: 10px;
+  grid-template-columns: minmax(200px, 1.08fr) repeat(3, minmax(0, 0.8fr)) minmax(190px, 0.66fr);
+  gap: 8px;
   align-items: stretch;
 }
 
 .vaultCommandStrip > div {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.76);
 }
 
@@ -5652,10 +5652,11 @@
 }
 
 .vaultCommandStrip p {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   color: var(--proposal-text);
+  font-size: 14px;
   font-weight: 820;
-  line-height: 1.38;
+  line-height: 1.28;
 }
 
 .vaultQuickActions {

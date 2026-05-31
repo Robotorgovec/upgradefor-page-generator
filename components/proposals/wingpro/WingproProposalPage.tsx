@@ -1614,6 +1614,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
   const visibleDocs = vaultDocs.filter((doc) => isDocVisible(doc));
   const visibleOpenDocs = visibleDocs.filter((doc) => doc[5] === "missing" || doc[5] === "requested");
+  const visibleOpenFocusDocs = visibleOpenDocs.slice(0, 3);
   const visibleReadyDocs = visibleDocs.filter((doc) => doc[5] === "ready").length;
   const vaultActiveQuery = [
     ["category", vaultCategory],
@@ -3570,7 +3571,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <strong>Missing / requested focus</strong>
             {visibleOpenDocs.length > 0 ? (
               <ul>
-                {visibleOpenDocs.map((doc) => (
+                {visibleOpenFocusDocs.map((doc) => (
                   <li key={`open-${doc[1]}`}>
                     <span>{doc[1]}</span>
                     <em>{getVaultReleaseLane(doc[3])}</em>
@@ -3580,6 +3581,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             ) : (
               <p>Filtered scope has no missing/requested documents.</p>
             )}
+            {visibleOpenDocs.length > visibleOpenFocusDocs.length ? (
+              <p>{visibleOpenDocs.length - visibleOpenFocusDocs.length} more open item(s) inside card-level detail.</p>
+            ) : null}
           </div>
         </div>
         <div className={styles.vaultCommandStrip} aria-live="polite" aria-label="Document Vault active command">
