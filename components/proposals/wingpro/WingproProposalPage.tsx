@@ -1595,6 +1595,38 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       detail: handoverPack.acceptance,
     },
   ] as const;
+  const cockpitKpis = [
+    {
+      label: "budget",
+      value: "3 000 000 ₸",
+      detail: "без НДС / базовый IT-data контур",
+    },
+    {
+      label: "blockers",
+      value: String(decisionBlockerQueue.length),
+      detail: `nearest: ${decisionBlockerQueue[0]}`,
+    },
+    {
+      label: "delivery gate",
+      value: deliveryPhase.releaseGate,
+      detail: deliveryPhase.statusControl,
+    },
+    {
+      label: "work plan",
+      value: "ППР skeleton",
+      detail: "coordination draft, not official ППР",
+    },
+    {
+      label: "evidence",
+      value: evidenceHandoff.gate,
+      detail: evidenceHandoff.closeoutOutput,
+    },
+    {
+      label: "handover",
+      value: handoverPack.gate,
+      detail: handoverPack.name,
+    },
+  ] as const;
   const cockpitAddonOpportunities = [
     "3D product visualization package",
     "supplier/product card expansion",
@@ -1604,6 +1636,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     "future sales catalog preparation",
   ] as const;
   const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
+  const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}; budget — 3 000 000 ₸ без НДС for the base IT/data and procurement-coordination contour. Optional extensions are not included automatically and may be agreed separately.`;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -1716,6 +1749,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   async function copyDecisionOutcome() {
     setCopyVariant("command");
     await copyPlainText(decisionOutcomeText, "Decision outcome copied");
+  }
+
+  async function copyCockpitSummary() {
+    setCopyVariant("command");
+    await copyPlainText(cockpitSummaryText, "Cockpit summary copied");
   }
 
   const twinStage = (
@@ -1898,6 +1936,18 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
             <p>Один верхний слой показывает выбранный маршрут, сценарий договора, readiness, blocker queue, следующий шаг и optional extensions без отдельной длинной секции.</p>
           </div>
+          <div className={styles.cockpitKpiRail} aria-label="Cockpit operating KPIs">
+            {cockpitKpis.map((item) => (
+              <article key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <small>{item.detail}</small>
+              </article>
+            ))}
+            <button type="button" onClick={copyCockpitSummary}>
+              Copy cockpit summary
+            </button>
+          </div>
           <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
             {cockpitSummaryCards.map((item) => (
               <button
@@ -1921,6 +1971,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <article>
               <span>nearest blocker</span>
               <strong>{decisionBlockerQueue[0]}</strong>
+            </article>
+            <article>
+              <span>copy/status</span>
+              <strong aria-live="polite">{copyStatus}</strong>
             </article>
             <details className={styles.cockpitAddonDisclosure}>
               <summary>
