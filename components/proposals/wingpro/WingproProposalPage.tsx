@@ -2,6 +2,8 @@
 
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import type { Group } from "three";
 
 import styles from "./WingproProposalPage.module.css";
 import { sourceDocuments, sourceDocumentInsights, sourceTraceabilityRows, type SourceDocument } from "./wingproSourceDocuments";
@@ -1383,6 +1385,101 @@ function formatSourceChecksum(value?: string) {
   return `sha256: ${value.slice(0, 10)}…${value.slice(-6)}`;
 }
 
+function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinLayerId; rotating: boolean }) {
+  const groupRef = useRef<Group>(null);
+  const plateCount = 28;
+  const activeTint = activeLayer === "documents" || activeLayer === "sales" ? "#4f7ea8" : activeLayer === "delivery" ? "#f59f55" : "#f05f6d";
+
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.55) * 0.42 : 0;
+    groupRef.current.rotation.y = -0.42 + orbit;
+    groupRef.current.rotation.x = -0.16;
+    groupRef.current.rotation.z = 0.04;
+    groupRef.current.position.y = -0.08 + (rotating ? Math.sin(state.clock.elapsedTime * 0.8) * 0.025 : 0);
+  });
+
+  return (
+    <group ref={groupRef} position={[0, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.76}>
+      <mesh position={[0, -1.28, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <circleGeometry args={[2.15, 72]} />
+        <meshStandardMaterial color="#dce6ef" transparent opacity={0.34} roughness={0.9} />
+      </mesh>
+
+      {Array.from({ length: plateCount }, (_, index) => {
+        const x = -1.08 + index * (2.16 / (plateCount - 1));
+        const isWarm = index % 2 === 0;
+        return (
+          <mesh key={`plate-${index}`} position={[x, 0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.026, 2.08, 1.24]} />
+            <meshStandardMaterial
+              color={isWarm ? "#fff3f4" : "#edf7ff"}
+              metalness={0.12}
+              roughness={0.36}
+              emissive={isWarm ? "#ffd1d8" : "#cfefff"}
+              emissiveIntensity={0.08}
+            />
+          </mesh>
+        );
+      })}
+
+      {[-1.32, 1.32].map((x) => (
+        <mesh key={`frame-${x}`} position={[x, 0, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.16, 2.34, 1.42]} />
+          <meshStandardMaterial color={x > 0 ? "#fff7f7" : "#f8fbff"} metalness={0.22} roughness={0.32} />
+        </mesh>
+      ))}
+
+      {[-0.52, 0.52].map((z) => (
+        <mesh key={`flow-cold-${z}`} position={[0, -0.18, z]} castShadow>
+          <boxGeometry args={[2.42, 0.045, 0.05]} />
+          <meshStandardMaterial color={z > 0 ? "#7dc7f2" : "#f47686"} emissive={z > 0 ? "#329ed8" : "#f05f6d"} emissiveIntensity={0.18} />
+        </mesh>
+      ))}
+
+      {[-0.74, 0.74].map((z) => (
+        <mesh key={`rod-top-${z}`} position={[0, 1.1, z]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.026, 0.026, 2.98, 18]} />
+          <meshStandardMaterial color="#718096" metalness={0.62} roughness={0.22} />
+        </mesh>
+      ))}
+      {[-0.74, 0.74].map((z) => (
+        <mesh key={`rod-bottom-${z}`} position={[0, -1.1, z]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.026, 0.026, 2.98, 18]} />
+          <meshStandardMaterial color="#718096" metalness={0.62} roughness={0.22} />
+        </mesh>
+      ))}
+
+      {[
+        [1.48, 0.62, 0.48, "#f47686"],
+        [1.48, -0.62, 0.48, "#f47686"],
+        [1.48, 0.62, -0.48, "#7dc7f2"],
+        [1.48, -0.62, -0.48, "#7dc7f2"],
+      ].map(([x, y, z, color], index) => (
+        <group key={`port-${index}`} position={[x as number, y as number, z as number]} rotation={[0, 0, Math.PI / 2]}>
+          <mesh castShadow receiveShadow>
+            <cylinderGeometry args={[0.18, 0.18, 0.22, 32]} />
+            <meshStandardMaterial color="#ffffff" metalness={0.32} roughness={0.28} />
+          </mesh>
+          <mesh position={[0, 0.13, 0]} castShadow>
+            <cylinderGeometry args={[0.21, 0.21, 0.035, 32]} />
+            <meshStandardMaterial color={color as string} emissive={color as string} emissiveIntensity={0.14} metalness={0.18} roughness={0.38} />
+          </mesh>
+        </group>
+      ))}
+
+      <mesh position={[-1.54, 0, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.12, 2.55, 1.6]} />
+        <meshStandardMaterial color="#334155" metalness={0.38} roughness={0.3} />
+      </mesh>
+      <mesh position={[1.54, 0, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.12, 2.55, 1.6]} />
+        <meshStandardMaterial color={activeTint} metalness={0.28} roughness={0.34} />
+      </mesh>
+    </group>
+  );
+}
+
 export default function WingproProposalPage({ proposalPath }: { proposalPath: string }) {
   const [activeLayer, setActiveLayer] = useState<TwinLayerId>("equipment");
   const [activeScene, setActiveScene] = useState<SceneId>("source");
@@ -1681,6 +1778,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIsRotating(false);
+    }
+  }, []);
+
   function isDocVisible(doc: (typeof vaultDocs)[number]) {
     return (
       (vaultCategory === "all" || doc[0] === vaultCategory) &&
@@ -1829,22 +1932,30 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const twinStage = (
     <div className={styles.twinStage} data-layer={activeLayer}>
       <div className={styles.twinStageHeader}>
-        <span>Conceptual Digital Twin Preview</span>
+        <span>Rotating 3D PlateHE Twin</span>
         <strong>{layer.title}</strong>
         <small>{layer.gate}</small>
       </div>
-      <div className={styles.twinObject} aria-hidden="true">
-        <span className={styles.twinShadow} />
-        <span className={styles.endPlateA} />
-        <span className={styles.endPlateB} />
-        <span className={styles.plateStack} />
-        <span className={styles.coreBlock} />
-        <span className={styles.connectionA} />
-        <span className={styles.connectionB} />
-        <span className={styles.tieRodA} />
-        <span className={styles.tieRodB} />
-        <span className={styles.tieRodC} />
-        <span className={styles.dimensionRail} />
+      <div className={styles.twinCanvasWrap} aria-hidden="true">
+        <Canvas
+          className={styles.twinCanvas}
+          camera={{ position: [0, 0.15, 6.8], fov: 38 }}
+          dpr={[1, 1.7]}
+          gl={{ antialias: true, alpha: true }}
+          shadows
+        >
+          <ambientLight intensity={1.45} />
+          <directionalLight position={[4, 5, 5]} intensity={2.4} castShadow />
+          <directionalLight position={[-4, 2, -3]} intensity={0.76} />
+          <pointLight position={[0, 1.8, 2.6]} intensity={0.9} color="#ffdbe0" />
+          <PlateHeatExchangerModel activeLayer={activeLayer} rotating={isRotating && !presentationMode} />
+        </Canvas>
+        <div className={styles.twinModelLegend}>
+          <span>28 plates</span>
+          <span>4 ports</span>
+          <span>tie rods</span>
+          <span>flow paths</span>
+        </div>
       </div>
       <svg className={styles.twinBlueprint} viewBox="0 0 720 420" role="img" aria-label="Conceptual digital twin preview">
         <path d="M90 210 C180 80 330 70 430 170 S570 330 650 210" />
@@ -2377,10 +2488,24 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.value}</p>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
-                    <span>Layer evidence</span>
-                    <strong>{item.readiness} / {item.gate}</strong>
-                    <small>Открыть data, evidence request, risk и deliverable</small>
+                    <span>Evidence board</span>
+                    <strong>{item.title}: что уже собрано и что запросить</strong>
+                    <small>{item.readiness} readiness · {item.gate}</small>
                   </summary>
+                  <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
+                    <article>
+                      <span>что отображается</span>
+                      <strong>{item.value}</strong>
+                    </article>
+                    <article>
+                      <span>что запросить</span>
+                      <strong>{item.evidence}</strong>
+                    </article>
+                    <article>
+                      <span>следующий артефакт</span>
+                      <strong>{item.deliverable}</strong>
+                    </article>
+                  </div>
                   <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
                     <span><strong>{item.readiness}</strong><small>readiness</small></span>
                     <span><strong>{item.gate}</strong><small>release gate</small></span>

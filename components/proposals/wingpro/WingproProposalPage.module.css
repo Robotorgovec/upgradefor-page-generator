@@ -1517,6 +1517,53 @@
   line-height: 1.15;
 }
 
+.twinCanvasWrap {
+  position: absolute;
+  inset: 70px 26px 112px;
+  z-index: 2;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 72%, transparent);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.9), transparent 34%),
+    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--proposal-brand-soft) 58%, transparent), transparent 52%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(248, 250, 252, 0.18));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.twinCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.twinModelLegend {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  pointer-events: none;
+}
+
+.twinModelLegend span {
+  min-height: 30px;
+  padding: 7px 8px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  color: var(--proposal-text-soft);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--proposal-shadow-sm);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .twinBlueprint {
   position: absolute;
   inset: 11% 7% 15%;
@@ -1955,7 +2002,7 @@
   padding: 14px;
   cursor: pointer;
   display: grid;
-  grid-template-columns: minmax(104px, 0.24fr) minmax(0, 1fr) minmax(148px, 0.32fr) 34px;
+  grid-template-columns: minmax(0, 1fr) 34px;
   gap: 10px;
   align-items: center;
   list-style: none;
@@ -1980,8 +2027,8 @@
   align-items: center;
   justify-content: center;
   justify-self: end;
-  grid-column: 4;
-  grid-row: 1;
+  grid-column: 2;
+  grid-row: 1 / span 3;
 }
 
 .twinLayerDetailsDisclosure[open] summary::after {
@@ -1989,6 +2036,7 @@
 }
 
 .twinLayerDetailsDisclosure summary span {
+  grid-column: 1;
   color: var(--proposal-text-muted);
   font-size: 10px;
   font-weight: 950;
@@ -1997,15 +2045,53 @@
 }
 
 .twinLayerDetailsDisclosure summary strong {
+  grid-column: 1;
   color: var(--proposal-text);
   font-size: 14px;
   line-height: 1.3;
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .twinLayerDetailsDisclosure summary small {
+  grid-column: 1;
   color: var(--proposal-text-soft);
   font-size: 12px;
   line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.twinLayerBrief {
+  margin: 0 14px 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.twinLayerBrief article {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+  display: grid;
+  gap: 5px;
+}
+
+.twinLayerBrief span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.twinLayerBrief strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.3;
 }
 
 .twinLayerDetailsDisclosure .twinReadout,
@@ -9717,6 +9803,24 @@
     overflow-clip-margin: 1px;
   }
 
+  .twinCanvasWrap {
+    inset: 56px 9px 98px;
+  }
+
+  .twinModelLegend {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .twinModelLegend span {
+    min-height: 24px;
+    padding: 5px 6px;
+    font-size: 8.5px;
+  }
+
   .twinObject {
     width: min(206px, 58vw);
     height: 198px;
@@ -9883,6 +9987,25 @@
   .twinLayerDetailsDisclosure .twinReadout,
   .twinLayerDetailsDisclosure dl {
     margin: 0 10px 10px;
+  }
+
+  .twinLayerBrief {
+    margin: 0 10px 8px;
+    gap: 6px;
+  }
+
+  .twinLayerBrief article {
+    padding: 7px;
+  }
+
+  .twinLayerBrief strong {
+    display: -webkit-box;
+    max-height: 2.4em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .twinReadout {
@@ -11512,6 +11635,10 @@
 
   .twinStage {
     min-height: 410px;
+  }
+
+  .twinCanvasWrap {
+    inset: 54px 8px 100px;
   }
 
   .evidencePhaseRail {
