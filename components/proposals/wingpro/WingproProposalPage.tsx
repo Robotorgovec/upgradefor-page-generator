@@ -1802,10 +1802,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyBoardText(variant);
   }
 
-  function scrollToSourceTarget(targetId: string) {
-    document.querySelector(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
   function triggerSourceDocumentDownload(doc: SourceDocument, index: number) {
     window.setTimeout(() => {
       const link = document.createElement("a");
@@ -2250,9 +2246,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <a href={doc.href} download={doc.downloadName} aria-label={`Скачать PDF ${doc.title}`}>
                   Скачать PDF
                 </a>
-                <button type="button" onClick={() => setSourceDownloadStatus(`${doc.title} добавлен в data-room`)}>
+                <a href="#vault" onClick={() => setSourceDownloadStatus(`${doc.title} добавлен в data-room`)}>
                   Добавить в data-room
-                </button>
+                </a>
               </div>
               <noscript>
                 <p className={styles.sourceDocsNoJs}><a href={doc.href}>Открыть PDF</a> / <a href={doc.href} download={doc.downloadName}>Скачать PDF</a></p>
@@ -2309,10 +2305,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </details>
 
         <div className={styles.sourceDocsRelated} aria-label="Связать исходные документы с разделами страницы">
-          <button type="button" onClick={() => scrollToSourceTarget("#digital-twin")}>Связать с Digital Twin</button>
-          <button type="button" onClick={() => scrollToSourceTarget("#vault")}>Связать с Document Vault</button>
-          <button type="button" onClick={() => scrollToSourceTarget("#work-plan-builder")}>Связать с Work Plan / ППР skeleton</button>
-          <button type="button" onClick={() => scrollToSourceTarget("#handover")}>Связать с Handover Pack</button>
+          <a href="#digital-twin">Связать с Digital Twin</a>
+          <a href="#vault">Связать с Document Vault</a>
+          <a href="#work-plan-builder">Связать с Work Plan / ППР skeleton</a>
+          <a href="#handover">Связать с Handover Pack</a>
         </div>
 
         <details className={styles.sourceDisclaimer}>
@@ -2565,22 +2561,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.detail}</p>
                 <em>{item.signal}</em>
               </article>
-            ))}
-          </div>
-
-          <div className={styles.controlScale} role="tablist" aria-label="Project control scale">
-            {projectControlScale.map((step, index) => (
-              <button
-                key={step.id}
-                type="button"
-                role="tab"
-                aria-selected={activeControlStep === step.id}
-                aria-controls={`control-step-${step.id}`}
-                onClick={() => setActiveControlStep(step.id)}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                {step.title}
-              </button>
             ))}
           </div>
 
