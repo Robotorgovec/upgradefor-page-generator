@@ -9180,6 +9180,22 @@
     min-height: 560px;
   }
 
+  .twinPanel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .digitalTwin .segmented,
+  .twinControls,
+  .digitalTwin .legalNote {
+    grid-column: 1 / -1;
+  }
+
+  .twinPanel section,
+  .twinInterfaceMap {
+    min-width: 0;
+  }
+
   .twinStageHeader,
   .twinStageFooter {
     grid-template-columns: 1fr;
@@ -12444,11 +12460,11 @@
   }
 
   .twinStage {
-    min-height: 365px;
+    min-height: 338px;
   }
 
   .twinCanvasWrap {
-    inset: 48px 7px 74px;
+    inset: 48px 7px 66px;
   }
 
   .twinStageHeader {
@@ -12481,19 +12497,20 @@
   }
 
   .twinPanel {
+    grid-template-columns: 1fr;
     gap: 7px;
     padding: 10px;
   }
 
   .digitalTwin .segmented {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
   }
 
   .digitalTwin .segmented button {
-    min-height: 40px;
-    padding: 7px;
-    font-size: 12px;
+    min-height: 38px;
+    padding: 6px;
+    font-size: 10.5px;
     line-height: 1.1;
   }
 
@@ -12502,6 +12519,7 @@
   }
 
   .twinLayerGuide article {
+    min-height: 72px;
     padding: 6px;
   }
 
@@ -12602,11 +12620,11 @@
   }
 
   .twinStage {
-    min-height: 360px;
+    min-height: 334px;
   }
 
   .twinCanvasWrap {
-    inset: 48px 7px 74px;
+    inset: 46px 6px 62px;
   }
 
   .twinConnectionCues,
