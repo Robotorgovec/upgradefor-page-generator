@@ -9374,6 +9374,139 @@
     grid-template-columns: 1fr;
   }
 
+  .valueOs,
+  .projectControl {
+    gap: 12px;
+  }
+
+  .valueOs .sectionHeader,
+  .projectControl .sectionHeader {
+    gap: 5px;
+  }
+
+  .valueOs .sectionHeader h2,
+  .projectControl .sectionHeader h2 {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
+  .projectControl .sectionHeader p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 4.05em;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .compareBoard {
+    gap: 8px;
+  }
+
+  .compareBoard article {
+    padding: 12px;
+  }
+
+  .compareBoard h3 {
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .compareBoard ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding-left: 0;
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .compareBoard li {
+    min-height: 38px;
+    border: 1px solid var(--proposal-border);
+    border-radius: 8px;
+    padding: 7px;
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .protectionGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .protectionGrid span {
+    min-height: 50px;
+    padding: 7px;
+    font-size: 11px;
+    line-height: 1.16;
+  }
+
+  .controlCommandPanel {
+    gap: 9px;
+    padding: 12px;
+  }
+
+  .controlCommandPanel h3 {
+    display: -webkit-box;
+    max-height: 2.4em;
+    overflow: hidden;
+    font-size: 18px;
+    line-height: 1.18;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .controlModuleLink {
+    margin-top: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .controlCommandPanel dl {
+    gap: 6px;
+  }
+
+  .controlCommandPanel dl div {
+    min-height: 72px;
+    padding: 8px;
+  }
+
+  .controlCommandPanel dt {
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+  }
+
+  .controlCommandPanel dd {
+    display: -webkit-box;
+    max-height: 3.9em;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .projectControlDetailsDisclosure summary,
+  .controlBoardsDisclosure summary {
+    min-height: 52px;
+    gap: 5px;
+    padding: 9px 40px 9px 9px;
+  }
+
+  .projectControlDetailsDisclosure summary strong,
+  .controlBoardsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .projectControlDetailsDisclosure summary small,
+  .controlBoardsDisclosure summary small {
+    display: none;
+  }
+
   .missionCard dt {
     font-size: 10px;
   }
