@@ -1121,7 +1121,6 @@
 .twinControls,
 .vaultControls,
 .modeSwitch,
-.riskFilters,
 .copyButtons,
 .packTabs,
 .paymentSwitch {
@@ -1141,7 +1140,7 @@
 .participantMap button,
 .routePointSelect,
 .modeSwitch button,
-.riskFilters button,
+.riskImpactSelect,
 .gatePipeline button,
 .packTabs button,
 .paymentSwitch button,
@@ -1190,7 +1189,6 @@
 .presentationLayerRail button,
 .segmented button,
 .modeSwitch button,
-.riskFilters button,
 .timelineRows button,
 .gatePipeline button,
 .packTabs button,
@@ -1208,7 +1206,6 @@
 .presentationLayerRail button:hover,
 .segmented button:hover,
 .modeSwitch button:hover,
-.riskFilters button:hover,
 .timelineRows button:hover,
 .gatePipeline button:hover,
 .packTabs button:hover,
@@ -1853,7 +1850,6 @@
 .participantMap button[data-active="true"],
 .routeFlow > span[data-active="true"],
 .modeSwitch button[aria-pressed="true"],
-.riskFilters button[aria-pressed="true"],
 .evidenceHandoffTabs button[data-active="true"],
 .gatePipeline button[data-active="true"],
 .packTabs button[aria-pressed="true"],
@@ -6477,6 +6473,39 @@
     #ffffff;
 }
 
+.riskFilters {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.22fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.riskFilters label {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.riskFilters select {
+  min-width: 0;
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-text);
+  background: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+}
+
 .riskResponseSurface {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
@@ -9212,14 +9241,9 @@
   }
 
   .riskFilters {
+    grid-template-columns: 1fr;
     gap: 6px;
-  }
-
-  .riskFilters button {
-    flex: 1 1 92px;
-    min-width: 0;
-    padding: 8px 9px;
-    font-size: 11.5px;
+    padding: 8px;
   }
 
   .riskSummaryRail {

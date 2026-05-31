@@ -1710,6 +1710,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     setVaultMode("missing");
   }
 
+  function selectRiskImpact(nextImpact: RiskImpact | "all") {
+    setRiskImpact(nextImpact);
+    if (nextImpact === "all") return;
+    const nextRisk = risks.find((item) => item.impact === nextImpact);
+    if (nextRisk) setActiveRisk(nextRisk.id);
+  }
+
   function selectScene(id: SceneId) {
     const next = scenes.find((item) => item.id === id);
     setActiveScene(id);
@@ -3451,8 +3458,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>Risk Radar</p>
           <h2 id="risk-title">Риски как координационный response pack</h2>
         </div>
-        <div className={styles.riskFilters} role="group" aria-label="risk impact filter">
-          {(["all", "quality", "time", "financial", "dependency"] as Array<RiskImpact | "all">).map((item) => <button key={item} type="button" aria-pressed={riskImpact === item} onClick={() => setRiskImpact(item)}>{item}</button>)}
+        <div className={styles.riskFilters}>
+          <label htmlFor="risk-impact-filter">Impact filter</label>
+          <select
+            id="risk-impact-filter"
+            className={styles.riskImpactSelect}
+            value={riskImpact}
+            onChange={(event) => selectRiskImpact(event.currentTarget.value as RiskImpact | "all")}
+            aria-label="Выбрать risk impact filter"
+          >
+            {(["all", "quality", "time", "financial", "dependency"] as Array<RiskImpact | "all">).map((item) => (
+              <option key={item} value={item}>{item}</option>
+            ))}
+          </select>
         </div>
         <div className={styles.riskSummaryRail} aria-label="Risk radar summary">
           <span><strong>{risks.filter((item) => item.severity === "high").length}</strong><small>high risks</small></span>
