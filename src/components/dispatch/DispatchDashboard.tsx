@@ -101,11 +101,23 @@ type ScadaTagRow = {
 };
 
 type PassportField = {
+  category: "identity" | "location" | "scada" | "service";
   id: string;
   label: string;
   requiredForCompletion: boolean;
   value: string;
 };
+
+const passportCompletenessCategories: Array<{
+  id: PassportField["category"];
+  label: string;
+  helper: string;
+}> = [
+  { id: "identity", label: "Identity", helper: "модель, серийный номер, производитель" },
+  { id: "location", label: "Location", helper: "система, локация, инвентарный номер" },
+  { id: "scada", label: "SCADA tags", helper: "теги, регистры, scaling" },
+  { id: "service", label: "Service", helper: "ТО, история, сервисная заметка" },
+];
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
   if (severity === "critical") return "Critical";
@@ -386,24 +398,26 @@ export default function DispatchDashboard() {
   const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
   const passportFields = useMemo<PassportField[]>(
     () => [
-      { id: "label", label: "Название", value: passportEquipment.label, requiredForCompletion: false },
-      { id: "status", label: "Статус", value: passportEquipment.status, requiredForCompletion: false },
+      { category: "identity", id: "label", label: "Название", value: passportEquipment.label, requiredForCompletion: false },
+      { category: "service", id: "status", label: "Статус", value: passportEquipment.status, requiredForCompletion: false },
       {
+        category: "service",
         id: "mode",
         label: "Режим",
         value: passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked",
         requiredForCompletion: false,
       },
-      { id: "system", label: "Система", value: passportEquipment.type, requiredForCompletion: true },
-      { id: "model", label: "Модель", value: passportEquipment.model, requiredForCompletion: true },
-      { id: "serial", label: "Серийный номер", value: passportEquipment.serial, requiredForCompletion: true },
-      { id: "inventory", label: "Инвентарный номер", value: passportEquipment.inventoryNumber, requiredForCompletion: true },
-      { id: "location", label: "Местоположение", value: passportEquipment.location, requiredForCompletion: true },
-      { id: "manufacturer", label: "Производитель", value: passportEquipment.manufacturer, requiredForCompletion: true },
-      { id: "year", label: "Год выпуска", value: passportEquipment.year, requiredForCompletion: true },
-      { id: "last-event", label: "Последнее событие", value: passportLastEvent, requiredForCompletion: false },
-      { id: "service", label: "Сервис", value: passportEquipment.serviceNote, requiredForCompletion: true },
+      { category: "location", id: "system", label: "Система", value: passportEquipment.type, requiredForCompletion: true },
+      { category: "identity", id: "model", label: "Модель", value: passportEquipment.model, requiredForCompletion: true },
+      { category: "identity", id: "serial", label: "Серийный номер", value: passportEquipment.serial, requiredForCompletion: true },
+      { category: "location", id: "inventory", label: "Инвентарный номер", value: passportEquipment.inventoryNumber, requiredForCompletion: true },
+      { category: "location", id: "location", label: "Местоположение", value: passportEquipment.location, requiredForCompletion: true },
+      { category: "identity", id: "manufacturer", label: "Производитель", value: passportEquipment.manufacturer, requiredForCompletion: true },
+      { category: "identity", id: "year", label: "Год выпуска", value: passportEquipment.year, requiredForCompletion: true },
+      { category: "service", id: "last-event", label: "Последнее событие", value: passportLastEvent, requiredForCompletion: false },
+      { category: "service", id: "service", label: "Сервис", value: passportEquipment.serviceNote, requiredForCompletion: true },
       {
+        category: "scada",
         id: "scada-tags",
         label: "SCADA-теги",
         value: passportScadaRows.some((row) => row.quality === "TO VERIFY")
@@ -412,6 +426,7 @@ export default function DispatchDashboard() {
         requiredForCompletion: true,
       },
       {
+        category: "service",
         id: "service-history",
         label: "История ТО",
         value: passportEquipment.serviceHistory.some((item) =>
@@ -431,6 +446,18 @@ export default function DispatchDashboard() {
   const passportCompleteness = Math.round(
     (completedPassportFieldCount / Math.max(1, requiredPassportFields.length)) * 100,
   );
+  const passportCategoryScores = passportCompletenessCategories.map((category) => {
+    const categoryRequiredFields = requiredPassportFields.filter((field) => field.category === category.id);
+    const categoryCompletedFields = categoryRequiredFields.filter(isPassportFieldComplete);
+    const percent = Math.round((categoryCompletedFields.length / Math.max(1, categoryRequiredFields.length)) * 100);
+
+    return {
+      ...category,
+      completed: categoryCompletedFields.length,
+      percent,
+      required: categoryRequiredFields.length,
+    };
+  });
   const visiblePassportFields = showOnlyIncompletePassportFields ? incompletePassportFields : passportFields;
   const selectedAlarm = selectedAlarmId ? alarmEvents.find((alarm) => alarm.id === selectedAlarmId) : undefined;
   const selectedAlarmSourceTag = selectedAlarm?.sourceTagId;
@@ -1196,6 +1223,17 @@ export default function DispatchDashboard() {
                 >
                   {showOnlyIncompletePassportFields ? "Показать все поля" : "Показать незаполненные"}
                 </button>
+                <div className="passportCompletenessBreakdown" data-testid="dispatch-passport-completeness-breakdown">
+                  {passportCategoryScores.map((category) => (
+                    <article data-testid={`dispatch-passport-completeness-category-${category.id}`} key={category.id}>
+                      <span>{category.label}</span>
+                      <strong>{category.percent}%</strong>
+                      <small>
+                        {category.completed}/{category.required} · {category.helper}
+                      </small>
+                    </article>
+                  ))}
+                </div>
               </div>
               <dl className="passportList" data-testid="dispatch-passport-list">
                 {visiblePassportFields.map((field) => (
@@ -3038,6 +3076,30 @@ export default function DispatchDashboard() {
           white-space: normal;
         }
 
+        .passportCompletenessBreakdown {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .passportCompletenessBreakdown article {
+          min-width: 0;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.42);
+          padding: 9px;
+        }
+
+        .passportCompletenessBreakdown article strong {
+          margin-top: 4px;
+          font-size: 15px;
+        }
+
+        .passportCompletenessBreakdown article small {
+          color: #bae6fd;
+          font-size: 10px;
+        }
+
         .passportList {
           display: grid;
           gap: 8px;
@@ -3303,11 +3365,8 @@ export default function DispatchDashboard() {
           align-items: stretch;
           gap: 7px;
           min-width: 0;
-          max-height: 128px;
-          overflow-x: hidden;
-          overflow-y: auto;
+          overflow: visible;
           padding-right: 2px;
-          scrollbar-width: thin;
         }
 
         .dispatchBottomNav button {
@@ -3492,7 +3551,7 @@ export default function DispatchDashboard() {
         @media (max-width: 980px) {
           .dispatchShell {
             margin: -16px;
-            padding: 16px 16px 184px;
+            padding: 16px 16px 224px;
           }
 
           .dispatchGrid {
@@ -3516,7 +3575,7 @@ export default function DispatchDashboard() {
           }
 
           .bottomNavSections {
-            max-height: 132px;
+            overflow-y: visible;
           }
 
           .bottomMeta {
@@ -3528,7 +3587,7 @@ export default function DispatchDashboard() {
 
         @media (max-width: 760px) {
           .dispatchShell {
-            padding-bottom: 248px;
+            padding-bottom: 326px;
           }
 
           .dispatchHeader {
@@ -3561,6 +3620,10 @@ export default function DispatchDashboard() {
             overflow-wrap: anywhere;
           }
 
+          .passportCompletenessBreakdown {
+            grid-template-columns: 1fr;
+          }
+
           .scadaTagHeader {
             display: none;
           }
@@ -3591,9 +3654,7 @@ export default function DispatchDashboard() {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 6px;
-            max-height: 174px;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow: visible;
             padding-right: 0;
           }
 

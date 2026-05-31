@@ -74,6 +74,11 @@ const checks = [
     script: "scripts/asset-qa/verify-dispatch-action-states.mjs",
     usesBrowser: true,
   },
+  {
+    id: "no-internal-scroll",
+    script: "scripts/asset-qa/verify-dispatch-no-internal-scroll.mjs",
+    usesBrowser: true,
+  },
 ];
 
 function normalizeBaseUrl(value) {

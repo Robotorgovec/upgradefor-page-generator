@@ -44,8 +44,14 @@ function parseEvalJson(output) {
 const inspectScript = `
 (() => {
   const score = document.querySelector('[data-testid="dispatch-passport-completeness-score"]');
+  const breakdown = document.querySelector('[data-testid="dispatch-passport-completeness-breakdown"]');
   const filter = document.querySelector('[data-testid="dispatch-passport-incomplete-filter"]');
   const list = document.querySelector('[data-testid="dispatch-passport-list"]');
+  const categories = Array.from(document.querySelectorAll('[data-testid^="dispatch-passport-completeness-category-"]'))
+    .map((category) => ({
+      id: category.getAttribute('data-testid'),
+      text: category.textContent || '',
+    }));
   const rows = Array.from(document.querySelectorAll('[data-testid^="dispatch-passport-field-"]'))
     .map((row) => ({
       id: row.getAttribute('data-testid'),
@@ -56,6 +62,9 @@ const inspectScript = `
   return JSON.stringify({
     hasScore: Boolean(score),
     scoreText: score?.textContent || '',
+    hasBreakdown: Boolean(breakdown),
+    categoryCount: categories.length,
+    categoryTexts: categories.map((category) => category.text),
     hasFilter: Boolean(filter),
     filterText: filter?.textContent || '',
     filterPressed: filter?.getAttribute('aria-pressed'),
@@ -87,6 +96,14 @@ try {
   assert(initial.hasScore, "Passport completeness score is missing");
   assert(/Паспорт заполнен на \d+%/.test(initial.scoreText), `Completeness percent is missing: ${initial.scoreText}`);
   assert(/обязательных полей/.test(initial.scoreText), `Required-field summary is missing: ${initial.scoreText}`);
+  assert(initial.hasBreakdown, "Passport completeness category breakdown is missing");
+  assert(initial.categoryCount === 4, `Expected 4 completeness categories, got ${initial.categoryCount}`);
+  for (const label of ["Identity", "Location", "SCADA tags", "Service"]) {
+    assert(
+      initial.categoryTexts.some((text) => text.includes(label) && /\d+%/.test(text)),
+      `Completeness category ${label} is missing a percent: ${JSON.stringify(initial.categoryTexts)}`,
+    );
+  }
   assert(initial.hasFilter, "Incomplete passport field filter is missing");
   assert(initial.hasList, "Passport field list is missing");
   assert(initial.rowCount >= 10, `Expected at least 10 passport fields, got ${initial.rowCount}`);
