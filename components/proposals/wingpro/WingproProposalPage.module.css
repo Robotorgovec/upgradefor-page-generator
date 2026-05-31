@@ -12208,6 +12208,122 @@
     font-size: 12.5px;
     line-height: 1.28;
   }
+
+  .digitalTwin {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .digitalTwin .sectionHeader h2 {
+    font-size: 21px;
+  }
+
+  .digitalTwin .sectionHeader p:not(.eyebrow) {
+    max-height: 2.7em;
+    -webkit-line-clamp: 2;
+  }
+
+  .twinStage {
+    min-height: 365px;
+  }
+
+  .twinCanvasWrap {
+    inset: 48px 7px 74px;
+  }
+
+  .twinStageHeader {
+    top: 8px;
+    right: 8px;
+    left: 8px;
+    padding: 7px;
+  }
+
+  .twinStageFooter {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .twinStageFooter span {
+    min-height: 36px;
+    padding: 5px;
+  }
+
+  .twinStageFooter strong,
+  .twinStageFooter span:first-child strong {
+    font-size: 10.5px !important;
+  }
+
+  .twinStageFooter small {
+    font-size: 8px;
+  }
+
+  .twinPanel {
+    gap: 7px;
+    padding: 10px;
+  }
+
+  .digitalTwin .segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .digitalTwin .segmented button {
+    min-height: 40px;
+    padding: 7px;
+    font-size: 12px;
+    line-height: 1.1;
+  }
+
+  .twinLayerGuide {
+    gap: 5px;
+  }
+
+  .twinLayerGuide article {
+    padding: 6px;
+  }
+
+  .twinLayerGuide span {
+    font-size: 8.5px;
+  }
+
+  .twinLayerGuide strong {
+    max-height: 2.5em;
+    font-size: 10.5px;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+  }
+
+  .twinInterfaceMap {
+    gap: 7px;
+    padding: 10px;
+  }
+
+  .twinInterfaceMap h3 {
+    font-size: 15px;
+  }
+
+  .twinInterfaceMap p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 2.7em;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .twinInterfaceChips {
+    gap: 5px;
+  }
+
+  .twinInterfaceChips span {
+    min-height: 24px;
+    padding: 5px 7px;
+    font-size: 9px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -12266,11 +12382,11 @@
   }
 
   .twinStage {
-    min-height: 410px;
+    min-height: 360px;
   }
 
   .twinCanvasWrap {
-    inset: 54px 8px 100px;
+    inset: 48px 7px 74px;
   }
 
   .twinConnectionCues,
