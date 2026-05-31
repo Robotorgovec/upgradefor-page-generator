@@ -1396,6 +1396,12 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
   const groupRef = useRef<Group>(null);
   const plateCount = 28;
   const activeTint = activeLayer === "documents" || activeLayer === "sales" ? "#4f7ea8" : activeLayer === "delivery" ? "#f59f55" : "#f05f6d";
+  const portPoints = [
+    { key: "warm-supply", y: 0.72, z: 0.56, color: "#f47686", ring: "#9f1239" },
+    { key: "warm-return", y: -0.72, z: 0.56, color: "#f47686", ring: "#9f1239" },
+    { key: "cold-supply", y: 0.72, z: -0.56, color: "#7dc7f2", ring: "#0369a1" },
+    { key: "cold-return", y: -0.72, z: -0.56, color: "#7dc7f2", ring: "#0369a1" },
+  ] as const;
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -1407,7 +1413,7 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.76}>
+    <group ref={groupRef} position={[-0.22, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.72}>
       <mesh position={[0, -1.28, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[2.15, 72]} />
         <meshStandardMaterial color="#dce6ef" transparent opacity={0.34} roughness={0.9} />
@@ -1417,16 +1423,22 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
         const x = -1.08 + index * (2.16 / (plateCount - 1));
         const isWarm = index % 2 === 0;
         return (
-          <mesh key={`plate-${index}`} position={[x, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[0.026, 2.08, 1.24]} />
-            <meshStandardMaterial
-              color={isWarm ? "#fff3f4" : "#edf7ff"}
-              metalness={0.12}
-              roughness={0.36}
-              emissive={isWarm ? "#ffd1d8" : "#cfefff"}
-              emissiveIntensity={0.08}
-            />
-          </mesh>
+          <group key={`plate-${index}`} position={[x, 0, 0]}>
+            <mesh castShadow receiveShadow>
+              <boxGeometry args={[0.026, 2.08, 1.24]} />
+              <meshStandardMaterial
+                color={isWarm ? "#fff3f4" : "#edf7ff"}
+                metalness={0.14}
+                roughness={0.32}
+                emissive={isWarm ? "#ffd1d8" : "#cfefff"}
+                emissiveIntensity={0.08}
+              />
+            </mesh>
+            <mesh position={[0.017, 0, 0]} castShadow receiveShadow>
+              <boxGeometry args={[0.012, 2.16, 1.31]} />
+              <meshStandardMaterial color="#273449" metalness={0.18} roughness={0.42} />
+            </mesh>
+          </group>
         );
       })}
 
@@ -1457,35 +1469,38 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
         </mesh>
       ))}
 
-      {[
-        [1.66, 0.72, 0.56, "#f47686"],
-        [1.66, -0.72, 0.56, "#f47686"],
-        [1.66, 0.72, -0.56, "#7dc7f2"],
-        [1.66, -0.72, -0.56, "#7dc7f2"],
-      ].map(([x, y, z, color], index) => (
-        <group key={`port-${index}`} position={[x as number, y as number, z as number]}>
-          <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.18, 0.18, 0.5, 36]} />
-            <meshStandardMaterial color="#d8e0e8" metalness={0.52} roughness={0.2} />
+      {portPoints.map((port, index) => (
+        <group key={`port-${port.key}`} position={[1.66, port.y, port.z]}>
+          <mesh position={[-0.05, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.22, 0.22, 0.2, 44]} />
+            <meshStandardMaterial color="#cbd5e1" metalness={0.48} roughness={0.22} />
           </mesh>
-          <mesh position={[0.28, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.32, 0.32, 0.1, 44]} />
-            <meshStandardMaterial color={color as string} emissive={color as string} emissiveIntensity={0.08} metalness={0.2} roughness={0.34} />
+          <mesh position={[0.23, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.18, 0.18, 0.62, 44]} />
+            <meshStandardMaterial color="#d8e0e8" metalness={0.58} roughness={0.19} />
           </mesh>
-          <mesh position={[0.36, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
-            <torusGeometry args={[0.2, 0.022, 12, 44]} />
-            <meshStandardMaterial color="#1f2937" metalness={0.5} roughness={0.3} />
+          <mesh position={[0.46, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.34, 0.34, 0.12, 52]} />
+            <meshStandardMaterial color={port.color} emissive={port.color} emissiveIntensity={0.08} metalness={0.24} roughness={0.32} />
           </mesh>
-          <mesh position={[0.41, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.13, 0.13, 0.06, 36]} />
-            <meshStandardMaterial color="#0f172a" metalness={0.38} roughness={0.32} />
+          <mesh position={[0.54, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+            <torusGeometry args={[0.23, 0.026, 14, 52]} />
+            <meshStandardMaterial color={port.ring} metalness={0.5} roughness={0.28} />
+          </mesh>
+          <mesh position={[0.68, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.145, 0.145, 0.24, 44]} />
+            <meshStandardMaterial color="#0f172a" metalness={0.48} roughness={0.27} />
+          </mesh>
+          <mesh position={[0.82, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.09, 0.09, 0.025, 36]} />
+            <meshStandardMaterial color="#020617" metalness={0.22} roughness={0.5} />
           </mesh>
           {Array.from({ length: 8 }, (_, boltIndex) => {
             const angle = (boltIndex / 8) * Math.PI * 2;
             return (
               <mesh
                 key={`bolt-${index}-${boltIndex}`}
-                position={[0.36, Math.cos(angle) * 0.25, Math.sin(angle) * 0.25]}
+                position={[0.55, Math.cos(angle) * 0.27, Math.sin(angle) * 0.27]}
                 rotation={[0, 0, Math.PI / 2]}
                 castShadow
               >
@@ -1553,6 +1568,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [modeEndpointOpen, setModeEndpointOpen] = useState(false);
   const [executiveDetailsOpen, setExecutiveDetailsOpen] = useState(false);
   const [copyActionsOpen, setCopyActionsOpen] = useState(false);
+  const [commercialOpen, setCommercialOpen] = useState(false);
   const [commercialStatus, setCommercialStatus] = useState("Коммерческий контур раскрыт отдельно от технического экрана");
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const copyRef = useRef<HTMLTextAreaElement>(null);
@@ -2534,11 +2550,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <StatusPill value={item.readiness} />
                 </div>
                 <p>{item.value}</p>
+                <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
+                  <article>
+                    <span>что это за блок</span>
+                    <strong>Краткая карта выбранного слоя: readiness, открытые evidence-запросы и кому передать результат.</strong>
+                  </article>
+                  <article>
+                    <span>сейчас запросить</span>
+                    <strong>{item.evidence}</strong>
+                  </article>
+                  <article>
+                    <span>кто подтверждает</span>
+                    <strong>{item.owner}</strong>
+                  </article>
+                </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
-                    <span>Evidence board</span>
-                    <strong>{item.title}: что уже собрано и что запросить</strong>
-                    <small>{item.readiness} readiness · {item.gate}</small>
+                    <span>Layer evidence checklist</span>
+                    <strong>{item.title}: данные, риск, deliverable и release gate</strong>
+                    <small>Открыть полный список · {item.readiness} readiness · {item.gate}</small>
                   </summary>
                   <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
                     <article>
@@ -3985,12 +4015,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="commercial-terms-title">Коммерческие условия</h2>
           <p>Финансовая часть вынесена отдельно, чтобы основной экран оставался технической панелью управления проектом.</p>
         </div>
-        <details className={styles.commercialDisclosure}>
-          <summary aria-controls="commercial-terms-panel">
+        <div className={styles.commercialDisclosure} data-open={commercialOpen}>
+          <button
+            type="button"
+            className={styles.commercialToggle}
+            aria-expanded={commercialOpen}
+            aria-controls="commercial-terms-panel"
+            onClick={() => {
+              const next = !commercialOpen;
+              setCommercialOpen(next);
+              setCommercialStatus(next ? "Коммерческие условия раскрыты" : "Коммерческий контур закрыт; основной экран остается техническим");
+            }}
+          >
             <span>Коммерческие условия</span>
             <strong>Показать оплату и стоимость</strong>
             <small>Финансовая часть раскрывается здесь; основной экран остается техническим.</small>
-          </summary>
+          </button>
+          {commercialOpen ? (
           <div id="commercial-terms-panel" className={styles.commercialPanel}>
             <div className={styles.commercialIntro}>
               <p>Коммерческие условия не меняют технические границы роли UPGRADE: UPGRADE оказывает IT/data и закупочно-координационное сопровождение, не является поставщиком, проектировщиком, монтажной организацией, брокером, перевозчиком или технадзором.</p>
@@ -4073,7 +4114,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.legalNote}>UPGRADE — IT/data и закупочно-координационный партнер. UPGRADE не является поставщиком оборудования; не является производителем; не является проектировщиком; не является монтажной организацией; не является ПНР-подрядчиком; не является техническим надзором; не является брокером; не является перевозчиком; не является сертификационным органом и не является юридическим консультантом.</p>
           <p className={styles.pathNote}>Canonical: {proposalPath}</p>
           </div>
-        </details>
+          ) : null}
+        </div>
       </section>
     </div>
   );
