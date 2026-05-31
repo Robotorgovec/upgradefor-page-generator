@@ -905,6 +905,69 @@
   align-items: stretch;
 }
 
+.modeEndpointDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.modeEndpointDisclosure summary {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.22fr) minmax(0, 0.78fr) minmax(220px, 0.54fr) 34px;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 13px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.modeEndpointDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.modeEndpointDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.modeEndpointDisclosure[open] summary::after {
+  content: "–";
+}
+
+.modeEndpointDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.modeEndpointDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.modeEndpointDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.modeEndpointDisclosure .modeEndpoint {
+  padding: 0 11px 11px;
+}
+
 .modeEndpoint article,
 .modeEndpoint button {
   min-height: 74px;
@@ -6689,6 +6752,10 @@
     grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) minmax(150px, 0.3fr) 38px;
   }
 
+  .modeEndpointDisclosure summary {
+    grid-template-columns: minmax(110px, 0.2fr) minmax(0, 1fr) minmax(160px, 0.36fr) 34px;
+  }
+
   .presentationModeTabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -6949,6 +7016,21 @@
 
   .cockpitAddonDisclosure div {
     grid-template-columns: 1fr;
+  }
+
+  .modeEndpointDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 34px;
+  }
+
+  .modeEndpointDisclosure summary span,
+  .modeEndpointDisclosure summary strong,
+  .modeEndpointDisclosure summary small {
+    grid-column: 1;
+  }
+
+  .modeEndpointDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
 
   .commandDisclosure summary {
@@ -7393,6 +7475,46 @@
   .modeEndpoint article,
   .modeEndpoint button {
     min-height: 54px;
+  }
+
+  .modeEndpointDisclosure summary {
+    min-height: 58px;
+    gap: 5px;
+    padding: 9px 40px 9px 9px;
+    position: relative;
+  }
+
+  .modeEndpointDisclosure summary::after {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .modeEndpointDisclosure summary strong,
+  .modeEndpointDisclosure summary small {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+  }
+
+  .modeEndpointDisclosure summary strong {
+    max-height: 2.5em;
+    font-size: 12.5px;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+  }
+
+  .modeEndpointDisclosure summary small {
+    max-height: 2.6em;
+    font-size: 10.5px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+  }
+
+  .modeEndpointDisclosure .modeEndpoint {
+    padding: 0 8px 8px;
   }
 
   .modeEndpoint {

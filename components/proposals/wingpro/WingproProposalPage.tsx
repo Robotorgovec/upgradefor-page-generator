@@ -1989,23 +1989,30 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </details>
           </div>
         </section>
-        <div className={styles.modeEndpoint} aria-label="Current mode decision endpoint">
-          <article>
-            <span>что выбрано</span>
+        <details className={styles.modeEndpointDisclosure}>
+          <summary>
+            <span>mode handoff</span>
             <strong>{activePresentation.endpoint.selected}</strong>
-          </article>
-          <article>
-            <span>что подтвердить</span>
-            <strong>{activePresentation.endpoint.confirm}</strong>
-          </article>
-          <article>
-            <span>что получит WinGPro</span>
-            <strong>{activePresentation.endpoint.receives}</strong>
-          </article>
-          <button type="button" onClick={() => copyBoardText(activePresentation.copyVariant)}>
-            Скопировать summary режима
-          </button>
-        </div>
+            <small>{activePresentation.nextAction}</small>
+          </summary>
+          <div className={styles.modeEndpoint} aria-label="Current mode decision endpoint">
+            <article>
+              <span>что выбрано</span>
+              <strong>{activePresentation.endpoint.selected}</strong>
+            </article>
+            <article>
+              <span>что подтвердить</span>
+              <strong>{activePresentation.endpoint.confirm}</strong>
+            </article>
+            <article>
+              <span>что получит WinGPro</span>
+              <strong>{activePresentation.endpoint.receives}</strong>
+            </article>
+            <button type="button" onClick={() => copyBoardText(activePresentation.copyVariant)}>
+              Скопировать summary режима
+            </button>
+          </div>
+        </details>
         <details className={styles.executiveCommandDetailsDisclosure}>
           <summary>
             <span>Executive detail</span>
