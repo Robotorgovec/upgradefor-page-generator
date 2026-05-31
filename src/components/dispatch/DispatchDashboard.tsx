@@ -79,6 +79,17 @@ type ReadonlyAuditEntry = {
   time: string;
 };
 
+type DemoTicketEntry = {
+  equipment: string;
+  id: string;
+  section: string;
+  severity: string;
+  source: string;
+  status: string;
+  tag: string;
+  time: string;
+};
+
 type ScadaTagRow = {
   tag: string;
   signalType: "AI" | "DI" | "DO" | "AO";
@@ -227,6 +238,7 @@ export default function DispatchDashboard() {
   const [aiAnswer, setAiAnswer] = useState("");
   const [demoTime, setDemoTime] = useState("17.05.2026 10:45");
   const [readonlyAuditLog, setReadonlyAuditLog] = useState<ReadonlyAuditEntry[]>([]);
+  const [ticketJournal, setTicketJournal] = useState<DemoTicketEntry[]>([]);
 
   useEffect(() => {
     document.body.classList.add("is-dispatch-demo");
@@ -463,6 +475,22 @@ export default function DispatchDashboard() {
     setIsDrawerOpen(true);
   };
 
+  const openDemoTicket = (source: string) => {
+    const entry: DemoTicketEntry = {
+      equipment: passportEquipment.shortLabel,
+      id: `demo-ticket-${Date.now()}`,
+      section: selectedSectionLabel,
+      severity: ticketSeverity,
+      source,
+      status: "Prepared locally · not sent · No real equipment control",
+      tag: ticketSourceTag,
+      time: demoTime,
+    };
+
+    setTicketJournal((current) => [entry, ...current].slice(0, 4));
+    setModal("ticket");
+  };
+
   const recordReadonlyAttempt = (action: string) => {
     const time = new Intl.DateTimeFormat("ru-RU", {
       hour: "2-digit",
@@ -608,7 +636,7 @@ export default function DispatchDashboard() {
               className="secondaryButton full"
               data-action-state="opens-demo-ticket"
               type="button"
-              onClick={() => setModal("ticket")}
+              onClick={() => openDemoTicket("active alarm panel")}
             >
               Создать заявку
             </button>
@@ -835,7 +863,11 @@ export default function DispatchDashboard() {
               <button data-testid="dispatch-section-action-passport" type="button" onClick={() => setIsDrawerOpen(true)}>
                 Open passport
               </button>
-              <button data-testid="dispatch-section-action-ticket" type="button" onClick={() => setModal("ticket")}>
+              <button
+                data-testid="dispatch-section-action-ticket"
+                type="button"
+                onClick={() => openDemoTicket("section action")}
+              >
                 Create demo ticket
               </button>
               <button
@@ -898,6 +930,32 @@ export default function DispatchDashboard() {
               </ol>
             ) : (
               <span>Попытки управления будут фиксироваться локально в demo-журнале.</span>
+            )}
+          </div>
+
+          <div className="demoTicketJournal" data-testid="dispatch-demo-ticket-journal">
+            <div className="demoTicketJournalHeader">
+              <strong>Demo ticket journal</strong>
+              <span>Local only · no external send · No real equipment control</span>
+            </div>
+            {ticketJournal.length ? (
+              <ol>
+                {ticketJournal.map((entry) => (
+                  <li key={entry.id}>
+                    <span>
+                      {entry.time} · {entry.status}
+                    </span>
+                    <strong>
+                      {entry.equipment} · {entry.section}
+                    </strong>
+                    <small>
+                      {entry.severity} · {entry.tag} · source: {entry.source}
+                    </small>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>No demo tickets prepared in this session.</p>
             )}
           </div>
 
@@ -1088,7 +1146,7 @@ export default function DispatchDashboard() {
                     type="button"
                     onClick={() => {
                       if (document.title === "Создать заявку") {
-                        setModal("ticket");
+                        openDemoTicket("passport document action");
                       } else if (document.title === "Открыть тренды") {
                         openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
                       } else {
@@ -1119,7 +1177,11 @@ export default function DispatchDashboard() {
           </div>
 
           <div className="drawerActions">
-            <button data-testid="dispatch-drawer-action-ticket" type="button" onClick={() => setModal("ticket")}>
+            <button
+              data-testid="dispatch-drawer-action-ticket"
+              type="button"
+              onClick={() => openDemoTicket("passport drawer")}
+            >
               Создать заявку
             </button>
             <button
@@ -1259,6 +1321,15 @@ export default function DispatchDashboard() {
                     <dd>Prepared locally · not sent · No real equipment control</dd>
                   </div>
                 </dl>
+                {ticketJournal[0] ? (
+                  <div className="modalTicketJournalEntry">
+                    <strong>Запись добавлена в demo-журнал</strong>
+                    <span>
+                      {ticketJournal[0].time} · {ticketJournal[0].equipment} · {ticketJournal[0].section} ·{" "}
+                      {ticketJournal[0].status}
+                    </span>
+                  </div>
+                ) : null}
               </>
             )}
           </div>
@@ -2256,6 +2327,68 @@ export default function DispatchDashboard() {
           line-height: 1.35;
         }
 
+        .demoTicketJournal {
+          display: grid;
+          gap: 10px;
+          margin: 8px 0 14px;
+          border: 1px solid rgba(34, 197, 94, 0.22);
+          border-radius: 8px;
+          background: rgba(6, 78, 59, 0.22);
+          color: #d1fae5;
+          padding: 10px;
+        }
+
+        .demoTicketJournalHeader {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 10px;
+          align-items: baseline;
+          justify-content: space-between;
+        }
+
+        .demoTicketJournalHeader strong {
+          color: #ecfdf5;
+        }
+
+        .demoTicketJournalHeader span,
+        .demoTicketJournal p {
+          margin: 0;
+          color: #a7f3d0;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .demoTicketJournal ol {
+          display: grid;
+          gap: 8px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .demoTicketJournal li {
+          display: grid;
+          gap: 3px;
+          border: 1px solid rgba(16, 185, 129, 0.22);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.34);
+          padding: 8px 9px;
+        }
+
+        .demoTicketJournal li span,
+        .demoTicketJournal li small {
+          color: #bbf7d0;
+          font-size: 12px;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
+        .demoTicketJournal li strong {
+          color: #f0fdf4;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
         .modalAuditEntry {
           display: grid;
           gap: 6px;
@@ -2270,6 +2403,24 @@ export default function DispatchDashboard() {
         .modalAuditEntry span {
           color: #fef3c7;
           font-size: 13px;
+        }
+
+        .modalTicketJournalEntry {
+          display: grid;
+          gap: 6px;
+          margin-top: 14px;
+          border: 1px solid rgba(34, 197, 94, 0.34);
+          border-radius: 8px;
+          background: rgba(6, 78, 59, 0.24);
+          color: #d1fae5;
+          padding: 10px;
+        }
+
+        .modalTicketJournalEntry span {
+          color: #bbf7d0;
+          font-size: 13px;
+          line-height: 1.4;
+          overflow-wrap: anywhere;
         }
 
         .sectionDetailPanel {

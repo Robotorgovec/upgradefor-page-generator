@@ -132,6 +132,7 @@ function state() {
   const drawer = document.querySelector(".passportDrawer");
   const passportTitle = normalize(document.querySelector(".passportDrawer .passportHero strong")?.textContent);
   const passportKpiText = normalize(document.querySelector(".passportDrawer [data-testid='dispatch-passport-kpi-strip']")?.textContent);
+  const ticketJournalText = normalize(document.querySelector('[data-testid="dispatch-demo-ticket-journal"]')?.textContent);
   const bodyText = document.body.innerText || "";
 
   return JSON.stringify({
@@ -146,6 +147,7 @@ function state() {
     dialogText,
     aiAnswer: normalize(document.querySelector('[data-testid="dispatch-ai-answer"]')?.textContent),
     auditText: normalize(document.querySelector('[data-testid="dispatch-readonly-audit-log"]')?.textContent),
+    ticketJournalText,
     safetyCopy: {
       readOnly: bodyText.includes("Read-only"),
       demoMode: bodyText.includes("DEMO MODE"),
@@ -217,8 +219,15 @@ try {
   assert(current.dialogText.includes("AI recommendation"), "Ticket modal is missing AI recommendation context");
   assert(current.dialogText.includes("not sent"), "Ticket modal is missing not-sent copy");
   assert(current.dialogText.includes("No real equipment control"), "Ticket modal is missing no-real-control copy");
+  assert(current.dialogText.includes("Запись добавлена в demo-журнал"), "Ticket modal did not confirm journal entry creation");
+  assert(current.ticketJournalText.includes("Prepared locally"), "Ticket journal did not record prepared status");
+  assert(current.ticketJournalText.includes("No real equipment control"), "Ticket journal is missing no-real-control copy");
+  assert(current.ticketJournalText.includes("section action"), "Ticket journal did not record section action source");
   screenshot("action-01-ticket-modal.png");
   closeModalIfOpen();
+  current = state();
+  assert(current.ticketJournalText.includes("Prepared locally"), "Ticket journal entry disappeared after closing modal");
+  screenshot("action-01b-ticket-journal.png");
 
   clickSection("Насосные группы");
   clickSelector('[data-testid="dispatch-section-action-trends"]', "section Show trends");
@@ -260,6 +269,7 @@ try {
   current = state();
   assert(current.dialogText.includes("Demo-заявка подготовлена локально"), "Drawer ticket action did not open contextual ticket modal");
   assert(current.dialogText.includes("No real equipment control"), "Drawer ticket modal is missing no-real-control copy");
+  assert(current.ticketJournalText.includes("passport drawer"), "Ticket journal did not record drawer ticket source");
   closeModalIfOpen();
 
   clickSelector('[data-testid="dispatch-drawer-action-readonly"]', "drawer Read-only controls");
