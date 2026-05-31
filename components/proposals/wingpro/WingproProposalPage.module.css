@@ -9221,7 +9221,34 @@
   }
 
   .heroMissionBridge {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 2px;
+  }
+
+  .heroMissionBridge a {
+    min-height: 76px;
+    padding: 9px;
+    gap: 4px;
+  }
+
+  .heroMissionBridge span {
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+
+  .heroMissionBridge strong {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .heroMissionBridge small {
+    display: none;
   }
 
   .missionCard {
