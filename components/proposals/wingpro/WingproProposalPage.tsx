@@ -1208,7 +1208,7 @@ function getHandoverOwnerCue(pack: HandoverPack) {
 
 const copyTexts: Record<CopyVariant, string> = {
   short:
-    "UPGRADE структурирует исходные данные, source documents, supplier evidence, delivery gates, mounting inputs, risk register и handover packs по зоне поставки и монтажной подготовки пластинчатых теплообменников. Коммерческие условия вынесены в отдельный блок.",
+    "UPGRADE структурирует исходные данные, source documents, supplier evidence, delivery gates, mounting inputs, risk register и handover packs по зоне поставки и монтажной подготовки пластинчатых теплообменников.",
   executive:
     "WinGPro получает технический cockpit: Source Data Room, Digital Twin, supplier evidence, release gates, Document Vault, Risk Radar, Route Map, Work Plan / ППР skeleton, field evidence preview, Handover Room и reusable Digital Product Asset.",
   command:
@@ -1227,7 +1227,7 @@ const copyTexts: Record<CopyVariant, string> = {
 
 const copyVariantTitles: Record<CopyVariant, string> = {
   short: "Короткое техническое сообщение",
-  executive: "Расширенное коммерческое сообщение",
+  executive: "Расширенный технический summary",
   command: "Технический summary",
   boundary: "Граница ответственности",
   deliverables: "Свод deliverables",
@@ -1262,7 +1262,7 @@ const presentationModes: Array<{
       confirm: "scope, evidence gates, handover packs and responsibility boundary",
       receives: "mission summary, control room, release board, handover packs and Digital Product Asset",
     },
-    detailActions: [["Открыть Digital Twin", "#digital-twin"], ["Коммерческие условия", "#commercial-terms"]],
+    detailActions: [["Открыть Digital Twin", "#digital-twin"], ["Offer Board", "#offer-comparison-board"]],
     copyVariant: "short",
     sections: ["hero", "digitalTwin", "valueOs", "statusOfCustomer", "sourceDocuments", "handoverRoom"],
   },
@@ -1292,7 +1292,7 @@ const presentationModes: Array<{
       confirm: "evidence readiness, owner approvals and boundary wording",
       receives: "draft terms summary, release readiness board and handover guardrails",
     },
-    detailActions: [["Contract Simulator", "#contract-decision-simulator"], ["Коммерческие условия", "#commercial-terms"]],
+    detailActions: [["Contract Simulator", "#contract-decision-simulator"], ["Release Gates", "#release-gates"]],
     copyVariant: "boundary",
     sections: ["projectControl", "valueOs", "sourceDocuments", "vault", "releaseGates", "handoverRoom"],
   },
@@ -1451,19 +1451,54 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
       ))}
 
       {[
-        [1.48, 0.62, 0.48, "#f47686"],
-        [1.48, -0.62, 0.48, "#f47686"],
-        [1.48, 0.62, -0.48, "#7dc7f2"],
-        [1.48, -0.62, -0.48, "#7dc7f2"],
+        [1.66, 0.72, 0.56, "#f47686"],
+        [1.66, -0.72, 0.56, "#f47686"],
+        [1.66, 0.72, -0.56, "#7dc7f2"],
+        [1.66, -0.72, -0.56, "#7dc7f2"],
       ].map(([x, y, z, color], index) => (
-        <group key={`port-${index}`} position={[x as number, y as number, z as number]} rotation={[0, 0, Math.PI / 2]}>
-          <mesh castShadow receiveShadow>
-            <cylinderGeometry args={[0.18, 0.18, 0.22, 32]} />
-            <meshStandardMaterial color="#ffffff" metalness={0.32} roughness={0.28} />
+        <group key={`port-${index}`} position={[x as number, y as number, z as number]}>
+          <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.18, 0.18, 0.5, 36]} />
+            <meshStandardMaterial color="#d8e0e8" metalness={0.52} roughness={0.2} />
           </mesh>
-          <mesh position={[0, 0.13, 0]} castShadow>
-            <cylinderGeometry args={[0.21, 0.21, 0.035, 32]} />
-            <meshStandardMaterial color={color as string} emissive={color as string} emissiveIntensity={0.14} metalness={0.18} roughness={0.38} />
+          <mesh position={[0.28, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.32, 0.32, 0.1, 44]} />
+            <meshStandardMaterial color={color as string} emissive={color as string} emissiveIntensity={0.08} metalness={0.2} roughness={0.34} />
+          </mesh>
+          <mesh position={[0.36, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+            <torusGeometry args={[0.2, 0.022, 12, 44]} />
+            <meshStandardMaterial color="#1f2937" metalness={0.5} roughness={0.3} />
+          </mesh>
+          <mesh position={[0.41, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.13, 0.13, 0.06, 36]} />
+            <meshStandardMaterial color="#0f172a" metalness={0.38} roughness={0.32} />
+          </mesh>
+          {Array.from({ length: 8 }, (_, boltIndex) => {
+            const angle = (boltIndex / 8) * Math.PI * 2;
+            return (
+              <mesh
+                key={`bolt-${index}-${boltIndex}`}
+                position={[0.36, Math.cos(angle) * 0.25, Math.sin(angle) * 0.25]}
+                rotation={[0, 0, Math.PI / 2]}
+                castShadow
+              >
+                <cylinderGeometry args={[0.018, 0.018, 0.04, 10]} />
+                <meshStandardMaterial color="#243244" metalness={0.72} roughness={0.18} />
+              </mesh>
+            );
+          })}
+        </group>
+      ))}
+
+      {[[-0.92, -1.42, 0.54], [0.92, -1.42, 0.54], [-0.92, -1.42, -0.54], [0.92, -1.42, -0.54]].map(([x, y, z], index) => (
+        <group key={`foot-${index}`} position={[x, y, z]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[0.2, 0.28, 0.14]} />
+            <meshStandardMaterial color="#334155" metalness={0.34} roughness={0.28} />
+          </mesh>
+          <mesh position={[0, -0.17, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.4, 0.06, 0.28]} />
+            <meshStandardMaterial color="#475569" metalness={0.42} roughness={0.24} />
           </mesh>
         </group>
       ))}
@@ -1763,7 +1798,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     "future sales catalog preparation",
   ] as const;
   const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
-  const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}. Commercial terms are kept in a separate collapsed block so the main page remains a technical cockpit.`;
+  const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}.`;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -2032,7 +2067,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.heroActions}>
             <a className={styles.primaryAction} href="#filmstrip">Запустить обзор сделки</a>
             <a className={styles.secondaryAction} href="#digital-twin">Открыть Digital Twin</a>
-            <button className={styles.secondaryAction} type="button" onClick={() => toggleCommercialTerms(true)}>Открыть коммерческие условия</button>
+            <a className={styles.secondaryAction} href="#offer-comparison-board">Сравнить предложения</a>
           </div>
           <div className={styles.indicators} aria-label="Mission indicators">
             {["Quality Gate: 6 checkpoints", "Document Vault: 30+ data points", "Risk Radar: 10 risk groups", "Handover: broker / logistics / mounting / sales", "Digital Product Asset: supplier + product line"].map((item) => (
@@ -2055,25 +2090,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </div>
         <aside className={styles.missionCard}>
-          <span className={styles.privateStatus}>commercial proposal / private</span>
+          <span className={styles.privateStatus}>technical cockpit / private</span>
           <strong>Technical cockpit + data-room</strong>
-          <p>Коммерческие условия доступны отдельно; основной экран остается техническим контуром проекта.</p>
+          <p>Основной экран показывает техническое состояние закупки: выбранный маршрут, предложения поставщиков, экономию, evidence, сроки, риски и handover.</p>
           <dl>
             <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
             <div><dt>маршрут</dt><dd>China → Kazakhstan</dd></div>
-            <div><dt>scope</dt><dd>IT/data + procurement coordination</dd></div>
+            <div><dt>экономия</dt><dd>supplier delta + risk avoidance</dd></div>
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
             <span>live proposal view</span>
-            <p>Digital Twin, Control Room, Release Gates and Handover stay connected as one operating model.</p>
+            <p>Digital Twin, Source Data Room, Offer Board, Release Gates and Handover stay connected as one operating model.</p>
             <button
               type="button"
-              aria-expanded={commercialTermsOpen}
-              aria-controls="commercial-terms-panel"
-              onClick={() => toggleCommercialTerms(true)}
+              onClick={copyCockpitSummary}
             >
-              Открыть коммерческие условия
+              Скопировать технический summary
             </button>
           </div>
         </aside>
