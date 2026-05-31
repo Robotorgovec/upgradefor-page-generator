@@ -80,6 +80,7 @@ type ReadonlyAuditEntry = {
 };
 
 type DemoTicketEntry = {
+  alarmTitle: string;
   equipment: string;
   id: string;
   section: string;
@@ -335,15 +336,16 @@ export default function DispatchDashboard() {
   const selectedAlarmSourceTag = selectedAlarm?.sourceTagId;
   const selectedSectionLabel =
     dispatchSections.find((section) => section.id === selectedSection.id)?.label ?? selectedSection.id;
-  const ticketSourceAlarm = relatedAlarms[0] ?? passportPrimaryAlarm;
+  const ticketSourceAlarm = selectedAlarm ?? relatedAlarms[0] ?? passportPrimaryAlarm;
   const ticketSourceTag =
+    selectedAlarm?.sourceTagId ??
     passportScadaRows.find((row) => row.quality === "DATA_ERROR")?.tag ??
     passportScadaRows[0]?.tag ??
     "TO VERIFY";
   const ticketSeverity = ticketSourceAlarm ? severityLabel(ticketSourceAlarm.severity) : "Info";
   const ticketRecommendation =
-    passportEquipment.aiRecommendations[0] ??
     ticketSourceAlarm?.description ??
+    passportEquipment.aiRecommendations[0] ??
     selectedSection.lastEvent;
   const passportTopKpis = [
     {
@@ -486,6 +488,7 @@ export default function DispatchDashboard() {
 
   const openDemoTicket = (source: string) => {
     const entry: DemoTicketEntry = {
+      alarmTitle: ticketSourceAlarm?.title ?? selectedSection.lastEvent,
       equipment: passportEquipment.shortLabel,
       id: `demo-ticket-${Date.now()}`,
       section: selectedSectionLabel,
@@ -958,7 +961,7 @@ export default function DispatchDashboard() {
                       {entry.equipment} · {entry.section}
                     </strong>
                     <small>
-                      {entry.severity} · {entry.tag} · source: {entry.source}
+                      {entry.severity} · {entry.tag} · {entry.alarmTitle} · source: {entry.source}
                     </small>
                   </li>
                 ))}
@@ -1342,6 +1345,12 @@ export default function DispatchDashboard() {
                     <dt>Контекст события</dt>
                     <dd>{ticketSourceAlarm ? ticketSourceAlarm.title : selectedSection.lastEvent}</dd>
                   </div>
+                  {selectedAlarm ? (
+                    <div>
+                      <dt>Selected alarm source</dt>
+                      <dd>{selectedAlarm.title} · {selectedAlarm.sourceTagId}</dd>
+                    </div>
+                  ) : null}
                   <div>
                     <dt>AI recommendation</dt>
                     <dd>{ticketRecommendation}</dd>

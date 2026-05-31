@@ -204,6 +204,21 @@ try {
   assert(current.activeTrend.includes("Давление"), `Alarm click did not switch related trend to pressure: ${current.activeTrend}`);
   screenshot("action-00a-alarm-source-context.png");
 
+  clickSelector('[data-testid="dispatch-drawer-action-ticket"]', "alarm context drawer Create ticket");
+  current = state();
+  assert(current.dialogText.includes("Demo-заявка подготовлена локально"), "Alarm-context ticket action did not open modal");
+  assert(current.dialogText.includes("Selected alarm source"), "Alarm-context ticket modal is missing selected alarm source row");
+  assert(current.dialogText.includes("DP DATA_ERROR"), "Alarm-context ticket modal is missing selected alarm title");
+  assert(current.dialogText.includes("SCADA.CHW.DP_01.PV"), "Alarm-context ticket modal is missing source tag");
+  assert(current.dialogText.includes("Raw DP tag"), "Alarm-context ticket modal is missing alarm recommendation/description");
+  assert(current.ticketJournalText.includes("DP DATA_ERROR"), "Ticket journal did not retain selected alarm title");
+  assert(current.ticketJournalText.includes("SCADA.CHW.DP_01.PV"), "Ticket journal did not retain selected alarm source tag");
+  screenshot("action-00b-alarm-ticket-modal.png");
+  closeModalIfOpen();
+  current = state();
+  assert(current.ticketJournalText.includes("DP DATA_ERROR"), "Alarm-context ticket journal disappeared after modal close");
+  screenshot("action-00c-alarm-ticket-journal.png");
+
   clickSelector('[data-testid="dispatch-equipment-node-pump-shu2"]', "digital twin node pump-shu2");
   current = state();
   assert(current.drawerOpen, "Digital twin node click did not open the passport drawer");
