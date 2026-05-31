@@ -1223,6 +1223,17 @@ const copyTexts: Record<CopyVariant, string> = {
     "Дополнительные опции могут быть согласованы отдельно: расширенный 3D / digital twin товара, инспекция или видео-проверка через профильного подрядчика, расширенный mounting coordination pack, post-delivery evidence report, цифровая карточка товара для повторных продаж и отдельный logistics / broker document checklist. Эти опции не включаются автоматически в базовые 3 000 000 ₸ без отдельного письменного согласования.",
 };
 
+const copyVariantTitles: Record<CopyVariant, string> = {
+  short: "Короткое техническое сообщение",
+  executive: "Расширенное коммерческое сообщение",
+  command: "Технический summary",
+  boundary: "Граница ответственности",
+  deliverables: "Свод deliverables",
+  payment: "Коммерческое сообщение",
+  next: "Условия оплаты",
+  addons: "Технические расширения",
+};
+
 const presentationModes: Array<{
   id: PresentationModeId;
   label: string;
@@ -1316,7 +1327,7 @@ const presentationModes: Array<{
   {
     id: "handover",
     label: "Evidence & Handover",
-    summary: "Photo Evidence Wall, Handover Room и Copy Package собирают evidence register, closeout packs и reusable Digital Product Asset.",
+    summary: "Photo Evidence Wall, Handover Room и technical summary pack собирают evidence register, closeout packs и reusable Digital Product Asset.",
     nextAction: "Скопировать технический summary и зафиксировать deliverables, open issues register и границы ответственности.",
     focus: "закрытие и повторное использование",
     endpoint: {
@@ -1398,7 +1409,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [isRotating, setIsRotating] = useState(true);
   const [presentationMode, setPresentationMode] = useState(false);
   const [activePresentationMode, setActivePresentationMode] = useState<PresentationModeId>("executive");
-  const [copyStatus, setCopyStatus] = useState("Ready");
+  const [copyStatus, setCopyStatus] = useState("Готово");
   const [copyVariant, setCopyVariant] = useState<CopyVariant>("short");
   const [modeEndpointOpen, setModeEndpointOpen] = useState(false);
   const [executiveDetailsOpen, setExecutiveDetailsOpen] = useState(false);
@@ -1739,7 +1750,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     return `${baseClass} ${isPresentationSection(section) ? styles.presentationSectionActive : ""}`;
   }
 
-  async function copyPlainText(text: string, status = "Copied") {
+  async function copyPlainText(text: string, status = "Скопировано") {
     if (window.isSecureContext && navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(text);
@@ -1756,23 +1767,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       copyRef.current.select();
       const ok = document.execCommand("copy");
       copyRef.current.hidden = ok;
-      setCopyStatus(ok ? `${status} with fallback` : "Text is open for manual copy");
+      setCopyStatus(ok ? `${status} через fallback` : "Текст открыт для ручного копирования");
     }
   }
 
   async function copyBoardText(variant: CopyVariant) {
     setCopyVariant(variant);
-    await copyPlainText(copyTexts[variant], "Copied");
+    await copyPlainText(copyTexts[variant], "Скопировано");
   }
 
   async function copyDecisionOutcome() {
     setCopyVariant("command");
-    await copyPlainText(decisionOutcomeText, "Decision outcome copied");
+    await copyPlainText(decisionOutcomeText, "Selected outcome скопирован");
   }
 
   async function copyCockpitSummary() {
     setCopyVariant("command");
-    await copyPlainText(cockpitSummaryText, "Cockpit summary copied");
+    await copyPlainText(cockpitSummaryText, "Технический summary скопирован");
   }
 
   function toggleCommercialTerms(nextOpen = !commercialTermsOpen) {
@@ -2010,7 +2021,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
             <button type="button" onClick={copyCockpitSummary}>
-              Copy cockpit summary
+              Скопировать технический summary
             </button>
           </div>
           <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
@@ -3804,10 +3815,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
           <div className={styles.copyCommandStrip} aria-label="Commercial copy summary">
             {[
-              ["short", "Short commercial message", "Единый комплекс UPGRADE отделен от стоимости оборудования, логистики, брокера, монтажа и иных внешних затрат."],
-              ["extended", "Extended commercial message", "Коммерческое сообщение раскрывает стоимость, порядок оплаты, acceptance basis и boundary без смешения с техническим cockpit."],
-              ["boundary", "Responsibility boundary", "UPGRADE структурирует данные и статусы; профильные участники утверждают технические, таможенные, логистические и монтажные решения."],
-              ["terms", "Payment terms", "50/50 или 100% по согласованию, с приемкой результата по переданным deliverables."],
+              ["кратко", "Короткое коммерческое сообщение", "Единый комплекс UPGRADE отделен от стоимости оборудования, логистики, брокера, монтажа и иных внешних затрат."],
+              ["развернуто", "Расширенное коммерческое сообщение", "Коммерческое сообщение раскрывает стоимость, порядок оплаты, acceptance basis и boundary без смешения с техническим cockpit."],
+              ["граница", "Граница ответственности", "UPGRADE структурирует данные и статусы; профильные участники утверждают технические, таможенные, логистические и монтажные решения."],
+              ["условия", "Условия оплаты", "50/50 или 100% по согласованию, с приемкой результата по переданным deliverables."],
             ].map(([label, title, text]) => (
               <article key={label}>
                 <span>{label}</span>
@@ -3818,25 +3829,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <details className={styles.copyActionDisclosure} open={commercialTermsOpen || copyActionsOpen} onToggle={(event) => setCopyActionsOpen(event.currentTarget.open)}>
             <summary>
-              <span>copy variants</span>
-              <strong>{copyVariant === "command" ? "Command-center summary" : copyVariant}</strong>
+              <span>сообщения</span>
+              <strong>{copyVariantTitles[copyVariant]}</strong>
               <small>{copyStatus}</small>
             </summary>
             {copyActionsOpen ? (
               <div className={styles.copyButtons}>
                 {[
                   ["payment", "Скопировать коммерческое сообщение"],
-                  ["executive", "Copy extended commercial message"],
-                  ["boundary", "Copy responsibility boundary"],
-                  ["next", "Copy payment terms"],
+                  ["executive", "Скопировать расширенное сообщение"],
+                  ["boundary", "Скопировать границу ответственности"],
+                  ["next", "Скопировать условия оплаты"],
                 ].map(([variant, label]) => <button key={variant} type="button" data-active={copyVariant === variant} onClick={() => copyCommercialMessage(variant as CopyVariant)}>{label}</button>)}
               </div>
             ) : null}
           </details>
           <article className={styles.copyPreview} aria-label="Selected commercial copy preview">
             <div>
-              <p className={styles.eyebrow}>Selected message</p>
-              <h3>{copyVariant === "command" ? "Command-center summary" : copyVariant}</h3>
+              <p className={styles.eyebrow}>Выбранное сообщение</p>
+              <h3>{copyVariantTitles[copyVariant]}</h3>
             </div>
             <p>{copyTexts[copyVariant]}</p>
           </article>
