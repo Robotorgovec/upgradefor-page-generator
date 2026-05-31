@@ -2045,6 +2045,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           camera={{ position: [0, 0.08, 7.1], fov: 38 }}
           dpr={[1, 1.7]}
           gl={{ antialias: true, alpha: true }}
+          onCreated={() => setTwinModelReady(true)}
           shadows
         >
           <ambientLight intensity={1.45} />
