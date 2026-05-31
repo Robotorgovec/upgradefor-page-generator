@@ -2402,6 +2402,84 @@
   font-weight: 850;
 }
 
+.twinInterfaceChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.twinInterfaceChips span {
+  min-height: 28px;
+  padding: 7px 9px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.twinInterfaceDisclosure {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.twinInterfaceDisclosure summary {
+  min-height: 44px;
+  padding: 10px 38px 10px 12px;
+  color: var(--proposal-text);
+  cursor: pointer;
+  display: grid;
+  gap: 3px;
+  position: relative;
+}
+
+.twinInterfaceDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.twinInterfaceDisclosure summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 50%;
+  color: var(--proposal-brand-contrast);
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+}
+
+.twinInterfaceDisclosure[open] summary::after {
+  content: "-";
+}
+
+.twinInterfaceDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.twinInterfaceDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.twinInterfaceDisclosure dl {
+  padding: 0 10px 10px;
+}
+
 .twinPanel dl,
 .sceneDetail dl,
 .controlDetail dl,

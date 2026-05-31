@@ -2646,18 +2646,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <h3>Патрубки и режимы: что подтверждать</h3>
                 <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
               </div>
-              <dl>
+              <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
                 {twinInterfaceRows.map((item) => (
-                  <div key={item.label}>
-                    <dt>{item.label}</dt>
-                    <dd>
-                      <strong>{item.input}</strong>
-                      <span>{item.action}</span>
-                      <small>{item.owner}</small>
-                    </dd>
-                  </div>
+                  <span key={item.label}>{item.label}</span>
                 ))}
-              </dl>
+              </div>
+              <details className={styles.twinInterfaceDisclosure}>
+                <summary>
+                  <span>Открыть handoff map</span>
+                  <strong>inputs, action и owner по патрубкам</strong>
+                </summary>
+                <dl>
+                  {twinInterfaceRows.map((item) => (
+                    <div key={item.label}>
+                      <dt>{item.label}</dt>
+                      <dd>
+                        <strong>{item.input}</strong>
+                        <span>{item.action}</span>
+                        <small>{item.owner}</small>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
             </div>
             <div className={styles.twinControls}>
               <button type="button" onClick={() => setPresentationMode(true)}>Open presentation mode</button>
