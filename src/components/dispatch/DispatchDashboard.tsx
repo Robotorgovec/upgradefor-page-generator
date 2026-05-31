@@ -1140,12 +1140,30 @@ export default function DispatchDashboard() {
                     }
                     key={row.tag}
                   >
-                    <code>{row.tag}</code>
-                    <span>{row.signalType}</span>
-                    <span>{row.register}</span>
-                    <span>{row.scaling}</span>
-                    <span>{row.unit}</span>
-                    <strong>{isSelectedAlarmSource ? `${row.quality} · SOURCE` : row.quality}</strong>
+                    <div className="scadaTagCell scadaTagCellTag">
+                      <span className="scadaTagMobileLabel">Tag</span>
+                      <code>{row.tag}</code>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Type</span>
+                      <span className="scadaTagValue">{row.signalType}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Register</span>
+                      <span className="scadaTagValue">{row.register}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Scaling</span>
+                      <span className="scadaTagValue">{row.scaling}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Unit</span>
+                      <span className="scadaTagValue">{row.unit}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Quality</span>
+                      <strong>{isSelectedAlarmSource ? `${row.quality} · SOURCE` : row.quality}</strong>
+                    </div>
                   </article>
                 );
               })}
@@ -2874,7 +2892,7 @@ export default function DispatchDashboard() {
 
         .scadaTagSummary span,
         .scadaTagHeader span,
-        .scadaTagTable article span {
+        .scadaTagValue {
           color: #93c5fd;
           font-size: 11px;
           font-weight: 800;
@@ -2905,6 +2923,23 @@ export default function DispatchDashboard() {
           border-radius: 8px;
           background: rgba(2, 8, 23, 0.62);
           padding: 8px;
+        }
+
+        .scadaTagCell {
+          display: grid;
+          min-width: 0;
+          gap: 3px;
+          align-content: center;
+        }
+
+        .scadaTagMobileLabel {
+          display: none;
+          color: #cbd5e1;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.04em;
+          line-height: 1.2;
+          text-transform: uppercase;
         }
 
         .scadaTagTable article.isDataError {
@@ -3252,10 +3287,15 @@ export default function DispatchDashboard() {
 
           .scadaTagTable article {
             grid-template-columns: 1fr 1fr;
+            gap: 10px;
           }
 
-          .scadaTagTable article code {
+          .scadaTagCellTag {
             grid-column: 1 / -1;
+          }
+
+          .scadaTagMobileLabel {
+            display: inline;
           }
 
           .dispatchBottomNav {

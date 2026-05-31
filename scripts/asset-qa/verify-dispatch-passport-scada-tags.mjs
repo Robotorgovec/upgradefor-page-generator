@@ -70,6 +70,7 @@ const inspectScript = `
   return JSON.stringify({
     hasTable: Boolean(table),
     tableText: table?.textContent || "",
+    mobileLabelCount: table?.querySelectorAll(".scadaTagMobileLabel").length || 0,
     rowCount: rows.length,
     rows,
     hasNoRealControlCopy: bodyText.includes("no write commands") || bodyText.includes("No real equipment control"),
@@ -92,6 +93,10 @@ try {
   assert(overview.tableText.includes("Scaling"), "SCADA tag table is missing Scaling column");
   assert(overview.tableText.includes("Unit"), "SCADA tag table is missing Unit column");
   assert(overview.tableText.includes("Quality"), "SCADA tag table is missing Quality column");
+  assert(
+    overview.mobileLabelCount >= overview.rowCount * 6,
+    `SCADA tag mobile labels are missing or incomplete: ${overview.mobileLabelCount} labels for ${overview.rowCount} rows`,
+  );
   assert(overview.hasNoRealControlCopy, "SCADA tag tab is missing read-only/no-write safety copy");
 
   runAgentBrowser(["eval", `document.querySelector('[data-testid="dispatch-data-error-alarm"]')?.click(); "clicked"`]);
