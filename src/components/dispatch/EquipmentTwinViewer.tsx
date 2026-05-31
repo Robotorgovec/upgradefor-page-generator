@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Html, OrbitControls, useGLTF } from "@react-three/drei";
+import { Bounds, Center, Html, OrbitControls, useGLTF } from "@react-three/drei";
 import type { Object3D } from "three";
 
 import type {
@@ -66,6 +66,44 @@ function collectBaseTransforms(root: Object3D) {
   return transforms;
 }
 
+function getEquipmentModelPath(equipment: EquipmentTwinConfig, state: EquipmentTwinAssemblyState) {
+  if (state === "exploded" && equipment.explodedModelPath) {
+    return equipment.explodedModelPath;
+  }
+
+  return equipment.assembledModelPath ?? equipment.modelPath;
+}
+
+function getInitialRotationY(equipmentId: EquipmentTwinConfig["id"]) {
+  if (equipmentId === "fancoil-fc92") {
+    return 2.82;
+  }
+
+  return -0.32;
+}
+
+function getViewerProfile(equipmentId: EquipmentTwinConfig["id"]) {
+  if (equipmentId === "ahu-pv1") {
+    return {
+      boundsMargin: 0.72,
+      camera: { position: [5.6, 2.7, 5.1] as [number, number, number], fov: 33 },
+      controls: { minDistance: 2.8, maxDistance: 9.5 },
+      gridY: -1,
+      labelY: 1.3,
+      modelScale: 1,
+    };
+  }
+
+  return {
+    boundsMargin: 0.86,
+    camera: { position: [5, 3.2, 5] as [number, number, number], fov: 42 },
+    controls: { minDistance: 2.8, maxDistance: 9 },
+    gridY: -0.82,
+    labelY: 1.05,
+    modelScale: 1.04,
+  };
+}
+
 function applyAbsoluteTransform(
   object: Object3D,
   base: BaseTransform,
@@ -82,16 +120,19 @@ function applyAbsoluteTransform(
 
 function LoadedTwinModel({
   equipment,
+  modelPath,
   state,
   onOpenPassport,
 }: {
   equipment: EquipmentTwinConfig;
+  modelPath: string;
   state: EquipmentTwinAssemblyState;
   onOpenPassport: () => void;
 }) {
-  const gltf = useGLTF(equipment.modelPath);
+  const gltf = useGLTF(modelPath, true);
   const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
   const baseTransforms = useMemo(() => collectBaseTransforms(gltf.scene), [gltf.scene]);
+  const viewerProfile = getViewerProfile(equipment.id);
 
   useEffect(() => {
     scene.traverse((object) => {
@@ -106,32 +147,15 @@ function LoadedTwinModel({
     });
   }, [baseTransforms, equipment.explodedTransforms, scene, state]);
 
-  useEffect(() => {
-    return () => {
-      scene.traverse((object) => {
-        const mesh = object as Object3D & {
-          geometry?: { dispose?: () => void };
-          material?: { dispose?: () => void } | Array<{ dispose?: () => void }>;
-        };
-
-        mesh.geometry?.dispose?.();
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach((material) => material.dispose?.());
-        } else {
-          mesh.material?.dispose?.();
-        }
-      });
-    };
-  }, [scene]);
-
   return (
     <group
+      key={modelPath}
       onClick={(event) => {
         event.stopPropagation();
         onOpenPassport();
       }}
-      rotation={[0, -0.32, 0]}
-      scale={[1.04, 1.04, 1.04]}
+      rotation={[0, getInitialRotationY(equipment.id), 0]}
+      scale={[viewerProfile.modelScale, viewerProfile.modelScale, viewerProfile.modelScale]}
     >
       <primitive object={scene} />
     </group>
@@ -171,12 +195,14 @@ export default function EquipmentTwinViewer({
   onOpenPassport,
 }: EquipmentTwinViewerProps) {
   const [assetStatus, setAssetStatus] = useState<"checking" | "available" | "missing">("checking");
+  const modelPath = getEquipmentModelPath(equipment, state);
+  const viewerProfile = getViewerProfile(equipment.id);
 
   useEffect(() => {
     let isMounted = true;
     setAssetStatus("checking");
 
-    fetch(equipment.modelPath, { method: "HEAD" })
+    fetch(modelPath, { method: "HEAD" })
       .then((response) => {
         if (isMounted) {
           setAssetStatus(response.ok ? "available" : "missing");
@@ -191,7 +217,7 @@ export default function EquipmentTwinViewer({
     return () => {
       isMounted = false;
     };
-  }, [equipment.modelPath]);
+  }, [modelPath]);
 
   return (
     <div className="equipmentTwinViewer" aria-label={`3D digital twin ${equipment.title}`}>
@@ -199,17 +225,26 @@ export default function EquipmentTwinViewer({
         {assetStatus === "checking" ? <AssetCheckingLabel /> : null}
         {assetStatus === "missing" ? <AssetErrorLabel onOpenPassport={onOpenPassport} /> : null}
         {assetStatus === "available" ? (
-          <Canvas camera={{ position: [5, 3.2, 5], fov: 42 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
+          <Canvas camera={viewerProfile.camera} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
             <color attach="background" args={["#06111f"]} />
             <ambientLight intensity={0.68} />
             <directionalLight position={[5, 6, 4]} intensity={1.45} />
             <pointLight position={[-3, 2.4, 2]} intensity={1.05} color="#67e8f9" />
-            <gridHelper args={[7, 14, "#155e75", "#0f2738"]} position={[0, -0.82, 0]} />
+            <gridHelper args={[7, 14, "#155e75", "#0f2738"]} position={[0, viewerProfile.gridY, 0]} />
             <Suspense fallback={<LoaderLabel />}>
               <ModelErrorBoundary fallback={<LoaderLabel />}>
-                <LoadedTwinModel equipment={equipment} state={state} onOpenPassport={onOpenPassport} />
+                <Bounds fit clip observe margin={viewerProfile.boundsMargin}>
+                  <Center>
+                    <LoadedTwinModel
+                      equipment={equipment}
+                      modelPath={modelPath}
+                      state={state}
+                      onOpenPassport={onOpenPassport}
+                    />
+                  </Center>
+                </Bounds>
               </ModelErrorBoundary>
-              <Html position={[0, 1.55, 0]} center distanceFactor={6}>
+              <Html position={[0, viewerProfile.labelY, 0]} center distanceFactor={3}>
                 <div className="equipmentTwinModelLabel">
                   <strong>{equipment.title}</strong>
                   <span>{equipment.status}</span>
@@ -217,7 +252,13 @@ export default function EquipmentTwinViewer({
                 </div>
               </Html>
             </Suspense>
-            <OrbitControls enableDamping enablePan={false} minDistance={2.8} maxDistance={9} />
+            <OrbitControls
+              enableDamping
+              makeDefault
+              enablePan={false}
+              minDistance={viewerProfile.controls.minDistance}
+              maxDistance={viewerProfile.controls.maxDistance}
+            />
           </Canvas>
         ) : null}
       </div>
@@ -316,8 +357,8 @@ export default function EquipmentTwinViewer({
 
         .equipmentTwinViewport {
           position: relative;
-          height: min(42vh, 390px);
-          min-height: 300px;
+          height: clamp(320px, 44vh, 430px);
+          min-height: 320px;
           overflow: hidden;
           border: 1px solid rgba(34, 211, 238, 0.24);
           border-radius: 8px;
@@ -343,6 +384,12 @@ export default function EquipmentTwinViewer({
           font-size: 11px;
           font-weight: 800;
           padding: 6px 8px;
+        }
+
+        @media (max-width: 760px) {
+          .equipmentTwinViewport {
+            height: clamp(340px, 62vh, 470px);
+          }
         }
       `}</style>
     </div>

@@ -1,0 +1,1402 @@
+{
+  "baseUrl": "http://127.0.0.1:3063",
+  "dispatchUrl": "http://127.0.0.1:3063/dispatch?cb=1780164742780",
+  "outputDir": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030",
+  "screenshots": [
+    {
+      "id": "full-page",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/00-full-page.png"
+    },
+    {
+      "id": "overview",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-01-overview.png"
+    },
+    {
+      "id": "cooling",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-02-cooling.png"
+    },
+    {
+      "id": "fan-coils",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-03-fan-coils.png"
+    },
+    {
+      "id": "ventilation",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-04-ventilation.png"
+    },
+    {
+      "id": "itp",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-05-itp.png"
+    },
+    {
+      "id": "pumps",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-06-pumps.png"
+    },
+    {
+      "id": "heat-exchangers",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-07-heat-exchangers.png"
+    },
+    {
+      "id": "alarms",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-08-alarms.png"
+    },
+    {
+      "id": "trends",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-09-trends.png"
+    },
+    {
+      "id": "equipment",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-10-equipment.png"
+    },
+    {
+      "id": "tickets",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-11-tickets.png"
+    },
+    {
+      "id": "ai",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-12-ai.png"
+    },
+    {
+      "id": "mobile",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/99-mobile-full-page.png"
+    }
+  ],
+  "initialAudit": {
+    "sectionLabel": null,
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3063/dispatch?cb=1780164742780",
+    "viewportWidth": 1440,
+    "scrollWidth": 1440,
+    "horizontalOverflow": false,
+    "overflowSamples": [
+      {
+        "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+        "tag": "aside",
+        "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+        "left": 14,
+        "right": 334,
+        "width": 320,
+        "overflowX": 9
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8",
+        "tag": "span",
+        "text": "Температура",
+        "left": 44,
+        "right": 108,
+        "width": 64,
+        "overflowX": 8
+      },
+      {
+        "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+        "tag": "article",
+        "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+        "left": 129,
+        "right": 219,
+        "width": 90,
+        "overflowX": 12
+      },
+      {
+        "selector": "strong.jsx-c9ef7b35db38fee8",
+        "tag": "strong",
+        "text": "DATA_ERROR",
+        "left": 142,
+        "right": 206,
+        "width": 64,
+        "overflowX": 24
+      },
+      {
+        "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+        "tag": "section",
+        "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+        "left": 14,
+        "right": 334,
+        "width": 320,
+        "overflowX": 10
+      },
+      {
+        "selector": "div.jsx-5cba732c33f44fe9.dispatchTrendsPanel__tabs",
+        "tag": "div",
+        "text": "Температура°CДавлениебарРасходм3/чЭнергиякВт·ч",
+        "left": 31,
+        "right": 317,
+        "width": 286,
+        "overflowX": 26
+      },
+      {
+        "selector": "button.jsx-5cba732c33f44fe9",
+        "tag": "button",
+        "text": "Температура°C",
+        "left": 31,
+        "right": 97,
+        "width": 66,
+        "overflowX": 61
+      },
+      {
+        "selector": "span.jsx-5cba732c33f44fe9.dispatchTrendsPanel__tabLabel",
+        "tag": "span",
+        "text": "Температура",
+        "left": 44,
+        "right": 84,
+        "width": 40,
+        "overflowX": 73
+      },
+      {
+        "selector": "button.jsx-5cba732c33f44fe9",
+        "tag": "button",
+        "text": "Давлениебар",
+        "left": 105,
+        "right": 170,
+        "width": 66,
+        "overflowX": 36
+      },
+      {
+        "selector": "span.jsx-5cba732c33f44fe9.dispatchTrendsPanel__tabLabel",
+        "tag": "span",
+        "text": "Давление",
+        "left": 118,
+        "right": 157,
+        "width": 40,
+        "overflowX": 48
+      },
+      {
+        "selector": "button.jsx-5cba732c33f44fe9",
+        "tag": "button",
+        "text": "Расходм3/ч",
+        "left": 178,
+        "right": 244,
+        "width": 66,
+        "overflowX": 17
+      },
+      {
+        "selector": "span.jsx-5cba732c33f44fe9.dispatchTrendsPanel__tabLabel",
+        "tag": "span",
+        "text": "Расход",
+        "left": 191,
+        "right": 231,
+        "width": 40,
+        "overflowX": 29
+      },
+      {
+        "selector": "button.jsx-5cba732c33f44fe9.isActive",
+        "tag": "button",
+        "text": "ЭнергиякВт·ч",
+        "left": 252,
+        "right": 317,
+        "width": 66,
+        "overflowX": 27
+      },
+      {
+        "selector": "span.jsx-5cba732c33f44fe9.dispatchTrendsPanel__tabLabel",
+        "tag": "span",
+        "text": "Энергия",
+        "left": 265,
+        "right": 304,
+        "width": 40,
+        "overflowX": 39
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.twinStage",
+        "tag": "div",
+        "text": "AHU VC-13/VC-11DP data-qualityCH-1ШУ-2VC-13AHUAHU VC-13/VC-11+11.400 / +12.600 / +13.500Чиллеры Tran",
+        "left": 367,
+        "right": 1053,
+        "width": 686,
+        "overflowX": 64
+      },
+      {
+        "selector": "button.jsx-c9ef7b35db38fee8.equipmentNode.labelBottom",
+        "tag": "button",
+        "text": "BMS/SCADA10.50.4.41 / Operator",
+        "left": 638,
+        "right": 782,
+        "width": 144,
+        "overflowX": 10
+      },
+      {
+        "selector": "aside.jsx-c9ef7b35db38fee8.passportDrawer.panel",
+        "tag": "aside",
+        "text": "×Equipment registryПаспортизация оборудованияПриточная вентустановка ПВ-1Статус: В работе · Read-onl",
+        "left": 1086,
+        "right": 1426,
+        "width": 340,
+        "overflowX": 21
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.passportTabs",
+        "tag": "div",
+        "text": "ПаспортПараметрыSCADA-тегиТОДокументы",
+        "left": 1103,
+        "right": 1409,
+        "width": 306,
+        "overflowX": 37
+      },
+      {
+        "selector": "button.jsx-c9ef7b35db38fee8.isActive",
+        "tag": "button",
+        "text": "Паспорт",
+        "left": 1103,
+        "right": 1159,
+        "width": 56,
+        "overflowX": 16
+      },
+      {
+        "selector": "button.jsx-c9ef7b35db38fee8",
+        "tag": "button",
+        "text": "Параметры",
+        "left": 1165,
+        "right": 1222,
+        "width": 56,
+        "overflowX": 39
+      }
+    ],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 136,
+      "disabled": 24,
+      "links": 11,
+      "active": 6,
+      "readonlyLocked": 35
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Обзор объекта",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-01-overview.png",
+      "activeSection": [
+        "Обзор объекта42/46 систем online · no active alarm",
+        "Обзор объекта"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "cooling",
+      "label": "Холодоснабжение / чиллеры",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-02-cooling.png",
+      "activeSection": [
+        "Холодоснабжение / чиллерыLIVE5 чиллерных позиций · 2 event",
+        "Холодоснабжение / чиллеры"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 36
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "fan-coils",
+      "label": "Кондиционирование / фанкойлы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-03-fan-coils.png",
+      "activeSection": [
+        "Кондиционирование / фанкойлыточный реестр TO VERIFY · 1 event",
+        "Кондиционирование / фанкойлы"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "ventilation",
+      "label": "Вентиляция",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-04-ventilation.png",
+      "activeSection": [
+        "Вентиляция5 вентиляционных групп · 1 event",
+        "Вентиляция"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "itp",
+      "label": "Теплоснабжение / ИТП",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-05-itp.png",
+      "activeSection": [
+        "Теплоснабжение / ИТП1 тепловой ввод / TO VERIFY · no active alarm",
+        "Теплоснабжение / ИТП"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "pumps",
+      "label": "Насосные группы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-06-pumps.png",
+      "activeSection": [
+        "Насосные группыоколо 10 насосов · 1 event",
+        "Насосные группы"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч!!0",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "heat-exchangers",
+      "label": "Теплообменники",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-07-heat-exchangers.png",
+      "activeSection": [
+        "Теплообменникиоколо 6 узлов · 1 event",
+        "Теплообменники"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "alarms",
+      "label": "Аварии",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-08-alarms.png",
+      "activeSection": [
+        "Аварии44 активных события · 4 event",
+        "Аварии"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч!!0",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 145,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "trends",
+      "label": "Тренды",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-09-trends.png",
+      "activeSection": [
+        "Тренды4 трендовых метрики · 1 event",
+        "Тренды"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч!!0",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "equipment",
+      "label": "Паспорта оборудования",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-10-equipment.png",
+      "activeSection": [
+        "Паспорта оборудования152 датчика + инженерные узлы · 1 event",
+        "Паспорта оборудования"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч!!0",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "tickets",
+      "label": "Заявки",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-11-tickets.png",
+      "activeSection": [
+        "Заявки1 demo-заявка готова · 1 event",
+        "Заявки"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 35
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    },
+    {
+      "id": "ai",
+      "label": "AI-диагностика",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-030/section-12-ai.png",
+      "activeSection": [
+        "AI-диагностикаNEW4 AI insights · 1 event",
+        "AI-диагностика"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [
+        {
+          "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+          "tag": "aside",
+          "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 9
+        },
+        {
+          "selector": "span.jsx-c9ef7b35db38fee8",
+          "tag": "span",
+          "text": "Температура",
+          "left": 44,
+          "right": 108,
+          "width": 64,
+          "overflowX": 8
+        },
+        {
+          "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+          "tag": "article",
+          "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+          "left": 129,
+          "right": 219,
+          "width": 90,
+          "overflowX": 12
+        },
+        {
+          "selector": "strong.jsx-c9ef7b35db38fee8",
+          "tag": "strong",
+          "text": "DATA_ERROR",
+          "left": 142,
+          "right": 206,
+          "width": 64,
+          "overflowX": 24
+        },
+        {
+          "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+          "tag": "section",
+          "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч!!0",
+          "left": 14,
+          "right": 334,
+          "width": 320,
+          "overflowX": 10
+        }
+      ],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 34
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      }
+    }
+  ],
+  "mobileAudit": {
+    "sectionLabel": "mobile",
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3063/dispatch?cb=1780164742780",
+    "viewportWidth": 390,
+    "scrollWidth": 390,
+    "horizontalOverflow": false,
+    "overflowSamples": [
+      {
+        "selector": "main.dispatchPageStack",
+        "tag": "main",
+        "text": "3D digital twin3D digital twin — Приточная вентустановка ПВ-1Presentation MVP поверх существующей BM",
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "overflowX": 178
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.dispatchShell",
+        "tag": "div",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "overflowX": 178
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.dispatchGrid",
+        "tag": "div",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "overflowX": 194
+      },
+      {
+        "selector": "header.jsx-c9ef7b35db38fee8.dispatchHeader.panel",
+        "tag": "header",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "overflowX": 195
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.headerStatus",
+        "tag": "div",
+        "text": "Связь: ОнлайнBMS/SCADA 10.50.4.41Роль: OperatorRead-only / Demo modeDEMO MODE",
+        "left": 243,
+        "right": 568,
+        "width": 324,
+        "overflowX": 0
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8",
+        "tag": "span",
+        "text": "Роль: Operator",
+        "left": 382,
+        "right": 433,
+        "width": 51,
+        "overflowX": 0
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8.readOnlyBadge",
+        "tag": "span",
+        "text": "Read-only / Demo mode",
+        "left": 443,
+        "right": 499,
+        "width": 56,
+        "overflowX": 0
+      },
+      {
+        "selector": "b.jsx-c9ef7b35db38fee8",
+        "tag": "b",
+        "text": "DEMO MODE",
+        "left": 509,
+        "right": 568,
+        "width": 59,
+        "overflowX": 0
+      },
+      {
+        "selector": "strong.jsx-c9ef7b35db38fee8",
+        "tag": "strong",
+        "text": "DATA_ERROR",
+        "left": 157,
+        "right": 233,
+        "width": 77,
+        "overflowX": 11
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.twinStage",
+        "tag": "div",
+        "text": "AHU VC-13/VC-11DP data-qualityCH-1ШУ-2VC-13AHUAHU VC-13/VC-11+11.400 / +12.600 / +13.500Чиллеры Tran",
+        "left": 35,
+        "right": 355,
+        "width": 320,
+        "overflowX": 30
+      },
+      {
+        "selector": "button.jsx-c9ef7b35db38fee8.equipmentNode.labelBottom",
+        "tag": "button",
+        "text": "BMS/SCADA10.50.4.41 / Operator",
+        "left": 123,
+        "right": 267,
+        "width": 144,
+        "overflowX": 10
+      },
+      {
+        "selector": "button.jsx-c9ef7b35db38fee8.equipmentNode",
+        "tag": "button",
+        "text": "Клапаны и приводы98 устройств",
+        "left": -22,
+        "right": 184,
+        "width": 206,
+        "overflowX": 0
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8.nodeCore",
+        "tag": "span",
+        "text": "",
+        "left": -16,
+        "right": 2,
+        "width": 18,
+        "overflowX": 0
+      },
+      {
+        "selector": "section.jsx-c9ef7b35db38fee8.sectionDetailPanel",
+        "tag": "section",
+        "text": "Selected moduleОбзор объекта4 события в контуре эксплуатацииОперационный обзор Asia Park Astana пове",
+        "left": 35,
+        "right": 355,
+        "width": 320,
+        "overflowX": 13
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.sectionDetailHeader",
+        "tag": "div",
+        "text": "Selected moduleОбзор объекта4 события в контуре эксплуатации",
+        "left": 50,
+        "right": 340,
+        "width": 290,
+        "overflowX": 27
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8",
+        "tag": "div",
+        "text": "Оборудование42/46 систем online",
+        "left": 50,
+        "right": 117,
+        "width": 67,
+        "overflowX": 25
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8",
+        "tag": "span",
+        "text": "Оборудование",
+        "left": 61,
+        "right": 106,
+        "width": 45,
+        "overflowX": 35
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8",
+        "tag": "div",
+        "text": "SCADA host10.50.4.41",
+        "left": 199,
+        "right": 266,
+        "width": 67,
+        "overflowX": 13
+      }
+    ],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 140,
+      "disabled": 24,
+      "links": 15,
+      "active": 6,
+      "readonlyLocked": 35
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "summary": {
+    "sectionScreenshots": 12,
+    "expectedSections": 12,
+    "desktopHorizontalOverflow": false,
+    "mobileHorizontalOverflow": false,
+    "desktopOverflowSamples": [
+      {
+        "selector": "aside.jsx-c9ef7b35db38fee8.leftRail",
+        "tag": "aside",
+        "text": "Engineering modulesРазделы диспетчеризацииОбзор объекта42/46 систем online · no active alarmХолодосн",
+        "left": 14,
+        "right": 334,
+        "width": 320,
+        "overflowX": 9
+      },
+      {
+        "selector": "span.jsx-c9ef7b35db38fee8",
+        "tag": "span",
+        "text": "Температура",
+        "left": 44,
+        "right": 108,
+        "width": 64,
+        "overflowX": 8
+      },
+      {
+        "selector": "[data-testid=\"dispatch-data-error-metric\"]",
+        "tag": "article",
+        "text": "ДавлениеDATA_ERRORОшибка данных · range 0–16 bar!",
+        "left": 129,
+        "right": 219,
+        "width": 90,
+        "overflowX": 12
+      },
+      {
+        "selector": "strong.jsx-c9ef7b35db38fee8",
+        "tag": "strong",
+        "text": "DATA_ERROR",
+        "left": 142,
+        "right": 206,
+        "width": 64,
+        "overflowX": 24
+      },
+      {
+        "selector": "section.jsx-5cba732c33f44fe9.dispatchTrendsPanel",
+        "tag": "section",
+        "text": "ТрендыПараметры диспетчеризации24 часа7 дней30 днейТемпература°CДавлениебарРасходм3/чЭнергиякВт·ч00:",
+        "left": 14,
+        "right": 334,
+        "width": 320,
+        "overflowX": 10
+      }
+    ],
+    "mobileOverflowSamples": [
+      {
+        "selector": "main.dispatchPageStack",
+        "tag": "main",
+        "text": "3D digital twin3D digital twin — Приточная вентустановка ПВ-1Presentation MVP поверх существующей BM",
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "overflowX": 178
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.dispatchShell",
+        "tag": "div",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "overflowX": 178
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.dispatchGrid",
+        "tag": "div",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "overflowX": 194
+      },
+      {
+        "selector": "header.jsx-c9ef7b35db38fee8.dispatchHeader.panel",
+        "tag": "header",
+        "text": "UPGRADE Dispatch / Asia Park AstanaИнтеллектуальная диспетчеризация существующей BMS/SCADA: холодосн",
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "overflowX": 195
+      },
+      {
+        "selector": "div.jsx-c9ef7b35db38fee8.headerStatus",
+        "tag": "div",
+        "text": "Связь: ОнлайнBMS/SCADA 10.50.4.41Роль: OperatorRead-only / Demo modeDEMO MODE",
+        "left": 243,
+        "right": 568,
+        "width": 324,
+        "overflowX": 0
+      }
+    ]
+  },
+  "ok": true
+}

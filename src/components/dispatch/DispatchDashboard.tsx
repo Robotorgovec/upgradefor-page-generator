@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   alarmEvents,
@@ -8,9 +8,11 @@ import {
   dispatchEquipmentNodes,
   dispatchSectionDetails,
   dispatchSections,
+  objectSummary,
   realtimeMetrics,
   trendSeries,
   type DispatchAlarmEvent,
+  type DispatchAiInsight,
   type DispatchEquipmentNode,
   type DispatchSection,
   type DispatchTrendKey,
@@ -29,9 +31,37 @@ import {
   getEquipmentTwinById,
 } from "./equipmentTwins.config";
 
-const passportTabs = ["Паспорт", "Параметры", "ТО", "Документы"];
+const passportTabs = ["Паспорт", "Параметры", "SCADA-теги", "ТО", "Документы"];
 const controlButtons = ["Пуск", "Стоп", "Auto/Manual", "Изменить уставку", "Сброс аварии"];
 const twinPassportActions = ["Паспорт", "Параметры", "ТО", "Документы", "Открыть тренды", "Создать заявку"];
+const readonlyControlTooltip = "Управление заблокировано (Demo mode)";
+const readonlyUserRole = "Operator";
+const aiInsightCategories: Array<{
+  id: DispatchAiInsight["category"];
+  title: string;
+  helper: string;
+}> = [
+  {
+    id: "data-quality",
+    title: "Data quality",
+    helper: "Tag validity, scaling and historian confidence",
+  },
+  {
+    id: "predictive-maintenance",
+    title: "Predictive maintenance",
+    helper: "Failure risk from events and unstable telemetry",
+  },
+  {
+    id: "energy-optimization",
+    title: "Energy optimization",
+    helper: "Demo estimates from normalized trend context",
+  },
+  {
+    id: "operational-risk",
+    title: "Operational risk",
+    helper: "Guidance for operator review, tickets and audit trail",
+  },
+];
 const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
   "ahu-pv1": "assembled",
   chiller: "assembled",
@@ -42,11 +72,57 @@ const initialTwinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState> = {
 
 type ModalState = "readonly" | "ticket" | null;
 type PassportSource = "node" | "twin";
+type ReadonlyAuditEntry = {
+  action: string;
+  equipment: string;
+  role: string;
+  time: string;
+};
+
+type DemoTicketEntry = {
+  alarmTitle: string;
+  equipment: string;
+  id: string;
+  section: string;
+  severity: string;
+  source: string;
+  status: string;
+  tag: string;
+  time: string;
+};
+
+type ScadaTagRow = {
+  tag: string;
+  signalType: "AI" | "DI" | "DO" | "AO";
+  register: string;
+  scaling: string;
+  unit: string;
+  quality: "VALID" | "DATA_ERROR" | "TO VERIFY";
+};
+
+type PassportField = {
+  category: "identity" | "location" | "scada" | "service";
+  id: string;
+  label: string;
+  requiredForCompletion: boolean;
+  value: string;
+};
+
+const passportCompletenessCategories: Array<{
+  id: PassportField["category"];
+  label: string;
+  helper: string;
+}> = [
+  { id: "identity", label: "Identity", helper: "модель, серийный номер, производитель" },
+  { id: "location", label: "Location", helper: "система, локация, инвентарный номер" },
+  { id: "scada", label: "SCADA tags", helper: "теги, регистры, scaling" },
+  { id: "service", label: "Service", helper: "ТО, история, сервисная заметка" },
+];
 
 function severityLabel(severity: DispatchAlarmEvent["severity"]) {
-  if (severity === "critical") return "Авария";
-  if (severity === "warning") return "Предупреждение";
-  return "ТО";
+  if (severity === "critical") return "Critical";
+  if (severity === "warning") return "Warning";
+  return "Info";
 }
 
 function statusTone(status: string) {
@@ -55,16 +131,168 @@ function statusTone(status: string) {
   return "ok";
 }
 
+function normalizeEquipmentStatus(status: string): DispatchEquipmentNode["status"] {
+  if (
+    status === "В работе" ||
+    status === "Предупреждение" ||
+    status === "Авария" ||
+    status === "TO VERIFY" ||
+    status === "Demo"
+  ) {
+    return status;
+  }
+
+  return "TO VERIFY";
+}
+
+function findParamValue(
+  params: Array<{ label: string; value: string }>,
+  patterns: RegExp[],
+  fallback = "TO VERIFY",
+) {
+  const param = params.find((item) => patterns.some((pattern) => pattern.test(item.label)));
+  return param?.value ?? fallback;
+}
+
+function needsVerification(value: string) {
+  return /TO VERIFY/i.test(value);
+}
+
+function passportVerificationLabel(value: string) {
+  const normalized = value.trim();
+  if (/^TO VERIFY$/i.test(normalized)) return "Требует обхода";
+  return "Частично не заполнено";
+}
+
+function formatVerifiedDisplayValue(value: string) {
+  const normalized = value.trim();
+  if (/^TO VERIFY$/i.test(normalized)) return "Не заполнено";
+  return normalized.replace(/TO VERIFY/gi, "требует верификации");
+}
+
+function isPassportFieldComplete(field: PassportField) {
+  return !needsVerification(field.value) && field.value.trim().length > 0;
+}
+
+function getScadaSignalType(tag: string): ScadaTagRow["signalType"] {
+  if (/WRITE|CONTROL|LOCKED|COMMAND/i.test(tag)) return "DO";
+  if (/STATUS|ONLINE|ALARM|MODE/i.test(tag)) return "DI";
+  if (/SETPOINT|VALVE|DRIVE/i.test(tag)) return "AO";
+  return "AI";
+}
+
+function getScadaUnit(tag: string) {
+  if (/TEMP|GLYCOL|WATER/i.test(tag)) return "°C";
+  if (/(^|[._-])DP([._-]|$)|PRESSURE/i.test(tag)) return "bar";
+  if (/AIRFLOW|FLOW/i.test(tag)) return "м³/ч";
+  if (/ENERGY|POWER/i.test(tag)) return "кВт·ч";
+  if (/VALVE|LOAD/i.test(tag)) return "%";
+  if (/STATUS|ONLINE|ALARM|MODE|LOCKED/i.test(tag)) return "state";
+  return "TO VERIFY";
+}
+
+function getScadaScaling(tag: string, unit: string) {
+  if (/(^|[._-])DP([._-]|$)|PRESSURE/i.test(tag)) return "0–16 bar";
+  if (/TEMP|GLYCOL|WATER/i.test(tag)) return "0.1 °C";
+  if (/AIRFLOW|FLOW/i.test(tag)) return "engineering units";
+  if (/STATUS|ONLINE|ALARM|MODE|LOCKED/i.test(tag)) return "boolean";
+  return unit === "TO VERIFY" ? "TO VERIFY" : "normalized";
+}
+
+function getScadaRegister(tag: string) {
+  const parts = tag.split(".");
+  const candidate = parts.slice(-2).join(".");
+  if (/TO_VERIFY/i.test(tag)) return "TO VERIFY";
+  if (/DISPATCH|AI\.ANOMALY/i.test(tag)) return "derived";
+  if (/BMS\.ALARM/i.test(tag)) return "event route";
+  return candidate || "TO VERIFY";
+}
+
+function buildScadaTagRows(equipment: DispatchEquipmentNode): ScadaTagRow[] {
+  const hasDataError = equipment.onlineParams.some((param) => param.quality === "DATA_ERROR");
+  const tags = equipment.scadaTags.length ? equipment.scadaTags : ["TO VERIFY"];
+
+  return tags.map((tag) => {
+    const unit = getScadaUnit(tag);
+    const quality = /TO_VERIFY|TO VERIFY/i.test(tag)
+      ? "TO VERIFY"
+      : hasDataError && (/(^|[._-])DP([._-]|$)/i.test(tag) || /6553/i.test(tag))
+        ? "DATA_ERROR"
+        : "VALID";
+
+    return {
+      tag,
+      signalType: getScadaSignalType(tag),
+      register: getScadaRegister(tag),
+      scaling: getScadaScaling(tag, unit),
+      unit,
+      quality,
+    };
+  });
+}
+
+function getDocumentActionMeta(title: string) {
+  if (title === "Создать заявку") {
+    return {
+      actionState: "opens-demo-ticket",
+      label: "Demo ticket",
+      title: "Подготовить demo-заявку локально. No real equipment control.",
+    };
+  }
+
+  if (title === "Открыть тренды") {
+    return {
+      actionState: "opens-trends-context",
+      label: "Trends",
+      title: "Открыть тренды выбранного оборудования в read-only режиме.",
+    };
+  }
+
+  return {
+    actionState: "read-only-locked",
+    label: "Read-only locked",
+    title: "Документ отмечен как read-only/TO VERIFY. Управление заблокировано (Demo mode).",
+  };
+}
+
 function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
   if (id === "ahu-pv1") return "flow";
   if (id === "chiller" || id === "cooling-tower-small") return "energy";
   return "temperature";
 }
 
+function twinSelectionForSection(sectionId: DispatchSection, currentTwinId: EquipmentTwinId) {
+  const sectionTwinIds = equipmentTwinSectionMap[sectionId] ?? [];
+  const activeTwinId = sectionTwinIds.includes(currentTwinId) ? currentTwinId : sectionTwinIds[0];
+
+  if (!activeTwinId) {
+    return { activeTwinId: currentTwinId, relatedTwinIds: [] };
+  }
+
+  if (sectionId === "cooling") {
+    return { activeTwinId: "chiller" as const, relatedTwinIds: ["cooling-tower-small" as const] };
+  }
+
+  if (sectionId === "fanCoils") {
+    return { activeTwinId: "fancoil-fc92" as const, relatedTwinIds: ["multi-split-system" as const] };
+  }
+
+  if (sectionId === "ventilation") {
+    return { activeTwinId: "ahu-pv1" as const, relatedTwinIds: [] };
+  }
+
+  return {
+    activeTwinId,
+    relatedTwinIds: sectionTwinIds.filter((id) => id !== activeTwinId),
+  };
+}
+
 export default function DispatchDashboard() {
+  const bottomNavRef = useRef<HTMLElement | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<DispatchSection>("overview");
   const [selectedId, setSelectedId] = useState("automation-cabinets");
   const [selectedTwinId, setSelectedTwinId] = useState<EquipmentTwinId>("ahu-pv1");
+  const [relatedTwinIds, setRelatedTwinIds] = useState<EquipmentTwinId[]>([]);
   const [passportSource, setPassportSource] = useState<PassportSource>("twin");
   const [twinStates, setTwinStates] =
     useState<Record<EquipmentTwinId, EquipmentTwinAssemblyState>>(initialTwinStates);
@@ -74,6 +302,10 @@ export default function DispatchDashboard() {
   const [modal, setModal] = useState<ModalState>(null);
   const [aiAnswer, setAiAnswer] = useState("");
   const [demoTime, setDemoTime] = useState("17.05.2026 10:45");
+  const [selectedAlarmId, setSelectedAlarmId] = useState<string | null>(null);
+  const [readonlyAuditLog, setReadonlyAuditLog] = useState<ReadonlyAuditEntry[]>([]);
+  const [ticketJournal, setTicketJournal] = useState<DemoTicketEntry[]>([]);
+  const [showOnlyIncompletePassportFields, setShowOnlyIncompletePassportFields] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("is-dispatch-demo");
@@ -84,6 +316,29 @@ export default function DispatchDashboard() {
     };
   }, []);
 
+  useEffect(() => {
+    const bottomNav = bottomNavRef.current;
+    if (!bottomNav) return undefined;
+
+    const updateBottomNavReserve = () => {
+      const navHeight = Math.ceil(bottomNav.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--dispatch-bottom-nav-height", `${navHeight}px`);
+    };
+
+    updateBottomNavReserve();
+
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateBottomNavReserve) : null;
+    observer?.observe(bottomNav);
+    window.addEventListener("resize", updateBottomNavReserve);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", updateBottomNavReserve);
+      document.documentElement.style.removeProperty("--dispatch-bottom-nav-height");
+    };
+  }, []);
+
   const selectedEquipment =
     dispatchEquipmentNodes.find((node) => node.id === selectedId) ?? dispatchEquipmentNodes[0];
 
@@ -91,7 +346,7 @@ export default function DispatchDashboard() {
     dispatchSectionDetails.find((section) => section.id === activeSectionId) ?? dispatchSectionDetails[0];
   const selectedTwin = getEquipmentTwinById(selectedTwinId);
   const selectedTwinTrendKey = trendKeyForTwin(selectedTwin.id);
-  const selectedTwinPassportEquipment = useMemo(
+  const selectedTwinPassportEquipment = useMemo<DispatchEquipmentNode>(
     () => ({
       id: selectedTwin.id,
       label: selectedTwin.title,
@@ -99,7 +354,7 @@ export default function DispatchDashboard() {
       countLabel: equipmentTwinSystemLabels[selectedTwin.system],
       type: equipmentTwinSystemLabels[selectedTwin.system],
       trendKey: selectedTwinTrendKey,
-      status: selectedTwin.status,
+      status: normalizeEquipmentStatus(selectedTwin.status),
       model: selectedTwin.model,
       serial: selectedTwin.serialNumber,
       inventoryNumber: selectedTwin.inventoryNumber,
@@ -146,7 +401,7 @@ export default function DispatchDashboard() {
 
   const notificationItems = useMemo(() => {
     const relatedIds = new Set(relatedAlarms.map((alarm) => alarm.id));
-    return [...relatedAlarms, ...alarmEvents.filter((alarm) => !relatedIds.has(alarm.id))].slice(0, 3);
+    return [...relatedAlarms, ...alarmEvents.filter((alarm) => !relatedIds.has(alarm.id))].slice(0, 4);
   }, [relatedAlarms]);
 
   const relatedNodes = useMemo(
@@ -163,11 +418,132 @@ export default function DispatchDashboard() {
   const passportRelatedAlarms = passportSource === "twin" ? [] : relatedAlarms;
   const passportLastEvent = passportSource === "twin" ? selectedTwin.lastEvent : selectedLastEvent;
   const passportTrendNodeId = passportSource === "twin" ? equipmentTwinNodeMap[selectedTwin.id] : passportEquipment.id;
-  const highlightedTwinIds = equipmentTwinSectionMap[activeSectionId] ?? [selectedTwinId];
+  const passportPrimaryAlarm = alarmEvents.find((alarm) => passportEquipment.relatedAlarmIds.includes(alarm.id));
+  const passportScadaRows = useMemo(() => buildScadaTagRows(passportEquipment), [passportEquipment]);
+  const passportFields = useMemo<PassportField[]>(
+    () => [
+      { category: "identity", id: "label", label: "Название", value: passportEquipment.label, requiredForCompletion: false },
+      { category: "service", id: "status", label: "Статус", value: passportEquipment.status, requiredForCompletion: false },
+      {
+        category: "service",
+        id: "mode",
+        label: "Режим",
+        value: passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked",
+        requiredForCompletion: false,
+      },
+      { category: "location", id: "system", label: "Система", value: passportEquipment.type, requiredForCompletion: true },
+      { category: "identity", id: "model", label: "Модель", value: passportEquipment.model, requiredForCompletion: true },
+      { category: "identity", id: "serial", label: "Серийный номер", value: passportEquipment.serial, requiredForCompletion: true },
+      { category: "location", id: "inventory", label: "Инвентарный номер", value: passportEquipment.inventoryNumber, requiredForCompletion: true },
+      { category: "location", id: "location", label: "Местоположение", value: passportEquipment.location, requiredForCompletion: true },
+      { category: "identity", id: "manufacturer", label: "Производитель", value: passportEquipment.manufacturer, requiredForCompletion: true },
+      { category: "identity", id: "year", label: "Год выпуска", value: passportEquipment.year, requiredForCompletion: true },
+      { category: "service", id: "last-event", label: "Последнее событие", value: passportLastEvent, requiredForCompletion: false },
+      { category: "service", id: "service", label: "Сервис", value: passportEquipment.serviceNote, requiredForCompletion: true },
+      {
+        category: "scada",
+        id: "scada-tags",
+        label: "SCADA-теги",
+        value: passportScadaRows.some((row) => row.quality === "TO VERIFY")
+          ? "TO VERIFY"
+          : `${passportScadaRows.length} тегов нормализовано`,
+        requiredForCompletion: true,
+      },
+      {
+        category: "service",
+        id: "service-history",
+        label: "История ТО",
+        value: passportEquipment.serviceHistory.some((item) =>
+          [item.date, item.title, item.result].some((value) => needsVerification(value)),
+        )
+          ? "TO VERIFY"
+          : `${passportEquipment.serviceHistory.length} записей`,
+        requiredForCompletion: true,
+      },
+    ],
+    [passportEquipment, passportLastEvent, passportScadaRows, passportSource],
+  );
+  const requiredPassportFields = passportFields.filter((field) => field.requiredForCompletion);
+  const completedPassportFieldCount = requiredPassportFields.filter(isPassportFieldComplete).length;
+  const incompletePassportFields = passportFields.filter((field) => !isPassportFieldComplete(field));
+  const incompleteRequiredPassportFields = requiredPassportFields.filter((field) => !isPassportFieldComplete(field));
+  const passportCompleteness = Math.round(
+    (completedPassportFieldCount / Math.max(1, requiredPassportFields.length)) * 100,
+  );
+  const passportCategoryScores = passportCompletenessCategories.map((category) => {
+    const categoryRequiredFields = requiredPassportFields.filter((field) => field.category === category.id);
+    const categoryCompletedFields = categoryRequiredFields.filter(isPassportFieldComplete);
+    const percent = Math.round((categoryCompletedFields.length / Math.max(1, categoryRequiredFields.length)) * 100);
 
+    return {
+      ...category,
+      completed: categoryCompletedFields.length,
+      percent,
+      required: categoryRequiredFields.length,
+    };
+  });
+  const visiblePassportFields = showOnlyIncompletePassportFields ? incompletePassportFields : passportFields;
+  const selectedAlarm = selectedAlarmId ? alarmEvents.find((alarm) => alarm.id === selectedAlarmId) : undefined;
+  const selectedAlarmSourceTag = selectedAlarm?.sourceTagId;
+  const selectedSectionLabel =
+    dispatchSections.find((section) => section.id === selectedSection.id)?.label ?? selectedSection.id;
+  const ticketSourceAlarm = selectedAlarm ?? relatedAlarms[0] ?? passportPrimaryAlarm;
+  const ticketSourceTag =
+    selectedAlarm?.sourceTagId ??
+    passportScadaRows.find((row) => row.quality === "DATA_ERROR")?.tag ??
+    passportScadaRows[0]?.tag ??
+    "TO VERIFY";
+  const ticketSeverity = ticketSourceAlarm ? severityLabel(ticketSourceAlarm.severity) : "Info";
+  const ticketRecommendation =
+    ticketSourceAlarm?.description ??
+    passportEquipment.aiRecommendations[0] ??
+    selectedSection.lastEvent;
+  const passportTopKpis = [
+    {
+      id: "temperature",
+      label: "Температура",
+      value: findParamValue(passportEquipment.onlineParams, [/темпера/i, /подач/i, /обрат/i, /гликоль/i, /вода/i]),
+      helper: "BMS/SCADA tag",
+    },
+    {
+      id: "pressure",
+      label: "Давление",
+      value: findParamValue(passportEquipment.onlineParams, [/давлен/i, /\bdp\b/i, /pressure/i]),
+      helper: "range 0–16 bar",
+      quality: passportEquipment.onlineParams.find((param) => [/давлен/i, /\bdp\b/i, /pressure/i].some((pattern) => pattern.test(param.label)))?.quality,
+    },
+    {
+      id: "flow",
+      label: "Расход",
+      value: findParamValue(passportEquipment.onlineParams, [/расход/i, /flow/i, /airflow/i]),
+      helper: "simulated gateway",
+    },
+    {
+      id: "status",
+      label: "Статус",
+      value: passportEquipment.status,
+      helper: passportSource === "twin" ? "read-only twin" : "registry state",
+    },
+    {
+      id: "last-alarm",
+      label: "Последняя авария",
+      value: passportPrimaryAlarm ? `${severityLabel(passportPrimaryAlarm.severity)} · ${passportPrimaryAlarm.title}` : "Активных аварий нет",
+      helper: passportPrimaryAlarm ? `SLA ${passportPrimaryAlarm.sla.label}` : "demo/read-only",
+    },
+  ];
   const hasDpAnomalyContext =
     selectedEquipment.visualTone === "anomaly" ||
     selectedSection.relatedAlarmIds.includes("alarm-pump-pressure");
+  const renderPassportValue = (value: string) => {
+    if (!needsVerification(value)) return value;
+
+    return (
+      <span className="verificationValue" data-testid="dispatch-passport-verification-badge">
+        <span>{formatVerifiedDisplayValue(value)}</span>
+        <small>{passportVerificationLabel(value)}</small>
+      </span>
+    );
+  };
 
   const selectEquipment = (node: DispatchEquipmentNode, sectionId?: DispatchSection) => {
     const nextSection = sectionId
@@ -179,8 +555,16 @@ export default function DispatchDashboard() {
     setSelectedId(node.id);
     setPassportSource("node");
     setActiveSectionId(nextSection?.id ?? activeSectionId);
+    if (nextSection && equipmentTwinSectionMap[nextSection.id]?.length) {
+      const sectionTwinSelection = twinSelectionForSection(nextSection.id, selectedTwinId);
+      setSelectedTwinId(sectionTwinSelection.activeTwinId);
+      setRelatedTwinIds(sectionTwinSelection.relatedTwinIds);
+    } else {
+      setRelatedTwinIds([]);
+    }
     setSelectedTrendKey(nextSection?.trendKey ?? node.trendKey);
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -190,11 +574,13 @@ export default function DispatchDashboard() {
     const sectionId = equipmentTwinSectionIdMap[twinId] as DispatchSection;
 
     setSelectedTwinId(twinId);
+    setRelatedTwinIds([]);
     setPassportSource("twin");
     setActiveSectionId(sectionId);
     setSelectedId(node?.id ?? selectedId);
     setSelectedTrendKey(node?.trendKey ?? trendKeyForTwin(twinId));
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -208,18 +594,21 @@ export default function DispatchDashboard() {
   const selectSection = (sectionId: DispatchSection) => {
     const section = dispatchSectionDetails.find((item) => item.id === sectionId) ?? dispatchSectionDetails[0];
     const node = dispatchEquipmentNodes.find((item) => item.id === section.nodeId) ?? selectedEquipment;
-    const sectionTwinIds = equipmentTwinSectionMap[section.id] ?? [];
+    const sectionTwinSelection = twinSelectionForSection(section.id, selectedTwinId);
 
     setActiveSectionId(section.id);
     setSelectedId(node.id);
-    if (sectionTwinIds[0]) {
-      setSelectedTwinId(sectionTwinIds[0]);
+    if (equipmentTwinSectionMap[section.id]?.length) {
+      setSelectedTwinId(sectionTwinSelection.activeTwinId);
+      setRelatedTwinIds(sectionTwinSelection.relatedTwinIds);
       setPassportSource("twin");
     } else {
+      setRelatedTwinIds([]);
       setPassportSource("node");
     }
     setSelectedTrendKey(section.trendKey);
     setPassportTab(passportTabs[0]);
+    setSelectedAlarmId(null);
     setIsDrawerOpen(true);
   };
 
@@ -229,6 +618,9 @@ export default function DispatchDashboard() {
     if (node) {
       selectEquipment(node, section?.id);
     }
+    setSelectedAlarmId(alarm.id);
+    setSelectedTrendKey(alarm.trendKey);
+    setPassportTab("SCADA-теги");
   };
 
   const openAiDiagnostics = () => {
@@ -255,6 +647,44 @@ export default function DispatchDashboard() {
     setIsDrawerOpen(true);
   };
 
+  const openDemoTicket = (source: string) => {
+    const entry: DemoTicketEntry = {
+      alarmTitle: ticketSourceAlarm?.title ?? selectedSection.lastEvent,
+      equipment: passportEquipment.shortLabel,
+      id: `demo-ticket-${Date.now()}`,
+      section: selectedSectionLabel,
+      severity: ticketSeverity,
+      source,
+      status: "Prepared locally · not sent · No real equipment control",
+      tag: ticketSourceTag,
+      time: demoTime,
+    };
+
+    setTicketJournal((current) => [entry, ...current].slice(0, 4));
+    setModal("ticket");
+  };
+
+  const recordReadonlyAttempt = (action: string) => {
+    const time = new Intl.DateTimeFormat("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).format(new Date());
+
+    setReadonlyAuditLog((current) =>
+      [
+        {
+          action,
+          equipment: passportEquipment.shortLabel,
+          role: readonlyUserRole,
+          time,
+        },
+        ...current,
+      ].slice(0, 4),
+    );
+    setModal("readonly");
+  };
+
   const handleAiSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAiAnswer(
@@ -276,7 +706,8 @@ export default function DispatchDashboard() {
           <div className="headerStatus">
             <span>Связь: Онлайн</span>
             <strong>BMS/SCADA 10.50.4.41</strong>
-            <span>Operator</span>
+            <span>Роль: {readonlyUserRole}</span>
+            <span className="readOnlyBadge">Read-only / Demo mode</span>
             <b>DEMO MODE</b>
           </div>
         </header>
@@ -320,10 +751,15 @@ export default function DispatchDashboard() {
             </div>
             <div className="kpiGrid">
               {realtimeMetrics.map((metric) => (
-                <article className="kpiCard" key={metric.label}>
+                <article
+                  className={`kpiCard ${metric.quality === "DATA_ERROR" ? "isDataError" : ""}`}
+                  data-testid={metric.quality === "DATA_ERROR" ? "dispatch-data-error-metric" : undefined}
+                  key={metric.label}
+                >
                   <span>{metric.label}</span>
                   <strong>{metric.value}</strong>
                   <small>{metric.state} · {metric.trend}</small>
+                  {metric.quality === "DATA_ERROR" ? <b>!</b> : null}
                 </article>
               ))}
             </div>
@@ -343,18 +779,38 @@ export default function DispatchDashboard() {
                 <button
                   className={`eventItem ${alarm.severity} ${
                     relatedAlarms.some((related) => related.id === alarm.id) ? "isRelated" : ""
-                  }`}
+                  } ${alarm.quality === "DATA_ERROR" ? "isDataError" : ""}`}
+                  data-alarm-severity={alarm.severity}
+                  data-alarm-sla-status={alarm.sla.status}
+                  data-testid={alarm.quality === "DATA_ERROR" ? "dispatch-data-error-alarm" : undefined}
                   key={alarm.id}
                   type="button"
                   onClick={() => openAlarm(alarm)}
                 >
-                  <span>{severityLabel(alarm.severity)} · {alarm.time}</span>
+                  <span className="eventMeta">
+                    <b className={`severityBadge ${alarm.severity}`}>{severityLabel(alarm.severity)}</b>
+                    <time>{alarm.time}</time>
+                  </span>
                   <strong>{alarm.title}</strong>
                   <small>{alarm.description}</small>
+                  <span
+                    className={`slaTimer ${alarm.sla.status}`}
+                    data-testid={`dispatch-alarm-sla-${alarm.id}`}
+                  >
+                    <span>SLA</span>
+                    <b>{alarm.sla.label}</b>
+                    <small>{alarm.sla.target}</small>
+                  </span>
+                  {alarm.quality === "DATA_ERROR" ? <em>DATA_ERROR · tag quarantined</em> : null}
                 </button>
               ))}
             </div>
-            <button className="secondaryButton full" type="button" onClick={() => setModal("ticket")}>
+            <button
+              className="secondaryButton full"
+              data-action-state="opens-demo-ticket"
+              type="button"
+              onClick={() => openDemoTicket("active alarm panel")}
+            >
               Создать заявку
             </button>
           </section>
@@ -370,31 +826,51 @@ export default function DispatchDashboard() {
               <p className="eyebrow">AI analytics</p>
               <h2>AI-аналитика и прогнозирование</h2>
             </div>
-            <div className="aiGrid">
-              {dispatchAiInsights.map((insight) => (
-                <button
-                  className="aiInsight"
-                  key={insight.id}
-                  type="button"
-                  onClick={() => {
-                    const node = dispatchEquipmentNodes.find((item) => item.id === insight.equipmentId);
-                    if (node) {
-                      selectEquipment(node, insight.id === "anomaly" ? "ai" : undefined);
-                    } else {
-                      selectSection("ai");
-                    }
-                  }}
-                >
-                  <span>{insight.title}</span>
-                  <strong>{insight.value}</strong>
-                </button>
-              ))}
+            <div className="aiCategoryStack" data-testid="dispatch-ai-categories">
+              {aiInsightCategories.map((category) => {
+                const categoryInsights = dispatchAiInsights.filter((insight) => insight.category === category.id);
+
+                return (
+                  <section
+                    className="aiCategoryGroup"
+                    data-testid={`dispatch-ai-category-${category.id}`}
+                    key={category.id}
+                  >
+                    <div className="aiCategoryHeader">
+                      <span>{category.title}</span>
+                      <small>{category.helper}</small>
+                    </div>
+                    <div className="aiGrid">
+                      {categoryInsights.map((insight) => (
+                        <button
+                          className="aiInsight"
+                          data-testid={`dispatch-ai-insight-${insight.id}`}
+                          key={insight.id}
+                          type="button"
+                          onClick={() => {
+                            const node = dispatchEquipmentNodes.find((item) => item.id === insight.equipmentId);
+                            if (node) {
+                              selectEquipment(node, insight.id === "anomaly" ? "ai" : undefined);
+                            } else {
+                              selectSection("ai");
+                            }
+                          }}
+                        >
+                          <span>{insight.title}</span>
+                          <strong>{insight.value}</strong>
+                          <small>{insight.description}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
             <form className="aiInput" onSubmit={handleAiSubmit}>
               <input aria-label="AI assistant" placeholder="Задайте вопрос по объекту..." />
-              <button type="submit">AI</button>
+              <button data-testid="dispatch-ai-submit" type="submit">AI</button>
             </form>
-            {aiAnswer ? <p className="aiAnswer">{aiAnswer}</p> : null}
+            {aiAnswer ? <p className="aiAnswer" data-testid="dispatch-ai-answer">{aiAnswer}</p> : null}
           </section>
         </aside>
 
@@ -410,7 +886,7 @@ export default function DispatchDashboard() {
           <EquipmentTwinGrid
             selectedTwinId={selectedTwinId}
             twinStates={twinStates}
-            highlightedTwinIds={highlightedTwinIds}
+            relatedTwinIds={relatedTwinIds}
             onSelectTwin={selectTwin}
             onToggleTwinState={toggleTwinState}
             onOpenPassport={() => {
@@ -427,7 +903,7 @@ export default function DispatchDashboard() {
             {hasDpAnomalyContext ? (
               <div className="anomalyCallout">
                 <span>AI insight</span>
-                DP 6553.3 / 6553.5 bar · проверить scaling/register
+                DP DATA_ERROR · вне диапазона 0–16 bar · проверить scaling/register
               </div>
             ) : null}
 
@@ -479,7 +955,7 @@ export default function DispatchDashboard() {
               const isSelected = node.id === selectedEquipment.id;
               const hasAlarm = node.relatedAlarmIds.some((id) => alarmEvents.find((alarm) => alarm.id === id)?.severity === "critical");
               const placementClass =
-                node.x > 66 ? "labelLeft" : node.y > 78 ? "labelTop" : node.y < 22 ? "labelBottom" : "";
+                node.x > 60 ? "labelLeft" : node.y > 78 ? "labelTop" : node.y < 22 ? "labelBottom" : "";
               const toneClass =
                 node.visualTone === "ahu" ? "isAhu" : node.visualTone === "anomaly" ? "isAnomaly" : "";
 
@@ -490,6 +966,7 @@ export default function DispatchDashboard() {
                   className={`equipmentNode ${placementClass} ${toneClass} ${isSelected ? "isSelected" : ""} ${
                     hasAlarm ? "hasAlarm" : ""
                   }`}
+                  data-testid={`dispatch-equipment-node-${node.id}`}
                   style={{ left: `${node.x}%`, top: `${node.y}%` }}
                   onClick={() => selectEquipment(node)}
                   aria-pressed={isSelected}
@@ -523,9 +1000,10 @@ export default function DispatchDashboard() {
                 <strong>{selectedSection.equipmentCount}</strong>
               </div>
               {selectedSection.keyMetrics.map((metric) => (
-                <div key={metric.label}>
+                <div className={metric.value.includes("DATA_ERROR") ? "isDataError" : undefined} key={metric.label}>
                   <span>{metric.label}</span>
                   <strong>{metric.value}</strong>
+                  {metric.value.includes("DATA_ERROR") ? <em>range 0–16 bar</em> : null}
                 </div>
               ))}
             </div>
@@ -545,6 +1023,7 @@ export default function DispatchDashboard() {
                 <div>
                   {relatedAlarms.map((alarm) => (
                     <button key={alarm.id} type="button" className={alarm.severity} onClick={() => openAlarm(alarm)}>
+                      <span>{severityLabel(alarm.severity)} · SLA {alarm.sla.label}</span>
                       {alarm.title}
                     </button>
                   ))}
@@ -554,21 +1033,103 @@ export default function DispatchDashboard() {
               )}
             </div>
             <div className="sectionActions">
-              <button type="button" onClick={() => setIsDrawerOpen(true)}>Open passport</button>
-              <button type="button" onClick={() => setModal("ticket")}>Create demo ticket</button>
-              <button type="button" onClick={() => openTrendsFor(selectedSection.trendKey, selectedSection.nodeId)}>
+              <button data-testid="dispatch-section-action-passport" type="button" onClick={() => setIsDrawerOpen(true)}>
+                Open passport
+              </button>
+              <button
+                data-testid="dispatch-section-action-ticket"
+                type="button"
+                onClick={() => openDemoTicket("section action")}
+              >
+                Create demo ticket
+              </button>
+              <button
+                data-testid="dispatch-section-action-trends"
+                type="button"
+                onClick={() => openTrendsFor(selectedSection.trendKey, selectedSection.nodeId)}
+              >
                 Show trends
               </button>
-              <button type="button" onClick={openAiDiagnostics}>AI diagnostics</button>
+              <button data-testid="dispatch-section-action-ai" type="button" onClick={openAiDiagnostics}>
+                AI diagnostics
+              </button>
             </div>
           </section>
 
           <div className="commandStrip">
+            <div className="readonlyPolicyBanner" data-testid="dispatch-readonly-policy">
+              <strong>Роль: {readonlyUserRole}</strong>
+              <span>{readonlyControlTooltip}. Попытки фиксируются локально, без команд в BMS/SCADA.</span>
+            </div>
             {controlButtons.map((button) => (
-              <button key={button} type="button" onClick={() => setModal("readonly")}>
-                {button}
-              </button>
+              <span
+                aria-disabled="true"
+                aria-label={`${button}: ${readonlyControlTooltip}`}
+                className="readonlyControl"
+                data-testid="dispatch-readonly-control"
+                key={button}
+                onClick={() => recordReadonlyAttempt(button)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    recordReadonlyAttempt(button);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                title={readonlyControlTooltip}
+              >
+                <button
+                  aria-label={`${button}. ${readonlyControlTooltip}`}
+                  disabled
+                  title={readonlyControlTooltip}
+                  type="button"
+                >
+                  {button}
+                </button>
+              </span>
             ))}
+          </div>
+          <div className="readonlyAuditLog" data-testid="dispatch-readonly-audit-log">
+            <strong>Read-only audit</strong>
+            {readonlyAuditLog.length ? (
+              <ol>
+                {readonlyAuditLog.map((entry) => (
+                  <li key={`${entry.time}-${entry.action}`}>
+                    {entry.time} · роль: {entry.role} · попытка: {entry.action} · {entry.equipment} · No real
+                    equipment control
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <span>Попытки управления будут фиксироваться локально в demo-журнале.</span>
+            )}
+          </div>
+
+          <div className="demoTicketJournal" data-testid="dispatch-demo-ticket-journal">
+            <div className="demoTicketJournalHeader">
+              <strong>Demo ticket journal</strong>
+              <span>Local only · no external send · No real equipment control</span>
+            </div>
+            {ticketJournal.length ? (
+              <ol>
+                {ticketJournal.map((entry) => (
+                  <li key={entry.id}>
+                    <span>
+                      {entry.time} · {entry.status}
+                    </span>
+                    <strong>
+                      {entry.equipment} · {entry.section}
+                    </strong>
+                    <small>
+                      {entry.severity} · {entry.tag} · {entry.alarmTitle} · source: {entry.source}
+                    </small>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>No demo tickets prepared in this session.</p>
+            )}
           </div>
 
           <section className="recommendationPanel">
@@ -603,6 +1164,20 @@ export default function DispatchDashboard() {
             <div className="qrBox">QR</div>
           </div>
 
+          <div className="passportKpiStrip" data-testid="dispatch-passport-kpi-strip">
+            {passportTopKpis.map((kpi) => (
+              <article
+                className={kpi.quality === "DATA_ERROR" ? "isDataError" : undefined}
+                data-testid={`dispatch-passport-kpi-${kpi.id}`}
+                key={kpi.id}
+              >
+                <span>{kpi.label}</span>
+                <strong>{kpi.value}</strong>
+                <small>{kpi.helper}</small>
+              </article>
+            ))}
+          </div>
+
           <div className="datasheetSnapshot">
             <div>
               <span>Тип</span>
@@ -622,6 +1197,19 @@ export default function DispatchDashboard() {
             </div>
           </div>
 
+          {selectedAlarm ? (
+            <div className="selectedAlarmContext" data-testid="dispatch-selected-alarm-context">
+              <span className={`severityBadge ${selectedAlarm.severity}`}>{severityLabel(selectedAlarm.severity)}</span>
+              <div>
+                <strong>{selectedAlarm.title}</strong>
+                <small>
+                  Source tag: <code>{selectedAlarm.sourceTagId}</code> · Related trend: {selectedAlarm.trendKey} · SLA{" "}
+                  {selectedAlarm.sla.label}
+                </small>
+              </div>
+            </div>
+          ) : null}
+
           <div className="passportTabs" role="tablist" aria-label="Разделы паспорта">
             {passportTabs.map((tab) => (
               <button
@@ -639,20 +1227,55 @@ export default function DispatchDashboard() {
 
           {passportTab === "Паспорт" ? (
             <>
-              <dl className="passportList">
-                <div><dt>Название</dt><dd>{passportEquipment.label}</dd></div>
-                <div><dt>Статус</dt><dd>{passportEquipment.status}</dd></div>
-                <div><dt>Режим</dt><dd>{passportSource === "twin" ? "Auto/Manual/read-only marker: Read-only / demo mode" : "Read-only / control locked"}</dd></div>
-                <div><dt>Система</dt><dd>{passportEquipment.type}</dd></div>
-                <div><dt>Модель</dt><dd>{passportEquipment.model}</dd></div>
-                <div><dt>Серийный номер</dt><dd>{passportEquipment.serial}</dd></div>
-                <div><dt>Инвентарный номер</dt><dd>{passportEquipment.inventoryNumber}</dd></div>
-                <div><dt>Местоположение</dt><dd>{passportEquipment.location}</dd></div>
-                <div><dt>Производитель</dt><dd>{passportEquipment.manufacturer}</dd></div>
-                <div><dt>Год выпуска</dt><dd>{passportEquipment.year}</dd></div>
-                <div><dt>Последнее событие</dt><dd>{passportLastEvent}</dd></div>
-                <div><dt>Сервис</dt><dd>{passportEquipment.serviceNote}</dd></div>
+              <div className="passportCompleteness" data-testid="dispatch-passport-completeness-score">
+                <div>
+                  <span>Completeness score</span>
+                  <strong>Паспорт заполнен на {passportCompleteness}%</strong>
+                  <small>
+                    {completedPassportFieldCount}/{requiredPassportFields.length} обязательных полей ·{" "}
+                    {incompleteRequiredPassportFields.length} требуют проверки
+                  </small>
+                </div>
+                <button
+                  aria-label="Фильтровать паспорт: показать незаполненные или все поля"
+                  aria-pressed={showOnlyIncompletePassportFields}
+                  data-action-state="filters-passport-verification-fields"
+                  data-testid="dispatch-passport-incomplete-filter"
+                  onClick={() => setShowOnlyIncompletePassportFields((current) => !current)}
+                  title="Фильтр паспорта: показать только поля, требующие обхода или верификации."
+                  type="button"
+                >
+                  {showOnlyIncompletePassportFields ? "Показать все поля" : "Показать незаполненные"}
+                </button>
+                <div className="passportCompletenessBreakdown" data-testid="dispatch-passport-completeness-breakdown">
+                  {passportCategoryScores.map((category) => (
+                    <article data-testid={`dispatch-passport-completeness-category-${category.id}`} key={category.id}>
+                      <span>{category.label}</span>
+                      <strong>{category.percent}%</strong>
+                      <small>
+                        {category.completed}/{category.required} · {category.helper}
+                      </small>
+                    </article>
+                  ))}
+                </div>
+              </div>
+              <dl className="passportList" data-testid="dispatch-passport-list">
+                {visiblePassportFields.map((field) => (
+                  <div
+                    data-passport-field-status={isPassportFieldComplete(field) ? "verified" : "needs-verification"}
+                    data-testid={`dispatch-passport-field-${field.id}`}
+                    key={field.id}
+                  >
+                    <dt>{field.label}</dt>
+                    <dd>{renderPassportValue(field.value)}</dd>
+                  </div>
+                ))}
               </dl>
+              {showOnlyIncompletePassportFields && visiblePassportFields.length === 0 ? (
+                <div className="passportEmptyState" data-testid="dispatch-passport-empty-verification-state">
+                  Все паспортные поля заполнены. Режим остается read-only/demo.
+                </div>
+              ) : null}
               <div className="linkedSystemsBlock">
                 <span>Связанные системы</span>
                 <div>
@@ -677,11 +1300,69 @@ export default function DispatchDashboard() {
           {passportTab === "Параметры" ? (
             <div className="paramGrid">
               {passportEquipment.onlineParams.map((param) => (
-                <div key={param.label}>
+                <div className={param.quality === "DATA_ERROR" ? "isDataError" : undefined} key={param.label}>
                   <span>{param.label}</span>
                   <strong>{param.value}</strong>
+                  {param.quality === "DATA_ERROR" ? <em>DATA_ERROR · tag quarantined</em> : null}
                 </div>
               ))}
+            </div>
+          ) : null}
+
+          {passportTab === "SCADA-теги" ? (
+            <div className="scadaTagTable" data-testid="dispatch-passport-scada-tags">
+              <div className="scadaTagSummary">
+                <span>Read-only SCADA/BMS mapping</span>
+                <strong>{passportScadaRows.length} tags · gateway 10.50.4.41 · no write commands</strong>
+              </div>
+              <div className="scadaTagHeader" aria-hidden="true">
+                <span>Tag</span>
+                <span>Type</span>
+                <span>Register</span>
+                <span>Scaling</span>
+                <span>Unit</span>
+                <span>Quality</span>
+              </div>
+              {passportScadaRows.map((row) => {
+                const isSelectedAlarmSource = row.tag === selectedAlarmSourceTag;
+
+                return (
+                  <article
+                    className={`${row.quality === "DATA_ERROR" ? "isDataError" : ""} ${
+                      isSelectedAlarmSource ? "isAlarmSource" : ""
+                    }`}
+                    data-testid={
+                      isSelectedAlarmSource ? "dispatch-selected-alarm-source-tag" : "dispatch-passport-scada-tag-row"
+                    }
+                    key={row.tag}
+                  >
+                    <div className="scadaTagCell scadaTagCellTag">
+                      <span className="scadaTagMobileLabel">Tag</span>
+                      <code>{row.tag}</code>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Type</span>
+                      <span className="scadaTagValue">{row.signalType}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Register</span>
+                      <span className="scadaTagValue">{row.register}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Scaling</span>
+                      <span className="scadaTagValue">{row.scaling}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Unit</span>
+                      <span className="scadaTagValue">{row.unit}</span>
+                    </div>
+                    <div className="scadaTagCell">
+                      <span className="scadaTagMobileLabel">Quality</span>
+                      <strong>{isSelectedAlarmSource ? `${row.quality} · SOURCE` : row.quality}</strong>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           ) : null}
 
@@ -705,31 +1386,33 @@ export default function DispatchDashboard() {
 
           {passportTab === "Документы" ? (
             <>
-              <div className="tagList">
-                <span>SCADA/BMS tags</span>
-                {(passportEquipment.scadaTags.length ? passportEquipment.scadaTags : ["TO VERIFY"]).map((tag) => (
-                  <code key={tag}>{tag}</code>
-                ))}
-              </div>
               <div className="documentList">
-                {passportEquipment.documents.map((document) => (
-                  <button
-                    key={document.title}
-                    type="button"
-                    onClick={() => {
-                      if (document.title === "Создать заявку") {
-                        setModal("ticket");
-                      } else if (document.title === "Открыть тренды") {
-                        openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
-                      } else {
-                        setModal("readonly");
-                      }
-                    }}
-                  >
-                    <span>{document.type}</span>
-                    {document.title}
-                  </button>
-                ))}
+                {passportEquipment.documents.map((document) => {
+                  const documentAction = getDocumentActionMeta(document.title);
+
+                  return (
+                    <button
+                      aria-label={`${document.title}. ${documentAction.title}`}
+                      data-action-state={documentAction.actionState}
+                      key={document.title}
+                      title={documentAction.title}
+                      type="button"
+                      onClick={() => {
+                        if (documentAction.actionState === "opens-demo-ticket") {
+                          openDemoTicket("passport document action");
+                        } else if (documentAction.actionState === "opens-trends-context") {
+                          openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
+                        } else {
+                          setModal("readonly");
+                        }
+                      }}
+                    >
+                      <span className="documentTypeBadge">{document.type}</span>
+                      <strong>{document.title}</strong>
+                      <small>{documentAction.label}</small>
+                    </button>
+                  );
+                })}
               </div>
             </>
           ) : null}
@@ -749,12 +1432,26 @@ export default function DispatchDashboard() {
           </div>
 
           <div className="drawerActions">
-            <button type="button" onClick={() => setModal("ticket")}>Создать заявку</button>
-            <button type="button" onClick={() => openTrendsFor(passportEquipment.trendKey, passportTrendNodeId)}>
+            <button
+              data-testid="dispatch-drawer-action-ticket"
+              type="button"
+              onClick={() => openDemoTicket("passport drawer")}
+            >
+              Создать заявку
+            </button>
+            <button
+              data-testid="dispatch-drawer-action-trends"
+              type="button"
+              onClick={() => openTrendsFor(passportEquipment.trendKey, passportTrendNodeId)}
+            >
               Открыть тренды
             </button>
-            <button type="button" onClick={openAiDiagnostics}>AI-диагностика</button>
-            <button type="button" onClick={() => setModal("readonly")}>Read-only controls</button>
+            <button data-testid="dispatch-drawer-action-ai" type="button" onClick={openAiDiagnostics}>
+              AI-диагностика
+            </button>
+            <button data-testid="dispatch-drawer-action-readonly" type="button" onClick={() => setModal("readonly")}>
+              Read-only controls
+            </button>
           </div>
         </aside>
 
@@ -765,7 +1462,7 @@ export default function DispatchDashboard() {
           </div>
           {notificationItems.map((alarm) => (
             <button key={alarm.id} type="button" onClick={() => openAlarm(alarm)}>
-              <span>{severityLabel(alarm.severity)}</span>
+              <span>{severityLabel(alarm.severity)} · SLA {alarm.sla.label}</span>
               <strong>{alarm.title.replace(" на ШУ-2", "")}</strong>
             </button>
           ))}
@@ -775,17 +1472,26 @@ export default function DispatchDashboard() {
         </aside>
       </div>
 
-      <nav className="dispatchBottomNav" aria-label="Навигация диспетчерской">
-        {dispatchSections.map((section) => (
-          <button
-            key={section.id}
-            type="button"
-            className={activeSectionId === section.id ? "isActive" : undefined}
-            onClick={() => selectSection(section.id)}
-          >
-            {section.label}
-          </button>
-        ))}
+      <nav ref={bottomNavRef} className="dispatchBottomNav" aria-label="Навигация диспетчерской">
+        <div className="bottomNavSections" aria-label="Разделы диспетчерской">
+          {dispatchSections.map((section) => {
+            const detail =
+              dispatchSectionDetails.find((item) => item.id === section.id) ?? dispatchSectionDetails[0];
+            const sectionAlarmCount = detail.relatedAlarmIds.length;
+
+            return (
+              <button
+                key={section.id}
+                type="button"
+                className={activeSectionId === section.id ? "isActive" : undefined}
+                onClick={() => selectSection(section.id)}
+              >
+                <span>{section.label}</span>
+                {sectionAlarmCount ? <small aria-label={`${sectionAlarmCount} active events`}>{sectionAlarmCount}</small> : null}
+              </button>
+            );
+          })}
+        </div>
         <div className="bottomMeta">
           <span>Связь с объектом: Онлайн / Simulated gateway</span>
           <span>Пользователь: Диспетчер</span>
@@ -796,8 +1502,14 @@ export default function DispatchDashboard() {
 
       {modal ? (
         <div className="modalBackdrop" role="presentation" onMouseDown={() => setModal(null)}>
-          <div className="demoModal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
-            <button type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
+          <div
+            className="demoModal"
+            data-testid="dispatch-demo-modal"
+            role="dialog"
+            aria-modal="true"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button data-testid="dispatch-modal-close" type="button" onClick={() => setModal(null)} aria-label="Закрыть">×</button>
             {modal === "readonly" ? (
               <>
                 <h2>Управление оборудованием отключено</h2>
@@ -806,14 +1518,79 @@ export default function DispatchDashboard() {
                   интеграция с BMS/SCADA, подтверждение прав доступа, аудит тегов и согласование с эксплуатационной
                   службой.
                 </p>
+                {readonlyAuditLog[0] ? (
+                  <div className="modalAuditEntry">
+                    <strong>Попытка управления зафиксирована локально</strong>
+                    <span>
+                      {readonlyAuditLog[0].time} · {readonlyAuditLog[0].action} ·{" "}
+                      {readonlyAuditLog[0].equipment} · роль: {readonlyAuditLog[0].role} · No real equipment control
+                    </span>
+                  </div>
+                ) : null}
               </>
             ) : (
               <>
-                <h2>Demo-заявка создана</h2>
+                <div className="ticketModalHeader">
+                  <span>DEMO</span>
+                  <h2>Demo-заявка подготовлена локально</h2>
+                </div>
                 <p>
-                  Заявка по оборудованию {passportEquipment.shortLabel} сформирована в demo/read-only режиме и не
-                  отправлена во внешнюю систему.
+                  Это read-only payload для внешней CMMS/Service Desk интеграции. Заявка не отправлена во внешнюю
+                  систему и не создает команду в BMS/SCADA.
                 </p>
+                <dl className="ticketPayload" data-testid="dispatch-demo-ticket-payload">
+                  <div>
+                    <dt>Объект</dt>
+                    <dd>{objectSummary.name}</dd>
+                  </div>
+                  <div>
+                    <dt>Раздел</dt>
+                    <dd>{selectedSectionLabel}</dd>
+                  </div>
+                  <div>
+                    <dt>Оборудование</dt>
+                    <dd>{passportEquipment.shortLabel}</dd>
+                  </div>
+                  <div>
+                    <dt>Источник / tag</dt>
+                    <dd>{ticketSourceTag}</dd>
+                  </div>
+                  <div>
+                    <dt>Severity</dt>
+                    <dd>{ticketSeverity}</dd>
+                  </div>
+                  <div>
+                    <dt>Timestamp</dt>
+                    <dd>{demoTime}</dd>
+                  </div>
+                  <div>
+                    <dt>Контекст события</dt>
+                    <dd>{ticketSourceAlarm ? ticketSourceAlarm.title : selectedSection.lastEvent}</dd>
+                  </div>
+                  {selectedAlarm ? (
+                    <div>
+                      <dt>Selected alarm source</dt>
+                      <dd>{selectedAlarm.title} · {selectedAlarm.sourceTagId}</dd>
+                    </div>
+                  ) : null}
+                  <div>
+                    <dt>AI recommendation</dt>
+                    <dd>{ticketRecommendation}</dd>
+                  </div>
+                  <div>
+                    <dt>Статус отправки</dt>
+                    <dd>Prepared locally · not sent · No real equipment control</dd>
+                  </div>
+                </dl>
+                {ticketJournal[0] ? (
+                  <div className="modalTicketJournalEntry">
+                    <strong>Запись добавлена в demo-журнал</strong>
+                    <span>
+                      {ticketJournal[0].time} · {ticketJournal[0].equipment} · {ticketJournal[0].section} ·{" "}
+                      {ticketJournal[0].status}
+                    </span>
+                  </div>
+                ) : null}
               </>
             )}
           </div>
@@ -837,7 +1614,7 @@ export default function DispatchDashboard() {
         .dispatchShell {
           min-height: 100vh;
           margin: 0;
-          padding: 14px 14px 88px;
+          padding: 14px 14px calc(var(--dispatch-bottom-nav-height, 132px) + 24px);
           color: #dbeafe;
           background:
             radial-gradient(circle at 48% 18%, rgba(14, 165, 233, 0.18), transparent 34%),
@@ -868,6 +1645,7 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          flex-wrap: wrap;
           gap: 20px;
           padding: 16px 20px;
         }
@@ -893,14 +1671,17 @@ export default function DispatchDashboard() {
         .headerStatus {
           display: flex;
           align-items: center;
+          flex-wrap: wrap;
+          justify-content: flex-end;
           gap: 10px;
           color: #93c5fd;
-          font-size: 12px;
+          font-size: 11px;
         }
 
         .headerStatus b,
         .bottomMeta b,
-        .readOnlyPill {
+        .readOnlyPill,
+        .readOnlyBadge {
           border: 1px solid rgba(34, 211, 238, 0.42);
           border-radius: 999px;
           color: #22d3ee;
@@ -930,7 +1711,7 @@ export default function DispatchDashboard() {
 
         .sectionList {
           display: grid;
-          gap: 7px;
+          gap: 6px;
         }
 
         .sectionItem {
@@ -982,22 +1763,25 @@ export default function DispatchDashboard() {
 
         .kpiGrid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
           gap: 8px;
         }
 
         .kpiCard,
         .aiInsight,
+        .passportKpiStrip article,
         .paramGrid div,
         .serviceList article {
           border: 1px solid rgba(125, 211, 252, 0.18);
           border-radius: 8px;
           background: rgba(15, 23, 42, 0.62);
+          min-width: 0;
           padding: 12px;
         }
 
         .kpiCard span,
         .aiInsight span,
+        .passportKpiStrip span,
         .paramGrid span,
         .serviceList span,
         .passportList dt,
@@ -1009,19 +1793,94 @@ export default function DispatchDashboard() {
 
         .kpiCard strong,
         .aiInsight strong,
+        .passportKpiStrip strong,
         .paramGrid strong {
           display: block;
           margin: 7px 0 4px;
           color: #f8fafc;
           font-size: 18px;
+          line-height: 1.15;
+          overflow-wrap: anywhere;
         }
 
         .kpiCard small,
+        .passportKpiStrip small,
         .serviceList small,
         .passportHero small,
         .relatedBlock small {
           color: #86efac;
           font-size: 11px;
+        }
+
+        :global(.verificationValue) {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        :global(.verificationValue > span) {
+          color: #e0f2fe;
+          overflow-wrap: anywhere;
+        }
+
+        :global(.verificationValue small) {
+          display: inline-flex;
+          width: fit-content;
+          border: 1px solid rgba(251, 191, 36, 0.34);
+          border-radius: 999px;
+          padding: 4px 8px;
+          color: #fde68a;
+          background: rgba(113, 63, 18, 0.34);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .kpiCard.isDataError,
+        .passportKpiStrip article.isDataError,
+        .paramGrid div.isDataError,
+        .sectionMetrics div.isDataError {
+          border-color: rgba(248, 113, 113, 0.48);
+          background: linear-gradient(145deg, rgba(127, 29, 29, 0.28), rgba(15, 23, 42, 0.62));
+          box-shadow: inset 3px 0 0 rgba(248, 113, 113, 0.88);
+        }
+
+        .kpiCard.isDataError strong,
+        .passportKpiStrip article.isDataError strong,
+        .paramGrid div.isDataError strong,
+        .sectionMetrics div.isDataError strong {
+          color: #fecaca;
+          overflow-wrap: anywhere;
+        }
+
+        .kpiCard.isDataError strong {
+          font-size: 13px;
+          letter-spacing: 0;
+        }
+
+        .kpiCard.isDataError small,
+        .paramGrid div.isDataError em,
+        .sectionMetrics div.isDataError em {
+          display: block;
+          margin-top: 4px;
+          color: #fca5a5;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 800;
+        }
+
+        .kpiCard.isDataError b {
+          display: inline-grid;
+          width: 20px;
+          height: 20px;
+          place-items: center;
+          border: 1px solid rgba(248, 113, 113, 0.58);
+          border-radius: 999px;
+          color: #fee2e2;
+          background: rgba(127, 29, 29, 0.72);
         }
 
         button {
@@ -1094,10 +1953,55 @@ export default function DispatchDashboard() {
           transform: translateY(-1px);
         }
 
-        .eventItem span,
+        .eventItem > span,
         .notificationsPanel span {
           color: #67e8f9;
           font-size: 11px;
+        }
+
+        .eventMeta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .eventMeta time {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .severityBadge {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          border-radius: 999px;
+          color: #dbeafe;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0;
+          padding: 3px 7px;
+          text-transform: uppercase;
+        }
+
+        .severityBadge.critical {
+          border-color: rgba(248, 113, 113, 0.66);
+          color: #fecaca;
+          background: rgba(127, 29, 29, 0.4);
+        }
+
+        .severityBadge.warning {
+          border-color: rgba(251, 191, 36, 0.62);
+          color: #fde68a;
+          background: rgba(120, 53, 15, 0.34);
+        }
+
+        .severityBadge.info {
+          border-color: rgba(125, 211, 252, 0.48);
+          color: #bae6fd;
+          background: rgba(8, 47, 73, 0.38);
         }
 
         .eventItem strong,
@@ -1112,6 +2016,80 @@ export default function DispatchDashboard() {
           border-color: rgba(248, 113, 113, 0.45);
         }
 
+        .eventItem.warning {
+          border-color: rgba(251, 191, 36, 0.36);
+        }
+
+        .eventItem.info {
+          border-color: rgba(125, 211, 252, 0.24);
+        }
+
+        .slaTimer {
+          display: grid;
+          grid-template-columns: auto auto 1fr;
+          gap: 6px;
+          align-items: center;
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.55);
+          margin-top: 8px;
+          padding: 7px 8px;
+        }
+
+        .slaTimer > span {
+          color: #93c5fd;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .slaTimer > b {
+          color: #f8fafc;
+          font-size: 12px;
+        }
+
+        .slaTimer > small {
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.25;
+          text-align: right;
+        }
+
+        .slaTimer.due_soon {
+          border-color: rgba(248, 113, 113, 0.46);
+          background: rgba(127, 29, 29, 0.22);
+        }
+
+        .slaTimer.due_soon > b {
+          color: #fecaca;
+        }
+
+        .slaTimer.on_track {
+          border-color: rgba(251, 191, 36, 0.32);
+        }
+
+        .slaTimer.monitoring {
+          border-style: dashed;
+        }
+
+        .eventItem.isDataError {
+          border-color: rgba(248, 113, 113, 0.72);
+          background: rgba(127, 29, 29, 0.2);
+        }
+
+        .eventItem.isDataError em {
+          display: inline-flex;
+          margin-top: 8px;
+          border: 1px solid rgba(248, 113, 113, 0.38);
+          border-radius: 999px;
+          color: #fecaca;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 800;
+          padding: 4px 7px;
+        }
+
         .eventItem.isRelated {
           background: rgba(14, 165, 233, 0.16);
           box-shadow: inset 3px 0 0 rgba(34, 211, 238, 0.9);
@@ -1122,7 +2100,6 @@ export default function DispatchDashboard() {
         }
 
         .secondaryButton,
-        .commandStrip button,
         .drawerActions button,
         .sectionActions button,
         .relatedNodesRow button,
@@ -1144,8 +2121,40 @@ export default function DispatchDashboard() {
 
         .aiGrid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 8px;
+        }
+
+        .aiCategoryStack {
+          display: grid;
+          gap: 10px;
+        }
+
+        .aiCategoryGroup {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.34);
+          padding: 9px;
+        }
+
+        .aiCategoryHeader {
+          display: grid;
+          gap: 3px;
+          margin-bottom: 7px;
+        }
+
+        .aiCategoryHeader span {
+          color: #67e8f9;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .aiCategoryHeader small,
+        .aiInsight small {
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.35;
         }
 
         .aiInput {
@@ -1304,9 +2313,9 @@ export default function DispatchDashboard() {
           position: absolute;
           left: 50%;
           top: 24%;
-          width: min(88%, 820px);
+          width: min(76%, 700px);
           aspect-ratio: 1.32;
-          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(1.08);
+          transform: translate(-50%, -50%) perspective(900px) rotateX(52deg) rotateZ(-38deg) scale(0.96);
           transform-style: preserve-3d;
         }
 
@@ -1384,7 +2393,10 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          flex-wrap: wrap;
+          gap: 6px;
+          min-width: 0;
+          overflow: hidden;
           transform: translateZ(22px);
         }
 
@@ -1392,6 +2404,7 @@ export default function DispatchDashboard() {
           border: 1px solid rgba(34, 211, 238, 0.42);
           color: #cffafe;
           font-size: 11px;
+          line-height: 1.1;
           padding: 6px;
         }
 
@@ -1401,25 +2414,29 @@ export default function DispatchDashboard() {
           display: flex;
           align-items: center;
           gap: 8px;
+          max-width: min(218px, 44%);
           border: 0;
           background: transparent;
           color: #dbeafe;
           cursor: pointer;
-          transform: translate(-50%, -50%);
+          transform: translate(0, -50%);
         }
 
         .equipmentNode.labelLeft {
           flex-direction: row-reverse;
+          transform: translate(-100%, -50%);
         }
 
         .equipmentNode.labelTop {
           flex-direction: column-reverse;
           gap: 6px;
+          transform: translate(-50%, -100%);
         }
 
         .equipmentNode.labelBottom {
           flex-direction: column;
           gap: 6px;
+          transform: translate(-50%, 0);
         }
 
         .nodeCore {
@@ -1442,7 +2459,9 @@ export default function DispatchDashboard() {
         }
 
         .nodeLabel {
-          min-width: 118px;
+          box-sizing: border-box;
+          min-width: 0;
+          width: min(156px, 36vw);
           max-width: 168px;
           border: 1px solid rgba(125, 211, 252, 0.26);
           border-radius: 8px;
@@ -1450,11 +2469,18 @@ export default function DispatchDashboard() {
           padding: 8px 10px;
           text-align: left;
           box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+          overflow-wrap: anywhere;
         }
 
         .nodeLabel strong,
         .nodeLabel small {
           display: block;
+          min-width: 0;
+        }
+
+        .nodeLabel strong {
+          font-size: 12px;
+          line-height: 1.18;
         }
 
         .nodeLabel small {
@@ -1471,9 +2497,10 @@ export default function DispatchDashboard() {
         .equipmentNode.isSelected::before {
           content: "";
           position: absolute;
-          inset: -10px;
-          border: 1px solid rgba(34, 211, 238, 0.58);
+          inset: 0;
           border-radius: 10px;
+          outline: 1px solid rgba(34, 211, 238, 0.58);
+          outline-offset: 6px;
           box-shadow: 0 0 34px rgba(34, 211, 238, 0.22);
           pointer-events: none;
         }
@@ -1515,37 +2542,216 @@ export default function DispatchDashboard() {
           z-index: 2;
         }
 
+        .readonlyPolicyBanner {
+          flex: 1 1 100%;
+          display: grid;
+          gap: 4px;
+          border: 1px solid rgba(251, 191, 36, 0.28);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.16);
+          color: #fde68a;
+          padding: 9px 10px;
+        }
+
+        .readonlyPolicyBanner strong {
+          color: #fef3c7;
+          font-size: 12px;
+        }
+
+        .readonlyPolicyBanner span {
+          color: #fcd34d;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .readonlyControl {
+          display: inline-flex;
+          border-radius: 8px;
+          cursor: not-allowed;
+        }
+
+        .readonlyControl button {
+          border: 1px solid rgba(148, 163, 184, 0.28);
+          border-radius: 8px;
+          background: rgba(51, 65, 85, 0.42);
+          color: #94a3b8;
+          cursor: not-allowed;
+          padding: 9px 11px;
+          pointer-events: none;
+        }
+
+        .readonlyControl:focus-visible {
+          outline: 2px solid rgba(125, 211, 252, 0.9);
+          outline-offset: 2px;
+        }
+
+        .readonlyAuditLog {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          align-items: center;
+          margin: 8px 0 14px;
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.52);
+          color: #cbd5e1;
+          font-size: 12px;
+          padding: 8px 10px;
+        }
+
+        .readonlyAuditLog strong {
+          color: #e0f2fe;
+        }
+
+        .readonlyAuditLog ol {
+          display: grid;
+          gap: 3px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .readonlyAuditLog li {
+          line-height: 1.35;
+        }
+
+        .demoTicketJournal {
+          display: grid;
+          gap: 10px;
+          margin: 8px 0 14px;
+          border: 1px solid rgba(34, 197, 94, 0.22);
+          border-radius: 8px;
+          background: rgba(6, 78, 59, 0.22);
+          color: #d1fae5;
+          padding: 10px;
+        }
+
+        .demoTicketJournalHeader {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 10px;
+          align-items: baseline;
+          justify-content: space-between;
+        }
+
+        .demoTicketJournalHeader strong {
+          color: #ecfdf5;
+        }
+
+        .demoTicketJournalHeader span,
+        .demoTicketJournal p {
+          margin: 0;
+          color: #a7f3d0;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .demoTicketJournal ol {
+          display: grid;
+          gap: 8px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .demoTicketJournal li {
+          display: grid;
+          gap: 3px;
+          border: 1px solid rgba(16, 185, 129, 0.22);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.34);
+          padding: 8px 9px;
+        }
+
+        .demoTicketJournal li span,
+        .demoTicketJournal li small {
+          color: #bbf7d0;
+          font-size: 12px;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
+        .demoTicketJournal li strong {
+          color: #f0fdf4;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
+        .modalAuditEntry {
+          display: grid;
+          gap: 6px;
+          margin-top: 14px;
+          border: 1px solid rgba(251, 191, 36, 0.34);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.2);
+          color: #fde68a;
+          padding: 10px;
+        }
+
+        .modalAuditEntry span {
+          color: #fef3c7;
+          font-size: 13px;
+        }
+
+        .modalTicketJournalEntry {
+          display: grid;
+          gap: 6px;
+          margin-top: 14px;
+          border: 1px solid rgba(34, 197, 94, 0.34);
+          border-radius: 8px;
+          background: rgba(6, 78, 59, 0.24);
+          color: #d1fae5;
+          padding: 10px;
+        }
+
+        .modalTicketJournalEntry span {
+          color: #bbf7d0;
+          font-size: 13px;
+          line-height: 1.4;
+          overflow-wrap: anywhere;
+        }
+
         .sectionDetailPanel {
+          box-sizing: border-box;
           position: relative;
           z-index: 2;
           border: 1px solid rgba(125, 211, 252, 0.2);
           border-radius: 8px;
           background: rgba(2, 8, 23, 0.54);
+          min-width: 0;
           margin-bottom: 12px;
+          overflow: hidden;
           padding: 14px;
         }
 
         .sectionDetailHeader {
           display: flex;
           align-items: flex-start;
+          flex-wrap: wrap;
           justify-content: space-between;
-          gap: 16px;
+          gap: 8px 12px;
+          min-width: 0;
           margin-bottom: 8px;
         }
 
         .sectionDetailHeader h3 {
+          flex: 1 1 180px;
+          min-width: 0;
           margin: 0;
           color: #f8fafc;
           font-size: 18px;
           line-height: 1.2;
+          overflow-wrap: anywhere;
         }
 
         .sectionDetailHeader > span {
           border: 1px solid rgba(251, 191, 36, 0.32);
           border-radius: 999px;
           color: #fde68a;
-          flex: 0 0 auto;
+          flex: 0 1 auto;
           font-size: 11px;
+          max-width: 100%;
+          overflow-wrap: anywhere;
           padding: 7px 10px;
         }
 
@@ -1583,6 +2789,7 @@ export default function DispatchDashboard() {
           color: #f8fafc;
           font-size: 13px;
           line-height: 1.25;
+          overflow-wrap: anywhere;
         }
 
         .relatedNodesRow {
@@ -1621,9 +2828,9 @@ export default function DispatchDashboard() {
           color: #fde68a;
         }
 
-        .sectionAlarmSummary button.service {
-          border-color: rgba(34, 197, 94, 0.36);
-          color: #bbf7d0;
+        .sectionAlarmSummary button.info {
+          border-color: rgba(125, 211, 252, 0.36);
+          color: #bae6fd;
         }
 
         .sectionAlarmSummary small {
@@ -1695,6 +2902,28 @@ export default function DispatchDashboard() {
           line-height: 1.25;
         }
 
+        .passportKpiStrip {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .passportKpiStrip article {
+          min-width: 0;
+          padding: 10px;
+        }
+
+        .passportKpiStrip article:last-child {
+          grid-column: 1 / -1;
+        }
+
+        .passportKpiStrip strong {
+          font-size: 13px;
+          line-height: 1.25;
+          overflow-wrap: anywhere;
+        }
+
         .statusDot {
           display: inline-block;
           width: 9px;
@@ -1757,9 +2986,42 @@ export default function DispatchDashboard() {
           line-height: 1.35;
         }
 
+        .selectedAlarmContext {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 10px;
+          align-items: start;
+          margin-top: 12px;
+          border: 1px solid rgba(251, 191, 36, 0.32);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.18);
+          padding: 10px;
+        }
+
+        .selectedAlarmContext strong {
+          display: block;
+          color: #fef3c7;
+          font-size: 13px;
+          line-height: 1.3;
+          margin-bottom: 3px;
+        }
+
+        .selectedAlarmContext small {
+          color: #fde68a;
+          font-size: 12px;
+          line-height: 1.4;
+          overflow-wrap: anywhere;
+        }
+
+        .selectedAlarmContext code {
+          color: #fecaca;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          overflow-wrap: anywhere;
+        }
+
         .passportTabs {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 6px;
           margin: 12px 0;
         }
@@ -1770,13 +3032,96 @@ export default function DispatchDashboard() {
           background: rgba(2, 8, 23, 0.48);
           color: #93c5fd;
           cursor: pointer;
-          padding: 8px 6px;
+          min-height: 40px;
+          overflow-wrap: anywhere;
+          padding: 8px 7px;
+          line-height: 1.15;
+          white-space: normal;
         }
 
         .passportTabs button.isActive {
           border-color: rgba(34, 211, 238, 0.68);
           color: #e0f2fe;
           background: rgba(14, 165, 233, 0.18);
+        }
+
+        .passportCompleteness {
+          display: flex;
+          align-items: stretch;
+          flex-direction: column;
+          gap: 12px;
+          border: 1px solid rgba(34, 211, 238, 0.22);
+          border-radius: 8px;
+          background: rgba(8, 47, 73, 0.34);
+          margin: 0 0 12px;
+          padding: 12px;
+        }
+
+        .passportCompleteness div {
+          min-width: 0;
+        }
+
+        .passportCompleteness span,
+        .passportEmptyState {
+          color: #93c5fd;
+          font-size: 11px;
+        }
+
+        .passportCompleteness strong {
+          display: block;
+          margin-top: 5px;
+          color: #f8fafc;
+          font-size: 16px;
+          line-height: 1.2;
+          overflow-wrap: anywhere;
+        }
+
+        .passportCompleteness small {
+          display: block;
+          margin-top: 5px;
+          color: #fde68a;
+          font-size: 11px;
+          line-height: 1.25;
+          overflow-wrap: anywhere;
+          white-space: normal;
+        }
+
+        .passportCompleteness button {
+          width: 100%;
+          min-height: 40px;
+          border: 1px solid rgba(251, 191, 36, 0.36);
+          border-radius: 8px;
+          background: rgba(113, 63, 18, 0.22);
+          color: #fde68a;
+          cursor: pointer;
+          font-weight: 900;
+          line-height: 1.2;
+          padding: 8px 10px;
+          white-space: normal;
+        }
+
+        .passportCompletenessBreakdown {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .passportCompletenessBreakdown article {
+          min-width: 0;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.42);
+          padding: 9px;
+        }
+
+        .passportCompletenessBreakdown article strong {
+          margin-top: 4px;
+          font-size: 15px;
+        }
+
+        .passportCompletenessBreakdown article small {
+          color: #bae6fd;
+          font-size: 10px;
         }
 
         .passportList {
@@ -1797,6 +3142,20 @@ export default function DispatchDashboard() {
           margin: 0;
           color: #f8fafc;
           font-size: 13px;
+        }
+
+        .passportList div[data-passport-field-status="needs-verification"] {
+          border-color: rgba(251, 191, 36, 0.24);
+          background: rgba(113, 63, 18, 0.1);
+          border-radius: 8px;
+          padding: 8px;
+        }
+
+        .passportEmptyState {
+          border: 1px dashed rgba(125, 211, 252, 0.22);
+          border-radius: 8px;
+          margin-top: 10px;
+          padding: 12px;
         }
 
         .linkedSystemsBlock {
@@ -1843,12 +3202,145 @@ export default function DispatchDashboard() {
           white-space: normal;
         }
 
-        .documentList button span {
+        .scadaTagTable {
+          display: grid;
+          gap: 7px;
+        }
+
+        .scadaTagSummary {
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.52);
+          padding: 10px;
+        }
+
+        .scadaTagSummary span,
+        .scadaTagHeader span,
+        .scadaTagValue {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .scadaTagSummary strong {
+          display: block;
+          margin-top: 4px;
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .scadaTagHeader,
+        .scadaTagTable article {
+          display: grid;
+          grid-template-columns: minmax(130px, 1.4fr) 42px minmax(72px, 0.8fr) minmax(82px, 0.9fr) 52px 78px;
+          gap: 7px;
+          align-items: center;
+        }
+
+        .scadaTagHeader {
+          padding: 0 8px;
+        }
+
+        .scadaTagTable article {
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.62);
+          padding: 8px;
+        }
+
+        .scadaTagCell {
+          display: grid;
+          min-width: 0;
+          gap: 3px;
+          align-content: center;
+        }
+
+        .scadaTagMobileLabel {
+          display: none;
+          color: #cbd5e1;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.04em;
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .scadaTagTable article.isDataError {
+          border-color: rgba(248, 113, 113, 0.48);
+          background: rgba(127, 29, 29, 0.18);
+        }
+
+        .scadaTagTable article.isAlarmSource {
+          border-color: rgba(251, 191, 36, 0.82);
+          box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.22), 0 0 28px rgba(251, 191, 36, 0.12);
+        }
+
+        .scadaTagTable code {
+          min-width: 0;
+          color: #bae6fd;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 11px;
+          overflow-wrap: anywhere;
+        }
+
+        .scadaTagTable strong {
+          color: #bbf7d0;
+          font-size: 11px;
+        }
+
+        .scadaTagTable article.isDataError strong {
+          color: #fecaca;
+        }
+
+        .documentList button {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 4px 8px;
+          align-items: center;
+        }
+
+        .documentList button .documentTypeBadge {
           display: inline-grid;
           place-items: center;
-          width: 38px;
-          margin-right: 8px;
+          justify-self: start;
+          min-width: 58px;
+          border: 1px solid rgba(34, 211, 238, 0.2);
+          border-radius: 999px;
+          padding: 3px 7px;
           color: #67e8f9;
+          background: rgba(8, 47, 73, 0.36);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+
+        .documentList button strong {
+          min-width: 0;
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
+        .documentList button small {
+          grid-column: 2;
+          width: fit-content;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 999px;
+          padding: 3px 7px;
+          color: #bae6fd;
+          background: rgba(8, 47, 73, 0.42);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .documentList button[data-action-state="read-only-locked"] small {
+          border-color: rgba(148, 163, 184, 0.24);
+          color: #cbd5e1;
+          background: rgba(15, 23, 42, 0.68);
         }
 
         .relatedBlock {
@@ -1878,18 +3370,73 @@ export default function DispatchDashboard() {
           left: 0;
           right: 0;
           bottom: 0;
-          display: flex;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
           align-items: center;
-          gap: 8px;
+          gap: 12px;
           border-top: 1px solid rgba(56, 189, 248, 0.28);
           background: rgba(2, 8, 23, 0.94);
           box-shadow: 0 -18px 44px rgba(0,0,0,0.36);
+          overflow: visible;
           padding: 10px 14px;
+          scrollbar-width: thin;
           backdrop-filter: blur(18px);
         }
 
+        .bottomNavSections {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: stretch;
+          gap: 7px;
+          min-width: 0;
+          overflow: visible;
+          padding-right: 2px;
+        }
+
         .dispatchBottomNav button {
-          white-space: nowrap;
+          flex: 1 1 150px;
+          display: inline-flex;
+          position: relative;
+          align-items: center;
+          justify-content: center;
+          gap: 0;
+          min-width: 148px;
+          max-width: 210px;
+          min-height: 42px;
+          overflow-wrap: normal;
+          word-break: normal;
+          text-align: center;
+          white-space: normal;
+          line-height: 1.2;
+          font-size: 12px;
+          padding: 9px 30px 9px 9px;
+        }
+
+        .dispatchBottomNav button span {
+          display: block;
+          min-width: 0;
+          max-width: 100%;
+          white-space: normal;
+          overflow-wrap: anywhere;
+          word-break: normal;
+        }
+
+        .dispatchBottomNav button small {
+          display: inline-grid;
+          position: absolute;
+          top: 5px;
+          right: 6px;
+          place-items: center;
+          min-width: 20px;
+          height: 20px;
+          border: 1px solid rgba(251, 191, 36, 0.38);
+          border-radius: 999px;
+          background: rgba(251, 191, 36, 0.14);
+          color: #fde68a;
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1;
+          padding: 0 5px;
         }
 
         .dispatchBottomNav button.isActive {
@@ -1899,12 +3446,16 @@ export default function DispatchDashboard() {
         }
 
         .bottomMeta {
+          flex: 0 0 auto;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
+          justify-content: flex-end;
           gap: 10px;
-          margin-left: auto;
+          max-width: 420px;
+          margin-left: 0;
           color: #93c5fd;
-          font-size: 12px;
+          font-size: 11px;
           white-space: nowrap;
         }
 
@@ -1946,6 +3497,60 @@ export default function DispatchDashboard() {
           line-height: 1.55;
         }
 
+        .ticketModalHeader {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          margin: 0 36px 12px 0;
+        }
+
+        .ticketModalHeader span {
+          flex: 0 0 auto;
+          border: 1px solid rgba(251, 191, 36, 0.4);
+          border-radius: 999px;
+          background: rgba(113, 63, 18, 0.24);
+          color: #fde68a;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          padding: 5px 8px;
+        }
+
+        .ticketModalHeader h2 {
+          margin: 0;
+        }
+
+        .ticketPayload {
+          display: grid;
+          gap: 8px;
+          margin: 16px 0 0;
+        }
+
+        .ticketPayload div {
+          display: grid;
+          grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+          gap: 10px;
+          border: 1px solid rgba(125, 211, 252, 0.14);
+          border-radius: 8px;
+          background: rgba(15, 23, 42, 0.52);
+          padding: 9px 10px;
+        }
+
+        .ticketPayload dt {
+          color: #93c5fd;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .ticketPayload dd {
+          margin: 0;
+          color: #e0f2fe;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
         @keyframes dashFlow {
           from { stroke-dashoffset: 0; }
           to { stroke-dashoffset: -18; }
@@ -1970,7 +3575,7 @@ export default function DispatchDashboard() {
         @media (max-width: 980px) {
           .dispatchShell {
             margin: -16px;
-            padding: 16px 16px 120px;
+            padding: 16px 16px calc(var(--dispatch-bottom-nav-height, 188px) + 24px);
           }
 
           .dispatchGrid {
@@ -1988,9 +3593,125 @@ export default function DispatchDashboard() {
             min-height: 680px;
           }
 
-          .dispatchBottomNav,
+          .dispatchBottomNav {
+            grid-template-columns: 1fr;
+            overflow: visible;
+          }
+
+          .bottomNavSections {
+            overflow-y: visible;
+          }
+
           .bottomMeta {
-            overflow-x: auto;
+            justify-content: center;
+            overflow: hidden;
+            white-space: normal;
+          }
+        }
+
+        @media (max-width: 760px) {
+          .dispatchShell {
+            padding-bottom: calc(var(--dispatch-bottom-nav-height, 268px) + 22px);
+          }
+
+          .dispatchHeader {
+            align-items: flex-start;
+            gap: 12px;
+          }
+
+          .dispatchHeader h1 {
+            font-size: 18px;
+          }
+
+          .headerStatus {
+            justify-content: flex-start;
+            width: 100%;
+          }
+
+          .passportKpiStrip {
+            grid-template-columns: 1fr;
+          }
+
+          .sectionMetrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .passportTabs {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .passportTabs button {
+            overflow-wrap: anywhere;
+          }
+
+          .passportCompletenessBreakdown {
+            grid-template-columns: 1fr;
+          }
+
+          .scadaTagHeader {
+            display: none;
+          }
+
+          .scadaTagTable article {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+
+          .scadaTagCellTag {
+            grid-column: 1 / -1;
+          }
+
+          .scadaTagMobileLabel {
+            display: inline;
+          }
+
+          .dispatchBottomNav {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: stretch;
+            gap: 6px;
+            overflow: visible;
+            padding: 8px;
+          }
+
+          .bottomNavSections {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            overflow: visible;
+            padding-right: 0;
+          }
+
+          .dispatchBottomNav button {
+            min-width: 0;
+            min-height: 40px;
+            max-width: none;
+            width: 100%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: normal;
+            padding: 8px 6px;
+            font-size: 11px;
+            line-height: 1.15;
+          }
+
+          .dispatchBottomNav button small {
+            top: 4px;
+            right: 4px;
+          }
+
+          .bottomMeta {
+            grid-column: 1 / -1;
+            justify-content: center;
+            margin-left: 0;
+            min-width: 0;
+            overflow: hidden;
+            white-space: normal;
+          }
+
+          .bottomMeta span,
+          .bottomMeta input {
+            display: none;
           }
         }
       `}</style>

@@ -10,7 +10,7 @@ type EquipmentTwinCardProps = {
   equipment: EquipmentTwinConfig;
   state: EquipmentTwinAssemblyState;
   isActive: boolean;
-  isHighlighted: boolean;
+  isRelated: boolean;
   onSelect: () => void;
   onToggleState: () => void;
 };
@@ -19,36 +19,49 @@ export default function EquipmentTwinCard({
   equipment,
   state,
   isActive,
-  isHighlighted,
+  isRelated,
   onSelect,
   onToggleState,
 }: EquipmentTwinCardProps) {
-  const isChillerExplodedLocked = equipment.id === "chiller";
+  const isExplodedLocked = Boolean(equipment.explodedLocked);
+  const displayedState = isExplodedLocked ? "assembled" : state;
 
   return (
     <article
-      className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isHighlighted ? "isHighlighted" : ""}`}
+      className={`equipmentTwinCard ${isActive ? "isActive" : ""} ${isRelated ? "isRelated" : ""}`}
+      data-equipment-twin-id={equipment.id}
+      data-selection-state={isActive ? "active" : isRelated ? "related" : "idle"}
+      data-testid={`equipment-twin-card-${equipment.id}`}
     >
-      <button className="equipmentTwinCardBody" type="button" onClick={onSelect}>
-        <span className="equipmentTwinStatus">{equipment.status}</span>
+      <button
+        aria-current={isActive ? "true" : undefined}
+        className="equipmentTwinCardBody"
+        type="button"
+        onClick={onSelect}
+      >
+        <span className="equipmentTwinCardTopline">
+          <span className="equipmentTwinStatus">{equipment.status}</span>
+          {isActive ? <span className="equipmentTwinSelectionBadge">Выбрано</span> : null}
+          {!isActive && isRelated ? <span className="equipmentTwinSelectionBadge related">Связано</span> : null}
+        </span>
         <strong>{equipment.title}</strong>
         <small>{equipmentTwinSystemLabels[equipment.system]} · {equipment.location}</small>
         <span className="equipmentTwinMiniStatus">
-          {state === "exploded" ? "Разобрано" : "Собрано"} · Read-only
+          {displayedState === "exploded" ? "Разобрано" : "Собрано"} · Read-only
         </span>
       </button>
       <div className="equipmentTwinCardFooter">
         <button
           type="button"
-          disabled={isChillerExplodedLocked}
+          disabled={isExplodedLocked}
           onClick={(event) => {
             event.stopPropagation();
             onToggleState();
           }}
         >
-          {isChillerExplodedLocked
-            ? "Разборка модели в подготовке"
-            : state === "exploded"
+          {isExplodedLocked
+            ? equipment.explodedLockedLabel ?? "Разборка модели в подготовке"
+            : displayedState === "exploded"
               ? "Собрать"
               : "Разобрать"}
         </button>
@@ -69,15 +82,16 @@ export default function EquipmentTwinCard({
           transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .equipmentTwinCard.isActive,
-        .equipmentTwinCard.isHighlighted {
+        .equipmentTwinCard.isActive {
           border-color: rgba(34, 211, 238, 0.64);
           background: rgba(14, 165, 233, 0.14);
-          box-shadow: 0 0 26px rgba(34, 211, 238, 0.12);
+          box-shadow: 0 0 34px rgba(34, 211, 238, 0.2);
         }
 
-        .equipmentTwinCard.isActive {
-          box-shadow: 0 0 34px rgba(34, 211, 238, 0.2);
+        .equipmentTwinCard.isRelated {
+          border-color: rgba(125, 211, 252, 0.36);
+          background: rgba(14, 165, 233, 0.07);
+          box-shadow: 0 0 18px rgba(34, 211, 238, 0.07);
         }
 
         .equipmentTwinCardBody {
@@ -104,8 +118,16 @@ export default function EquipmentTwinCard({
           line-height: 1.35;
         }
 
+        .equipmentTwinCardTopline {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          align-items: center;
+        }
+
         .equipmentTwinStatus,
-        .equipmentTwinMiniStatus {
+        .equipmentTwinMiniStatus,
+        .equipmentTwinSelectionBadge {
           width: fit-content;
           border: 1px solid rgba(34, 197, 94, 0.34);
           border-radius: 999px;
@@ -113,6 +135,18 @@ export default function EquipmentTwinCard({
           font-size: 10px;
           font-weight: 800;
           padding: 4px 7px;
+        }
+
+        .equipmentTwinSelectionBadge {
+          border-color: rgba(34, 211, 238, 0.48);
+          color: #e0f2fe;
+          background: rgba(8, 145, 178, 0.18);
+        }
+
+        .equipmentTwinSelectionBadge.related {
+          border-color: rgba(147, 197, 253, 0.3);
+          color: #bfdbfe;
+          background: rgba(30, 41, 59, 0.46);
         }
 
         .equipmentTwinMiniStatus {

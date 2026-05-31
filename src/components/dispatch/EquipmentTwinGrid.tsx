@@ -11,7 +11,7 @@ import { equipmentTwins, getEquipmentTwinById } from "./equipmentTwins.config";
 type EquipmentTwinGridProps = {
   selectedTwinId: EquipmentTwinId;
   twinStates: Record<EquipmentTwinId, EquipmentTwinAssemblyState>;
-  highlightedTwinIds: EquipmentTwinId[];
+  relatedTwinIds: EquipmentTwinId[];
   onSelectTwin: (id: EquipmentTwinId) => void;
   onToggleTwinState: (id: EquipmentTwinId) => void;
   onOpenPassport: () => void;
@@ -20,18 +20,25 @@ type EquipmentTwinGridProps = {
 export default function EquipmentTwinGrid({
   selectedTwinId,
   twinStates,
-  highlightedTwinIds,
+  relatedTwinIds,
   onSelectTwin,
   onToggleTwinState,
   onOpenPassport,
 }: EquipmentTwinGridProps) {
   const activeEquipment = getEquipmentTwinById(selectedTwinId);
-  const highlightedIds = new Set(highlightedTwinIds);
-  const isChillerExplodedLocked = activeEquipment.id === "chiller";
-  const activeTwinState = isChillerExplodedLocked ? "assembled" : twinStates[activeEquipment.id];
+  const relatedIds = new Set(relatedTwinIds);
+  const isExplodedLocked = Boolean(activeEquipment.explodedLocked);
+  const activeTwinState = isExplodedLocked ? "assembled" : twinStates[activeEquipment.id];
 
   return (
-    <section className="equipmentTwinSection" aria-label="3D equipment twins">
+    <section
+      className="equipmentTwinSection"
+      aria-label="3D equipment twins selector"
+      data-active-twin-id={selectedTwinId}
+      data-related-twin-ids={relatedTwinIds.join(",")}
+      data-testid="dispatch-equipment-twin-selector"
+      data-viewer-scope="equipment-twin-selector"
+    >
       <div className="equipmentTwinHeader">
         <div>
           <p className="eyebrow">3D equipment twins</p>
@@ -39,11 +46,11 @@ export default function EquipmentTwinGrid({
         </div>
         <button
           type="button"
-          disabled={isChillerExplodedLocked}
+          disabled={isExplodedLocked}
           onClick={() => onToggleTwinState(activeEquipment.id)}
         >
-          {isChillerExplodedLocked
-            ? "Разборка модели в подготовке"
+          {isExplodedLocked
+            ? activeEquipment.explodedLockedLabel ?? "Разборка модели в подготовке"
             : twinStates[activeEquipment.id] === "exploded"
               ? "Собрать"
               : "Разобрать"}
@@ -61,9 +68,9 @@ export default function EquipmentTwinGrid({
           <EquipmentTwinCard
             key={equipment.id}
             equipment={equipment}
-            state={equipment.id === "chiller" ? "assembled" : twinStates[equipment.id]}
+            state={equipment.explodedLocked ? "assembled" : twinStates[equipment.id]}
             isActive={equipment.id === selectedTwinId}
-            isHighlighted={highlightedIds.has(equipment.id)}
+            isRelated={equipment.id !== selectedTwinId && relatedIds.has(equipment.id)}
             onSelect={() => onSelectTwin(equipment.id)}
             onToggleState={() => onToggleTwinState(equipment.id)}
           />

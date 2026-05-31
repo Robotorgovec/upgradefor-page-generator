@@ -1,0 +1,547 @@
+{
+  "baseUrl": "http://127.0.0.1:3077",
+  "dispatchUrl": "http://127.0.0.1:3077/dispatch?cb=1780193115101",
+  "outputDir": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045",
+  "screenshots": [
+    {
+      "id": "full-page",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/00-full-page.png"
+    },
+    {
+      "id": "overview",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-01-overview.png"
+    },
+    {
+      "id": "cooling",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-02-cooling.png"
+    },
+    {
+      "id": "fan-coils",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-03-fan-coils.png"
+    },
+    {
+      "id": "ventilation",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-04-ventilation.png"
+    },
+    {
+      "id": "itp",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-05-itp.png"
+    },
+    {
+      "id": "pumps",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-06-pumps.png"
+    },
+    {
+      "id": "heat-exchangers",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-07-heat-exchangers.png"
+    },
+    {
+      "id": "alarms",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-08-alarms.png"
+    },
+    {
+      "id": "trends",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-09-trends.png"
+    },
+    {
+      "id": "equipment",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-10-equipment.png"
+    },
+    {
+      "id": "tickets",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-11-tickets.png"
+    },
+    {
+      "id": "ai",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-12-ai.png"
+    },
+    {
+      "id": "mobile",
+      "path": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/99-mobile-full-page.png"
+    }
+  ],
+  "initialAudit": {
+    "sectionLabel": null,
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3077/dispatch?cb=1780193115101",
+    "viewportWidth": 1440,
+    "scrollWidth": 1440,
+    "horizontalOverflow": false,
+    "overflowSamples": [],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 136,
+      "disabled": 24,
+      "links": 11,
+      "active": 6,
+      "readonlyLocked": 42,
+      "textFitIssues": []
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Обзор объекта",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-01-overview.png",
+      "activeSection": [
+        "Обзор объекта42/46 систем online · no active alarm",
+        "Обзор объекта"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "cooling",
+      "label": "Холодоснабжение / чиллеры",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-02-cooling.png",
+      "activeSection": [
+        "Холодоснабжение / чиллерыLIVE5 чиллерных позиций · 2 event",
+        "Холодоснабжение / чиллеры2"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 138,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 43,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "fan-coils",
+      "label": "Кондиционирование / фанкойлы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-03-fan-coils.png",
+      "activeSection": [
+        "Кондиционирование / фанкойлыточный реестр TO VERIFY · 1 event",
+        "Кондиционирование / фанкойлы1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 41,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "ventilation",
+      "label": "Вентиляция",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-04-ventilation.png",
+      "activeSection": [
+        "Вентиляция5 вентиляционных групп · 1 event",
+        "Вентиляция1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "itp",
+      "label": "Теплоснабжение / ИТП",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-05-itp.png",
+      "activeSection": [
+        "Теплоснабжение / ИТП1 тепловой ввод / TO VERIFY · no active alarm",
+        "Теплоснабжение / ИТП"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 136,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "pumps",
+      "label": "Насосные группы",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-06-pumps.png",
+      "activeSection": [
+        "Насосные группыоколо 10 насосов · 1 event",
+        "Насосные группы1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "heat-exchangers",
+      "label": "Теплообменники",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-07-heat-exchangers.png",
+      "activeSection": [
+        "Теплообменникиоколо 6 узлов · 1 event",
+        "Теплообменники1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 138,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "alarms",
+      "label": "Аварии",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-08-alarms.png",
+      "activeSection": [
+        "Аварии44 активных события · 4 event",
+        "Аварии4"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 145,
+        "disabled": 24,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "trends",
+      "label": "Тренды",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-09-trends.png",
+      "activeSection": [
+        "Тренды4 трендовых метрики · 1 event",
+        "Тренды1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 41,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "equipment",
+      "label": "Паспорта оборудования",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-10-equipment.png",
+      "activeSection": [
+        "Паспорта оборудования152 датчика + инженерные узлы · 1 event",
+        "Паспорта оборудования1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 41,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "tickets",
+      "label": "Заявки",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-11-tickets.png",
+      "activeSection": [
+        "Заявки1 demo-заявка готова · 1 event",
+        "Заявки1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 42,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    },
+    {
+      "id": "ai",
+      "label": "AI-диагностика",
+      "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/section-12-ai.png",
+      "activeSection": [
+        "AI-диагностикаNEW4 AI insights · 1 event",
+        "AI-диагностика1"
+      ],
+      "horizontalOverflow": false,
+      "overflowSamples": [],
+      "controlTextFitIssues": [],
+      "controls": {
+        "total": 137,
+        "disabled": 25,
+        "links": 11,
+        "active": 6,
+        "readonlyLocked": 41,
+        "textFitIssues": []
+      },
+      "visibleDialogs": [],
+      "safetyCopy": {
+        "readOnly": true,
+        "demoMode": true,
+        "noRealControl": true
+      },
+      "checklist": {
+        "activeSection": "checked",
+        "horizontalOverflow": "checked",
+        "buttonTextFit": "checked",
+        "safetyCopy": "checked"
+      }
+    }
+  ],
+  "mobileAudit": {
+    "sectionLabel": "mobile",
+    "title": "UPGRADE Dispatch / Asia Park Astana",
+    "url": "http://127.0.0.1:3077/dispatch?cb=1780193115101",
+    "viewportWidth": 390,
+    "scrollWidth": 390,
+    "horizontalOverflow": false,
+    "overflowSamples": [],
+    "activeSection": [
+      "Обзор объекта42/46 систем online · no active alarm",
+      "Обзор объекта"
+    ],
+    "controls": {
+      "total": 140,
+      "disabled": 24,
+      "links": 15,
+      "active": 6,
+      "readonlyLocked": 42,
+      "textFitIssues": []
+    },
+    "visibleDialogs": [],
+    "safetyCopy": {
+      "readOnly": true,
+      "demoMode": true,
+      "noRealControl": true
+    }
+  },
+  "summary": {
+    "sectionScreenshots": 12,
+    "expectedSections": 12,
+    "desktopHorizontalOverflow": false,
+    "mobileHorizontalOverflow": false,
+    "desktopOverflowSamples": [],
+    "mobileOverflowSamples": [],
+    "desktopButtonTextFitIssues": [],
+    "mobileButtonTextFitIssues": [],
+    "sectionButtonTextFitFailures": [],
+    "checklist": [
+      {
+        "item": "full-page screenshot captured",
+        "status": "checked",
+        "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/00-full-page.png"
+      },
+      {
+        "item": "all dispatch sections captured",
+        "status": "checked",
+        "expected": 12,
+        "actual": 12
+      },
+      {
+        "item": "desktop horizontal overflow",
+        "status": "checked",
+        "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/00-full-page.png"
+      },
+      {
+        "item": "mobile horizontal overflow",
+        "status": "checked",
+        "screenshot": "/Users/m1/UPGRADE/worktrees/dispatch-3d-equipment-models-and-selection/docs/dispatch/reports/screenshots/cycle-045/99-mobile-full-page.png"
+      },
+      {
+        "item": "button text fits in all captured states",
+        "status": "checked",
+        "suggestedFix": "Use normal wrapping, overflow-wrap:anywhere, stable min-height, and responsive button/grid constraints."
+      },
+      {
+        "item": "read-only/demo/no-real-control safety copy",
+        "status": "checked"
+      }
+    ]
+  },
+  "ok": true
+}
