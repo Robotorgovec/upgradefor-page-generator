@@ -7455,9 +7455,29 @@
     gap: 10px;
   }
 
+  .vault .sectionHeader {
+    gap: 5px;
+  }
+
+  .vault .sectionHeader h2 {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
   .vaultReadinessBoard p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 3.78em;
+    overflow: hidden;
     margin-top: 7px;
+    font-size: 13px;
     line-height: 1.42;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .vaultReadinessBoard h3 {
+    font-size: 20px;
+    line-height: 1.12;
   }
 
   .vaultStats {
@@ -7466,17 +7486,62 @@
   }
 
   .vaultStats span {
-    min-height: 78px;
+    min-height: 66px;
     gap: 4px;
-    padding: 9px;
+    padding: 8px;
   }
 
   .vaultStats strong {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .vaultStats small {
+    font-size: 10px;
+    line-height: 1.15;
   }
 
   .vaultStats em {
     display: none;
+  }
+
+  .vaultOpenList {
+    gap: 7px;
+    padding: 9px;
+  }
+
+  .vaultOpenList strong {
+    font-size: 11.5px;
+  }
+
+  .vaultOpenList ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .vaultOpenList li {
+    min-height: 54px;
+    padding: 7px;
+  }
+
+  .vaultOpenList li span {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .vaultOpenList li em,
+  .vaultOpenList p {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 10.5px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .contractSimulator .boardHeader {
@@ -7724,6 +7789,22 @@
     padding: 8px;
   }
 
+  .vaultCommandStrip span {
+    font-size: 9.5px;
+    line-height: 1.15;
+  }
+
+  .vaultCommandStrip p {
+    display: -webkit-box;
+    max-height: 3.5em;
+    overflow: hidden;
+    margin-top: 4px;
+    font-size: 11.5px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
   .vaultQuickActions {
     grid-column: 1 / -1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -7734,6 +7815,59 @@
     min-height: 42px;
     padding: 8px;
     font-size: 12px;
+  }
+
+  .vaultFilterDisclosure summary,
+  .vaultCardsDisclosure summary {
+    min-height: 58px;
+    gap: 5px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .vaultFilterDisclosure summary strong,
+  .vaultCardsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.22;
+  }
+
+  .vaultFilterDisclosure summary small,
+  .vaultCardsDisclosure summary small {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .vaultFilterDisclosure summary::after,
+  .vaultCardsDisclosure summary::after {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .vaultFilterDisclosure .vaultControls,
+  .vaultFilterDisclosure .modeSwitch {
+    margin: 0 10px 10px;
+  }
+
+  .vaultFilterDisclosure .vaultControls {
+    gap: 7px;
+  }
+
+  .vaultFilterDisclosure .modeSwitch {
+    width: calc(100% - 20px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .vaultFilterDisclosure .modeSwitch button {
+    min-height: 38px;
+    padding: 7px;
+    font-size: 11.5px;
   }
 
   .statusLine {
