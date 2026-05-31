@@ -7087,6 +7087,11 @@
     padding: 14px;
   }
 
+  .commandLayerHeader h2 {
+    font-size: 21px;
+    line-height: 1.12;
+  }
+
   .commandLayerHeader > p,
   .cockpitSummaryHeader > p {
     display: none;
@@ -7140,50 +7145,195 @@
   }
 
   .presentationModeTabs button {
-    min-height: 42px;
-    padding: 8px;
+    min-height: 38px;
+    padding: 7px;
     justify-items: start;
     text-align: left;
-    font-size: 11px;
+    font-size: 10.5px;
+    line-height: 1.12;
   }
 
   .cockpitSummaryGrid button {
-    min-height: 92px;
+    min-height: 78px;
     gap: 5px;
-    padding: 9px;
+    padding: 8px;
   }
 
   .cockpitSummaryGrid strong {
-    font-size: 12.5px;
+    display: -webkit-box;
+    max-height: 2.45em;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.22;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitSummaryGrid small {
+    display: -webkit-box;
+    max-height: 2.4em;
+    overflow: hidden;
+    font-size: 10.5px;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .cockpitSummaryGrid em {
     display: -webkit-box;
-    max-height: 2.6em;
+    max-height: 2.4em;
     overflow: hidden;
     font-size: 10.5px;
+    line-height: 1.2;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .presentationModePanel {
-    padding: 11px;
-    gap: 8px;
+    padding: 10px;
+    gap: 7px;
+  }
+
+  .presentationModePanel span {
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+
+  .presentationModePanel h3 {
+    font-size: 16px;
+    line-height: 1.18;
+  }
+
+  .presentationModePanel > p,
+  .presentationModePanel div p {
+    display: -webkit-box;
+    max-height: 3.6em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .presentationModePanel div {
+    gap: 4px;
+    padding-top: 7px;
   }
 
   .cockpitSummaryBoard {
-    padding: 10px;
+    gap: 8px;
+    padding: 9px;
+  }
+
+  .cockpitSummaryHeader h3 {
+    font-size: 16px;
+    line-height: 1.18;
+  }
+
+  .cockpitDecisionDock {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
   }
 
   .cockpitDecisionDock article,
   .cockpitAddonDisclosure,
   .cockpitAddonDisclosure summary {
-    min-height: 72px;
+    min-height: 62px;
+  }
+
+  .cockpitDecisionDock article {
+    padding: 8px;
+  }
+
+  .cockpitDecisionDock strong,
+  .cockpitAddonDisclosure summary strong {
+    display: -webkit-box;
+    max-height: 3.36em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitAddonDisclosure {
+    grid-column: 1 / -1;
+  }
+
+  .cockpitAddonDisclosure summary {
+    padding: 8px 38px 8px 8px;
+  }
+
+  .cockpitAddonDisclosure div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 8px 8px;
+  }
+
+  .cockpitAddonDisclosure p {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    padding: 7px;
+    font-size: 10.5px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .modeEndpoint article,
   .modeEndpoint button {
-    min-height: 60px;
+    min-height: 54px;
+  }
+
+  .modeEndpoint {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modeEndpoint article {
+    padding: 8px;
+  }
+
+  .modeEndpoint button {
+    grid-column: 1 / -1;
+    padding: 9px;
+  }
+
+  .modeEndpoint strong {
+    display: -webkit-box;
+    max-height: 3.25em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .executiveCommandDetailsDisclosure summary {
+    min-height: 58px;
+    gap: 5px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .executiveCommandDetailsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.22;
+  }
+
+  .executiveCommandDetailsDisclosure summary small {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .executiveCommandDetailsDisclosure summary::after {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
   }
 
   .candidateStack {
@@ -8642,10 +8792,10 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cockpitSummaryGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
