@@ -2422,6 +2422,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
+          <div className={styles.sourceDocsSummaryActions}>
+            <span>package action</span>
+            <strong>Скачать пакет исходных данных</strong>
+            <p>Два PDF скачиваются последовательно, без ZIP и без дублей в репозитории.</p>
+            <button type="button" onClick={downloadSourceDocuments}>Скачать пакет исходных данных</button>
+            {sourceDownloadStatus ? (
+              <p className={styles.sourceDownloadStatus} role="status" aria-live="polite">{sourceDownloadStatus}</p>
+            ) : null}
+          </div>
         </div>
 
         <div className={styles.sourceDocsGrid}>
@@ -2492,17 +2501,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </noscript>
             </article>
           ))}
-        </div>
-
-        <div className={styles.sourceDocsPackage}>
-          <div>
-            <strong>Пакет исходных данных</strong>
-            <p>Кнопка запускает скачивание двух исходных PDF последовательно, без ZIP и без дублирования файлов в репозитории.</p>
-          </div>
-          <button type="button" onClick={downloadSourceDocuments}>Скачать пакет исходных данных</button>
-          {sourceDownloadStatus ? (
-            <p className={styles.sourceDownloadStatus} role="status" aria-live="polite">{sourceDownloadStatus}</p>
-          ) : null}
         </div>
 
         <details className={styles.sourceDocsIntelligence}>

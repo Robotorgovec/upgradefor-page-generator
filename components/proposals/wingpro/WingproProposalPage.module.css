@@ -6578,8 +6578,9 @@
 .sourceDocsSummaryCard {
   padding: 16px;
   display: grid;
-  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr) minmax(210px, 0.25fr);
   gap: 14px;
+  align-items: stretch;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff), #ffffff 74%),
     #ffffff;
@@ -6639,6 +6640,53 @@
   color: var(--proposal-text-soft);
   font-size: 12px;
   line-height: 1.3;
+}
+
+.sourceDocsSummaryActions {
+  min-width: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+.sourceDocsSummaryActions > span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.sourceDocsSummaryActions strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.18;
+}
+
+.sourceDocsSummaryActions p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.34;
+}
+
+.sourceDocsSummaryActions button {
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.15;
+  cursor: pointer;
 }
 
 .sourceDocsGrid {
@@ -6882,6 +6930,7 @@
 
 .sourceDocActions a:hover,
 .sourceDocsPackage button:hover,
+.sourceDocsSummaryActions button:hover,
 .sourceDocsRelated a:hover {
   border-color: var(--proposal-brand-border-strong);
   background: var(--proposal-brand-soft);
@@ -9200,6 +9249,7 @@
   .sourceDocsHeader,
   .sourceDocsSummaryCard,
   .sourceDocsPackage,
+  .sourceDocsSummaryActions,
   .sourceDocsIntelligence summary,
   .sourceTraceabilityHeader,
   .sourceDisclaimer summary,
@@ -9260,6 +9310,11 @@
   .sourceDocsSummaryCard {
     gap: 6px;
     padding: 8px;
+  }
+
+  .sourceDocsSummaryActions {
+    gap: 5px;
+    padding: 7px;
   }
 
   .sourceDocsSummaryCard h3 {
@@ -9423,7 +9478,18 @@
     -webkit-line-clamp: 1;
   }
 
+  .sourceDocsSummaryActions p {
+    display: none;
+  }
+
   .sourceDocsPackage button {
+    width: 100%;
+    min-height: 44px;
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  .sourceDocsSummaryActions button {
     width: 100%;
     min-height: 44px;
     padding: 7px 9px;
