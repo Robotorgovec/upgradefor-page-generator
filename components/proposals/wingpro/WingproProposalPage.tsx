@@ -143,14 +143,14 @@ const twinInterfaceRows = [
 ] as const;
 
 const scenes = [
-  { id: "source", layer: "equipment", title: "Source", status: "collecting", control: "канал поставщика и контактная карта", receives: "supplier profile", risk: "неясная роль производителя/трейдера" },
-  { id: "verify", layer: "specification", title: "Verify", status: "owner required", control: "material, pressure, model, drawing questions", receives: "technical evidence checklist", risk: "параметры теряются в переписке" },
-  { id: "negotiate", layer: "documents", title: "Negotiate", status: "collecting", control: "PI, delta-list, release terms", receives: "decision log", risk: "слабые условия PI" },
-  { id: "contract", layer: "documents", title: "Contract", status: "external dependency", control: "draft RU/EN and responsibility boundary", receives: "contract input pack", risk: "устные договоренности без owner" },
-  { id: "produce", layer: "specification", title: "Produce", status: "planned", control: "production confirmations and evidence request", receives: "confirmation tracker", risk: "производственный статус непрозрачен" },
-  { id: "ship", layer: "delivery", title: "Ship", status: "at risk", control: "packing, dimensions, photo/video/nameplate", receives: "shipment readiness board", risk: "нет данных для логиста/брокера" },
-  { id: "handover", layer: "installation", title: "Handover", status: "planned", control: "broker, logistics, mounting inputs", receives: "handover room packs", risk: "участники получают вводные поздно" },
-  { id: "reuse", layer: "sales", title: "Reuse", status: "planned", control: "supplier card, product card, sales brief", receives: "Digital Product Asset", risk: "позиция исчезает после разовой закупки" },
+  { id: "source", layer: "equipment", title: "Источник", status: "сбор данных", control: "канал поставщика и контактная карта", receives: "профиль поставщика", risk: "неясная роль производителя/трейдера" },
+  { id: "verify", layer: "specification", title: "Проверка", status: "нужен owner", control: "вопросы по материалу, давлению, модели и чертежу", receives: "чек-лист technical evidence", risk: "параметры теряются в переписке" },
+  { id: "negotiate", layer: "documents", title: "Согласование", status: "сбор данных", control: "PI, delta-list и release readiness", receives: "журнал решений", risk: "слабые условия PI" },
+  { id: "contract", layer: "documents", title: "Договорная логика", status: "внешняя зависимость", control: "draft RU/EN и граница ответственности", receives: "пакет вводных для договора", risk: "устные договоренности без owner" },
+  { id: "produce", layer: "specification", title: "Производство", status: "план", control: "подтверждения производства и evidence request", receives: "трекер подтверждений", risk: "производственный статус непрозрачен" },
+  { id: "ship", layer: "delivery", title: "Отгрузка", status: "есть риск", control: "packing, dimensions, photo/video/nameplate", receives: "board готовности к отгрузке", risk: "нет данных для логиста/брокера" },
+  { id: "handover", layer: "installation", title: "Передача вводных", status: "план", control: "broker, logistics и mounting inputs", receives: "handover room packs", risk: "участники получают вводные поздно" },
+  { id: "reuse", layer: "sales", title: "Повторное использование", status: "план", control: "карточка поставщика, product card и sales brief", receives: "Digital Product Asset", risk: "позиция исчезает после разовой закупки" },
 ] as const;
 
 const projectControlScale = [
@@ -1651,6 +1651,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const layer = twinLayers.find((item) => item.id === activeLayer) ?? twinLayers[0];
   const scene = scenes.find((item) => item.id === activeScene) ?? scenes[0];
   const activeSceneIndex = scenes.findIndex((item) => item.id === scene.id) + 1;
+  const sceneLayerTitle = twinLayers.find((item) => item.id === scene.layer)?.title ?? scene.layer;
   const activeControl = projectControlScale.find((item) => item.id === activeControlStep) ?? projectControlScale[0];
   const supplier = supplierCandidates.find((item) => item.id === activeSupplier) ?? supplierCandidates[0];
   const decisionMode = offerDecisionModes.find((item) => item.id === offerDecisionMode) ?? offerDecisionModes[0];
@@ -2674,9 +2675,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                     </article>
                   </div>
                   <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
-                    <span><strong>{item.readiness}</strong><small>readiness</small></span>
+                    <span><strong>{item.readiness}</strong><small>готовность</small></span>
                     <span><strong>{item.gate}</strong><small>release gate</small></span>
-                    <span><strong>{item.owner}</strong><small>owner</small></span>
+                    <span><strong>{item.owner}</strong><small>ответственный</small></span>
                   </div>
                   <dl>
                     <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
@@ -2740,16 +2741,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       </section>
 
       {presentationMode ? (
-        <div className={styles.presentationOverlay} role="dialog" aria-modal="true" aria-label="Digital Twin presentation mode">
+        <div className={styles.presentationOverlay} role="dialog" aria-modal="true" aria-label="Режим показа Digital Twin">
           <div className={styles.presentationHud}>
             <div>
-              <p className={styles.eyebrow}>Digital Twin presentation mode</p>
+              <p className={styles.eyebrow}>Режим показа Digital Twin</p>
               <h2>Conceptual twin для решения WinGPro</h2>
             </div>
             <dl aria-label="Current Digital Twin presentation state">
               <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
-              <div><dt>layer</dt><dd>{layer.title}</dd></div>
-              <div><dt>readiness</dt><dd>{layer.readiness}</dd></div>
+              <div><dt>слой</dt><dd>{layer.title}</dd></div>
+              <div><dt>готовность</dt><dd>{layer.readiness}</dd></div>
               <div><dt>gate</dt><dd>{layer.gate}</dd></div>
             </dl>
             <button
@@ -2759,7 +2760,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               onMouseDown={() => setPresentationMode(false)}
               onPointerDown={() => setPresentationMode(false)}
             >
-              Close
+              Закрыть
             </button>
           </div>
           <div className={styles.presentationStage}>{twinStage}</div>
@@ -2785,14 +2786,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <dl>
                 <div><dt>WinGPro получает</dt><dd>{layer.deliverable}</dd></div>
                 <div><dt>Evidence request</dt><dd>{layer.evidence}</dd></div>
-                <div><dt>Risk закрывается</dt><dd>{layer.risk}</dd></div>
-                <div><dt>Owner</dt><dd>{layer.owner}</dd></div>
+                <div><dt>Какой риск закрывается</dt><dd>{layer.risk}</dd></div>
+                <div><dt>Ответственный</dt><dd>{layer.owner}</dd></div>
               </dl>
             </section>
             <div className={styles.presentationDecisionStrip} aria-label="Digital Twin decision strip">
-              <span><strong>{layer.readiness}</strong><small>readiness</small></span>
-              <span><strong>{layer.owner}</strong><small>approval owner</small></span>
-              <span><strong>{layer.deliverable}</strong><small>deliverable</small></span>
+              <span><strong>{layer.readiness}</strong><small>готовность</small></span>
+              <span><strong>{layer.owner}</strong><small>кто подтверждает</small></span>
+              <span><strong>{layer.deliverable}</strong><small>что передается</small></span>
             </div>
             <p className={styles.legalNote}>Conceptual digital twin preview: визуализация не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
           </article>
@@ -2801,26 +2802,26 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
       <section className={sectionClass(styles.filmstrip, "filmstrip")} id="filmstrip" data-section="filmstrip" aria-labelledby="film-title">
         <div className={styles.sectionHeader}>
-          <p className={styles.eyebrow}>Procurement filmstrip</p>
+          <p className={styles.eyebrow}>Операционный сценарий</p>
           <h2 id="film-title">Сделка как операционный сценарий</h2>
         </div>
         <aside className={styles.sceneDecisionSurface} aria-live="polite" aria-label="Selected procurement scene">
           <div>
-            <p className={styles.eyebrow}>Active scene {activeSceneIndex} / {scenes.length}</p>
+            <p className={styles.eyebrow}>Активный кадр {activeSceneIndex} / {scenes.length}</p>
             <h3>{scene.title}</h3>
             <StatusPill value={scene.status} />
           </div>
           <dl>
             <div><dt>что контролирует UPGRADE</dt><dd>{scene.control}</dd></div>
             <div><dt>что получает WinGPro</dt><dd>{scene.receives}</dd></div>
-            <div><dt>risk if skipped</dt><dd>{scene.risk}</dd></div>
-            <div><dt>Digital Twin layer</dt><dd>{scene.layer}</dd></div>
+            <div><dt>риск если пропустить</dt><dd>{scene.risk}</dd></div>
+            <div><dt>связанный слой Digital Twin</dt><dd>{sceneLayerTitle}</dd></div>
           </dl>
         </aside>
         <details className={styles.filmstripDetailsDisclosure}>
           <summary>
-            <span>Scenario film detail</span>
-            <strong>Открыть 8 кадров сделки Source → Reuse</strong>
+            <span>детали сценария</span>
+            <strong>Открыть 8 кадров сделки Источник → Повторное использование</strong>
             <small>Активный кадр остается сверху; полный operational filmstrip раскрывается по запросу без внутреннего скролла.</small>
           </summary>
           <div className={styles.sceneRail}>
@@ -2837,10 +2838,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <article key={`detail-${item.id}`} className={styles.sceneDetail} hidden={activeScene !== item.id}>
                 <h3>{item.title}</h3>
                 <dl>
-                  <div><dt>what UPGRADE controls</dt><dd>{item.control}</dd></div>
-                  <div><dt>what WinGPro receives</dt><dd>{item.receives}</dd></div>
-                  <div><dt>risk if skipped</dt><dd>{item.risk}</dd></div>
-                  <div><dt>related Digital Twin layer</dt><dd>{item.layer}</dd></div>
+                  <div><dt>что контролирует UPGRADE</dt><dd>{item.control}</dd></div>
+                  <div><dt>что получает WinGPro</dt><dd>{item.receives}</dd></div>
+                  <div><dt>риск если пропустить</dt><dd>{item.risk}</dd></div>
+                  <div><dt>связанный слой Digital Twin</dt><dd>{twinLayers.find((layerItem) => layerItem.id === item.layer)?.title ?? item.layer}</dd></div>
                 </dl>
               </article>
             ))}
