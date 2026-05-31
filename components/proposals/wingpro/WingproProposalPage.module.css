@@ -1458,7 +1458,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.16fr) minmax(330px, 0.72fr);
   gap: 18px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .twinStage {
@@ -1708,6 +1708,7 @@
   z-index: 1;
   width: min(430px, 72vw);
   height: 320px;
+  opacity: 0.26;
   transform: rotateX(58deg) rotateZ(-36deg);
   transform-style: preserve-3d;
   filter: drop-shadow(0 42px 34px rgba(15, 23, 42, 0.18));

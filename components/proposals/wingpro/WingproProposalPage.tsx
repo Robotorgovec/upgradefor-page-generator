@@ -109,10 +109,10 @@ const twinHotspots = [
 }>;
 
 const twinConnectionCues = [
-  { label: "4 nozzles", detail: "flanged connection points", tone: "ports", x: "73%", y: "39%" },
-  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "70%", y: "61%" },
-  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "31%", y: "61%" },
-  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "31%", y: "33%" },
+  { label: "Патрубки", detail: "4 фланцевых вывода", tone: "ports", x: "76%", y: "47%" },
+  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "70%", y: "63%" },
+  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "29%", y: "63%" },
+  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "28%", y: "34%" },
 ] as const;
 
 const twinInterfaceRows = [
@@ -1421,7 +1421,7 @@ function formatSourceChecksum(value?: string) {
 
 function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinLayerId; rotating: boolean }) {
   const groupRef = useRef<Group>(null);
-  const plateCount = 28;
+  const plateCount = 34;
   const activeTint = activeLayer === "documents" || activeLayer === "sales" ? "#4f7ea8" : activeLayer === "delivery" ? "#f59f55" : "#f05f6d";
   const portPoints = [
     { key: "warm-supply", y: 0.72, z: 0.56, color: "#f47686", ring: "#9f1239" },
@@ -1432,15 +1432,15 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
 
   useFrame((state) => {
     if (!groupRef.current) return;
-    const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.55) * 0.3 : 0;
-    groupRef.current.rotation.y = -0.42 + orbit;
-    groupRef.current.rotation.x = -0.16;
-    groupRef.current.rotation.z = 0.04;
-    groupRef.current.position.y = -0.08 + (rotating ? Math.sin(state.clock.elapsedTime * 0.8) * 0.025 : 0);
+    const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.52) * 0.22 : 0;
+    groupRef.current.rotation.y = -0.46 + orbit;
+    groupRef.current.rotation.x = -0.18;
+    groupRef.current.rotation.z = 0.03;
+    groupRef.current.position.y = 0.12 + (rotating ? Math.sin(state.clock.elapsedTime * 0.72) * 0.018 : 0);
   });
 
   return (
-    <group ref={groupRef} position={[-0.1, -0.08, 0]} rotation={[-0.16, -0.55, 0.04]} scale={0.62}>
+    <group ref={groupRef} position={[-0.2, 0.12, 0]} rotation={[-0.18, -0.46, 0.03]} scale={0.66}>
       <mesh position={[0, -1.28, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[2.15, 72]} />
         <meshStandardMaterial color="#dce6ef" transparent opacity={0.34} roughness={0.9} />
@@ -1497,28 +1497,32 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
       ))}
 
       {portPoints.map((port, index) => (
-        <group key={`port-${port.key}`} position={[1.66, port.y, port.z]}>
+        <group key={`port-${port.key}`} position={[1.5, port.y, port.z]}>
           <mesh position={[-0.05, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.22, 0.22, 0.2, 44]} />
+            <cylinderGeometry args={[0.24, 0.24, 0.18, 48]} />
             <meshStandardMaterial color="#cbd5e1" metalness={0.48} roughness={0.22} />
           </mesh>
+          <mesh position={[0.06, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.255, 0.255, 0.026, 48]} />
+            <meshStandardMaterial color="#0f172a" metalness={0.42} roughness={0.3} />
+          </mesh>
           <mesh position={[0.23, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.18, 0.18, 0.62, 44]} />
+            <cylinderGeometry args={[0.16, 0.17, 0.52, 48]} />
             <meshStandardMaterial color="#d8e0e8" metalness={0.58} roughness={0.19} />
           </mesh>
-          <mesh position={[0.46, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.34, 0.34, 0.12, 52]} />
+          <mesh position={[0.44, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.32, 0.32, 0.11, 56]} />
             <meshStandardMaterial color={port.color} emissive={port.color} emissiveIntensity={0.08} metalness={0.24} roughness={0.32} />
           </mesh>
-          <mesh position={[0.54, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+          <mesh position={[0.51, 0, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
             <torusGeometry args={[0.23, 0.026, 14, 52]} />
             <meshStandardMaterial color={port.ring} metalness={0.5} roughness={0.28} />
           </mesh>
-          <mesh position={[0.68, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.145, 0.145, 0.24, 44]} />
+          <mesh position={[0.64, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.13, 0.14, 0.2, 48]} />
             <meshStandardMaterial color="#0f172a" metalness={0.48} roughness={0.27} />
           </mesh>
-          <mesh position={[0.82, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+          <mesh position={[0.75, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
             <cylinderGeometry args={[0.09, 0.09, 0.025, 36]} />
             <meshStandardMaterial color="#020617" metalness={0.22} roughness={0.5} />
           </mesh>
@@ -1527,7 +1531,7 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
             return (
               <mesh
                 key={`bolt-${index}-${boltIndex}`}
-                position={[0.55, Math.cos(angle) * 0.27, Math.sin(angle) * 0.27]}
+                position={[0.51, Math.cos(angle) * 0.27, Math.sin(angle) * 0.27]}
                 rotation={[0, 0, Math.PI / 2]}
                 castShadow
               >
@@ -1559,6 +1563,10 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
       <mesh position={[1.54, 0, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.12, 2.55, 1.6]} />
         <meshStandardMaterial color={activeTint} metalness={0.28} roughness={0.34} />
+      </mesh>
+      <mesh position={[1.62, 0, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.055, 2.38, 1.44]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.12} roughness={0.48} transparent opacity={0.42} />
       </mesh>
     </group>
   );
@@ -2014,7 +2022,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       <div className={styles.twinCanvasWrap} aria-hidden="true">
         <Canvas
           className={styles.twinCanvas}
-          camera={{ position: [0, 0.15, 6.8], fov: 38 }}
+          camera={{ position: [0, 0.08, 7.1], fov: 38 }}
           dpr={[1, 1.7]}
           gl={{ antialias: true, alpha: true }}
           shadows
@@ -2059,7 +2067,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           ))}
         </div>
         <div className={styles.twinModelLegend}>
-          <span>28 plates</span>
+          <span>34 plates</span>
           <span>4 flanged ports</span>
           <span>tie rods</span>
           <span>mounting inputs</span>
@@ -2592,16 +2600,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.value}</p>
                 <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
                   <article>
-                    <span>что это за блок</span>
-                    <strong>Краткая карта выбранного слоя: readiness, открытые evidence-запросы и кому передать результат.</strong>
+                    <span>evidence board</span>
+                    <strong>Показывает готовность выбранного слоя, открытые запросы и кому передать результат.</strong>
                   </article>
                   <article>
-                    <span>сейчас запросить</span>
+                    <span>следующий запрос</span>
                     <strong>{item.evidence}</strong>
                   </article>
                   <article>
-                    <span>кто подтверждает</span>
-                    <strong>{item.owner}</strong>
+                    <span>handoff</span>
+                    <strong>{item.deliverable} → {item.owner}</strong>
                   </article>
                 </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
