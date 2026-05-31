@@ -1416,7 +1416,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [copyActionsOpen, setCopyActionsOpen] = useState(false);
   const [commercialTermsOpen, setCommercialTermsOpen] = useState(false);
   const [commercialStatus, setCommercialStatus] = useState("Коммерческие условия скрыты");
-  const [sourceDownloadStatus, setSourceDownloadStatus] = useState("Исходные документы готовы");
+  const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -2223,29 +2223,34 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </div>
                 <span>{doc.sizeLabel}</span>
               </div>
-              <details className={styles.sourceDocMetadata}>
-                <summary>Метаданные файла</summary>
-                <dl className={styles.sourceDocMeta}>
-                  <div><dt>File</dt><dd>{doc.href.split("/").slice(-1)[0]}</dd></div>
-                  <div><dt>Source name</dt><dd>{doc.sourceName}</dd></div>
-                  <div><dt>Object</dt><dd>{doc.object}</dd></div>
-                  <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
-                </dl>
-              </details>
-              <details className={styles.sourceDocUtility}>
+              <details className={styles.sourceDocDetails}>
                 <summary>
-                  <span>Для чего используется</span>
-                  <small>{doc.relevantTo.length} data-room checkpoints</small>
+                  <span>Файл / применение / границы</span>
+                  <small>{doc.relevantTo.length} checkpoints</small>
                 </summary>
-                <ul>
-                  {doc.relevantTo.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-              </details>
-              <details className={styles.sourceDocBoundary}>
-                <summary>Границы использования</summary>
-                <ul>
-                  {doc.notFor.map((item) => <li key={item}>{item}</li>)}
-                </ul>
+                <div className={styles.sourceDocDetailGrid}>
+                  <section>
+                    <h4>Метаданные</h4>
+                    <dl className={styles.sourceDocMeta}>
+                      <div><dt>File</dt><dd>{doc.href.split("/").slice(-1)[0]}</dd></div>
+                      <div><dt>Source name</dt><dd>{doc.sourceName}</dd></div>
+                      <div><dt>Object</dt><dd>{doc.object}</dd></div>
+                      <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
+                    </dl>
+                  </section>
+                  <section>
+                    <h4>Для чего используется</h4>
+                    <ul className={styles.sourceDocUtilityList}>
+                      {doc.relevantTo.map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>Границы использования</h4>
+                    <ul className={styles.sourceDocBoundaryList}>
+                      {doc.notFor.map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  </section>
+                </div>
               </details>
               <div className={styles.sourceDocActions}>
                 <a href={doc.href} target="_blank" rel="noreferrer" aria-label={`Просмотреть PDF ${doc.title}`}>
@@ -2254,7 +2259,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <a href={doc.href} download={doc.downloadName} aria-label={`Скачать PDF ${doc.title}`}>
                   Скачать PDF
                 </a>
-                <a href="#vault" onClick={() => setSourceDownloadStatus(`${doc.title} добавлен в data-room`)}>
+                <a
+                  href="#vault"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setSourceDownloadStatus(`${doc.title} добавлен в data-room`);
+                    document.getElementById("vault")?.scrollIntoView({ block: "start" });
+                  }}
+                >
                   Добавить в data-room
                 </a>
               </div>
@@ -2271,7 +2283,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>Кнопка запускает скачивание двух исходных PDF последовательно, без ZIP и без дублирования файлов в репозитории.</p>
           </div>
           <button type="button" onClick={downloadSourceDocuments}>Скачать пакет исходных данных</button>
-          <p className={styles.sourceDownloadStatus} aria-live="polite">{sourceDownloadStatus}</p>
+          {sourceDownloadStatus ? (
+            <p className={styles.sourceDownloadStatus} role="status" aria-live="polite">{sourceDownloadStatus}</p>
+          ) : null}
         </div>
 
         <details className={styles.sourceDocsIntelligence}>

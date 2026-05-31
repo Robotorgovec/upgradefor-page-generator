@@ -3904,6 +3904,7 @@
 .sourceDocMetadata:not([open]) > :not(summary),
 .sourceDocUtility:not([open]) > :not(summary),
 .sourceDocBoundary:not([open]) > :not(summary),
+.sourceDocDetails:not([open]) > :not(summary),
 .sourceDocsIntelligence:not([open]) > :not(summary),
 .sourceTraceability:not([open]) > :not(summary),
 .sourceDisclaimer:not([open]) > :not(summary),
@@ -6213,14 +6214,16 @@
 
 .sourceDocUtility,
 .sourceDocMetadata,
-.sourceDocBoundary {
+.sourceDocBoundary,
+.sourceDocDetails {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background: color-mix(in srgb, var(--proposal-brand-soft) 52%, #ffffff);
   overflow: visible;
 }
 
-.sourceDocUtility summary {
+.sourceDocUtility summary,
+.sourceDocDetails summary {
   min-height: 44px;
   padding: 9px 10px;
   color: var(--proposal-text);
@@ -6233,7 +6236,8 @@
   font-weight: 900;
 }
 
-.sourceDocUtility summary small {
+.sourceDocUtility summary small,
+.sourceDocDetails summary small {
   color: var(--proposal-text-soft);
   font-size: 11px;
   font-weight: 800;
@@ -6241,27 +6245,59 @@
   text-transform: uppercase;
 }
 
+.sourceDocDetailGrid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1fr) minmax(0, 0.86fr);
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+
+.sourceDocDetailGrid section {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: #ffffff;
+}
+
+.sourceDocDetailGrid h4 {
+  margin: 0 0 7px;
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
 .sourceDocUtility ul,
-.sourceDocBoundary ul {
+.sourceDocBoundary ul,
+.sourceDocUtilityList,
+.sourceDocBoundaryList {
   margin-top: 8px;
   color: var(--proposal-text-soft);
   font-size: 13px;
   line-height: 1.4;
 }
 
-.sourceDocUtility ul {
+.sourceDocUtility ul,
+.sourceDocUtilityList {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 0 10px 10px;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
-.sourceDocUtility li {
+.sourceDocUtility li,
+.sourceDocUtilityList li {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 999px;
   padding: 5px 8px;
   background: #ffffff;
+}
+
+.sourceDocBoundaryList {
+  margin: 0;
+  padding-left: 18px;
 }
 
 .sourceDocMetadata,
@@ -6287,7 +6323,8 @@
 
 .sourceDocMetadata[open] .sourceDocMeta,
 .sourceDocUtility[open] ul,
-.sourceDocBoundary[open] ul {
+.sourceDocBoundary[open] ul,
+.sourceDocDetails[open] .sourceDocDetailGrid {
   margin-top: 8px;
 }
 
@@ -6360,6 +6397,10 @@
   padding: 10px;
   background: var(--proposal-surface-soft);
   font-size: 13px;
+}
+
+.sourceDownloadStatus:empty {
+  display: none;
 }
 
 .sourceDocsIntelligence {
@@ -8419,6 +8460,7 @@
 
   .sourceDocsStatusGrid,
   .sourceDocMeta,
+  .sourceDocDetailGrid,
   .sourceDocActions,
   .sourceDocsRelated {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -8447,6 +8489,10 @@
     padding: 10px;
   }
 
+  .sourceDocTopline span:nth-child(n + 3) {
+    display: none;
+  }
+
   .sourceDocTitleRow {
     grid-template-columns: minmax(0, 1fr) auto;
   }
@@ -8462,6 +8508,25 @@
 
   .sourceDocActions a:nth-child(3) {
     grid-column: 1 / -1;
+  }
+
+  .sourceDocDetails summary {
+    gap: 8px;
+    padding: 8px 9px;
+  }
+
+  .sourceDocDetails summary small {
+    font-size: 10px;
+  }
+
+  .sourceDocDetailGrid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 0 8px 8px;
+  }
+
+  .sourceDocDetailGrid section {
+    padding: 8px;
   }
 
   .sourceDocCard,
