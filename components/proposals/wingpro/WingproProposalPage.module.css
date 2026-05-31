@@ -146,6 +146,7 @@
 .releaseGates,
 .statusOfCustomer,
 .handoverRoom,
+.commercialTerms,
 .acceptance,
 .copyPackage {
   width: 100%;
@@ -1132,6 +1133,7 @@
 
 .primaryAction,
 .secondaryAction,
+.missionCardFooter button,
 .twinControls button,
 .segmented button,
 .sceneRail button,
@@ -1183,6 +1185,7 @@
 }
 
 .secondaryAction,
+.missionCardFooter button,
 .twinControls button,
 .presentationLayerRail button,
 .segmented button,
@@ -1200,6 +1203,7 @@
 }
 
 .secondaryAction:hover,
+.missionCardFooter button:hover,
 .twinControls button:hover,
 .presentationLayerRail button:hover,
 .segmented button:hover,
@@ -1404,6 +1408,11 @@
   color: var(--proposal-text);
   font-weight: 850;
   line-height: 1.42;
+}
+
+.missionCardFooter button {
+  width: 100%;
+  margin-top: 12px;
 }
 
 .digitalTwin,
@@ -6424,19 +6433,33 @@
 
 .sourceDisclaimer {
   padding: 14px;
-  display: grid;
-  grid-template-columns: minmax(180px, 0.22fr) minmax(0, 1fr);
-  gap: 12px;
   background:
     linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff)),
     #ffffff;
+  overflow: visible;
+}
+
+.sourceDisclaimer summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.22fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
 }
 
 .sourceDisclaimer strong {
   color: var(--proposal-text);
 }
 
+.sourceDisclaimer span {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 .sourceDisclaimer p {
+  margin: 12px 0 0;
   color: var(--proposal-text-soft);
   line-height: 1.55;
 }
@@ -7318,8 +7341,68 @@
   margin: 0 18px 18px;
 }
 
+.commercialTerms,
 .acceptance {
   background: linear-gradient(180deg, #ffffff, #fbfdff);
+}
+
+.commercialIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, auto) minmax(220px, 0.28fr);
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 66%, #ffffff), #ffffff),
+    #ffffff;
+}
+
+.commercialIntro p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.45;
+}
+
+.commercialActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.commercialIntro button {
+  flex: 1 1 150px;
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.commercialIntro button:hover {
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
+.commercialStatus {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+  font-size: 13px;
+}
+
+.commercialPanel {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+  overflow: visible;
 }
 
 .acceptanceGrid {
@@ -7812,8 +7895,9 @@
   .sourceDocsPackage,
   .sourceDisclaimer,
   .sourceTraceabilityHead,
-  .sourceTraceabilityRow,
-  .projectSourcesHeader,
+	  .sourceTraceabilityRow,
+	  .commercialIntro,
+	  .projectSourcesHeader,
   .projectSourcesBoundary,
   .projectSourceGroupHeader,
   .projectSourceCard,
@@ -8232,8 +8316,9 @@
   .riskRadar,
   .releaseGates,
   .statusOfCustomer,
-  .handoverRoom,
-  .acceptance,
+	  .handoverRoom,
+	  .commercialTerms,
+	  .acceptance,
   .copyPackage {
     padding: 18px;
   }
@@ -8262,6 +8347,7 @@
   .sourceDocsPackage,
   .sourceDocsIntelligence summary,
   .sourceTraceabilityHeader,
+  .sourceDisclaimer summary,
   .sourceInsightGrid {
     grid-template-columns: 1fr;
   }
@@ -10233,7 +10319,8 @@
     -webkit-line-clamp: 3;
   }
 
-  .acceptance {
+	  .commercialTerms,
+	  .acceptance {
     gap: 10px;
   }
 
@@ -10588,8 +10675,9 @@
   .riskRadar,
   .releaseGates,
   .statusOfCustomer,
-  .handoverRoom,
-  .acceptance,
+	  .handoverRoom,
+	  .commercialTerms,
+	  .acceptance,
   .copyPackage {
     padding: 14px;
   }
