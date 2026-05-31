@@ -10,9 +10,9 @@ type TwinLayerId = "equipment" | "specification" | "documents" | "delivery" | "i
 type SceneId = "source" | "verify" | "negotiate" | "contract" | "produce" | "ship" | "handover" | "reuse";
 type ControlStepId = "supplier" | "offer" | "contract" | "delivery" | "workplan" | "field" | "closeout";
 type SupplierCandidateId = "candidate-a" | "candidate-b" | "candidate-c";
-type OfferDecisionMode = "evidence" | "price" | "speed";
+type OfferDecisionMode = "evidence" | "terms" | "speed";
 type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
-type DeliveryPhaseId = "payment" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
+type DeliveryPhaseId = "release" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
 type RiskImpact = "quality" | "time" | "financial" | "dependency";
 type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next" | "addons";
@@ -277,9 +277,9 @@ const supplierCandidates = [
     channel: "trader channel",
     score: 67,
     status: "reserve",
-    recommendation: "reserve until commercial delta-list is closed",
-    rationale: "может быть полезен как price check, но роль трейдера, bank details и delivery evidence требуют отдельной проверки",
-    decisionSignal: "reserve path for price benchmark and fallback negotiation",
+    recommendation: "reserve until contract delta-list is closed",
+    rationale: "может быть полезен как terms check, но роль трейдера, bank details и delivery evidence требуют отдельной проверки",
+    decisionSignal: "reserve path for terms benchmark and fallback negotiation",
     blockers: ["manufacturer/trader role", "bank details", "drawing and factory contact"],
     nextEvidence: "manufacturer clarification, bank details confirmation, delivery terms EXW/FCA/DAP",
     handoffValue: "WinGPro видит, почему канал нельзя вести как основной без дополнительных доказательств",
@@ -330,7 +330,7 @@ const supplierCandidates = [
 const supplierRequestQueue = [
   ["Identity", "supplier profile, manufacturer/trader role, contact map", "before shortlist"],
   ["Technical", "material, pressure class, model BB150B-307H, drawing request", "before release"],
-  ["Commercial", "PI, release terms, delivery terms, commercial delta-list", "inside commercial block"],
+  ["Contract input", "PI, release terms, delivery terms, contract delta-list", "inside separated terms block"],
   ["Evidence", "photo/video/nameplate, packing list, weight/dimensions", "before shipment"],
 ] as const;
 
@@ -403,14 +403,14 @@ const offerDecisionModes = [
     handoffOutput: "offer comparison board + evidence-led recommendation + open questions list",
   },
   {
-    id: "price",
-    title: "Price-led",
+    id: "terms",
+    title: "Terms-led",
     score: "requires caution",
-    summary: "цена сравнивается только вместе с PI strength, bank evidence и delivery terms",
-    impact: "низкая цена без evidence переносит риск в release и логистическое решение",
-    ownerDecision: "WinGPro может использовать цену как benchmark, но не как единственный критерий release",
-    risksControlled: ["low-price trap", "unclear trader margin", "bank/details gap"],
-    handoffOutput: "commercial delta-list + reserve supplier notes + release risk memo",
+    summary: "условия сравниваются только вместе с PI strength, bank evidence и delivery terms",
+    impact: "слабые условия без evidence переносят риск в release и логистическое решение",
+    ownerDecision: "WinGPro может использовать условия как benchmark, но не как единственный критерий release",
+    risksControlled: ["weak terms trap", "unclear trader margin", "bank/details gap"],
+    handoffOutput: "contract delta-list + reserve supplier notes + release risk memo",
   },
   {
     id: "speed",
@@ -437,9 +437,9 @@ const contractScenarios = [
   {
     id: "balanced",
     title: "Balanced evidence path",
-    payment: "release path: technical/commercial evidence gates are visible before the next project step",
+    releaseReadiness: "release path: technical and contractual evidence gates are visible before the next project step",
     deliveryTerms: "FCA/DAP logic сравнивается с pickup responsibility и broker input",
-    evidenceBeforePayment: "PI, bank details, material confirmation, pressure class, open questions list",
+    evidenceBeforeRelease: "PI, bank details, material confirmation, pressure class, open questions list",
     evidenceBeforeShipment: "packing list, weight/dimensions, nameplate/photo/video, commercial invoice draft",
     contractStrength: "high if evidence gates and responsibility boundary are attached",
     acceptanceImpact: "handover is based on deliverables: data-room, risk register, release board, handover packs",
@@ -452,9 +452,9 @@ const contractScenarios = [
   {
     id: "evidence-first",
     title: "Evidence-first",
-    payment: "release decision waits for stronger evidence",
+    releaseReadiness: "release decision waits for stronger evidence",
     deliveryTerms: "delivery terms stay open until pickup/export documents are mapped",
-    evidenceBeforePayment: "supplier profile, bank details, material/pressure evidence, technical owner questions",
+    evidenceBeforeRelease: "supplier profile, bank details, material/pressure evidence, technical owner questions",
     evidenceBeforeShipment: "photo/video/nameplate and packing data become shipment blockers",
     contractStrength: "strongest for risk visibility, slower if supplier response is weak",
     acceptanceImpact: "best fit when WinGPro wants maximum document traceability before release gates",
@@ -467,14 +467,14 @@ const contractScenarios = [
   {
     id: "speed-sensitive",
     title: "Speed-sensitive",
-    payment: "release decision can move faster, but evidence gaps stay visible as blockers",
+    releaseReadiness: "release decision can move faster, but evidence gaps stay visible as blockers",
     deliveryTerms: "delivery terms prioritize logistics handoff and pickup readiness",
-    evidenceBeforePayment: "minimum PI/bank/material/pressure evidence, with explicit unresolved list",
+    evidenceBeforeRelease: "minimum PI/bank/material/pressure evidence, with explicit unresolved list",
     evidenceBeforeShipment: "packing list and photo/nameplate remain mandatory handoff inputs",
     contractStrength: "conditional: speed improves coordination only if blockers are not hidden",
     acceptanceImpact: "useful when schedule pressure exists, but profile owners still approve final decisions",
     decisionSignal: "use only with visible risk register and WinGPro approval owner",
-    ownerRequiredDecision: "approve faster commercial movement while keeping unresolved evidence visible as blockers",
+    ownerRequiredDecision: "approve faster next-stage movement while keeping unresolved evidence visible as blockers",
     evidenceGateStrength: "conditional: speed is acceptable only when hidden-risk shortcuts are not used",
     unresolvedBlockers: ["minimum PI/bank evidence", "explicit unresolved list", "shipment evidence before handoff"],
     acceptanceHandoff: "fast-track decision note + owner-required blockers + shipment handoff checklist",
@@ -482,9 +482,9 @@ const contractScenarios = [
 ] as const satisfies ReadonlyArray<{
   id: ContractScenarioId;
   title: string;
-  payment: string;
+  releaseReadiness: string;
   deliveryTerms: string;
-  evidenceBeforePayment: string;
+  evidenceBeforeRelease: string;
   evidenceBeforeShipment: string;
   contractStrength: string;
   acceptanceImpact: string;
@@ -507,19 +507,19 @@ const contractValueControls = [
   ["Source logic", "contract choices are tied to data-room, risk register, release gates and handover packs", "technical evidence, owner approvals and handoff artifacts"],
   ["Decision quality", "release choices are linked to evidence gates, open blockers and owner-required approvals", "PI/bank/material/pressure before release, packing/photo/video before shipment"],
   ["Time discipline", "structured questions reduce repeated clarification loops and make late blockers visible earlier", "owner-required statuses, next-best actions and release readiness signals"],
-  ["Acceptance clarity", "service acceptance is tied to delivered artifacts, not to physical results of third parties", "delivery board, digital supplier/product card and copy-ready executive summary"],
+  ["Handover clarity", "result review is tied to transferred artifacts, not to physical results of third parties", "delivery board, digital supplier/product card and executive technical summary"],
 ] as const;
 
 const acceptanceGuardrails = [
   ["Accepted by deliverables", "приемка результата осуществляется по deliverables", "data-room index, risk register, release board, handover packs and digital supplier/product cards"],
   ["Not accepted by third-party outcomes", "manufacturer, carrier, broker, customs, mounting side and certification actions stay external", "tracked as external dependencies, not UPGRADE service acceptance criteria"],
   ["External costs excluded", "equipment, delivery, duties, VAT, broker, certification, mounting, PNR, inspection and bank commissions", "outside the 3 000 000 ₸ service price"],
-  ["Decision owner remains WinGPro", "payment mode, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
+  ["Decision owner remains WinGPro", "format, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
 ] as const;
 
 const deliveryTimeline = [
   {
-    id: "payment",
+    id: "release",
     phase: "Release readiness",
     releaseGate: "Gate 1 — Evidence readiness",
     status: "owner required",
@@ -529,7 +529,7 @@ const deliveryTimeline = [
     upgradeAction: "UPGRADE prepares release readiness board and evidence request.",
     blocker: "material or pressure evidence is missing, or bank details are not confirmed",
     output: "release-readiness checklist",
-    releaseDecision: "the next project step can be discussed only after minimum commercial, bank and technical evidence is visible",
+    releaseDecision: "the next project step can be discussed only after minimum PI, bank and technical evidence is visible",
     evidencePacket: "PI snapshot, bank check note, material / pressure evidence, open item delta-list",
     escalationOwner: "WinGPro decision owner",
     handoff: "release approval note + unresolved evidence list",
@@ -880,7 +880,7 @@ const routePoints = [
     action: "создать source request",
     risk: "неясный источник данных",
     gate: "Gate 0",
-    readiness: "factory contact and supplier identity are visible before commercial movement",
+    readiness: "factory contact and supplier identity are visible before release movement",
     response: "UPGRADE turns supplier messages into a traceable source request and open evidence list.",
     boundary: "supplier confirms factory data; UPGRADE structures the request and traceability.",
   },
@@ -967,7 +967,7 @@ const routePoints = [
 const vaultDocs = [
   ["Supplier Identity", "supplier profile", "identity", "Gate 0", "UPGRADE", "collecting", "commercial", "подтверждает канал", "сокращает повторные вопросы", "неясный торговый канал", "свести supplier profile"],
   ["Supplier Identity", "bank details confirmation", "finance", "Gate 1", "supplier", "missing", "commercial", "снижает риск слабого release decision", "уменьшает задержку решения по следующему этапу", "release без evidence", "запросить подтверждение"],
-  ["Commercial Terms", "Proforma Invoice", "commercial", "Gate 1", "supplier", "review", "commercial", "сверка цены и условий", "сокращает цикл согласования PI", "слабые условия PI", "подготовить delta-list"],
+  ["Contract Terms", "Proforma Invoice", "contract", "Gate 1", "supplier", "review", "contract", "сверка PI и условий", "сокращает цикл согласования PI", "слабые условия PI", "подготовить delta-list"],
   ["Technical Evidence", "pressure class confirmation", "technical", "Gate 1", "supplier", "missing", "quality", "снижает риск неподходящего оборудования", "снижает риск поздней технической переделки", "ошибка pressure class", "запросить evidence"],
   ["Technical Evidence", "drawing", "technical", "Gate 2", "supplier", "requested", "quality", "дает профильным участникам проверяемую основу", "уменьшает поздние монтажные вопросы", "нет чертежа", "закрепить owner"],
   ["Delivery Pack", "packing list", "logistics", "Gate 3", "supplier", "requested", "time", "снижает риск ошибки в логистическом пакете", "ускоряет передачу логисту/брокеру", "нет packing data", "включить в shipment checklist"],
@@ -1006,10 +1006,10 @@ function getVaultOperationalCue(status: string, impact: string) {
 }
 
 const risks = [
-  { id: "identity", title: "supplier identity unclear", severity: "medium", impact: "dependency", x: 18, y: 34, evidence: "supplier profile, role clarification", owner: "WinGPro / supplier", escalation: "source request", vaultEvidence: "supplier profile", releaseGate: "Gate 0 — Deal setup", routeHandoff: "Factory China", response: "подготовить supplier identity request и зафиксировать open owner до commercial movement", decision: "WinGPro confirms whether the trading channel is acceptable", boundary: "UPGRADE фиксирует статус ответа поставщика, но не отвечает за его действия" },
+  { id: "identity", title: "supplier identity unclear", severity: "medium", impact: "dependency", x: 18, y: 34, evidence: "supplier profile, role clarification", owner: "WinGPro / supplier", escalation: "source request", vaultEvidence: "supplier profile", releaseGate: "Gate 0 — Deal setup", routeHandoff: "Factory China", response: "подготовить supplier identity request и зафиксировать open owner до release movement", decision: "WinGPro confirms whether the trading channel is acceptable", boundary: "UPGRADE фиксирует статус ответа поставщика, но не отвечает за его действия" },
   { id: "material", title: "material mismatch", severity: "high", impact: "quality", x: 35, y: 18, evidence: "material confirmation, technical sheet", owner: "technical owner", escalation: "evidence before release", vaultEvidence: "material / specification confirmation", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "сформировать evidence request для supplier и вынести спорный материал в decision log", decision: "technical owner checks material evidence before release readiness", boundary: "UPGRADE не утверждает технические параметры" },
   { id: "pressure", title: "pressure class mismatch", severity: "high", impact: "quality", x: 50, y: 24, evidence: "pressure class confirmation", owner: "technical owner", escalation: "Gate 1 blocker", vaultEvidence: "pressure class confirmation", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "пометить Gate 1 blocker и запросить pressure evidence до release decision", decision: "responsible technical specialist confirms pressure class", boundary: "UPGRADE структурирует запрос" },
-  { id: "pi", title: "PI weakness", severity: "medium", impact: "financial", x: 64, y: 36, evidence: "PI, commercial delta-list", owner: "WinGPro", escalation: "release readiness", vaultEvidence: "Proforma Invoice", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "собрать PI delta-list: цена, количество, реквизиты, сроки, Incoterms и evidence gaps", decision: "WinGPro approves commercial terms after reviewing delta-list", boundary: "UPGRADE не принимает финансовое решение" },
+  { id: "pi", title: "PI weakness", severity: "medium", impact: "financial", x: 64, y: 36, evidence: "PI, contract delta-list", owner: "WinGPro", escalation: "release readiness", vaultEvidence: "Proforma Invoice", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "собрать PI delta-list: реквизиты, сроки, Incoterms и evidence gaps", decision: "WinGPro approves terms after reviewing delta-list", boundary: "UPGRADE не принимает финансовое решение" },
   { id: "payment", title: "release before evidence", severity: "high", impact: "financial", x: 76, y: 22, evidence: "release-readiness checklist", owner: "WinGPro", escalation: "release gate board", vaultEvidence: "bank details confirmation + release-readiness checklist", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "показать stop/go list по evidence before release и unresolved blockers", decision: "WinGPro decides release scenario and risk acceptance", boundary: "UPGRADE не принимает финансовое решение за WinGPro" },
   { id: "packing", title: "missing packing data", severity: "medium", impact: "time", x: 25, y: 68, evidence: "packing list, weight/dimensions", owner: "supplier / logistics", escalation: "shipment readiness", vaultEvidence: "packing list", releaseGate: "Gate 3 — Before shipment", routeHandoff: "Pickup / Export docs", response: "запросить packing list, dimensions and pickup data before logistics handoff", decision: "supplier provides cargo data; logistics reviews route readiness", boundary: "UPGRADE не является перевозчиком" },
   { id: "customs", title: "customs documents gap", severity: "medium", impact: "dependency", x: 48, y: 76, evidence: "broker input list, export docs", owner: "broker", escalation: "customs handoff", vaultEvidence: "broker input list + export document checklist", releaseGate: "Gate 4 — Before customs/logistics handoff", routeHandoff: "Border / customs", response: "собрать customs input board и отделить broker decisions от supplier documents", decision: "broker/profile parties review customs inputs", boundary: "UPGRADE не является брокером" },
@@ -1056,8 +1056,8 @@ function getGateStopGo(gateTitle: string) {
   if (key === "Gate 3") return "Stop shipment readiness when packing data or photo/video/nameplate evidence is missing.";
   if (key === "Gate 4") return "Go only when broker/logistics input package and external document owners are visible.";
   if (key === "Gate 5") return "Stop mounting handoff if owner, access inputs or technical question path is unclear.";
-  if (key === "Gate 7") return "Go when supplier/product card and reusable notes are linked for future commercial use.";
-  return "Service acceptance is based on deliverables, open issue register and handover packs.";
+  if (key === "Gate 7") return "Go when supplier/product card and reusable notes are linked for future sales or repeat procurement use.";
+  return "Результат принимается по deliverables, open issue register и handover packs.";
 }
 
 const handoverPacks = [
@@ -1200,7 +1200,7 @@ function getHandoverOwnerCue(pack: HandoverPack) {
   if (pack.name.includes("Logistics")) return "logistics/carrier side reviews route execution; UPGRADE prepares cargo data and pickup status.";
   if (pack.name.includes("Mounting")) return "mounting side and technical specialists approve field decisions; UPGRADE prepares the coordination draft.";
   if (pack.name.includes("Supplier")) return "supplier responds to evidence requests; UPGRADE keeps open items visible.";
-  if (pack.name.includes("Future")) return "WinGPro decides commercial reuse; UPGRADE structures supplier and product data.";
+  if (pack.name.includes("Future")) return "WinGPro decides future reuse; UPGRADE structures supplier and product data.";
   return "WinGPro accepts service deliverables; UPGRADE transfers the structured closeout package.";
 }
 
@@ -1216,7 +1216,7 @@ const copyTexts: Record<CopyVariant, string> = {
   deliverables:
     "Deliverables: mission card, Digital Twin preview, Document Vault, Risk Radar, Release gates board, Route Map, Control Room status, Handover Room packs, digital supplier card, digital product card, copy-ready executive summary.",
   payment:
-    "Коммерческое решение: 3 000 000 ₸ без НДС за единый комплекс сопровождения. Оплата 50/50 или 100% по согласованию. Acceptance is based on deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
+    "Коммерческое решение: 3 000 000 ₸ без НДС за единый комплекс сопровождения. Оплата 50/50 или 100% по согласованию. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
   next:
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
   addons:
@@ -1390,7 +1390,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [activeSupplier, setActiveSupplier] = useState<SupplierCandidateId>("candidate-a");
   const [offerDecisionMode, setOfferDecisionMode] = useState<OfferDecisionMode>("evidence");
   const [activeContractScenario, setActiveContractScenario] = useState<ContractScenarioId>("balanced");
-  const [activeDeliveryPhase, setActiveDeliveryPhase] = useState<DeliveryPhaseId>("payment");
+  const [activeDeliveryPhase, setActiveDeliveryPhase] = useState<DeliveryPhaseId>("release");
   const [activeEvidencePhase, setActiveEvidencePhase] = useState<EvidencePhase>("Before shipment");
   const [activeFieldStatus, setActiveFieldStatus] = useState<FieldStatus>("Planned");
   const [activeParticipant, setActiveParticipant] = useState("UPGRADE");
@@ -1627,9 +1627,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   ] as const;
   const cockpitKpis = [
     {
-      label: "commercial",
-      value: "отдельно",
-      detail: "финансовая часть вынесена из technical cockpit",
+      label: "scope",
+      value: "IT/data",
+      detail: "финансовая часть доступна только в отдельном disclosure",
     },
     {
       label: "blockers",
@@ -1945,8 +1945,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </div>
         <aside className={styles.missionCard}>
           <span className={styles.privateStatus}>commercial proposal / private</span>
-          <strong>Коммерческие условия: доступны отдельно</strong>
-          <p>основной экран — technical cockpit и data-room</p>
+          <strong>Technical cockpit + data-room</strong>
+          <p>Коммерческие условия доступны отдельно; основной экран остается техническим контуром проекта.</p>
           <dl>
             <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
             <div><dt>маршрут</dt><dd>China → Kazakhstan</dd></div>
@@ -2629,7 +2629,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Supplier Request Lab</p>
               <h3>Запросы, scoring, shortlist и selected rationale</h3>
-              <p>UPGRADE не выбирает “на ощущениях”: каждый канал проходит через request queue, evidence gates и scoring. Финальное коммерческое решение остается за WinGPro.</p>
+              <p>UPGRADE не выбирает “на ощущениях”: каждый канал проходит через request queue, evidence gates и scoring. Финальное решение по маршруту остается за WinGPro.</p>
             </div>
             <aside className={styles.supplierDecisionPacket} aria-live="polite" aria-label="Selected supplier decision packet">
               <p className={styles.eyebrow}>Selected supplier decision packet</p>
@@ -2731,7 +2731,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Offer Comparison Board</p>
               <h3>Выбор условий не прячется в переписке</h3>
-              <p>Board показывает, какой сценарий выбора сейчас безопаснее: evidence-led, price-led или speed-led. Это не утверждение технических параметров, а decision support для WinGPro.</p>
+              <p>Board показывает, какой сценарий выбора сейчас безопаснее: evidence-led, terms-led или speed-led. Это не утверждение технических параметров, а decision support для WinGPro.</p>
             </div>
             <aside className={styles.offerDecisionSurface} aria-live="polite" aria-label="Selected offer decision surface">
               <div>
@@ -2752,13 +2752,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </aside>
             <div className={styles.selectionSummary}>
               <h4>Selected supplier rationale</h4>
-              <p>Текущий selected path: {supplier.name} через {decisionMode.title}. UPGRADE фиксирует evidence request, owner и release gate; WinGPro утверждает коммерческое решение после проверки профильными участниками.</p>
+              <p>Текущий selected path: {supplier.name} через {decisionMode.title}. UPGRADE фиксирует evidence request, owner и release gate; WinGPro утверждает финальный маршрут выбора после проверки профильными участниками.</p>
             </div>
             <details className={styles.offerDetailsDisclosure}>
               <summary>
                 <span>Offer comparison detail</span>
                 <strong>Открыть decision modes, gates и comparison matrix</strong>
-                <small>Детали сравнения раскрываются по запросу; UPGRADE структурирует evidence и decision support, а WinGPro утверждает коммерческий маршрут.</small>
+                <small>Детали сравнения раскрываются по запросу; UPGRADE структурирует evidence и decision support, а WinGPro утверждает маршрут выбора.</small>
               </summary>
               <div className={styles.decisionModeSwitch} role="tablist" aria-label="Offer decision modes">
                 {offerDecisionModes.map((mode) => (
@@ -2842,7 +2842,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </aside>
             <div className={styles.contractDecisionSummary}>
               <h4>Current decision frame</h4>
-              <p>{contractScenario.title}: {contractScenario.decisionSignal}. UPGRADE фиксирует status, evidence request и boundary; WinGPro и профильные участники принимают финальные коммерческие, технические, юридические и операционные решения.</p>
+              <p>{contractScenario.title}: {contractScenario.decisionSignal}. UPGRADE фиксирует status, evidence request и boundary; WinGPro и профильные участники принимают финальные технические, юридические, договорные и операционные решения.</p>
             </div>
             <details className={styles.contractDetailsDisclosure}>
               <summary>
@@ -2872,9 +2872,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                       <StatusPill value={scenario.decisionSignal} />
                     </div>
                     <dl className={styles.simulatorGrid}>
-                      <div><dt>Release scenario</dt><dd>{scenario.payment}</dd></div>
+                      <div><dt>Release readiness</dt><dd>{scenario.releaseReadiness}</dd></div>
                       <div><dt>Delivery terms</dt><dd>{scenario.deliveryTerms}</dd></div>
-                      <div><dt>Evidence before release</dt><dd>{scenario.evidenceBeforePayment}</dd></div>
+                      <div><dt>Evidence before release</dt><dd>{scenario.evidenceBeforeRelease}</dd></div>
                       <div><dt>Evidence before shipment</dt><dd>{scenario.evidenceBeforeShipment}</dd></div>
                       <div><dt>Contract strength</dt><dd>{scenario.contractStrength}</dd></div>
                       <div><dt>Acceptance impact</dt><dd>{scenario.acceptanceImpact}</dd></div>
@@ -3693,7 +3693,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
             <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
             <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
-            <div><dt>acceptance logic</dt><dd>Acceptance is based on delivered pack evidence, not physical work or third-party outcomes.</dd></div>
+            <div><dt>handover logic</dt><dd>Приемка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
           </dl>
         </aside>
         <details className={styles.handoverCommandDisclosure}>
@@ -3870,7 +3870,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <strong>{copyVariantTitles[copyVariant]}</strong>
               <small>{copyStatus}</small>
             </summary>
-            {copyActionsOpen ? (
+            {commercialTermsOpen || copyActionsOpen ? (
               <div className={styles.copyButtons}>
                 {[
                   ["payment", "Скопировать коммерческое сообщение"],
