@@ -1663,6 +1663,19 @@
   border-style: dashed;
 }
 
+.twinStage[data-label-density="focus"] .orbitGrid,
+.twinStage[data-label-density="focus"] .twinHotspots {
+  display: none;
+}
+
+.twinStage[data-label-density="focus"] .twinConnectionCue {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+.twinStage[data-label-density="focus"] .twinServiceEnvelope {
+  opacity: 0.58;
+}
+
 .twinModelLegend {
   position: absolute;
   right: 12px;
@@ -2046,6 +2059,13 @@
 .twinHotspots button[data-layer="sales"]::before {
   right: 9px;
   top: 9px;
+}
+
+.twinControls button[aria-pressed="true"] {
+  color: var(--proposal-brand-contrast);
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
 }
 
 .orbitNode[data-active="true"],

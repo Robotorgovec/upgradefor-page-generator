@@ -1597,6 +1597,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [paymentMode, setPaymentMode] = useState<"split" | "full">("split");
   const [isRotating, setIsRotating] = useState(true);
   const [presentationMode, setPresentationMode] = useState(false);
+  const [twinLabelDensity, setTwinLabelDensity] = useState<"focus" | "full">("focus");
   const [activePresentationMode, setActivePresentationMode] = useState<PresentationModeId>("executive");
   const [copyStatus, setCopyStatus] = useState("Готово");
   const [copyVariant, setCopyVariant] = useState<CopyVariant>("short");
@@ -2013,7 +2014,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   }
 
   const twinStage = (
-    <div className={styles.twinStage} data-layer={activeLayer}>
+    <div className={styles.twinStage} data-layer={activeLayer} data-label-density={twinLabelDensity}>
       <div className={styles.twinStageHeader}>
         <span>Rotating 3D PlateHE Twin</span>
         <strong>{layer.title}</strong>
@@ -2678,6 +2679,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
             <div className={styles.twinControls}>
               <button type="button" onClick={() => setPresentationMode(true)}>Open presentation mode</button>
+              <button
+                type="button"
+                aria-pressed={twinLabelDensity === "full"}
+                onClick={() => setTwinLabelDensity((value) => (value === "full" ? "focus" : "full"))}
+              >
+                {twinLabelDensity === "full" ? "3D focus" : "Показать подписи"}
+              </button>
               <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Pause" : "Rotate"}</button>
               <button type="button" onClick={() => setActiveLayer("equipment")}>Reset</button>
             </div>
