@@ -2058,21 +2058,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             onReady={() => setTwinModelReady(true)}
           />
         </Canvas>
-        <div className={styles.twinObject} aria-hidden="true">
-          <span className={styles.twinShadow} />
-          <span className={styles.endPlateA} />
-          <span className={styles.endPlateB} />
-          <span className={styles.coreBlock} />
-          <span className={styles.plateStack} />
-          <span className={`${styles.connectionA} ${styles.connectionWarm}`} />
-          <span className={`${styles.connectionB} ${styles.connectionCold}`} />
-          <span className={`${styles.connectionC} ${styles.connectionCold}`} />
-          <span className={`${styles.connectionD} ${styles.connectionWarm}`} />
-          <span className={styles.tieRodA} />
-          <span className={styles.tieRodB} />
-          <span className={styles.tieRodC} />
-          <span className={styles.dimensionRail} />
-        </div>
+        {!twinModelReady ? (
+          <div className={styles.twinObject} aria-hidden="true">
+            <span className={styles.twinShadow} />
+            <span className={styles.endPlateA} />
+            <span className={styles.endPlateB} />
+            <span className={styles.coreBlock} />
+            <span className={styles.plateStack} />
+            <span className={`${styles.connectionA} ${styles.connectionWarm}`} />
+            <span className={`${styles.connectionB} ${styles.connectionCold}`} />
+            <span className={`${styles.connectionC} ${styles.connectionCold}`} />
+            <span className={`${styles.connectionD} ${styles.connectionWarm}`} />
+            <span className={styles.tieRodA} />
+            <span className={styles.tieRodB} />
+            <span className={styles.tieRodC} />
+            <span className={styles.dimensionRail} />
+          </div>
+        ) : null}
         <div className={styles.twinServiceEnvelope} aria-hidden="true">
           <span>service access envelope</span>
         </div>
