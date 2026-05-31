@@ -1690,7 +1690,8 @@
 }
 
 .twinStage[data-model-ready="true"] .twinBlueprint {
-  opacity: 0.18;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .twinModelLegend {
@@ -9304,6 +9305,206 @@
     font-weight: 900;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 900px) {
+  .commandLayer {
+    gap: 8px;
+    padding: 14px;
+  }
+
+  .commandLayerHeader,
+  .cockpitSummaryHeader {
+    grid-template-columns: minmax(190px, 0.34fr) minmax(0, 1fr);
+    gap: 10px;
+    align-items: end;
+  }
+
+  .commandLayerHeader > p,
+  .cockpitSummaryHeader > p {
+    display: -webkit-box;
+    max-height: 2.75em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.36;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .presentationModeTabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .presentationModeTabs button {
+    min-height: 44px;
+    padding: 6px;
+    font-size: 10.5px;
+    line-height: 1.14;
+  }
+
+  .presentationModePanel {
+    grid-template-columns: minmax(104px, 0.22fr) minmax(136px, 0.3fr) minmax(0, 1fr);
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .presentationModePanel span {
+    padding: 5px 6px;
+    font-size: 9.5px;
+  }
+
+  .presentationModePanel h3 {
+    display: -webkit-box;
+    max-height: 2.35em;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.17;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .presentationModePanel > p {
+    display: -webkit-box;
+    max-height: 2.45em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.22;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .presentationModePanel div {
+    grid-column: 1 / -1;
+    gap: 4px;
+    padding-top: 6px;
+  }
+
+  .presentationModePanel div strong {
+    font-size: 10.5px;
+  }
+
+  .presentationModePanel div p {
+    display: -webkit-box;
+    max-height: 2.4em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitSummaryBoard {
+    gap: 7px;
+    padding: 9px;
+  }
+
+  .cockpitSummaryGrid,
+  .cockpitKpiRail {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .cockpitSummaryGrid button,
+  .cockpitKpiRail article,
+  .cockpitKpiRail button {
+    padding: 6px;
+  }
+
+  .cockpitSummaryGrid button {
+    min-height: 70px;
+    gap: 4px;
+  }
+
+  .cockpitKpiRail article,
+  .cockpitKpiRail button {
+    min-height: 56px;
+  }
+
+  .cockpitKpiRail button {
+    grid-column: span 2;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .cockpitSummaryGrid span,
+  .cockpitKpiRail span,
+  .cockpitDecisionDock span,
+  .cockpitAddonDisclosure summary span {
+    font-size: 8.8px;
+    line-height: 1.08;
+  }
+
+  .cockpitSummaryGrid strong,
+  .cockpitKpiRail strong,
+  .cockpitDecisionDock strong,
+  .cockpitAddonDisclosure summary strong {
+    display: -webkit-box;
+    max-height: 2.35em;
+    overflow: hidden;
+    font-size: 10.5px;
+    line-height: 1.17;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitSummaryGrid small,
+  .cockpitSummaryGrid em,
+  .cockpitKpiRail small {
+    display: -webkit-box;
+    max-height: 2.28em;
+    overflow: hidden;
+    font-size: 9.5px;
+    line-height: 1.14;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitDecisionDock {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .cockpitDecisionDock article,
+  .cockpitAddonDisclosure,
+  .cockpitAddonDisclosure summary {
+    min-height: 56px;
+  }
+
+  .cockpitDecisionDock article {
+    padding: 6px;
+  }
+
+  .cockpitAddonDisclosure {
+    grid-column: 1 / -1;
+  }
+
+  .cockpitAddonDisclosure summary {
+    padding: 7px 38px 7px 7px;
+  }
+
+  .cockpitAddonDisclosure summary::after {
+    right: 8px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .cockpitAddonDisclosure div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 8px 8px;
+  }
+
+  .cockpitAddonDisclosure p {
+    display: -webkit-box;
+    max-height: 2.35em;
+    overflow: hidden;
+    padding: 7px;
+    font-size: 10px;
+    line-height: 1.16;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 }
 
