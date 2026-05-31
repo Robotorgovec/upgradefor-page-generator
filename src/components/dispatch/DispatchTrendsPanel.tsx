@@ -32,6 +32,15 @@ const viewBox = {
   paddingY: 22,
 };
 
+function formatTrendValue(value: number | null | undefined, unit: string) {
+  if (typeof value !== "number") {
+    return "DATA_ERROR";
+  }
+
+  const rounded = Number.isInteger(value) ? value.toString() : value.toFixed(1);
+  return `${rounded} ${unit}`;
+}
+
 export default function DispatchTrendsPanel({
   trendSeries,
   selectedTrendKey,
@@ -70,6 +79,9 @@ export default function DispatchTrendsPanel({
       (point): point is typeof point & { value: number } => typeof point.value === "number",
     );
     const invalidPoints = plottedPoints.filter((point) => point.quality === "DATA_ERROR");
+    const averageValue =
+      values.length > 0 ? values.reduce((total, value) => total + value, 0) / values.length : null;
+    const latestValidPoint = validPlottedPoints[validPlottedPoints.length - 1] ?? null;
 
     return {
       plottedPoints,
@@ -78,6 +90,8 @@ export default function DispatchTrendsPanel({
       polyline: validPlottedPoints.map((point) => `${point.x},${point.y}`).join(" "),
       minValue,
       maxValue,
+      averageValue,
+      latestValidPoint,
     };
   }, [selectedPeriod, selectedTrend]);
 
@@ -137,6 +151,37 @@ export default function DispatchTrendsPanel({
             </button>
           );
         })}
+      </div>
+
+      <div className="dispatchTrendsPanel__summary" data-testid="dispatch-trends-summary">
+        <article data-testid="dispatch-trends-current">
+          <span>Текущее</span>
+          <strong>{formatTrendValue(chart.latestValidPoint?.value, selectedTrend.unit)}</strong>
+          <small>{chart.latestValidPoint ? `last valid · ${chart.latestValidPoint.label}` : "Нет валидных точек"}</small>
+        </article>
+        <article>
+          <span>Среднее</span>
+          <strong>{formatTrendValue(chart.averageValue, selectedTrend.unit)}</strong>
+          <small>{chart.validPlottedPoints.length} valid points</small>
+        </article>
+        <article>
+          <span>Диапазон</span>
+          <strong>
+            {formatTrendValue(chart.minValue, selectedTrend.unit)} – {formatTrendValue(chart.maxValue, selectedTrend.unit)}
+          </strong>
+          <small>min / max за период</small>
+        </article>
+        <article className={chart.invalidPoints.length ? "isDataError" : undefined}>
+          <span>Data health</span>
+          <strong>
+            {chart.validPlottedPoints.length}/{chart.plottedPoints.length} valid
+          </strong>
+          <small>
+            {chart.invalidPoints.length
+              ? "DATA_ERROR excluded from calculations"
+              : "Все точки участвуют в расчете"}
+          </small>
+        </article>
       </div>
 
       <div className="dispatchTrendsPanel__chartWrap">
@@ -208,6 +253,26 @@ export default function DispatchTrendsPanel({
               <circle cx={point.x} cy={point.y} r="4" fill="#020617" stroke={selectedTrend.color} strokeWidth="3" />
             </g>
           ))}
+
+          {chart.latestValidPoint ? (
+            <g aria-hidden="true">
+              <line
+                x1={chart.latestValidPoint.x}
+                x2={chart.latestValidPoint.x}
+                y1={viewBox.paddingY}
+                y2={viewBox.height - viewBox.paddingY}
+                className="dispatchTrendsPanel__currentLine"
+              />
+              <circle
+                cx={chart.latestValidPoint.x}
+                cy={chart.latestValidPoint.y}
+                r="7"
+                fill="transparent"
+                stroke="#f8fafc"
+                strokeWidth="2"
+              />
+            </g>
+          ) : null}
 
           {chart.invalidPoints.map((point) => (
             <g key={`${point.label}-DATA_ERROR`}>
@@ -326,7 +391,7 @@ export default function DispatchTrendsPanel({
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 8px;
-          margin-bottom: 20px;
+          margin-bottom: 12px;
         }
 
         .dispatchTrendsPanel__tabs button {
@@ -381,6 +446,59 @@ export default function DispatchTrendsPanel({
 
         .dispatchTrendsPanel__tabs button.isActive .dispatchTrendsPanel__tabUnit {
           color: #bae6fd;
+        }
+
+        .dispatchTrendsPanel__summary {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .dispatchTrendsPanel__summary article {
+          min-width: 0;
+          border: 1px solid rgba(125, 211, 252, 0.16);
+          border-radius: 8px;
+          background: rgba(2, 8, 23, 0.5);
+          padding: 10px;
+        }
+
+        .dispatchTrendsPanel__summary article.isDataError {
+          border-color: rgba(248, 113, 113, 0.48);
+          background: rgba(127, 29, 29, 0.22);
+          box-shadow: inset 3px 0 0 rgba(248, 113, 113, 0.82);
+        }
+
+        .dispatchTrendsPanel__summary span {
+          display: block;
+          color: #93c5fd;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .dispatchTrendsPanel__summary strong {
+          display: block;
+          margin-top: 5px;
+          color: #f8fafc;
+          font-size: 14px;
+          line-height: 1.2;
+          overflow-wrap: anywhere;
+        }
+
+        .dispatchTrendsPanel__summary small {
+          display: block;
+          margin-top: 4px;
+          color: #93c5fd;
+          font-size: 11px;
+          line-height: 1.25;
+          overflow-wrap: anywhere;
+        }
+
+        .dispatchTrendsPanel__summary article.isDataError strong,
+        .dispatchTrendsPanel__summary article.isDataError small {
+          color: #fecaca;
         }
 
         .dispatchTrendsPanel__chartWrap {
@@ -439,6 +557,12 @@ export default function DispatchTrendsPanel({
           font-weight: 900 !important;
         }
 
+        .dispatchTrendsPanel__currentLine {
+          stroke: rgba(248, 250, 252, 0.62);
+          stroke-dasharray: 4 5;
+          stroke-width: 1.5;
+        }
+
         .dispatchTrendsPanel__range {
           display: flex;
           align-items: center;
@@ -466,6 +590,10 @@ export default function DispatchTrendsPanel({
 
           .dispatchTrendsPanel__tabs {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .dispatchTrendsPanel__summary {
+            grid-template-columns: 1fr;
           }
 
           .dispatchTrendsPanel__periods,

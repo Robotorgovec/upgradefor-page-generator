@@ -128,6 +128,8 @@ function state() {
   const activePassportTab = normalize(document.querySelector(".passportTabs button.isActive")?.textContent);
   const activeTrendPeriod = normalize(document.querySelector(".dispatchTrendsPanel__periods button.isActive")?.textContent);
   const activeTrend = normalize(document.querySelector(".dispatchTrendsPanel__tabs button[aria-selected='true']")?.textContent);
+  const trendSummaryText = normalize(document.querySelector('[data-testid="dispatch-trends-summary"]')?.textContent);
+  const trendCurrentText = normalize(document.querySelector('[data-testid="dispatch-trends-current"]')?.textContent);
   const dialogText = normalize(document.querySelector('[data-testid="dispatch-demo-modal"], [role="dialog"]')?.textContent);
   const drawer = document.querySelector(".passportDrawer");
   const passportTitle = normalize(document.querySelector(".passportDrawer .passportHero strong")?.textContent);
@@ -148,6 +150,8 @@ function state() {
     activePassportTab,
     activeTrendPeriod,
     activeTrend,
+    trendSummaryText,
+    trendCurrentText,
     dialogText,
     aiAnswer: normalize(document.querySelector('[data-testid="dispatch-ai-answer"]')?.textContent),
     auditText: normalize(document.querySelector('[data-testid="dispatch-readonly-audit-log"]')?.textContent),
@@ -271,6 +275,12 @@ try {
   current = state();
   assert(current.activeTrendPeriod.includes("7 дней"), `Trend period did not change: ${current.activeTrendPeriod}`);
   assert(current.activeTrend.includes("Давление"), `Trend metric did not change: ${current.activeTrend}`);
+  assert(current.trendSummaryText.includes("Текущее"), "Trend summary is missing current value card");
+  assert(current.trendSummaryText.includes("Среднее"), "Trend summary is missing average value card");
+  assert(current.trendSummaryText.includes("Data health"), "Trend summary is missing data health card");
+  assert(current.trendSummaryText.includes("6/7 valid"), `Trend summary did not report quarantined pressure point: ${current.trendSummaryText}`);
+  assert(current.trendSummaryText.includes("DATA_ERROR excluded"), "Trend summary did not explain DATA_ERROR exclusion");
+  assert(current.trendCurrentText.includes("2.1 бар"), `Trend current value is not readable: ${current.trendCurrentText}`);
   screenshot("action-03-trend-pressure-7d.png");
 
   clickSelector('[data-testid="dispatch-drawer-action-ai"]', "drawer AI diagnostics");
