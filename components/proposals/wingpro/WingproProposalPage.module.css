@@ -139,6 +139,7 @@
 .projectControl,
 .controlRoom,
 .routeMap,
+.sourceDocsSection,
 .vault,
 .projectSources,
 .riskRadar,
@@ -5965,6 +5966,447 @@
   text-align: center;
 }
 
+.sourceDocsSection {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
+    linear-gradient(180deg, #ffffff, #fbfdff);
+}
+
+.sourceDocsHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.38fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.sourceDocsHeader h2,
+.sourceDocsHeader p,
+.sourceDocsSummaryCard h3,
+.sourceDocsSummaryCard p,
+.sourceDocsPackage p,
+.sourceDisclaimer p,
+.sourceTraceabilityHeader h3 {
+  margin: 0;
+}
+
+.sourceDocsHeader h2 {
+  color: var(--proposal-text);
+  font-size: 32px;
+  line-height: 1.08;
+}
+
+.sourceDocsHeader p:not(.eyebrow) {
+  margin-top: 8px;
+  color: var(--proposal-text-soft);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.sourceDocsLegalLine,
+.sourceDocsSummaryCard,
+.sourceDocCard,
+.sourceDocsPackage,
+.sourceDocsIntelligence,
+.sourceTraceability,
+.sourceDisclaimer {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.sourceDocsLegalLine {
+  padding: 12px;
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sourceDocsSummaryCard {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  gap: 14px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff), #ffffff 74%),
+    #ffffff;
+}
+
+.sourceDocsSummaryCard h3 {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.sourceDocsSummaryCard p {
+  margin-top: 8px;
+  color: var(--proposal-text-soft);
+  line-height: 1.5;
+}
+
+.sourceDocsStatusGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.sourceDocsStatusGrid article {
+  min-height: 104px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+}
+
+.sourceDocsStatusGrid span,
+.sourceDocTopline span,
+.sourceDocMeta dt,
+.sourceDocsIntelligence summary span,
+.sourceTraceabilityHeader span,
+.sourceTraceabilityHead span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.sourceDocsStatusGrid strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.sourceDocsStatusGrid small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.sourceDocsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  overflow: visible;
+}
+
+.sourceDocCard {
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+  overflow: visible;
+}
+
+.sourceDocTopline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.sourceDocTopline span {
+  min-height: 26px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 6px 8px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  display: inline-flex;
+  align-items: center;
+}
+
+.sourceDocTitleRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.sourceDocTitleRow h3,
+.sourceDocTitleRow p,
+.sourceDocUtility strong,
+.sourceDocUtility ul,
+.sourceDocBoundary ul {
+  margin: 0;
+}
+
+.sourceDocTitleRow h3 {
+  color: var(--proposal-text);
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.sourceDocTitleRow p {
+  margin-top: 5px;
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.sourceDocTitleRow > span {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  color: var(--proposal-text);
+  background: var(--proposal-surface-soft);
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.sourceDocMeta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.sourceDocMeta div {
+  min-width: 0;
+  min-height: 56px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--proposal-surface-soft);
+}
+
+.sourceDocMeta dd {
+  margin: 4px 0 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.sourceDocUtility {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--proposal-brand-soft) 52%, #ffffff);
+}
+
+.sourceDocUtility strong {
+  color: var(--proposal-text);
+  display: block;
+  font-size: 13px;
+}
+
+.sourceDocUtility ul,
+.sourceDocBoundary ul {
+  margin-top: 8px;
+  padding-left: 18px;
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.sourceDocBoundary {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #ffffff;
+}
+
+.sourceDocBoundary summary {
+  color: var(--proposal-text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sourceDocActions,
+.sourceDocsRelated {
+  display: grid;
+  gap: 8px;
+}
+
+.sourceDocActions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sourceDocActions a,
+.sourceDocActions button,
+.sourceDocsPackage button,
+.sourceDocsRelated button {
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sourceDocActions a:hover,
+.sourceDocActions button:hover,
+.sourceDocsPackage button:hover,
+.sourceDocsRelated button:hover {
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
+.sourceDocsNoJs {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+}
+
+.sourceDocsPackage {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, auto) minmax(220px, 0.28fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.sourceDocsPackage strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+}
+
+.sourceDocsPackage p {
+  margin-top: 5px;
+  color: var(--proposal-text-soft);
+  line-height: 1.4;
+}
+
+.sourceDownloadStatus {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+  font-size: 13px;
+}
+
+.sourceDocsIntelligence {
+  padding: 12px;
+  overflow: visible;
+}
+
+.sourceDocsIntelligence summary {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(160px, 0.22fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.sourceDocsIntelligence summary strong {
+  color: var(--proposal-text);
+  font-size: 18px;
+}
+
+.sourceInsightGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.sourceInsightGrid article {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--proposal-surface-soft);
+}
+
+.sourceInsightGrid h3,
+.sourceInsightGrid p {
+  margin: 0;
+}
+
+.sourceInsightGrid h3 {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.18;
+}
+
+.sourceInsightGrid p {
+  margin-top: 7px;
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.sourceTraceability {
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.sourceTraceabilityHeader h3 {
+  margin-top: 4px;
+  color: var(--proposal-text);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.sourceTraceabilityGrid {
+  display: grid;
+  gap: 7px;
+}
+
+.sourceTraceabilityHead,
+.sourceTraceabilityRow {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.25fr) minmax(0, 0.32fr) minmax(0, 0.3fr) minmax(150px, 0.26fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.sourceTraceabilityHead span,
+.sourceTraceabilityRow span {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: var(--proposal-surface-soft);
+}
+
+.sourceTraceabilityRow span {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.sourceDocsRelated {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sourceDisclaimer {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.22fr) minmax(0, 1fr);
+  gap: 12px;
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff)),
+    #ffffff;
+}
+
+.sourceDisclaimer strong {
+  color: var(--proposal-text);
+}
+
+.sourceDisclaimer p {
+  color: var(--proposal-text-soft);
+  line-height: 1.55;
+}
+
 .riskRadar {
   background:
     radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--proposal-brand-soft) 72%, transparent), transparent 36%),
@@ -7331,6 +7773,12 @@
   .fieldCommandSurface,
   .evidenceWallSurface,
   .evidenceHandoffShell,
+  .sourceDocsHeader,
+  .sourceDocsSummaryCard,
+  .sourceDocsPackage,
+  .sourceDisclaimer,
+  .sourceTraceabilityHead,
+  .sourceTraceabilityRow,
   .projectSourcesHeader,
   .projectSourcesBoundary,
   .projectSourceGroupHeader,
@@ -7479,6 +7927,36 @@
 
   .cockpitKpiRail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sourceDocsGrid,
+  .sourceDocsPackage,
+  .sourceDisclaimer {
+    grid-template-columns: 1fr;
+  }
+
+  .sourceDocsStatusGrid,
+  .sourceInsightGrid,
+  .sourceDocsRelated {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sourceTraceabilityHead {
+    display: none;
+  }
+
+  .sourceTraceabilityRow span {
+    display: grid;
+    gap: 4px;
+  }
+
+  .sourceTraceabilityRow span::before {
+    content: attr(data-label);
+    color: var(--proposal-text-muted);
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .cockpitAddonDisclosure div {
@@ -7714,6 +8192,7 @@
   .projectControl,
   .controlRoom,
   .routeMap,
+  .sourceDocsSection,
   .vault,
   .projectSources,
   .riskRadar,
@@ -7738,6 +8217,29 @@
 
   .projectSources {
     gap: 12px;
+  }
+
+  .sourceDocsSection {
+    gap: 12px;
+  }
+
+  .sourceDocsHeader,
+  .sourceDocsStatusGrid,
+  .sourceDocTitleRow,
+  .sourceDocMeta,
+  .sourceDocActions,
+  .sourceDocsPackage,
+  .sourceDocsIntelligence summary,
+  .sourceInsightGrid,
+  .sourceDocsRelated {
+    grid-template-columns: 1fr;
+  }
+
+  .sourceDocCard,
+  .sourceDocsPackage,
+  .sourceTraceability,
+  .sourceDisclaimer {
+    padding: 12px;
   }
 
   .projectSourceGroup,
@@ -10002,6 +10504,7 @@
   .projectControl,
   .controlRoom,
   .routeMap,
+  .sourceDocsSection,
   .vault,
   .projectSources,
   .riskRadar,
