@@ -9379,6 +9379,11 @@
     gap: 12px;
   }
 
+  .valueOs,
+  .vault {
+    padding: 16px;
+  }
+
   .valueOs .sectionHeader,
   .projectControl .sectionHeader {
     gap: 5px;
@@ -9405,12 +9410,12 @@
   }
 
   .compareBoard article {
-    padding: 12px;
+    padding: 10px;
   }
 
   .compareBoard h3 {
-    margin-bottom: 8px;
-    font-size: 16px;
+    margin-bottom: 7px;
+    font-size: 15px;
     line-height: 1.2;
   }
 
@@ -9425,10 +9430,10 @@
   }
 
   .compareBoard li {
-    min-height: 38px;
+    min-height: 34px;
     border: 1px solid var(--proposal-border);
     border-radius: 8px;
-    padding: 7px;
+    padding: 6px;
     background: rgba(255, 255, 255, 0.78);
   }
 
@@ -9438,8 +9443,8 @@
   }
 
   .protectionGrid span {
-    min-height: 50px;
-    padding: 7px;
+    min-height: 44px;
+    padding: 6px;
     font-size: 11px;
     line-height: 1.16;
   }
@@ -9811,6 +9816,10 @@
     grid-template-columns: 1fr;
   }
 
+  .valueOs .protectionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .deliveryReleaseMap::before {
     display: none;
   }
@@ -10001,8 +10010,8 @@
   }
 
   .vaultReadinessBoard {
-    padding: 14px;
-    gap: 10px;
+    padding: 11px;
+    gap: 8px;
   }
 
   .vault .sectionHeader {
@@ -10016,17 +10025,17 @@
 
   .vaultReadinessBoard p:not(.eyebrow) {
     display: -webkit-box;
-    max-height: 3.78em;
+    max-height: 2.84em;
     overflow: hidden;
     margin-top: 7px;
     font-size: 13px;
     line-height: 1.42;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
   .vaultReadinessBoard h3 {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.12;
   }
 
@@ -10036,13 +10045,13 @@
   }
 
   .vaultStats span {
-    min-height: 66px;
+    min-height: 58px;
     gap: 4px;
-    padding: 8px;
+    padding: 7px;
   }
 
   .vaultStats strong {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .vaultStats small {
@@ -10069,7 +10078,7 @@
   }
 
   .vaultOpenList li {
-    min-height: 54px;
+    min-height: 48px;
     padding: 7px;
   }
 
@@ -10362,7 +10371,7 @@
   }
 
   .vaultQuickActions button {
-    min-height: 42px;
+    min-height: 44px;
     padding: 8px;
     font-size: 12px;
   }
@@ -10415,7 +10424,7 @@
   }
 
   .vaultFilterDisclosure .modeSwitch button {
-    min-height: 38px;
+    min-height: 44px;
     padding: 7px;
     font-size: 11.5px;
   }
@@ -11334,6 +11343,10 @@
   }
 
   .evidencePhaseRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .valueOs .protectionGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
