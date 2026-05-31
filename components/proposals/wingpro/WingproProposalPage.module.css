@@ -8680,8 +8680,8 @@
   }
 
   .sourceDocsSection {
-    gap: 8px;
-    padding: 14px;
+    gap: 6px;
+    padding: 12px;
   }
 
   .sourceDocsHeader,
@@ -8701,12 +8701,12 @@
   }
 
   .sourceDocsHeader {
-    gap: 8px;
+    gap: 6px;
   }
 
   .sourceDocsHeader h2 {
-    font-size: 26px;
-    line-height: 1.05;
+    font-size: 23px;
+    line-height: 1.04;
   }
 
   .sourceDocsRelatedDisclosure summary strong {
@@ -8734,35 +8734,35 @@
   }
 
   .sourceDocsStatusGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 5px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
   }
 
   .sourceDocsStatusGrid article {
-    min-height: 48px;
-    gap: 3px;
-    padding: 6px;
+    min-height: 50px;
+    gap: 2px;
+    padding: 5px;
   }
 
   .sourceDocsSummaryCard {
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px;
   }
 
   .sourceDocsSummaryCard h3 {
-    font-size: 18px;
-    line-height: 1.08;
+    font-size: 16px;
+    line-height: 1.06;
   }
 
   .sourceDocsSummaryCard p,
   .sourceDocsLegalLine,
   .sourceDisclaimer p {
-    font-size: 12.5px;
-    line-height: 1.34;
+    font-size: 11.5px;
+    line-height: 1.28;
   }
 
   .sourceDocsLegalLine {
-    padding: 8px;
+    padding: 7px;
   }
 
   .sourceDocsHeader p:not(.eyebrow),
@@ -8772,15 +8772,15 @@
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
   }
 
   .sourceDocsStatusGrid strong {
     display: -webkit-box;
-    max-height: 2.45em;
+    max-height: 2.18em;
     overflow: hidden;
-    font-size: 11.5px;
-    line-height: 1.2;
+    font-size: 9.5px;
+    line-height: 1.09;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
@@ -8790,7 +8790,7 @@
   }
 
   .sourceDocsStatusGrid span {
-    font-size: 9px;
+    font-size: 7.8px;
     letter-spacing: 0.02em;
     line-height: 1.08;
   }
@@ -8801,32 +8801,32 @@
 
   .sourceDocTitleRow {
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 7px;
+    gap: 6px;
   }
 
   .sourceDocTitleRow h3 {
     display: -webkit-box;
-    max-height: 2.28em;
+    max-height: 2.2em;
     overflow: hidden;
-    font-size: 16.5px;
-    line-height: 1.14;
+    font-size: 15px;
+    line-height: 1.1;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .sourceDocTitleRow p {
     display: -webkit-box;
-    max-height: 1.24em;
+    max-height: 1.16em;
     overflow: hidden;
-    font-size: 12px;
-    line-height: 1.24;
+    font-size: 11px;
+    line-height: 1.16;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
   }
 
   .sourceDocTitleRow > span {
-    padding: 6px 7px;
-    font-size: 10.5px;
+    padding: 5px 6px;
+    font-size: 9.5px;
   }
 
   .sourceDocMeta {
@@ -8840,18 +8840,19 @@
 
   .sourceDocActions {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5px;
+    gap: 4px;
   }
 
   .sourceDocActions a {
     min-height: 44px;
-    padding: 8px 6px;
-    font-size: 11.5px;
+    padding: 7px 5px;
+    font-size: 10.5px;
   }
 
   .sourceDocDetails summary {
     gap: 8px;
-    padding: 8px 9px;
+    padding: 7px 8px;
+    font-size: 12px;
   }
 
   .sourceDocDetails summary small {
@@ -8873,12 +8874,12 @@
   .sourceTraceability,
   .sourceDocsRelatedDisclosure,
   .sourceDisclaimer {
-    padding: 9px;
+    padding: 8px;
   }
 
   .sourceDocsGrid,
   .sourceDocCard {
-    gap: 8px;
+    gap: 6px;
   }
 
   .sourceDocTopline {
@@ -8887,43 +8888,55 @@
 
   .sourceDocTopline span {
     min-height: 22px;
-    padding: 4px 7px;
-    font-size: 9px;
+    padding: 3px 6px;
+    font-size: 8.5px;
   }
 
   .sourceDocsPackage {
-    gap: 7px;
+    gap: 6px;
   }
 
   .sourceDocsPackage strong {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .sourceDocsPackage p {
     display: -webkit-box;
-    max-height: 2.48em;
+    max-height: 1.18em;
     overflow: hidden;
-    font-size: 12.5px;
-    line-height: 1.24;
+    font-size: 11px;
+    line-height: 1.18;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
   }
 
   .sourceDocsPackage button {
     width: 100%;
     min-height: 44px;
-    padding: 8px 10px;
+    padding: 7px 9px;
+    font-size: 12px;
   }
 
   .sourceDocsIntelligence,
   .sourceTraceability {
-    padding: 9px;
+    padding: 8px;
   }
 
   .sourceDocsIntelligence summary strong,
   .sourceTraceabilityHeader strong {
+    font-size: 13px;
+    line-height: 1.14;
+  }
+
+  .sourceDocsIntelligence summary,
+  .sourceTraceabilityHeader,
+  .sourceDisclaimer summary {
+    min-height: 44px;
+    gap: 5px;
+  }
+
+  .sourceDisclaimer strong {
     font-size: 14px;
-    line-height: 1.18;
   }
 
   .projectSourceGroup,
@@ -11466,6 +11479,14 @@
 	  .acceptance,
   .copyPackage {
     padding: 14px;
+  }
+
+  .sourceDocsSection {
+    padding: 10px;
+  }
+
+  .sourceDocsStatusGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero h1 {
