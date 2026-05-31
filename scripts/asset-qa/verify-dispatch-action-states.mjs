@@ -100,6 +100,24 @@ function clickSection(label) {
   return result;
 }
 
+function clickPassportTab(label) {
+  const result = evalJson(`
+(() => {
+  const label = ${JSON.stringify(label)};
+  const normalize = (value) => (value || "").replace(/\\s+/g, " ").trim();
+  const tabs = Array.from(document.querySelectorAll(".passportTabs button"));
+  const element = tabs.find((button) => normalize(button.textContent).includes(label));
+  if (!element) return JSON.stringify({ ok: false, label, reason: "passport tab not found" });
+  element.scrollIntoView({ block: "center", inline: "nearest" });
+  element.click();
+  return JSON.stringify({ ok: true, label, text: normalize(element.textContent) });
+})()
+`);
+  assert(result.ok, `Could not click passport tab ${label}: ${result.reason ?? "unknown"}`);
+  wait();
+  return result;
+}
+
 function actionInventory() {
   return evalJson(`
 (() => {
@@ -192,6 +210,30 @@ function actionInventory() {
 `);
 }
 
+function documentActionInventory() {
+  return evalJson(`
+(() => {
+  const normalize = (value) => (value || "").replace(/\\s+/g, " ").trim();
+  const buttons = Array.from(document.querySelectorAll(".documentList button")).map((button) => ({
+    text: normalize(button.textContent),
+    actionState: button.getAttribute("data-action-state") || "",
+    title: button.getAttribute("title") || "",
+    ariaLabel: button.getAttribute("aria-label") || "",
+  }));
+
+  return JSON.stringify({
+    count: buttons.length,
+    buttons,
+    missingExplicitActionState: buttons.filter((button) => !button.actionState),
+    missingVisibleStatus: buttons.filter((button) => !/(Demo ticket|Trends|Read-only locked)/.test(button.text)),
+    readOnlyLocked: buttons.filter((button) => button.actionState === "read-only-locked").length,
+    trends: buttons.filter((button) => button.actionState === "opens-trends-context").length,
+    demoTickets: buttons.filter((button) => button.actionState === "opens-demo-ticket").length,
+  });
+})()
+`);
+}
+
 function assertInventoryClean(label) {
   const inventory = actionInventory();
   assert(
@@ -271,6 +313,30 @@ try {
 
   clickSelector('[data-testid="dispatch-section-action-passport"]', "section passport action");
   assertInventoryClean("passport drawer");
+  clickPassportTab("Документы");
+  const documents = documentActionInventory();
+  assert(documents.count >= 3, `Expected passport documents/actions, got ${documents.count}`);
+  assert(
+    documents.missingExplicitActionState.length === 0,
+    `Passport document buttons are missing explicit action states: ${JSON.stringify(
+      documents.missingExplicitActionState,
+      null,
+      2,
+    )}`,
+  );
+  assert(
+    documents.missingVisibleStatus.length === 0,
+    `Passport document buttons are missing visible statuses: ${JSON.stringify(
+      documents.missingVisibleStatus,
+      null,
+      2,
+    )}`,
+  );
+  assert(documents.readOnlyLocked >= 1, "Passport documents should expose at least one read-only locked action");
+  assert(documents.trends >= 1, "Passport documents should expose a trends action");
+  assert(documents.demoTickets >= 1, "Passport documents should expose a demo ticket action");
+  clickSelector('.documentList button[data-action-state="read-only-locked"]', "read-only document action");
+  assertInventoryClean("read-only document modal");
 
   const finalInventory = actionInventory();
   console.log(

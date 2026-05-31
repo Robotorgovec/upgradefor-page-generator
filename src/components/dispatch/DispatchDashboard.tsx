@@ -192,6 +192,30 @@ function buildScadaTagRows(equipment: DispatchEquipmentNode): ScadaTagRow[] {
   });
 }
 
+function getDocumentActionMeta(title: string) {
+  if (title === "Создать заявку") {
+    return {
+      actionState: "opens-demo-ticket",
+      label: "Demo ticket",
+      title: "Подготовить demo-заявку локально. No real equipment control.",
+    };
+  }
+
+  if (title === "Открыть тренды") {
+    return {
+      actionState: "opens-trends-context",
+      label: "Trends",
+      title: "Открыть тренды выбранного оборудования в read-only режиме.",
+    };
+  }
+
+  return {
+    actionState: "read-only-locked",
+    label: "Read-only locked",
+    title: "Документ отмечен как read-only/TO VERIFY. Управление заблокировано (Demo mode).",
+  };
+}
+
 function trendKeyForTwin(id: EquipmentTwinId): DispatchTrendKey {
   if (id === "ahu-pv1") return "flow";
   if (id === "chiller" || id === "cooling-tower-small") return "energy";
@@ -1191,24 +1215,32 @@ export default function DispatchDashboard() {
           {passportTab === "Документы" ? (
             <>
               <div className="documentList">
-                {passportEquipment.documents.map((document) => (
-                  <button
-                    key={document.title}
-                    type="button"
-                    onClick={() => {
-                      if (document.title === "Создать заявку") {
-                        openDemoTicket("passport document action");
-                      } else if (document.title === "Открыть тренды") {
-                        openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
-                      } else {
-                        setModal("readonly");
-                      }
-                    }}
-                  >
-                    <span>{document.type}</span>
-                    {document.title}
-                  </button>
-                ))}
+                {passportEquipment.documents.map((document) => {
+                  const documentAction = getDocumentActionMeta(document.title);
+
+                  return (
+                    <button
+                      aria-label={`${document.title}. ${documentAction.title}`}
+                      data-action-state={documentAction.actionState}
+                      key={document.title}
+                      title={documentAction.title}
+                      type="button"
+                      onClick={() => {
+                        if (documentAction.actionState === "opens-demo-ticket") {
+                          openDemoTicket("passport document action");
+                        } else if (documentAction.actionState === "opens-trends-context") {
+                          openTrendsFor(passportEquipment.trendKey, passportTrendNodeId);
+                        } else {
+                          setModal("readonly");
+                        }
+                      }}
+                    >
+                      <span className="documentTypeBadge">{document.type}</span>
+                      <strong>{document.title}</strong>
+                      <small>{documentAction.label}</small>
+                    </button>
+                  );
+                })}
               </div>
             </>
           ) : null}
@@ -2969,12 +3001,54 @@ export default function DispatchDashboard() {
           color: #fecaca;
         }
 
-        .documentList button span {
+        .documentList button {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 4px 8px;
+          align-items: center;
+        }
+
+        .documentList button .documentTypeBadge {
           display: inline-grid;
           place-items: center;
-          width: 38px;
-          margin-right: 8px;
+          justify-self: start;
+          min-width: 58px;
+          border: 1px solid rgba(34, 211, 238, 0.2);
+          border-radius: 999px;
+          padding: 3px 7px;
           color: #67e8f9;
+          background: rgba(8, 47, 73, 0.36);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+
+        .documentList button strong {
+          min-width: 0;
+          color: #e0f2fe;
+          font-size: 12px;
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+
+        .documentList button small {
+          grid-column: 2;
+          width: fit-content;
+          border: 1px solid rgba(125, 211, 252, 0.18);
+          border-radius: 999px;
+          padding: 3px 7px;
+          color: #bae6fd;
+          background: rgba(8, 47, 73, 0.42);
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .documentList button[data-action-state="read-only-locked"] small {
+          border-color: rgba(148, 163, 184, 0.24);
+          color: #cbd5e1;
+          background: rgba(15, 23, 42, 0.68);
         }
 
         .relatedBlock {
