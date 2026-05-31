@@ -1139,7 +1139,7 @@
 .sceneRail button,
 .timelineRows button,
 .participantMap button,
-.routeFlow button,
+.routePointSelect,
 .modeSwitch button,
 .riskFilters button,
 .gatePipeline button,
@@ -1851,7 +1851,7 @@
 .sceneRail button[data-active="true"],
 .timelineRows button[data-active="true"],
 .participantMap button[data-active="true"],
-.routeFlow button[data-active="true"],
+.routeFlow > span[data-active="true"],
 .modeSwitch button[aria-pressed="true"],
 .riskFilters button[aria-pressed="true"],
 .evidenceHandoffTabs button[data-active="true"],
@@ -4949,11 +4949,44 @@
   background: linear-gradient(180deg, #ffffff, #f9fcff);
 }
 
+.routeSelectorRow {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.24fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.routeSelectorRow label {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.routeSelectorRow select {
+  min-width: 0;
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-text);
+  background: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+}
+
 .routeFlow {
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .routeFlow::before {
@@ -4968,32 +5001,34 @@
   pointer-events: none;
 }
 
-.routeFlow button {
+.routeFlow > span {
   position: relative;
   z-index: 1;
-  min-height: 86px;
-  padding: 12px;
+  min-height: 62px;
+  padding: 10px;
   color: var(--proposal-text-soft);
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
   border-color: var(--proposal-border);
   background: #ffffff;
   box-shadow: var(--proposal-shadow-sm);
   display: grid;
-  gap: 8px;
+  gap: 6px;
   align-content: start;
   justify-items: start;
   text-align: left;
 }
 
-.routeFlow button > span:not(.statusPill) {
+.routeFlow > span > span:not(.statusPill) {
   color: var(--proposal-text);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 920;
   line-height: 1.2;
 }
 
-.routeFlow button small {
+.routeFlow > span small {
   color: var(--proposal-text-muted);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -5123,11 +5158,12 @@
 }
 
 .routeDetailsDisclosure .routeFlow,
+.routeDetailsDisclosure .routeSelectorRow,
 .routeDetailsDisclosure .routeCards {
   margin: 0 18px 18px;
 }
 
-.routeDetailsDisclosure .routeFlow {
+.routeDetailsDisclosure .routeSelectorRow {
   margin-top: 0;
 }
 
@@ -8175,6 +8211,7 @@
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
+  .routeSelectorRow,
   .routeFlow,
   .controlActiveSurface dl,
   .sceneDecisionSurface dl,
@@ -9136,6 +9173,7 @@
   .simulatorGrid,
   .statusLine,
   .gatePipeline,
+  .routeSelectorRow,
   .routeFlow,
   .controlActiveSurface dl,
   .sceneDecisionSurface dl,

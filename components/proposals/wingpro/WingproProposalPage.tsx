@@ -3282,22 +3282,34 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <strong>Открыть China → Kazakhstan route points и handoff cards</strong>
             <small>Active route point остается сверху; полный data-flow раскрывается по запросу без внутреннего скролла.</small>
           </summary>
-          <div className={styles.routeFlow} role="tablist" aria-label="China to Kazakhstan delivery data-flow">
+          <div className={styles.routeSelectorRow}>
+            <label htmlFor="route-point-selector">Route point</label>
+            <select
+              id="route-point-selector"
+              className={styles.routePointSelect}
+              value={activeRoute}
+              onChange={(event) => setActiveRoute(event.currentTarget.value)}
+              aria-label="Выбрать route data-flow point"
+            >
+              {routePoints.map((point) => (
+                <option key={point.title} value={point.title}>
+                  {point.title} — {point.gate}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.routeFlow} aria-label="China to Kazakhstan delivery data-flow readiness">
             {routePoints.map((point) => (
-              <button
+              <span
                 key={point.title}
-                type="button"
-                role="tab"
-                aria-selected={activeRoute === point.title}
-                aria-controls={`route-point-${point.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                aria-current={activeRoute === point.title ? "step" : undefined}
                 data-active={activeRoute === point.title}
                 data-status={point.status}
-                onClick={() => setActiveRoute(point.title)}
               >
                 <StatusPill value={point.status} />
                 <span>{point.title}</span>
                 <small>{point.gate}</small>
-              </button>
+              </span>
             ))}
           </div>
           <div className={styles.routeCards}>
