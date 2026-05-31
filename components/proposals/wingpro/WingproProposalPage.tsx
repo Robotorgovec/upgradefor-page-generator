@@ -2225,12 +2225,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
                 </dl>
               </details>
-              <div className={styles.sourceDocUtility}>
-                <strong>Useful for UPGRADE</strong>
+              <details className={styles.sourceDocUtility}>
+                <summary>
+                  <span>Для чего используется</span>
+                  <small>{doc.relevantTo.length} data-room checkpoints</small>
+                </summary>
                 <ul>
                   {doc.relevantTo.map((item) => <li key={item}>{item}</li>)}
                 </ul>
-              </div>
+              </details>
               <details className={styles.sourceDocBoundary}>
                 <summary>Границы использования</summary>
                 <ul>
@@ -3807,7 +3810,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <details className={styles.copyActionDisclosure} open={commercialTermsOpen || copyActionsOpen} onToggle={(event) => setCopyActionsOpen(event.currentTarget.open)}>
             <summary>
-              <span>сообщения</span>
+              <span>Сообщения для отправки</span>
               <strong>{copyVariantTitles[copyVariant]}</strong>
               <small>{copyStatus}</small>
             </summary>

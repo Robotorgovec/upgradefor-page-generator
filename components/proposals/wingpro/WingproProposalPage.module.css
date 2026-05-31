@@ -6097,7 +6097,6 @@
 
 .sourceDocTitleRow h3,
 .sourceDocTitleRow p,
-.sourceDocUtility strong,
 .sourceDocUtility ul,
 .sourceDocBoundary ul {
   margin: 0;
@@ -6150,17 +6149,34 @@
   overflow-wrap: anywhere;
 }
 
-.sourceDocUtility {
+.sourceDocUtility,
+.sourceDocMetadata,
+.sourceDocBoundary {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 10px;
   background: color-mix(in srgb, var(--proposal-brand-soft) 52%, #ffffff);
+  overflow: visible;
 }
 
-.sourceDocUtility strong {
+.sourceDocUtility summary {
+  min-height: 44px;
+  padding: 9px 10px;
   color: var(--proposal-text);
-  display: block;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   font-size: 13px;
+  font-weight: 900;
+}
+
+.sourceDocUtility summary small {
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+  text-transform: uppercase;
 }
 
 .sourceDocUtility ul,
@@ -6175,7 +6191,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding-left: 0;
+  padding: 0 10px 10px;
   list-style: none;
 }
 
@@ -6188,8 +6204,7 @@
 
 .sourceDocMetadata,
 .sourceDocBoundary {
-  border: 1px solid var(--proposal-border);
-  border-radius: 8px;
+  border-color: var(--proposal-border);
   padding: 9px 10px;
   background: #ffffff;
 }
@@ -6209,6 +6224,7 @@
 }
 
 .sourceDocMetadata[open] .sourceDocMeta,
+.sourceDocUtility[open] ul,
 .sourceDocBoundary[open] ul {
   margin-top: 8px;
 }
@@ -7552,10 +7568,10 @@
 
 .copyActionDisclosure summary span {
   color: var(--proposal-text-muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 950;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .copyActionDisclosure summary strong {
