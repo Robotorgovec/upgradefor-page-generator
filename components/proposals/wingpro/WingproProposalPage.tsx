@@ -366,7 +366,7 @@ const supplierCandidates = [
 const supplierRequestQueue = [
   ["Identity", "supplier profile, manufacturer/trader role, contact map", "before shortlist"],
   ["Technical", "material, pressure class, model BB150B-307H, drawing request", "before release"],
-  ["Contract input", "PI, release terms, delivery terms, contract delta-list", "inside separated terms block"],
+  ["Release input", "PI, Incoterms, delivery terms, contract delta-list", "inside contract decision board"],
   ["Evidence", "photo/video/nameplate, packing list, weight/dimensions", "before shipment"],
 ] as const;
 
@@ -1820,7 +1820,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     {
       label: "scope",
       value: "IT/data",
-      detail: "финансовая часть доступна только в отдельном disclosure",
+      detail: "UPGRADE ведет data-room, evidence и coordination draft",
     },
     {
       label: "blockers",
@@ -2178,7 +2178,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <dl>
             <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
             <div><dt>маршрут</dt><dd>China → Kazakhstan</dd></div>
-            <div><dt>экономия</dt><dd>supplier delta + risk avoidance</dd></div>
+            <div><dt>экономия</dt><dd>дельта предложений + снижение риска повторных запросов</dd></div>
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
@@ -2828,7 +2828,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </article>
         </div>
         <div className={styles.protectionGrid}>
-          {["качество подбора", "время согласований", "документальная готовность", "статусный контроль", "управляемость поставки", "монтажная подготовленность", "повторное коммерческое использование"].map((item) => <span key={item}>{item}</span>)}
+          {["качество подбора", "время согласований", "документальная готовность", "статусный контроль", "управляемость поставки", "монтажная подготовленность", "повторное использование товарных данных"].map((item) => <span key={item}>{item}</span>)}
         </div>
       </section>
 

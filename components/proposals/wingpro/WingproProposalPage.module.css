@@ -1676,6 +1676,10 @@
   opacity: 0.58;
 }
 
+.twinStage[data-label-density="focus"] .twinObject {
+  opacity: 0.82;
+}
+
 .twinModelLegend {
   position: absolute;
   right: 12px;
@@ -1721,10 +1725,10 @@
   z-index: 1;
   width: min(430px, 72vw);
   height: 320px;
-  opacity: 0.26;
+  opacity: 0.62;
   transform: rotateX(58deg) rotateZ(-36deg);
   transform-style: preserve-3d;
-  filter: drop-shadow(0 42px 34px rgba(15, 23, 42, 0.18));
+  filter: drop-shadow(0 44px 36px rgba(15, 23, 42, 0.26)) saturate(1.08);
   pointer-events: none;
 }
 
@@ -1772,30 +1776,38 @@
 
 .endPlateA {
   left: 36px;
+  border-color: rgba(15, 23, 42, 0.38);
+  background:
+    linear-gradient(120deg, #14243a, #0f172a),
+    #0f172a;
 }
 
 .endPlateB {
   right: 36px;
+  border-color: color-mix(in srgb, var(--proposal-brand-active) 62%, #9f1239);
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--proposal-brand-active) 88%, #ffffff), #9f1239),
+    var(--proposal-brand-active);
 }
 
 .coreBlock {
   inset: 52px 98px 60px;
-  border: 1px solid var(--proposal-brand-border-strong);
+  border: 1px solid rgba(15, 23, 42, 0.28);
   border-radius: 8px;
   background:
-    repeating-linear-gradient(90deg, #ffffff 0 7px, color-mix(in srgb, var(--proposal-brand-soft) 72%, #ffffff) 7px 13px),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
-    #ffffff;
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.72) 0 4px, rgba(30, 41, 59, 0.78) 4px 7px, rgba(226, 232, 240, 0.78) 7px 11px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), color-mix(in srgb, var(--proposal-brand-soft) 50%, #ffffff)),
+    #eaf3fb;
   transform: translateZ(40px);
 }
 
 .plateStack {
   inset: 32px 64px 38px;
-  border: 1px solid var(--proposal-border-strong);
+  border: 1px solid rgba(15, 23, 42, 0.34);
   border-radius: 8px;
   background:
-    repeating-linear-gradient(90deg, #e9f3fb 0 6px, #ffffff 6px 11px),
-    #ffffff;
+    repeating-linear-gradient(90deg, #0f172a 0 4px, #1e293b 4px 7px, #f8fbff 7px 10px, #b7dff2 10px 12px),
+    #f8fbff;
   transform: translateZ(22px);
 }
 
