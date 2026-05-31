@@ -1680,6 +1680,10 @@
   opacity: 0.82;
 }
 
+.twinStage[data-model-ready="true"] .twinObject {
+  opacity: 0;
+}
+
 .twinModelLegend {
   position: absolute;
   right: 12px;

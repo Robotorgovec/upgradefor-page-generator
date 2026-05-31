@@ -1419,8 +1419,17 @@ function formatSourceChecksum(value?: string) {
   return `sha256: ${value.slice(0, 10)}…${value.slice(-6)}`;
 }
 
-function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinLayerId; rotating: boolean }) {
+function PlateHeatExchangerModel({
+  activeLayer,
+  rotating,
+  onReady,
+}: {
+  activeLayer: TwinLayerId;
+  rotating: boolean;
+  onReady?: () => void;
+}) {
   const groupRef = useRef<Group>(null);
+  const readyRef = useRef(false);
   const plateCount = 34;
   const activeTint = activeLayer === "documents" || activeLayer === "sales" ? "#4f7ea8" : activeLayer === "delivery" ? "#f59f55" : "#f05f6d";
   const portPoints = [
@@ -1431,6 +1440,10 @@ function PlateHeatExchangerModel({ activeLayer, rotating }: { activeLayer: TwinL
   ] as const;
 
   useFrame((state) => {
+    if (!readyRef.current) {
+      readyRef.current = true;
+      onReady?.();
+    }
     if (!groupRef.current) return;
     const orbit = rotating ? Math.sin(state.clock.elapsedTime * 0.52) * 0.22 : 0;
     groupRef.current.rotation.y = -0.46 + orbit;
@@ -1597,6 +1610,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [paymentMode, setPaymentMode] = useState<"split" | "full">("split");
   const [isRotating, setIsRotating] = useState(true);
   const [presentationMode, setPresentationMode] = useState(false);
+  const [twinModelReady, setTwinModelReady] = useState(false);
   const [twinLabelDensity, setTwinLabelDensity] = useState<"focus" | "full">("focus");
   const [activePresentationMode, setActivePresentationMode] = useState<PresentationModeId>("executive");
   const [copyStatus, setCopyStatus] = useState("Готово");
@@ -2014,7 +2028,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   }
 
   const twinStage = (
-    <div className={styles.twinStage} data-layer={activeLayer} data-label-density={twinLabelDensity}>
+    <div
+      className={styles.twinStage}
+      data-layer={activeLayer}
+      data-label-density={twinLabelDensity}
+      data-model-ready={twinModelReady ? "true" : "false"}
+    >
       <div className={styles.twinStageHeader}>
         <span>Rotating 3D PlateHE Twin</span>
         <strong>{layer.title}</strong>
@@ -2032,7 +2051,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <directionalLight position={[4, 5, 5]} intensity={2.4} castShadow />
           <directionalLight position={[-4, 2, -3]} intensity={0.76} />
           <pointLight position={[0, 1.8, 2.6]} intensity={0.9} color="#ffdbe0" />
-          <PlateHeatExchangerModel activeLayer={activeLayer} rotating={isRotating && !presentationMode} />
+          <PlateHeatExchangerModel
+            activeLayer={activeLayer}
+            rotating={isRotating && !presentationMode}
+            onReady={() => setTwinModelReady(true)}
+          />
         </Canvas>
         <div className={styles.twinObject} aria-hidden="true">
           <span className={styles.twinShadow} />
