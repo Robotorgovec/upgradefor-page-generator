@@ -1,13 +1,10 @@
-﻿import type { ReactNode } from "react";
+import type { ReactNode } from "react";
 import fs from "fs";
 import path from "path";
-
 import AppShell from "../components/layout/AppShell";
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   const headerHtml = fs.readFileSync(path.join(process.cwd(), "public", "includes", "header.html"), "utf8");
   const sidebarHtml = fs.readFileSync(path.join(process.cwd(), "public", "includes", "menu.html"), "utf8");
-
   return (
     <html lang="ru" suppressHydrationWarning>
       <head>

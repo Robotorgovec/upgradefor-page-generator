@@ -7,6 +7,8 @@ declare module "next-auth" {
       id: string;
       email: string;
       role: string;
+      accountType: "BUYER" | "VENDOR";
+      onboardingCompleted: boolean;
       emailVerified: string | null;
     };
   }
@@ -15,6 +17,8 @@ declare module "next-auth" {
     id: string;
     email: string;
     role: string;
+    accountType: "BUYER" | "VENDOR";
+    onboardingCompleted: boolean;
     emailVerified: Date | null;
   }
 }
@@ -23,6 +27,8 @@ declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
     role?: string;
+    accountType?: "BUYER" | "VENDOR";
+    onboardingCompleted?: boolean;
     emailVerified?: string | null;
   }
 }

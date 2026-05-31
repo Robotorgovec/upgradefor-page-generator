@@ -1,12 +1,20 @@
 /* app/account/auth.css */
 
 .auth-page {
-  padding: calc(env(safe-area-inset-top, 0px) + 88px) 24px 40px;
+  padding: calc(env(safe-area-inset-top, 0px) + 48px) 24px 40px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: calc(100vh - 40px);
   box-sizing: border-box;
+}
+
+.auth-app-content,
+body.menu-open > .auth-app-content {
+  margin-left: 0 !important;
+  width: 100% !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 @media (max-width: 520px) {
@@ -48,6 +56,27 @@
   color: var(--success);
 }
 
+.auth-footnote {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.auth-footnote a,
+.auth-label-row a,
+.auth-checkbox a {
+  color: var(--link-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-footnote a:hover,
+.auth-label-row a:hover,
+.auth-checkbox a:hover {
+  text-decoration: underline;
+}
+
 .auth-card form {
   display: flex;
   flex-direction: column;
@@ -83,6 +112,85 @@
 .auth-card input:focus {
   border-color: var(--form-focus);
   box-shadow: 0 0 0 4px var(--form-focus-ring);
+}
+
+.auth-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-label-row label {
+  margin-bottom: 6px;
+}
+
+.auth-label-row a {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.field-error {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--danger);
+}
+
+.password-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.password-hints li {
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--neutral-500);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.password-hints li.is-met {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.auth-fieldset {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  margin: 0;
+  padding: 12px;
+}
+
+.auth-fieldset legend {
+  padding: 0 6px;
+  color: var(--neutral-700);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-radio,
+.auth-checkbox {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0 0 !important;
+  color: var(--neutral-700);
+  font-weight: 500 !important;
+  line-height: 1.4;
+}
+
+.auth-radio input,
+.auth-checkbox input {
+  width: auto;
+  height: auto;
+  margin-top: 3px;
+  flex: 0 0 auto;
 }
 
 /* ВАЖНО: стили "большой синей кнопки" — только для submit */
