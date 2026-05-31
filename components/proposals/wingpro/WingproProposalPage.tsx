@@ -110,9 +110,9 @@ const twinHotspots = [
 
 const twinConnectionCues = [
   { label: "Патрубки", detail: "4 фланцевых вывода", tone: "ports", x: "83%", y: "48%" },
-  { label: "EG 40% · 5/10°C", detail: "source input", tone: "warm", x: "77%", y: "69%" },
-  { label: "Water · 7/12°C", detail: "source input", tone: "cold", x: "22%", y: "69%" },
-  { label: "Service zone", detail: "mounting side approves", tone: "clearance", x: "22%", y: "34%" },
+  { label: "EG 40% · 5/10°C", detail: "исходный режим", tone: "warm", x: "77%", y: "69%" },
+  { label: "Вода · 7/12°C", detail: "исходный режим", tone: "cold", x: "22%", y: "69%" },
+  { label: "Сервисная зона", detail: "подтверждает монтажная сторона", tone: "clearance", x: "22%", y: "34%" },
 ] as const;
 
 const twinInterfaceRows = [
@@ -120,25 +120,25 @@ const twinInterfaceRows = [
     label: "EG 40% · 5/10°C",
     input: "исходный режим холодоносителя из ХС-схем",
     action: "передать поставщику для сверки подбора и pressure/material evidence",
-    owner: "WinGPro technical owner / supplier",
+    owner: "тех. владелец WinGPro / поставщик",
   },
   {
-    label: "Water · 7/12°C",
+    label: "Вода · 7/12°C",
     input: "входной температурный контур для проверки применимости ПТО",
     action: "связать с specification request и открытыми technical questions",
-    owner: "responsible technical specialist",
+    owner: "ответственный технический специалист",
   },
   {
-    label: "4 flanged ports",
+    label: "4 фланцевых патрубка",
     input: "точки подключения: DN/PN, orientation, drawing, gasket/material",
     action: "запросить connection drawing и packing/dimensions до handoff",
-    owner: "supplier / mounting side",
+    owner: "поставщик / монтажная сторона",
   },
   {
-    label: "Service envelope",
+    label: "Сервисная зона",
     input: "габариты, доступ и зона обслуживания вокруг теплообменника",
     action: "передать как mounting coordination input, не как утвержденный ППР",
-    owner: "mounting contractor / technical owner",
+    owner: "монтажная сторона / тех. владелец",
   },
 ] as const;
 
@@ -2618,18 +2618,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <StatusPill value={item.readiness} />
                 </div>
                 <p>{item.value}</p>
+                <div className={styles.twinLayerPlainSummary}>
+                  <span>что это за блок</span>
+                  <strong>Карта выбранного слоя Digital Twin: что уже собрано, что запросить и кому передать результат.</strong>
+                  <small>{item.title}: {item.value}</small>
+                </div>
                 <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
                   <article>
-                    <span>готовность к передаче</span>
+                    <span>состояние слоя</span>
                     <strong>{item.readiness}</strong>
                     <small>{item.gate}</small>
                   </article>
                   <article>
-                    <span>что запросить сейчас</span>
+                    <span>следующий evidence request</span>
                     <strong>{item.evidence}</strong>
                   </article>
                   <article>
-                    <span>кому передать результат</span>
+                    <span>передача результата</span>
                     <strong>{item.deliverable}</strong>
                     <small>{item.owner}</small>
                   </article>
@@ -2650,9 +2655,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
-                    <span>чек-лист слоя</span>
+                    <span>полный чек-лист слоя</span>
                     <strong>{item.title}: данные, запрос и подтверждающий owner</strong>
-                    <small>Открыть полный список: risk, deliverable, owner</small>
+                    <small>Открыть risk, deliverable, owner и исходные данные</small>
                   </summary>
                   <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
                     <article>
