@@ -3205,15 +3205,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <p className={styles.eyebrow}>Implementation Status Dashboard</p>
               <h3>Готовность проекта по ключевым контурам</h3>
             </div>
-            <div className={styles.metricGrid}>
-              {implementationMetrics.map(([metric, value, note]) => (
-                <section key={metric}>
-                  <strong>{value}</strong>
-                  <span>{metric}</span>
-                  <p>{note}</p>
-                </section>
-              ))}
-            </div>
+            <details className={styles.statusDashboardDetails}>
+              <summary>
+                <span>Readiness metrics</span>
+                <strong>Открыть {implementationMetrics.length} статуса готовности</strong>
+              </summary>
+              <div className={styles.metricGrid}>
+                {implementationMetrics.map(([metric, value, note]) => (
+                  <section key={metric}>
+                    <strong>{value}</strong>
+                    <span>{metric}</span>
+                    <p>{note}</p>
+                  </section>
+                ))}
+              </div>
+            </details>
           </article>
           </div>
         </details>
@@ -3593,14 +3599,20 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>Route handoff</dt><dd>{gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"}</dd></div>
             <div><dt>Output</dt><dd>{gate[6]}</dd></div>
           </dl>
-          <div className={styles.gateCommandStrip} aria-label="Selected release gate command sequence">
-            {gateCommandSequence.map(([label, value]) => (
-              <section key={label}>
-                <span>{label}</span>
-                <p>{value}</p>
-              </section>
-            ))}
-          </div>
+          <details className={styles.gateCommandDisclosure}>
+            <summary>
+              <span>Action sequence</span>
+              <strong>Открыть {gateCommandSequence.length} linked actions</strong>
+            </summary>
+            <div className={styles.gateCommandStrip} aria-label="Selected release gate command sequence">
+              {gateCommandSequence.map(([label, value]) => (
+                <section key={label}>
+                  <span>{label}</span>
+                  <p>{value}</p>
+                </section>
+              ))}
+            </div>
+          </details>
         </aside>
         <details className={styles.releaseGateDetailsDisclosure}>
           <summary>

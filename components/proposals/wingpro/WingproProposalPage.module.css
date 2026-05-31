@@ -3901,6 +3901,7 @@
 .executiveCommandDetailsDisclosure:not([open]) > :not(summary),
 .commandDisclosure:not([open]) > :not(summary),
 .modeEndpointDisclosure:not([open]) > :not(summary),
+.statusDashboardDetails:not([open]) > :not(summary),
 .sourceDocMetadata:not([open]) > :not(summary),
 .sourceDocUtility:not([open]) > :not(summary),
 .sourceDocBoundary:not([open]) > :not(summary),
@@ -3922,6 +3923,7 @@
 .vaultCardsDisclosure:not([open]) > :not(summary),
 .riskDetailsDisclosure:not([open]) > :not(summary),
 .releaseGateDetailsDisclosure:not([open]) > :not(summary),
+.gateCommandDisclosure:not([open]) > :not(summary),
 .handoverCommandDisclosure:not([open]) > :not(summary),
 .handoverDetailsDisclosure:not([open]) > :not(summary),
 .copyActionDisclosure:not([open]) > :not(summary) {
@@ -4726,6 +4728,79 @@
 .metricGrid span {
   color: var(--proposal-text);
   font-weight: 900;
+}
+
+.statusDashboardDetails,
+.gateCommandDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 48%, #ffffff)),
+    #ffffff;
+  overflow: visible;
+}
+
+.statusDashboardDetails summary,
+.gateCommandDisclosure summary {
+  min-height: 48px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(130px, 0.32fr) minmax(0, 1fr) 32px;
+  gap: 10px;
+  align-items: center;
+  list-style: none;
+}
+
+.statusDashboardDetails summary::-webkit-details-marker,
+.gateCommandDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.statusDashboardDetails summary::after,
+.gateCommandDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.statusDashboardDetails[open] summary::after,
+.gateCommandDisclosure[open] summary::after {
+  content: "−";
+}
+
+.statusDashboardDetails summary span,
+.gateCommandDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.statusDashboardDetails summary strong,
+.gateCommandDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.statusDashboardDetails .metricGrid,
+.gateCommandDisclosure .gateCommandStrip {
+  padding: 0 12px 12px;
 }
 
 .controlRoom {
@@ -6953,6 +7028,10 @@
   gap: 9px;
 }
 
+.gateCommandDisclosure {
+  grid-column: 2;
+}
+
 .gateCommandStrip section {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
@@ -8011,6 +8090,10 @@
   .controlBoardGrid,
   .acceptanceGrid {
     grid-template-columns: 1fr;
+  }
+
+  .gateCommandDisclosure {
+    grid-column: auto;
   }
 
   .contractDetailsDisclosure summary,
