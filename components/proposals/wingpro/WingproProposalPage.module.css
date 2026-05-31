@@ -8959,12 +8959,12 @@
   }
 
   .commandLayer {
-    gap: 8px;
-    padding: 14px;
+    gap: 6px;
+    padding: 12px;
   }
 
   .commandLayerHeader h2 {
-    font-size: 21px;
+    font-size: 20px;
     line-height: 1.12;
   }
 
@@ -8987,38 +8987,51 @@
 
   .cockpitSummaryGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
+    gap: 6px;
   }
 
   .cockpitKpiRail {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .cockpitKpiRail article,
   .cockpitKpiRail button {
-    min-height: 58px;
-    padding: 7px;
+    min-height: 52px;
+    padding: 6px;
+  }
+
+  .cockpitKpiRail span {
+    font-size: 8.8px;
+    line-height: 1.08;
   }
 
   .cockpitKpiRail strong {
     display: -webkit-box;
-    max-height: 2.4em;
+    max-height: 2.25em;
     overflow: hidden;
-    font-size: 11px;
-    line-height: 1.2;
+    font-size: 10px;
+    line-height: 1.12;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .cockpitKpiRail small {
     display: -webkit-box;
-    max-height: 2.5em;
+    max-height: 2.28em;
     overflow: hidden;
-    font-size: 10px;
-    line-height: 1.25;
+    font-size: 9px;
+    line-height: 1.14;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+
+  .cockpitKpiRail button {
+    grid-column: span 2;
+    justify-items: center;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.15;
   }
 
   .lead {
@@ -9047,124 +9060,144 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
   }
 
   .presentationModeTabs button {
     min-height: 44px;
-    padding: 6px;
+    padding: 5px;
     justify-items: start;
     text-align: left;
-    font-size: 10px;
+    font-size: 9px;
     line-height: 1.12;
+    overflow: hidden;
   }
 
   .cockpitSummaryGrid button {
-    min-height: 74px;
-    gap: 5px;
-    padding: 7px;
+    min-height: 64px;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .cockpitSummaryGrid span {
+    font-size: 8.8px;
+    line-height: 1.08;
   }
 
   .cockpitSummaryGrid strong {
     display: -webkit-box;
-    max-height: 2.45em;
+    max-height: 2.32em;
     overflow: hidden;
-    font-size: 11.5px;
-    line-height: 1.22;
+    font-size: 10px;
+    line-height: 1.16;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .cockpitSummaryGrid small {
     display: -webkit-box;
-    max-height: 2.4em;
+    max-height: 2.24em;
     overflow: hidden;
-    font-size: 10px;
-    line-height: 1.2;
+    font-size: 9px;
+    line-height: 1.12;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .cockpitSummaryGrid em {
     display: -webkit-box;
-    max-height: 2.4em;
+    max-height: 2.24em;
     overflow: hidden;
-    font-size: 10px;
-    line-height: 1.2;
+    font-size: 9px;
+    line-height: 1.12;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
   .presentationModePanel {
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-    padding: 10px;
-    gap: 7px;
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    padding: 8px;
+    gap: 6px;
   }
 
   .presentationModePanel span {
-    padding: 5px 7px;
-    font-size: 10px;
+    padding: 5px 6px;
+    font-size: 9px;
   }
 
   .presentationModePanel h3 {
-    font-size: 16px;
-    line-height: 1.18;
+    display: -webkit-box;
+    max-height: 2.3em;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.15;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .presentationModePanel > p,
+  .presentationModePanel > p {
+    display: none;
+  }
+
   .presentationModePanel div p {
     display: -webkit-box;
-    max-height: 3.6em;
+    max-height: 2.4em;
     overflow: hidden;
-    font-size: 12.5px;
-    line-height: 1.3;
+    font-size: 11px;
+    line-height: 1.2;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
   .presentationModePanel div {
     grid-column: 1 / -1;
     gap: 4px;
-    padding-top: 7px;
+    padding-top: 6px;
   }
 
-  .presentationModePanel > p {
-    grid-column: 1 / -1;
+  .presentationModePanel div strong {
+    font-size: 10px;
   }
 
   .cockpitSummaryBoard {
-    gap: 8px;
-    padding: 9px;
+    gap: 6px;
+    padding: 8px;
   }
 
   .cockpitSummaryHeader h3 {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.18;
   }
 
   .cockpitDecisionDock {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .cockpitDecisionDock article,
   .cockpitAddonDisclosure,
   .cockpitAddonDisclosure summary {
-    min-height: 62px;
+    min-height: 54px;
   }
 
   .cockpitDecisionDock article {
-    padding: 8px;
+    padding: 6px;
+  }
+
+  .cockpitDecisionDock span,
+  .cockpitAddonDisclosure summary span {
+    font-size: 8.8px;
+    line-height: 1.08;
   }
 
   .cockpitDecisionDock strong,
   .cockpitAddonDisclosure summary strong {
     display: -webkit-box;
-    max-height: 3.36em;
+    max-height: 2.38em;
     overflow: hidden;
-    font-size: 11.5px;
-    line-height: 1.4;
+    font-size: 10px;
+    line-height: 1.19;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
@@ -9174,22 +9207,28 @@
   }
 
   .cockpitAddonDisclosure summary {
-    padding: 8px 38px 8px 8px;
+    padding: 7px 34px 7px 7px;
+  }
+
+  .cockpitAddonDisclosure summary::after {
+    right: 7px;
+    width: 24px;
+    height: 24px;
   }
 
   .cockpitAddonDisclosure div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    padding: 0 8px 8px;
+    gap: 5px;
+    padding: 0 7px 7px;
   }
 
   .cockpitAddonDisclosure p {
     display: -webkit-box;
-    max-height: 2.5em;
+    max-height: 2.28em;
     overflow: hidden;
-    padding: 7px;
-    font-size: 10.5px;
-    line-height: 1.25;
+    padding: 6px;
+    font-size: 9.5px;
+    line-height: 1.14;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
@@ -11469,8 +11508,12 @@
   }
 
   .presentationModeTabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 5px;
+  }
+
+  .commandLayer {
+    padding: 12px;
   }
 
   .cockpitSummaryGrid {
