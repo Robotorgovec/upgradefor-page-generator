@@ -3897,6 +3897,36 @@
   margin-top: 0;
 }
 
+.cockpitAddonDisclosure:not([open]) > :not(summary),
+.executiveCommandDetailsDisclosure:not([open]) > :not(summary),
+.commandDisclosure:not([open]) > :not(summary),
+.modeEndpointDisclosure:not([open]) > :not(summary),
+.sourceDocMetadata:not([open]) > :not(summary),
+.sourceDocUtility:not([open]) > :not(summary),
+.sourceDocBoundary:not([open]) > :not(summary),
+.sourceDocsIntelligence:not([open]) > :not(summary),
+.sourceTraceability:not([open]) > :not(summary),
+.sourceDisclaimer:not([open]) > :not(summary),
+.twinLayerDetailsDisclosure:not([open]) > :not(summary),
+.filmstripDetailsDisclosure:not([open]) > :not(summary),
+.projectControlDetailsDisclosure:not([open]) > :not(summary),
+.controlBoardsDisclosure:not([open]) > :not(summary),
+.supplierDetailsDisclosure:not([open]) > :not(summary),
+.offerDetailsDisclosure:not([open]) > :not(summary),
+.contractDetailsDisclosure:not([open]) > :not(summary),
+.deliveryDetailsDisclosure:not([open]) > :not(summary),
+.controlParticipantsDisclosure:not([open]) > :not(summary),
+.routeDetailsDisclosure:not([open]) > :not(summary),
+.vaultFilterDisclosure:not([open]) > :not(summary),
+.vaultCardsDisclosure:not([open]) > :not(summary),
+.riskDetailsDisclosure:not([open]) > :not(summary),
+.releaseGateDetailsDisclosure:not([open]) > :not(summary),
+.handoverCommandDisclosure:not([open]) > :not(summary),
+.handoverDetailsDisclosure:not([open]) > :not(summary),
+.copyActionDisclosure:not([open]) > :not(summary) {
+  display: none;
+}
+
 .contractValueGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
