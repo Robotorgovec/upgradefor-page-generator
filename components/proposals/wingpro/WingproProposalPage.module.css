@@ -7901,8 +7901,132 @@
     line-height: 1.42;
   }
 
+  .fieldBoard .boardHeader {
+    gap: 5px;
+  }
+
+  .fieldBoard .boardHeader h3 {
+    font-size: 20px;
+    line-height: 1.12;
+  }
+
+  .fieldBoard .boardHeader p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 4.2em;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .fieldCommandSurface {
+    gap: 9px;
+  }
+
   .fieldStatusRail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .fieldStatusRail button {
+    min-height: 82px;
+    gap: 4px;
+    padding: 9px;
+  }
+
+  .fieldStatusRail span {
+    font-size: 10px;
+  }
+
+  .fieldStatusRail strong {
+    font-size: 22px;
+  }
+
+  .fieldStatusRail small {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .fieldStatusPanel {
+    gap: 7px;
+    padding: 11px;
+  }
+
+  .fieldStatusPanel h4 {
+    font-size: 18px;
+  }
+
+  .fieldStatusPanel p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 2.7em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .fieldStatusPanel dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .fieldStatusPanel dl div {
+    padding: 8px;
+  }
+
+  .fieldStatusPanel dd {
+    display: -webkit-box;
+    max-height: 3.36em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .fieldPanels section:not([hidden]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .fieldPanels h4,
+  .fieldPanels p {
+    grid-column: 1 / -1;
+  }
+
+  .fieldPanels section {
+    padding: 10px;
+  }
+
+  .fieldPanels div {
+    padding: 8px;
+  }
+
+  .fieldPanels strong {
+    display: -webkit-box;
+    max-height: 2.55em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .fieldPanels span {
+    display: -webkit-box;
+    max-height: 3.6em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .evidencePhaseRail {
@@ -8001,10 +8125,6 @@
 
   .twinStage {
     min-height: 500px;
-  }
-
-  .fieldStatusRail {
-    grid-template-columns: 1fr;
   }
 
   .evidencePhaseRail {
