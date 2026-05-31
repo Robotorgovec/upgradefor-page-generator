@@ -108,6 +108,13 @@ const twinHotspots = [
   note: string;
 }>;
 
+const twinConnectionCues = [
+  { label: "4 flanged nozzles", detail: "connection points to verify", tone: "ports", x: "70%", y: "36%" },
+  { label: "EG 40%", detail: "5/10°C source input", tone: "warm", x: "67%", y: "55%" },
+  { label: "Water loop", detail: "7/12°C source input", tone: "cold", x: "31%", y: "63%" },
+  { label: "Service clearance", detail: "mounting side approves", tone: "clearance", x: "34%", y: "31%" },
+] as const;
+
 const scenes = [
   { id: "source", layer: "equipment", title: "Source", status: "collecting", control: "канал поставщика и контактная карта", receives: "supplier profile", risk: "неясная роль производителя/трейдера" },
   { id: "verify", layer: "specification", title: "Verify", status: "owner required", control: "material, pressure, model, drawing questions", receives: "technical evidence checklist", risk: "параметры теряются в переписке" },
@@ -1985,11 +1992,28 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <pointLight position={[0, 1.8, 2.6]} intensity={0.9} color="#ffdbe0" />
           <PlateHeatExchangerModel activeLayer={activeLayer} rotating={isRotating && !presentationMode} />
         </Canvas>
+        <div className={styles.twinServiceEnvelope} aria-hidden="true">
+          <span>service access envelope</span>
+        </div>
+        <div className={styles.twinConnectionCues} role="list" aria-label="Plate heat exchanger connection cues">
+          {twinConnectionCues.map((item) => (
+            <span
+              key={item.label}
+              className={styles.twinConnectionCue}
+              data-tone={item.tone}
+              role="listitem"
+              style={{ ["--x" as string]: item.x, ["--y" as string]: item.y }}
+            >
+              <strong>{item.label}</strong>
+              <small>{item.detail}</small>
+            </span>
+          ))}
+        </div>
         <div className={styles.twinModelLegend}>
           <span>28 plates</span>
-          <span>4 ports</span>
+          <span>4 flanged ports</span>
           <span>tie rods</span>
-          <span>flow paths</span>
+          <span>mounting inputs</span>
         </div>
       </div>
       <svg className={styles.twinBlueprint} viewBox="0 0 720 420" role="img" aria-label="Conceptual digital twin preview">

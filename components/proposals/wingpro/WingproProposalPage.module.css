@@ -1537,6 +1537,106 @@
   display: block;
 }
 
+.twinServiceEnvelope {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 24%;
+  bottom: 20%;
+  z-index: 2;
+  border: 1px dashed color-mix(in srgb, var(--proposal-brand-active) 36%, #94a3b8);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.twinServiceEnvelope span {
+  position: absolute;
+  left: 16px;
+  bottom: -12px;
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 82%, transparent);
+  border-radius: 999px;
+  color: var(--proposal-text-muted);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.twinConnectionCues {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.twinConnectionCue {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: min(148px, 26%);
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--proposal-shadow-sm);
+  color: var(--proposal-text);
+  transform: translate(-50%, -50%);
+}
+
+.twinConnectionCue::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 26px;
+  background: color-mix(in srgb, var(--proposal-brand-active) 42%, #94a3b8);
+  transform: translateX(-50%);
+}
+
+.twinConnectionCue strong,
+.twinConnectionCue small {
+  display: block;
+  min-width: 0;
+}
+
+.twinConnectionCue strong {
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.twinConnectionCue small {
+  margin-top: 3px;
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.twinConnectionCue[data-tone="warm"] {
+  border-color: color-mix(in srgb, var(--proposal-brand-active) 46%, #fca5a5);
+  background: rgba(255, 244, 245, 0.92);
+}
+
+.twinConnectionCue[data-tone="cold"] {
+  border-color: rgba(125, 199, 242, 0.72);
+  background: rgba(239, 248, 255, 0.92);
+}
+
+.twinConnectionCue[data-tone="ports"] {
+  border-color: color-mix(in srgb, var(--proposal-brand-active) 44%, #e2e8f0);
+}
+
+.twinConnectionCue[data-tone="clearance"] {
+  border-style: dashed;
+}
+
 .twinModelLegend {
   position: absolute;
   right: 12px;
@@ -9807,6 +9907,28 @@
     inset: 56px 9px 98px;
   }
 
+  .twinConnectionCue {
+    width: min(116px, 30%);
+    min-height: 34px;
+    padding: 6px 7px;
+  }
+
+  .twinConnectionCue::before {
+    height: 14px;
+  }
+
+  .twinConnectionCue strong {
+    font-size: 9px;
+  }
+
+  .twinConnectionCue small {
+    display: none;
+  }
+
+  .twinServiceEnvelope span {
+    display: none;
+  }
+
   .twinModelLegend {
     right: 8px;
     bottom: 8px;
@@ -11639,6 +11761,11 @@
 
   .twinCanvasWrap {
     inset: 54px 8px 100px;
+  }
+
+  .twinConnectionCues,
+  .twinServiceEnvelope {
+    display: none;
   }
 
   .evidencePhaseRail {
