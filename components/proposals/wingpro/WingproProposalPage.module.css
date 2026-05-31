@@ -6220,10 +6220,7 @@
   background: #ffffff;
 }
 
-.sourceDocBoundary ul {
-  padding-left: 18px;
-}
-
+.sourceDocMetadata,
 .sourceDocBoundary {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
@@ -6231,6 +6228,7 @@
   background: #ffffff;
 }
 
+.sourceDocMetadata summary,
 .sourceDocBoundary summary {
   min-height: 44px;
   color: var(--proposal-text);
@@ -6238,6 +6236,15 @@
   font-size: 13px;
   font-weight: 900;
   align-content: center;
+}
+
+.sourceDocBoundary ul {
+  padding-left: 18px;
+}
+
+.sourceDocMetadata[open] .sourceDocMeta,
+.sourceDocBoundary[open] ul {
+  margin-top: 8px;
 }
 
 .sourceDocActions,
@@ -8251,16 +8258,59 @@
   }
 
   .sourceDocsHeader,
-  .sourceDocsStatusGrid,
-  .sourceDocTitleRow,
-  .sourceDocMeta,
-  .sourceDocActions,
+  .sourceDocsSummaryCard,
   .sourceDocsPackage,
   .sourceDocsIntelligence summary,
   .sourceTraceabilityHeader,
-  .sourceInsightGrid,
-  .sourceDocsRelated {
+  .sourceInsightGrid {
     grid-template-columns: 1fr;
+  }
+
+  .sourceDocsStatusGrid,
+  .sourceDocMeta,
+  .sourceDocActions,
+  .sourceDocsRelated {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sourceDocsStatusGrid article {
+    min-height: 78px;
+  }
+
+  .sourceDocsSummaryCard {
+    gap: 10px;
+  }
+
+  .sourceDocsSummaryCard h3 {
+    font-size: 21px;
+  }
+
+  .sourceDocsSummaryCard p,
+  .sourceDocsLegalLine,
+  .sourceDisclaimer p {
+    font-size: 13px;
+    line-height: 1.38;
+  }
+
+  .sourceDocsLegalLine {
+    padding: 10px;
+  }
+
+  .sourceDocTitleRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .sourceDocMeta {
+    gap: 6px;
+  }
+
+  .sourceDocMeta div {
+    min-height: auto;
+    padding: 7px;
+  }
+
+  .sourceDocActions button {
+    grid-column: 1 / -1;
   }
 
   .sourceDocCard,

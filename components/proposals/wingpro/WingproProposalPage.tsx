@@ -2185,12 +2185,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </div>
                 <span>{doc.sizeLabel}</span>
               </div>
-              <dl className={styles.sourceDocMeta}>
-                <div><dt>File</dt><dd>{doc.href.split("/").slice(-1)[0]}</dd></div>
-                <div><dt>Source name</dt><dd>{doc.sourceName}</dd></div>
-                <div><dt>Object</dt><dd>{doc.object}</dd></div>
-                <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
-              </dl>
+              <details className={styles.sourceDocMetadata}>
+                <summary>Метаданные файла</summary>
+                <dl className={styles.sourceDocMeta}>
+                  <div><dt>File</dt><dd>{doc.href.split("/").slice(-1)[0]}</dd></div>
+                  <div><dt>Source name</dt><dd>{doc.sourceName}</dd></div>
+                  <div><dt>Object</dt><dd>{doc.object}</dd></div>
+                  <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
+                </dl>
+              </details>
               <div className={styles.sourceDocUtility}>
                 <strong>Useful for UPGRADE</strong>
                 <ul>
