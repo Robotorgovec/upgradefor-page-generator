@@ -82,8 +82,11 @@
 }
 
 .breadcrumbs a {
+  min-height: 44px;
   text-decoration: none;
   font-weight: 800;
+  display: inline-flex;
+  align-items: center;
 }
 
 .breadcrumbs a:hover {
@@ -115,8 +118,8 @@
 }
 
 .miniNav a {
-  min-height: 36px;
-  padding: 8px 11px;
+  min-height: 44px;
+  padding: 9px 12px;
   border-radius: 8px;
   color: var(--proposal-text-soft);
   text-decoration: none;
@@ -9339,36 +9342,54 @@
   }
 
   .heroActions {
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .heroActions .primaryAction {
+    grid-column: 1 / -1;
   }
 
   .primaryAction,
   .secondaryAction {
-    min-height: 46px;
-    padding: 11px 14px;
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 10px;
+    text-align: center;
+    font-size: 12.5px;
+    line-height: 1.15;
   }
 
   .indicators {
-    gap: 7px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
     margin-top: 4px;
   }
 
   .indicators span {
+    display: -webkit-box;
+    width: auto;
+    min-height: 32px;
+    overflow: hidden;
     padding: 5px 8px;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.12;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .heroMissionBridge {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
     margin-top: 2px;
   }
 
   .heroMissionBridge a {
-    min-height: 76px;
-    padding: 9px;
-    gap: 4px;
+    min-height: 64px;
+    padding: 7px;
+    gap: 3px;
   }
 
   .heroMissionBridge span {
@@ -9378,10 +9399,10 @@
 
   .heroMissionBridge strong {
     display: -webkit-box;
-    max-height: 2.5em;
+    max-height: 2.55em;
     overflow: hidden;
-    font-size: 12px;
-    line-height: 1.25;
+    font-size: 10.5px;
+    line-height: 1.28;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
@@ -9392,34 +9413,72 @@
 
   .missionCard {
     min-height: auto;
-    padding: 18px;
-    gap: 13px;
+    padding: 14px;
+    gap: 9px;
   }
 
   .missionCard::after {
     right: 14px;
     bottom: 14px;
     left: 10%;
-    height: 170px;
+    height: 122px;
   }
 
   .missionCard strong,
   .decisionCard strong {
-    font-size: clamp(29px, 8.2vw, 34px);
-    line-height: 1.02;
+    font-size: clamp(24px, 6.8vw, 29px);
+    line-height: 1.04;
   }
 
   .missionCard p {
+    display: -webkit-box;
+    max-height: 2.8em;
+    overflow: hidden;
     font-size: 14px;
-    line-height: 1.45;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .missionCard dl {
-    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .missionCard dl div {
-    padding: 9px;
+    min-width: 0;
+    padding: 7px;
+  }
+
+  .missionCard dt {
+    font-size: 9.5px;
+  }
+
+  .missionCard dd {
+    display: -webkit-box;
+    max-height: 2.6em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .missionCardFooter {
+    padding: 10px;
+  }
+
+  .missionCardFooter p {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.28;
+  }
+
+  .missionCardFooter button {
+    margin-top: 8px;
+    min-height: 44px;
+    padding: 9px 10px;
+    font-size: 12.5px;
   }
 
   .controlSnapshot,
