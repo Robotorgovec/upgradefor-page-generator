@@ -7930,32 +7930,63 @@
     gap: 7px;
   }
 
+  .handoverRoom .sectionHeader {
+    gap: 5px;
+  }
+
+  .handoverRoom .sectionHeader h2 {
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
+  .handoverRoom .sectionHeader p:not(.eyebrow) {
+    display: -webkit-box;
+    max-height: 4.05em;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
   .handoverMetrics span,
   .acceptanceLink {
-    min-height: 72px;
+    min-height: 62px;
     gap: 4px;
-    padding: 9px;
+    padding: 8px;
   }
 
   .handoverMetrics strong {
     font-size: 20px;
   }
 
+  .handoverMetrics small {
+    font-size: 10px;
+    line-height: 1.15;
+  }
+
   .handoverControlSurface {
-    gap: 10px;
-    padding: 14px;
+    gap: 9px;
+    padding: 12px;
   }
 
   .handoverControlLead {
-    gap: 8px;
+    gap: 6px;
   }
 
   .handoverControlLead h3 {
-    font-size: 22px;
+    font-size: 20px;
+    line-height: 1.12;
   }
 
   .handoverControlLead p:not(.eyebrow) {
-    line-height: 1.42;
+    display: -webkit-box;
+    max-height: 3.78em;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .handoverControlSurface dl {
@@ -7964,12 +7995,65 @@
   }
 
   .handoverControlSurface dl div {
-    padding: 9px;
+    padding: 8px;
+  }
+
+  .handoverControlSurface dt {
+    font-size: 9.5px;
+    line-height: 1.15;
+  }
+
+  .handoverControlSurface dd {
+    display: -webkit-box;
+    max-height: 3.36em;
+    overflow: hidden;
+    margin-top: 4px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .handoverCommandDisclosure summary,
+  .handoverDetailsDisclosure summary {
+    min-height: 58px;
+    gap: 5px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .handoverCommandDisclosure summary strong,
+  .handoverDetailsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.22;
+  }
+
+  .handoverCommandDisclosure summary small,
+  .handoverDetailsDisclosure summary small {
+    display: -webkit-box;
+    max-height: 2.5em;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .handoverCommandDisclosure summary::after,
+  .handoverDetailsDisclosure summary::after {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
   }
 
   .handoverSummary {
+    display: -webkit-box;
+    max-height: 4.05em;
+    overflow: hidden;
     padding: 10px;
+    font-size: 12.5px;
     line-height: 1.38;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .copyCommandStrip {
