@@ -2064,7 +2064,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       data-model-ready={twinModelReady ? "true" : "false"}
     >
       <div className={styles.twinStageHeader}>
-        <span>Rotating 3D PlateHE Twin</span>
+        <span>3D-модель ПТО</span>
         <strong>{layer.title}</strong>
         <small>{layer.gate}</small>
       </div>
@@ -2625,19 +2625,33 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.value}</p>
                 <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
                   <article>
-                    <span>готовность слоя</span>
+                    <span>готовность к передаче</span>
                     <strong>{item.readiness}</strong>
                     <small>{item.gate}</small>
                   </article>
                   <article>
-                    <span>следующий запрос</span>
+                    <span>что запросить сейчас</span>
                     <strong>{item.evidence}</strong>
                   </article>
                   <article>
-                    <span>передача</span>
+                    <span>кому передать результат</span>
                     <strong>{item.deliverable}</strong>
                     <small>{item.owner}</small>
                   </article>
+                </div>
+                <div className={styles.twinLayerDecisionStrip} aria-label={`${item.title} operating meaning`}>
+                  <span>
+                    <strong>Что видно</strong>
+                    <small>{item.data.slice(0, 2).join(" / ")}</small>
+                  </span>
+                  <span>
+                    <strong>Что закрывает</strong>
+                    <small>{item.risk}</small>
+                  </span>
+                  <span>
+                    <strong>Следующий артефакт</strong>
+                    <small>{item.deliverable}</small>
+                  </span>
                 </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
