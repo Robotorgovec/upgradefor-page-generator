@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   alarmEvents,
@@ -288,6 +288,7 @@ function twinSelectionForSection(sectionId: DispatchSection, currentTwinId: Equi
 }
 
 export default function DispatchDashboard() {
+  const bottomNavRef = useRef<HTMLElement | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<DispatchSection>("overview");
   const [selectedId, setSelectedId] = useState("automation-cabinets");
   const [selectedTwinId, setSelectedTwinId] = useState<EquipmentTwinId>("ahu-pv1");
@@ -312,6 +313,29 @@ export default function DispatchDashboard() {
 
     return () => {
       document.body.classList.remove("is-dispatch-demo");
+    };
+  }, []);
+
+  useEffect(() => {
+    const bottomNav = bottomNavRef.current;
+    if (!bottomNav) return undefined;
+
+    const updateBottomNavReserve = () => {
+      const navHeight = Math.ceil(bottomNav.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--dispatch-bottom-nav-height", `${navHeight}px`);
+    };
+
+    updateBottomNavReserve();
+
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateBottomNavReserve) : null;
+    observer?.observe(bottomNav);
+    window.addEventListener("resize", updateBottomNavReserve);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", updateBottomNavReserve);
+      document.documentElement.style.removeProperty("--dispatch-bottom-nav-height");
     };
   }, []);
 
@@ -1448,7 +1472,7 @@ export default function DispatchDashboard() {
         </aside>
       </div>
 
-      <nav className="dispatchBottomNav" aria-label="Навигация диспетчерской">
+      <nav ref={bottomNavRef} className="dispatchBottomNav" aria-label="Навигация диспетчерской">
         <div className="bottomNavSections" aria-label="Разделы диспетчерской">
           {dispatchSections.map((section) => {
             const detail =
@@ -1590,7 +1614,7 @@ export default function DispatchDashboard() {
         .dispatchShell {
           min-height: 100vh;
           margin: 0;
-          padding: 14px 14px 148px;
+          padding: 14px 14px calc(var(--dispatch-bottom-nav-height, 132px) + 24px);
           color: #dbeafe;
           background:
             radial-gradient(circle at 48% 18%, rgba(14, 165, 233, 0.18), transparent 34%),
@@ -3551,7 +3575,7 @@ export default function DispatchDashboard() {
         @media (max-width: 980px) {
           .dispatchShell {
             margin: -16px;
-            padding: 16px 16px 224px;
+            padding: 16px 16px calc(var(--dispatch-bottom-nav-height, 188px) + 24px);
           }
 
           .dispatchGrid {
@@ -3587,7 +3611,7 @@ export default function DispatchDashboard() {
 
         @media (max-width: 760px) {
           .dispatchShell {
-            padding-bottom: 326px;
+            padding-bottom: calc(var(--dispatch-bottom-nav-height, 268px) + 22px);
           }
 
           .dispatchHeader {

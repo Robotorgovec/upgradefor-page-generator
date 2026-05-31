@@ -92,6 +92,11 @@ const inspectScript = `
   const pageCanScroll = document.documentElement.scrollHeight > document.documentElement.clientHeight;
   const bottomNav = document.querySelector(".dispatchBottomNav");
   const bottomNavSections = document.querySelector(".bottomNavSections");
+  const dispatchShell = document.querySelector(".dispatchShell");
+  const bottomNavHeight = bottomNav ? Math.ceil(bottomNav.getBoundingClientRect().height) : 0;
+  const dispatchShellPaddingBottom = dispatchShell
+    ? Number.parseFloat(window.getComputedStyle(dispatchShell).paddingBottom || "0")
+    : 0;
 
   return JSON.stringify({
     pageCanScroll,
@@ -100,6 +105,9 @@ const inspectScript = `
     bottomNavOverflowY: bottomNav ? window.getComputedStyle(bottomNav).overflowY : null,
     bottomNavSectionsOverflowY: bottomNavSections ? window.getComputedStyle(bottomNavSections).overflowY : null,
     bottomNavSectionsScrollGap: bottomNavSections ? bottomNavSections.scrollHeight - bottomNavSections.clientHeight : null,
+    bottomNavHeight,
+    dispatchShellPaddingBottom,
+    bottomNavReserveOk: bottomNavHeight > 0 && dispatchShellPaddingBottom >= bottomNavHeight + 12,
   });
 })()
 `;
@@ -126,6 +134,10 @@ try {
     assert(
       result.bottomNavSectionsOverflowY !== "auto" && result.bottomNavSectionsOverflowY !== "scroll",
       `${viewport.label}: bottom nav sections still use overflow-y ${result.bottomNavSectionsOverflowY}`,
+    );
+    assert(
+      result.bottomNavReserveOk,
+      `${viewport.label}: page bottom reserve ${result.dispatchShellPaddingBottom}px does not cover fixed nav ${result.bottomNavHeight}px`,
     );
   }
 } finally {
