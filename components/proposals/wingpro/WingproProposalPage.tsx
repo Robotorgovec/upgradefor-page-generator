@@ -23,85 +23,85 @@ type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "
 const twinLayers = [
   {
     id: "equipment",
-    title: "Equipment",
-    data: ["модель BB150B-307H", "количество 2 units", "material confirmation", "pressure class", "connection logic", "dimensions/weight pending/confirmed"],
+    title: "Оборудование",
+    data: ["модель BB150B-307H", "количество 2 шт.", "подтверждение материала", "pressure class", "логика подключения", "габариты/вес pending/confirmed"],
     value: "товарная позиция получает единый технический профиль вместо фрагментов переписки",
     risk: "снижение вероятности ошибки по модели, материалу, давлению или комплектности",
-    deliverable: "equipment data card",
-    owner: "supplier / WinGPro technical owner",
-    gate: "Gate 1 — Evidence readiness",
+    deliverable: "карточка оборудования",
+    owner: "поставщик / тех. владелец WinGPro",
+    gate: "Gate 1 — готовность evidence",
     readiness: "62%",
-    evidence: "model, quantity, material and pressure confirmation",
+    evidence: "подтверждение модели, количества, материала и давления",
   },
   {
     id: "specification",
-    title: "Specification",
+    title: "Спецификация",
     data: ["исходные параметры", "технические вопросы", "подтверждение материала", "подтверждение давления", "чертеж", "параметры для профильной проверки"],
     value: "профильные специалисты WinGPro получают структурированные вводные для проверки",
     risk: "технические решения не принимаются на базе устных сообщений",
-    deliverable: "technical evidence checklist",
-    owner: "responsible technical specialist",
-    gate: "Gate 2 — Before production confirmation",
+    deliverable: "чек-лист technical evidence",
+    owner: "ответственный технический специалист",
+    gate: "Gate 2 — до подтверждения производства",
     readiness: "48%",
-    evidence: "drawing request, open technical questions, approval owner",
+    evidence: "чертеж, открытые технические вопросы, владелец проверки",
   },
   {
     id: "documents",
-    title: "Documents",
+    title: "Документы",
     data: ["PI", "specification", "drawing", "packing list", "commercial invoice", "certificate of origin", "material certificates", "warranty certificate", "photo/video/nameplate"],
     value: "документы превращаются в Document Vault с owner, status и release gate",
     risk: "снижение риска позднего запроса критичных файлов перед release decision или отгрузкой",
-    deliverable: "Document Vault index",
-    owner: "supplier / UPGRADE data coordinator",
+    deliverable: "индекс Document Vault",
+    owner: "поставщик / координатор данных UPGRADE",
     gate: "Gate 1-3",
     readiness: "41%",
-    evidence: "PI, specification, drawing, certificates, shipment photos",
+    evidence: "PI, спецификация, чертеж, сертификаты, shipment photos",
   },
   {
     id: "delivery",
-    title: "Delivery",
+    title: "Поставка",
     data: ["factory contact", "EXW/FCA/DAP logic", "pickup data", "weight/dimensions", "broker input", "logistics handoff"],
     value: "маршрут поставки читается как data-flow, а не как набор разрозненных сообщений",
     risk: "логист и брокер получают пакет до операционных точек передачи",
     deliverable: "delivery data-flow pack",
-    owner: "logistics / broker / supplier",
-    gate: "Gate 4 — Before customs/logistics handoff",
+    owner: "логист / брокер / поставщик",
+    gate: "Gate 4 — до customs/logistics handoff",
     readiness: "38%",
-    evidence: "pickup data, packing, weight/dimensions, broker input list",
+    evidence: "pickup data, packing, вес/габариты, broker input list",
   },
   {
     id: "installation",
-    title: "Installation Inputs",
-    data: ["connection points", "service access", "dimensions", "mounting questions", "owner for technical approval", "coordination pack"],
+    title: "Монтажные вводные",
+    data: ["точки подключения", "service access", "габариты", "mounting questions", "owner for technical approval", "coordination pack"],
     value: "монтажная сторона получает вводные заранее и видит открытые вопросы",
     risk: "снижение вероятности поздних уточнений на площадке",
     deliverable: "mounting coordination pack",
-    owner: "mounting side / technical owner",
-    gate: "Gate 5 — Before mounting handoff",
+    owner: "монтажная сторона / technical owner",
+    gate: "Gate 5 — до mounting handoff",
     readiness: "35%",
-    evidence: "connection points, access/service space, mounting questions",
+    evidence: "точки подключения, сервисные зоны, монтажные вопросы",
   },
   {
     id: "sales",
-    title: "Digital Sales Asset",
+    title: "Товарная карточка",
     data: ["supplier profile", "product card", "document links", "repeat purchase notes", "future sales brief", "Kazakhstan resale base"],
     value: "поставка не исчезает после сделки, а становится reusable digital product asset",
     risk: "следующая закупка или продажа не начинается с нуля",
-    deliverable: "digital supplier + product line cards",
+    deliverable: "цифровые карточки поставщика и товара",
     owner: "WinGPro / UPGRADE",
-    gate: "Gate 7 — Reuse in sales pipeline",
+    gate: "Gate 7 — reuse в sales pipeline",
     readiness: "44%",
-    evidence: "supplier card, product card, document links, sales brief",
+    evidence: "карточка поставщика, product card, ссылки на документы",
   },
 ] as const;
 
 const twinHotspots = [
-  { label: "material", layer: "equipment", note: "material confirmation" },
-  { label: "pressure", layer: "specification", note: "pressure class owner" },
-  { label: "PI / drawing", layer: "documents", note: "document evidence" },
-  { label: "packing", layer: "delivery", note: "weight and dimensions" },
-  { label: "connections", layer: "installation", note: "mounting input" },
-  { label: "sales card", layer: "sales", note: "future product asset" },
+  { label: "материал", layer: "equipment", note: "подтверждение материала" },
+  { label: "давление", layer: "specification", note: "owner pressure class" },
+  { label: "PI / чертеж", layer: "documents", note: "document evidence" },
+  { label: "упаковка", layer: "delivery", note: "вес и габариты" },
+  { label: "подключения", layer: "installation", note: "монтажные вводные" },
+  { label: "карточка", layer: "sales", note: "future product asset" },
 ] as const satisfies ReadonlyArray<{
   label: string;
   layer: TwinLayerId;
@@ -2073,7 +2073,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           className={styles.twinCanvas}
           camera={{ position: [0, 0.08, 7.1], fov: 38 }}
           dpr={[1, 1.7]}
-          gl={{ antialias: true, alpha: true }}
+          gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
           onCreated={() => setTwinModelReady(true)}
           shadows
         >
@@ -2105,21 +2105,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </span>
           ))}
         </div>
-        <div className={styles.twinModelLegend}>
-          <span>42 plates</span>
-          <span>4 flanged ports</span>
-          <span>tie rods</span>
-          <span>mounting inputs</span>
-        </div>
       </div>
-      <svg className={styles.twinBlueprint} viewBox="0 0 720 420" role="img" aria-label="Conceptual digital twin preview">
-        <path d="M90 210 C180 80 330 70 430 170 S570 330 650 210" />
-        <path d="M80 290 C210 360 410 360 620 260" />
-        <circle cx="138" cy="164" r="6" />
-        <circle cx="274" cy="105" r="6" />
-        <circle cx="462" cy="174" r="6" />
-        <circle cx="586" cy="276" r="6" />
-      </svg>
       <div className={styles.orbitGrid} aria-hidden="true">
         {twinLayers.map((item, index) => (
           <span
@@ -2146,11 +2132,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </button>
         ))}
       </div>
-      <div className={styles.twinStageFooter} aria-label="Digital Twin selected evidence">
-        <span className={styles.twinFooterLabel}><strong>Digital Twin selected evidence</strong><small>current layer</small></span>
-        <span className={styles.twinReadinessMetric}><strong>{layer.readiness}</strong><small>readiness</small></span>
-        <span><strong>{layer.owner}</strong><small>approval owner</small></span>
-        <span><strong>{layer.deliverable}</strong><small>WinGPro receives</small></span>
+      <div className={styles.twinStageFooter} aria-label="Выбранные evidence Digital Twin">
+        <span className={styles.twinFooterLabel}><strong>Выбранный слой</strong><small>что сейчас видно</small></span>
+        <span className={styles.twinReadinessMetric}><strong>{layer.readiness}</strong><small>готовность</small></span>
+        <span><strong>{layer.owner}</strong><small>кто подтверждает</small></span>
+        <span><strong>{layer.deliverable}</strong><small>что получает WinGPro</small></span>
       </div>
     </div>
   );
@@ -2620,7 +2606,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.twinShell} data-rotating={isRotating && !presentationMode}>
           {twinStage}
           <aside className={styles.twinPanel}>
-            <div className={styles.segmented} role="tablist" aria-label="Digital Twin layers">
+            <div className={styles.segmented} role="tablist" aria-label="Слои Digital Twin">
               {twinLayers.map((item) => (
                 <button key={item.id} type="button" role="tab" aria-selected={activeLayer === item.id} aria-controls={`layer-${item.id}`} onClick={() => setActiveLayer(item.id)}>
                   {item.title}
@@ -2631,7 +2617,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <section key={item.id} id={`layer-${item.id}`} role="tabpanel" hidden={activeLayer !== item.id}>
                 <div className={styles.layerHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Selected digital layer</p>
+                    <p className={styles.eyebrow}>Выбранный слой Digital Twin</p>
                     <h3>{item.title}</h3>
                   </div>
                   <StatusPill value={item.readiness} />
@@ -2639,23 +2625,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <p>{item.value}</p>
                 <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
                   <article>
-                    <span>что здесь видно</span>
-                    <strong>{item.readiness} readiness · {item.gate}</strong>
+                    <span>готовность слоя</span>
+                    <strong>{item.readiness}</strong>
+                    <small>{item.gate}</small>
                   </article>
                   <article>
-                    <span>что запросить</span>
+                    <span>следующий запрос</span>
                     <strong>{item.evidence}</strong>
                   </article>
                   <article>
-                    <span>кому передать</span>
-                    <strong>{item.deliverable} → {item.owner}</strong>
+                    <span>передача</span>
+                    <strong>{item.deliverable}</strong>
+                    <small>{item.owner}</small>
                   </article>
                 </div>
                 <details className={styles.twinLayerDetailsDisclosure}>
                   <summary>
                     <span>чек-лист слоя</span>
-                    <strong>{item.title}: какие данные есть, что запросить и кто подтверждает</strong>
-                    <small>Открыть полный список · risk / deliverable / owner</small>
+                    <strong>{item.title}: данные, запрос и подтверждающий owner</strong>
+                    <small>Открыть полный список: risk, deliverable, owner</small>
                   </summary>
                   <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
                     <article>
@@ -2678,16 +2666,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   </div>
                   <dl>
                     <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
-                    <div><dt>evidence to request</dt><dd>{item.evidence}</dd></div>
-                    <div><dt>risk закрывается</dt><dd>{item.risk}</dd></div>
-                    <div><dt>deliverable</dt><dd>{item.deliverable}</dd></div>
+                    <div><dt>что запросить</dt><dd>{item.evidence}</dd></div>
+                    <div><dt>какой риск закрывается</dt><dd>{item.risk}</dd></div>
+                    <div><dt>результат передачи</dt><dd>{item.deliverable}</dd></div>
                   </dl>
                 </details>
               </section>
             ))}
             <div className={styles.twinInterfaceMap} aria-label="Hydraulic interface handoff map">
               <div>
-                <p className={styles.eyebrow}>Hydraulic interface</p>
+                <p className={styles.eyebrow}>Интерфейс подключения</p>
                 <h3>Патрубки и режимы: что подтверждать</h3>
                 <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
               </div>
@@ -2698,8 +2686,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </div>
               <details className={styles.twinInterfaceDisclosure}>
                 <summary>
-                  <span>Открыть handoff map</span>
-                  <strong>inputs, action и owner по патрубкам</strong>
+                  <span>Открыть карту передачи</span>
+                  <strong>вводные, действие и owner по патрубкам</strong>
                 </summary>
                 <dl>
                   {twinInterfaceRows.map((item) => (
@@ -2716,16 +2704,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </details>
             </div>
             <div className={styles.twinControls}>
-              <button type="button" onClick={() => setPresentationMode(true)}>Open presentation mode</button>
+              <button type="button" onClick={() => setPresentationMode(true)}>Режим показа</button>
               <button
                 type="button"
                 aria-pressed={twinLabelDensity === "full"}
                 onClick={() => setTwinLabelDensity((value) => (value === "full" ? "focus" : "full"))}
               >
-                {twinLabelDensity === "full" ? "3D focus" : "Показать подписи"}
+                {twinLabelDensity === "full" ? "Фокус 3D" : "Показать подписи"}
               </button>
-              <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Pause" : "Rotate"}</button>
-              <button type="button" onClick={() => setActiveLayer("equipment")}>Reset</button>
+              <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Пауза" : "Вращать"}</button>
+              <button type="button" onClick={() => setActiveLayer("equipment")}>Сброс</button>
             </div>
             <p className={styles.legalNote}>Визуализация является conceptual digital twin preview и не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
           </aside>
