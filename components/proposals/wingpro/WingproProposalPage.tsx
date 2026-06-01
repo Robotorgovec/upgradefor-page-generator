@@ -8,7 +8,9 @@ import type { Group } from "three";
 import styles from "./WingproProposalPage.module.css";
 import {
   HEXNOVAS_RECOMMENDED_VARIANT_ID,
+  hexnovasArchiveGroups,
   hexnovasDocumentSignals,
+  hexnovasPackageRules,
   hexnovasProject,
   hexnovasRiskControls,
   hexnovasTimeline,
@@ -1768,6 +1770,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["Поставка + монтажная подготовка", "PlateHE zone", "исходные параметры и handoff"],
     ["Исходная база", "не утверждение UPGRADE", "передается профильным участникам"],
   ] as const;
+  const hexnovasArchiveFileCount = hexnovasArchiveGroups.reduce((sum, item) => sum + item.files, 0);
+  const hexnovasPublicEvidenceCount = sourceDocuments.length + hexnovasDocumentSignals.filter((item) => Boolean(item.href)).length;
+  const hexnovasPrivateArchiveCount = hexnovasArchiveGroups.reduce((sum, item) => sum + Math.max(item.files - item.publicEvidence, 0), 0);
+  const hexnovasPackageOverviewStats = [
+    ["archive files", String(hexnovasArchiveFileCount), "full package from Hexnovas / WinGPro"],
+    ["public evidence", String(hexnovasPublicEvidenceCount), "safe technical assets linked in page"],
+    ["private archive", String(hexnovasPrivateArchiveCount), "contracts, requisites and correspondence stay gated"],
+    ["decision rules", String(hexnovasPackageRules.length), "recommended / economy / risk / contract consistency"],
+  ] as const;
   const recommendedHexnovasVariant = hexnovasVariants.find((item) => item.id === HEXNOVAS_RECOMMENDED_VARIANT_ID) ?? hexnovasVariants[0];
   const activeHexnovasVariant = hexnovasVariants.find((item) => item.id === activeHexnovasVariantId) ?? recommendedHexnovasVariant;
   const activeHexnovasDelta = activeHexnovasVariant.totalPriceUsd - recommendedHexnovasVariant.totalPriceUsd;
@@ -2719,6 +2730,53 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <small>{note}</small>
             </article>
           ))}
+        </div>
+
+        <div className={styles.hexnovasPackageIndex} aria-label="Hexnovas procurement package index">
+          <div className={styles.hexnovasPackageIndexIntro}>
+            <span>Procurement package index</span>
+            <strong>Архив Hexnovas превращен в управляемый decision package</strong>
+            <p>
+              На странице показываются технические evidence-активы, которые помогают выбрать модель, материал и release route.
+              Договоры, реквизиты, условия сервисного контура и переписка остаются в private contour до отдельного решения WinGPro.
+            </p>
+          </div>
+          <div className={styles.hexnovasPackageIndexStats}>
+            {hexnovasPackageOverviewStats.map(([label, value, note]) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{note}</small>
+              </article>
+            ))}
+          </div>
+          <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
+            {hexnovasPackageRules.map((item) => (
+              <article key={item.title}>
+                <span>{item.title}</span>
+                <strong>{item.signal}</strong>
+                <p>{item.action}</p>
+                <small>{item.owner}</small>
+              </article>
+            ))}
+          </div>
+          <details className={styles.hexnovasArchiveBreakdown}>
+            <summary>
+              <span>archive breakdown</span>
+              <strong>Показать карту групп архива</strong>
+              <small>{hexnovasArchiveGroups.length} groups / {hexnovasArchiveFileCount} files</small>
+            </summary>
+            <div>
+              {hexnovasArchiveGroups.map((item) => (
+                <article key={item.title}>
+                  <span>{item.title}</span>
+                  <strong>{item.role}</strong>
+                  <p>{item.action}</p>
+                  <small>{item.files} files / {item.publicEvidence} public evidence item(s) / {item.boundary}</small>
+                </article>
+              ))}
+            </div>
+          </details>
         </div>
 
         <div className={styles.hexnovasVariantGrid} aria-label="Heat exchanger supplier variants">

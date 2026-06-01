@@ -70,6 +70,22 @@ export type HexnovasVaultTraceRow = {
   approvalBoundary: string;
 };
 
+export type HexnovasArchiveGroup = {
+  title: string;
+  files: number;
+  publicEvidence: number;
+  role: string;
+  action: string;
+  boundary: string;
+};
+
+export type HexnovasPackageRule = {
+  title: string;
+  signal: string;
+  action: string;
+  owner: string;
+};
+
 export const HEXNOVAS_RECOMMENDED_VARIANT_ID: HexnovasVariantId = "TH150B_381H_PN16_316L_low_dp";
 
 export const hexnovasProject = {
@@ -85,6 +101,92 @@ export const hexnovasProject = {
   currentDecision:
     "WinGPro выбирает между технически рекомендуемым TH150B / 316L и эконом-вариантом TH150B / 304; BH150B дешевле, но требует отдельного гидравлического подтверждения.",
 } as const;
+
+export const hexnovasArchiveGroups: HexnovasArchiveGroup[] = [
+  {
+    title: "00 README / manifest",
+    files: 3,
+    publicEvidence: 0,
+    role: "package index, SHA256 и карта файлов",
+    action: "использовать как control list для data-room",
+    boundary: "служебная карта архива, не customer deliverable сама по себе",
+  },
+  {
+    title: "01 Executive reports",
+    files: 6,
+    publicEvidence: 1,
+    role: "короткий и детальный отчет по выбору варианта",
+    action: "показывать executive summary, полный отчет держать как source evidence",
+    boundary: "отчет структурирует данные, но не утверждает проектные решения",
+  },
+  {
+    title: "02 Project source files",
+    files: 3,
+    publicEvidence: 3,
+    role: "ХС-проект + ARES reference для параметров",
+    action: "связать heat duty, DN150 PN16, 316L и pressure-drop target",
+    boundary: "исходная база заказчика, не проектирование UPGRADE",
+  },
+  {
+    title: "03 Supplier technical pack",
+    files: 10,
+    publicEvidence: 8,
+    role: "selection sheets, drawing, PI, CE/PED, ISO, registration",
+    action: "разнести по Vault: ready, update required, approval required, archive risk",
+    boundary: "UPGRADE фиксирует evidence; проверка остается у профильных участников",
+  },
+  {
+    title: "04 Private contract contour",
+    files: 9,
+    publicEvidence: 0,
+    role: "supplier contract drafts, UPGRADE service proposal files, buyer requisites",
+    action: "держать в private contract contour до отдельного решения",
+    boundary: "не смешивать с техническим cockpit и public preview",
+  },
+  {
+    title: "05 Correspondence screenshots",
+    files: 11,
+    publicEvidence: 0,
+    role: "история переговоров и подтверждений поставщика",
+    action: "использовать как trace evidence без публикации всех скринов",
+    boundary: "переписка показывается только как управленческие факты и milestones",
+  },
+  {
+    title: "06 Codex implementation pack",
+    files: 4,
+    publicEvidence: 0,
+    role: "структурированные данные и implementation brief",
+    action: "использовать для page-scoped data model",
+    boundary: "служебные файлы не выводить как customer content",
+  },
+];
+
+export const hexnovasPackageRules: HexnovasPackageRule[] = [
+  {
+    title: "Recommended route",
+    signal: "TH150B-381H / 316L keeps low pressure drop and matches ARES material reference.",
+    action: "вывести как baseline для выбора и запросить updated PI / GA drawing / contract",
+    owner: "WinGPro technical owner + supplier",
+  },
+  {
+    title: "Economy route",
+    signal: "TH150B-381H / 304 экономит 2 752 USD, но меняет reference material.",
+    action: "не двигать в release без письменного согласования AISI 304",
+    owner: "WinGPro / project specialist",
+  },
+  {
+    title: "Risk route",
+    signal: "BH150B-307H / 316L дешевле, но 63.3 / 99.4 kPa выше целевого коридора.",
+    action: "хранить как risk evidence, не как рекомендацию без hydraulic approval",
+    owner: "project designer / WinGPro technical owner",
+  },
+  {
+    title: "Contract consistency",
+    signal: "Текущий PI/договор по BH150B не должен остаться финальным при выборе TH150B.",
+    action: "обновить модель, материал, цену и приложения до next gate",
+    owner: "supplier + WinGPro",
+  },
+];
 
 export const hexnovasVariants: HexnovasVariant[] = [
   {
@@ -224,6 +326,19 @@ export const hexnovasRiskControls: HexnovasRiskControl[] = [
 
 export const hexnovasDocumentSignals: HexnovasDocumentSignal[] = [
   {
+    title: "ARES A6L reference selection",
+    source: "03_Reference_ARES_A6L_PN16_1194kW.pdf",
+    status: "ready",
+    note: "Исходный reference selection: 1194.38 kW, AISI316L, DN150 PN16 и ориентир pressure drop около 0.2-0.3 bar на сторону.",
+    href: "/assets/proposals/wingpro/hexnovas-evidence/wingpro-reference-ares-a6l-pn16-1194kw.pdf",
+    downloadName: "WinGPro_ARES_A6L_PN16_1194kW_reference_selection.pdf",
+    fileType: "PDF",
+    sizeLabel: "452 KB",
+    checksumSha256: "22c63ac00cce0ece41da0b38a5ac920d938280990a5c631e861ec3ea912329f2",
+    vaultUse: "project reference and pressure-drop target",
+    previewable: true,
+  },
+  {
     title: "TH150B-381H selection / 316L",
     source: "01_TH150B-381H_low_pressure_drop_316L_selection_2026-05-29.rtf",
     status: "ready",
@@ -345,11 +460,11 @@ export const hexnovasDocumentSignals: HexnovasDocumentSignal[] = [
 export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   {
     source: "TH150B-381H / 316L selection",
-    evidenceSignalTitles: ["TH150B-381H selection / 316L"],
+    evidenceSignalTitles: ["ARES A6L reference selection", "TH150B-381H selection / 316L"],
     dataRoomRole: "recommended selection evidence",
     releaseGate: "Gate 1 — Evidence readiness",
     owner: "WinGPro technical owner / supplier",
-    action: "Принять как базовую техническую линию и запросить обновленные PI, GA drawing и договор под TH150B-381H / 316L.",
+    action: "Сверить TH150B с ARES reference и запросить обновленные PI, GA drawing и договор под TH150B-381H / 316L.",
     approvalBoundary: "WinGPro и профильный технический специалист подтверждают финальный выбор.",
   },
   {

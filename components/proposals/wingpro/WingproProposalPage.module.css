@@ -7729,6 +7729,9 @@
 .hexnovasAlert p,
 .hexnovasCostBox p,
 .hexnovasCostBox dl,
+.hexnovasPackageIndexIntro p,
+.hexnovasPackageRules p,
+.hexnovasArchiveBreakdown p,
 .hexnovasTimeline p,
 .hexnovasRiskControls p,
 .hexnovasDocumentSignals p,
@@ -7764,6 +7767,8 @@
 .hexnovasVariantCard,
 .hexnovasSelectedMain,
 .hexnovasCostBox,
+.hexnovasPackageIndex,
+.hexnovasArchiveBreakdown,
 .hexnovasComparison,
 .hexnovasComparisonDisclosure,
 .hexnovasTimeline,
@@ -7789,6 +7794,11 @@
 .hexnovasVariantCard > span,
 .hexnovasSelectedMain span,
 .hexnovasCostBox span,
+.hexnovasPackageIndexIntro span,
+.hexnovasPackageIndexStats span,
+.hexnovasPackageRules span,
+.hexnovasArchiveBreakdown summary span,
+.hexnovasArchiveBreakdown article span,
 .hexnovasComparisonDisclosure summary span,
 .hexnovasComparisonHead span,
 .hexnovasTimeline summary span,
@@ -7841,6 +7851,115 @@
   color: var(--proposal-text-soft);
   font-size: 11.5px;
   line-height: 1.3;
+}
+
+.hexnovasPackageIndex {
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 34%, #ffffff)),
+    #ffffff;
+}
+
+.hexnovasPackageIndexIntro {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.22fr) minmax(260px, 0.34fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.hexnovasPackageIndexIntro strong {
+  color: var(--proposal-text);
+  font-size: 18px;
+  line-height: 1.14;
+}
+
+.hexnovasPackageIndexIntro p,
+.hexnovasPackageRules p,
+.hexnovasPackageRules small,
+.hexnovasArchiveBreakdown p,
+.hexnovasArchiveBreakdown small,
+.hexnovasPackageIndexStats small {
+  color: var(--proposal-text-soft);
+  font-size: 12.5px;
+  line-height: 1.38;
+}
+
+.hexnovasPackageIndexStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasPackageIndexStats article,
+.hexnovasPackageRules article,
+.hexnovasArchiveBreakdown article {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.hexnovasPackageIndexStats strong {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.hexnovasPackageRules {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasPackageRules strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.22;
+}
+
+.hexnovasArchiveBreakdown {
+  padding: 10px;
+  box-shadow: none;
+}
+
+.hexnovasArchiveBreakdown summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.22fr) minmax(0, 1fr) minmax(140px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasArchiveBreakdown summary strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.hexnovasArchiveBreakdown summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.hexnovasArchiveBreakdown > div {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasArchiveBreakdown article strong {
+  color: var(--proposal-text);
+  font-size: 13px;
+  line-height: 1.22;
 }
 
 .hexnovasVariantGrid {
@@ -14149,11 +14268,16 @@
   .hexnovasHeader,
   .hexnovasSelectedPanel,
   .hexnovasEvidenceBridge,
-  .hexnovasDecisionGrid {
+  .hexnovasDecisionGrid,
+  .hexnovasPackageIndexIntro,
+  .hexnovasArchiveBreakdown summary {
     grid-template-columns: 1fr;
   }
 
-  .hexnovasSummaryRail {
+  .hexnovasSummaryRail,
+  .hexnovasPackageIndexStats,
+  .hexnovasPackageRules,
+  .hexnovasArchiveBreakdown > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -14232,6 +14356,11 @@
   }
 
   .hexnovasSummaryRail article,
+  .hexnovasPackageIndex,
+  .hexnovasPackageIndexStats article,
+  .hexnovasPackageRules article,
+  .hexnovasArchiveBreakdown,
+  .hexnovasArchiveBreakdown article,
   .hexnovasVariantCard,
   .hexnovasSelectedMain,
   .hexnovasEvidenceBridge,
@@ -14251,6 +14380,7 @@
   .hexnovasTimeline summary,
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
+  .hexnovasArchiveBreakdown summary,
   .hexnovasDocumentSignals summary {
     grid-template-columns: 1fr;
   }
@@ -14258,8 +14388,21 @@
   .hexnovasTimeline summary small,
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
+  .hexnovasArchiveBreakdown summary small,
   .hexnovasDocumentSignals summary small {
     display: none;
+  }
+
+  .hexnovasPackageIndexIntro p,
+  .hexnovasPackageRules p,
+  .hexnovasPackageRules small {
+    display: none;
+  }
+
+  .hexnovasPackageIndexStats,
+  .hexnovasPackageRules,
+  .hexnovasArchiveBreakdown > div {
+    grid-template-columns: 1fr;
   }
 
   .hexnovasVariantCard small,
