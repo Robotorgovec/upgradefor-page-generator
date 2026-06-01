@@ -26,7 +26,7 @@ type OfferDecisionMode = "evidence" | "terms" | "speed";
 type ContractScenarioId = "balanced" | "evidence-first" | "speed-sensitive";
 type DeliveryPhaseId = "release" | "production" | "factory" | "preshipment" | "logistics" | "broker" | "arrival" | "mounting";
 type VaultMode = "vault" | "timeline" | "owner" | "missing";
-type RiskImpact = "quality" | "time" | "financial" | "dependency";
+type RiskImpact = "quality" | "time" | "decision" | "dependency";
 type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next" | "addons";
 type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover" | "addons";
 
@@ -1055,13 +1055,13 @@ const risks = [
   { id: "identity", title: "supplier identity unclear", severity: "medium", impact: "dependency", x: 18, y: 34, evidence: "supplier profile, role clarification", owner: "WinGPro / supplier", escalation: "source request", vaultEvidence: "supplier profile", releaseGate: "Gate 0 — Deal setup", routeHandoff: "Factory China", response: "подготовить supplier identity request и зафиксировать open owner до release movement", decision: "WinGPro confirms whether the trading channel is acceptable", boundary: "UPGRADE фиксирует статус ответа поставщика, но не отвечает за его действия" },
   { id: "material", title: "material mismatch", severity: "high", impact: "quality", x: 35, y: 18, evidence: "material confirmation, technical sheet", owner: "technical owner", escalation: "evidence before release", vaultEvidence: "material / specification confirmation", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "сформировать evidence request для supplier и вынести спорный материал в decision log", decision: "technical owner checks material evidence before release readiness", boundary: "UPGRADE не утверждает технические параметры" },
   { id: "pressure", title: "pressure class mismatch", severity: "high", impact: "quality", x: 50, y: 24, evidence: "pressure class confirmation", owner: "technical owner", escalation: "Gate 1 blocker", vaultEvidence: "pressure class confirmation", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "пометить Gate 1 blocker и запросить pressure evidence до release decision", decision: "responsible technical specialist confirms pressure class", boundary: "UPGRADE структурирует запрос" },
-  { id: "pi", title: "PI weakness", severity: "medium", impact: "financial", x: 64, y: 36, evidence: "PI, contract delta-list", owner: "WinGPro", escalation: "release readiness", vaultEvidence: "Proforma Invoice", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "собрать PI delta-list: реквизиты, сроки, Incoterms и evidence gaps", decision: "WinGPro approves terms after reviewing delta-list", boundary: "UPGRADE не принимает финансовое решение" },
-  { id: "payment", title: "release before evidence", severity: "high", impact: "financial", x: 76, y: 22, evidence: "release-readiness checklist", owner: "WinGPro", escalation: "release gate board", vaultEvidence: "bank details confirmation + release-readiness checklist", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "показать stop/go list по evidence before release и unresolved blockers", decision: "WinGPro decides release scenario and risk acceptance", boundary: "UPGRADE не принимает финансовое решение за WinGPro" },
+  { id: "pi", title: "PI weakness", severity: "medium", impact: "decision", x: 64, y: 36, evidence: "PI, contract delta-list", owner: "WinGPro", escalation: "release readiness", vaultEvidence: "Proforma Invoice", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "собрать PI delta-list: реквизиты, сроки, Incoterms и evidence gaps", decision: "WinGPro approves PI terms after reviewing delta-list", boundary: "UPGRADE фиксирует delta-list, но не утверждает условия" },
+  { id: "release", title: "release before evidence", severity: "high", impact: "decision", x: 76, y: 22, evidence: "release-readiness checklist", owner: "WinGPro", escalation: "release gate board", vaultEvidence: "bank details confirmation + release-readiness checklist", releaseGate: "Gate 1 — Evidence readiness", routeHandoff: "Release / Contract decision", response: "показать stop/go list по evidence before release и unresolved blockers", decision: "WinGPro decides release scenario and risk acceptance", boundary: "UPGRADE не принимает release decision за WinGPro" },
   { id: "packing", title: "missing packing data", severity: "medium", impact: "time", x: 25, y: 68, evidence: "packing list, weight/dimensions", owner: "supplier / logistics", escalation: "shipment readiness", vaultEvidence: "packing list", releaseGate: "Gate 3 — Before shipment", routeHandoff: "Pickup / Export docs", response: "запросить packing list, dimensions and pickup data before logistics handoff", decision: "supplier provides cargo data; logistics reviews route readiness", boundary: "UPGRADE не является перевозчиком" },
   { id: "customs", title: "customs documents gap", severity: "medium", impact: "dependency", x: 48, y: 76, evidence: "broker input list, export docs", owner: "broker", escalation: "customs handoff", vaultEvidence: "broker input list + export document checklist", releaseGate: "Gate 4 — Before customs/logistics handoff", routeHandoff: "Border / customs", response: "собрать customs input board и отделить broker decisions от supplier documents", decision: "broker/profile parties review customs inputs", boundary: "UPGRADE не является брокером" },
   { id: "mounting", title: "late mounting inputs", severity: "high", impact: "time", x: 72, y: 66, evidence: "connection points, service access", owner: "mounting side", escalation: "mounting handoff", vaultEvidence: "mounting questions checklist", releaseGate: "Gate 5 — Before mounting handoff", routeHandoff: "Project site / Mounting handoff", response: "передать mounting questions checklist и coordination draft до field execution", decision: "mounting side and technical specialist approve field inputs", boundary: "UPGRADE не выполняет монтаж" },
   { id: "media", title: "no nameplate/photo/video before shipment", severity: "medium", impact: "quality", x: 42, y: 54, evidence: "photo/video/nameplate", owner: "supplier", escalation: "shipment evidence request", vaultEvidence: "photo/video/nameplate", releaseGate: "Gate 3 — Before shipment", routeHandoff: "Pickup / Export docs", response: "запросить media evidence before shipment и связать его с shipment evidence pack", decision: "supplier provides evidence; WinGPro reviews before release movement", boundary: "UPGRADE не инспекционный орган" },
-  { id: "asset", title: "no reusable digital product card", severity: "controlled", impact: "financial", x: 84, y: 82, evidence: "supplier card, product card", owner: "UPGRADE / WinGPro", escalation: "reuse pipeline", vaultEvidence: "digital product card", releaseGate: "Gate 7 — Reuse in sales pipeline", routeHandoff: "Handover Room / Future Sales", response: "связать supplier profile, documents, notes and product card for repeat purchase / sales reuse", decision: "WinGPro chooses how to reuse product asset commercially", boundary: "будущие продажи зависят от коммерческой стратегии WinGPro" },
+  { id: "asset", title: "no reusable digital product card", severity: "controlled", impact: "decision", x: 84, y: 82, evidence: "supplier card, product card", owner: "UPGRADE / WinGPro", escalation: "reuse pipeline", vaultEvidence: "digital product card", releaseGate: "Gate 7 — Reuse in sales pipeline", routeHandoff: "Handover Room / Future Sales", response: "связать supplier profile, documents, notes and product card for repeat purchase / sales reuse", decision: "WinGPro chooses the future reuse strategy for this product asset", boundary: "будущая повторная продажа зависит от стратегии WinGPro" },
 ] as const;
 
 const gates = [
@@ -2731,8 +2731,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
           </article>
 
-          <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment economics">
-            <span>supplier-side economics</span>
+          <aside className={styles.hexnovasCostBox} aria-label="Supplier offer delta">
+            <span>supplier offer delta</span>
             <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
             <p>оборудование Hexnovas за {activeHexnovasVariant.quantity} шт.; логистический reserve: {formatUsd(hexnovasProject.logisticsReserveUsdForTwoUnits)}</p>
             <dl>
@@ -2740,7 +2740,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
               <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
             </dl>
-            <small>Здесь показаны только supplier/equipment numbers и логистический резерв; условия услуг UPGRADE не смешиваются с этой матрицей.</small>
+            <small>Здесь показаны только supplier package amounts и логистический reserve для сравнения сценариев; решение по закупочному маршруту остается за WinGPro.</small>
           </aside>
         </div>
 
@@ -4149,7 +4149,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             onChange={(event) => selectRiskImpact(event.currentTarget.value as RiskImpact | "all")}
             aria-label="Выбрать risk impact filter"
           >
-            {(["all", "quality", "time", "financial", "dependency"] as Array<RiskImpact | "all">).map((item) => (
+            {(["all", "quality", "time", "decision", "dependency"] as Array<RiskImpact | "all">).map((item) => (
               <option key={item} value={item}>{item}</option>
             ))}
           </select>
