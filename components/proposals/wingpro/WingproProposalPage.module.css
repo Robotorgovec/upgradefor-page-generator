@@ -6294,7 +6294,55 @@
 }
 
 .hexnovasVaultRouteLayer {
-  padding: 14px;
+  display: block;
+}
+
+.hexnovasVaultRouteSummary {
+  min-height: 72px;
+  padding: 14px 50px 14px 14px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.22fr) minmax(0, 0.48fr) minmax(210px, 0.3fr);
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  list-style: none;
+}
+
+.hexnovasVaultRouteSummary::-webkit-details-marker {
+  display: none;
+}
+
+.hexnovasVaultRouteSummary::after {
+  content: "+";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 20px;
+  font-weight: 950;
+  transform: translateY(-50%);
+}
+
+.hexnovasVaultRouteLayer[open] .hexnovasVaultRouteSummary::after {
+  content: "–";
+}
+
+.hexnovasVaultRouteSummary:focus-visible {
+  border-radius: 8px;
+  outline: 2px solid var(--proposal-brand);
+  outline-offset: 3px;
+}
+
+.hexnovasVaultRouteBody {
+  padding: 0 14px 14px;
   display: grid;
   gap: 10px;
 }
@@ -6306,6 +6354,7 @@
   align-items: center;
 }
 
+.hexnovasVaultRouteSummary span,
 .hexnovasVaultRouteIntro span,
 .hexnovasVaultRouteStats span,
 .hexnovasVaultRouteCardsDisclosure summary span,
@@ -6318,12 +6367,14 @@
   text-transform: uppercase;
 }
 
+.hexnovasVaultRouteSummary strong,
 .hexnovasVaultRouteIntro strong {
   color: var(--proposal-text);
   font-size: 18px;
   line-height: 1.16;
 }
 
+.hexnovasVaultRouteSummary small,
 .hexnovasVaultRouteIntro p,
 .hexnovasVaultRouteStats small,
 .hexnovasVaultRouteCards dd {
@@ -6609,6 +6660,7 @@
 }
 
 @media (max-width: 980px) {
+  .hexnovasVaultRouteSummary,
   .hexnovasVaultRouteIntro,
   .hexnovasVaultRouteStats,
   .hexnovasVaultRouteCards,
@@ -6633,8 +6685,25 @@
 }
 
 @media (max-width: 560px) {
-  .hexnovasVaultRouteLayer {
-    padding: 8px;
+  .hexnovasVaultRouteSummary {
+    min-height: 48px;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    gap: 6px;
+    padding: 8px 40px 8px 9px;
+  }
+
+  .hexnovasVaultRouteSummary::after {
+    right: 10px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .hexnovasVaultRouteSummary small {
+    display: none;
+  }
+
+  .hexnovasVaultRouteBody {
+    padding: 0 8px 8px;
   }
 
   .hexnovasVaultRouteCards {
@@ -11225,8 +11294,8 @@
     display: none;
   }
 
-  .hexnovasVaultRouteLayer {
-    padding: 12px;
+  .hexnovasVaultRouteBody {
+    padding: 0 12px 12px;
   }
 
   .hexnovasVaultRouteIntro {
@@ -15549,9 +15618,12 @@
   }
 
   .vaultOpenList,
-  .vaultCommandStrip,
-  .hexnovasVaultRouteLayer {
+  .vaultCommandStrip {
     padding: 7px;
+  }
+
+  .hexnovasVaultRouteBody {
+    padding: 0 7px 7px;
   }
 
   .vaultOpenList li {
@@ -15625,7 +15697,7 @@
     display: none;
   }
 
-  .hexnovasVaultRouteLayer {
+  .hexnovasVaultRouteBody {
     gap: 6px;
   }
 
@@ -15656,6 +15728,7 @@
     font-size: 18px;
   }
 
+  .hexnovasVaultRouteSummary,
   .hexnovasVaultTrace summary,
   .vaultFilterDisclosure summary,
   .vaultCardsDisclosure summary {
@@ -15665,6 +15738,7 @@
     padding: 8px 40px 8px 9px;
   }
 
+  .hexnovasVaultRouteSummary::after,
   .hexnovasVaultTrace summary::after,
   .vaultCardsDisclosure summary::after {
     right: 10px;
@@ -15678,6 +15752,7 @@
     grid-column: 2;
   }
 
+  .hexnovasVaultRouteSummary span,
   .hexnovasVaultTrace summary span,
   .vaultFilterDisclosure summary span,
   .vaultCardsDisclosure summary span {

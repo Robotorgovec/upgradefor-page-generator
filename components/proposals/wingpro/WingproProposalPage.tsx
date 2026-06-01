@@ -4436,42 +4436,49 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={resetVaultFilters}>Reset filters</button>
           </div>
         </div>
-        <div className={styles.hexnovasVaultRouteLayer} aria-label="Hexnovas source to vault route summary">
-          <div className={styles.hexnovasVaultRouteIntro}>
+        <details className={styles.hexnovasVaultRouteLayer}>
+          <summary className={styles.hexnovasVaultRouteSummary}>
             <span>Hexnovas route layer</span>
             <strong>Source → Data-room → Gate → Owner → Action</strong>
-            <p>Короткий слой показывает, как архив поставщика превращается в queue для Document Vault: что идет в release, что требует решения владельца и где остается boundary UPGRADE.</p>
-          </div>
-          <div className={styles.hexnovasVaultRouteStats}>
-            {hexnovasVaultTraceStats.map(([label, value, note]) => (
-              <article key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-                <small>{note}</small>
-              </article>
-            ))}
-          </div>
-          <details className={styles.hexnovasVaultRouteCardsDisclosure}>
-            <summary>
-              <span>route cards</span>
-              <strong>{hexnovasVaultRouteCards.length} owner / gate / action cards</strong>
-              <small>Открыть route-level detail по архиву Hexnovas</small>
-            </summary>
-            <div className={styles.hexnovasVaultRouteCards}>
-              {hexnovasVaultRouteCards.map(([label, title, gateName, action, owner]) => (
-                <article key={title}>
+            <small>{hexnovasVaultTraceRows.length} source signals / route-level detail по архиву Hexnovas</small>
+          </summary>
+          <div className={styles.hexnovasVaultRouteBody} aria-label="Hexnovas source to vault route summary">
+            <div className={styles.hexnovasVaultRouteIntro}>
+              <span>route logic</span>
+              <strong>Архив превращается в queue для Document Vault</strong>
+              <p>Короткий слой показывает, что идет в release, что требует решения владельца и где остается boundary UPGRADE.</p>
+            </div>
+            <div className={styles.hexnovasVaultRouteStats}>
+              {hexnovasVaultTraceStats.map(([label, value, note]) => (
+                <article key={label}>
                   <span>{label}</span>
-                  <strong>{title}</strong>
-                  <dl>
-                    <div><dt>Gate</dt><dd>{gateName}</dd></div>
-                    <div><dt>Action</dt><dd>{action}</dd></div>
-                    <div><dt>Owner</dt><dd>{owner}</dd></div>
-                  </dl>
+                  <strong>{value}</strong>
+                  <small>{note}</small>
                 </article>
               ))}
             </div>
-          </details>
-        </div>
+            <details className={styles.hexnovasVaultRouteCardsDisclosure}>
+              <summary>
+                <span>route cards</span>
+                <strong>{hexnovasVaultRouteCards.length} owner / gate / action cards</strong>
+                <small>Открыть route-level detail по архиву Hexnovas</small>
+              </summary>
+              <div className={styles.hexnovasVaultRouteCards}>
+                {hexnovasVaultRouteCards.map(([label, title, gateName, action, owner]) => (
+                  <article key={title}>
+                    <span>{label}</span>
+                    <strong>{title}</strong>
+                    <dl>
+                      <div><dt>Gate</dt><dd>{gateName}</dd></div>
+                      <div><dt>Action</dt><dd>{action}</dd></div>
+                      <div><dt>Owner</dt><dd>{owner}</dd></div>
+                    </dl>
+                  </article>
+                ))}
+              </div>
+            </details>
+          </div>
+        </details>
         <details className={styles.hexnovasVaultTrace}>
           <summary>
             <span>Hexnovas evidence bridge</span>
