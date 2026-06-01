@@ -83,15 +83,21 @@
   --proposal-text-muted: #64748b;
   --proposal-border: #d9e2ec;
   --proposal-surface: #ffffff;
-  width: min(1180px, calc(100vw - 320px));
-  min-height: 100vh;
-  margin: 0 auto;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  width: 100vw;
+  min-height: 100dvh;
+  margin: 0;
   padding: clamp(24px, 6vw, 76px) 0;
   color: var(--proposal-text);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(18, 175, 240, 0.13), transparent 30%),
+    linear-gradient(135deg, #f8fbff 0%, #ffffff 52%, #f3faff 100%);
   display: grid;
   place-items: center;
   overflow-x: clip;
-  overflow-y: visible;
+  overflow-y: auto;
 }
 
 .passwordGatePage *,
