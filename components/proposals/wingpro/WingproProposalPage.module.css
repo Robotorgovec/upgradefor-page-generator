@@ -14943,7 +14943,6 @@
 
   .hexnovasDocumentSignals > div,
   .hexnovasComparisonRow,
-  .hexnovasDecisionReceipt ol,
   .hexnovasEvidenceBridgeStats {
     grid-template-columns: 1fr;
   }
@@ -15025,6 +15024,41 @@
 
   .hexnovasDecisionActionPanel {
     gap: 7px;
+  }
+
+  .hexnovasDecisionReceipt {
+    gap: 6px;
+  }
+
+  .hexnovasDecisionReceipt p {
+    display: none;
+  }
+
+  .hexnovasDecisionReceipt ol {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .hexnovasDecisionReceipt li {
+    min-height: 54px;
+    padding: 6px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hexnovasDecisionReceipt li > span {
+    min-width: 22px;
+    min-height: 22px;
+  }
+
+  .hexnovasDecisionReceipt li strong {
+    font-size: 11px;
+    line-height: 1.12;
+  }
+
+  .hexnovasDecisionReceipt li small {
+    display: none;
   }
 
   .hexnovasDecisionQuickPick {
