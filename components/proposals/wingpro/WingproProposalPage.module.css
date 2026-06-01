@@ -8221,8 +8221,8 @@
 
 .hexnovasDecisionBoard {
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px;
   overflow: visible;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 44%, #ffffff), #ffffff 52%),
@@ -8233,7 +8233,7 @@
 .hexnovasHeader {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(230px, 0.28fr);
-  gap: 14px;
+  gap: 12px;
   align-items: start;
 }
 
@@ -8263,25 +8263,27 @@
 
 .hexnovasHeader h2 {
   color: var(--proposal-text);
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.08;
 }
 
 .hexnovasHeader p:not(.eyebrow) {
-  margin-top: 7px;
+  margin-top: 5px;
   color: var(--proposal-text-soft);
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.34;
 }
 
 .hexnovasScopeNote {
   max-width: 780px;
   border: 1px solid rgba(245, 158, 11, 0.22);
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   background: rgba(255, 251, 235, 0.72);
   color: var(--proposal-text);
+  font-size: 12.5px;
   font-weight: 850;
+  line-height: 1.32;
 }
 
 .hexnovasDecisionStatus,
@@ -8314,18 +8316,18 @@
 }
 
 .hexnovasDecisionStatus {
-  min-height: 118px;
-  padding: 12px;
+  min-height: 96px;
+  padding: 10px;
   display: grid;
-  gap: 6px;
+  gap: 5px;
   align-content: start;
 }
 
 .hexnovasDecisionActionPanel {
-  padding: 12px;
+  padding: 10px;
   display: grid;
-  grid-template-columns: minmax(210px, 0.26fr) minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: minmax(190px, 0.23fr) minmax(0, 1fr);
+  gap: 8px;
   align-items: stretch;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff), #ffffff 74%),
@@ -8335,7 +8337,7 @@
 .hexnovasDecisionActionIntro {
   min-width: 0;
   display: grid;
-  gap: 7px;
+  gap: 5px;
   align-content: start;
   grid-row: span 3;
 }
@@ -8354,14 +8356,14 @@
 
 .hexnovasDecisionActionIntro h3 {
   color: var(--proposal-text);
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.12;
 }
 
 .hexnovasDecisionActionIntro p {
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.42;
+  font-size: 12.5px;
+  line-height: 1.3;
 }
 
 .hexnovasDecisionQuickPick {
@@ -8369,18 +8371,18 @@
   display: grid;
   grid-column: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasDecisionQuickPick button {
-  min-height: 86px;
-  padding: 9px;
+  min-height: 76px;
+  padding: 8px;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   display: grid;
-  gap: 5px;
+  gap: 4px;
   align-content: start;
 }
 
@@ -8405,27 +8407,27 @@
 
 .hexnovasDecisionQuickPick strong {
   color: var(--proposal-text);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.12;
 }
 
 .hexnovasDecisionQuickPick small {
   color: var(--proposal-text-soft);
-  font-size: 11px;
-  line-height: 1.24;
+  font-size: 10.5px;
+  line-height: 1.18;
 }
 
 .hexnovasDecisionOwnerFields {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(180px, 0.34fr) minmax(0, 1fr);
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasDecisionOwnerDisclosure {
   min-width: 0;
   grid-column: 2;
-  padding: 8px 10px;
+  padding: 7px 9px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.95), color-mix(in srgb, var(--proposal-brand-soft) 18%, #ffffff)),
     #ffffff;
@@ -8436,7 +8438,7 @@
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(120px, 0.2fr) minmax(0, 1fr) minmax(140px, 0.28fr) 28px;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -8478,7 +8480,7 @@
 .hexnovasDecisionOwnerDisclosure summary strong {
   min-width: 0;
   color: var(--proposal-text);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.18;
 }
 
@@ -8538,7 +8540,7 @@
   display: grid;
   grid-column: 2;
   grid-template-columns: minmax(0, 1fr) minmax(180px, 0.44fr);
-  gap: 8px;
+  gap: 7px;
   align-content: start;
 }
 
@@ -8547,11 +8549,11 @@
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border-strong);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 9px 10px;
   color: var(--proposal-brand-contrast);
   background: var(--proposal-brand-soft);
   font: inherit;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 950;
   text-align: center;
   text-decoration: none;
@@ -8575,7 +8577,7 @@
 .hexnovasDecisionEmailPacket {
   min-width: 0;
   grid-column: 2;
-  padding: 9px 10px;
+  padding: 8px 9px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 22%, #ffffff)),
     #ffffff;
@@ -8586,7 +8588,7 @@
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(115px, 0.18fr) minmax(0, 1fr) minmax(180px, auto);
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
@@ -8605,17 +8607,17 @@
 }
 
 .hexnovasDecisionEmailPacket dl {
-  margin: 8px 0 0;
+  margin: 7px 0 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
+  gap: 5px;
 }
 
 .hexnovasDecisionEmailPacket div {
   min-width: 0;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 8px;
+  padding: 7px;
   background: rgba(255, 255, 255, 0.78);
 }
 
@@ -8699,11 +8701,11 @@
 
 .hexnovasDecisionReceiptDisclosure summary {
   min-height: 48px;
-  padding: 10px;
+  padding: 8px 10px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(130px, 0.18fr) minmax(0, 1fr) minmax(210px, auto);
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
@@ -8726,11 +8728,11 @@
 }
 
 .hexnovasDecisionReceipt {
-  margin: 0 10px 10px;
-  padding: 10px;
+  margin: 0 8px 8px;
+  padding: 8px;
   display: grid;
   grid-template-columns: minmax(210px, 0.32fr) minmax(0, 1fr);
-  gap: 10px;
+  gap: 8px;
   align-items: stretch;
   box-shadow: none;
 }
@@ -8752,7 +8754,7 @@
   margin: 0;
   color: var(--proposal-text-soft);
   font-size: 12.5px;
-  line-height: 1.38;
+  line-height: 1.3;
 }
 
 .hexnovasDecisionReceipt ol {
@@ -8761,15 +8763,15 @@
   list-style: none;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
 }
 
 .hexnovasDecisionReceipt li {
   min-width: 0;
-  min-height: 72px;
+  min-height: 62px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 9px;
+  padding: 7px;
   background: rgba(255, 255, 255, 0.78);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
