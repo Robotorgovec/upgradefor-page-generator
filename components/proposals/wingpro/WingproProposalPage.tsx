@@ -2819,23 +2819,37 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>{activeHexnovasVariant.name}</h3>
               <p>{activeHexnovasVariant.comment}</p>
             </div>
-            <div className={styles.hexnovasAlert}>
-              <strong>{activeHexnovasVariant.statusLabel}</strong>
+            <details className={styles.hexnovasSelectedDecisionDetails}>
+              <summary>
+                <span>release condition</span>
+                <strong>{activeHexnovasVariant.statusLabel}</strong>
+                <small>Открыть owner decision note</small>
+              </summary>
               <p>{activeHexnovasVariant.decisionAlert}</p>
-            </div>
+            </details>
             <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
           </article>
 
           <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
-            <span>supplier equipment package</span>
-            <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
-            <p>только оборудование Hexnovas за {activeHexnovasVariant.quantity} шт.; логистический reserve вынесен ниже как расчетный ориентир для маршрута</p>
-            <dl>
-              <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
-              <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
-              <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
-            </dl>
-            <small>Supplier-only reference: здесь показаны только supplier package amounts и логистический reserve для сравнения сценариев; решение по закупочному маршруту остается за WinGPro.</small>
+            <div className={styles.hexnovasCostSummary}>
+              <span>supplier equipment package</span>
+              <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
+              <small>{activeHexnovasVariant.quantity} шт. / supplier-only ориентир</small>
+            </div>
+            <details className={styles.hexnovasCostDetails}>
+              <summary>
+                <span>route math</span>
+                <strong>{activeHexnovasDelta === 0 ? "baseline" : `${formatUsd(activeHexnovasDelta)} delta`}</strong>
+                <small>Открыть reserve / material</small>
+              </summary>
+              <p>только оборудование Hexnovas; логистический reserve показан как расчетный ориентир для сравнения маршрутов.</p>
+              <dl>
+                <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
+                <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
+                <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
+              </dl>
+              <small>Supplier-only reference: решение по закупочному маршруту остается за WinGPro.</small>
+            </details>
           </aside>
         </div>
 

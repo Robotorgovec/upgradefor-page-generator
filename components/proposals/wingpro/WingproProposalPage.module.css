@@ -7795,6 +7795,8 @@
 .hexnovasVariantCard > span,
 .hexnovasSelectedMain span,
 .hexnovasCostBox span,
+.hexnovasSelectedDecisionDetails summary span,
+.hexnovasCostDetails summary span,
 .hexnovasPackageIndexIntro span,
 .hexnovasPackageIndexStats span,
 .hexnovasPackageRulesDisclosure summary span,
@@ -8149,20 +8151,51 @@
 .hexnovasSelectedMain p,
 .hexnovasAlert p,
 .hexnovasCostBox p,
-.hexnovasCostBox small {
+.hexnovasCostBox small,
+.hexnovasSelectedDecisionDetails p {
   color: var(--proposal-text-soft);
   font-size: 13px;
   line-height: 1.42;
 }
 
-.hexnovasAlert {
+.hexnovasAlert,
+.hexnovasSelectedDecisionDetails,
+.hexnovasCostDetails {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   padding: 10px;
   background: color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff);
+  overflow: visible;
 }
 
-.hexnovasAlert strong {
+.hexnovasSelectedDecisionDetails summary,
+.hexnovasCostDetails summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  align-items: center;
+}
+
+.hexnovasSelectedDecisionDetails summary small,
+.hexnovasCostDetails summary small {
+  color: var(--proposal-text-muted);
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasSelectedDecisionDetails p,
+.hexnovasCostDetails p,
+.hexnovasCostDetails dl,
+.hexnovasCostDetails small {
+  margin-top: 8px;
+}
+
+.hexnovasAlert strong,
+.hexnovasSelectedDecisionDetails strong,
+.hexnovasCostDetails strong {
   color: var(--proposal-text);
   font-size: 14px;
   line-height: 1.18;
@@ -8182,10 +8215,15 @@
   cursor: pointer;
 }
 
-.hexnovasCostBox strong {
+.hexnovasCostSummary > strong {
   color: var(--proposal-text);
   font-size: 28px;
   line-height: 1;
+}
+
+.hexnovasCostSummary {
+  display: grid;
+  gap: 6px;
 }
 
 .hexnovasCostBox dl {
@@ -14444,8 +14482,18 @@
 
   .hexnovasVariantCard strong,
   .hexnovasSelectedMain h3,
-  .hexnovasCostBox strong {
+  .hexnovasCostSummary > strong {
     font-size: 18px;
+  }
+
+  .hexnovasSelectedDecisionDetails summary,
+  .hexnovasCostDetails summary {
+    grid-template-columns: 1fr;
+  }
+
+  .hexnovasSelectedDecisionDetails summary small,
+  .hexnovasCostDetails summary small {
+    display: none;
   }
 
   .hexnovasTimeline summary,
