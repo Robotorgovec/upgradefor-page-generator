@@ -1750,6 +1750,10 @@
   gap: 22px;
 }
 
+.digitalTwin {
+  gap: 18px;
+}
+
 .sectionHeader {
   max-width: 880px;
   display: grid;
@@ -1774,7 +1778,7 @@
 .twinShell {
   display: grid;
   grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.7fr);
-  gap: 16px;
+  gap: 14px;
   align-items: start;
 }
 
@@ -2451,10 +2455,10 @@
 .twinPanel {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 14px;
+  padding: 12px;
   background: #ffffff;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   align-content: start;
 }
 
@@ -2479,13 +2483,13 @@
 
 .digitalTwin .segmented {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
 }
 
 .digitalTwin .segmented button {
   justify-content: center;
-  padding: 8px 6px;
-  font-size: 12.5px;
+  padding: 7px 6px;
+  font-size: 12px;
   line-height: 1.08;
   text-align: center;
   overflow-wrap: normal;
@@ -2502,7 +2506,7 @@
 .presentationPanel {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background: var(--proposal-surface-soft);
 }
 
@@ -2551,12 +2555,12 @@
 }
 
 .twinLayerDetailsDisclosure summary {
-  min-height: 60px;
-  padding: 12px;
+  min-height: 56px;
+  padding: 10px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 34px;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   list-style: none;
 }
@@ -2628,18 +2632,18 @@
 }
 
 .twinLayerBrief {
-  margin: 0 14px 12px;
+  margin: 0 10px 10px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .twinLayerBrief article {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background: #ffffff;
   display: grid;
-  gap: 5px;
+  gap: 4px;
 }
 
 .twinLayerBrief span {
@@ -2659,7 +2663,7 @@
 
 .twinLayerDetailsDisclosure .twinReadout,
 .twinLayerDetailsDisclosure dl {
-  margin: 0 14px 14px;
+  margin: 0 10px 10px;
 }
 
 .twinLayerDetailsDisclosure .twinReadout {
@@ -2669,12 +2673,12 @@
 .twinLayerPlainSummary {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 10px 11px;
+  padding: 8px 9px;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 70%, #ffffff), #ffffff 76%),
     #ffffff;
   display: grid;
-  gap: 5px;
+  gap: 4px;
 }
 
 .twinLayerPlainSummary span {
@@ -2688,15 +2692,15 @@
 
 .twinLayerPlainSummary strong {
   color: var(--proposal-text);
-  font-size: 13.5px;
-  line-height: 1.3;
+  font-size: 13px;
+  line-height: 1.24;
 }
 
 .twinLayerPlainSummary small {
   color: var(--proposal-text-soft);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 760;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 .twinPanel h3,
@@ -2729,20 +2733,24 @@
   line-height: 1.5;
 }
 
+.digitalTwin .twinPanel p {
+  line-height: 1.38;
+}
+
 .twinLayerGuide {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
 }
 
 .twinLayerGuide article {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  min-height: 86px;
-  padding: 8px 9px;
+  min-height: 68px;
+  padding: 7px 8px;
   background: #ffffff;
   display: grid;
-  gap: 5px;
+  gap: 4px;
   align-content: start;
 }
 
@@ -2763,13 +2771,13 @@
 
 .twinLayerGuide strong {
   color: var(--proposal-text);
-  font-size: 12px;
-  line-height: 1.28;
+  font-size: 11.5px;
+  line-height: 1.22;
   display: -webkit-box;
-  max-height: 3.85em;
+  max-height: 2.44em;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .twinLayerGuide small {
@@ -2780,7 +2788,7 @@
 }
 
 .twinLayerGuide article:first-child strong {
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
   max-height: none;
   -webkit-line-clamp: initial;
@@ -2828,28 +2836,28 @@
 .twinInterfaceMap {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background:
     radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--proposal-brand-soft) 78%, #ffffff), transparent 30%),
     #ffffff;
   display: grid;
-  gap: 9px;
+  gap: 7px;
 }
 
 .twinInterfaceMap h3 {
   margin: 0;
   color: var(--proposal-text);
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.18;
 }
 
 .twinInterfaceMap p:not(.eyebrow) {
-  margin: 6px 0 0;
+  margin: 5px 0 0;
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.34;
   display: -webkit-box;
-  max-height: 2.9em;
+  max-height: 2.68em;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -2913,12 +2921,12 @@
 .twinInterfaceChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 
 .twinInterfaceChips span {
-  min-height: 26px;
-  padding: 5px 8px;
+  min-height: 24px;
+  padding: 4px 7px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 999px;
   color: var(--proposal-brand-contrast);
@@ -2990,12 +2998,12 @@
 
 .digitalTwin .legalNote {
   display: -webkit-box;
-  max-height: 4.35em;
+  max-height: 2.8em;
   overflow: hidden;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.4;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .twinControls {
