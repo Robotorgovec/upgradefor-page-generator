@@ -23,6 +23,7 @@
   --proposal-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
   --proposal-shadow-md: 0 16px 34px rgba(15, 23, 42, 0.08);
   --proposal-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.12);
+  --proposal-anchor-offset: 154px;
   width: min(1180px, calc(100vw - 320px));
   height: auto;
   max-height: none;
@@ -51,6 +52,10 @@
 .page > * {
   min-width: 0;
   max-width: 100%;
+}
+
+.page [data-section] {
+  scroll-margin-top: var(--proposal-anchor-offset);
 }
 
 .page :where(h1, h2, h3, h4, p, li, dd, dt, span, strong, button, a) {
@@ -11795,6 +11800,7 @@
 @media (max-width: 900px) {
   .page,
   .passwordGatePage {
+    --proposal-anchor-offset: 96px;
     width: min(100%, calc(100vw - 28px));
     gap: 18px;
   }
