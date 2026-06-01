@@ -8099,6 +8099,7 @@
 .hexnovasDecisionStatus,
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
+.hexnovasDecisionEmailPacket,
 .hexnovasDecisionReceiptDisclosure,
 .hexnovasDecisionReceipt,
 .hexnovasSourceDigest,
@@ -8152,6 +8153,7 @@
 
 .hexnovasDecisionActionIntro span,
 .hexnovasDecisionQuickPick span,
+.hexnovasDecisionEmailPacket summary span,
 .hexnovasDecisionMailActions small {
   color: var(--proposal-text-muted);
   font-size: 10px;
@@ -8310,6 +8312,78 @@
 .hexnovasDecisionMailActions small {
   text-transform: none;
   letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.hexnovasDecisionEmailPacket {
+  min-width: 0;
+  grid-column: 2;
+  padding: 9px 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 22%, #ffffff)),
+    #ffffff;
+}
+
+.hexnovasDecisionEmailPacket summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(115px, 0.18fr) minmax(0, 1fr) minmax(180px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasDecisionEmailPacket summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.hexnovasDecisionEmailPacket summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasDecisionEmailPacket dl {
+  margin: 8px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasDecisionEmailPacket div {
+  min-width: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.hexnovasDecisionEmailPacket dt {
+  margin: 0 0 4px;
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionEmailPacket dd {
+  margin: 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.24;
+}
+
+.hexnovasDecisionEmailPacket p {
+  margin: 8px 0 0;
+  color: var(--proposal-text-soft);
+  font-size: 12px;
   line-height: 1.35;
 }
 
@@ -15182,6 +15256,7 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
+  .hexnovasDecisionEmailPacket summary,
   .hexnovasDecisionReceipt,
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasSourceDigest summary,
@@ -15372,6 +15447,7 @@
   .hexnovasComparisonDisclosure summary,
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
+  .hexnovasDecisionEmailPacket summary,
   .hexnovasSourceDigest summary,
   .hexnovasSelectedDisclosure summary,
   .hexnovasVariantDisclosure summary,
@@ -15386,6 +15462,7 @@
   .hexnovasComparisonDisclosure summary small,
   .hexnovasDecisionReceiptDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
+  .hexnovasDecisionEmailPacket summary small,
   .hexnovasSourceDigest summary small,
   .hexnovasSelectedDisclosure summary small,
   .hexnovasVariantDisclosure summary small,
@@ -15402,6 +15479,7 @@
   }
 
   .hexnovasPackageRules,
+  .hexnovasDecisionEmailPacket dl,
   .hexnovasArchiveBreakdown > div {
     grid-template-columns: 1fr;
   }
@@ -15419,7 +15497,8 @@
   .hexnovasDecisionActionIntro,
   .hexnovasDecisionQuickPick,
   .hexnovasDecisionOwnerFields,
-  .hexnovasDecisionMailActions {
+  .hexnovasDecisionMailActions,
+  .hexnovasDecisionEmailPacket {
     grid-column: 1 / -1;
     grid-row: auto;
   }
@@ -15454,6 +15533,10 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+  }
+
+  .hexnovasDecisionEmailPacket dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hexnovasDecisionReceipt {

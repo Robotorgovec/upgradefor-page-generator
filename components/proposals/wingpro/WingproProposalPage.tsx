@@ -2743,7 +2743,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.hexnovasDecisionActionIntro}>
             <span>decision action</span>
             <h3 id="hexnovas-decision-action-title">Выбрать вариант сейчас и отправить решение</h3>
-            <p>Активный выбор попадет в письмо на {HEXNOVAS_DECISION_EMAIL}. Перед отправкой WinGPro может добавить имя, должность и комментарий decision owner.</p>
+            <p>Активный выбор формирует готовое письмо на {HEXNOVAS_DECISION_EMAIL}. Перед отправкой WinGPro может добавить имя, должность и комментарий decision owner.</p>
           </div>
           <div className={styles.hexnovasDecisionQuickPick} role="group" aria-label="Быстрый выбор варианта теплообменника">
             {hexnovasVariants.map((item) => {
@@ -2791,13 +2791,27 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <div className={styles.hexnovasDecisionMailActions}>
             <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
-              Отправить на info@upgradefor.com
+              Открыть письмо на info@upgradefor.com
             </a>
             <button type="button" onClick={copyHexnovasDecisionEmail}>
               Скопировать письмо
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
+          <details className={styles.hexnovasDecisionEmailPacket}>
+            <summary>
+              <span>email packet</span>
+              <strong>Что уйдет на info@upgradefor.com</strong>
+              <small>{hexnovasDecisionEmailSubject}</small>
+            </summary>
+            <dl>
+              <div><dt>Выбор</dt><dd>{activeHexnovasVariant.name}</dd></div>
+              <div><dt>Статус</dt><dd>{activeHexnovasVariant.statusLabel}</dd></div>
+              <div><dt>Owner</dt><dd>{hexnovasDecisionOwner.trim() || "будет указан перед отправкой"}</dd></div>
+              <div><dt>Следующее действие</dt><dd>{activeHexnovasVariant.action}</dd></div>
+            </dl>
+            <p>Если почтовый клиент не открылся автоматически, используйте “Скопировать письмо” и отправьте текст вручную на {HEXNOVAS_DECISION_EMAIL}.</p>
+          </details>
         </div>
 
         <details className={styles.hexnovasDecisionReceiptDisclosure}>
