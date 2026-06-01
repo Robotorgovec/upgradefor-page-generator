@@ -62,6 +62,7 @@ export type HexnovasDocumentSignal = {
 
 export type HexnovasVaultTraceRow = {
   source: string;
+  evidenceSignalTitles: string[];
   dataRoomRole: string;
   releaseGate: string;
   owner: string;
@@ -344,6 +345,7 @@ export const hexnovasDocumentSignals: HexnovasDocumentSignal[] = [
 export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   {
     source: "TH150B-381H / 316L selection",
+    evidenceSignalTitles: ["TH150B-381H selection / 316L"],
     dataRoomRole: "recommended selection evidence",
     releaseGate: "Gate 1 — Evidence readiness",
     owner: "WinGPro technical owner / supplier",
@@ -352,6 +354,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "TH150B-381H / 304 option",
+    evidenceSignalTitles: ["TH150B-381H option / 304"],
     dataRoomRole: "material substitution evidence",
     releaseGate: "Gate 1 — Owner decision",
     owner: "WinGPro technical owner",
@@ -360,6 +363,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "BH150B-307H / 316L selection",
+    evidenceSignalTitles: ["BH150B-307H PN16 selection"],
     dataRoomRole: "hydraulic risk evidence",
     releaseGate: "Risk Radar / Gate 1",
     owner: "project designer / WinGPro technical owner",
@@ -368,6 +372,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "BH150B-307H drawing",
+    evidenceSignalTitles: ["BH150B-307H PN16 drawing"],
     dataRoomRole: "drawing update trigger",
     releaseGate: "Gate 2 — Contract / document package",
     owner: "supplier",
@@ -376,6 +381,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "CE/PED + ISO + Business Registration",
+    evidenceSignalTitles: ["CE/PED certificate", "ISO 9001 certificate", "Business Registration HK"],
     dataRoomRole: "supplier compliance / identity evidence",
     releaseGate: "Document Vault / Counterparty check",
     owner: "WinGPro / supplier",
@@ -384,6 +390,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "Latest PI",
+    evidenceSignalTitles: ["Latest supplier PI"],
     dataRoomRole: "PI consistency check",
     releaseGate: "Contract pack",
     owner: "supplier / WinGPro",
@@ -392,6 +399,7 @@ export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
   },
   {
     source: "Executive procurement report",
+    evidenceSignalTitles: ["Executive procurement report"],
     dataRoomRole: "decision summary",
     releaseGate: "Handover / executive review",
     owner: "UPGRADE data coordinator / WinGPro",

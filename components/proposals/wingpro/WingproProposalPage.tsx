@@ -1442,6 +1442,14 @@ function pressureDropTone(value: number) {
   return value <= 30 ? "ok" : "risk";
 }
 
+function anchorSlug(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function getHexnovasSignalId(title: string) {
+  return `hexnovas-signal-${anchorSlug(title)}`;
+}
+
 function PlateHeatExchangerModel({
   activeLayer,
   rotating,
@@ -2794,7 +2802,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </summary>
           <div>
             {hexnovasDocumentSignals.map((item) => (
-              <article key={item.title} data-status={item.status}>
+              <article key={item.title} id={getHexnovasSignalId(item.title)} data-status={item.status}>
                 <div className={styles.hexnovasDocumentSignalHead}>
                   <span>{item.status}</span>
                   <em>{item.fileType} / {item.sizeLabel}</em>
@@ -4020,7 +4028,17 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
             {hexnovasVaultTraceRows.map((row) => (
               <div className={styles.hexnovasVaultTraceRow} role="row" key={`${row.source}-${row.releaseGate}`}>
-                <strong role="cell"><span className={styles.matrixCellLabel}>Source</span>{row.source}</strong>
+                <div role="cell" className={styles.hexnovasVaultTraceSource}>
+                  <span className={styles.matrixCellLabel}>Source</span>
+                  <strong>{row.source}</strong>
+                  <span className={styles.hexnovasVaultTraceLinks}>
+                    {row.evidenceSignalTitles.map((title) => (
+                      <a key={title} href={`#${getHexnovasSignalId(title)}`}>
+                        {title}
+                      </a>
+                    ))}
+                  </span>
+                </div>
                 <span role="cell"><span className={styles.matrixCellLabel}>Data-room role</span>{row.dataRoomRole}</span>
                 <em role="cell"><span className={styles.matrixCellLabel}>Gate</span>{row.releaseGate}</em>
                 <small role="cell"><span className={styles.matrixCellLabel}>Owner</span>{row.owner}</small>

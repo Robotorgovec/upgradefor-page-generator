@@ -6264,6 +6264,41 @@
   color: var(--proposal-text-soft);
 }
 
+.hexnovasVaultTraceSource {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.hexnovasVaultTraceSource strong {
+  font-size: 12.5px;
+}
+
+.hexnovasVaultTraceLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.hexnovasVaultTraceLinks a {
+  min-height: 30px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 6px 8px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.hexnovasVaultTraceLinks a:hover,
+.hexnovasVaultTraceLinks a:focus-visible {
+  border-color: var(--proposal-brand-border-strong);
+  background: var(--proposal-brand-soft);
+}
+
 .hexnovasVaultTraceRow .matrixCellLabel {
   display: none;
   margin: 0 0 4px;
