@@ -2085,8 +2085,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
-    if (window.location.hash !== next) window.history.replaceState(null, "", next);
+    const currentHash = window.location.hash;
+    if (currentHash && !currentHash.startsWith("#layer-")) return;
+    if (currentHash !== next) window.history.replaceState(null, "", next);
   }, [activeLayer]);
+
+  useEffect(() => {
+    if (accessStatus !== "unlocked") return;
+    const currentHash = window.location.hash;
+    if (!currentHash || currentHash.startsWith("#layer-")) return;
+    window.requestAnimationFrame(() => {
+      document.getElementById(decodeURIComponent(currentHash.slice(1)))?.scrollIntoView({ block: "start" });
+    });
+  }, [accessStatus]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
