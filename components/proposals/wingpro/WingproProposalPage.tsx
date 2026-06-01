@@ -2933,46 +2933,53 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </details>
 
-        <div className={styles.hexnovasSelectedPanel}>
-          <article className={styles.hexnovasSelectedMain} data-tone={activeHexnovasVariant.statusTone}>
-            <div>
-              <span>selected scenario</span>
-              <h3>{activeHexnovasVariant.name}</h3>
-              <p>{activeHexnovasVariant.comment}</p>
-            </div>
-            <details className={styles.hexnovasSelectedDecisionDetails}>
-              <summary>
-                <span>release condition</span>
-                <strong>{activeHexnovasVariant.statusLabel}</strong>
-                <small>Открыть owner decision note</small>
-              </summary>
-              <p>{activeHexnovasVariant.decisionAlert}</p>
-            </details>
-            <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
-          </article>
+        <details className={styles.hexnovasSelectedDisclosure}>
+          <summary>
+            <span>детали выбранного варианта</span>
+            <strong>{activeHexnovasVariant.shortName}: {activeHexnovasVariant.statusLabel}</strong>
+            <small>{hexnovasNextEvidenceAction.title}</small>
+          </summary>
+          <div className={styles.hexnovasSelectedPanel}>
+            <article className={styles.hexnovasSelectedMain} data-tone={activeHexnovasVariant.statusTone}>
+              <div>
+                <span>selected scenario</span>
+                <h3>{activeHexnovasVariant.name}</h3>
+                <p>{activeHexnovasVariant.comment}</p>
+              </div>
+              <details className={styles.hexnovasSelectedDecisionDetails}>
+                <summary>
+                  <span>release condition</span>
+                  <strong>{activeHexnovasVariant.statusLabel}</strong>
+                  <small>Открыть owner decision note</small>
+                </summary>
+                <p>{activeHexnovasVariant.decisionAlert}</p>
+              </details>
+              <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
+            </article>
 
-          <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
-            <div className={styles.hexnovasCostSummary}>
-              <span>supplier equipment package</span>
-              <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
-              <small>{activeHexnovasVariant.quantity} шт. / supplier-only ориентир</small>
-            </div>
-            <details className={styles.hexnovasCostDetails}>
-              <summary>
-                <span>route math</span>
-                <strong>{activeHexnovasDelta === 0 ? "baseline" : `${formatUsd(activeHexnovasDelta)} delta`}</strong>
-                <small>Открыть reserve / material</small>
-              </summary>
-              <p>только оборудование Hexnovas; логистический reserve показан как расчетный ориентир для сравнения маршрутов.</p>
-              <dl>
-                <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
-                <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
-                <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
-              </dl>
-              <small>Supplier-only reference: решение по закупочному маршруту остается за WinGPro.</small>
-            </details>
-          </aside>
-        </div>
+            <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
+              <div className={styles.hexnovasCostSummary}>
+                <span>supplier equipment package</span>
+                <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
+                <small>{activeHexnovasVariant.quantity} шт. / supplier-only ориентир</small>
+              </div>
+              <details className={styles.hexnovasCostDetails}>
+                <summary>
+                  <span>route math</span>
+                  <strong>{activeHexnovasDelta === 0 ? "baseline" : `${formatUsd(activeHexnovasDelta)} delta`}</strong>
+                  <small>Открыть reserve / material</small>
+                </summary>
+                <p>только оборудование Hexnovas; логистический reserve показан как расчетный ориентир для сравнения маршрутов.</p>
+                <dl>
+                  <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
+                  <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
+                  <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
+                </dl>
+                <small>Supplier-only reference: решение по закупочному маршруту остается за WinGPro.</small>
+              </details>
+            </aside>
+          </div>
+        </details>
 
         <details className={styles.hexnovasComparisonDisclosure}>
           <summary>

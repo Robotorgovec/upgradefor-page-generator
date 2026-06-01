@@ -8103,6 +8103,7 @@
 .hexnovasDecisionReceipt,
 .hexnovasSourceDigest,
 .hexnovasSummaryRail article,
+.hexnovasSelectedDisclosure,
 .hexnovasVariantDisclosure,
 .hexnovasVariantCard,
 .hexnovasSelectedMain,
@@ -8317,6 +8318,7 @@
 .hexnovasDecisionReceipt span,
 .hexnovasSourceDigest summary span,
 .hexnovasSummaryRail span,
+.hexnovasSelectedDisclosure summary span,
 .hexnovasVariantDisclosure summary span,
 .hexnovasVariantCard > span,
 .hexnovasSelectedMain span,
@@ -8467,6 +8469,7 @@
 }
 
 .hexnovasSourceDigest,
+.hexnovasSelectedDisclosure,
 .hexnovasVariantDisclosure {
   padding: 10px;
   background:
@@ -8475,6 +8478,7 @@
 }
 
 .hexnovasSourceDigest summary,
+.hexnovasSelectedDisclosure summary,
 .hexnovasVariantDisclosure summary {
   min-height: 44px;
   cursor: pointer;
@@ -8485,6 +8489,7 @@
 }
 
 .hexnovasSourceDigest summary strong,
+.hexnovasSelectedDisclosure summary strong,
 .hexnovasVariantDisclosure summary strong {
   min-width: 0;
   color: var(--proposal-text);
@@ -8493,6 +8498,7 @@
 }
 
 .hexnovasSourceDigest summary small,
+.hexnovasSelectedDisclosure summary small,
 .hexnovasVariantDisclosure summary small {
   color: var(--proposal-text-muted);
   font-size: 11px;
@@ -8501,12 +8507,14 @@
 }
 
 .hexnovasSourceDigest[open],
+.hexnovasSelectedDisclosure[open],
 .hexnovasVariantDisclosure[open] {
   box-shadow: var(--proposal-shadow-md);
 }
 
 .hexnovasSourceDigest .hexnovasSummaryRail,
 .hexnovasSourceDigest .hexnovasPackageIndex,
+.hexnovasSelectedDisclosure .hexnovasSelectedPanel,
 .hexnovasVariantDisclosure .hexnovasVariantGrid {
   margin-top: 10px;
 }
@@ -15177,6 +15185,7 @@
   .hexnovasDecisionReceipt,
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasSourceDigest summary,
+  .hexnovasSelectedDisclosure summary,
   .hexnovasVariantDisclosure summary,
   .hexnovasSelectedPanel,
   .hexnovasEvidenceBridge,
@@ -15364,6 +15373,7 @@
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
   .hexnovasSourceDigest summary,
+  .hexnovasSelectedDisclosure summary,
   .hexnovasVariantDisclosure summary,
   .hexnovasEvidenceBridgeDisclosure summary,
   .hexnovasArchiveBreakdown summary,
@@ -15377,6 +15387,7 @@
   .hexnovasDecisionReceiptDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
   .hexnovasSourceDigest summary small,
+  .hexnovasSelectedDisclosure summary small,
   .hexnovasVariantDisclosure summary small,
   .hexnovasEvidenceBridgeDisclosure summary small,
   .hexnovasArchiveBreakdown summary small,
