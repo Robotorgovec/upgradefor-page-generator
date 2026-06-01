@@ -2437,9 +2437,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.lead}>От выбора поставщика до handover-пакета: данные, документы, риски, сроки, логистика, монтажные вводные и цифровая товарная линия в одном управляемом процессе.</p>
           <p className={styles.sublead}>Это не комиссия за контакт поставщика. Это рабочая система управления качеством закупки, сроками подготовки, статусами участников и повторным использованием товарных данных.</p>
           <div className={styles.heroActions}>
-            <a className={styles.primaryAction} href="#filmstrip">Запустить обзор сделки</a>
-            <a className={styles.secondaryAction} href="#digital-twin">Открыть Digital Twin</a>
-            <a className={styles.secondaryAction} href="#offer-comparison-board">Сравнить предложения</a>
+            <a className={styles.primaryAction} href="#digital-twin">Открыть 3D Digital Twin</a>
+            <a className={styles.secondaryAction} href="#hexnovas-decision-board">Выбрать вариант</a>
+            <a className={styles.secondaryAction} href="#source-documents">Исходные документы</a>
           </div>
           <div className={styles.indicators} aria-label="Mission indicators">
             {["Quality Gate: 6 checkpoints", "Document Vault: 30+ data points", "Risk Radar: 10 risk groups", "Handover: broker / logistics / mounting / sales", "Digital Product Asset: supplier + product line"].map((item) => (
@@ -2450,10 +2450,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             {[
               ["01", "Digital Twin", "equipment object + evidence layers"],
               ["02", "Control Room", "owners, blockers, next actions"],
-              ["03", "Release Gates", "evidence / shipment / handover"],
+              ["03", "Decision Board", "TH150B / 316L route + owner choice"],
               ["04", "Handover Room", "packs for logistics, broker, mounting, sales"],
             ].map(([index, title, detail]) => (
-              <a key={title} href={title === "Digital Twin" ? "#digital-twin" : title === "Control Room" ? "#control-room" : title === "Release Gates" ? "#release-gates" : "#handover"}>
+              <a key={title} href={title === "Digital Twin" ? "#digital-twin" : title === "Control Room" ? "#control-room" : title === "Decision Board" ? "#hexnovas-decision-board" : "#handover"}>
                 <span>{index}</span>
                 <strong>{title}</strong>
                 <small>{detail}</small>
