@@ -2635,8 +2635,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <aside className={styles.hexnovasDecisionStatus} aria-label="Current supplier decision status">
             <span>decision pending</span>
-            <strong>{recommendedHexnovasVariant.shortName}</strong>
-            <small>рекомендуемый маршрут по pressure drop и материалу</small>
+            <strong>{activeHexnovasVariant.shortName}</strong>
+            <small>{activeHexnovasVariant.statusLabel}</small>
           </aside>
         </div>
 
@@ -2679,32 +2679,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </div>
 
-        <div className={styles.hexnovasSummaryRail} aria-label="Hexnovas project source summary">
-          {[
-            ["buyer", hexnovasProject.buyer, hexnovasProject.project],
-            ["supplier", "Hexnovas", hexnovasProject.supplier],
-            ["reference", `${hexnovasProject.referenceHeatDutyKw} kW`, hexnovasProject.mediums],
-            ["target", hexnovasProject.pressureDropTarget, hexnovasProject.pressureClass],
-          ].map(([label, value, note]) => (
-            <article key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-              <small>{note}</small>
-            </article>
-          ))}
-        </div>
-
-        <div className={styles.hexnovasPackageIndex} aria-label="Hexnovas procurement package index">
-          <div className={styles.hexnovasPackageIndexIntro}>
-            <span>Procurement package index</span>
-            <strong>Архив Hexnovas превращен в управляемый decision package</strong>
-            <p>
-              На странице показываются технические evidence-активы, которые помогают выбрать модель, материал и release route.
-              Договоры, реквизиты, условия сервисного контура и переписка остаются в private contour до отдельного решения WinGPro.
-            </p>
-          </div>
-          <div className={styles.hexnovasPackageIndexStats}>
-            {hexnovasPackageOverviewStats.map(([label, value, note]) => (
+        <details className={styles.hexnovasSourceDigest}>
+          <summary>
+            <span>source digest</span>
+            <strong>Исходные параметры и архив Hexnovas</strong>
+            <small>{hexnovasArchiveFileCount} files / {hexnovasPackageRules.length} decision rules</small>
+          </summary>
+          <div className={styles.hexnovasSummaryRail} aria-label="Hexnovas project source summary">
+            {[
+              ["buyer", hexnovasProject.buyer, hexnovasProject.project],
+              ["supplier", "Hexnovas", hexnovasProject.supplier],
+              ["reference", `${hexnovasProject.referenceHeatDutyKw} kW`, hexnovasProject.mediums],
+              ["target", hexnovasProject.pressureDropTarget, hexnovasProject.pressureClass],
+            ].map(([label, value, note]) => (
               <article key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
@@ -2712,67 +2699,94 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <details className={styles.hexnovasPackageRulesDisclosure}>
-            <summary>
-              <span>decision rules</span>
-              <strong>TH150B / 316L как baseline; 304 и BH150B идут только через owner approval</strong>
-              <small>{hexnovasPackageRules.length} rules from archive</small>
-            </summary>
-            <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
-              {hexnovasPackageRules.map((item) => (
-                <article key={item.title}>
-                  <span>{item.title}</span>
-                  <strong>{item.signal}</strong>
-                  <p>{item.action}</p>
-                  <small>{item.owner}</small>
-                </article>
-              ))}
-            </div>
-          </details>
-          <details className={styles.hexnovasArchiveBreakdown}>
-            <summary>
-              <span>archive breakdown</span>
-              <strong>Показать карту групп архива</strong>
-              <small>{hexnovasArchiveGroups.length} groups / {hexnovasArchiveFileCount} files</small>
-            </summary>
-            <div>
-              {hexnovasArchiveGroups.map((item) => (
-                <article key={item.title}>
-                  <span>{item.title}</span>
-                  <strong>{item.role}</strong>
-                  <p>{item.action}</p>
-                  <small>{item.files} files / {item.publicEvidence} public evidence item(s) / {item.boundary}</small>
-                </article>
-              ))}
-            </div>
-          </details>
-        </div>
 
-        <div className={styles.hexnovasVariantGrid} aria-label="Heat exchanger supplier variants">
-          {hexnovasVariants.map((item) => {
-            const isActive = activeHexnovasVariant.id === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                aria-pressed={isActive}
-                className={styles.hexnovasVariantCard}
-                data-active={isActive}
-                data-tone={item.statusTone}
-                onClick={() => setActiveHexnovasVariantId(item.id)}
-                aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
-              >
-                <span>{item.statusLabel}</span>
-                <strong>{item.shortName}</strong>
-                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / supplier package {formatUsd(item.totalPriceUsd)}</small>
-                <div className={styles.hexnovasPressureRow}>
-                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
-                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
+          <div className={styles.hexnovasPackageIndex} aria-label="Hexnovas procurement package index">
+            <div className={styles.hexnovasPackageIndexIntro}>
+              <span>Procurement package index</span>
+              <strong>Архив Hexnovas превращен в управляемый decision package</strong>
+              <p>
+                На странице показываются технические evidence-активы, которые помогают выбрать модель, материал и release route.
+                Договоры, реквизиты, условия сервисного контура и переписка остаются в private contour до отдельного решения WinGPro.
+              </p>
+            </div>
+            <div className={styles.hexnovasPackageIndexStats}>
+              {hexnovasPackageOverviewStats.map(([label, value, note]) => (
+                <article key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                  <small>{note}</small>
+                </article>
+              ))}
+            </div>
+            <details className={styles.hexnovasPackageRulesDisclosure}>
+              <summary>
+                <span>decision rules</span>
+                <strong>TH150B / 316L как baseline; 304 и BH150B идут только через owner approval</strong>
+                <small>{hexnovasPackageRules.length} rules from archive</small>
+              </summary>
+              <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
+                {hexnovasPackageRules.map((item) => (
+                  <article key={item.title}>
+                    <span>{item.title}</span>
+                    <strong>{item.signal}</strong>
+                    <p>{item.action}</p>
+                    <small>{item.owner}</small>
+                  </article>
+                ))}
+              </div>
+            </details>
+            <details className={styles.hexnovasArchiveBreakdown}>
+              <summary>
+                <span>archive breakdown</span>
+                <strong>Показать карту групп архива</strong>
+                <small>{hexnovasArchiveGroups.length} groups / {hexnovasArchiveFileCount} files</small>
+              </summary>
+              <div>
+                {hexnovasArchiveGroups.map((item) => (
+                  <article key={item.title}>
+                    <span>{item.title}</span>
+                    <strong>{item.role}</strong>
+                    <p>{item.action}</p>
+                    <small>{item.files} files / {item.publicEvidence} public evidence item(s) / {item.boundary}</small>
+                  </article>
+                ))}
+              </div>
+            </details>
+          </div>
+        </details>
+
+        <details className={styles.hexnovasVariantDisclosure}>
+          <summary>
+            <span>variant cards</span>
+            <strong>Открыть технические карточки всех вариантов</strong>
+            <small>{hexnovasVariants.length} варианта</small>
+          </summary>
+          <div className={styles.hexnovasVariantGrid} aria-label="Heat exchanger supplier variants">
+            {hexnovasVariants.map((item) => {
+              const isActive = activeHexnovasVariant.id === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  className={styles.hexnovasVariantCard}
+                  data-active={isActive}
+                  data-tone={item.statusTone}
+                  onClick={() => setActiveHexnovasVariantId(item.id)}
+                  aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
+                >
+                  <span>{item.statusLabel}</span>
+                  <strong>{item.shortName}</strong>
+                  <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / supplier package {formatUsd(item.totalPriceUsd)}</small>
+                  <div className={styles.hexnovasPressureRow}>
+                    <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
+                    <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </details>
 
         <div className={styles.hexnovasSelectedPanel}>
           <article className={styles.hexnovasSelectedMain} data-tone={activeHexnovasVariant.statusTone}>

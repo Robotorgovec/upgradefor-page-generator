@@ -7822,7 +7822,9 @@
 .hexnovasDecisionStatus,
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
+.hexnovasSourceDigest,
 .hexnovasSummaryRail article,
+.hexnovasVariantDisclosure,
 .hexnovasVariantCard,
 .hexnovasSelectedMain,
 .hexnovasCostBox,
@@ -7978,7 +7980,9 @@
 }
 
 .hexnovasDecisionStatus span,
+.hexnovasSourceDigest summary span,
 .hexnovasSummaryRail span,
+.hexnovasVariantDisclosure summary span,
 .hexnovasVariantCard > span,
 .hexnovasSelectedMain span,
 .hexnovasCostBox span,
@@ -8017,6 +8021,51 @@
   color: var(--proposal-text-soft);
   font-size: 12px;
   line-height: 1.32;
+}
+
+.hexnovasSourceDigest,
+.hexnovasVariantDisclosure {
+  padding: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 24%, #ffffff)),
+    #ffffff;
+}
+
+.hexnovasSourceDigest summary,
+.hexnovasVariantDisclosure summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(130px, 0.18fr) minmax(0, 1fr) minmax(150px, auto);
+  gap: 10px;
+  align-items: center;
+}
+
+.hexnovasSourceDigest summary strong,
+.hexnovasVariantDisclosure summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.18;
+}
+
+.hexnovasSourceDigest summary small,
+.hexnovasVariantDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasSourceDigest[open],
+.hexnovasVariantDisclosure[open] {
+  box-shadow: var(--proposal-shadow-md);
+}
+
+.hexnovasSourceDigest .hexnovasSummaryRail,
+.hexnovasSourceDigest .hexnovasPackageIndex,
+.hexnovasVariantDisclosure .hexnovasVariantGrid {
+  margin-top: 10px;
 }
 
 .hexnovasSummaryRail {
@@ -14561,6 +14610,8 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
+  .hexnovasSourceDigest summary,
+  .hexnovasVariantDisclosure summary,
   .hexnovasSelectedPanel,
   .hexnovasEvidenceBridge,
   .hexnovasDecisionGrid,
@@ -14693,6 +14744,8 @@
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
+  .hexnovasSourceDigest summary,
+  .hexnovasVariantDisclosure summary,
   .hexnovasEvidenceBridgeDisclosure summary,
   .hexnovasArchiveBreakdown summary,
   .hexnovasDocumentSignals summary {
@@ -14703,6 +14756,8 @@
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
+  .hexnovasSourceDigest summary small,
+  .hexnovasVariantDisclosure summary small,
   .hexnovasEvidenceBridgeDisclosure summary small,
   .hexnovasArchiveBreakdown summary small,
   .hexnovasDocumentSignals summary small {
