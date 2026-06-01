@@ -2717,31 +2717,38 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </aside>
         </div>
 
-        <div className={styles.hexnovasComparison} role="table" aria-label="Hexnovas variant comparison">
-          <div role="row" className={styles.hexnovasComparisonHead}>
-            <span role="columnheader">Вариант</span>
-            <span role="columnheader">Цена / 2 шт.</span>
-            <span role="columnheader">Материал</span>
-            <span role="columnheader">Перепад</span>
-            <span role="columnheader">Решение</span>
+        <details className={styles.hexnovasComparisonDisclosure}>
+          <summary>
+            <span>comparison matrix</span>
+            <strong>Открыть полную матрицу вариантов</strong>
+            <small>{hexnovasVariants.length} scenarios</small>
+          </summary>
+          <div className={styles.hexnovasComparison} role="table" aria-label="Hexnovas variant comparison">
+            <div role="row" className={styles.hexnovasComparisonHead}>
+              <span role="columnheader">Вариант</span>
+              <span role="columnheader">Цена / 2 шт.</span>
+              <span role="columnheader">Материал</span>
+              <span role="columnheader">Перепад</span>
+              <span role="columnheader">Решение</span>
+            </div>
+            {hexnovasVariants.map((item) => (
+              <button
+                key={`row-${item.id}`}
+                type="button"
+                role="row"
+                className={styles.hexnovasComparisonRow}
+                data-active={activeHexnovasVariant.id === item.id}
+                onClick={() => setActiveHexnovasVariantId(item.id)}
+              >
+                <span role="cell" data-label="Вариант">{item.shortName}</span>
+                <span role="cell" data-label="Цена / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
+                <span role="cell" data-label="Материал">{item.material}</span>
+                <span role="cell" data-label="Перепад">{item.pressureDropKpaHot.toFixed(1)} / {item.pressureDropKpaCold.toFixed(1)} kPa</span>
+                <span role="cell" data-label="Решение">{item.action}</span>
+              </button>
+            ))}
           </div>
-          {hexnovasVariants.map((item) => (
-            <button
-              key={`row-${item.id}`}
-              type="button"
-              role="row"
-              className={styles.hexnovasComparisonRow}
-              data-active={activeHexnovasVariant.id === item.id}
-              onClick={() => setActiveHexnovasVariantId(item.id)}
-            >
-              <span role="cell" data-label="Вариант">{item.shortName}</span>
-              <span role="cell" data-label="Цена / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
-              <span role="cell" data-label="Материал">{item.material}</span>
-              <span role="cell" data-label="Перепад">{item.pressureDropKpaHot.toFixed(1)} / {item.pressureDropKpaCold.toFixed(1)} kPa</span>
-              <span role="cell" data-label="Решение">{item.action}</span>
-            </button>
-          ))}
-        </div>
+        </details>
 
         <div className={styles.hexnovasDecisionGrid}>
           <details className={styles.hexnovasTimeline}>
@@ -2787,13 +2794,37 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div>
             {hexnovasDocumentSignals.map((item) => (
               <article key={item.title} data-status={item.status}>
-                <span>{item.status}</span>
+                <div className={styles.hexnovasDocumentSignalHead}>
+                  <span>{item.status}</span>
+                  <em>{item.fileType} / {item.sizeLabel}</em>
+                </div>
                 <strong>{item.title}</strong>
                 <p>{item.note}</p>
-                <small>{item.source}</small>
+                <dl className={styles.hexnovasDocumentSignalMeta}>
+                  <div><dt>Source</dt><dd>{item.source}</dd></div>
+                  <div><dt>Vault use</dt><dd>{item.vaultUse}</dd></div>
+                  <div><dt>Checksum</dt><dd>sha256: {item.checksumSha256.slice(0, 10)}...</dd></div>
+                </dl>
+                {item.href && item.downloadName ? (
+                  <div className={styles.hexnovasDocumentSignalActions}>
+                    {item.previewable ? (
+                      <a href={item.href} target="_blank" rel="noreferrer" aria-label={`Просмотреть ${item.title}`}>
+                        Просмотреть
+                      </a>
+                    ) : (
+                      <span>Предпросмотр не поддерживается</span>
+                    )}
+                    <a href={item.href} download={item.downloadName} aria-label={`Скачать ${item.title}`}>
+                      Скачать
+                    </a>
+                  </div>
+                ) : null}
               </article>
             ))}
           </div>
+          <p className={styles.hexnovasDocumentSignalNote}>
+            Эти файлы используются как evidence для supplier selection, PI consistency, compliance и handover. UPGRADE структурирует data-room и запросы; технические, договорные и сертификационные решения подтверждают профильные участники.
+          </p>
         </details>
       </section>
 
