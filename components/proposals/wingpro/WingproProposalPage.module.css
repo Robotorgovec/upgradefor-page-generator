@@ -11152,6 +11152,91 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .vaultReadinessBoard {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .vaultStats {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .vaultOpenList p {
+    display: none;
+  }
+
+  .vaultOpenList li:nth-child(n + 3) {
+    display: none;
+  }
+
+  .hexnovasVaultRouteLayer {
+    padding: 12px;
+  }
+
+  .hexnovasVaultRouteIntro {
+    grid-template-columns: minmax(120px, 0.32fr) minmax(0, 0.68fr);
+  }
+
+  .hexnovasVaultRouteIntro p {
+    display: none;
+  }
+
+  .hexnovasVaultRouteStats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gateControlSurface {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .gateControlSurface p:not(.eyebrow),
+  .gateControlSurface dd {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+  }
+
+  .gateControlSurface p:not(.eyebrow) {
+    max-height: 2.8em;
+    margin-top: 7px;
+    font-size: 13px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+
+  .gateControlSurface dl {
+    gap: 7px;
+  }
+
+  .gateControlSurface dl div {
+    padding: 8px;
+  }
+
+  .gateControlSurface dd {
+    max-height: 3.36em;
+    margin-top: 4px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+
+  .releaseGateDetailsDisclosure summary {
+    min-height: 60px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .releaseGateDetailsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.24;
+  }
+
+  .releaseGateDetailsDisclosure summary small {
+    display: none;
+  }
+
   .compareBoard,
   .beforeAfter,
   .comparisonRows div,
@@ -15346,6 +15431,7 @@
   }
 
   .vaultReadinessBoard {
+    grid-template-columns: 1fr;
     gap: 8px;
     padding: 8px;
   }
