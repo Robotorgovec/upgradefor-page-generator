@@ -7577,8 +7577,8 @@
 
 .sourceDocsSection {
   display: grid;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
   overflow: visible;
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
@@ -7588,7 +7588,7 @@
 .sourceDocsHeader {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 0.38fr);
-  gap: 12px;
+  gap: 10px;
   align-items: start;
 }
 
@@ -7604,15 +7604,15 @@
 
 .sourceDocsHeader h2 {
   color: var(--proposal-text);
-  font-size: 28px;
+  font-size: 26px;
   line-height: 1.08;
 }
 
 .sourceDocsHeader p:not(.eyebrow) {
-  margin-top: 5px;
+  margin-top: 4px;
   color: var(--proposal-text-soft);
-  font-size: 14px;
-  line-height: 1.36;
+  font-size: 13.5px;
+  line-height: 1.32;
 }
 
 .sourceDocsLegalLine,
@@ -7630,17 +7630,17 @@
 }
 
 .sourceDocsLegalLine {
-  padding: 8px;
+  padding: 7px 8px;
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.32;
+  font-size: 12px;
+  line-height: 1.28;
 }
 
 .sourceDocsSummaryCard {
-  padding: 10px;
+  padding: 9px;
   display: grid;
   grid-template-columns: minmax(220px, 0.3fr) minmax(0, 1fr) minmax(190px, 0.24fr);
-  gap: 8px;
+  gap: 7px;
   align-items: start;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff), #ffffff 74%),
@@ -7649,29 +7649,29 @@
 
 .sourceDocsSummaryCard h3 {
   color: var(--proposal-text);
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.1;
 }
 
 .sourceDocsSummaryCard p {
-  margin-top: 5px;
+  margin-top: 4px;
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.26;
 }
 
 .sourceDocsStatusGrid {
   align-self: start;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
 }
 
 .sourceDocsStatusGrid article {
-  min-height: 64px;
+  min-height: 58px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 7px;
+  padding: 6px;
   background: #ffffff;
   display: grid;
   gap: 4px;
@@ -7695,14 +7695,14 @@
 
 .sourceDocsStatusGrid strong {
   color: var(--proposal-text);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.16;
 }
 
 .sourceDocsStatusGrid small {
   color: var(--proposal-text-soft);
-  font-size: 11px;
-  line-height: 1.25;
+  font-size: 10.5px;
+  line-height: 1.22;
 }
 
 .sourceDocsSummaryActions {
@@ -7710,7 +7710,7 @@
   align-self: start;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 7px;
+  padding: 6px;
   background: #ffffff;
   display: grid;
   gap: 5px;
@@ -7728,22 +7728,22 @@
 
 .sourceDocsSummaryActions strong {
   color: var(--proposal-text);
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.18;
 }
 
 .sourceDocsSummaryActions p {
   margin: 0;
   color: var(--proposal-text-soft);
-  font-size: 11px;
-  line-height: 1.22;
+  font-size: 10.5px;
+  line-height: 1.2;
 }
 
 .sourceDocsSummaryActions button {
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 9px 11px;
   color: var(--proposal-brand-contrast);
   background: var(--proposal-brand-soft);
   font: inherit;
@@ -7761,9 +7761,9 @@
 }
 
 .sourceDocCard {
-  padding: 10px;
+  padding: 9px;
   display: grid;
-  gap: 8px;
+  gap: 7px;
   overflow: visible;
 }
 
@@ -7800,15 +7800,15 @@
 
 .sourceDocTitleRow h3 {
   color: var(--proposal-text);
-  font-size: 17.5px;
+  font-size: 16.5px;
   line-height: 1.15;
 }
 
 .sourceDocTitleRow p {
   margin-top: 3px;
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.28;
+  font-size: 12.5px;
+  line-height: 1.24;
 }
 
 .sourceDocTitleRow > span {
@@ -7825,23 +7825,23 @@
 .sourceDocMeta {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
   margin: 0;
 }
 
 .sourceDocMeta div {
   min-width: 0;
-  min-height: 50px;
+  min-height: 46px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 7px;
+  padding: 6px;
   background: var(--proposal-surface-soft);
 }
 
 .sourceDocMeta dd {
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   color: var(--proposal-text);
-  font-size: 11.5px;
+  font-size: 11px;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
@@ -7937,7 +7937,7 @@
 .sourceDocMetadata,
 .sourceDocBoundary {
   border-color: var(--proposal-border);
-  padding: 9px 10px;
+  padding: 8px 9px;
   background: #ffffff;
 }
 
@@ -8008,10 +8008,10 @@
 }
 
 .sourceDocsPackage {
-  padding: 12px;
+  padding: 10px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, auto) minmax(220px, 0.28fr);
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
@@ -8021,9 +8021,10 @@
 }
 
 .sourceDocsPackage p {
-  margin-top: 5px;
+  margin-top: 4px;
   color: var(--proposal-text-soft);
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.32;
 }
 
 .sourceDownloadStatus {
@@ -8039,7 +8040,7 @@
 }
 
 .sourceDocsIntelligence {
-  padding: 8px 10px;
+  padding: 7px 9px;
   overflow: visible;
 }
 
@@ -8072,14 +8073,14 @@
 .sourceInsightGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 7px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .sourceInsightGrid article {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 8px;
+  padding: 7px;
   background: var(--proposal-surface-soft);
 }
 
@@ -8090,19 +8091,19 @@
 
 .sourceInsightGrid h3 {
   color: var(--proposal-text);
-  font-size: 14px;
-  line-height: 1.18;
+  font-size: 13.2px;
+  line-height: 1.16;
 }
 
 .sourceInsightGrid p {
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--proposal-text-soft);
-  font-size: 12px;
-  line-height: 1.34;
+  font-size: 11.5px;
+  line-height: 1.28;
 }
 
 .sourceTraceability {
-  padding: 10px;
+  padding: 9px;
   display: grid;
   gap: 8px;
 }
@@ -8202,7 +8203,7 @@
 }
 
 .sourceDisclaimer {
-  padding: 12px;
+  padding: 10px;
   background:
     linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff)),
     #ffffff;
@@ -8229,15 +8230,16 @@
 }
 
 .sourceDisclaimer p {
-  margin: 12px 0 0;
+  margin: 9px 0 0;
   color: var(--proposal-text-soft);
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.42;
 }
 
 .hexnovasDecisionBoard {
   display: grid;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
   overflow: visible;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 44%, #ffffff), #ffffff 52%),
@@ -8248,7 +8250,7 @@
 .hexnovasHeader {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(230px, 0.28fr);
-  gap: 12px;
+  gap: 10px;
   align-items: start;
 }
 
@@ -8278,25 +8280,25 @@
 
 .hexnovasHeader h2 {
   color: var(--proposal-text);
-  font-size: 28px;
+  font-size: 26px;
   line-height: 1.08;
 }
 
 .hexnovasHeader p:not(.eyebrow) {
-  margin-top: 5px;
+  margin-top: 4px;
   color: var(--proposal-text-soft);
-  font-size: 14px;
-  line-height: 1.34;
+  font-size: 13.5px;
+  line-height: 1.3;
 }
 
 .hexnovasScopeNote {
   max-width: 780px;
   border: 1px solid rgba(245, 158, 11, 0.22);
   border-radius: 8px;
-  padding: 7px 9px;
+  padding: 6px 8px;
   background: rgba(255, 251, 235, 0.72);
   color: var(--proposal-text);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 850;
   line-height: 1.32;
 }
@@ -8331,18 +8333,18 @@
 }
 
 .hexnovasDecisionStatus {
-  min-height: 96px;
-  padding: 10px;
+  min-height: 82px;
+  padding: 9px;
   display: grid;
   gap: 5px;
   align-content: start;
 }
 
 .hexnovasDecisionActionPanel {
-  padding: 10px;
+  padding: 9px;
   display: grid;
   grid-template-columns: minmax(190px, 0.23fr) minmax(0, 1fr);
-  gap: 8px;
+  gap: 7px;
   align-items: stretch;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff), #ffffff 74%),
@@ -8352,7 +8354,7 @@
 .hexnovasDecisionActionIntro {
   min-width: 0;
   display: grid;
-  gap: 5px;
+  gap: 4px;
   align-content: start;
   grid-row: span 3;
 }
@@ -8371,14 +8373,14 @@
 
 .hexnovasDecisionActionIntro h3 {
   color: var(--proposal-text);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.12;
 }
 
 .hexnovasDecisionActionIntro p {
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.25;
 }
 
 .hexnovasDecisionQuickPick {
@@ -8386,18 +8388,18 @@
   display: grid;
   grid-column: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
 }
 
 .hexnovasDecisionQuickPick button {
-  min-height: 76px;
-  padding: 8px;
+  min-height: 68px;
+  padding: 7px;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   display: grid;
-  gap: 4px;
+  gap: 3px;
   align-content: start;
 }
 
@@ -8422,27 +8424,27 @@
 
 .hexnovasDecisionQuickPick strong {
   color: var(--proposal-text);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.12;
 }
 
 .hexnovasDecisionQuickPick small {
   color: var(--proposal-text-soft);
-  font-size: 10.5px;
-  line-height: 1.18;
+  font-size: 10px;
+  line-height: 1.15;
 }
 
 .hexnovasDecisionOwnerFields {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(180px, 0.34fr) minmax(0, 1fr);
-  gap: 7px;
+  gap: 6px;
 }
 
 .hexnovasDecisionOwnerDisclosure {
   min-width: 0;
   grid-column: 2;
-  padding: 7px 9px;
+  padding: 6px 8px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.95), color-mix(in srgb, var(--proposal-brand-soft) 18%, #ffffff)),
     #ffffff;
@@ -8505,7 +8507,7 @@
 }
 
 .hexnovasDecisionOwnerDisclosure .hexnovasDecisionOwnerFields {
-  margin-top: 8px;
+  margin-top: 7px;
 }
 
 .hexnovasDecisionOwnerFields label {
@@ -8555,7 +8557,7 @@
   display: grid;
   grid-column: 2;
   grid-template-columns: minmax(0, 1fr) minmax(180px, 0.44fr);
-  gap: 7px;
+  gap: 6px;
   align-content: start;
 }
 
@@ -8564,11 +8566,11 @@
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border-strong);
   border-radius: 8px;
-  padding: 9px 10px;
+  padding: 8px 9px;
   color: var(--proposal-brand-contrast);
   background: var(--proposal-brand-soft);
   font: inherit;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 950;
   text-align: center;
   text-decoration: none;
@@ -8592,7 +8594,7 @@
 .hexnovasDecisionEmailPacket {
   min-width: 0;
   grid-column: 2;
-  padding: 8px 9px;
+  padding: 7px 8px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 22%, #ffffff)),
     #ffffff;
@@ -8698,14 +8700,14 @@
 
 .hexnovasDecisionStatus strong {
   color: var(--proposal-text);
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1.08;
 }
 
 .hexnovasDecisionStatus small {
   color: var(--proposal-text-soft);
-  font-size: 12px;
-  line-height: 1.32;
+  font-size: 11.5px;
+  line-height: 1.25;
 }
 
 .hexnovasDecisionReceiptDisclosure {
@@ -8716,7 +8718,7 @@
 
 .hexnovasDecisionReceiptDisclosure summary {
   min-height: 48px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(130px, 0.18fr) minmax(0, 1fr) minmax(210px, auto);
@@ -8727,7 +8729,7 @@
 .hexnovasDecisionReceiptDisclosure summary strong {
   min-width: 0;
   color: var(--proposal-text);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.16;
 }
 
@@ -8744,7 +8746,7 @@
 
 .hexnovasDecisionReceipt {
   margin: 0 8px 8px;
-  padding: 8px;
+  padding: 7px;
   display: grid;
   grid-template-columns: minmax(210px, 0.32fr) minmax(0, 1fr);
   gap: 8px;
@@ -8761,15 +8763,15 @@
 
 .hexnovasDecisionReceipt strong {
   color: var(--proposal-text);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.18;
 }
 
 .hexnovasDecisionReceipt p {
   margin: 0;
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.25;
 }
 
 .hexnovasDecisionReceipt ol {
@@ -8783,10 +8785,10 @@
 
 .hexnovasDecisionReceipt li {
   min-width: 0;
-  min-height: 62px;
+  min-height: 56px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 7px;
+  padding: 6px;
   background: rgba(255, 255, 255, 0.78);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -8819,7 +8821,7 @@
 .hexnovasSourceDigest,
 .hexnovasSelectedDisclosure,
 .hexnovasVariantDisclosure {
-  padding: 10px;
+  padding: 9px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 24%, #ffffff)),
     #ffffff;
@@ -8864,18 +8866,18 @@
 .hexnovasSourceDigest .hexnovasPackageIndex,
 .hexnovasSelectedDisclosure .hexnovasSelectedPanel,
 .hexnovasVariantDisclosure .hexnovasVariantGrid {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .hexnovasSummaryRail {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasSummaryRail article {
-  min-height: 94px;
-  padding: 10px;
+  min-height: 82px;
+  padding: 8px;
   display: grid;
   gap: 5px;
   align-content: start;
@@ -8883,18 +8885,18 @@
 
 .hexnovasSummaryRail strong {
   color: var(--proposal-text);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.14;
 }
 
 .hexnovasSummaryRail small {
   color: var(--proposal-text-soft);
-  font-size: 11.5px;
-  line-height: 1.3;
+  font-size: 11px;
+  line-height: 1.24;
 }
 
 .hexnovasPackageIndex {
-  padding: 12px;
+  padding: 10px;
   display: grid;
   gap: 8px;
   background:
@@ -8905,13 +8907,13 @@
 .hexnovasPackageIndexIntro {
   display: grid;
   grid-template-columns: minmax(160px, 0.22fr) minmax(260px, 0.34fr) minmax(0, 1fr);
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .hexnovasPackageIndexIntro strong {
   color: var(--proposal-text);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.14;
 }
 
@@ -8922,14 +8924,14 @@
 .hexnovasArchiveBreakdown small,
 .hexnovasPackageIndexStats small {
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.38;
+  font-size: 12px;
+  line-height: 1.32;
 }
 
 .hexnovasPackageIndexStats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasPackageIndexStats article,
@@ -8938,10 +8940,10 @@
   min-width: 0;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.8);
   display: grid;
-  gap: 6px;
+  gap: 5px;
   align-content: start;
 }
 
@@ -8981,24 +8983,24 @@
 
 .hexnovasPackageIndexStats strong {
   color: var(--proposal-text);
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
 }
 
 .hexnovasPackageRules {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasPackageRules strong {
   color: var(--proposal-text);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.22;
 }
 
 .hexnovasArchiveBreakdown {
-  padding: 10px;
+  padding: 9px;
   box-shadow: none;
 }
 
@@ -9024,10 +9026,10 @@
 }
 
 .hexnovasArchiveBreakdown > div {
-  margin-top: 8px;
+  margin-top: 7px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasArchiveBreakdown article strong {
@@ -9039,19 +9041,19 @@
 .hexnovasVariantGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .hexnovasVariantCard {
   min-width: 0;
   min-height: 44px;
-  padding: 10px;
+  padding: 9px;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   display: grid;
-  gap: 7px;
+  gap: 6px;
   align-content: start;
 }
 
@@ -9076,13 +9078,13 @@
 
 .hexnovasVariantCard strong {
   color: var(--proposal-text);
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.08;
 }
 
 .hexnovasVariantCard small {
   color: var(--proposal-text-soft);
-  font-size: 11.5px;
+  font-size: 11px;
   line-height: 1.25;
 }
 
@@ -9152,15 +9154,15 @@
 .hexnovasSelectedPanel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(290px, 0.34fr);
-  gap: 10px;
+  gap: 8px;
   align-items: start;
 }
 
 .hexnovasSelectedMain,
 .hexnovasCostBox {
-  padding: 12px;
+  padding: 10px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   align-content: start;
 }
 
@@ -9177,9 +9179,9 @@
 }
 
 .hexnovasSelectedMain h3 {
-  margin-top: 4px;
+  margin-top: 3px;
   color: var(--proposal-text);
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1.1;
 }
 
@@ -9189,8 +9191,8 @@
 .hexnovasCostBox small,
 .hexnovasSelectedDecisionDetails p {
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.42;
+  font-size: 12.5px;
+  line-height: 1.34;
 }
 
 .hexnovasAlert,
@@ -9198,7 +9200,7 @@
 .hexnovasCostDetails {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 9px;
   background: color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff);
   overflow: visible;
 }
@@ -9225,7 +9227,7 @@
 .hexnovasCostDetails p,
 .hexnovasCostDetails dl,
 .hexnovasCostDetails small {
-  margin-top: 8px;
+  margin-top: 7px;
 }
 
 .hexnovasAlert strong,
@@ -9252,7 +9254,7 @@
 
 .hexnovasCostSummary > strong {
   color: var(--proposal-text);
-  font-size: 28px;
+  font-size: 25px;
   line-height: 1;
 }
 
@@ -9267,13 +9269,13 @@
 }
 
 .hexnovasComparison {
-  padding: 8px;
+  padding: 7px;
   display: grid;
   gap: 6px;
 }
 
 .hexnovasComparisonDisclosure {
-  padding: 10px;
+  padding: 9px;
 }
 
 .hexnovasComparisonDisclosure summary {
@@ -9345,19 +9347,19 @@
 .hexnovasEvidenceBridge {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
     #ffffff;
   display: grid;
   grid-template-columns: minmax(210px, 0.28fr) minmax(0, 1fr) minmax(260px, 0.32fr);
-  gap: 10px;
+  gap: 8px;
   align-items: stretch;
   overflow: visible;
 }
 
 .hexnovasEvidenceBridgeDisclosure {
-  padding: 10px;
+  padding: 9px;
   overflow: visible;
 }
 
@@ -9384,7 +9386,7 @@
 }
 
 .hexnovasEvidenceBridgeDisclosure .hexnovasEvidenceBridge {
-  margin-top: 8px;
+  margin-top: 7px;
   box-shadow: none;
 }
 
@@ -9394,14 +9396,14 @@
   min-width: 0;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.78);
 }
 
 .hexnovasEvidenceBridgeMain,
 .hexnovasEvidenceBridgeAction {
   display: grid;
-  gap: 7px;
+  gap: 6px;
   align-content: start;
 }
 
@@ -9419,7 +9421,7 @@
 .hexnovasEvidenceBridgeMain strong,
 .hexnovasEvidenceBridgeAction strong {
   color: var(--proposal-text);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.16;
 }
 
@@ -9429,15 +9431,15 @@
 .hexnovasEvidenceBridgeStats small {
   margin: 0;
   color: var(--proposal-text-soft);
-  font-size: 12.5px;
-  line-height: 1.42;
+  font-size: 12px;
+  line-height: 1.34;
 }
 
 .hexnovasEvidenceBridgeStats {
   min-width: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .hexnovasEvidenceBridgeStats article {
@@ -9447,20 +9449,20 @@
 
 .hexnovasEvidenceBridgeStats strong {
   color: var(--proposal-text);
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
 }
 
 .hexnovasDecisionGrid {
   display: grid;
   grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .hexnovasTimeline,
 .hexnovasRiskControls,
 .hexnovasDocumentSignals {
-  padding: 10px;
+  padding: 9px;
 }
 
 .hexnovasTimeline summary,
@@ -9492,8 +9494,8 @@
 .hexnovasRiskControls > div,
 .hexnovasDocumentSignals > div {
   display: grid;
-  gap: 7px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 7px;
 }
 
 .hexnovasTimeline article,
@@ -9502,7 +9504,7 @@
   min-width: 0;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 9px;
+  padding: 8px;
   background: var(--proposal-surface-soft);
   display: grid;
   gap: 5px;
@@ -9574,7 +9576,7 @@
 .hexnovasRiskControls article strong,
 .hexnovasDocumentSignals article strong {
   color: var(--proposal-text);
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.2;
 }
 
@@ -9582,8 +9584,8 @@
 .hexnovasRiskControls article p,
 .hexnovasDocumentSignals article p {
   color: var(--proposal-text-soft);
-  font-size: 12px;
-  line-height: 1.36;
+  font-size: 11.5px;
+  line-height: 1.3;
 }
 
 .hexnovasRiskControls article small,
