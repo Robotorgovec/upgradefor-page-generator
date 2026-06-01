@@ -1463,14 +1463,20 @@ function PlateHeatExchangerModel({
 }) {
   const groupRef = useRef<Group>(null);
   const readyRef = useRef(false);
-  const plateCount = 42;
-  const plateSpan = 2.32;
+  const plateCount = 54;
+  const plateSpan = 2.46;
   const activeTint = activeLayer === "documents" || activeLayer === "sales" ? "#4f7ea8" : activeLayer === "delivery" ? "#f59f55" : "#f05f6d";
   const portPoints = [
     { key: "warm-supply", y: 0.74, z: 0.61, color: "#f47686", ring: "#9f1239" },
     { key: "warm-return", y: -0.74, z: 0.61, color: "#f47686", ring: "#9f1239" },
     { key: "cold-supply", y: 0.74, z: -0.61, color: "#7dc7f2", ring: "#0369a1" },
     { key: "cold-return", y: -0.74, z: -0.61, color: "#7dc7f2", ring: "#0369a1" },
+  ] as const;
+  const frameBeamPoints = [
+    { key: "top-front", y: 1.36, z: 0.86 },
+    { key: "top-back", y: 1.36, z: -0.86 },
+    { key: "bottom-front", y: -1.36, z: 0.86 },
+    { key: "bottom-back", y: -1.36, z: -0.86 },
   ] as const;
 
   useFrame((state) => {
@@ -1528,6 +1534,20 @@ function PlateHeatExchangerModel({
         </mesh>
       ))}
 
+      {frameBeamPoints.map((beam) => (
+        <mesh key={`frame-beam-${beam.key}`} position={[0, beam.y, beam.z]} castShadow receiveShadow>
+          <boxGeometry args={[3.08, 0.07, 0.09]} />
+          <meshStandardMaterial color="#263447" metalness={0.5} roughness={0.22} />
+        </mesh>
+      ))}
+
+      {[-0.42, 0.42].map((z) => (
+        <mesh key={`service-guide-${z}`} position={[0, 0, z]} castShadow receiveShadow>
+          <boxGeometry args={[2.86, 0.035, 0.045]} />
+          <meshStandardMaterial color={z > 0 ? "#f47686" : "#7dc7f2"} emissive={z > 0 ? "#f05f6d" : "#329ed8"} emissiveIntensity={0.12} metalness={0.32} roughness={0.24} />
+        </mesh>
+      ))}
+
       {[-0.55, 0.55].map((z) => (
         <mesh key={`flow-cold-${z}`} position={[0, -0.18, z]} castShadow>
           <boxGeometry args={[2.58, 0.05, 0.052]} />
@@ -1557,6 +1577,10 @@ function PlateHeatExchangerModel({
 
       {portPoints.map((port, index) => (
         <group key={`port-${port.key}`} position={[1.58, port.y, port.z]}>
+          <mesh position={[-0.18, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.34, 0.34, 0.045, 64]} />
+            <meshStandardMaterial color={port.ring} metalness={0.42} roughness={0.24} />
+          </mesh>
           <mesh position={[-0.05, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
             <cylinderGeometry args={[0.26, 0.26, 0.2, 56]} />
             <meshStandardMaterial color="#cbd5e1" metalness={0.48} roughness={0.22} />
@@ -1584,6 +1608,10 @@ function PlateHeatExchangerModel({
           <mesh position={[0.8, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
             <cylinderGeometry args={[0.09, 0.09, 0.025, 36]} />
             <meshStandardMaterial color="#020617" metalness={0.22} roughness={0.5} />
+          </mesh>
+          <mesh position={[0.93, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.095, 0.095, 0.18, 36]} />
+            <meshStandardMaterial color="#101827" metalness={0.5} roughness={0.24} />
           </mesh>
           {Array.from({ length: 10 }, (_, boltIndex) => {
             const angle = (boltIndex / 10) * Math.PI * 2;
@@ -1637,6 +1665,10 @@ function PlateHeatExchangerModel({
       <mesh position={[1.735, 0.08, 0.02]} castShadow receiveShadow>
         <boxGeometry args={[0.012, 0.46, 0.28]} />
         <meshStandardMaterial color="#f7d76c" metalness={0.18} roughness={0.42} />
+      </mesh>
+      <mesh position={[1.77, -0.44, 0.02]} castShadow receiveShadow>
+        <boxGeometry args={[0.014, 0.32, 0.2]} />
+        <meshStandardMaterial color="#dbeafe" metalness={0.18} roughness={0.38} />
       </mesh>
     </group>
   );
