@@ -14514,8 +14514,7 @@
 
   .hexnovasDocumentSignals > div,
   .hexnovasComparisonRow,
-  .hexnovasEvidenceBridgeStats,
-  .hexnovasVariantCard dl {
+  .hexnovasEvidenceBridgeStats {
     grid-template-columns: 1fr;
   }
 
@@ -14577,15 +14576,45 @@
     display: none;
   }
 
-  .hexnovasPackageIndexStats,
   .hexnovasPackageRules,
   .hexnovasArchiveBreakdown > div {
     grid-template-columns: 1fr;
   }
 
-  .hexnovasVariantCard small,
-  .hexnovasVariantCard dl {
+  .hexnovasVariantGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .hexnovasVariantCard {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    min-height: 82px;
+    align-content: start;
+  }
+
+  .hexnovasVariantCard > span {
     display: none;
+  }
+
+  .hexnovasVariantCard small {
+    display: none;
+  }
+
+  .hexnovasVariantCard strong {
+    font-size: 13px;
+    line-height: 1.12;
+  }
+
+  .hexnovasPressureRow {
+    gap: 3px;
+    justify-content: flex-start;
+  }
+
+  .hexnovasPressureBadge {
+    min-height: 21px;
+    padding: 3px 4px;
+    font-size: 8.5px;
   }
 
   .sourceDocsSection {
