@@ -1877,7 +1877,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     "Boundary:",
     "UPGRADE структурирует source data, supplier evidence, decision board, risk register and handover pack. Технические, договорные и проектные решения подтверждают WinGPro и профильные участники.",
     "",
+    `send_to: ${HEXNOVAS_DECISION_EMAIL}`,
     `source_path: ${proposalPath}`,
+    `decision_board: ${proposalPath}#hexnovas-decision-board`,
   ].join("\n");
   const hexnovasDecisionMailto = `mailto:${HEXNOVAS_DECISION_EMAIL}?subject=${encodeURIComponent(hexnovasDecisionEmailSubject)}&body=${encodeURIComponent(hexnovasDecisionEmailText)}`;
   const hexnovasEvidenceBridgeStats = [
@@ -2822,7 +2824,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <summary>
             <span>decision receipt</span>
             <strong>Что произойдет после выбора</strong>
-            <small>Открыть email → PI / drawing / evidence route</small>
+            <small>Email / copy fallback → PI / drawing / evidence route</small>
           </summary>
           <aside className={styles.hexnovasDecisionReceipt} aria-label="Decision receipt after variant selection">
             <div>
