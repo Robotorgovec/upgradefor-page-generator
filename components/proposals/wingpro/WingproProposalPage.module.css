@@ -468,8 +468,8 @@
 
 .cockpitSummaryBoard {
   display: grid;
-  gap: 8px;
-  padding: 10px;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
   background:
@@ -526,53 +526,83 @@
 
 .cockpitSummaryGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .cockpitKpiRail {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .cockpitKpiRail article {
+  position: relative;
   min-width: 0;
-  min-height: 66px;
-  display: grid;
-  align-content: start;
-  gap: 4px;
-  padding: 8px;
-  border: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  min-height: 78px;
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 10px;
+  border-right: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.cockpitKpiRail article:last-child {
+  border-right: 0;
 }
 
 .cockpitKpiRail article:first-child {
-  border-color: var(--proposal-brand-border-strong);
+  border-color: color-mix(in srgb, var(--proposal-border) 82%, transparent);
   background:
     linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 62%, #ffffff)),
     #ffffff;
-  box-shadow: var(--proposal-shadow-sm);
 }
 
 .cockpitKpiRail span {
+  flex: 0 0 auto;
+  min-width: 34px;
+  min-height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.cockpitKpiRail div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.cockpitKpiRail small {
   color: var(--proposal-text-muted);
   font-size: 9.5px;
   font-weight: 950;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  line-height: 1.1;
 }
 
 .cockpitKpiRail strong {
   color: var(--proposal-text);
-  font-size: 12.5px;
-  line-height: 1.2;
+  font-size: 13px;
+  line-height: 1.18;
 }
 
-.cockpitKpiRail small {
+.cockpitKpiRail em {
   color: var(--proposal-text-soft);
   font-size: 10.5px;
+  font-style: normal;
   line-height: 1.22;
 }
 
@@ -603,11 +633,12 @@
 }
 
 .cockpitSummaryGrid button {
-  min-height: 82px;
+  min-height: 74px;
   display: grid;
-  align-content: start;
-  gap: 5px;
-  padding: 9px;
+  grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+  gap: 5px 10px;
+  align-content: center;
+  padding: 10px;
   border: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
   border-radius: 8px;
   color: var(--proposal-text-soft);
@@ -642,20 +673,39 @@
   text-transform: uppercase;
 }
 
+.cockpitSummaryGrid span {
+  grid-column: 1;
+}
+
 .cockpitSummaryGrid strong {
+  grid-column: 1;
   color: var(--proposal-text);
   font-size: 13px;
   line-height: 1.22;
 }
 
 .cockpitSummaryGrid small {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 6px 9px;
   color: var(--proposal-brand-contrast);
+  background: #ffffff;
   font-size: 10.5px;
   font-weight: 850;
   line-height: 1.24;
 }
 
 .cockpitSummaryGrid em {
+  grid-column: 1 / -1;
   margin-top: auto;
   color: var(--proposal-text-soft);
   display: -webkit-box;
@@ -12432,7 +12482,7 @@
 
   .cockpitSummaryGrid,
   .cockpitKpiRail {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
@@ -12447,7 +12497,8 @@
   }
 
   .cockpitKpiRail article {
-    min-height: 56px;
+    min-height: 64px;
+    border-right: 0;
   }
 
   .cockpitDecisionActionBar {
@@ -12490,6 +12541,7 @@
   .cockpitSummaryGrid small,
   .cockpitSummaryGrid em,
   .cockpitKpiRail small,
+  .cockpitKpiRail em,
   .cockpitDecisionActionBar small,
   .cockpitDecisionActionBar p {
     display: -webkit-box;
@@ -13090,18 +13142,19 @@
   }
 
   .cockpitSummaryGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 6px;
   }
 
   .cockpitKpiRail {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
   .cockpitKpiRail article {
-    min-height: 52px;
+    min-height: 64px;
     padding: 6px;
+    border-right: 0;
   }
 
   .cockpitKpiRail span {
@@ -13120,6 +13173,16 @@
   }
 
   .cockpitKpiRail small {
+    display: -webkit-box;
+    max-height: 2.28em;
+    overflow: hidden;
+    font-size: 9px;
+    line-height: 1.14;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitKpiRail em {
     display: -webkit-box;
     max-height: 2.28em;
     overflow: hidden;
@@ -13170,6 +13233,7 @@
   }
 
   .cockpitSummaryGrid button {
+    grid-template-columns: 1fr;
     min-height: 64px;
     gap: 4px;
     padding: 6px;
@@ -13191,13 +13255,12 @@
   }
 
   .cockpitSummaryGrid small {
-    display: -webkit-box;
-    max-height: 2.24em;
-    overflow: hidden;
+    grid-column: 1;
+    grid-row: auto;
+    min-height: 28px;
+    display: inline-flex;
     font-size: 9px;
     line-height: 1.12;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
   }
 
   .cockpitSummaryGrid em {
@@ -15941,7 +16004,7 @@
   }
 
   .cockpitSummaryGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 5px;
   }
 

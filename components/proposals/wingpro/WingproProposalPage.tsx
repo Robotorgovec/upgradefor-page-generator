@@ -3282,11 +3282,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </button>
           </div>
           <div className={styles.cockpitKpiRail} aria-label="Cockpit operating KPIs">
-            {cockpitKpis.map((item) => (
+            {cockpitKpis.map((item, index) => (
               <article key={item.label}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-                <small>{item.detail}</small>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <small>{item.label}</small>
+                  <strong>{item.value}</strong>
+                  <em>{item.detail}</em>
+                </div>
               </article>
             ))}
           </div>
@@ -3300,6 +3303,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 key={item.label}
                 type="button"
                 data-active={activePresentationMode === item.mode}
+                aria-pressed={activePresentationMode === item.mode}
                 onClick={() => setActivePresentationMode(item.mode)}
               >
                 <span>{item.label}</span>
