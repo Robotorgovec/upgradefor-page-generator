@@ -8254,6 +8254,7 @@
 .hexnovasDecisionStatus,
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
+.hexnovasDecisionOwnerDisclosure,
 .hexnovasDecisionEmailPacket,
 .hexnovasDecisionReceiptDisclosure,
 .hexnovasDecisionReceipt,
@@ -8384,9 +8385,77 @@
 .hexnovasDecisionOwnerFields {
   min-width: 0;
   display: grid;
-  grid-column: 2;
   grid-template-columns: minmax(180px, 0.34fr) minmax(0, 1fr);
   gap: 8px;
+}
+
+.hexnovasDecisionOwnerDisclosure {
+  min-width: 0;
+  grid-column: 2;
+  padding: 8px 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), color-mix(in srgb, var(--proposal-brand-soft) 18%, #ffffff)),
+    #ffffff;
+}
+
+.hexnovasDecisionOwnerDisclosure summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.2fr) minmax(0, 1fr) minmax(140px, 0.28fr) 28px;
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasDecisionOwnerDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.hexnovasDecisionOwnerDisclosure summary::after {
+  content: "+";
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 999px;
+  color: var(--proposal-brand);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.hexnovasDecisionOwnerDisclosure[open] summary::after {
+  content: "-";
+}
+
+.hexnovasDecisionOwnerDisclosure summary span,
+.hexnovasDecisionOwnerDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionOwnerDisclosure summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.hexnovasDecisionOwnerDisclosure summary small {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hexnovasDecisionOwnerDisclosure .hexnovasDecisionOwnerFields {
+  margin-top: 8px;
 }
 
 .hexnovasDecisionOwnerFields label {
@@ -15454,6 +15523,7 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
+  .hexnovasDecisionOwnerDisclosure summary,
   .hexnovasDecisionEmailPacket summary,
   .hexnovasDecisionReceipt,
   .hexnovasDecisionReceiptDisclosure summary,
@@ -15528,6 +15598,21 @@
   .sourceDocsSummaryActions {
     align-content: center;
   }
+
+  .hexnovasDecisionOwnerDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 28px;
+  }
+
+  .hexnovasDecisionOwnerDisclosure summary span,
+  .hexnovasDecisionOwnerDisclosure summary strong,
+  .hexnovasDecisionOwnerDisclosure summary small {
+    grid-column: 1;
+  }
+
+  .hexnovasDecisionOwnerDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
 }
 
 @media (max-width: 560px) {
@@ -15581,6 +15666,7 @@
   .hexnovasSummaryRail article,
   .hexnovasDecisionActionPanel,
   .hexnovasDecisionReceipt,
+  .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionQuickPick button,
   .hexnovasPackageIndex,
   .hexnovasPackageIndexStats article,
@@ -15643,6 +15729,7 @@
   .hexnovasTimeline summary,
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
+  .hexnovasDecisionOwnerDisclosure summary,
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
   .hexnovasDecisionEmailPacket summary,
@@ -15658,6 +15745,7 @@
   .hexnovasTimeline summary small,
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
+  .hexnovasDecisionOwnerDisclosure summary small,
   .hexnovasDecisionReceiptDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
   .hexnovasDecisionEmailPacket summary small,
@@ -15694,6 +15782,7 @@
 
   .hexnovasDecisionActionIntro,
   .hexnovasDecisionQuickPick,
+  .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
   .hexnovasDecisionEmailPacket {

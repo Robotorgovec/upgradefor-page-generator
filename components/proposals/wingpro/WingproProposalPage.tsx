@@ -2767,28 +2767,35 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               );
             })}
           </div>
-          <div className={styles.hexnovasDecisionOwnerFields} aria-label="Данные decision owner для письма">
-            <label>
-              <span>Кто подтверждает</span>
-              <input
-                type="text"
-                value={hexnovasDecisionOwner}
-                onChange={(event) => setHexnovasDecisionOwner(event.currentTarget.value)}
-                placeholder="Имя / должность"
-                aria-label="Имя и должность decision owner"
-              />
-            </label>
-            <label>
-              <span>Комментарий к выбору</span>
-              <textarea
-                value={hexnovasDecisionComment}
-                onChange={(event) => setHexnovasDecisionComment(event.currentTarget.value)}
-                placeholder="Например: выбираем TH150B / 316L, запросить обновленный PI и GA drawing"
-                aria-label="Комментарий к решению по выбору теплообменника"
-                rows={2}
-              />
-            </label>
-          </div>
+          <details className={styles.hexnovasDecisionOwnerDisclosure}>
+            <summary>
+              <span>owner / comment</span>
+              <strong>Дополнить письмо decision owner и комментарием</strong>
+              <small>{hexnovasDecisionOwner.trim() ? hexnovasDecisionOwner : "опционально перед отправкой"}</small>
+            </summary>
+            <div className={styles.hexnovasDecisionOwnerFields} aria-label="Данные decision owner для письма">
+              <label>
+                <span>Кто подтверждает</span>
+                <input
+                  type="text"
+                  value={hexnovasDecisionOwner}
+                  onChange={(event) => setHexnovasDecisionOwner(event.currentTarget.value)}
+                  placeholder="Имя / должность"
+                  aria-label="Имя и должность decision owner"
+                />
+              </label>
+              <label>
+                <span>Комментарий к выбору</span>
+                <textarea
+                  value={hexnovasDecisionComment}
+                  onChange={(event) => setHexnovasDecisionComment(event.currentTarget.value)}
+                  placeholder="Например: выбираем TH150B / 316L, запросить обновленный PI и GA drawing"
+                  aria-label="Комментарий к решению по выбору теплообменника"
+                  rows={2}
+                />
+              </label>
+            </div>
+          </details>
           <div className={styles.hexnovasDecisionMailActions}>
             <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
               Открыть письмо на info@upgradefor.com
