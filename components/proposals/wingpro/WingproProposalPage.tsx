@@ -1799,6 +1799,17 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           detail: "Рекомендованная линия может идти дальше только после сверки supplier evidence, модели, материала и чертежа.",
           owner: "supplier + WinGPro technical owner",
         };
+  const hexnovasVaultRouteCards = [
+    ["recommended route", "TH150B / 316L", "Gate 1", "обновить PI + GA drawing под выбранную модель", "supplier + WinGPro technical owner"],
+    ["material decision", "TH150B / 304", "Owner decision", "оставить как эконом-вариант только после письменного согласия", "WinGPro technical owner"],
+    ["risk evidence", "BH150B / 316L", "Risk Radar", "не использовать как рекомендацию без hydraulic approval", "project designer / WinGPro technical owner"],
+    ["supplier identity", "CE/PED + ISO + registration", "Vault check", "сложить в evidence pack и передать на профильную проверку", "WinGPro / supplier"],
+  ] as const;
+  const hexnovasVaultTraceStats = [
+    ["source signals", String(hexnovasVaultTraceRows.length), "linked to release gates"],
+    ["primary owners", String(new Set(hexnovasVaultTraceRows.map((row) => row.owner)).size), "owner queue is explicit"],
+    ["approval boundaries", String(hexnovasVaultTraceRows.filter((row) => row.approvalBoundary.includes("UPGRADE") || row.approvalBoundary.includes("WinGPro")).length), "role boundary shown per row"],
+  ] as const;
   const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
   const decisionPath = [
     {
@@ -4071,6 +4082,35 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.vaultQuickActions}>
             <button type="button" onClick={showVaultOpenItems}>Show missing/requested</button>
             <button type="button" onClick={resetVaultFilters}>Reset filters</button>
+          </div>
+        </div>
+        <div className={styles.hexnovasVaultRouteLayer} aria-label="Hexnovas source to vault route summary">
+          <div className={styles.hexnovasVaultRouteIntro}>
+            <span>Hexnovas route layer</span>
+            <strong>Source → Data-room → Gate → Owner → Action</strong>
+            <p>Короткий слой показывает, как архив поставщика превращается в queue для Document Vault: что идет в release, что требует решения владельца и где остается boundary UPGRADE.</p>
+          </div>
+          <div className={styles.hexnovasVaultRouteStats}>
+            {hexnovasVaultTraceStats.map(([label, value, note]) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{note}</small>
+              </article>
+            ))}
+          </div>
+          <div className={styles.hexnovasVaultRouteCards}>
+            {hexnovasVaultRouteCards.map(([label, title, gateName, action, owner]) => (
+              <article key={title}>
+                <span>{label}</span>
+                <strong>{title}</strong>
+                <dl>
+                  <div><dt>Gate</dt><dd>{gateName}</dd></div>
+                  <div><dt>Action</dt><dd>{action}</dd></div>
+                  <div><dt>Owner</dt><dd>{owner}</dd></div>
+                </dl>
+              </article>
+            ))}
           </div>
         </div>
         <details className={styles.hexnovasVaultTrace}>
