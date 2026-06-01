@@ -18,7 +18,13 @@ import {
   hexnovasVaultTraceRows,
   type HexnovasVariantId,
 } from "./wingproHexnovasProcurement";
-import { sourceDocuments, sourceDocumentInsights, sourceTraceabilityRows, type SourceDocument } from "./wingproSourceDocuments";
+import {
+  purchasedPumpAssignments,
+  sourceDocuments,
+  sourceDocumentInsights,
+  sourceTraceabilityRows,
+  type SourceDocument,
+} from "./wingproSourceDocuments";
 
 type TwinLayerId = "equipment" | "specification" | "documents" | "delivery" | "installation" | "sales";
 type SceneId = "source" | "verify" | "negotiate" | "contract" | "produce" | "ship" | "handover" | "reuse";
@@ -1833,11 +1839,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["route links", String(new Set(visibleDocs.map((doc) => getVaultRouteLink(doc[0], doc[3]))).size), "delivery points connected to vault"],
   ] as const;
   const sourceDocumentStats = [
-    ["2 PDF-файла", "полные исходники", "просмотр и скачивание"],
+    [`${sourceDocuments.length} PDF-файла`, "исходники + паспорта", "просмотр и скачивание"],
     ["ХС / холодоснабжение", "source scope", "без расширения до всего ФОК"],
-    ["Поставка + монтажная подготовка", "PlateHE zone", "исходные параметры и handoff"],
+    ["Pedrollo 2+2", "закупленные насосы", "сверить серийники и место установки"],
     ["Исходная база", "не утверждение UPGRADE", "передается профильным участникам"],
   ] as const;
+  const purchasedPumpDocs = sourceDocuments.filter((doc) => doc.procurementStatus);
   const hexnovasArchiveFileCount = hexnovasArchiveGroups.reduce((sum, item) => sum + item.files, 0);
   const hexnovasPublicEvidenceCount = sourceDocuments.length + hexnovasDocumentSignals.filter((item) => Boolean(item.href)).length;
   const hexnovasPrivateArchiveCount = hexnovasArchiveGroups.reduce((sum, item) => sum + Math.max(item.files - item.publicEvidence, 0), 0);
@@ -1854,7 +1861,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const activeHexnovasMaterialSignal = activeHexnovasVariant.material.includes("304")
     ? "замена материала требует письменного согласования"
     : "материал совпадает с референсом 316L";
-  const hexnovasDecisionPublicUrl = `https://upgradefor.com${proposalPath}#hexnovas-decision-board`;
+  const hexnovasDecisionPublicUrl = `https://upgradefor.com${proposalPath}?variant=${encodeURIComponent(activeHexnovasVariant.id)}#hexnovas-decision-board`;
   const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, supplier equipment package ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, supplier equipment package ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Эти суммы относятся к предложению Hexnovas на оборудование и логистическому reserve; это supplier-only ориентир, не итоговая стоимость проекта. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
   const hexnovasDecisionEmailSubject = `WinGPro decision — ${activeHexnovasVariant.shortName}`;
   const hexnovasDecisionEmailText = [
@@ -1916,7 +1923,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["Куда уйдет", HEXNOVAS_DECISION_EMAIL, "decision inbox"],
     ["Выбранный вариант", activeHexnovasVariant.shortName, activeHexnovasVariant.statusLabel],
     ["Следующий запрос", hexnovasNextEvidenceAction.title, hexnovasNextEvidenceAction.owner],
-    ["Публичная ссылка", "upgradefor.com → Decision Board", "копируется для ручной отправки"],
+    ["Публичная ссылка", "upgradefor.com → выбранный вариант", "копируется для ручной отправки"],
   ] as const;
   const hexnovasVaultRouteCards = [
     ["recommended route", "TH150B / 316L", "Gate 1", "обновить PI + GA drawing под выбранную модель", "supplier + WinGPro technical owner"],
@@ -2127,6 +2134,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     const storedAccess = window.localStorage.getItem(WINGPRO_ACCESS_STORAGE_KEY);
     setAccessStatus(storedAccess === "granted" ? "unlocked" : "locked");
   }, []);
+
+  useEffect(() => {
+    const variantParam = new URLSearchParams(window.location.search).get("variant");
+    const linkedVariant = hexnovasVariants.find((item) => item.id === variantParam);
+    if (!linkedVariant) return;
+    setActiveHexnovasVariantId(linkedVariant.id);
+    setHexnovasDecisionStatus(`Открыт вариант из ссылки: ${linkedVariant.shortName}`);
+  }, []);
+
+  function selectHexnovasVariant(item: (typeof hexnovasVariants)[number]) {
+    setActiveHexnovasVariantId(item.id);
+    setHexnovasDecisionStatus(`Выбран ${item.shortName}; письмо будет подготовлено на ${HEXNOVAS_DECISION_EMAIL}`);
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("variant", item.id);
+    window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}#hexnovas-decision-board`);
+  }
 
   function isDocVisible(doc: (typeof vaultDocs)[number]) {
     return (
@@ -2527,7 +2551,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <button type="button" onClick={copyHexnovasDecisionPublicLink}>Скопировать ссылку</button>
             </div>
             <a className={styles.missionCardPublicLink} href={hexnovasDecisionPublicUrl}>
-              upgradefor.com/cp/2605281047-wingpro#hexnovas-decision-board
+              Публичная ссылка на Decision Board: {activeHexnovasVariant.shortName}
             </a>
             <small role="status" aria-live="polite">{copyStatus}</small>
           </div>
@@ -2772,10 +2796,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   data-active={isActive}
                   data-tone={item.statusTone}
                   aria-pressed={isActive}
-                  onClick={() => {
-                    setActiveHexnovasVariantId(item.id);
-                    setHexnovasDecisionStatus(`Выбран ${item.shortName}; письмо будет подготовлено на ${HEXNOVAS_DECISION_EMAIL}`);
-                  }}
+                  onClick={() => selectHexnovasVariant(item)}
                 >
                   <span>{item.statusLabel}</span>
                   <strong>{item.shortName}</strong>
@@ -2967,7 +2988,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   className={styles.hexnovasVariantCard}
                   data-active={isActive}
                   data-tone={item.statusTone}
-                  onClick={() => setActiveHexnovasVariantId(item.id)}
+                  onClick={() => selectHexnovasVariant(item)}
                   aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
                 >
                   <span>{item.statusLabel}</span>
@@ -3052,7 +3073,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 role="row"
                 className={styles.hexnovasComparisonRow}
                 data-active={activeHexnovasVariant.id === item.id}
-                onClick={() => setActiveHexnovasVariantId(item.id)}
+                onClick={() => selectHexnovasVariant(item)}
               >
                 <span role="cell" data-label="Вариант">{item.shortName}</span>
                 <span role="cell" data-label="Supplier price / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
@@ -3418,7 +3439,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div>
             <p className={styles.eyebrow}>Source Data Room</p>
             <h2 id="source-documents-title">Исходные данные проекта</h2>
-            <p>Полные проектные PDF доступны для просмотра и скачивания. В рамках предложения UPGRADE использует эти материалы как исходный data-room для поставки, сверки, монтажной подготовки и handover по пластинчатым теплообменникам.</p>
+            <p>Полные проектные PDF и паспорта закупленного оборудования доступны для просмотра и скачивания. В рамках предложения UPGRADE использует эти материалы как исходный data-room для поставки, сверки, монтажной подготовки и handover по пластинчатым теплообменникам и связанному насосному interface ХС.</p>
           </div>
           <aside className={styles.sourceDocsLegalLine}>
             Файлы являются исходной проектной документацией объекта. UPGRADE не является проектировщиком, автором проекта, технадзором или организацией, утверждающей проектные решения.
@@ -3428,7 +3449,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.sourceDocsSummaryCard}>
           <div>
             <span className={styles.eyebrow}>пакет исходников</span>
-            <h3>Source Data Room для теплообменников</h3>
+            <h3>Source Data Room для теплообменников и насосов ХС</h3>
             <p>Материал используется как исходная информационная база, не заменяет проектную документацию и передается профильным участникам для проверки и утверждения.</p>
           </div>
           <div className={styles.sourceDocsStatusGrid} aria-label="Source document status">
@@ -3443,11 +3464,37 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.sourceDocsSummaryActions}>
             <span>действие</span>
             <strong>Скачать пакет исходных данных</strong>
-            <p>Два PDF скачиваются последовательно, без ZIP и без дублей в репозитории.</p>
+            <p>PDF скачиваются последовательно, без ZIP и без дублей в репозитории.</p>
             <button type="button" onClick={downloadSourceDocuments}>Скачать пакет исходных данных</button>
             {sourceDownloadStatus ? (
               <p className={styles.sourceDownloadStatus} role="status" aria-live="polite">{sourceDownloadStatus}</p>
             ) : null}
+          </div>
+        </div>
+
+        <div className={styles.pumpEvidencePanel} aria-label="Закупленные насосы Pedrollo">
+          <div className={styles.pumpEvidenceIntro}>
+            <span className={styles.eyebrow}>Purchased pump evidence</span>
+            <h3>Закупленные насосы Pedrollo в data-room</h3>
+            <p>По паспортам заведены два насосных типа: F100/200C и F80/160C. Для операционного контроля принято 2 шт. каждого типа; финальная привязка к контурам, серийные номера и накладные должны быть подтверждены WinGPro technical owner и монтажной стороной.</p>
+          </div>
+          <div className={styles.pumpAssignmentGrid}>
+            {purchasedPumpAssignments.map((item) => (
+              <article key={item.model}>
+                <span>{item.quantity}</span>
+                <strong>{item.model}</strong>
+                <p>{item.role}</p>
+                <small>{item.hydraulicLogic}</small>
+                <em>{item.confirmation}</em>
+              </article>
+            ))}
+          </div>
+          <div className={styles.pumpEvidenceDocLinks}>
+            {purchasedPumpDocs.map((doc) => (
+              <a key={doc.id} href={doc.href} target="_blank" rel="noreferrer">
+                {doc.equipmentModel}: открыть паспорт
+              </a>
+            ))}
           </div>
         </div>
 
@@ -3457,8 +3504,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <div className={styles.sourceDocTopline}>
                 <span>PDF</span>
                 <span>{doc.pagesLabel}</span>
-                <span>source</span>
-                <span>ХС</span>
+                <span>{doc.procurementStatus ? "purchased" : "source"}</span>
+                <span>{doc.equipmentModel ?? "ХС"}</span>
               </div>
               <div className={styles.sourceDocTitleRow}>
                 <div>
@@ -3479,9 +3526,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                       <div><dt>File</dt><dd>{doc.href.split("/").slice(-1)[0]}</dd></div>
                       <div><dt>Source name</dt><dd>{doc.sourceName}</dd></div>
                       <div><dt>Object</dt><dd>{doc.object}</dd></div>
+                      {doc.quantityLabel ? <div><dt>Quantity</dt><dd>{doc.quantityLabel}</dd></div> : null}
+                      {doc.procurementStatus ? <div><dt>Status</dt><dd>{doc.procurementStatus}</dd></div> : null}
+                      {doc.assignment ? <div><dt>Logic</dt><dd>{doc.assignment}</dd></div> : null}
+                      {doc.confirmationOwner ? <div><dt>Confirm</dt><dd>{doc.confirmationOwner}</dd></div> : null}
                       <div><dt>Checksum</dt><dd>{formatSourceChecksum(doc.checksumSha256)}</dd></div>
                     </dl>
                   </section>
+                  {doc.technicalFacts ? (
+                    <section>
+                      <h4>Технические факты</h4>
+                      <ul className={styles.sourceDocUtilityList}>
+                        {doc.technicalFacts.map((item) => <li key={item}>{item}</li>)}
+                      </ul>
+                    </section>
+                  ) : null}
                   <section>
                     <h4>Для чего используется</h4>
                     <ul className={styles.sourceDocUtilityList}>
