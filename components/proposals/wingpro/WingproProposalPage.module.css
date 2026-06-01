@@ -6265,17 +6265,27 @@
     var(--proposal-surface);
 }
 
+.vault .sectionHeader {
+  gap: 8px;
+}
+
+.vault .sectionHeader h2 {
+  max-width: 860px;
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 1.02;
+}
+
 .vaultReadinessBoard {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 14px;
+  padding: 12px;
   background:
     radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
     linear-gradient(135deg, #ffffff, #f8fbff);
   box-shadow: var(--proposal-shadow-md);
   display: grid;
   grid-template-columns: minmax(240px, 0.66fr) minmax(0, 1fr) minmax(220px, 0.56fr);
-  gap: 12px;
+  gap: 10px;
   align-items: start;
 }
 
@@ -6286,14 +6296,14 @@
 
 .vaultReadinessBoard h3 {
   color: var(--proposal-text);
-  font-size: 21px;
+  font-size: 19px;
   line-height: 1.12;
 }
 
 .vaultReadinessBoard p:not(.eyebrow) {
-  margin-top: 8px;
+  margin-top: 6px;
   color: var(--proposal-text-soft);
-  line-height: 1.42;
+  line-height: 1.35;
 }
 
 .vaultStats {
@@ -6303,19 +6313,19 @@
 }
 
 .vaultStats span {
-  min-height: 88px;
+  min-height: 76px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.78);
   display: grid;
-  gap: 6px;
+  gap: 4px;
   align-content: start;
 }
 
 .vaultStats strong {
   color: var(--proposal-brand-contrast);
-  font-size: 26px;
+  font-size: 22px;
   line-height: 1;
 }
 
@@ -6328,9 +6338,9 @@
 
 .vaultStats em {
   color: var(--proposal-text-muted);
-  font-size: 11px;
+  font-size: 10.5px;
   font-style: normal;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 .vaultOpenFocusDisclosure {
@@ -6341,11 +6351,11 @@
 }
 
 .vaultOpenFocusDisclosure summary {
-  min-height: 88px;
+  min-height: 76px;
   display: grid;
   gap: 5px;
   align-content: start;
-  padding: 11px 38px 11px 11px;
+  padding: 9px 36px 9px 9px;
   cursor: pointer;
   position: relative;
 }
@@ -6456,21 +6466,21 @@
 .vaultCommandStrip {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background:
     linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 64%, #ffffff)),
     #ffffff;
   box-shadow: var(--proposal-shadow-sm);
   display: grid;
   grid-template-columns: minmax(200px, 1.08fr) repeat(3, minmax(0, 0.8fr)) minmax(190px, 0.66fr);
-  gap: 8px;
+  gap: 7px;
   align-items: stretch;
 }
 
 .vaultCommandStrip > div {
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 8px;
+  padding: 7px;
   background: rgba(255, 255, 255, 0.76);
 }
 
@@ -6484,14 +6494,14 @@
 .vaultCommandStrip p {
   margin: 4px 0 0;
   color: var(--proposal-text);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 820;
-  line-height: 1.28;
+  line-height: 1.22;
 }
 
 .vaultQuickActions {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   align-content: stretch;
 }
 
@@ -6529,12 +6539,12 @@
 }
 
 .hexnovasVaultRouteSummary {
-  min-height: 72px;
-  padding: 14px 50px 14px 14px;
+  min-height: 64px;
+  padding: 12px 48px 12px 12px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(150px, 0.22fr) minmax(0, 0.48fr) minmax(210px, 0.3fr);
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   position: relative;
   list-style: none;
@@ -6601,7 +6611,7 @@
 .hexnovasVaultRouteSummary strong,
 .hexnovasVaultRouteIntro strong {
   color: var(--proposal-text);
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.16;
 }
 
@@ -6724,12 +6734,12 @@
 }
 
 .hexnovasVaultTrace summary {
-  min-height: 76px;
-  padding: 14px 48px 14px 14px;
+  min-height: 64px;
+  padding: 12px 46px 12px 12px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(160px, 0.24fr) minmax(0, 1fr) minmax(210px, 0.34fr);
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   position: relative;
   list-style: none;
@@ -6774,7 +6784,7 @@
 
 .hexnovasVaultTrace summary strong {
   color: var(--proposal-text);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.25;
 }
 
@@ -6960,12 +6970,12 @@
 }
 
 .vaultFilterDisclosure summary {
-  min-height: 76px;
-  padding: 16px 18px;
+  min-height: 64px;
+  padding: 12px 16px;
   cursor: pointer;
   display: grid;
   grid-template-columns: minmax(120px, 0.22fr) minmax(0, 1fr) minmax(190px, 0.34fr) 38px;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   list-style: none;
 }
@@ -7007,13 +7017,13 @@
 
 .vaultFilterDisclosure summary strong {
   color: var(--proposal-text);
-  font-size: 16px;
-  line-height: 1.35;
+  font-size: 15px;
+  line-height: 1.25;
 }
 
 .vaultFilterDisclosure summary small {
   color: var(--proposal-text-soft);
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .vaultFilterDisclosure .vaultControls,
@@ -7042,12 +7052,12 @@
 }
 
 .vaultCardsDisclosure summary {
-  min-height: 76px;
+  min-height: 64px;
   display: grid;
   grid-template-columns: minmax(140px, 0.22fr) minmax(0, 1fr) minmax(170px, 0.28fr);
-  gap: 12px;
+  gap: 10px;
   align-items: center;
-  padding: 14px 48px 14px 14px;
+  padding: 12px 46px 12px 12px;
   cursor: pointer;
   list-style: none;
   position: relative;
@@ -7088,7 +7098,7 @@
 
 .vaultCardsDisclosure summary strong {
   color: var(--proposal-text);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.22;
 }
 
