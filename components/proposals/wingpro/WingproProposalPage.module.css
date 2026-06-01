@@ -15152,6 +15152,191 @@
   .sourceDocActions a:nth-child(3)::before {
     content: "В data-room";
   }
+
+  .vault {
+    gap: 8px;
+  }
+
+  .vaultReadinessBoard {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .vaultReadinessBoard h3 {
+    font-size: 18px;
+  }
+
+  .vaultReadinessBoard p:not(.eyebrow),
+  .vaultStats em,
+  .vaultOpenList p,
+  .hexnovasVaultRouteIntro p,
+  .hexnovasVaultRouteStats small,
+  .hexnovasVaultRouteCardsDisclosure summary small,
+  .hexnovasVaultTrace summary small,
+  .vaultFilterDisclosure summary small,
+  .vaultCardsDisclosure summary small {
+    display: none;
+  }
+
+  .vaultStats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .vaultStats span {
+    min-height: 60px;
+    gap: 3px;
+    padding: 6px;
+  }
+
+  .vaultStats strong {
+    font-size: 20px;
+  }
+
+  .vaultStats small {
+    font-size: 8.5px;
+    line-height: 1.1;
+  }
+
+  .vaultOpenList,
+  .vaultCommandStrip,
+  .hexnovasVaultRouteLayer {
+    padding: 7px;
+  }
+
+  .vaultOpenList li {
+    padding: 6px;
+  }
+
+  .vaultOpenList li:nth-child(n+3) {
+    display: none;
+  }
+
+  .vaultCommandStrip {
+    gap: 5px;
+  }
+
+  .vaultCommandStrip > div {
+    padding: 6px;
+  }
+
+  .vaultCommandStrip span {
+    font-size: 8.5px;
+  }
+
+  .vaultCommandStrip p {
+    margin-top: 2px;
+    font-size: 11px;
+    line-height: 1.15;
+  }
+
+  .vaultQuickActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .vaultQuickActions button {
+    min-height: 44px;
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  .hexnovasVaultRouteStats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .hexnovasVaultRouteStats article {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .hexnovasVaultRouteStats strong {
+    font-size: 18px;
+  }
+
+  .hexnovasVaultTrace summary,
+  .vaultFilterDisclosure summary,
+  .vaultCardsDisclosure summary {
+    min-height: 54px;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    gap: 6px;
+    padding: 10px 42px 10px 10px;
+  }
+
+  .hexnovasVaultTrace summary::after,
+  .vaultCardsDisclosure summary::after {
+    right: 10px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .vaultFilterDisclosure summary::after {
+    width: 28px;
+    height: 28px;
+    grid-column: 2;
+  }
+
+  .hexnovasVaultTrace summary span,
+  .vaultFilterDisclosure summary span,
+  .vaultCardsDisclosure summary span {
+    font-size: 8.5px;
+  }
+
+  .hexnovasVaultTrace summary strong,
+  .vaultFilterDisclosure summary strong,
+  .vaultCardsDisclosure summary strong {
+    font-size: 13px;
+    line-height: 1.16;
+  }
+
+  .vaultCardsDisclosure .vaultGrid {
+    padding: 0 8px 8px;
+  }
+
+  .vaultGrid article {
+    min-height: 0;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .vaultGrid h3 {
+    font-size: 15px;
+  }
+
+  .vaultGrid dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+    margin-top: 6px;
+  }
+
+  .vaultGrid dl div {
+    padding: 6px;
+  }
+
+  .vaultGrid dl div:nth-child(3),
+  .vaultGrid dl div:nth-child(4),
+  .vaultGrid dl div:nth-child(6),
+  .vaultGrid dl div:nth-child(7),
+  .vaultGrid dl div:nth-child(8),
+  .vaultGrid dl div:nth-child(10),
+  .vaultGrid dl div:nth-child(11) {
+    display: none;
+  }
+
+  .vaultGrid dt {
+    font-size: 8.5px;
+  }
+
+  .vaultGrid dd {
+    margin-top: 2px;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .docTop > span:first-child {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 360px) {
