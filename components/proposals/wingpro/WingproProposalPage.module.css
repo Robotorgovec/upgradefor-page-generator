@@ -14855,6 +14855,29 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .digitalTwin .segmented {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .digitalTwin .segmented button {
+    padding: 6px 4px;
+    font-size: 9.5px;
+  }
+
+  .twinPanel section > p {
+    max-height: 2.7em;
+    -webkit-line-clamp: 2;
+  }
+
+  .twinInterfaceMap {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .twinInterfaceChips span:nth-child(n + 5) {
+    display: none;
+  }
+
   .twinControls button {
     min-height: 44px;
     padding: 6px;
@@ -14965,9 +14988,11 @@
   .hexnovasDecisionBoard {
     gap: 7px;
     padding: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hexnovasHeader {
+    grid-column: 1 / -1;
     gap: 7px;
   }
 
@@ -15112,7 +15137,29 @@
   }
 
   .hexnovasDecisionActionPanel {
+    grid-column: 1 / -1;
     gap: 7px;
+  }
+
+  .hexnovasDecisionMailActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .hexnovasDecisionMailActions a,
+  .hexnovasDecisionMailActions button {
+    padding: 8px 6px;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .hexnovasDecisionMailActions small {
+    grid-column: 1 / -1;
+    display: -webkit-box;
+    max-height: 1.25em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
 
   .hexnovasDecisionReceipt {
@@ -15168,6 +15215,57 @@
 
   .hexnovasDecisionQuickPick strong {
     font-size: 12px;
+  }
+
+  .hexnovasDecisionReceiptDisclosure,
+  .hexnovasSourceDigest,
+  .hexnovasVariantDisclosure,
+  .hexnovasComparisonDisclosure,
+  .hexnovasEvidenceBridgeDisclosure {
+    min-width: 0;
+    padding: 7px;
+  }
+
+  .hexnovasDecisionReceiptDisclosure[open],
+  .hexnovasSourceDigest[open],
+  .hexnovasVariantDisclosure[open],
+  .hexnovasComparisonDisclosure[open],
+  .hexnovasEvidenceBridgeDisclosure[open],
+  .hexnovasSelectedPanel,
+  .hexnovasDecisionGrid,
+  .hexnovasDocumentSignals {
+    grid-column: 1 / -1;
+  }
+
+  .hexnovasDecisionReceiptDisclosure summary,
+  .hexnovasSourceDigest summary,
+  .hexnovasVariantDisclosure summary,
+  .hexnovasComparisonDisclosure summary,
+  .hexnovasEvidenceBridgeDisclosure summary {
+    min-height: 48px;
+    padding: 6px 8px;
+  }
+
+  .hexnovasDecisionReceiptDisclosure summary span,
+  .hexnovasSourceDigest summary span,
+  .hexnovasVariantDisclosure summary span,
+  .hexnovasComparisonDisclosure summary span,
+  .hexnovasEvidenceBridgeDisclosure summary span {
+    display: none;
+  }
+
+  .hexnovasDecisionReceiptDisclosure summary strong,
+  .hexnovasSourceDigest summary strong,
+  .hexnovasVariantDisclosure summary strong,
+  .hexnovasComparisonDisclosure summary strong,
+  .hexnovasEvidenceBridgeDisclosure summary strong {
+    display: -webkit-box;
+    max-height: 2.4em;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .hexnovasVariantCard {
