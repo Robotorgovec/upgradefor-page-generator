@@ -3639,15 +3639,20 @@
 
 .controlCommandPanel dl {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns:
+    minmax(118px, 0.72fr)
+    minmax(142px, 0.9fr)
+    minmax(232px, 1.36fr)
+    minmax(160px, 1fr);
   gap: 8px;
 }
 
 .controlCommandPanel dl div {
-  min-height: 104px;
+  min-width: 0;
+  min-height: 96px;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 10px;
+  padding: 9px;
   background: rgba(255, 255, 255, 0.78);
 }
 
@@ -3660,10 +3665,13 @@
 }
 
 .controlCommandPanel dd {
-  margin: 6px 0 0;
+  margin: 5px 0 0;
   color: var(--proposal-text-soft);
   font-weight: 820;
-  line-height: 1.38;
+  line-height: 1.32;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 .projectControlDetailsDisclosure {
