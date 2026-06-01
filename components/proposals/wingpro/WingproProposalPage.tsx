@@ -1912,6 +1912,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["2", "Email", `готовое письмо открывается на ${HEXNOVAS_DECISION_EMAIL}`],
     ["3", "После отправки", hexnovasNextEvidenceAction.title],
   ] as const;
+  const hexnovasDecisionHandoffCards = [
+    ["Куда уйдет", HEXNOVAS_DECISION_EMAIL, "decision inbox"],
+    ["Выбранный вариант", activeHexnovasVariant.shortName, activeHexnovasVariant.statusLabel],
+    ["Следующий запрос", hexnovasNextEvidenceAction.title, hexnovasNextEvidenceAction.owner],
+    ["Публичная ссылка", "upgradefor.com → Decision Board", "копируется для ручной отправки"],
+  ] as const;
   const hexnovasVaultRouteCards = [
     ["recommended route", "TH150B / 316L", "Gate 1", "обновить PI + GA drawing под выбранную модель", "supplier + WinGPro technical owner"],
     ["material decision", "TH150B / 304", "Owner decision", "оставить как эконом-вариант только после письменного согласия", "WinGPro technical owner"],
@@ -2815,6 +2821,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               Скопировать письмо
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
+          </div>
+          <div className={styles.hexnovasDecisionHandoffStrip} aria-label="Куда ведет выбранное решение">
+            {hexnovasDecisionHandoffCards.map(([label, value, detail]) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{detail}</small>
+              </article>
+            ))}
           </div>
           <details className={styles.hexnovasDecisionEmailPacket}>
             <summary>

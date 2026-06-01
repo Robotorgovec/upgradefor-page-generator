@@ -8631,6 +8631,52 @@
   line-height: 1.35;
 }
 
+.hexnovasDecisionHandoffStrip {
+  min-width: 0;
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasDecisionHandoffStrip article {
+  min-width: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 7px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), color-mix(in srgb, var(--proposal-brand-soft) 22%, #ffffff)),
+    #ffffff;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.hexnovasDecisionHandoffStrip span {
+  color: var(--proposal-text-muted);
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionHandoffStrip strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.hexnovasDecisionHandoffStrip small {
+  color: var(--proposal-text-soft);
+  font-size: 10px;
+  font-weight: 850;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
 .hexnovasDecisionEmailPacket {
   min-width: 0;
   grid-column: 2;
@@ -15666,6 +15712,7 @@
   .hexnovasSummaryRail,
   .hexnovasPackageIndexStats,
   .hexnovasPackageRules,
+  .hexnovasDecisionHandoffStrip,
   .hexnovasDecisionReceipt ol,
   .hexnovasArchiveBreakdown > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -15908,6 +15955,7 @@
   .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
+  .hexnovasDecisionHandoffStrip,
   .hexnovasDecisionEmailPacket {
     grid-column: 1 / -1;
     grid-row: auto;
