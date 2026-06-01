@@ -254,12 +254,12 @@ const projectControlScale = [
     result: "handover register, photo evidence register, open issues, digital product card",
     decision: "результат остается как Digital Product Asset для повторных закупок и продаж",
     artifact: "Handover & Closeout",
-    status: "acceptance package",
+    status: "closeout package",
     owner: "UPGRADE / WinGPro",
     nextAction: "собрать data-room index, risk register, handover packs и digital product card",
     handoff: "closeout pack + reusable sales asset",
     anchor: "handover",
-    spineSignal: "acceptance package",
+    spineSignal: "closeout package",
   },
 ] as const satisfies ReadonlyArray<{
   id: ControlStepId;
@@ -564,7 +564,7 @@ const contractValueControls = [
 
 const acceptanceGuardrails = [
   ["Accepted by deliverables", "приемка результата осуществляется по deliverables", "data-room index, risk register, release board, handover packs and digital supplier/product cards"],
-  ["Not accepted by third-party outcomes", "manufacturer, carrier, broker, customs, mounting side and certification actions stay external", "tracked as external dependencies, not UPGRADE service acceptance criteria"],
+  ["Not accepted by third-party outcomes", "manufacturer, carrier, broker, customs, mounting side and certification actions stay external", "tracked as external dependencies, not UPGRADE closeout review criteria"],
   ["External costs excluded", "equipment, delivery, duties, VAT, broker, certification, mounting, PNR, inspection and bank commissions", "outside the 3 000 000 ₸ service price"],
   ["Decision owner remains WinGPro", "format, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
 ] as const;
@@ -757,7 +757,7 @@ const participantRoles = [
 
 const fieldTasks = [
   ["received", "Ready", "receiving photo + packing state"],
-  ["nameplate checked", "Needs evidence", "nameplate/photo/video before acceptance"],
+  ["nameplate checked", "Needs evidence", "nameplate/photo/video before closeout review"],
   ["photo report", "Planned", "before shipment / receiving / handover"],
   ["access path", "Blocked", "site owner required"],
   ["connection points", "Ready", "technical owner confirmation"],
@@ -831,7 +831,7 @@ const evidenceHandoffLinks = [
   },
   {
     phase: "Work progress",
-    gate: "Gate 6 — Before service acceptance",
+    gate: "Gate 6 — Before closeout review",
     fieldTasks: "installation started, blockers, owner updates",
     evidenceInput: "field task notes, blocker owner, status update",
     handoverPack: "Mounting Coordination Pack / WinGPro Executive Pack",
@@ -842,12 +842,12 @@ const evidenceHandoffLinks = [
   },
   {
     phase: "Handover",
-    gate: "Gate 6 — Before service acceptance",
+    gate: "Gate 6 — Before closeout review",
     fieldTasks: "handover, photo evidence register",
     evidenceInput: "completion notes, open issues, photo evidence register",
     handoverPack: "WinGPro Executive Pack / Future Sales Pack",
     riskLink: "closeout without reusable evidence trail",
-    owner: "WinGPro accepts service deliverables",
+    owner: "WinGPro reviews delivered packs",
     closeoutOutput: "handover register, photo evidence register and reusable product notes",
     boundary: "acceptance covers delivered UPGRADE artifacts, not third-party physical outcomes.",
   },
@@ -1012,7 +1012,7 @@ const routePoints = [
     gate: "Gate 6",
     readiness: "handover package shows what was delivered, what remains open and which owners approve next steps",
     response: "UPGRADE closes the information contour with handover register and reusable product data links.",
-    boundary: "WinGPro accepts service deliverables; third parties remain responsible for their physical work.",
+    boundary: "WinGPro reviews delivered information packs; third parties remain responsible for their physical work.",
   },
 ];
 
@@ -1037,7 +1037,7 @@ function getVaultReleaseLane(gate: string) {
   if (gate.includes("Gate 4")) return "customs / logistics handoff readiness";
   if (gate.includes("Gate 5")) return "mounting handoff readiness";
   if (gate.includes("Gate 7")) return "digital product asset readiness";
-  return "service acceptance readiness";
+  return "closeout readiness";
 }
 
 function getVaultRouteLink(category: string, gate: string) {
@@ -1077,7 +1077,7 @@ const gates = [
   ["Gate 3 — Before shipment", "отгрузка имеет evidence и logistics inputs", "packing, weight/dimensions, photo/video/nameplate", "supplier", "собрать shipment readiness", "нет packing data", "shipment pack"],
   ["Gate 4 — Before customs/logistics handoff", "брокер и логист получают data-flow", "broker input, export docs, pickup map", "broker / logistics", "передать route map", "customs gap", "logistics/customs pack"],
   ["Gate 5 — Before mounting handoff", "площадка получает вводные заранее", "connection points, dimensions, access, questions", "mounting side", "подготовить coordination pack", "нет mounting owner", "mounting handoff"],
-  ["Gate 6 — Before service acceptance", "результат принимается по deliverables", "vault index, risk radar, release board, packs", "WinGPro", "собрать handover room", "не закрыты deliverables", "acceptance register"],
+  ["Gate 6 — Before closeout review", "результат сверяется по deliverables", "vault index, risk radar, release board, packs", "WinGPro", "собрать handover room", "не закрыты deliverables", "closeout register"],
   ["Gate 7 — Reuse in sales pipeline", "позиция готова к повторному использованию", "supplier card, product card, links, notes", "WinGPro / UPGRADE", "создать digital product asset", "нет reusable card", "sales asset"],
 ] as const;
 
@@ -1115,13 +1115,13 @@ function getGateStopGo(gateTitle: string) {
 const handoverPacks = [
   {
     name: "WinGPro Executive Pack",
-    inside: "mission card, decision log, release gates, acceptance register",
+    inside: "mission card, decision log, release gates, closeout register",
     format: "board pack",
     recipient: "WinGPro",
     gate: "Gate 6",
     value: "руководство видит статус и результат",
     acceptance: "executive summary and closeout index are ready to review",
-    paymentLink: "supports final service acceptance package",
+    paymentLink: "supports final closeout review package",
     evidence: "decision log, release board, open issues register",
     reusable: "management view for repeated procurement decisions",
   },
@@ -1253,7 +1253,7 @@ function getHandoverOwnerCue(pack: HandoverPack) {
   if (pack.name.includes("Mounting")) return "mounting side and technical specialists approve field decisions; UPGRADE prepares the coordination draft.";
   if (pack.name.includes("Supplier")) return "supplier responds to evidence requests; UPGRADE keeps open items visible.";
   if (pack.name.includes("Future")) return "WinGPro decides future reuse; UPGRADE structures supplier and product data.";
-  return "WinGPro accepts service deliverables; UPGRADE transfers the structured closeout package.";
+  return "WinGPro reviews delivered information packs; UPGRADE transfers the structured closeout package.";
 }
 
 const copyTexts: Record<CopyVariant, string> = {
@@ -1305,7 +1305,7 @@ const presentationModes: Array<{
     id: "executive",
     label: "Executive Summary",
     summary: "WinGPro получает выбранный закупочный маршрут, Digital Twin, status board, release gates, handover packs и Digital Product Asset как единый контур решения.",
-    nextAction: "Сначала подтвердить, что услуга принимается как единый IT/data и закупочно-координационный комплекс.",
+    nextAction: "Сначала подтвердить рабочий формат: единый IT/data и закупочно-координационный контур.",
     focus: "что получает заказчик",
     endpoint: {
       selected: "единый procurement-to-implementation контур",
@@ -1384,7 +1384,7 @@ const presentationModes: Array<{
     focus: "закрытие и повторное использование",
     endpoint: {
       selected: "evidence register, handover packs and reusable product asset",
-      confirm: "deliverables acceptance, open issues register and service closeout package",
+      confirm: "deliverables review, open issues register and structured closeout package",
       receives: "photo evidence register, closeout index, digital supplier card and product line card",
     },
     detailActions: [["Photo Evidence Wall", "#photo-evidence-wall"], ["Handover Room", "#handover"]],
@@ -1787,7 +1787,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const gateCommandSequence = [
     ["1. Owner decision", gate[3]],
     ["2. Evidence board", gateVaultLinks.length > 0 ? gateVaultLinks.join(", ") : gate[2]],
-    ["3. Risk check", gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "service acceptance / open issues"],
+    ["3. Risk check", gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "closeout / open issues"],
     ["4. Route handoff", gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"],
     ["5. Output artifact", gate[6]],
   ] as const;
@@ -2008,7 +2008,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       mode: "contract",
       label: "Contract scenario",
       value: contractScenario.title,
-      status: "acceptance by deliverables",
+      status: "deliverable handoff",
       detail: contractScenario.evidenceGateStrength,
     },
     {
@@ -4797,7 +4797,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <dl>
             <div><dt>Vault evidence</dt><dd>{gateVaultLinks.length > 0 ? gateVaultLinks.join(", ") : gate[2]}</dd></div>
-            <div><dt>Risk radar links</dt><dd>{gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "service acceptance / open issues"}</dd></div>
+            <div><dt>Risk radar links</dt><dd>{gateRiskLinks.length > 0 ? gateRiskLinks.join(", ") : "closeout / open issues"}</dd></div>
             <div><dt>Route handoff</dt><dd>{gateRouteLinks.length > 0 ? gateRouteLinks.join(", ") : "Handover Room"}</dd></div>
             <div><dt>Output</dt><dd>{gate[6]}</dd></div>
           </dl>
@@ -4851,7 +4851,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <div><dt>output artifact</dt><dd>{gate[6]}</dd></div>
                   <div><dt>stop/go signal</dt><dd>{getGateStopGo(gate[0])}</dd></div>
                   <div><dt>Vault evidence</dt><dd>{getGateVaultLinks(gate[0]).join(", ") || gate[2]}</dd></div>
-                  <div><dt>Risk radar links</dt><dd>{getGateRiskLinks(gate[0]).join(", ") || "service acceptance / open issues"}</dd></div>
+                  <div><dt>Risk radar links</dt><dd>{getGateRiskLinks(gate[0]).join(", ") || "closeout / open issues"}</dd></div>
                   <div><dt>Route handoff</dt><dd>{getGateRouteLinks(gate[0]).join(", ") || "Handover Room"}</dd></div>
                 </dl>
               </article>
@@ -4875,11 +4875,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Handover Room</p>
           <h2 id="handover-title">Что получает каждая сторона</h2>
-          <p>Closeout строится как acceptance package: каждый handover pack связан с release gate, evidence, владельцем и практической ценностью. Приемка результата осуществляется по deliverables, а не по действиям производителя, перевозчика, брокера, монтажной организации или иных третьих лиц.</p>
+          <p>Closeout строится как deliverables package: каждый handover pack связан с release gate, evidence, владельцем и практической ценностью. Сверка результата идет по переданным deliverables, а не по действиям производителя, перевозчика, брокера, монтажной организации или иных третьих лиц.</p>
         </div>
         <div className={styles.handoverMetrics} aria-label="Closeout readiness summary">
           <span><strong>6</strong><small>handover packs</small></span>
-          <span><strong>Gate 6</strong><small>service acceptance</small></span>
+          <span><strong>Gate 6</strong><small>deliverables review</small></span>
           <span><strong>Gate 7</strong><small>reuse asset</small></span>
           <span><strong>data-room</strong><small>technical closeout</small></span>
         </div>
@@ -4895,14 +4895,14 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
             <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
             <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
-            <div><dt>handover logic</dt><dd>Приемка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
+            <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
           </dl>
         </aside>
         <details className={styles.handoverCommandDisclosure}>
           <summary>
             <span>Command sequence</span>
             <strong>Открыть 6 шагов closeout-пакета</strong>
-            <small>Gate, Vault, Risk, Route, Acceptance и reusable asset раскрываются по запросу.</small>
+            <small>Gate, Vault, Risk, Route, review signal и reusable asset раскрываются по запросу.</small>
           </summary>
           <div className={styles.handoverCommandStrip} aria-label="Selected handover command sequence">
             {handoverCommandSequence.map(([label, value]) => (
@@ -4916,8 +4916,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <details className={styles.handoverDetailsDisclosure}>
           <summary>
             <span>Closeout details</span>
-            <strong>Открыть handover packs и acceptance matrix</strong>
-            <small>Подробности раскрываются по запросу; приемка остается привязанной к deliverables и evidence, а не к действиям третьих лиц.</small>
+            <strong>Открыть handover packs и deliverables matrix</strong>
+            <small>Подробности раскрываются по запросу; сверка остается привязанной к deliverables и evidence, а не к действиям третьих лиц.</small>
           </summary>
           <div className={styles.packTabs} role="tablist" aria-label="Handover packs">
             {handoverPacks.map((item) => (
@@ -4960,7 +4960,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <div><dt>vault evidence</dt><dd>{uniqueList(getHandoverVaultLinks(item).map((doc) => doc[1])).join(", ") || item.evidence}</dd></div>
                   <div><dt>risk response link</dt><dd>{uniqueList(getHandoverRiskLinks(item).map((risk) => risk.title)).join(", ") || "open issues register"}</dd></div>
                   <div><dt>route/data-flow point</dt><dd>{uniqueList(getHandoverRouteLinks(item).map((point) => point.title)).join(", ") || "Handover Room"}</dd></div>
-                  <div><dt>acceptance signal</dt><dd>{item.acceptance}</dd></div>
+                  <div><dt>review signal</dt><dd>{item.acceptance}</dd></div>
                   <div><dt>handover link</dt><dd>{item.paymentLink}</dd></div>
                   <div><dt>evidence register</dt><dd>{item.evidence}</dd></div>
                   <div><dt>reusable value</dt><dd>{item.reusable}</dd></div>
@@ -4969,19 +4969,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <div className={styles.closeoutMatrix} role="table" aria-label="Closeout acceptance matrix">
+          <div className={styles.closeoutMatrix} role="table" aria-label="Closeout deliverables matrix">
             <div role="row" className={styles.closeoutHeader}>
               <span role="columnheader">Pack</span>
               <span role="columnheader">Recipient</span>
               <span role="columnheader">Gate</span>
-              <span role="columnheader">Acceptance signal</span>
+              <span role="columnheader">Review signal</span>
             </div>
             {handoverPacks.map((item) => (
               <div key={`closeout-${item.name}`} role="row" className={styles.closeoutRow}>
                 <strong role="cell" data-label="Pack">{item.name}</strong>
                 <span role="cell" data-label="Recipient">{item.recipient}</span>
                 <span role="cell" data-label="Gate">{item.gate}</span>
-                <em role="cell" data-label="Acceptance signal">{item.acceptance}</em>
+                <em role="cell" data-label="Review signal">{item.acceptance}</em>
               </div>
             ))}
           </div>
