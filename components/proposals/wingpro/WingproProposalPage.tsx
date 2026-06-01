@@ -3219,15 +3219,30 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </button>
             ))}
           </div>
+          <div className={styles.cockpitDecisionActionBar} aria-label="Быстрое подтверждение выбранного варианта теплообменника">
+            <div>
+              <span>decision now</span>
+              <strong>{activeHexnovasVariant.shortName} → {HEXNOVAS_DECISION_EMAIL}</strong>
+              <small>{activeHexnovasVariant.statusLabel}; письмо содержит selected model, material, pressure evidence и next action для WinGPro approval owner.</small>
+            </div>
+            <div className={styles.cockpitDecisionActionButtons}>
+              <a
+                href={hexnovasDecisionMailto}
+                onClick={markHexnovasDecisionEmailOpen}
+                aria-label={`Отправить решение ${activeHexnovasVariant.shortName} на ${HEXNOVAS_DECISION_EMAIL}`}
+              >
+                Отправить решение
+              </a>
+              <button type="button" onClick={copyHexnovasDecisionEmail}>
+                Скопировать письмо
+              </button>
+            </div>
+            <p role="status" aria-live="polite">{hexnovasDecisionStatus}</p>
+          </div>
           <div className={styles.cockpitDecisionDock}>
             <article>
               <span>next best action</span>
               <strong>{activePresentation.nextAction}</strong>
-            </article>
-            <article>
-              <span>selected PlateHE route</span>
-              <strong>{activeHexnovasVariant.shortName} → {HEXNOVAS_DECISION_EMAIL}</strong>
-              <small>{activeHexnovasVariant.statusLabel}</small>
             </article>
             <article>
               <span>nearest blocker</span>

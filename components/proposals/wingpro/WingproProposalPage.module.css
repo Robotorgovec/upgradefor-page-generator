@@ -616,9 +616,96 @@
   line-height: 1.24;
 }
 
+.cockpitDecisionActionBar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(170px, 0.34fr);
+  gap: 10px;
+  align-items: stretch;
+  padding: 10px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 68%, #ffffff), #ffffff 76%),
+    #ffffff;
+}
+
+.cockpitDecisionActionBar > div:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  align-content: center;
+}
+
+.cockpitDecisionActionBar span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cockpitDecisionActionBar strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.cockpitDecisionActionBar small,
+.cockpitDecisionActionBar p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.cockpitDecisionActionBar p {
+  align-self: center;
+  padding: 8px 10px;
+  border-left: 1px solid var(--proposal-brand-border);
+}
+
+.cockpitDecisionActionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-content: center;
+  justify-content: flex-end;
+}
+
+.cockpitDecisionActionButtons a,
+.cockpitDecisionActionButtons button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 8px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 950;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cockpitDecisionActionButtons a {
+  color: #ffffff;
+  background: var(--proposal-brand);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--proposal-brand) 18%, transparent);
+}
+
+.cockpitDecisionActionButtons a:hover,
+.cockpitDecisionActionButtons button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
 .cockpitDecisionDock {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 0.72fr) minmax(0, 0.66fr) minmax(170px, 0.44fr) minmax(240px, 0.76fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.74fr) minmax(170px, 0.48fr) minmax(240px, 0.76fr);
   gap: 7px;
 }
 
@@ -11689,8 +11776,23 @@
     text-align: center;
   }
 
+  .cockpitDecisionActionBar {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .cockpitDecisionActionButtons {
+    justify-content: flex-start;
+  }
+
+  .cockpitDecisionActionBar p {
+    padding: 0;
+    border-left: 0;
+  }
+
   .cockpitSummaryGrid span,
   .cockpitKpiRail span,
+  .cockpitDecisionActionBar span,
   .cockpitDecisionDock span,
   .cockpitAddonDisclosure summary span {
     font-size: 8.8px;
@@ -11699,6 +11801,7 @@
 
   .cockpitSummaryGrid strong,
   .cockpitKpiRail strong,
+  .cockpitDecisionActionBar strong,
   .cockpitDecisionDock strong,
   .cockpitAddonDisclosure summary strong {
     display: -webkit-box;
@@ -11712,7 +11815,9 @@
 
   .cockpitSummaryGrid small,
   .cockpitSummaryGrid em,
-  .cockpitKpiRail small {
+  .cockpitKpiRail small,
+  .cockpitDecisionActionBar small,
+  .cockpitDecisionActionBar p {
     display: -webkit-box;
     max-height: 2.28em;
     overflow: hidden;
@@ -12482,6 +12587,31 @@
   .cockpitSummaryHeader h3 {
     font-size: 15px;
     line-height: 1.18;
+  }
+
+  .cockpitDecisionActionBar {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .cockpitDecisionActionBar p {
+    padding: 0;
+    border-left: 0;
+  }
+
+  .cockpitDecisionActionButtons {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  .cockpitDecisionActionButtons a,
+  .cockpitDecisionActionButtons button {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 11px;
   }
 
   .cockpitDecisionDock {
