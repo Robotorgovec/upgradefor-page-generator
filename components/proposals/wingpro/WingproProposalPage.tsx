@@ -2245,11 +2245,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyPlainText(cockpitSummaryText, "Технический summary скопирован");
   }
 
-  async function copyDecisionBoardLink() {
-    const decisionBoardLink = `${window.location.origin}${proposalPath}#hexnovas-decision-board`;
-    await copyPlainText(decisionBoardLink, "Ссылка на Decision Board скопирована");
-  }
-
   async function copyHexnovasDecisionSummary() {
     setCopyVariant("command");
     await copyPlainText(hexnovasDecisionSummaryText, "Hexnovas decision summary скопирован");
@@ -2512,7 +2507,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.missionCardFooterActions}>
               <a href="#hexnovas-decision-board">Открыть Decision Board</a>
               <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>
-              <button type="button" onClick={copyDecisionBoardLink}>Скопировать ссылку</button>
+              <button type="button" onClick={copyHexnovasDecisionEmail}>Скопировать письмо</button>
             </div>
             <small role="status" aria-live="polite">{copyStatus}</small>
           </div>
