@@ -60,6 +60,15 @@ export type HexnovasDocumentSignal = {
   previewable: boolean;
 };
 
+export type HexnovasVaultTraceRow = {
+  source: string;
+  dataRoomRole: string;
+  releaseGate: string;
+  owner: string;
+  action: string;
+  approvalBoundary: string;
+};
+
 export const HEXNOVAS_RECOMMENDED_VARIANT_ID: HexnovasVariantId = "TH150B_381H_PN16_316L_low_dp";
 
 export const hexnovasProject = {
@@ -329,5 +338,64 @@ export const hexnovasDocumentSignals: HexnovasDocumentSignal[] = [
     checksumSha256: "a86f72fc43bf9f652fa231b18062cb54674db8685df24ead803cf46fcb871307",
     vaultUse: "executive decision summary",
     previewable: true,
+  },
+];
+
+export const hexnovasVaultTraceRows: HexnovasVaultTraceRow[] = [
+  {
+    source: "TH150B-381H / 316L selection",
+    dataRoomRole: "recommended selection evidence",
+    releaseGate: "Gate 1 — Evidence readiness",
+    owner: "WinGPro technical owner / supplier",
+    action: "Принять как базовую техническую линию и запросить обновленные PI, GA drawing и договор под TH150B-381H / 316L.",
+    approvalBoundary: "WinGPro и профильный технический специалист подтверждают финальный выбор.",
+  },
+  {
+    source: "TH150B-381H / 304 option",
+    dataRoomRole: "material substitution evidence",
+    releaseGate: "Gate 1 — Owner decision",
+    owner: "WinGPro technical owner",
+    action: "Оставить как эконом-вариант; не выпускать дальше без письменного согласования замены материала 316L → 304.",
+    approvalBoundary: "UPGRADE фиксирует decision gap, но не утверждает замену материала.",
+  },
+  {
+    source: "BH150B-307H / 316L selection",
+    dataRoomRole: "hydraulic risk evidence",
+    releaseGate: "Risk Radar / Gate 1",
+    owner: "project designer / WinGPro technical owner",
+    action: "Хранить как risk evidence по high pressure drop; не использовать как рекомендацию без hydraulic approval.",
+    approvalBoundary: "Гидравлическое подтверждение остается у ответственных проектных/технических участников.",
+  },
+  {
+    source: "BH150B-307H drawing",
+    dataRoomRole: "drawing update trigger",
+    releaseGate: "Gate 2 — Contract / document package",
+    owner: "supplier",
+    action: "Показать, что существующий чертеж относится к BH150B; при выборе TH150B запросить новый GA drawing.",
+    approvalBoundary: "Поставщик готовит чертеж, WinGPro и профильные участники проверяют применимость.",
+  },
+  {
+    source: "CE/PED + ISO + Business Registration",
+    dataRoomRole: "supplier compliance / identity evidence",
+    releaseGate: "Document Vault / Counterparty check",
+    owner: "WinGPro / supplier",
+    action: "Сложить в supplier evidence pack и отметить, что документы требуют проверки профильными участниками до release.",
+    approvalBoundary: "UPGRADE не является сертификационным органом и не проводит юридическую экспертизу.",
+  },
+  {
+    source: "Latest PI",
+    dataRoomRole: "PI consistency check",
+    releaseGate: "Contract pack",
+    owner: "supplier / WinGPro",
+    action: "Если выбран TH150B, обновить модель, материал, цену, комплект приложений и привязать PI к выбранному варианту.",
+    approvalBoundary: "Коммерческое и договорное решение принимает WinGPro.",
+  },
+  {
+    source: "Executive procurement report",
+    dataRoomRole: "decision summary",
+    releaseGate: "Handover / executive review",
+    owner: "UPGRADE data coordinator / WinGPro",
+    action: "Использовать как короткую карту решения: recommended / economy / hydraulic-risk route.",
+    approvalBoundary: "Отчет структурирует данные и вопросы, но не заменяет проектное или техническое утверждение.",
   },
 ];

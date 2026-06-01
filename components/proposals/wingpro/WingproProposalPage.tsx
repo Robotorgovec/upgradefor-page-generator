@@ -13,6 +13,7 @@ import {
   hexnovasRiskControls,
   hexnovasTimeline,
   hexnovasVariants,
+  hexnovasVaultTraceRows,
   type HexnovasVariantId,
 } from "./wingproHexnovasProcurement";
 import { sourceDocuments, sourceDocumentInsights, sourceTraceabilityRows, type SourceDocument } from "./wingproSourceDocuments";
@@ -3994,6 +3995,41 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={resetVaultFilters}>Reset filters</button>
           </div>
         </div>
+        <details className={styles.hexnovasVaultTrace}>
+          <summary>
+            <span>Hexnovas evidence bridge</span>
+            <strong>{hexnovasVaultTraceRows.length} source signals linked to release gates</strong>
+            <small>Открыть Source → Data-room → Gate → Owner → Action по архиву Hexnovas / WinGPro</small>
+          </summary>
+          <div className={styles.hexnovasVaultTraceIntro}>
+            <p>
+              Этот слой связывает архив Hexnovas с Document Vault: selection sheets, PI, drawing,
+              сертификаты и executive report превращаются в проверяемую цепочку evidence, risk
+              register и handover. UPGRADE структурирует data-room и owner queue; финальные
+              технические, проектные и договорные решения подтверждают WinGPro и профильные участники.
+            </p>
+          </div>
+          <div className={styles.hexnovasVaultTraceGrid} role="table" aria-label="Hexnovas evidence to Document Vault traceability">
+            <div className={styles.hexnovasVaultTraceHead} role="row">
+              <span role="columnheader">Source</span>
+              <span role="columnheader">Data-room role</span>
+              <span role="columnheader">Gate</span>
+              <span role="columnheader">Owner</span>
+              <span role="columnheader">UPGRADE action</span>
+              <span role="columnheader">Approval boundary</span>
+            </div>
+            {hexnovasVaultTraceRows.map((row) => (
+              <div className={styles.hexnovasVaultTraceRow} role="row" key={`${row.source}-${row.releaseGate}`}>
+                <strong role="cell"><span className={styles.matrixCellLabel}>Source</span>{row.source}</strong>
+                <span role="cell"><span className={styles.matrixCellLabel}>Data-room role</span>{row.dataRoomRole}</span>
+                <em role="cell"><span className={styles.matrixCellLabel}>Gate</span>{row.releaseGate}</em>
+                <small role="cell"><span className={styles.matrixCellLabel}>Owner</span>{row.owner}</small>
+                <p role="cell"><span className={styles.matrixCellLabel}>UPGRADE action</span>{row.action}</p>
+                <p role="cell"><span className={styles.matrixCellLabel}>Approval boundary</span>{row.approvalBoundary}</p>
+              </div>
+            ))}
+          </div>
+        </details>
         <details className={styles.vaultFilterDisclosure}>
           <summary>
             <span>Filter controls</span>
