@@ -2204,17 +2204,30 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         // Fallback below keeps file/preview contexts usable.
       }
     }
-    if (copyRef.current) {
-      const fallbackTextarea = copyRef.current;
+    const fallbackTextarea = copyRef.current ?? document.createElement("textarea");
+    const isTemporaryFallback = !copyRef.current;
+    if (isTemporaryFallback) {
+      fallbackTextarea.setAttribute("aria-hidden", "true");
+      fallbackTextarea.style.position = "fixed";
+      fallbackTextarea.style.inset = "0 auto auto 0";
+      fallbackTextarea.style.width = "1px";
+      fallbackTextarea.style.height = "1px";
+      fallbackTextarea.style.opacity = "0";
+      document.body.appendChild(fallbackTextarea);
+    } else {
       fallbackTextarea.hidden = false;
-      fallbackTextarea.value = text;
-      fallbackTextarea.focus();
-      fallbackTextarea.select();
-      const ok = document.execCommand("copy");
+    }
+    fallbackTextarea.value = text;
+    fallbackTextarea.focus();
+    fallbackTextarea.select();
+    const ok = document.execCommand("copy");
+    if (isTemporaryFallback) {
+      fallbackTextarea.remove();
+    } else {
       fallbackTextarea.hidden = true;
       fallbackTextarea.value = copyTexts[copyVariant];
-      setCopyStatus(ok ? `${status} через fallback` : "Не удалось скопировать автоматически");
     }
+    setCopyStatus(ok ? `${status} через fallback` : "Не удалось скопировать автоматически");
   }
 
   async function copyBoardText(variant: CopyVariant) {
@@ -2230,6 +2243,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   async function copyCockpitSummary() {
     setCopyVariant("command");
     await copyPlainText(cockpitSummaryText, "Технический summary скопирован");
+  }
+
+  async function copyDecisionBoardLink() {
+    const decisionBoardLink = `${window.location.origin}${proposalPath}#hexnovas-decision-board`;
+    await copyPlainText(decisionBoardLink, "Ссылка на Decision Board скопирована");
   }
 
   async function copyHexnovasDecisionSummary() {
@@ -2488,14 +2506,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
-            <span>live proposal view</span>
-            <p>Digital Twin, Source Data Room, Offer Board, Release Gates and Handover stay connected as one operating model.</p>
-            <button
-              type="button"
-              onClick={copyCockpitSummary}
-            >
-              Скопировать технический summary
-            </button>
+            <span>decision shortcut</span>
+            <p>{recommendedHexnovasVariant.shortName}: {hexnovasNextEvidenceAction.title}. Решение отправляется из Decision Board.</p>
+            <div className={styles.missionCardFooterActions}>
+              <a href="#hexnovas-decision-board">Открыть выбор</a>
+              <button type="button" onClick={copyDecisionBoardLink}>Скопировать ссылку</button>
+            </div>
+            <small role="status" aria-live="polite">{copyStatus}</small>
           </div>
         </aside>
       </section>
