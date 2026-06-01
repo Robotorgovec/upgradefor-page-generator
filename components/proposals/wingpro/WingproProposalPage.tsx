@@ -2081,7 +2081,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     "future sales catalog preparation",
   ] as const;
   const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
-  const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}.`;
+  const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); PlateHE route — ${activeHexnovasVariant.shortName} (${activeHexnovasVariant.statusLabel}); decision email — ${HEXNOVAS_DECISION_EMAIL}; contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}.`;
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -3223,6 +3223,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <article>
               <span>next best action</span>
               <strong>{activePresentation.nextAction}</strong>
+            </article>
+            <article>
+              <span>selected PlateHE route</span>
+              <strong>{activeHexnovasVariant.shortName} → {HEXNOVAS_DECISION_EMAIL}</strong>
+              <small>{activeHexnovasVariant.statusLabel}</small>
             </article>
             <article>
               <span>nearest blocker</span>
