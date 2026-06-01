@@ -7773,6 +7773,7 @@
 .hexnovasComparisonDisclosure,
 .hexnovasTimeline,
 .hexnovasRiskControls,
+.hexnovasEvidenceBridgeDisclosure,
 .hexnovasDocumentSignals {
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
@@ -7796,6 +7797,7 @@
 .hexnovasCostBox span,
 .hexnovasPackageIndexIntro span,
 .hexnovasPackageIndexStats span,
+.hexnovasPackageRulesDisclosure summary span,
 .hexnovasPackageRules span,
 .hexnovasArchiveBreakdown summary span,
 .hexnovasArchiveBreakdown article span,
@@ -7803,6 +7805,7 @@
 .hexnovasComparisonHead span,
 .hexnovasTimeline summary span,
 .hexnovasRiskControls summary span,
+.hexnovasEvidenceBridgeDisclosure summary span,
 .hexnovasDocumentSignals summary span,
 .hexnovasTimeline article span,
 .hexnovasRiskControls article span,
@@ -7856,7 +7859,7 @@
 .hexnovasPackageIndex {
   padding: 12px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 34%, #ffffff)),
     #ffffff;
@@ -7903,6 +7906,40 @@
   display: grid;
   gap: 6px;
   align-content: start;
+}
+
+.hexnovasPackageRulesDisclosure {
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.72);
+  overflow: visible;
+}
+
+.hexnovasPackageRulesDisclosure summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(128px, 0.2fr) minmax(0, 1fr) minmax(98px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasPackageRulesDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.hexnovasPackageRulesDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasPackageRulesDisclosure .hexnovasPackageRules {
+  margin-top: 8px;
 }
 
 .hexnovasPackageIndexStats strong {
@@ -8244,6 +8281,38 @@
   gap: 10px;
   align-items: stretch;
   overflow: visible;
+}
+
+.hexnovasEvidenceBridgeDisclosure {
+  padding: 10px;
+  overflow: visible;
+}
+
+.hexnovasEvidenceBridgeDisclosure summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.24fr) minmax(0, 1fr) minmax(150px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasEvidenceBridgeDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.hexnovasEvidenceBridgeDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasEvidenceBridgeDisclosure .hexnovasEvidenceBridge {
+  margin-top: 8px;
+  box-shadow: none;
 }
 
 .hexnovasEvidenceBridgeMain,
@@ -14270,6 +14339,8 @@
   .hexnovasEvidenceBridge,
   .hexnovasDecisionGrid,
   .hexnovasPackageIndexIntro,
+  .hexnovasPackageRulesDisclosure summary,
+  .hexnovasEvidenceBridgeDisclosure summary,
   .hexnovasArchiveBreakdown summary {
     grid-template-columns: 1fr;
   }
@@ -14380,6 +14451,8 @@
   .hexnovasTimeline summary,
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
+  .hexnovasPackageRulesDisclosure summary,
+  .hexnovasEvidenceBridgeDisclosure summary,
   .hexnovasArchiveBreakdown summary,
   .hexnovasDocumentSignals summary {
     grid-template-columns: 1fr;
@@ -14388,6 +14461,8 @@
   .hexnovasTimeline summary small,
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
+  .hexnovasPackageRulesDisclosure summary small,
+  .hexnovasEvidenceBridgeDisclosure summary small,
   .hexnovasArchiveBreakdown summary small,
   .hexnovasDocumentSignals summary small {
     display: none;

@@ -2750,16 +2750,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
-            {hexnovasPackageRules.map((item) => (
-              <article key={item.title}>
-                <span>{item.title}</span>
-                <strong>{item.signal}</strong>
-                <p>{item.action}</p>
-                <small>{item.owner}</small>
-              </article>
-            ))}
-          </div>
+          <details className={styles.hexnovasPackageRulesDisclosure}>
+            <summary>
+              <span>decision rules</span>
+              <strong>TH150B / 316L как baseline; 304 и BH150B идут только через owner approval</strong>
+              <small>{hexnovasPackageRules.length} rules from archive</small>
+            </summary>
+            <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
+              {hexnovasPackageRules.map((item) => (
+                <article key={item.title}>
+                  <span>{item.title}</span>
+                  <strong>{item.signal}</strong>
+                  <p>{item.action}</p>
+                  <small>{item.owner}</small>
+                </article>
+              ))}
+            </div>
+          </details>
           <details className={styles.hexnovasArchiveBreakdown}>
             <summary>
               <span>archive breakdown</span>
@@ -2900,28 +2907,35 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </details>
         </div>
 
-        <div className={styles.hexnovasEvidenceBridge} aria-label="Hexnovas evidence handoff summary">
-          <div className={styles.hexnovasEvidenceBridgeMain}>
+        <details className={styles.hexnovasEvidenceBridgeDisclosure}>
+          <summary>
             <span>evidence handoff</span>
-            <strong>Что из архива уже можно вести в Document Vault</strong>
-            <p>Слой показывает не файлы ради файлов, а их роль в release-gates: что готово, что нужно обновить, где нужен owner approval и что остается risk evidence.</p>
+            <strong>{hexnovasEvidenceBridgeStats[0][1]} ready / {hexnovasEvidenceBridgeStats[1][1]} updates; next: {hexnovasNextEvidenceAction.title}</strong>
+            <small>Открыть Document Vault readiness</small>
+          </summary>
+          <div className={styles.hexnovasEvidenceBridge} aria-label="Hexnovas evidence handoff summary">
+            <div className={styles.hexnovasEvidenceBridgeMain}>
+              <span>evidence handoff</span>
+              <strong>Что из архива уже можно вести в Document Vault</strong>
+              <p>Слой показывает не файлы ради файлов, а их роль в release-gates: что готово, что нужно обновить, где нужен owner approval и что остается risk evidence.</p>
+            </div>
+            <div className={styles.hexnovasEvidenceBridgeStats}>
+              {hexnovasEvidenceBridgeStats.map(([label, value, note]) => (
+                <article key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                  <small>{note}</small>
+                </article>
+              ))}
+            </div>
+            <div className={styles.hexnovasEvidenceBridgeAction}>
+              <span>next document action</span>
+              <strong>{hexnovasNextEvidenceAction.title}</strong>
+              <p>{hexnovasNextEvidenceAction.detail}</p>
+              <small>Owner for confirmation: {hexnovasNextEvidenceAction.owner}. UPGRADE структурирует data-room и evidence request, финальные технические решения подтверждают профильные участники.</small>
+            </div>
           </div>
-          <div className={styles.hexnovasEvidenceBridgeStats}>
-            {hexnovasEvidenceBridgeStats.map(([label, value, note]) => (
-              <article key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-                <small>{note}</small>
-              </article>
-            ))}
-          </div>
-          <div className={styles.hexnovasEvidenceBridgeAction}>
-            <span>next document action</span>
-            <strong>{hexnovasNextEvidenceAction.title}</strong>
-            <p>{hexnovasNextEvidenceAction.detail}</p>
-            <small>Owner for confirmation: {hexnovasNextEvidenceAction.owner}. UPGRADE структурирует data-room и evidence request, финальные технические решения подтверждают профильные участники.</small>
-          </div>
-        </div>
+        </details>
 
         <details
           className={styles.hexnovasDocumentSignals}
