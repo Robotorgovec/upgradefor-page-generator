@@ -1,6 +1,6 @@
 "use client";
 
-import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from "react";
+import type { FormEvent as ReactFormEvent, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type { Group } from "three";
@@ -33,6 +33,8 @@ type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverable
 type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover" | "addons";
 
 const HEXNOVAS_DECISION_EMAIL = "info@upgradefor.com";
+const WINGPRO_ACCESS_PASSWORD = "1111";
+const WINGPRO_ACCESS_STORAGE_KEY = "wingpro-2605281047-access";
 
 const twinLayers = [
   {
@@ -1742,6 +1744,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
   const [hexnovasEvidenceOpen, setHexnovasEvidenceOpen] = useState(false);
   const [activeHexnovasSignalTitle, setActiveHexnovasSignalTitle] = useState<string | null>(null);
+  const [accessStatus, setAccessStatus] = useState<"checking" | "locked" | "unlocked">("checking");
+  const [accessPassword, setAccessPassword] = useState("");
+  const [accessMessage, setAccessMessage] = useState("Введите пароль доступа к странице");
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -1895,6 +1900,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           detail: "Рекомендованная линия может идти дальше только после сверки supplier evidence, модели, материала и чертежа.",
           owner: "supplier + WinGPro technical owner",
         };
+  const hexnovasDecisionReceiptSteps = [
+    ["1", "Выбор", `${activeHexnovasVariant.shortName} зафиксирован как активный сценарий`],
+    ["2", "Email", `готовое письмо открывается на ${HEXNOVAS_DECISION_EMAIL}`],
+    ["3", "После отправки", hexnovasNextEvidenceAction.title],
+  ] as const;
   const hexnovasVaultRouteCards = [
     ["recommended route", "TH150B / 316L", "Gate 1", "обновить PI + GA drawing под выбранную модель", "supplier + WinGPro technical owner"],
     ["material decision", "TH150B / 304", "Owner decision", "оставить как эконом-вариант только после письменного согласия", "WinGPro technical owner"],
@@ -2089,6 +2099,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     }
   }, []);
 
+  useEffect(() => {
+    const storedAccess = window.localStorage.getItem(WINGPRO_ACCESS_STORAGE_KEY);
+    setAccessStatus(storedAccess === "granted" ? "unlocked" : "locked");
+  }, []);
+
   function isDocVisible(doc: (typeof vaultDocs)[number]) {
     return (
       (vaultCategory === "all" || doc[0] === vaultCategory) &&
@@ -2216,6 +2231,21 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     setHexnovasDecisionStatus(`Открываем письмо на ${HEXNOVAS_DECISION_EMAIL} по выбранному варианту ${activeHexnovasVariant.shortName}`);
   }
 
+  function unlockWingproProposal(event: ReactFormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (accessPassword.trim() === WINGPRO_ACCESS_PASSWORD) {
+      window.localStorage.setItem(WINGPRO_ACCESS_STORAGE_KEY, "granted");
+      setAccessStatus("unlocked");
+      setAccessMessage("Доступ открыт");
+      setAccessPassword("");
+      return;
+    }
+
+    setAccessStatus("locked");
+    setAccessMessage("Неверный пароль. Проверьте код доступа и попробуйте еще раз.");
+    setAccessPassword("");
+  }
+
   function openHexnovasEvidenceSignal(event: ReactMouseEvent<HTMLAnchorElement>, title: string) {
     event.preventDefault();
     const targetId = getHexnovasSignalId(title);
@@ -2253,6 +2283,42 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   function downloadSourceDocuments() {
     sourceDocuments.forEach((doc, index) => triggerSourceDocumentDownload(doc, index));
     setSourceDownloadStatus("Пакет исходных данных подготовлен к скачиванию");
+  }
+
+  if (accessStatus !== "unlocked") {
+    return (
+      <main className={styles.passwordGatePage} data-theme-scope="light" data-proposal-id="wingpro-2605281047" data-wingpro-password-gate>
+        <section className={styles.passwordGateCard} aria-labelledby="wingpro-password-title">
+          <div className={styles.passwordGateBrand}>
+            <span>WinGPro × UPGRADE</span>
+            <h1 id="wingpro-password-title">Доступ к технической панели</h1>
+            <p>Страница открывается без логина: нужен только пароль доступа, переданный для просмотра КП.</p>
+          </div>
+          <form className={styles.passwordGateForm} onSubmit={unlockWingproProposal}>
+            <label htmlFor="wingpro-access-password">Пароль</label>
+            <input
+              id="wingpro-access-password"
+              type="password"
+              inputMode="numeric"
+              autoComplete="current-password"
+              value={accessPassword}
+              onChange={(event) => setAccessPassword(event.currentTarget.value)}
+              disabled={accessStatus === "checking"}
+              aria-describedby="wingpro-access-status"
+            />
+            <button type="submit" disabled={accessStatus === "checking"}>Открыть страницу</button>
+            <p id="wingpro-access-status" role="status" aria-live="polite">
+              {accessStatus === "checking" ? "Проверяем сохраненный доступ" : accessMessage}
+            </p>
+          </form>
+          <div className={styles.passwordGateMeta} aria-label="Access scope">
+            <span>protected preview</span>
+            <span>/cp/2605281047-wingpro</span>
+            <span>без аккаунта и логина</span>
+          </div>
+        </section>
+      </main>
+    );
   }
 
   const twinStage = (
@@ -2670,14 +2736,31 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
           <div className={styles.hexnovasDecisionMailActions}>
             <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
-              Принять выбранный вариант
+              Отправить решение на email
             </a>
             <button type="button" onClick={copyHexnovasDecisionEmail}>
-              Скопировать письмо решения
+              Скопировать письмо
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
         </div>
+
+        <aside className={styles.hexnovasDecisionReceipt} aria-label="Decision receipt after variant selection">
+          <div>
+            <span>decision receipt</span>
+            <strong>Что произойдет после выбора</strong>
+            <p>Кнопка открывает готовое письмо. Отправитель проверяет текст и отправляет его со своей почты; после этого UPGRADE связывает решение с PI, GA drawing, evidence request и risk register.</p>
+          </div>
+          <ol>
+            {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
+              <li key={title}>
+                <span>{step}</span>
+                <strong>{title}</strong>
+                <small>{value}</small>
+              </li>
+            ))}
+          </ol>
+        </aside>
 
         <details className={styles.hexnovasSourceDigest}>
           <summary>

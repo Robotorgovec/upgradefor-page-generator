@@ -72,6 +72,155 @@
   color: inherit;
 }
 
+.passwordGatePage {
+  --proposal-brand: var(--theme-primary, #12aff0);
+  --proposal-brand-active: var(--theme-primary-active, #0c84b4);
+  --proposal-brand-soft: var(--theme-soft-bg, #f3faff);
+  --proposal-brand-border: var(--theme-border, #c4e7f7);
+  --proposal-focus: var(--theme-focus-ring, rgba(18, 175, 240, 0.28));
+  --proposal-text: #0f172a;
+  --proposal-text-soft: #475569;
+  --proposal-text-muted: #64748b;
+  --proposal-border: #d9e2ec;
+  --proposal-surface: #ffffff;
+  width: min(1180px, calc(100vw - 320px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(24px, 6vw, 76px) 0;
+  color: var(--proposal-text);
+  display: grid;
+  place-items: center;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.passwordGatePage *,
+.passwordGatePage *::before,
+.passwordGatePage *::after {
+  box-sizing: border-box;
+}
+
+.passwordGateCard {
+  width: min(760px, 100%);
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: clamp(20px, 4vw, 36px);
+  background:
+    radial-gradient(circle at 88% 8%, rgba(18, 175, 240, 0.14), transparent 28%),
+    linear-gradient(135deg, var(--proposal-brand-soft), #ffffff 58%);
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.12);
+  display: grid;
+  gap: 18px;
+  overflow: visible;
+}
+
+.passwordGateBrand {
+  display: grid;
+  gap: 10px;
+}
+
+.passwordGateBrand span,
+.passwordGateMeta span {
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.passwordGateBrand h1,
+.passwordGateBrand p,
+.passwordGateForm p {
+  margin: 0;
+}
+
+.passwordGateBrand h1 {
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.passwordGateBrand p,
+.passwordGateForm p {
+  color: var(--proposal-text-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.passwordGateForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.passwordGateForm label {
+  grid-column: 1 / -1;
+  color: var(--proposal-text-muted);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.passwordGateForm input,
+.passwordGateForm button {
+  min-height: 48px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.passwordGateForm input {
+  width: 100%;
+  border: 1px solid var(--proposal-border);
+  padding: 10px 12px;
+  color: var(--proposal-text);
+  background: #ffffff;
+}
+
+.passwordGateForm button {
+  border: 1px solid var(--proposal-brand-active);
+  padding: 10px 18px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--proposal-brand), var(--proposal-brand-active));
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.passwordGateForm button:disabled,
+.passwordGateForm input:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.passwordGateForm input:focus-visible,
+.passwordGateForm button:focus-visible {
+  outline: 3px solid var(--proposal-focus);
+  outline-offset: 3px;
+}
+
+.passwordGateForm p {
+  grid-column: 1 / -1;
+  min-height: 24px;
+  font-size: 14px;
+}
+
+.passwordGateMeta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.passwordGateMeta span {
+  min-height: 32px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.78);
+  display: inline-flex;
+  align-items: center;
+}
+
 .breadcrumbs {
   display: flex;
   gap: 8px;
@@ -7822,6 +7971,7 @@
 .hexnovasDecisionStatus,
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
+.hexnovasDecisionReceipt,
 .hexnovasSourceDigest,
 .hexnovasSummaryRail article,
 .hexnovasVariantDisclosure,
@@ -7980,6 +8130,7 @@
 }
 
 .hexnovasDecisionStatus span,
+.hexnovasDecisionReceipt span,
 .hexnovasSourceDigest summary span,
 .hexnovasSummaryRail span,
 .hexnovasVariantDisclosure summary span,
@@ -8021,6 +8172,81 @@
   color: var(--proposal-text-soft);
   font-size: 12px;
   line-height: 1.32;
+}
+
+.hexnovasDecisionReceipt {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.32fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  background:
+    linear-gradient(135deg, rgba(236, 253, 245, 0.72), #ffffff 68%),
+    #ffffff;
+}
+
+.hexnovasDecisionReceipt div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+}
+
+.hexnovasDecisionReceipt strong {
+  color: var(--proposal-text);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.hexnovasDecisionReceipt p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 12.5px;
+  line-height: 1.38;
+}
+
+.hexnovasDecisionReceipt ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasDecisionReceipt li {
+  min-width: 0;
+  min-height: 72px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.78);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 7px;
+  align-content: start;
+}
+
+.hexnovasDecisionReceipt li > span {
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--proposal-brand-active);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexnovasDecisionReceipt li strong {
+  font-size: 13px;
+}
+
+.hexnovasDecisionReceipt li small {
+  grid-column: 1 / -1;
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 .hexnovasSourceDigest,
@@ -10442,7 +10668,8 @@
 }
 
 @media (max-width: 900px) {
-  .page {
+  .page,
+  .passwordGatePage {
     width: min(100%, calc(100vw - 28px));
     gap: 18px;
   }
@@ -11172,10 +11399,15 @@
 }
 
 @media (max-width: 560px) {
-  .page {
+  .page,
+  .passwordGatePage {
     width: min(100%, calc(100vw - 18px));
     padding-bottom: 72px;
     gap: 14px;
+  }
+
+  .passwordGateForm {
+    grid-template-columns: 1fr;
   }
 
   .hero,
@@ -14373,7 +14605,8 @@
 }
 
 @media (max-width: 360px) {
-  .page {
+  .page,
+  .passwordGatePage {
     width: min(100%, calc(100vw - 12px));
   }
 
@@ -14610,6 +14843,7 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
+  .hexnovasDecisionReceipt,
   .hexnovasSourceDigest summary,
   .hexnovasVariantDisclosure summary,
   .hexnovasSelectedPanel,
@@ -14625,6 +14859,7 @@
   .hexnovasSummaryRail,
   .hexnovasPackageIndexStats,
   .hexnovasPackageRules,
+  .hexnovasDecisionReceipt ol,
   .hexnovasArchiveBreakdown > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -14702,12 +14937,14 @@
 
   .hexnovasDocumentSignals > div,
   .hexnovasComparisonRow,
+  .hexnovasDecisionReceipt ol,
   .hexnovasEvidenceBridgeStats {
     grid-template-columns: 1fr;
   }
 
   .hexnovasSummaryRail article,
   .hexnovasDecisionActionPanel,
+  .hexnovasDecisionReceipt,
   .hexnovasDecisionQuickPick button,
   .hexnovasPackageIndex,
   .hexnovasPackageIndexStats article,
