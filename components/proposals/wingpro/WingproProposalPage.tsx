@@ -32,6 +32,8 @@ type RiskImpact = "quality" | "time" | "decision" | "dependency";
 type CopyVariant = "short" | "executive" | "command" | "boundary" | "deliverables" | "payment" | "next" | "addons";
 type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "workplan" | "handover" | "addons";
 
+const HEXNOVAS_DECISION_EMAIL = "info@upgradefor.com";
+
 const twinLayers = [
   {
     id: "equipment",
@@ -1478,6 +1480,12 @@ function PlateHeatExchangerModel({
     { key: "bottom-front", y: -1.36, z: 0.86 },
     { key: "bottom-back", y: -1.36, z: -0.86 },
   ] as const;
+  const flowArrows = [
+    { key: "eg-in-1", x: -0.72, y: 0.13, z: 0.42, color: "#f47686", direction: 1 },
+    { key: "eg-in-2", x: 0.34, y: 0.13, z: 0.42, color: "#f47686", direction: 1 },
+    { key: "water-in-1", x: 0.72, y: -0.13, z: -0.42, color: "#7dc7f2", direction: -1 },
+    { key: "water-in-2", x: -0.34, y: -0.13, z: -0.42, color: "#7dc7f2", direction: -1 },
+  ] as const;
 
   useFrame((state) => {
     if (!readyRef.current) {
@@ -1545,6 +1553,26 @@ function PlateHeatExchangerModel({
         <mesh key={`service-guide-${z}`} position={[0, 0, z]} castShadow receiveShadow>
           <boxGeometry args={[2.86, 0.035, 0.045]} />
           <meshStandardMaterial color={z > 0 ? "#f47686" : "#7dc7f2"} emissive={z > 0 ? "#f05f6d" : "#329ed8"} emissiveIntensity={0.12} metalness={0.32} roughness={0.24} />
+        </mesh>
+      ))}
+
+      {flowArrows.map((arrow) => (
+        <group key={arrow.key} position={[arrow.x, arrow.y, arrow.z]} rotation={[0, 0, arrow.direction > 0 ? -Math.PI / 2 : Math.PI / 2]}>
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[0.06, 0.18, 28]} />
+            <meshStandardMaterial color={arrow.color} emissive={arrow.color} emissiveIntensity={0.18} metalness={0.28} roughness={0.26} />
+          </mesh>
+          <mesh position={[0, -0.11, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.023, 0.023, 0.16, 18]} />
+            <meshStandardMaterial color={arrow.color} emissive={arrow.color} emissiveIntensity={0.16} metalness={0.34} roughness={0.24} />
+          </mesh>
+        </group>
+      ))}
+
+      {[-0.82, 0, 0.82].map((x, index) => (
+        <mesh key={`inspection-band-${index}`} position={[x, 0, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.018, 2.34, 1.48]} />
+          <meshStandardMaterial color="#e2e8f0" metalness={0.36} roughness={0.28} transparent opacity={0.48} />
         </mesh>
       ))}
 
@@ -1711,6 +1739,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [commercialStatus, setCommercialStatus] = useState("Коммерческий контур раскрыт отдельно от технического экрана");
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
+  const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
   const [hexnovasEvidenceOpen, setHexnovasEvidenceOpen] = useState(false);
   const [activeHexnovasSignalTitle, setActiveHexnovasSignalTitle] = useState<string | null>(null);
   const copyRef = useRef<HTMLTextAreaElement>(null);
@@ -1819,6 +1848,30 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ? "замена материала требует письменного согласования"
     : "материал совпадает с референсом 316L";
   const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, supplier equipment package ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, supplier equipment package ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Эти суммы относятся к предложению Hexnovas на оборудование и логистическому reserve; это supplier-only ориентир, не итоговая стоимость проекта. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
+  const hexnovasDecisionEmailSubject = `WinGPro decision — ${activeHexnovasVariant.shortName}`;
+  const hexnovasDecisionEmailText = [
+    "Решение по выбору теплообменника WinGPro / Hexnovas",
+    "",
+    `Выбранный вариант: ${activeHexnovasVariant.name}`,
+    `Статус: ${activeHexnovasVariant.statusLabel}`,
+    `Материал: ${activeHexnovasVariant.material}`,
+    `Количество: ${activeHexnovasVariant.quantity} шт.`,
+    `Supplier equipment package: ${formatUsd(activeHexnovasVariant.totalPriceUsd)}`,
+    `Pressure drop: hot ${activeHexnovasVariant.pressureDropKpaHot.toFixed(1)} kPa / cold ${activeHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa`,
+    `Следующее действие: ${activeHexnovasVariant.action}`,
+    "",
+    "Decision note:",
+    activeHexnovasVariant.decisionAlert,
+    "",
+    "Owner confirmation:",
+    "Имя / должность / комментарий: ______________________________",
+    "",
+    "Boundary:",
+    "UPGRADE структурирует source data, supplier evidence, decision board, risk register and handover pack. Технические, договорные и проектные решения подтверждают WinGPro и профильные участники.",
+    "",
+    `source_path: ${proposalPath}`,
+  ].join("\n");
+  const hexnovasDecisionMailto = `mailto:${HEXNOVAS_DECISION_EMAIL}?subject=${encodeURIComponent(hexnovasDecisionEmailSubject)}&body=${encodeURIComponent(hexnovasDecisionEmailText)}`;
   const hexnovasEvidenceBridgeStats = [
     ["ready evidence", String(hexnovasDocumentSignals.filter((item) => item.status === "ready").length), "можно положить в vault"],
     ["update required", String(hexnovasDocumentSignals.filter((item) => item.status === "update-required").length), "PI / drawing должны совпасть с выбранной моделью"],
@@ -2153,6 +2206,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyPlainText(hexnovasDecisionSummaryText, "Hexnovas decision summary скопирован");
   }
 
+  async function copyHexnovasDecisionEmail() {
+    setCopyVariant("command");
+    setHexnovasDecisionStatus("Текст решения скопирован; можно отправить на info@upgradefor.com");
+    await copyPlainText(hexnovasDecisionEmailText, "Текст решения скопирован");
+  }
+
+  function markHexnovasDecisionEmailOpen() {
+    setHexnovasDecisionStatus(`Открываем письмо на ${HEXNOVAS_DECISION_EMAIL} по выбранному варианту ${activeHexnovasVariant.shortName}`);
+  }
+
   function openHexnovasEvidenceSignal(event: ReactMouseEvent<HTMLAnchorElement>, title: string) {
     event.preventDefault();
     const targetId = getHexnovasSignalId(title);
@@ -2289,10 +2352,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         {[
           ["#mission", "Mission"],
           ["#digital-twin", "Digital Twin"],
+          ["#hexnovas-decision-board", "Decision Board"],
           ["#project-control", "Control Scale"],
           ["#control-room", "Control Room"],
           ["#source-documents", "Source Docs"],
-          ["#hexnovas-decision-board", "Decision Board"],
           ["#vault", "Vault"],
           ["#risk-radar", "Risk Radar"],
           ["#handover", "Handover"],
@@ -2354,6 +2417,555 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </aside>
       </section>
+
+      <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" data-section="digital-twin" aria-labelledby="twin-title">
+        <div className={styles.sectionHeader}>
+          <p className={styles.eyebrow}>Digital Twin сделки</p>
+          <h2 id="twin-title">Digital Twin: товарная позиция как управляемый цифровой объект</h2>
+          <p>UPGRADE превращает товарную позицию из набора сообщений и файлов в управляемый цифровой объект. Такой объект можно проверять, передавать логисту/брокеру/монтажной стороне и повторно использовать в продажах.</p>
+        </div>
+        <div className={styles.twinShell} data-rotating={isRotating && !presentationMode}>
+          {twinStage}
+          <aside className={styles.twinPanel}>
+            <div className={styles.segmented} role="tablist" aria-label="Слои Digital Twin">
+              {twinLayers.map((item) => (
+                <button key={item.id} type="button" role="tab" aria-selected={activeLayer === item.id} aria-controls={`layer-${item.id}`} onClick={() => setActiveLayer(item.id)}>
+                  {item.title}
+                </button>
+              ))}
+            </div>
+            {twinLayers.map((item) => (
+              <section key={item.id} id={`layer-${item.id}`} role="tabpanel" hidden={activeLayer !== item.id}>
+                <div className={styles.layerHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Выбранный слой Digital Twin</p>
+                    <h3>{item.title}</h3>
+                  </div>
+                  <StatusPill value={item.readiness} />
+                </div>
+                <p>{item.value}</p>
+                <div className={styles.twinLayerPlainSummary}>
+                  <span>что это за блок</span>
+                  <strong>Карта выбранного слоя Digital Twin: что уже собрано, что запросить и кому передать результат.</strong>
+                  <small>{item.title}: {item.value}</small>
+                </div>
+                <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
+                  <article>
+                    <span>состояние слоя</span>
+                    <strong>{item.readiness}</strong>
+                    <small>{item.gate}</small>
+                  </article>
+                  <article>
+                    <span>следующий evidence request</span>
+                    <strong>{item.evidence}</strong>
+                  </article>
+                  <article>
+                    <span>передача результата</span>
+                    <strong>{item.deliverable}</strong>
+                    <small>{item.owner}</small>
+                  </article>
+                </div>
+                <div className={styles.twinLayerDecisionStrip} aria-label={`${item.title} operating meaning`}>
+                  <span>
+                    <strong>Что видно</strong>
+                    <small>{item.data.slice(0, 2).join(" / ")}</small>
+                  </span>
+                  <span>
+                    <strong>Что закрывает</strong>
+                    <small>{item.risk}</small>
+                  </span>
+                  <span>
+                    <strong>Следующий артефакт</strong>
+                    <small>{item.deliverable}</small>
+                  </span>
+                </div>
+                <details className={styles.twinLayerDetailsDisclosure}>
+                  <summary>
+                    <span>полный чек-лист слоя</span>
+                    <strong>{item.title}: данные, запрос и подтверждающий owner</strong>
+                    <small>Открыть risk, deliverable, owner и исходные данные</small>
+                  </summary>
+                  <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
+                    <article>
+                      <span>что отображается</span>
+                      <strong>{item.value}</strong>
+                    </article>
+                    <article>
+                      <span>что запросить</span>
+                      <strong>{item.evidence}</strong>
+                    </article>
+                    <article>
+                      <span>следующий артефакт</span>
+                      <strong>{item.deliverable}</strong>
+                    </article>
+                  </div>
+                  <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
+                    <span><strong>{item.readiness}</strong><small>готовность</small></span>
+                    <span><strong>{item.gate}</strong><small>release gate</small></span>
+                    <span><strong>{item.owner}</strong><small>ответственный</small></span>
+                  </div>
+                  <dl>
+                    <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
+                    <div><dt>что запросить</dt><dd>{item.evidence}</dd></div>
+                    <div><dt>какой риск закрывается</dt><dd>{item.risk}</dd></div>
+                    <div><dt>результат передачи</dt><dd>{item.deliverable}</dd></div>
+                  </dl>
+                </details>
+              </section>
+            ))}
+            <div className={styles.twinInterfaceMap} aria-label="Hydraulic interface handoff map">
+              <div>
+                <p className={styles.eyebrow}>Интерфейс подключения</p>
+                <h3>Патрубки и режимы: что подтверждать</h3>
+                <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
+              </div>
+              <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
+                {twinInterfaceRows.map((item) => (
+                  <span key={item.label}>{item.label}</span>
+                ))}
+              </div>
+              <details className={styles.twinInterfaceDisclosure}>
+                <summary>
+                  <span>Открыть карту передачи</span>
+                  <strong>вводные, действие и owner по патрубкам</strong>
+                </summary>
+                <dl>
+                  {twinInterfaceRows.map((item) => (
+                    <div key={item.label}>
+                      <dt>{item.label}</dt>
+                      <dd>
+                        <strong>{item.input}</strong>
+                        <span>{item.action}</span>
+                        <small>{item.owner}</small>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
+            </div>
+            <div className={styles.twinControls}>
+              <button type="button" onClick={() => setPresentationMode(true)}>Режим показа</button>
+              <button
+                type="button"
+                aria-pressed={twinLabelDensity === "full"}
+                onClick={() => setTwinLabelDensity((value) => (value === "full" ? "focus" : "full"))}
+              >
+                {twinLabelDensity === "full" ? "Фокус 3D" : "Показать подписи"}
+              </button>
+              <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Пауза" : "Вращать"}</button>
+              <button type="button" onClick={() => setActiveLayer("equipment")}>Сброс</button>
+            </div>
+            <p className={styles.legalNote}>Визуализация является conceptual digital twin preview и не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
+          </aside>
+        </div>
+        <noscript>
+          <ul className={styles.noScriptList}>
+            {twinLayers.map((item) => <li key={item.id}>{item.title}: {item.data.join("; ")}</li>)}
+          </ul>
+        </noscript>
+      </section>
+
+      {presentationMode ? (
+        <div className={styles.presentationOverlay} role="dialog" aria-modal="true" aria-label="Режим показа Digital Twin">
+          <div className={styles.presentationHud}>
+            <div>
+              <p className={styles.eyebrow}>Режим показа Digital Twin</p>
+              <h2>Conceptual twin для решения WinGPro</h2>
+            </div>
+            <dl aria-label="Current Digital Twin presentation state">
+              <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
+              <div><dt>слой</dt><dd>{layer.title}</dd></div>
+              <div><dt>готовность</dt><dd>{layer.readiness}</dd></div>
+              <div><dt>gate</dt><dd>{layer.gate}</dd></div>
+            </dl>
+            <button
+              className={styles.closePresentation}
+              type="button"
+              onClick={() => setPresentationMode(false)}
+              onMouseDown={() => setPresentationMode(false)}
+              onPointerDown={() => setPresentationMode(false)}
+            >
+              Закрыть
+            </button>
+          </div>
+          <div className={styles.presentationStage}>{twinStage}</div>
+          <article className={styles.presentationPanel}>
+            <div className={styles.presentationLayerRail} role="tablist" aria-label="Digital Twin presentation layers">
+              {twinLayers.map((item) => (
+                <button
+                  key={`presentation-${item.id}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeLayer === item.id}
+                  aria-controls={`presentation-layer-${item.id}`}
+                  onClick={() => setActiveLayer(item.id)}
+                >
+                  {item.title}
+                </button>
+              ))}
+            </div>
+            <section id={`presentation-layer-${layer.id}`} role="tabpanel" className={styles.presentationLayerPanel}>
+              <span>{layer.gate}</span>
+              <h2>{layer.title}</h2>
+              <p>{layer.value}</p>
+              <dl>
+                <div><dt>WinGPro получает</dt><dd>{layer.deliverable}</dd></div>
+                <div><dt>Evidence request</dt><dd>{layer.evidence}</dd></div>
+                <div><dt>Какой риск закрывается</dt><dd>{layer.risk}</dd></div>
+                <div><dt>Ответственный</dt><dd>{layer.owner}</dd></div>
+              </dl>
+            </section>
+            <div className={styles.presentationDecisionStrip} aria-label="Digital Twin decision strip">
+              <span><strong>{layer.readiness}</strong><small>готовность</small></span>
+              <span><strong>{layer.owner}</strong><small>кто подтверждает</small></span>
+              <span><strong>{layer.deliverable}</strong><small>что передается</small></span>
+            </div>
+            <p className={styles.legalNote}>Conceptual digital twin preview: визуализация не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
+          </article>
+        </div>
+      ) : null}
+
+      <section className={sectionClass(styles.hexnovasDecisionBoard, "sourceDocuments")} id="hexnovas-decision-board" data-section="hexnovas-decision-board" aria-labelledby="hexnovas-decision-title">
+        <div className={styles.hexnovasHeader}>
+          <div>
+            <p className={styles.eyebrow}>Hexnovas Decision Board</p>
+            <h2 id="hexnovas-decision-title">Выбор варианта теплообменника</h2>
+            <p>Техническая панель по архиву Hexnovas: модель, материал, перепад давления, документы и действия до обновления PI/договора.</p>
+            <p className={styles.hexnovasScopeNote}>Все суммы в этом board относятся только к supplier equipment package и логистическому reserve для сравнения сценариев. Это supplier-only ориентир, не итоговая стоимость проекта.</p>
+          </div>
+          <aside className={styles.hexnovasDecisionStatus} aria-label="Current supplier decision status">
+            <span>decision pending</span>
+            <strong>{recommendedHexnovasVariant.shortName}</strong>
+            <small>рекомендуемый маршрут по pressure drop и материалу</small>
+          </aside>
+        </div>
+
+        <div className={styles.hexnovasDecisionActionPanel} aria-labelledby="hexnovas-decision-action-title">
+          <div className={styles.hexnovasDecisionActionIntro}>
+            <span>decision action</span>
+            <h3 id="hexnovas-decision-action-title">Выбрать вариант сейчас и отправить решение</h3>
+            <p>Активный выбор попадет в письмо на {HEXNOVAS_DECISION_EMAIL}. Перед отправкой WinGPro может добавить имя, должность и комментарий decision owner.</p>
+          </div>
+          <div className={styles.hexnovasDecisionQuickPick} role="group" aria-label="Быстрый выбор варианта теплообменника">
+            {hexnovasVariants.map((item) => {
+              const isActive = activeHexnovasVariant.id === item.id;
+              return (
+                <button
+                  key={`quick-${item.id}`}
+                  type="button"
+                  data-active={isActive}
+                  data-tone={item.statusTone}
+                  aria-pressed={isActive}
+                  onClick={() => {
+                    setActiveHexnovasVariantId(item.id);
+                    setHexnovasDecisionStatus(`Выбран ${item.shortName}; письмо будет подготовлено на ${HEXNOVAS_DECISION_EMAIL}`);
+                  }}
+                >
+                  <span>{item.statusLabel}</span>
+                  <strong>{item.shortName}</strong>
+                  <small>{item.material} / {item.pressureDropKpaHot.toFixed(1)}-{item.pressureDropKpaCold.toFixed(1)} kPa</small>
+                </button>
+              );
+            })}
+          </div>
+          <div className={styles.hexnovasDecisionMailActions}>
+            <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
+              Принять выбранный вариант
+            </a>
+            <button type="button" onClick={copyHexnovasDecisionEmail}>
+              Скопировать письмо решения
+            </button>
+            <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
+          </div>
+        </div>
+
+        <div className={styles.hexnovasSummaryRail} aria-label="Hexnovas project source summary">
+          {[
+            ["buyer", hexnovasProject.buyer, hexnovasProject.project],
+            ["supplier", "Hexnovas", hexnovasProject.supplier],
+            ["reference", `${hexnovasProject.referenceHeatDutyKw} kW`, hexnovasProject.mediums],
+            ["target", hexnovasProject.pressureDropTarget, hexnovasProject.pressureClass],
+          ].map(([label, value, note]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+              <small>{note}</small>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.hexnovasPackageIndex} aria-label="Hexnovas procurement package index">
+          <div className={styles.hexnovasPackageIndexIntro}>
+            <span>Procurement package index</span>
+            <strong>Архив Hexnovas превращен в управляемый decision package</strong>
+            <p>
+              На странице показываются технические evidence-активы, которые помогают выбрать модель, материал и release route.
+              Договоры, реквизиты, условия сервисного контура и переписка остаются в private contour до отдельного решения WinGPro.
+            </p>
+          </div>
+          <div className={styles.hexnovasPackageIndexStats}>
+            {hexnovasPackageOverviewStats.map(([label, value, note]) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{note}</small>
+              </article>
+            ))}
+          </div>
+          <details className={styles.hexnovasPackageRulesDisclosure}>
+            <summary>
+              <span>decision rules</span>
+              <strong>TH150B / 316L как baseline; 304 и BH150B идут только через owner approval</strong>
+              <small>{hexnovasPackageRules.length} rules from archive</small>
+            </summary>
+            <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
+              {hexnovasPackageRules.map((item) => (
+                <article key={item.title}>
+                  <span>{item.title}</span>
+                  <strong>{item.signal}</strong>
+                  <p>{item.action}</p>
+                  <small>{item.owner}</small>
+                </article>
+              ))}
+            </div>
+          </details>
+          <details className={styles.hexnovasArchiveBreakdown}>
+            <summary>
+              <span>archive breakdown</span>
+              <strong>Показать карту групп архива</strong>
+              <small>{hexnovasArchiveGroups.length} groups / {hexnovasArchiveFileCount} files</small>
+            </summary>
+            <div>
+              {hexnovasArchiveGroups.map((item) => (
+                <article key={item.title}>
+                  <span>{item.title}</span>
+                  <strong>{item.role}</strong>
+                  <p>{item.action}</p>
+                  <small>{item.files} files / {item.publicEvidence} public evidence item(s) / {item.boundary}</small>
+                </article>
+              ))}
+            </div>
+          </details>
+        </div>
+
+        <div className={styles.hexnovasVariantGrid} aria-label="Heat exchanger supplier variants">
+          {hexnovasVariants.map((item) => {
+            const isActive = activeHexnovasVariant.id === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={isActive}
+                className={styles.hexnovasVariantCard}
+                data-active={isActive}
+                data-tone={item.statusTone}
+                onClick={() => setActiveHexnovasVariantId(item.id)}
+                aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
+              >
+                <span>{item.statusLabel}</span>
+                <strong>{item.shortName}</strong>
+                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / supplier package {formatUsd(item.totalPriceUsd)}</small>
+                <div className={styles.hexnovasPressureRow}>
+                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
+                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className={styles.hexnovasSelectedPanel}>
+          <article className={styles.hexnovasSelectedMain} data-tone={activeHexnovasVariant.statusTone}>
+            <div>
+              <span>selected scenario</span>
+              <h3>{activeHexnovasVariant.name}</h3>
+              <p>{activeHexnovasVariant.comment}</p>
+            </div>
+            <details className={styles.hexnovasSelectedDecisionDetails}>
+              <summary>
+                <span>release condition</span>
+                <strong>{activeHexnovasVariant.statusLabel}</strong>
+                <small>Открыть owner decision note</small>
+              </summary>
+              <p>{activeHexnovasVariant.decisionAlert}</p>
+            </details>
+            <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
+          </article>
+
+          <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
+            <div className={styles.hexnovasCostSummary}>
+              <span>supplier equipment package</span>
+              <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
+              <small>{activeHexnovasVariant.quantity} шт. / supplier-only ориентир</small>
+            </div>
+            <details className={styles.hexnovasCostDetails}>
+              <summary>
+                <span>route math</span>
+                <strong>{activeHexnovasDelta === 0 ? "baseline" : `${formatUsd(activeHexnovasDelta)} delta`}</strong>
+                <small>Открыть reserve / material</small>
+              </summary>
+              <p>только оборудование Hexnovas; логистический reserve показан как расчетный ориентир для сравнения маршрутов.</p>
+              <dl>
+                <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
+                <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
+                <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
+              </dl>
+              <small>Supplier-only reference: решение по закупочному маршруту остается за WinGPro.</small>
+            </details>
+          </aside>
+        </div>
+
+        <details className={styles.hexnovasComparisonDisclosure}>
+          <summary>
+            <span>comparison matrix</span>
+            <strong>Открыть полную матрицу вариантов</strong>
+            <small>{hexnovasVariants.length} scenarios</small>
+          </summary>
+          <div className={styles.hexnovasComparison} role="table" aria-label="Hexnovas variant comparison">
+            <div role="row" className={styles.hexnovasComparisonHead}>
+              <span role="columnheader">Вариант</span>
+              <span role="columnheader">Supplier price / 2 шт.</span>
+              <span role="columnheader">Материал</span>
+              <span role="columnheader">Перепад</span>
+              <span role="columnheader">Решение</span>
+            </div>
+            {hexnovasVariants.map((item) => (
+              <button
+                key={`row-${item.id}`}
+                type="button"
+                role="row"
+                className={styles.hexnovasComparisonRow}
+                data-active={activeHexnovasVariant.id === item.id}
+                onClick={() => setActiveHexnovasVariantId(item.id)}
+              >
+                <span role="cell" data-label="Вариант">{item.shortName}</span>
+                <span role="cell" data-label="Supplier price / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
+                <span role="cell" data-label="Материал">{item.material}</span>
+                <span role="cell" data-label="Перепад">{item.pressureDropKpaHot.toFixed(1)} / {item.pressureDropKpaCold.toFixed(1)} kPa</span>
+                <span role="cell" data-label="Решение">{item.action}</span>
+              </button>
+            ))}
+          </div>
+        </details>
+
+        <div className={styles.hexnovasDecisionGrid}>
+          <details className={styles.hexnovasTimeline}>
+            <summary>
+              <span>procurement timeline</span>
+              <strong>Как появился рекомендуемый вариант</strong>
+            </summary>
+            <div>
+              {hexnovasTimeline.map((item) => (
+                <article key={item.id}>
+                  <span>{item.label}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.result}</p>
+                </article>
+              ))}
+            </div>
+          </details>
+
+          <details className={styles.hexnovasRiskControls}>
+            <summary>
+              <span>risk controls</span>
+              <strong>Что подтвердить до release</strong>
+            </summary>
+            <div>
+              {hexnovasRiskControls.map((item) => (
+                <article key={item.title}>
+                  <span>{item.title}</span>
+                  <strong>{item.control}</strong>
+                  <p>{item.risk}</p>
+                  <small>{item.owner}</small>
+                </article>
+              ))}
+            </div>
+          </details>
+        </div>
+
+        <details className={styles.hexnovasEvidenceBridgeDisclosure}>
+          <summary>
+            <span>evidence handoff</span>
+            <strong>{hexnovasEvidenceBridgeStats[0][1]} ready / {hexnovasEvidenceBridgeStats[1][1]} updates; next: {hexnovasNextEvidenceAction.title}</strong>
+            <small>Открыть Document Vault readiness</small>
+          </summary>
+          <div className={styles.hexnovasEvidenceBridge} aria-label="Hexnovas evidence handoff summary">
+            <div className={styles.hexnovasEvidenceBridgeMain}>
+              <span>evidence handoff</span>
+              <strong>Что из архива уже можно вести в Document Vault</strong>
+              <p>Слой показывает не файлы ради файлов, а их роль в release-gates: что готово, что нужно обновить, где нужен owner approval и что остается risk evidence.</p>
+            </div>
+            <div className={styles.hexnovasEvidenceBridgeStats}>
+              {hexnovasEvidenceBridgeStats.map(([label, value, note]) => (
+                <article key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                  <small>{note}</small>
+                </article>
+              ))}
+            </div>
+            <div className={styles.hexnovasEvidenceBridgeAction}>
+              <span>next document action</span>
+              <strong>{hexnovasNextEvidenceAction.title}</strong>
+              <p>{hexnovasNextEvidenceAction.detail}</p>
+              <small>Owner for confirmation: {hexnovasNextEvidenceAction.owner}. UPGRADE структурирует data-room и evidence request, финальные технические решения подтверждают профильные участники.</small>
+            </div>
+          </div>
+        </details>
+
+        <details
+          className={styles.hexnovasDocumentSignals}
+          open={hexnovasEvidenceOpen}
+          onToggle={(event) => setHexnovasEvidenceOpen(event.currentTarget.open)}
+        >
+          <summary>
+            <span>supplier evidence pack</span>
+            <strong>Документы из архива для Document Vault</strong>
+            <small>{activeHexnovasSignalTitle ? `active: ${activeHexnovasSignalTitle}` : `${hexnovasDocumentSignals.length} signals`}</small>
+          </summary>
+          <div>
+            {hexnovasDocumentSignals.map((item) => (
+              <article
+                key={item.title}
+                id={getHexnovasSignalId(item.title)}
+                data-status={item.status}
+                data-linked-active={activeHexnovasSignalTitle === item.title}
+                tabIndex={-1}
+              >
+                <div className={styles.hexnovasDocumentSignalHead}>
+                  <span>{item.status}</span>
+                  <em>{item.fileType} / {item.sizeLabel}</em>
+                </div>
+                <strong>{item.title}</strong>
+                <p>{item.note}</p>
+                <dl className={styles.hexnovasDocumentSignalMeta}>
+                  <div><dt>Source</dt><dd>{item.source}</dd></div>
+                  <div><dt>Vault use</dt><dd>{item.vaultUse}</dd></div>
+                  <div><dt>Checksum</dt><dd>sha256: {item.checksumSha256.slice(0, 10)}...</dd></div>
+                </dl>
+                {item.href && item.downloadName ? (
+                  <div className={styles.hexnovasDocumentSignalActions}>
+                    {item.previewable ? (
+                      <a href={item.href} target="_blank" rel="noreferrer" aria-label={`Просмотреть ${item.title}`}>
+                        Просмотреть
+                      </a>
+                    ) : (
+                      <span>Предпросмотр не поддерживается</span>
+                    )}
+                    <a href={item.href} download={item.downloadName} aria-label={`Скачать ${item.title}`}>
+                      Скачать
+                    </a>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+          <p className={styles.hexnovasDocumentSignalNote}>
+            Эти файлы используются как evidence для supplier selection, PI consistency, compliance и handover. UPGRADE структурирует data-room и запросы; технические, договорные и сертификационные решения подтверждают профильные участники.
+          </p>
+        </details>
+      </section>
+
 
       <section className={styles.commandLayer} data-section="executive-command" aria-labelledby="command-layer-title" data-active-mode={activePresentationMode}>
         <div className={styles.commandLayerHeader}>
@@ -2733,515 +3345,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p>UPGRADE использует приложенные проектные документы как исходную информационную базу для структурирования данных, подготовки вопросов, data-room, evidence request, handover pack и монтажного coordination draft по зоне пластинчатых теплообменников. UPGRADE не является автором проекта, проектировщиком, техническим надзором, экспертизой, производителем оборудования или организацией, утверждающей проектные решения. Все проектные, технические, монтажные и эксплуатационные решения проверяются и утверждаются ответственными специалистами WinGPro, проектной организацией, монтажной организацией или иными профильными участниками.</p>
         </details>
       </section>
-
-      <section className={sectionClass(styles.hexnovasDecisionBoard, "sourceDocuments")} id="hexnovas-decision-board" data-section="hexnovas-decision-board" aria-labelledby="hexnovas-decision-title">
-        <div className={styles.hexnovasHeader}>
-          <div>
-            <p className={styles.eyebrow}>Hexnovas Decision Board</p>
-            <h2 id="hexnovas-decision-title">Выбор варианта теплообменника</h2>
-            <p>Техническая панель по архиву Hexnovas: модель, материал, перепад давления, документы и действия до обновления PI/договора.</p>
-            <p className={styles.hexnovasScopeNote}>Все суммы в этом board относятся только к supplier equipment package и логистическому reserve для сравнения сценариев. Это supplier-only ориентир, не итоговая стоимость проекта.</p>
-          </div>
-          <aside className={styles.hexnovasDecisionStatus} aria-label="Current supplier decision status">
-            <span>decision pending</span>
-            <strong>{recommendedHexnovasVariant.shortName}</strong>
-            <small>рекомендуемый маршрут по pressure drop и материалу</small>
-          </aside>
-        </div>
-
-        <div className={styles.hexnovasSummaryRail} aria-label="Hexnovas project source summary">
-          {[
-            ["buyer", hexnovasProject.buyer, hexnovasProject.project],
-            ["supplier", "Hexnovas", hexnovasProject.supplier],
-            ["reference", `${hexnovasProject.referenceHeatDutyKw} kW`, hexnovasProject.mediums],
-            ["target", hexnovasProject.pressureDropTarget, hexnovasProject.pressureClass],
-          ].map(([label, value, note]) => (
-            <article key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-              <small>{note}</small>
-            </article>
-          ))}
-        </div>
-
-        <div className={styles.hexnovasPackageIndex} aria-label="Hexnovas procurement package index">
-          <div className={styles.hexnovasPackageIndexIntro}>
-            <span>Procurement package index</span>
-            <strong>Архив Hexnovas превращен в управляемый decision package</strong>
-            <p>
-              На странице показываются технические evidence-активы, которые помогают выбрать модель, материал и release route.
-              Договоры, реквизиты, условия сервисного контура и переписка остаются в private contour до отдельного решения WinGPro.
-            </p>
-          </div>
-          <div className={styles.hexnovasPackageIndexStats}>
-            {hexnovasPackageOverviewStats.map(([label, value, note]) => (
-              <article key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-                <small>{note}</small>
-              </article>
-            ))}
-          </div>
-          <details className={styles.hexnovasPackageRulesDisclosure}>
-            <summary>
-              <span>decision rules</span>
-              <strong>TH150B / 316L как baseline; 304 и BH150B идут только через owner approval</strong>
-              <small>{hexnovasPackageRules.length} rules from archive</small>
-            </summary>
-            <div className={styles.hexnovasPackageRules} aria-label="Buyer decision rules from archive">
-              {hexnovasPackageRules.map((item) => (
-                <article key={item.title}>
-                  <span>{item.title}</span>
-                  <strong>{item.signal}</strong>
-                  <p>{item.action}</p>
-                  <small>{item.owner}</small>
-                </article>
-              ))}
-            </div>
-          </details>
-          <details className={styles.hexnovasArchiveBreakdown}>
-            <summary>
-              <span>archive breakdown</span>
-              <strong>Показать карту групп архива</strong>
-              <small>{hexnovasArchiveGroups.length} groups / {hexnovasArchiveFileCount} files</small>
-            </summary>
-            <div>
-              {hexnovasArchiveGroups.map((item) => (
-                <article key={item.title}>
-                  <span>{item.title}</span>
-                  <strong>{item.role}</strong>
-                  <p>{item.action}</p>
-                  <small>{item.files} files / {item.publicEvidence} public evidence item(s) / {item.boundary}</small>
-                </article>
-              ))}
-            </div>
-          </details>
-        </div>
-
-        <div className={styles.hexnovasVariantGrid} aria-label="Heat exchanger supplier variants">
-          {hexnovasVariants.map((item) => {
-            const isActive = activeHexnovasVariant.id === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                aria-pressed={isActive}
-                className={styles.hexnovasVariantCard}
-                data-active={isActive}
-                data-tone={item.statusTone}
-                onClick={() => setActiveHexnovasVariantId(item.id)}
-                aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
-              >
-                <span>{item.statusLabel}</span>
-                <strong>{item.shortName}</strong>
-                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / supplier package {formatUsd(item.totalPriceUsd)}</small>
-                <div className={styles.hexnovasPressureRow}>
-                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
-                  <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className={styles.hexnovasSelectedPanel}>
-          <article className={styles.hexnovasSelectedMain} data-tone={activeHexnovasVariant.statusTone}>
-            <div>
-              <span>selected scenario</span>
-              <h3>{activeHexnovasVariant.name}</h3>
-              <p>{activeHexnovasVariant.comment}</p>
-            </div>
-            <details className={styles.hexnovasSelectedDecisionDetails}>
-              <summary>
-                <span>release condition</span>
-                <strong>{activeHexnovasVariant.statusLabel}</strong>
-                <small>Открыть owner decision note</small>
-              </summary>
-              <p>{activeHexnovasVariant.decisionAlert}</p>
-            </details>
-            <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
-          </article>
-
-          <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
-            <div className={styles.hexnovasCostSummary}>
-              <span>supplier equipment package</span>
-              <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
-              <small>{activeHexnovasVariant.quantity} шт. / supplier-only ориентир</small>
-            </div>
-            <details className={styles.hexnovasCostDetails}>
-              <summary>
-                <span>route math</span>
-                <strong>{activeHexnovasDelta === 0 ? "baseline" : `${formatUsd(activeHexnovasDelta)} delta`}</strong>
-                <small>Открыть reserve / material</small>
-              </summary>
-              <p>только оборудование Hexnovas; логистический reserve показан как расчетный ориентир для сравнения маршрутов.</p>
-              <dl>
-                <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
-                <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
-                <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
-              </dl>
-              <small>Supplier-only reference: решение по закупочному маршруту остается за WinGPro.</small>
-            </details>
-          </aside>
-        </div>
-
-        <details className={styles.hexnovasComparisonDisclosure}>
-          <summary>
-            <span>comparison matrix</span>
-            <strong>Открыть полную матрицу вариантов</strong>
-            <small>{hexnovasVariants.length} scenarios</small>
-          </summary>
-          <div className={styles.hexnovasComparison} role="table" aria-label="Hexnovas variant comparison">
-            <div role="row" className={styles.hexnovasComparisonHead}>
-              <span role="columnheader">Вариант</span>
-              <span role="columnheader">Supplier price / 2 шт.</span>
-              <span role="columnheader">Материал</span>
-              <span role="columnheader">Перепад</span>
-              <span role="columnheader">Решение</span>
-            </div>
-            {hexnovasVariants.map((item) => (
-              <button
-                key={`row-${item.id}`}
-                type="button"
-                role="row"
-                className={styles.hexnovasComparisonRow}
-                data-active={activeHexnovasVariant.id === item.id}
-                onClick={() => setActiveHexnovasVariantId(item.id)}
-              >
-                <span role="cell" data-label="Вариант">{item.shortName}</span>
-                <span role="cell" data-label="Supplier price / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
-                <span role="cell" data-label="Материал">{item.material}</span>
-                <span role="cell" data-label="Перепад">{item.pressureDropKpaHot.toFixed(1)} / {item.pressureDropKpaCold.toFixed(1)} kPa</span>
-                <span role="cell" data-label="Решение">{item.action}</span>
-              </button>
-            ))}
-          </div>
-        </details>
-
-        <div className={styles.hexnovasDecisionGrid}>
-          <details className={styles.hexnovasTimeline}>
-            <summary>
-              <span>procurement timeline</span>
-              <strong>Как появился рекомендуемый вариант</strong>
-            </summary>
-            <div>
-              {hexnovasTimeline.map((item) => (
-                <article key={item.id}>
-                  <span>{item.label}</span>
-                  <strong>{item.title}</strong>
-                  <p>{item.result}</p>
-                </article>
-              ))}
-            </div>
-          </details>
-
-          <details className={styles.hexnovasRiskControls}>
-            <summary>
-              <span>risk controls</span>
-              <strong>Что подтвердить до release</strong>
-            </summary>
-            <div>
-              {hexnovasRiskControls.map((item) => (
-                <article key={item.title}>
-                  <span>{item.title}</span>
-                  <strong>{item.control}</strong>
-                  <p>{item.risk}</p>
-                  <small>{item.owner}</small>
-                </article>
-              ))}
-            </div>
-          </details>
-        </div>
-
-        <details className={styles.hexnovasEvidenceBridgeDisclosure}>
-          <summary>
-            <span>evidence handoff</span>
-            <strong>{hexnovasEvidenceBridgeStats[0][1]} ready / {hexnovasEvidenceBridgeStats[1][1]} updates; next: {hexnovasNextEvidenceAction.title}</strong>
-            <small>Открыть Document Vault readiness</small>
-          </summary>
-          <div className={styles.hexnovasEvidenceBridge} aria-label="Hexnovas evidence handoff summary">
-            <div className={styles.hexnovasEvidenceBridgeMain}>
-              <span>evidence handoff</span>
-              <strong>Что из архива уже можно вести в Document Vault</strong>
-              <p>Слой показывает не файлы ради файлов, а их роль в release-gates: что готово, что нужно обновить, где нужен owner approval и что остается risk evidence.</p>
-            </div>
-            <div className={styles.hexnovasEvidenceBridgeStats}>
-              {hexnovasEvidenceBridgeStats.map(([label, value, note]) => (
-                <article key={label}>
-                  <span>{label}</span>
-                  <strong>{value}</strong>
-                  <small>{note}</small>
-                </article>
-              ))}
-            </div>
-            <div className={styles.hexnovasEvidenceBridgeAction}>
-              <span>next document action</span>
-              <strong>{hexnovasNextEvidenceAction.title}</strong>
-              <p>{hexnovasNextEvidenceAction.detail}</p>
-              <small>Owner for confirmation: {hexnovasNextEvidenceAction.owner}. UPGRADE структурирует data-room и evidence request, финальные технические решения подтверждают профильные участники.</small>
-            </div>
-          </div>
-        </details>
-
-        <details
-          className={styles.hexnovasDocumentSignals}
-          open={hexnovasEvidenceOpen}
-          onToggle={(event) => setHexnovasEvidenceOpen(event.currentTarget.open)}
-        >
-          <summary>
-            <span>supplier evidence pack</span>
-            <strong>Документы из архива для Document Vault</strong>
-            <small>{activeHexnovasSignalTitle ? `active: ${activeHexnovasSignalTitle}` : `${hexnovasDocumentSignals.length} signals`}</small>
-          </summary>
-          <div>
-            {hexnovasDocumentSignals.map((item) => (
-              <article
-                key={item.title}
-                id={getHexnovasSignalId(item.title)}
-                data-status={item.status}
-                data-linked-active={activeHexnovasSignalTitle === item.title}
-                tabIndex={-1}
-              >
-                <div className={styles.hexnovasDocumentSignalHead}>
-                  <span>{item.status}</span>
-                  <em>{item.fileType} / {item.sizeLabel}</em>
-                </div>
-                <strong>{item.title}</strong>
-                <p>{item.note}</p>
-                <dl className={styles.hexnovasDocumentSignalMeta}>
-                  <div><dt>Source</dt><dd>{item.source}</dd></div>
-                  <div><dt>Vault use</dt><dd>{item.vaultUse}</dd></div>
-                  <div><dt>Checksum</dt><dd>sha256: {item.checksumSha256.slice(0, 10)}...</dd></div>
-                </dl>
-                {item.href && item.downloadName ? (
-                  <div className={styles.hexnovasDocumentSignalActions}>
-                    {item.previewable ? (
-                      <a href={item.href} target="_blank" rel="noreferrer" aria-label={`Просмотреть ${item.title}`}>
-                        Просмотреть
-                      </a>
-                    ) : (
-                      <span>Предпросмотр не поддерживается</span>
-                    )}
-                    <a href={item.href} download={item.downloadName} aria-label={`Скачать ${item.title}`}>
-                      Скачать
-                    </a>
-                  </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
-          <p className={styles.hexnovasDocumentSignalNote}>
-            Эти файлы используются как evidence для supplier selection, PI consistency, compliance и handover. UPGRADE структурирует data-room и запросы; технические, договорные и сертификационные решения подтверждают профильные участники.
-          </p>
-        </details>
-      </section>
-
-      <section className={sectionClass(styles.digitalTwin, "digitalTwin")} id="digital-twin" data-section="digital-twin" aria-labelledby="twin-title">
-        <div className={styles.sectionHeader}>
-          <p className={styles.eyebrow}>Digital Twin сделки</p>
-          <h2 id="twin-title">Digital Twin: товарная позиция как управляемый цифровой объект</h2>
-          <p>UPGRADE превращает товарную позицию из набора сообщений и файлов в управляемый цифровой объект. Такой объект можно проверять, передавать логисту/брокеру/монтажной стороне и повторно использовать в продажах.</p>
-        </div>
-        <div className={styles.twinShell} data-rotating={isRotating && !presentationMode}>
-          {twinStage}
-          <aside className={styles.twinPanel}>
-            <div className={styles.segmented} role="tablist" aria-label="Слои Digital Twin">
-              {twinLayers.map((item) => (
-                <button key={item.id} type="button" role="tab" aria-selected={activeLayer === item.id} aria-controls={`layer-${item.id}`} onClick={() => setActiveLayer(item.id)}>
-                  {item.title}
-                </button>
-              ))}
-            </div>
-            {twinLayers.map((item) => (
-              <section key={item.id} id={`layer-${item.id}`} role="tabpanel" hidden={activeLayer !== item.id}>
-                <div className={styles.layerHeader}>
-                  <div>
-                    <p className={styles.eyebrow}>Выбранный слой Digital Twin</p>
-                    <h3>{item.title}</h3>
-                  </div>
-                  <StatusPill value={item.readiness} />
-                </div>
-                <p>{item.value}</p>
-                <div className={styles.twinLayerPlainSummary}>
-                  <span>что это за блок</span>
-                  <strong>Карта выбранного слоя Digital Twin: что уже собрано, что запросить и кому передать результат.</strong>
-                  <small>{item.title}: {item.value}</small>
-                </div>
-                <div className={styles.twinLayerGuide} aria-label={`${item.title} evidence board explanation`}>
-                  <article>
-                    <span>состояние слоя</span>
-                    <strong>{item.readiness}</strong>
-                    <small>{item.gate}</small>
-                  </article>
-                  <article>
-                    <span>следующий evidence request</span>
-                    <strong>{item.evidence}</strong>
-                  </article>
-                  <article>
-                    <span>передача результата</span>
-                    <strong>{item.deliverable}</strong>
-                    <small>{item.owner}</small>
-                  </article>
-                </div>
-                <div className={styles.twinLayerDecisionStrip} aria-label={`${item.title} operating meaning`}>
-                  <span>
-                    <strong>Что видно</strong>
-                    <small>{item.data.slice(0, 2).join(" / ")}</small>
-                  </span>
-                  <span>
-                    <strong>Что закрывает</strong>
-                    <small>{item.risk}</small>
-                  </span>
-                  <span>
-                    <strong>Следующий артефакт</strong>
-                    <small>{item.deliverable}</small>
-                  </span>
-                </div>
-                <details className={styles.twinLayerDetailsDisclosure}>
-                  <summary>
-                    <span>полный чек-лист слоя</span>
-                    <strong>{item.title}: данные, запрос и подтверждающий owner</strong>
-                    <small>Открыть risk, deliverable, owner и исходные данные</small>
-                  </summary>
-                  <div className={styles.twinLayerBrief} aria-label={`${item.title} evidence explanation`}>
-                    <article>
-                      <span>что отображается</span>
-                      <strong>{item.value}</strong>
-                    </article>
-                    <article>
-                      <span>что запросить</span>
-                      <strong>{item.evidence}</strong>
-                    </article>
-                    <article>
-                      <span>следующий артефакт</span>
-                      <strong>{item.deliverable}</strong>
-                    </article>
-                  </div>
-                  <div className={styles.twinReadout} aria-label={`${item.title} readiness readout`}>
-                    <span><strong>{item.readiness}</strong><small>готовность</small></span>
-                    <span><strong>{item.gate}</strong><small>release gate</small></span>
-                    <span><strong>{item.owner}</strong><small>ответственный</small></span>
-                  </div>
-                  <dl>
-                    <div><dt>данные</dt><dd>{item.data.join("; ")}</dd></div>
-                    <div><dt>что запросить</dt><dd>{item.evidence}</dd></div>
-                    <div><dt>какой риск закрывается</dt><dd>{item.risk}</dd></div>
-                    <div><dt>результат передачи</dt><dd>{item.deliverable}</dd></div>
-                  </dl>
-                </details>
-              </section>
-            ))}
-            <div className={styles.twinInterfaceMap} aria-label="Hydraulic interface handoff map">
-              <div>
-                <p className={styles.eyebrow}>Интерфейс подключения</p>
-                <h3>Патрубки и режимы: что подтверждать</h3>
-                <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
-              </div>
-              <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
-                {twinInterfaceRows.map((item) => (
-                  <span key={item.label}>{item.label}</span>
-                ))}
-              </div>
-              <details className={styles.twinInterfaceDisclosure}>
-                <summary>
-                  <span>Открыть карту передачи</span>
-                  <strong>вводные, действие и owner по патрубкам</strong>
-                </summary>
-                <dl>
-                  {twinInterfaceRows.map((item) => (
-                    <div key={item.label}>
-                      <dt>{item.label}</dt>
-                      <dd>
-                        <strong>{item.input}</strong>
-                        <span>{item.action}</span>
-                        <small>{item.owner}</small>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </details>
-            </div>
-            <div className={styles.twinControls}>
-              <button type="button" onClick={() => setPresentationMode(true)}>Режим показа</button>
-              <button
-                type="button"
-                aria-pressed={twinLabelDensity === "full"}
-                onClick={() => setTwinLabelDensity((value) => (value === "full" ? "focus" : "full"))}
-              >
-                {twinLabelDensity === "full" ? "Фокус 3D" : "Показать подписи"}
-              </button>
-              <button type="button" onClick={() => setIsRotating((value) => !value)}>{isRotating ? "Пауза" : "Вращать"}</button>
-              <button type="button" onClick={() => setActiveLayer("equipment")}>Сброс</button>
-            </div>
-            <p className={styles.legalNote}>Визуализация является conceptual digital twin preview и не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
-          </aside>
-        </div>
-        <noscript>
-          <ul className={styles.noScriptList}>
-            {twinLayers.map((item) => <li key={item.id}>{item.title}: {item.data.join("; ")}</li>)}
-          </ul>
-        </noscript>
-      </section>
-
-      {presentationMode ? (
-        <div className={styles.presentationOverlay} role="dialog" aria-modal="true" aria-label="Режим показа Digital Twin">
-          <div className={styles.presentationHud}>
-            <div>
-              <p className={styles.eyebrow}>Режим показа Digital Twin</p>
-              <h2>Conceptual twin для решения WinGPro</h2>
-            </div>
-            <dl aria-label="Current Digital Twin presentation state">
-              <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
-              <div><dt>слой</dt><dd>{layer.title}</dd></div>
-              <div><dt>готовность</dt><dd>{layer.readiness}</dd></div>
-              <div><dt>gate</dt><dd>{layer.gate}</dd></div>
-            </dl>
-            <button
-              className={styles.closePresentation}
-              type="button"
-              onClick={() => setPresentationMode(false)}
-              onMouseDown={() => setPresentationMode(false)}
-              onPointerDown={() => setPresentationMode(false)}
-            >
-              Закрыть
-            </button>
-          </div>
-          <div className={styles.presentationStage}>{twinStage}</div>
-          <article className={styles.presentationPanel}>
-            <div className={styles.presentationLayerRail} role="tablist" aria-label="Digital Twin presentation layers">
-              {twinLayers.map((item) => (
-                <button
-                  key={`presentation-${item.id}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeLayer === item.id}
-                  aria-controls={`presentation-layer-${item.id}`}
-                  onClick={() => setActiveLayer(item.id)}
-                >
-                  {item.title}
-                </button>
-              ))}
-            </div>
-            <section id={`presentation-layer-${layer.id}`} role="tabpanel" className={styles.presentationLayerPanel}>
-              <span>{layer.gate}</span>
-              <h2>{layer.title}</h2>
-              <p>{layer.value}</p>
-              <dl>
-                <div><dt>WinGPro получает</dt><dd>{layer.deliverable}</dd></div>
-                <div><dt>Evidence request</dt><dd>{layer.evidence}</dd></div>
-                <div><dt>Какой риск закрывается</dt><dd>{layer.risk}</dd></div>
-                <div><dt>Ответственный</dt><dd>{layer.owner}</dd></div>
-              </dl>
-            </section>
-            <div className={styles.presentationDecisionStrip} aria-label="Digital Twin decision strip">
-              <span><strong>{layer.readiness}</strong><small>готовность</small></span>
-              <span><strong>{layer.owner}</strong><small>кто подтверждает</small></span>
-              <span><strong>{layer.deliverable}</strong><small>что передается</small></span>
-            </div>
-            <p className={styles.legalNote}>Conceptual digital twin preview: визуализация не заменяет инженерную модель, проектную документацию или утвержденные чертежи.</p>
-          </article>
-        </div>
-      ) : null}
 
       <section className={sectionClass(styles.filmstrip, "filmstrip")} id="filmstrip" data-section="filmstrip" aria-labelledby="film-title">
         <div className={styles.sectionHeader}>

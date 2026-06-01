@@ -7774,6 +7774,8 @@
 
 .hexnovasHeader h2,
 .hexnovasHeader p,
+.hexnovasDecisionActionIntro h3,
+.hexnovasDecisionActionIntro p,
 .hexnovasDecisionStatus strong,
 .hexnovasDecisionStatus small,
 .hexnovasVariantCard strong,
@@ -7818,6 +7820,8 @@
 }
 
 .hexnovasDecisionStatus,
+.hexnovasDecisionActionPanel,
+.hexnovasDecisionQuickPick button,
 .hexnovasSummaryRail article,
 .hexnovasVariantCard,
 .hexnovasSelectedMain,
@@ -7843,6 +7847,134 @@
   display: grid;
   gap: 6px;
   align-content: start;
+}
+
+.hexnovasDecisionActionPanel {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.28fr) minmax(0, 1fr) minmax(230px, 0.28fr);
+  gap: 10px;
+  align-items: stretch;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 60%, #ffffff), #ffffff 74%),
+    #ffffff;
+}
+
+.hexnovasDecisionActionIntro {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+.hexnovasDecisionActionIntro span,
+.hexnovasDecisionQuickPick span,
+.hexnovasDecisionMailActions small {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionActionIntro h3 {
+  color: var(--proposal-text);
+  font-size: 20px;
+  line-height: 1.12;
+}
+
+.hexnovasDecisionActionIntro p {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.hexnovasDecisionQuickPick {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasDecisionQuickPick button {
+  min-height: 86px;
+  padding: 9px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+}
+
+.hexnovasDecisionQuickPick button[data-active="true"] {
+  border-color: var(--proposal-brand-border-strong);
+  box-shadow:
+    inset 0 0 0 1px var(--proposal-brand-border),
+    var(--proposal-shadow-md);
+}
+
+.hexnovasDecisionQuickPick button[data-tone="good"] {
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.92), #ffffff 70%);
+}
+
+.hexnovasDecisionQuickPick button[data-tone="warning"] {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.94), #ffffff 70%);
+}
+
+.hexnovasDecisionQuickPick button[data-tone="danger"] {
+  background: linear-gradient(135deg, rgba(255, 241, 242, 0.94), #ffffff 70%);
+}
+
+.hexnovasDecisionQuickPick strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.12;
+}
+
+.hexnovasDecisionQuickPick small {
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.24;
+}
+
+.hexnovasDecisionMailActions {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.hexnovasDecisionMailActions a,
+.hexnovasDecisionMailActions button {
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 950;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexnovasDecisionMailActions a {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--proposal-brand), var(--proposal-brand-active));
+}
+
+.hexnovasDecisionMailActions small {
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.35;
 }
 
 .hexnovasDecisionStatus span,
@@ -14428,6 +14560,7 @@
 
 @media (max-width: 700px) {
   .hexnovasHeader,
+  .hexnovasDecisionActionPanel,
   .hexnovasSelectedPanel,
   .hexnovasEvidenceBridge,
   .hexnovasDecisionGrid,
@@ -14447,6 +14580,10 @@
 
   .hexnovasVariantGrid {
     grid-template-columns: 1fr;
+  }
+
+  .hexnovasDecisionQuickPick {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .hexnovasEvidenceBridgeStats {
@@ -14519,6 +14656,8 @@
   }
 
   .hexnovasSummaryRail article,
+  .hexnovasDecisionActionPanel,
+  .hexnovasDecisionQuickPick button,
   .hexnovasPackageIndex,
   .hexnovasPackageIndexStats article,
   .hexnovasPackageRules article,
@@ -14584,6 +14723,29 @@
   .hexnovasVariantGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 5px;
+  }
+
+  .hexnovasDecisionActionPanel {
+    gap: 7px;
+  }
+
+  .hexnovasDecisionQuickPick {
+    gap: 5px;
+  }
+
+  .hexnovasDecisionActionIntro p,
+  .hexnovasDecisionQuickPick span,
+  .hexnovasDecisionQuickPick small {
+    display: none;
+  }
+
+  .hexnovasDecisionQuickPick button {
+    min-height: 58px;
+    align-content: center;
+  }
+
+  .hexnovasDecisionQuickPick strong {
+    font-size: 12px;
   }
 
   .hexnovasVariantCard {
