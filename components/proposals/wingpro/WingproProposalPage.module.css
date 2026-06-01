@@ -479,9 +479,9 @@
 
 .cockpitSummaryHeader {
   display: grid;
-  grid-template-columns: minmax(210px, 0.36fr) minmax(0, 1fr);
-  gap: 14px;
-  align-items: end;
+  grid-template-columns: minmax(210px, 0.34fr) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
 }
 
 .cockpitSummaryHeader h3,
@@ -501,20 +501,42 @@
   line-height: 1.36;
 }
 
+.cockpitSummaryCopyButton {
+  min-width: 148px;
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: var(--proposal-brand-contrast);
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.12;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cockpitSummaryCopyButton:hover {
+  background: var(--proposal-brand-soft);
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
 .cockpitSummaryGrid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
 }
 
 .cockpitKpiRail {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr)) minmax(160px, 0.72fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 7px;
 }
 
-.cockpitKpiRail article,
-.cockpitKpiRail button {
+.cockpitKpiRail article {
   min-width: 0;
   min-height: 66px;
   display: grid;
@@ -524,6 +546,14 @@
   border: 1px solid color-mix(in srgb, var(--proposal-border) 82%, transparent);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.9);
+}
+
+.cockpitKpiRail article:first-child {
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 62%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
 }
 
 .cockpitKpiRail span {
@@ -546,24 +576,34 @@
   line-height: 1.22;
 }
 
-.cockpitKpiRail button {
-  align-content: center;
-  color: #ffffff;
-  background: var(--proposal-brand);
-  border-color: var(--proposal-brand-strong);
-  font-size: 12px;
-  font-weight: 950;
-  text-align: left;
-  cursor: pointer;
+.cockpitSummaryModeHeader {
+  min-width: 0;
+  border-top: 1px solid color-mix(in srgb, var(--proposal-brand-border) 62%, transparent);
+  padding-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.cockpitKpiRail button:hover {
-  background: var(--proposal-brand-strong);
-  box-shadow: 0 0 0 2px var(--proposal-focus);
+.cockpitSummaryModeHeader span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cockpitSummaryModeHeader p {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 .cockpitSummaryGrid button {
-  min-height: 96px;
+  min-height: 82px;
   display: grid;
   align-content: start;
   gap: 5px;
@@ -574,6 +614,13 @@
   background: rgba(255, 255, 255, 0.84);
   text-align: left;
   cursor: pointer;
+}
+
+.cockpitSummaryGrid button:nth-child(1),
+.cockpitSummaryGrid button:nth-child(3) {
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 45%, #ffffff)),
+    #ffffff;
 }
 
 .cockpitSummaryGrid button:hover,
@@ -8168,6 +8215,95 @@
   background: var(--proposal-brand-soft);
 }
 
+.pumpEvidenceRequestGrid {
+  grid-column: 1 / -1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  overflow: visible;
+}
+
+.pumpEvidenceRequestGrid article {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  display: grid;
+  gap: 5px;
+}
+
+.pumpEvidenceRequestGrid article[data-status="ready"] {
+  border-color: color-mix(in srgb, #17a36b 36%, var(--proposal-border));
+  background: color-mix(in srgb, #ecfdf5 72%, #ffffff);
+}
+
+.pumpEvidenceRequestGrid article[data-status="requested"] {
+  border-color: color-mix(in srgb, var(--proposal-brand-border) 72%, var(--proposal-border));
+  background: color-mix(in srgb, var(--proposal-brand-soft) 52%, #ffffff);
+}
+
+.pumpEvidenceRequestGrid article[data-status="missing"] {
+  border-color: color-mix(in srgb, #d97706 36%, var(--proposal-border));
+  background: color-mix(in srgb, #fff7ed 76%, #ffffff);
+}
+
+.pumpEvidenceRequestGrid span {
+  width: fit-content;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 3px 6px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 9.5px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pumpEvidenceRequestGrid article[data-status="ready"] span {
+  color: #08784c;
+}
+
+.pumpEvidenceRequestGrid article[data-status="missing"] span {
+  color: #9a4f00;
+}
+
+.pumpEvidenceRequestGrid strong,
+.pumpEvidenceRequestGrid p,
+.pumpEvidenceRequestGrid small,
+.pumpEvidenceRequestGrid em {
+  margin: 0;
+}
+
+.pumpEvidenceRequestGrid strong {
+  color: var(--proposal-text);
+  font-size: 12.5px;
+  line-height: 1.18;
+}
+
+.pumpEvidenceRequestGrid p {
+  color: var(--proposal-text);
+  font-size: 11.5px;
+  font-weight: 800;
+  line-height: 1.26;
+}
+
+.pumpEvidenceRequestGrid small,
+.pumpEvidenceRequestGrid em {
+  color: var(--proposal-text-soft);
+  font-size: 10.8px;
+  font-style: normal;
+  line-height: 1.26;
+}
+
+.pumpEvidenceRequestGrid em {
+  border-top: 1px solid var(--proposal-border);
+  padding-top: 5px;
+}
+
 .sourceDocsNoJs {
   margin: 0;
   color: var(--proposal-text-soft);
@@ -12164,8 +12300,7 @@
   }
 
   .cockpitSummaryGrid button,
-  .cockpitKpiRail article,
-  .cockpitKpiRail button {
+  .cockpitKpiRail article {
     padding: 6px;
   }
 
@@ -12174,15 +12309,8 @@
     gap: 4px;
   }
 
-  .cockpitKpiRail article,
-  .cockpitKpiRail button {
+  .cockpitKpiRail article {
     min-height: 56px;
-  }
-
-  .cockpitKpiRail button {
-    grid-column: span 2;
-    justify-items: center;
-    text-align: center;
   }
 
   .cockpitDecisionActionBar {
@@ -12801,6 +12929,17 @@
     display: none;
   }
 
+  .cockpitSummaryHeader {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .cockpitSummaryCopyButton {
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
   .eyebrow {
     font-size: 11px;
     letter-spacing: 0.06em;
@@ -12823,8 +12962,7 @@
     gap: 6px;
   }
 
-  .cockpitKpiRail article,
-  .cockpitKpiRail button {
+  .cockpitKpiRail article {
     min-height: 52px;
     padding: 6px;
   }
@@ -12852,14 +12990,6 @@
     line-height: 1.14;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-  }
-
-  .cockpitKpiRail button {
-    grid-column: span 2;
-    justify-items: center;
-    text-align: center;
-    font-size: 11px;
-    line-height: 1.15;
   }
 
   .lead {
@@ -13002,6 +13132,16 @@
     display: none;
   }
 
+  .cockpitSummaryHeader {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .cockpitSummaryCopyButton {
+    width: 100%;
+    justify-self: stretch;
+  }
+
   .cockpitSummaryGrid button {
     min-height: 58px;
   }
@@ -13010,8 +13150,7 @@
     display: none;
   }
 
-  .cockpitKpiRail article,
-  .cockpitKpiRail button {
+  .cockpitKpiRail article {
     min-height: 48px;
   }
 
@@ -15671,8 +15810,7 @@
 
   .presentationModeTabs button,
   .cockpitSummaryGrid button,
-  .cockpitKpiRail article,
-  .cockpitKpiRail button {
+  .cockpitKpiRail article {
     padding: 6px;
   }
 }
@@ -16634,6 +16772,10 @@
   .pumpEvidenceDocLinks {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .pumpEvidenceRequestGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 560px) {
@@ -16643,7 +16785,8 @@
   }
 
   .pumpAssignmentGrid,
-  .pumpEvidenceDocLinks {
+  .pumpEvidenceDocLinks,
+  .pumpEvidenceRequestGrid {
     grid-template-columns: 1fr;
   }
 
@@ -16653,7 +16796,10 @@
 
   .pumpEvidenceIntro p,
   .pumpAssignmentGrid small,
-  .pumpAssignmentGrid em {
+  .pumpAssignmentGrid em,
+  .pumpEvidenceRequestGrid p,
+  .pumpEvidenceRequestGrid small,
+  .pumpEvidenceRequestGrid em {
     font-size: 11px;
     line-height: 1.28;
   }

@@ -20,6 +20,7 @@ import {
 } from "./wingproHexnovasProcurement";
 import {
   purchasedPumpAssignments,
+  purchasedPumpEvidenceRequests,
   sourceDocuments,
   sourceDocumentInsights,
   sourceTraceabilityRows,
@@ -1032,6 +1033,10 @@ const vaultDocs = [
   ["Delivery Pack", "photo/video/nameplate", "evidence", "Gate 3", "supplier", "requested", "quality", "дает evidence before shipment", "уменьшает поздние проверки", "нет доказательств до отгрузки", "запросить media evidence"],
   ["Customs/Broker Inputs", "broker input list", "customs", "Gate 4", "broker", "collecting", "customs", "структурирует таможенные вводные", "ускоряет передачу брокеру", "customs documents gap", "передать input list"],
   ["Mounting Inputs", "mounting questions checklist", "mounting", "Gate 5", "UPGRADE", "ready", "mounting", "повышает готовность монтажной стороны", "снижает риск поздних уточнений", "late mounting inputs", "собрать coordination pack"],
+  ["Purchased Pump Pack", "Pedrollo F100/F80 datasheets", "technical", "Gate 5", "UPGRADE", "ready", "mounting", "фиксирует паспорта закупленных насосов", "ускоряет сверку насосного interface", "насосы вне data-room", "связать паспорта с Source Data Room"],
+  ["Purchased Pump Pack", "pump nameplates and serial numbers", "evidence", "Gate 5", "WinGPro / mounting", "requested", "quality", "подтверждает фактические 2+2 насоса", "снижает риск путаницы по модели и серийникам", "нет шильдиков насосов", "запросить фото шильдиков"],
+  ["Purchased Pump Pack", "purchase invoice / waybill / receiving note", "procurement", "Gate 5", "WinGPro procurement", "missing", "dependency", "подтверждает статус уже закуплено", "отделяет паспорт от факта закупки", "нет закупочного evidence", "добавить purchase evidence"],
+  ["Purchased Pump Pack", "pump installation assignment", "mounting", "Gate 5", "WinGPro technical owner", "requested", "time", "связывает F100/F80 с фактическим контуром", "снижает риск поздней переувязки насосов", "не подтверждено место установки", "подтвердить контур и owner"],
   ["Digital Sales Asset", "digital product card", "asset", "Gate 7", "UPGRADE", "collecting", "commercial", "создает reusable sales base", "ускоряет повторное предложение", "нет product card", "связать documents and notes"],
 ] as const;
 
@@ -1072,6 +1077,7 @@ const risks = [
   { id: "packing", title: "missing packing data", severity: "medium", impact: "time", x: 25, y: 68, evidence: "packing list, weight/dimensions", owner: "supplier / logistics", escalation: "shipment readiness", vaultEvidence: "packing list", releaseGate: "Gate 3 — Before shipment", routeHandoff: "Pickup / Export docs", response: "запросить packing list, dimensions and pickup data before logistics handoff", decision: "supplier provides cargo data; logistics reviews route readiness", boundary: "UPGRADE не является перевозчиком" },
   { id: "customs", title: "customs documents gap", severity: "medium", impact: "dependency", x: 48, y: 76, evidence: "broker input list, export docs", owner: "broker", escalation: "customs handoff", vaultEvidence: "broker input list + export document checklist", releaseGate: "Gate 4 — Before customs/logistics handoff", routeHandoff: "Border / customs", response: "собрать customs input board и отделить broker decisions от supplier documents", decision: "broker/profile parties review customs inputs", boundary: "UPGRADE не является брокером" },
   { id: "mounting", title: "late mounting inputs", severity: "high", impact: "time", x: 72, y: 66, evidence: "connection points, service access", owner: "mounting side", escalation: "mounting handoff", vaultEvidence: "mounting questions checklist", releaseGate: "Gate 5 — Before mounting handoff", routeHandoff: "Project site / Mounting handoff", response: "передать mounting questions checklist и coordination draft до field execution", decision: "mounting side and technical specialist approve field inputs", boundary: "UPGRADE не выполняет монтаж" },
+  { id: "pump-evidence", title: "pump purchase / serial evidence incomplete", severity: "medium", impact: "dependency", x: 58, y: 70, evidence: "pump nameplates, serial numbers, invoice / waybill, installation assignment", owner: "WinGPro / mounting side", escalation: "pump evidence request", vaultEvidence: "pump nameplates and serial numbers", releaseGate: "Gate 5 — Before mounting handoff", routeHandoff: "Project site / Mounting handoff", response: "собрать pump evidence request: шильдики, серийники, закупочный документ и подтверждение контура F100/F80", decision: "WinGPro technical owner and mounting contractor confirm pump assignment and documents", boundary: "UPGRADE структурирует evidence request, но не подтверждает гидравлику и не принимает оборудование" },
   { id: "media", title: "no nameplate/photo/video before shipment", severity: "medium", impact: "quality", x: 42, y: 54, evidence: "photo/video/nameplate", owner: "supplier", escalation: "shipment evidence request", vaultEvidence: "photo/video/nameplate", releaseGate: "Gate 3 — Before shipment", routeHandoff: "Pickup / Export docs", response: "запросить media evidence before shipment и связать его с shipment evidence pack", decision: "supplier provides evidence; WinGPro reviews before release movement", boundary: "UPGRADE не инспекционный орган" },
   { id: "asset", title: "no reusable digital product card", severity: "controlled", impact: "decision", x: 84, y: 82, evidence: "supplier card, product card", owner: "UPGRADE / WinGPro", escalation: "reuse pipeline", vaultEvidence: "digital product card", releaseGate: "Gate 7 — Reuse in sales pipeline", routeHandoff: "Handover Room / Future Sales", response: "связать supplier profile, documents, notes and product card for repeat purchase / sales reuse", decision: "WinGPro chooses the future reuse strategy for this product asset", boundary: "будущая повторная продажа зависит от стратегии WinGPro" },
 ] as const;
@@ -1169,14 +1175,14 @@ const handoverPacks = [
   },
   {
     name: "Mounting Coordination Pack",
-    inside: "connection points, service access, dimensions, questions",
+    inside: "connection points, service access, dimensions, pump assignment, questions",
     format: "coordination pack",
     recipient: "mounting side",
     gate: "Gate 5",
     value: "площадка получает вводные заранее",
-    acceptance: "mounting questions and technical owner path are listed",
+    acceptance: "mounting questions, pump assignment and technical owner path are listed",
     paymentLink: "confirms coordination inputs were transferred, not field execution",
-    evidence: "connection points, service access, dimensions, open questions",
+    evidence: "connection points, service access, dimensions, pump nameplates, installation assignment, open questions",
     reusable: "mounting input checklist for future implementation",
   },
   {
@@ -1448,6 +1454,12 @@ function formatUsd(value: number) {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+function formatPumpEvidenceStatus(value: "ready" | "requested" | "missing") {
+  if (value === "ready") return "готово";
+  if (value === "requested") return "запросить";
+  return "нет файла";
 }
 
 function pressureDropTone(value: number) {
@@ -2059,33 +2071,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   ] as const;
   const cockpitKpis = [
     {
-      label: "scope",
-      value: "IT/data",
-      detail: "UPGRADE ведет data-room, evidence и coordination draft",
+      label: "выбранный маршрут",
+      value: activeHexnovasVariant.shortName,
+      detail: activeHexnovasVariant.statusLabel,
     },
     {
-      label: "blockers",
-      value: String(decisionBlockerQueue.length),
-      detail: `nearest: ${decisionBlockerQueue[0]}`,
+      label: "следующий blocker",
+      value: decisionBlockerQueue[0],
+      detail: `${decisionBlockerQueue.length} items in queue`,
     },
     {
-      label: "delivery gate",
+      label: "release gate",
       value: deliveryPhase.releaseGate,
       detail: deliveryPhase.statusControl,
     },
     {
-      label: "work plan",
-      value: "ППР skeleton",
-      detail: "coordination draft, not official ППР",
-    },
-    {
-      label: "evidence",
+      label: "evidence handoff",
       value: evidenceHandoff.gate,
-      detail: evidenceHandoff.closeoutOutput,
-    },
-    {
-      label: "handover",
-      value: handoverPack.gate,
       detail: handoverPack.name,
     },
   ] as const;
@@ -3247,7 +3249,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <span className={styles.eyebrow}>Project Cockpit Summary</span>
               <h3 id="cockpit-summary-title">Что получает WinGPro сейчас</h3>
             </div>
-            <p>Один верхний слой показывает выбранный маршрут, сценарий договора, readiness, blocker queue, следующий шаг и optional extensions без отдельной длинной секции.</p>
+            <p>Один верхний слой показывает маршрут решения, ближайший blocker, release gate и evidence handoff. Детальные карточки ниже открывают рабочие слои страницы.</p>
+            <button className={styles.cockpitSummaryCopyButton} type="button" onClick={copyCockpitSummary}>
+              Скопировать summary
+            </button>
           </div>
           <div className={styles.cockpitKpiRail} aria-label="Cockpit operating KPIs">
             {cockpitKpis.map((item) => (
@@ -3257,9 +3262,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <small>{item.detail}</small>
               </article>
             ))}
-            <button type="button" onClick={copyCockpitSummary}>
-              Скопировать технический summary
-            </button>
+          </div>
+          <div className={styles.cockpitSummaryModeHeader}>
+            <span>рабочие слои</span>
+            <p>Выберите, что открыть дальше: supplier, contract, delivery, Work Plan, evidence или handover.</p>
           </div>
           <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
             {cockpitSummaryCards.map((item) => (
@@ -3494,6 +3500,17 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <a key={doc.id} href={doc.href} target="_blank" rel="noreferrer">
                 {doc.equipmentModel}: открыть паспорт
               </a>
+            ))}
+          </div>
+          <div className={styles.pumpEvidenceRequestGrid} aria-label="Что запросить по закупленным насосам">
+            {purchasedPumpEvidenceRequests.map((item) => (
+              <article key={item.title} data-status={item.status}>
+                <span>{formatPumpEvidenceStatus(item.status)}</span>
+                <strong>{item.title}</strong>
+                <p>{item.action}</p>
+                <small>{item.owner}</small>
+                <em>{item.why}</em>
+              </article>
             ))}
           </div>
         </div>

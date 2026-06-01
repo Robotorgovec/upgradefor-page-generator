@@ -40,6 +40,14 @@ export type PurchasedPumpAssignment = {
   confirmation: string;
 };
 
+export type PurchasedPumpEvidenceRequest = {
+  title: string;
+  status: "ready" | "requested" | "missing";
+  owner: string;
+  action: string;
+  why: string;
+};
+
 export const sourceDocuments: SourceDocument[] = [
   {
     id: "hs-working-project",
@@ -179,6 +187,44 @@ export const purchasedPumpAssignments: PurchasedPumpAssignment[] = [
     hydraulicLogic: "15 kW, DN100/DN80, nominal 150 m3/h; логично держать как отдельный насосный пакет для меньшего расхода.",
     documentId: "pedrollo-f80-160c-pump",
     confirmation: "Сверить фактическое место установки с монтажной стороной и ответственным техспециалистом WinGPro.",
+  },
+];
+
+export const purchasedPumpEvidenceRequests: PurchasedPumpEvidenceRequest[] = [
+  {
+    title: "Паспорта F100/200C и F80/160C",
+    status: "ready",
+    owner: "UPGRADE data-room",
+    action: "закрепить PDF как ready evidence в Source Data Room",
+    why: "паспорта уже доступны для проверки мощности, DN, расхода, напора и габаритов",
+  },
+  {
+    title: "Шильдики и серийные номера 2+2",
+    status: "requested",
+    owner: "WinGPro / монтажная сторона",
+    action: "запросить фото шильдиков каждого насоса и связать с моделью",
+    why: "без серийников нельзя уверенно закрыть handover и сверить фактическую поставку",
+  },
+  {
+    title: "Накладные / счет / складской факт",
+    status: "missing",
+    owner: "WinGPro procurement owner",
+    action: "добавить purchase evidence: invoice, waybill или receiving note",
+    why: "статус `уже закуплено` должен подтверждаться закупочным документом, а не только паспортом",
+  },
+  {
+    title: "Привязка к контуру и месту установки",
+    status: "requested",
+    owner: "WinGPro technical owner / mounting contractor",
+    action: "подтвердить, какой тип насоса идет в крупное и меньшее насосное плечо",
+    why: "логическая раскладка F100/F80 должна быть проверена по фактической гидравлике и монтажному контексту",
+  },
+  {
+    title: "Фланцы, доступ и сервисная зона",
+    status: "requested",
+    owner: "mounting contractor",
+    action: "проверить DN125/DN100 и DN100/DN80, доступ к обслуживанию и место для обвязки",
+    why: "это входные данные для coordination draft, а не утверждение монтажного решения UPGRADE",
   },
 ];
 
