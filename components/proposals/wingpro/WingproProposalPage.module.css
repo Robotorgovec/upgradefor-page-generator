@@ -1722,6 +1722,25 @@
   box-shadow: 0 0 0 2px var(--proposal-focus);
 }
 
+.missionCardPublicLink {
+  display: block;
+  margin-top: 7px;
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.missionCardPublicLink:hover,
+.missionCardPublicLink:focus-visible {
+  color: var(--proposal-brand-contrast);
+  text-decoration: underline;
+  outline: 2px solid var(--proposal-focus);
+  outline-offset: 2px;
+}
+
 .missionCardFooter small {
   display: block;
   margin-top: 6px;

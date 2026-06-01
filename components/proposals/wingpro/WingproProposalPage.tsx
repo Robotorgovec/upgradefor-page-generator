@@ -1854,6 +1854,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const activeHexnovasMaterialSignal = activeHexnovasVariant.material.includes("304")
     ? "замена материала требует письменного согласования"
     : "материал совпадает с референсом 316L";
+  const hexnovasDecisionPublicUrl = `https://upgradefor.com${proposalPath}#hexnovas-decision-board`;
   const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, supplier equipment package ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, supplier equipment package ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Эти суммы относятся к предложению Hexnovas на оборудование и логистическому reserve; это supplier-only ориентир, не итоговая стоимость проекта. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
   const hexnovasDecisionEmailSubject = `WinGPro decision — ${activeHexnovasVariant.shortName}`;
   const hexnovasDecisionEmailText = [
@@ -1880,6 +1881,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     `send_to: ${HEXNOVAS_DECISION_EMAIL}`,
     `source_path: ${proposalPath}`,
     `decision_board: ${proposalPath}#hexnovas-decision-board`,
+    `public_decision_link: ${hexnovasDecisionPublicUrl}`,
   ].join("\n");
   const hexnovasDecisionMailto = `mailto:${HEXNOVAS_DECISION_EMAIL}?subject=${encodeURIComponent(hexnovasDecisionEmailSubject)}&body=${encodeURIComponent(hexnovasDecisionEmailText)}`;
   const hexnovasEvidenceBridgeStats = [
@@ -2258,6 +2260,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     await copyPlainText(hexnovasDecisionEmailText, "Текст решения скопирован");
   }
 
+  async function copyHexnovasDecisionPublicLink() {
+    setCopyVariant("command");
+    setHexnovasDecisionStatus("Ссылка на Decision Board скопирована");
+    await copyPlainText(hexnovasDecisionPublicUrl, "Ссылка на Decision Board скопирована");
+  }
+
   function markHexnovasDecisionEmailOpen() {
     setHexnovasDecisionStatus(`Открываем письмо на ${HEXNOVAS_DECISION_EMAIL} по выбранному варианту ${activeHexnovasVariant.shortName}`);
     setCopyStatus(`Письмо на ${HEXNOVAS_DECISION_EMAIL} готовится`);
@@ -2510,7 +2518,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <a href="#hexnovas-decision-board">Открыть Decision Board</a>
               <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>
               <button type="button" onClick={copyHexnovasDecisionEmail}>Скопировать письмо</button>
+              <button type="button" onClick={copyHexnovasDecisionPublicLink}>Скопировать ссылку</button>
             </div>
+            <a className={styles.missionCardPublicLink} href={hexnovasDecisionPublicUrl}>
+              upgradefor.com/cp/2605281047-wingpro#hexnovas-decision-board
+            </a>
             <small role="status" aria-live="polite">{copyStatus}</small>
           </div>
         </aside>
