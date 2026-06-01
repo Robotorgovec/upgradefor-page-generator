@@ -2263,6 +2263,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
   function markHexnovasDecisionEmailOpen() {
     setHexnovasDecisionStatus(`Открываем письмо на ${HEXNOVAS_DECISION_EMAIL} по выбранному варианту ${activeHexnovasVariant.shortName}`);
+    setCopyStatus(`Письмо на ${HEXNOVAS_DECISION_EMAIL} готовится`);
   }
 
   function unlockWingproProposal(event: ReactFormEvent<HTMLFormElement>) {
@@ -2506,10 +2507,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
-            <span>decision shortcut</span>
-            <p>{recommendedHexnovasVariant.shortName}: {hexnovasNextEvidenceAction.title}. Решение отправляется из Decision Board.</p>
+            <span>decision now</span>
+            <p>{recommendedHexnovasVariant.shortName}: выберите вариант и откройте готовое письмо на {HEXNOVAS_DECISION_EMAIL}. {hexnovasNextEvidenceAction.title}.</p>
             <div className={styles.missionCardFooterActions}>
-              <a href="#hexnovas-decision-board">Открыть выбор</a>
+              <a href="#hexnovas-decision-board">Открыть Decision Board</a>
+              <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>
               <button type="button" onClick={copyDecisionBoardLink}>Скопировать ссылку</button>
             </div>
             <small role="status" aria-live="polite">{copyStatus}</small>
