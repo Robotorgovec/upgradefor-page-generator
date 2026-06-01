@@ -12751,7 +12751,7 @@
   }
 
   .twinStage {
-    min-height: 390px;
+    min-height: 368px;
     overflow: clip;
     overflow-clip-margin: 1px;
   }
@@ -12927,12 +12927,12 @@
 
   .twinPanel section > p {
     display: -webkit-box;
-    max-height: 3.78em;
+    max-height: 2.7em;
     overflow: hidden;
     font-size: 12.5px;
     line-height: 1.35;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
   .twinLayerDetailsDisclosure summary {
@@ -12996,6 +12996,7 @@
   }
 
   .twinLayerPlainSummary small {
+    display: none;
     max-height: 2.5em;
     font-size: 10.5px;
     line-height: 1.25;
@@ -13056,13 +13057,13 @@
 
   .digitalTwin .legalNote {
     display: -webkit-box;
-    max-height: 3.78em;
+    max-height: 2.7em;
     overflow: hidden;
     padding: 9px;
     font-size: 12px;
     line-height: 1.35;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
   .segmented,
@@ -14856,6 +14857,38 @@
 }
 
 @media (max-width: 900px) {
+  .twinLayerGuide {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .twinLayerGuide article,
+  .twinLayerGuide article:first-child {
+    grid-column: auto;
+    min-height: 62px;
+    padding: 7px;
+  }
+
+  .twinLayerGuide span {
+    font-size: 8.5px;
+  }
+
+  .twinLayerGuide strong,
+  .twinLayerGuide article:first-child strong {
+    max-height: 2.4em;
+    font-size: 11px;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+  }
+
+  .twinLayerGuide small {
+    display: none;
+  }
+
+  .twinInterfaceChips span:nth-child(n + 5) {
+    display: none;
+  }
+
   .twinLayerDecisionStrip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
@@ -14884,39 +14917,9 @@
   }
 }
 
-@media (max-width: 700px) {
-  .twinLayerGuide {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  .twinLayerGuide article,
-  .twinLayerGuide article:first-child {
-    grid-column: auto;
-    min-height: 62px;
-    padding: 7px;
-  }
-
-  .twinLayerGuide span {
-    font-size: 8.5px;
-  }
-
-  .twinLayerGuide strong,
-  .twinLayerGuide article:first-child strong {
-    max-height: 2.4em;
-    font-size: 11px;
-    line-height: 1.2;
-    -webkit-line-clamp: 2;
-  }
-
-  .twinLayerGuide small {
-    display: none;
-  }
-}
-
 @media (max-width: 560px) {
   .twinStage {
-    min-height: clamp(300px, 94vw, 352px);
+    min-height: clamp(292px, 90vw, 338px);
   }
 
   .twinCanvasWrap {
