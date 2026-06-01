@@ -2698,16 +2698,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 data-active={isActive}
                 data-tone={item.statusTone}
                 onClick={() => setActiveHexnovasVariantId(item.id)}
+                aria-label={`${item.shortName}: ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
               >
                 <span>{item.statusLabel}</span>
                 <strong>{item.shortName}</strong>
-                <small>{item.name}</small>
-                <dl>
-                  <div><dt>unit</dt><dd>{formatUsd(item.unitPriceUsd)}</dd></div>
-                  <div><dt>2 pcs</dt><dd>{formatUsd(item.totalPriceUsd)}</dd></div>
-                  <div><dt>material</dt><dd>{item.material}</dd></div>
-                  <div><dt>production</dt><dd>{item.productionTimeDaysAfterAdvance} days</dd></div>
-                </dl>
+                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / {formatUsd(item.totalPriceUsd)}</small>
                 <div className={styles.hexnovasPressureRow}>
                   <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
                   <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
