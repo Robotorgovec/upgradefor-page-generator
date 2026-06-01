@@ -1742,6 +1742,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
   const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
+  const [hexnovasDecisionOwner, setHexnovasDecisionOwner] = useState("");
+  const [hexnovasDecisionComment, setHexnovasDecisionComment] = useState("");
   const [hexnovasEvidenceOpen, setHexnovasEvidenceOpen] = useState(false);
   const [activeHexnovasSignalTitle, setActiveHexnovasSignalTitle] = useState<string | null>(null);
   const [accessStatus, setAccessStatus] = useState<"checking" | "locked" | "unlocked">("checking");
@@ -1869,7 +1871,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     activeHexnovasVariant.decisionAlert,
     "",
     "Owner confirmation:",
-    "Имя / должность / комментарий: ______________________________",
+    `Имя / должность: ${hexnovasDecisionOwner.trim() || "______________________________"}`,
+    `Комментарий: ${hexnovasDecisionComment.trim() || "______________________________"}`,
     "",
     "Boundary:",
     "UPGRADE структурирует source data, supplier evidence, decision board, risk register and handover pack. Технические, договорные и проектные решения подтверждают WinGPro и профильные участники.",
@@ -2191,13 +2194,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       }
     }
     if (copyRef.current) {
-      copyRef.current.hidden = false;
-      copyRef.current.value = text;
-      copyRef.current.focus();
-      copyRef.current.select();
+      const fallbackTextarea = copyRef.current;
+      fallbackTextarea.hidden = false;
+      fallbackTextarea.value = text;
+      fallbackTextarea.focus();
+      fallbackTextarea.select();
       const ok = document.execCommand("copy");
-      copyRef.current.hidden = ok;
-      setCopyStatus(ok ? `${status} через fallback` : "Текст открыт для ручного копирования");
+      fallbackTextarea.hidden = true;
+      fallbackTextarea.value = copyTexts[copyVariant];
+      setCopyStatus(ok ? `${status} через fallback` : "Не удалось скопировать автоматически");
     }
   }
 
@@ -2734,9 +2739,31 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               );
             })}
           </div>
+          <div className={styles.hexnovasDecisionOwnerFields} aria-label="Данные decision owner для письма">
+            <label>
+              <span>Кто подтверждает</span>
+              <input
+                type="text"
+                value={hexnovasDecisionOwner}
+                onChange={(event) => setHexnovasDecisionOwner(event.currentTarget.value)}
+                placeholder="Имя / должность"
+                aria-label="Имя и должность decision owner"
+              />
+            </label>
+            <label>
+              <span>Комментарий к выбору</span>
+              <textarea
+                value={hexnovasDecisionComment}
+                onChange={(event) => setHexnovasDecisionComment(event.currentTarget.value)}
+                placeholder="Например: выбираем TH150B / 316L, запросить обновленный PI и GA drawing"
+                aria-label="Комментарий к решению по выбору теплообменника"
+                rows={2}
+              />
+            </label>
+          </div>
           <div className={styles.hexnovasDecisionMailActions}>
             <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
-              Отправить решение на email
+              Отправить на info@upgradefor.com
             </a>
             <button type="button" onClick={copyHexnovasDecisionEmail}>
               Скопировать письмо

@@ -8011,7 +8011,7 @@
 .hexnovasDecisionActionPanel {
   padding: 12px;
   display: grid;
-  grid-template-columns: minmax(210px, 0.28fr) minmax(0, 1fr) minmax(230px, 0.28fr);
+  grid-template-columns: minmax(210px, 0.26fr) minmax(0, 1fr);
   gap: 10px;
   align-items: stretch;
   background:
@@ -8024,6 +8024,7 @@
   display: grid;
   gap: 7px;
   align-content: start;
+  grid-row: span 3;
 }
 
 .hexnovasDecisionActionIntro span,
@@ -8052,6 +8053,7 @@
 .hexnovasDecisionQuickPick {
   min-width: 0;
   display: grid;
+  grid-column: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
@@ -8099,9 +8101,61 @@
   line-height: 1.24;
 }
 
+.hexnovasDecisionOwnerFields {
+  min-width: 0;
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: minmax(180px, 0.34fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.hexnovasDecisionOwnerFields label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.hexnovasDecisionOwnerFields span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionOwnerFields input,
+.hexnovasDecisionOwnerFields textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--proposal-text);
+  background: rgba(255, 255, 255, 0.88);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.28;
+}
+
+.hexnovasDecisionOwnerFields textarea {
+  resize: vertical;
+  overflow-y: hidden;
+}
+
+.hexnovasDecisionOwnerFields input:focus-visible,
+.hexnovasDecisionOwnerFields textarea:focus-visible {
+  border-color: var(--proposal-brand-border-strong);
+  outline: 3px solid var(--proposal-focus-ring);
+  outline-offset: 2px;
+}
+
 .hexnovasDecisionMailActions {
   min-width: 0;
   display: grid;
+  grid-column: 2;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.44fr);
   gap: 8px;
   align-content: start;
 }
@@ -15227,6 +15281,25 @@
   .hexnovasDecisionActionPanel {
     grid-column: 1 / -1;
     gap: 7px;
+  }
+
+  .hexnovasDecisionActionIntro,
+  .hexnovasDecisionQuickPick,
+  .hexnovasDecisionOwnerFields,
+  .hexnovasDecisionMailActions {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .hexnovasDecisionOwnerFields {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .hexnovasDecisionOwnerFields input,
+  .hexnovasDecisionOwnerFields textarea {
+    padding: 8px;
+    font-size: 12px;
   }
 
   .hexnovasDecisionMailActions {
