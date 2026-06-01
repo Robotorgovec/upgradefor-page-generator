@@ -4185,19 +4185,26 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <div className={styles.hexnovasVaultRouteCards}>
-            {hexnovasVaultRouteCards.map(([label, title, gateName, action, owner]) => (
-              <article key={title}>
-                <span>{label}</span>
-                <strong>{title}</strong>
-                <dl>
-                  <div><dt>Gate</dt><dd>{gateName}</dd></div>
-                  <div><dt>Action</dt><dd>{action}</dd></div>
-                  <div><dt>Owner</dt><dd>{owner}</dd></div>
-                </dl>
-              </article>
-            ))}
-          </div>
+          <details className={styles.hexnovasVaultRouteCardsDisclosure}>
+            <summary>
+              <span>route cards</span>
+              <strong>{hexnovasVaultRouteCards.length} owner / gate / action cards</strong>
+              <small>Открыть route-level detail по архиву Hexnovas</small>
+            </summary>
+            <div className={styles.hexnovasVaultRouteCards}>
+              {hexnovasVaultRouteCards.map(([label, title, gateName, action, owner]) => (
+                <article key={title}>
+                  <span>{label}</span>
+                  <strong>{title}</strong>
+                  <dl>
+                    <div><dt>Gate</dt><dd>{gateName}</dd></div>
+                    <div><dt>Action</dt><dd>{action}</dd></div>
+                    <div><dt>Owner</dt><dd>{owner}</dd></div>
+                  </dl>
+                </article>
+              ))}
+            </div>
+          </details>
         </div>
         <details className={styles.hexnovasVaultTrace}>
           <summary>
