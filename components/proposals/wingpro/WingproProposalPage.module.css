@@ -4876,6 +4876,7 @@
 .deliveryDetailsDisclosure:not([open]) > :not(summary),
 .controlParticipantsDisclosure:not([open]) > :not(summary),
 .routeDetailsDisclosure:not([open]) > :not(summary),
+.vaultOpenFocusDisclosure:not([open]) > :not(summary),
 .vaultFilterDisclosure:not([open]) > :not(summary),
 .vaultCardsDisclosure:not([open]) > :not(summary),
 .riskResponseDisclosure:not([open]) > :not(summary),
@@ -6309,11 +6310,71 @@
   line-height: 1.35;
 }
 
-.vaultOpenList {
+.vaultOpenFocusDisclosure {
+  min-width: 0;
   border: 1px solid var(--proposal-border);
   border-radius: 8px;
-  padding: 11px;
   background: #ffffff;
+}
+
+.vaultOpenFocusDisclosure summary {
+  min-height: 88px;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+  padding: 11px 38px 11px 11px;
+  cursor: pointer;
+  position: relative;
+}
+
+.vaultOpenFocusDisclosure summary::after {
+  content: "+";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-weight: 950;
+}
+
+.vaultOpenFocusDisclosure[open] summary::after {
+  content: "-";
+}
+
+.vaultOpenFocusDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.vaultOpenFocusDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.vaultOpenFocusDisclosure summary small {
+  display: -webkit-box;
+  max-height: 2.5em;
+  overflow: hidden;
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.vaultOpenList {
+  padding: 11px;
+  border-top: 1px solid var(--proposal-border);
   display: grid;
   gap: 8px;
 }
@@ -15904,6 +15965,59 @@
   .vaultOpenList,
   .vaultCommandStrip {
     padding: 7px;
+  }
+
+  .vaultOpenFocusDisclosure summary {
+    min-height: 56px;
+    gap: 3px;
+    padding: 7px 34px 7px 7px;
+  }
+
+  .vaultOpenFocusDisclosure summary::after {
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .vaultOpenFocusDisclosure summary span {
+    font-size: 8.5px;
+    line-height: 1.08;
+  }
+
+  .vaultOpenFocusDisclosure summary strong {
+    font-size: 11.5px;
+    line-height: 1.14;
+  }
+
+  .vaultOpenFocusDisclosure summary small {
+    display: none;
+  }
+
+  .vault .hexnovasVaultRouteSummary,
+  .vault .hexnovasVaultTrace > summary,
+  .vault .vaultFilterDisclosure > summary,
+  .vault .vaultCardsDisclosure > summary {
+    min-height: 54px;
+    grid-template-columns: minmax(0, 1fr) 28px;
+    gap: 4px;
+    padding: 8px 36px 8px 8px;
+  }
+
+  .vault .hexnovasVaultRouteSummary span,
+  .vault .hexnovasVaultTrace > summary span,
+  .vault .vaultFilterDisclosure > summary span,
+  .vault .vaultCardsDisclosure > summary span {
+    font-size: 8.5px;
+    line-height: 1.08;
+  }
+
+  .vault .hexnovasVaultRouteSummary strong,
+  .vault .hexnovasVaultTrace > summary strong,
+  .vault .vaultFilterDisclosure > summary strong,
+  .vault .vaultCardsDisclosure > summary strong {
+    font-size: 12px;
+    line-height: 1.14;
   }
 
   .hexnovasVaultRouteBody {

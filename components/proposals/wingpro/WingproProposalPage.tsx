@@ -4470,24 +4470,31 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </span>
             ))}
           </div>
-          <div className={styles.vaultOpenList}>
-            <strong>Missing / requested focus</strong>
-            {visibleOpenDocs.length > 0 ? (
-              <ul>
-                {visibleOpenFocusDocs.map((doc) => (
-                  <li key={`open-${doc[1]}`}>
-                    <span>{doc[1]}</span>
-                    <em>{getVaultReleaseLane(doc[3])}</em>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Filtered scope has no missing/requested documents.</p>
-            )}
-            {visibleOpenDocs.length > visibleOpenFocusDocs.length ? (
-              <p>{visibleOpenDocs.length - visibleOpenFocusDocs.length} more open item(s) inside card-level detail.</p>
-            ) : null}
-          </div>
+          <details className={styles.vaultOpenFocusDisclosure}>
+            <summary>
+              <span>Missing / requested focus</span>
+              <strong>{visibleOpenDocs.length} open evidence item(s)</strong>
+              <small>{visibleOpenFocusDocs.map((doc) => doc[1]).join(" / ") || "Filtered scope has no missing/requested documents."}</small>
+            </summary>
+            <div className={styles.vaultOpenList}>
+              <strong>Owner queue detail</strong>
+              {visibleOpenDocs.length > 0 ? (
+                <ul>
+                  {visibleOpenFocusDocs.map((doc) => (
+                    <li key={`open-${doc[1]}`}>
+                      <span>{doc[1]}</span>
+                      <em>{getVaultReleaseLane(doc[3])}</em>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Filtered scope has no missing/requested documents.</p>
+              )}
+              {visibleOpenDocs.length > visibleOpenFocusDocs.length ? (
+                <p>{visibleOpenDocs.length - visibleOpenFocusDocs.length} more open item(s) inside card-level detail.</p>
+              ) : null}
+            </div>
+          </details>
         </div>
         <div className={styles.vaultCommandStrip} aria-live="polite" aria-label="Document Vault active command">
           <div>
