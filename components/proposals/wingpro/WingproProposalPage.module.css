@@ -8219,8 +8219,8 @@
   grid-column: 1 / -1;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   overflow: visible;
 }
 
@@ -8232,6 +8232,7 @@
   background: rgba(255, 255, 255, 0.86);
   display: grid;
   gap: 5px;
+  align-content: start;
 }
 
 .pumpEvidenceRequestGrid article[data-status="ready"] {
@@ -8251,16 +8252,21 @@
 
 .pumpEvidenceRequestGrid span {
   width: fit-content;
+  min-height: 24px;
   border: 1px solid currentColor;
   border-radius: 999px;
-  padding: 3px 6px;
+  padding: 4px 8px;
   color: var(--proposal-brand-contrast);
   background: #ffffff;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 950;
   letter-spacing: 0.06em;
   line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pumpEvidenceRequestGrid article[data-status="ready"] span {
