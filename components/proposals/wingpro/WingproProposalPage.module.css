@@ -7562,8 +7562,8 @@
 
 .sourceDocsSection {
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px;
   overflow: visible;
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--proposal-brand-soft) 88%, #ffffff), transparent 34%),
@@ -7573,7 +7573,7 @@
 .sourceDocsHeader {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 0.38fr);
-  gap: 14px;
+  gap: 12px;
   align-items: start;
 }
 
@@ -7589,15 +7589,15 @@
 
 .sourceDocsHeader h2 {
   color: var(--proposal-text);
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.08;
 }
 
 .sourceDocsHeader p:not(.eyebrow) {
-  margin-top: 7px;
+  margin-top: 5px;
   color: var(--proposal-text-soft);
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.36;
 }
 
 .sourceDocsLegalLine,
@@ -7615,17 +7615,17 @@
 }
 
 .sourceDocsLegalLine {
-  padding: 10px;
+  padding: 8px;
   color: var(--proposal-text-soft);
   font-size: 12.5px;
-  line-height: 1.4;
+  line-height: 1.32;
 }
 
 .sourceDocsSummaryCard {
-  padding: 12px;
+  padding: 10px;
   display: grid;
   grid-template-columns: minmax(220px, 0.3fr) minmax(0, 1fr) minmax(190px, 0.24fr);
-  gap: 10px;
+  gap: 8px;
   align-items: start;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff), #ffffff 74%),
@@ -7634,15 +7634,15 @@
 
 .sourceDocsSummaryCard h3 {
   color: var(--proposal-text);
-  font-size: 21px;
+  font-size: 19px;
   line-height: 1.1;
 }
 
 .sourceDocsSummaryCard p {
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--proposal-text-soft);
-  font-size: 13px;
-  line-height: 1.38;
+  font-size: 12.5px;
+  line-height: 1.3;
 }
 
 .sourceDocsStatusGrid {
@@ -7653,10 +7653,10 @@
 }
 
 .sourceDocsStatusGrid article {
-  min-height: 72px;
+  min-height: 64px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 8px;
+  padding: 7px;
   background: #ffffff;
   display: grid;
   gap: 4px;
@@ -7680,7 +7680,7 @@
 
 .sourceDocsStatusGrid strong {
   color: var(--proposal-text);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.16;
 }
 
@@ -7695,7 +7695,7 @@
   align-self: start;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 8px;
+  padding: 7px;
   background: #ffffff;
   display: grid;
   gap: 5px;
@@ -7720,8 +7720,8 @@
 .sourceDocsSummaryActions p {
   margin: 0;
   color: var(--proposal-text-soft);
-  font-size: 11.5px;
-  line-height: 1.28;
+  font-size: 11px;
+  line-height: 1.22;
 }
 
 .sourceDocsSummaryActions button {
@@ -7741,21 +7741,21 @@
 .sourceDocsGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
   overflow: visible;
 }
 
 .sourceDocCard {
-  padding: 12px;
+  padding: 10px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   overflow: visible;
 }
 
 .sourceDocTopline {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 
 .sourceDocTopline span {
@@ -7772,7 +7772,7 @@
 .sourceDocTitleRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
+  gap: 8px;
   align-items: start;
 }
 
@@ -7785,15 +7785,15 @@
 
 .sourceDocTitleRow h3 {
   color: var(--proposal-text);
-  font-size: 19px;
+  font-size: 17.5px;
   line-height: 1.15;
 }
 
 .sourceDocTitleRow p {
-  margin-top: 4px;
+  margin-top: 3px;
   color: var(--proposal-text-soft);
   font-size: 13px;
-  line-height: 1.35;
+  line-height: 1.28;
 }
 
 .sourceDocTitleRow > span {
@@ -7844,7 +7844,7 @@
 .sourceDocUtility summary,
 .sourceDocDetails summary {
   min-height: 44px;
-  padding: 9px 10px;
+  padding: 8px 9px;
   color: var(--proposal-text);
   cursor: pointer;
   display: flex;
@@ -7950,7 +7950,7 @@
 .sourceDocActions,
 .sourceDocsRelated {
   display: grid;
-  gap: 7px;
+  gap: 6px;
 }
 
 .sourceDocActions {
@@ -7963,7 +7963,7 @@
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border);
   border-radius: 8px;
-  padding: 9px 10px;
+  padding: 8px 9px;
   color: var(--proposal-brand-contrast);
   background: #ffffff;
   font: inherit;
@@ -8024,7 +8024,7 @@
 }
 
 .sourceDocsIntelligence {
-  padding: 10px;
+  padding: 8px 10px;
   overflow: visible;
 }
 
