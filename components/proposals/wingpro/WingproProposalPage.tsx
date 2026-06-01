@@ -1776,6 +1776,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ? "замена материала требует письменного согласования"
     : "материал совпадает с референсом 316L";
   const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, supplier equipment package ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, supplier equipment package ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Эти суммы относятся к предложению Hexnovas на оборудование и логистическому reserve; это supplier-only ориентир, не итоговая стоимость проекта. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
+  const hexnovasEvidenceBridgeStats = [
+    ["ready evidence", String(hexnovasDocumentSignals.filter((item) => item.status === "ready").length), "можно положить в vault"],
+    ["update required", String(hexnovasDocumentSignals.filter((item) => item.status === "update-required").length), "PI / drawing должны совпасть с выбранной моделью"],
+    ["owner approval", String(hexnovasDocumentSignals.filter((item) => item.status === "approval-required").length), "нужно письменное решение WinGPro"],
+    ["archive risk", String(hexnovasDocumentSignals.filter((item) => item.status === "archive").length), "хранить как риск-доказательство"],
+  ] as const;
+  const hexnovasNextEvidenceAction = activeHexnovasVariant.status === "economy_option_requires_buyer_approval"
+    ? {
+        title: "Сначала письменное согласование AISI 304",
+        detail: "Материал отличается от референса 316L; без owner approval этот сценарий не должен уходить в release.",
+        owner: "WinGPro technical owner",
+      }
+    : activeHexnovasVariant.status === "not_recommended_without_hydraulic_approval"
+      ? {
+          title: "Сначала гидравлическое подтверждение BH150B",
+          detail: "Перепад давления выше целевого коридора; хранить как risk evidence до проверки профильным специалистом.",
+          owner: "project designer / WinGPro technical owner",
+        }
+      : {
+          title: "Запросить обновленные PI и GA drawing под TH150B / 316L",
+          detail: "Рекомендованная линия может идти дальше только после сверки supplier evidence, модели, материала и чертежа.",
+          owner: "supplier + WinGPro technical owner",
+        };
   const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
   const decisionPath = [
     {
@@ -2806,6 +2829,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               ))}
             </div>
           </details>
+        </div>
+
+        <div className={styles.hexnovasEvidenceBridge} aria-label="Hexnovas evidence handoff summary">
+          <div className={styles.hexnovasEvidenceBridgeMain}>
+            <span>evidence handoff</span>
+            <strong>Что из архива уже можно вести в Document Vault</strong>
+            <p>Слой показывает не файлы ради файлов, а их роль в release-gates: что готово, что нужно обновить, где нужен owner approval и что остается risk evidence.</p>
+          </div>
+          <div className={styles.hexnovasEvidenceBridgeStats}>
+            {hexnovasEvidenceBridgeStats.map(([label, value, note]) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{note}</small>
+              </article>
+            ))}
+          </div>
+          <div className={styles.hexnovasEvidenceBridgeAction}>
+            <span>next document action</span>
+            <strong>{hexnovasNextEvidenceAction.title}</strong>
+            <p>{hexnovasNextEvidenceAction.detail}</p>
+            <small>Owner for confirmation: {hexnovasNextEvidenceAction.owner}. UPGRADE структурирует data-room и evidence request, финальные технические решения подтверждают профильные участники.</small>
+          </div>
         </div>
 
         <details

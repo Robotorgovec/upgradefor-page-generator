@@ -7993,6 +7993,83 @@
   line-height: 1.28;
 }
 
+.hexnovasEvidenceBridge {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.28fr) minmax(0, 1fr) minmax(260px, 0.32fr);
+  gap: 10px;
+  align-items: stretch;
+  overflow: visible;
+}
+
+.hexnovasEvidenceBridgeMain,
+.hexnovasEvidenceBridgeAction,
+.hexnovasEvidenceBridgeStats article {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.hexnovasEvidenceBridgeMain,
+.hexnovasEvidenceBridgeAction {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+.hexnovasEvidenceBridgeMain span,
+.hexnovasEvidenceBridgeAction span,
+.hexnovasEvidenceBridgeStats span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hexnovasEvidenceBridgeMain strong,
+.hexnovasEvidenceBridgeAction strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.hexnovasEvidenceBridgeMain p,
+.hexnovasEvidenceBridgeAction p,
+.hexnovasEvidenceBridgeAction small,
+.hexnovasEvidenceBridgeStats small {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 12.5px;
+  line-height: 1.42;
+}
+
+.hexnovasEvidenceBridgeStats {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasEvidenceBridgeStats article {
+  display: grid;
+  gap: 5px;
+}
+
+.hexnovasEvidenceBridgeStats strong {
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1;
+}
+
 .hexnovasDecisionGrid {
   display: grid;
   grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
@@ -13951,6 +14028,7 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasSelectedPanel,
+  .hexnovasEvidenceBridge,
   .hexnovasDecisionGrid {
     grid-template-columns: 1fr;
   }
@@ -13961,6 +14039,10 @@
 
   .hexnovasVariantGrid {
     grid-template-columns: 1fr;
+  }
+
+  .hexnovasEvidenceBridgeStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hexnovasDocumentSignals > div {
@@ -14024,6 +14106,7 @@
 
   .hexnovasDocumentSignals > div,
   .hexnovasComparisonRow,
+  .hexnovasEvidenceBridgeStats,
   .hexnovasVariantCard dl {
     grid-template-columns: 1fr;
   }
@@ -14031,6 +14114,10 @@
   .hexnovasSummaryRail article,
   .hexnovasVariantCard,
   .hexnovasSelectedMain,
+  .hexnovasEvidenceBridge,
+  .hexnovasEvidenceBridgeMain,
+  .hexnovasEvidenceBridgeAction,
+  .hexnovasEvidenceBridgeStats article,
   .hexnovasCostBox {
     padding: 8px;
   }
