@@ -1775,7 +1775,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const activeHexnovasMaterialSignal = activeHexnovasVariant.material.includes("304")
     ? "замена материала требует письменного согласования"
     : "материал совпадает с референсом 316L";
-  const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
+  const hexnovasDecisionSummaryText = `Hexnovas Decision Board: рекомендуемый технический вариант — ${recommendedHexnovasVariant.name}, supplier equipment package ${formatUsd(recommendedHexnovasVariant.totalPriceUsd)} за ${recommendedHexnovasVariant.quantity} шт.; перепад ${recommendedHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${recommendedHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa. Выбранный сценарий сейчас — ${activeHexnovasVariant.name}, supplier equipment package ${formatUsd(activeHexnovasVariant.totalPriceUsd)}; ${activeHexnovasMaterialSignal}. Эти суммы относятся к предложению Hexnovas на оборудование и логистическому reserve; это supplier-only ориентир, не итоговая стоимость проекта. Если WinGPro выбирает TH150B-381H, PI/договор по BH150B-307H нужно обновить до release. UPGRADE структурирует source data, supplier evidence, risks and handover; технические решения подтверждают профильные участники.`;
   const activePresentation = presentationModes.find((item) => item.id === activePresentationMode) ?? presentationModes[0];
   const decisionPath = [
     {
@@ -2663,6 +2663,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p className={styles.eyebrow}>Hexnovas Decision Board</p>
             <h2 id="hexnovas-decision-title">Выбор варианта теплообменника</h2>
             <p>Техническая панель по архиву Hexnovas: модель, материал, перепад давления, документы и действия до обновления PI/договора.</p>
+            <p className={styles.hexnovasScopeNote}>Все суммы в этом board относятся только к supplier equipment package и логистическому reserve для сравнения сценариев. Это supplier-only ориентир, не итоговая стоимость проекта.</p>
           </div>
           <aside className={styles.hexnovasDecisionStatus} aria-label="Current supplier decision status">
             <span>decision pending</span>
@@ -2698,11 +2699,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 data-active={isActive}
                 data-tone={item.statusTone}
                 onClick={() => setActiveHexnovasVariantId(item.id)}
-                aria-label={`${item.shortName}: ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
+                aria-label={`${item.shortName}: supplier equipment package ${formatUsd(item.totalPriceUsd)}, ${item.material}, ${item.productionTimeDaysAfterAdvance} days, pressure ${item.pressureDropKpaHot.toFixed(1)} / ${item.pressureDropKpaCold.toFixed(1)} kPa`}
               >
                 <span>{item.statusLabel}</span>
                 <strong>{item.shortName}</strong>
-                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / {formatUsd(item.totalPriceUsd)}</small>
+                <small>{item.material} / {item.productionTimeDaysAfterAdvance} days / supplier package {formatUsd(item.totalPriceUsd)}</small>
                 <div className={styles.hexnovasPressureRow}>
                   <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaHot)}>hot {item.pressureDropKpaHot.toFixed(1)} kPa</span>
                   <span className={styles.hexnovasPressureBadge} data-tone={pressureDropTone(item.pressureDropKpaCold)}>cold {item.pressureDropKpaCold.toFixed(1)} kPa</span>
@@ -2726,16 +2727,16 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={copyHexnovasDecisionSummary}>Скопировать decision summary</button>
           </article>
 
-          <aside className={styles.hexnovasCostBox} aria-label="Supplier offer delta">
-            <span>supplier offer delta</span>
+          <aside className={styles.hexnovasCostBox} aria-label="Supplier equipment package delta">
+            <span>supplier equipment package</span>
             <strong>{formatUsd(activeHexnovasVariant.totalPriceUsd)}</strong>
-            <p>оборудование Hexnovas за {activeHexnovasVariant.quantity} шт.; логистический reserve: {formatUsd(hexnovasProject.logisticsReserveUsdForTwoUnits)}</p>
+            <p>только оборудование Hexnovas за {activeHexnovasVariant.quantity} шт.; логистический reserve вынесен ниже как расчетный ориентир для маршрута</p>
             <dl>
-              <div><dt>Equipment + reserve</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
+              <div><dt>Supplier route total</dt><dd>{formatUsd(activeHexnovasEquipmentRouteTotal)}</dd></div>
               <div><dt>Delta vs recommended</dt><dd>{activeHexnovasDelta === 0 ? "baseline" : formatUsd(activeHexnovasDelta)}</dd></div>
               <div><dt>Material signal</dt><dd>{activeHexnovasMaterialSignal}</dd></div>
             </dl>
-            <small>Здесь показаны только supplier package amounts и логистический reserve для сравнения сценариев; решение по закупочному маршруту остается за WinGPro.</small>
+            <small>Supplier-only reference: здесь показаны только supplier package amounts и логистический reserve для сравнения сценариев; решение по закупочному маршруту остается за WinGPro.</small>
           </aside>
         </div>
 
@@ -2748,7 +2749,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.hexnovasComparison} role="table" aria-label="Hexnovas variant comparison">
             <div role="row" className={styles.hexnovasComparisonHead}>
               <span role="columnheader">Вариант</span>
-              <span role="columnheader">Цена / 2 шт.</span>
+              <span role="columnheader">Supplier price / 2 шт.</span>
               <span role="columnheader">Материал</span>
               <span role="columnheader">Перепад</span>
               <span role="columnheader">Решение</span>
@@ -2763,7 +2764,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 onClick={() => setActiveHexnovasVariantId(item.id)}
               >
                 <span role="cell" data-label="Вариант">{item.shortName}</span>
-                <span role="cell" data-label="Цена / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
+                <span role="cell" data-label="Supplier price / 2 шт.">{formatUsd(item.totalPriceUsd)}</span>
                 <span role="cell" data-label="Материал">{item.material}</span>
                 <span role="cell" data-label="Перепад">{item.pressureDropKpaHot.toFixed(1)} / {item.pressureDropKpaCold.toFixed(1)} kPa</span>
                 <span role="cell" data-label="Решение">{item.action}</span>
