@@ -1,6 +1,6 @@
 "use client";
 
-import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type { Group } from "three";
@@ -1677,6 +1677,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [commercialStatus, setCommercialStatus] = useState("Коммерческий контур раскрыт отдельно от технического экрана");
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
+  const [hexnovasEvidenceOpen, setHexnovasEvidenceOpen] = useState(false);
+  const [activeHexnovasSignalTitle, setActiveHexnovasSignalTitle] = useState<string | null>(null);
   const copyRef = useRef<HTMLTextAreaElement>(null);
   const presentationTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -2072,6 +2074,22 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   async function copyHexnovasDecisionSummary() {
     setCopyVariant("command");
     await copyPlainText(hexnovasDecisionSummaryText, "Hexnovas decision summary скопирован");
+  }
+
+  function openHexnovasEvidenceSignal(event: ReactMouseEvent<HTMLAnchorElement>, title: string) {
+    event.preventDefault();
+    const targetId = getHexnovasSignalId(title);
+    setHexnovasEvidenceOpen(true);
+    setActiveHexnovasSignalTitle(title);
+
+    window.setTimeout(() => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      target.focus({ preventScroll: true });
+      window.history.replaceState(null, "", `#${targetId}`);
+    }, 80);
   }
 
   async function copyCommercialMessage(variant: CopyVariant) {
@@ -2794,15 +2812,25 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </details>
         </div>
 
-        <details className={styles.hexnovasDocumentSignals}>
+        <details
+          className={styles.hexnovasDocumentSignals}
+          open={hexnovasEvidenceOpen}
+          onToggle={(event) => setHexnovasEvidenceOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>supplier evidence pack</span>
             <strong>Документы из архива для Document Vault</strong>
-            <small>{hexnovasDocumentSignals.length} signals</small>
+            <small>{activeHexnovasSignalTitle ? `active: ${activeHexnovasSignalTitle}` : `${hexnovasDocumentSignals.length} signals`}</small>
           </summary>
           <div>
             {hexnovasDocumentSignals.map((item) => (
-              <article key={item.title} id={getHexnovasSignalId(item.title)} data-status={item.status}>
+              <article
+                key={item.title}
+                id={getHexnovasSignalId(item.title)}
+                data-status={item.status}
+                data-linked-active={activeHexnovasSignalTitle === item.title}
+                tabIndex={-1}
+              >
                 <div className={styles.hexnovasDocumentSignalHead}>
                   <span>{item.status}</span>
                   <em>{item.fileType} / {item.sizeLabel}</em>
@@ -4033,7 +4061,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <strong>{row.source}</strong>
                   <span className={styles.hexnovasVaultTraceLinks}>
                     {row.evidenceSignalTitles.map((title) => (
-                      <a key={title} href={`#${getHexnovasSignalId(title)}`}>
+                      <a
+                        key={title}
+                        href={`#${getHexnovasSignalId(title)}`}
+                        onClick={(event) => openHexnovasEvidenceSignal(event, title)}
+                        aria-label={`Открыть evidence card ${title} в supplier evidence pack`}
+                      >
                         {title}
                       </a>
                     ))}

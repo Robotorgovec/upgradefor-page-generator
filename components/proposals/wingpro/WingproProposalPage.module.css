@@ -8038,6 +8038,31 @@
   gap: 5px;
 }
 
+.hexnovasDocumentSignals article:focus-visible,
+.hexnovasDocumentSignals article[data-linked-active="true"] {
+  border-color: var(--proposal-brand-border-strong);
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
+    #ffffff;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--proposal-brand-border) 48%, transparent);
+  outline: none;
+}
+
+.hexnovasDocumentSignals article[data-linked-active="true"]::before {
+  content: "linked from Document Vault";
+  width: fit-content;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 4px 7px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .hexnovasDocumentSignalHead {
   min-width: 0;
   display: flex;
