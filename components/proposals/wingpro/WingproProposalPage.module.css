@@ -143,6 +143,7 @@
 .controlRoom,
 .routeMap,
 .sourceDocsSection,
+.hexnovasDecisionBoard,
 .vault,
 .projectSources,
 .riskRadar,
@@ -7385,6 +7386,485 @@
   line-height: 1.55;
 }
 
+.hexnovasDecisionBoard {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  overflow: visible;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--proposal-brand-soft) 44%, #ffffff), #ffffff 52%),
+    radial-gradient(circle at 88% 8%, rgba(47, 120, 255, 0.12), transparent 28%),
+    #ffffff;
+}
+
+.hexnovasHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.28fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.hexnovasHeader h2,
+.hexnovasHeader p,
+.hexnovasDecisionStatus strong,
+.hexnovasDecisionStatus small,
+.hexnovasVariantCard strong,
+.hexnovasVariantCard small,
+.hexnovasVariantCard dl,
+.hexnovasSelectedMain h3,
+.hexnovasSelectedMain p,
+.hexnovasAlert p,
+.hexnovasCostBox p,
+.hexnovasCostBox dl,
+.hexnovasTimeline p,
+.hexnovasRiskControls p,
+.hexnovasDocumentSignals p {
+  margin: 0;
+}
+
+.hexnovasHeader h2 {
+  color: var(--proposal-text);
+  font-size: 30px;
+  line-height: 1.08;
+}
+
+.hexnovasHeader p:not(.eyebrow) {
+  margin-top: 7px;
+  color: var(--proposal-text-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.hexnovasDecisionStatus,
+.hexnovasSummaryRail article,
+.hexnovasVariantCard,
+.hexnovasSelectedMain,
+.hexnovasCostBox,
+.hexnovasComparison,
+.hexnovasTimeline,
+.hexnovasRiskControls,
+.hexnovasDocumentSignals {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  overflow: visible;
+}
+
+.hexnovasDecisionStatus {
+  min-height: 118px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.hexnovasDecisionStatus span,
+.hexnovasSummaryRail span,
+.hexnovasVariantCard > span,
+.hexnovasSelectedMain span,
+.hexnovasCostBox span,
+.hexnovasComparisonHead span,
+.hexnovasTimeline summary span,
+.hexnovasRiskControls summary span,
+.hexnovasDocumentSignals summary span,
+.hexnovasTimeline article span,
+.hexnovasRiskControls article span,
+.hexnovasDocumentSignals article span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionStatus strong {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.08;
+}
+
+.hexnovasDecisionStatus small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.hexnovasSummaryRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hexnovasSummaryRail article {
+  min-height: 94px;
+  padding: 10px;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+}
+
+.hexnovasSummaryRail strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.14;
+}
+
+.hexnovasSummaryRail small {
+  color: var(--proposal-text-soft);
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.hexnovasVariantGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.hexnovasVariantCard {
+  min-width: 0;
+  min-height: 44px;
+  padding: 12px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 9px;
+}
+
+.hexnovasVariantCard[data-active="true"] {
+  border-color: var(--proposal-brand-border-strong);
+  box-shadow:
+    inset 0 0 0 1px var(--proposal-brand-border),
+    var(--proposal-shadow-md);
+}
+
+.hexnovasVariantCard[data-tone="good"] {
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.92), #ffffff 70%);
+}
+
+.hexnovasVariantCard[data-tone="warning"] {
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.94), #ffffff 70%);
+}
+
+.hexnovasVariantCard[data-tone="danger"] {
+  background: linear-gradient(135deg, rgba(255, 241, 242, 0.94), #ffffff 70%);
+}
+
+.hexnovasVariantCard strong {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.08;
+}
+
+.hexnovasVariantCard small {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.hexnovasVariantCard dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasVariantCard dl div,
+.hexnovasCostBox dl div {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 7px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.hexnovasVariantCard dt,
+.hexnovasCostBox dt {
+  color: var(--proposal-text-muted);
+  font-size: 9.5px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hexnovasVariantCard dd,
+.hexnovasCostBox dd {
+  margin: 3px 0 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasPressureRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hexnovasPressureBadge {
+  min-height: 28px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 999px;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hexnovasPressureBadge[data-tone="ok"] {
+  border-color: rgba(16, 185, 129, 0.32);
+  color: #047857;
+  background: rgba(236, 253, 245, 0.94);
+}
+
+.hexnovasPressureBadge[data-tone="risk"] {
+  border-color: rgba(244, 63, 94, 0.32);
+  color: #be123c;
+  background: rgba(255, 241, 242, 0.96);
+}
+
+.hexnovasSelectedPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 0.34fr);
+  gap: 10px;
+}
+
+.hexnovasSelectedMain,
+.hexnovasCostBox {
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.hexnovasSelectedMain[data-tone="good"] {
+  border-color: rgba(16, 185, 129, 0.36);
+}
+
+.hexnovasSelectedMain[data-tone="warning"] {
+  border-color: rgba(245, 158, 11, 0.44);
+}
+
+.hexnovasSelectedMain[data-tone="danger"] {
+  border-color: rgba(244, 63, 94, 0.38);
+}
+
+.hexnovasSelectedMain h3 {
+  margin-top: 4px;
+  color: var(--proposal-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.hexnovasSelectedMain p,
+.hexnovasAlert p,
+.hexnovasCostBox p,
+.hexnovasCostBox small {
+  color: var(--proposal-text-soft);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.hexnovasAlert {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff);
+}
+
+.hexnovasAlert strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.hexnovasSelectedMain button {
+  min-height: 44px;
+  justify-self: start;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--proposal-brand-contrast);
+  background: var(--proposal-brand-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.hexnovasCostBox strong {
+  color: var(--proposal-text);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.hexnovasCostBox dl {
+  display: grid;
+  gap: 6px;
+}
+
+.hexnovasComparison {
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.hexnovasComparisonHead,
+.hexnovasComparisonRow {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.18fr) minmax(92px, 0.14fr) minmax(120px, 0.2fr) minmax(118px, 0.18fr) minmax(0, 1fr);
+  gap: 6px;
+  align-items: stretch;
+}
+
+.hexnovasComparisonRow {
+  min-height: 44px;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hexnovasComparisonHead span,
+.hexnovasComparisonRow span {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--proposal-surface-soft);
+}
+
+.hexnovasComparisonRow[data-active="true"] span {
+  border-color: var(--proposal-brand-border);
+  background: var(--proposal-brand-soft);
+}
+
+.hexnovasComparisonRow span {
+  color: var(--proposal-text);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.28;
+}
+
+.hexnovasDecisionGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+  gap: 10px;
+}
+
+.hexnovasTimeline,
+.hexnovasRiskControls,
+.hexnovasDocumentSignals {
+  padding: 10px;
+}
+
+.hexnovasTimeline summary,
+.hexnovasRiskControls summary,
+.hexnovasDocumentSignals summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.28fr) minmax(0, 1fr) minmax(72px, auto);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasTimeline summary strong,
+.hexnovasRiskControls summary strong,
+.hexnovasDocumentSignals summary strong {
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.hexnovasDocumentSignals summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.hexnovasTimeline > div,
+.hexnovasRiskControls > div,
+.hexnovasDocumentSignals > div {
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.hexnovasTimeline article,
+.hexnovasRiskControls article,
+.hexnovasDocumentSignals article {
+  min-width: 0;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: var(--proposal-surface-soft);
+  display: grid;
+  gap: 5px;
+}
+
+.hexnovasTimeline article {
+  grid-template-columns: 40px minmax(0, 0.34fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.hexnovasTimeline article span {
+  min-height: 32px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexnovasTimeline article strong,
+.hexnovasRiskControls article strong,
+.hexnovasDocumentSignals article strong {
+  color: var(--proposal-text);
+  font-size: 13.5px;
+  line-height: 1.2;
+}
+
+.hexnovasTimeline article p,
+.hexnovasRiskControls article p,
+.hexnovasDocumentSignals article p {
+  color: var(--proposal-text-soft);
+  font-size: 12px;
+  line-height: 1.36;
+}
+
+.hexnovasRiskControls article small,
+.hexnovasDocumentSignals article small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.hexnovasDocumentSignals > div {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.hexnovasDocumentSignals article[data-status="ready"] {
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.hexnovasDocumentSignals article[data-status="update-required"],
+.hexnovasDocumentSignals article[data-status="approval-required"] {
+  border-color: rgba(245, 158, 11, 0.36);
+}
+
 .riskRadar {
   background:
     radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--proposal-brand-soft) 72%, transparent), transparent 36%),
@@ -13111,6 +13591,181 @@
 
   .twinControls button {
     padding: 5px;
+    font-size: 9.5px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hexnovasHeader,
+  .hexnovasSelectedPanel,
+  .hexnovasDecisionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .hexnovasSummaryRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hexnovasVariantGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .hexnovasDocumentSignals > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hexnovasComparisonHead {
+    display: none;
+  }
+
+  .hexnovasComparisonRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hexnovasComparisonRow span::before {
+    content: attr(data-label);
+    margin-right: 6px;
+    color: var(--proposal-text-muted);
+    font-size: 9px;
+    font-weight: 950;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .hexnovasTimeline article {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .hexnovasTimeline article p {
+    grid-column: 2;
+  }
+
+  .sourceDocsSummaryActions > span,
+  .sourceDocsSummaryActions p {
+    display: none;
+  }
+
+  .sourceDocsSummaryActions {
+    align-content: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .hexnovasDecisionBoard {
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .hexnovasHeader h2 {
+    font-size: 22px;
+  }
+
+  .hexnovasHeader p:not(.eyebrow),
+  .hexnovasDecisionStatus small,
+  .hexnovasSummaryRail small,
+  .hexnovasSelectedMain p,
+  .hexnovasCostBox small,
+  .hexnovasCostBox p {
+    font-size: 11.5px;
+  }
+
+  .hexnovasSummaryRail,
+  .hexnovasDocumentSignals > div,
+  .hexnovasComparisonRow,
+  .hexnovasVariantCard dl {
+    grid-template-columns: 1fr;
+  }
+
+  .hexnovasSummaryRail article,
+  .hexnovasVariantCard,
+  .hexnovasSelectedMain,
+  .hexnovasCostBox {
+    padding: 8px;
+  }
+
+  .hexnovasVariantCard strong,
+  .hexnovasSelectedMain h3,
+  .hexnovasCostBox strong {
+    font-size: 18px;
+  }
+
+  .hexnovasTimeline summary,
+  .hexnovasRiskControls summary,
+  .hexnovasDocumentSignals summary {
+    grid-template-columns: 1fr;
+  }
+
+  .hexnovasTimeline summary small,
+  .hexnovasRiskControls summary small,
+  .hexnovasDocumentSignals summary small {
+    display: none;
+  }
+
+  .sourceDocsSection {
+    gap: 5px;
+  }
+
+  .sourceDocsSummaryCard > div:first-child p,
+  .sourceDocsSummaryActions strong,
+  .sourceDocsIntelligence summary small,
+  .sourceTraceabilityHeader small {
+    display: none;
+  }
+
+  .sourceDocsSummaryActions {
+    padding: 6px;
+  }
+
+  .sourceDocCard {
+    padding: 7px;
+  }
+
+  .sourceDocActions a {
+    padding: 7px 4px;
+    font-size: 0;
+  }
+
+  .sourceDocActions a::before {
+    font-size: 10.5px;
+    font-weight: 900;
+    line-height: 1.05;
+  }
+
+  .sourceDocActions a:nth-child(1)::before {
+    content: "Просмотр";
+  }
+
+  .sourceDocActions a:nth-child(2)::before {
+    content: "Скачать";
+  }
+
+  .sourceDocActions a:nth-child(3)::before {
+    content: "В data-room";
+  }
+}
+
+@media (max-width: 360px) {
+  .hexnovasHeader h2 {
+    font-size: 20px;
+  }
+
+  .hexnovasPressureRow {
+    gap: 4px;
+  }
+
+  .hexnovasPressureBadge {
+    font-size: 9.5px;
+  }
+
+  .sourceDocsHeader h2 {
+    font-size: 21px;
+  }
+
+  .sourceDocTitleRow h3 {
+    font-size: 14px;
+  }
+
+  .sourceDocActions a::before {
     font-size: 9.5px;
   }
 }
