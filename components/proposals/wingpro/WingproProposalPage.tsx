@@ -42,6 +42,7 @@ type PresentationModeId = "executive" | "supplier" | "contract" | "delivery" | "
 const HEXNOVAS_DECISION_EMAIL = "info@upgradefor.com";
 const WINGPRO_ACCESS_PASSWORD = "1111";
 const WINGPRO_ACCESS_STORAGE_KEY = "wingpro-2605281047-access";
+const WINGPRO_TECHNICAL_PAGE_TITLE = "WinGPro technical cockpit and data-room | UPGRADE";
 
 const twinLayers = [
   {
@@ -572,8 +573,21 @@ const contractValueControls = [
 const acceptanceGuardrails = [
   ["Accepted by deliverables", "приемка результата осуществляется по deliverables", "data-room index, risk register, release board, handover packs and digital supplier/product cards"],
   ["Not accepted by third-party outcomes", "manufacturer, carrier, broker, customs, mounting side and certification actions stay external", "tracked as external dependencies, not UPGRADE closeout review criteria"],
-  ["External costs excluded", "equipment, delivery, duties, VAT, broker, certification, mounting, PNR, inspection and bank commissions", "outside the 3 000 000 ₸ service price"],
+  ["External costs excluded", "equipment, delivery, duties, VAT, broker, certification, mounting, PNR, inspection and bank commissions", "outside UPGRADE service fee; logistics is not included in the percentage base"],
   ["Decision owner remains WinGPro", "format, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
+] as const;
+
+const commercialFeeRows = [
+  ["5%", "Поиск и short-list поставщика", "поиск канала, первичная валидация поставщика, supplier profile, запросы по модели / материалу / pressure class", "считается от стоимости заказа оборудования без логистики и внешних расходов"],
+  ["5%", "Переговоры, цена, техвопросы и договор", "ведение переговоров, сравнение вариантов, вопросы по PI / чертежам / материалу, договорные вводные и release readiness", "считается от той же equipment-only базы"],
+  ["10%", "Итого service fee UPGRADE", "прозрачная ставка за IT/data и закупочно-координационное сопровождение, а не скрытая логистическая комиссия", "рыночный ориентир для sourcing/procurement coordination обычно выше 10%; здесь фиксируется 10%"],
+] as const;
+
+const commercialProofRows = [
+  ["Supplier evidence", "Hexnovas / альтернативы / документы поставщика", "видно, что работа не сводится к контакту: проверяются модель, материал, pressure drop, PI и evidence"],
+  ["Decision board", "TH150B / 316L, TH150B / 304, BH150B / 316L", "варианты разделены по техническому риску, цене, документам и необходимости owner approval"],
+  ["Data-room", "Source Docs, паспорта насосов, проектные PDF, supplier pack", "заказчик получает структурированную доказательную базу, а не пересланные файлы"],
+  ["Risk / handover", "Risk Radar, release gates, handover packs", "оплата привязана к переданным deliverables и открытым вопросам, а не к действиям перевозчика, брокера или монтажной стороны"],
 ] as const;
 
 const deliveryTimeline = [
@@ -1280,7 +1294,7 @@ const copyTexts: Record<CopyVariant, string> = {
   deliverables:
     "Deliverables: mission card, Digital Twin preview, Document Vault, Risk Radar, Release gates board, Route Map, Control Room status, Handover Room packs, digital supplier card, digital product card, copy-ready executive summary.",
   payment:
-    "Коммерческое решение: 3 000 000 ₸ без НДС за единый комплекс сопровождения. Оплата 50/50 или 100% по согласованию. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
+    "Коммерческое решение: UPGRADE service fee = 10% от стоимости заказа оборудования без логистики, брокера, пошлин, НДС, доставки, монтажа, ПНР и иных внешних расходов. 5% — поиск и short-list поставщика; 5% — переговоры, обсуждение цены, технических вопросов, PI/документов и договорных вводных. Для текущего КП это оформлено как 3 000 000 ₸ без НДС за единый комплекс сопровождения. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
   next:
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
   addons:
@@ -1392,7 +1406,7 @@ const presentationModes: Array<{
     id: "handover",
     label: "Evidence & Handover",
     summary: "Photo Evidence Wall, Handover Room и technical summary pack собирают evidence register, closeout packs и reusable Digital Product Asset.",
-    nextAction: "Скопировать технический summary и зафиксировать deliverables, open issues register и границы ответственности.",
+    nextAction: "Скопировать summary и зафиксировать deliverables, open issues register и границы ответственности.",
     focus: "закрытие и повторное использование",
     endpoint: {
       selected: "evidence register, handover packs and reusable product asset",
@@ -2101,6 +2115,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   ] as const;
   const decisionOutcomeText = `Выбранный маршрут: ${supplier.name} (${supplier.channel}, score ${supplier.score}) ведется как ${supplier.status} через ${decisionMode.title} decision logic. Contract frame: ${contractScenario.title}; evidence gate: ${contractScenario.evidenceGateStrength}. Delivery focus: ${deliveryPhase.phase} / ${deliveryPhase.releaseGate}; статус: ${deliveryPhase.statusControl}. Work plan: ${activeControl.title} как coordination draft, не официальный ППР. Evidence / handover: ${evidenceHandoff.phase} передается в ${handoverPack.name}. Открытые blocker items: ${decisionBlockerQueue.join("; ")}. UPGRADE структурирует данные, статусы, evidence и handover-пакеты; профильные участники утверждают и исполняют решения в своих зонах ответственности.`;
   const cockpitSummaryText = `WinGPro Cockpit Summary: selected supplier — ${supplier.name} (${supplier.status}, ${supplier.channel}); PlateHE route — ${activeHexnovasVariant.shortName} (${activeHexnovasVariant.statusLabel}); decision email — ${HEXNOVAS_DECISION_EMAIL}; contract scenario — ${contractScenario.title}; delivery gate — ${deliveryPhase.releaseGate}; work plan readiness — ППР skeleton / coordination draft; evidence readiness — ${evidenceHandoff.gate}; handover readiness — ${handoverPack.name}; blockers — ${decisionBlockerQueue.length} (${decisionBlockerQueue.join("; ")}); next action — ${activePresentation.nextAction}.`;
+
+  useEffect(() => {
+    const applyTechnicalTitle = () => {
+      document.title = WINGPRO_TECHNICAL_PAGE_TITLE;
+    };
+    applyTechnicalTitle();
+    const titleRefresh = window.setTimeout(applyTechnicalTitle, 250);
+    return () => window.clearTimeout(titleRefresh);
+  }, [accessStatus]);
+
+  useEffect(() => {
+    document.title = WINGPRO_TECHNICAL_PAGE_TITLE;
+  }, [commercialOpen, activeLayer, activePresentationMode]);
 
   useEffect(() => {
     const next = `#layer-${activeLayer}`;
@@ -5133,8 +5160,35 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <p>{paymentMode === "split" ? "1 500 000 ₸ при запуске / 1 500 000 ₸ после передачи структурированного пакета." : "3 000 000 ₸ единым платежом при согласовании."}</p>
               <dl className={styles.paymentValueList}>
                 <div><dt>формат</dt><dd>единый комплекс IT/data и закупочно-координационного сопровождения</dd></div>
+                <div><dt>база расчета</dt><dd>10% от стоимости заказа оборудования без логистики, брокера, пошлин, НДС, доставки, монтажа и ПНР</dd></div>
                 <div><dt>acceptance basis</dt><dd>data-room index, risk register, release gate board, handover packs, digital supplier/product card</dd></div>
               </dl>
+            </article>
+            <article className={styles.commercialFeeBasis}>
+              <h3>из чего складываются 10%</h3>
+              <p>UPGRADE показывает ставку открыто: это не логистическая комиссия и не стоимость оборудования. Логистика, брокер, доставка и таможенные платежи не включаются в базу, потому что UPGRADE не является перевозчиком, брокером или таможенным представителем.</p>
+              <div className={styles.commercialFeeGrid} aria-label="Commercial fee calculation">
+                {commercialFeeRows.map(([percent, title, detail, basis]) => (
+                  <section key={title}>
+                    <span>{percent}</span>
+                    <strong>{title}</strong>
+                    <p>{detail}</p>
+                    <small>{basis}</small>
+                  </section>
+                ))}
+              </div>
+              <div className={styles.commercialFeeProof} aria-label="Commercial evidence base">
+                <strong>Доказательная база для заказчика</strong>
+                <div>
+                  {commercialProofRows.map(([label, source, proof]) => (
+                    <section key={label}>
+                      <span>{label}</span>
+                      <p>{source}</p>
+                      <small>{proof}</small>
+                    </section>
+                  ))}
+                </div>
+              </div>
             </article>
             <article>
               <h3>что считается результатом</h3>
@@ -5159,7 +5213,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.copyCommandStrip} aria-label="Commercial copy summary">
             {[
               ["кратко", "Короткое коммерческое сообщение", "Единый комплекс UPGRADE отделен от стоимости оборудования, логистики, брокера, монтажа и иных внешних затрат."],
-              ["развернуто", "Расширенное коммерческое сообщение", "Коммерческое сообщение раскрывает стоимость, порядок оплаты, acceptance basis и boundary без смешения с техническим cockpit."],
+              ["развернуто", "Расширенное коммерческое сообщение", "Коммерческое сообщение раскрывает 5% supplier search + 5% переговоры/техвопросы/договор, порядок оплаты, acceptance basis и boundary без смешения с техническим cockpit."],
               ["граница", "Граница ответственности", "UPGRADE структурирует данные и статусы; профильные участники утверждают технические, таможенные, логистические и монтажные решения."],
               ["условия", "Условия оплаты", "50/50 или 100% по согласованию, с приемкой результата по переданным deliverables."],
             ].map(([label, title, text]) => (
