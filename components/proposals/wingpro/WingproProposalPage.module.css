@@ -7977,6 +7977,7 @@
 .hexnovasDecisionStatus,
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
+.hexnovasDecisionReceiptDisclosure,
 .hexnovasDecisionReceipt,
 .hexnovasSourceDigest,
 .hexnovasSummaryRail article,
@@ -8136,6 +8137,7 @@
 }
 
 .hexnovasDecisionStatus span,
+.hexnovasDecisionReceiptDisclosure summary span,
 .hexnovasDecisionReceipt span,
 .hexnovasSourceDigest summary span,
 .hexnovasSummaryRail span,
@@ -8180,15 +8182,48 @@
   line-height: 1.32;
 }
 
+.hexnovasDecisionReceiptDisclosure {
+  background:
+    linear-gradient(135deg, rgba(236, 253, 245, 0.72), #ffffff 68%),
+    #ffffff;
+}
+
+.hexnovasDecisionReceiptDisclosure summary {
+  min-height: 48px;
+  padding: 10px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(130px, 0.18fr) minmax(0, 1fr) minmax(210px, auto);
+  gap: 10px;
+  align-items: center;
+}
+
+.hexnovasDecisionReceiptDisclosure summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.hexnovasDecisionReceiptDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.hexnovasDecisionReceiptDisclosure[open] {
+  box-shadow: var(--proposal-shadow-md);
+}
+
 .hexnovasDecisionReceipt {
+  margin: 0 10px 10px;
   padding: 10px;
   display: grid;
   grid-template-columns: minmax(210px, 0.32fr) minmax(0, 1fr);
   gap: 10px;
   align-items: stretch;
-  background:
-    linear-gradient(135deg, rgba(236, 253, 245, 0.72), #ffffff 68%),
-    #ffffff;
+  box-shadow: none;
 }
 
 .hexnovasDecisionReceipt div {
@@ -14850,6 +14885,7 @@
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
   .hexnovasDecisionReceipt,
+  .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasSourceDigest summary,
   .hexnovasVariantDisclosure summary,
   .hexnovasSelectedPanel,
@@ -15033,6 +15069,7 @@
   .hexnovasTimeline summary,
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
+  .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
   .hexnovasSourceDigest summary,
   .hexnovasVariantDisclosure summary,
@@ -15045,6 +15082,7 @@
   .hexnovasTimeline summary small,
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
+  .hexnovasDecisionReceiptDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
   .hexnovasSourceDigest summary small,
   .hexnovasVariantDisclosure summary small,
@@ -15076,6 +15114,7 @@
 
   .hexnovasDecisionReceipt {
     gap: 6px;
+    margin: 0 6px 6px;
   }
 
   .hexnovasDecisionReceipt p {

@@ -2745,22 +2745,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </div>
 
-        <aside className={styles.hexnovasDecisionReceipt} aria-label="Decision receipt after variant selection">
-          <div>
+        <details className={styles.hexnovasDecisionReceiptDisclosure}>
+          <summary>
             <span>decision receipt</span>
             <strong>Что произойдет после выбора</strong>
-            <p>Кнопка открывает готовое письмо. Отправитель проверяет текст и отправляет его со своей почты; после этого UPGRADE связывает решение с PI, GA drawing, evidence request и risk register.</p>
-          </div>
-          <ol>
-            {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
-              <li key={title}>
-                <span>{step}</span>
-                <strong>{title}</strong>
-                <small>{value}</small>
-              </li>
-            ))}
-          </ol>
-        </aside>
+            <small>Открыть email → PI / drawing / evidence route</small>
+          </summary>
+          <aside className={styles.hexnovasDecisionReceipt} aria-label="Decision receipt after variant selection">
+            <div>
+              <span>decision receipt</span>
+              <strong>Что произойдет после выбора</strong>
+              <p>Кнопка открывает готовое письмо. Отправитель проверяет текст и отправляет его со своей почты; после этого UPGRADE связывает решение с PI, GA drawing, evidence request и risk register.</p>
+            </div>
+            <ol>
+              {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
+                <li key={title}>
+                  <span>{step}</span>
+                  <strong>{title}</strong>
+                  <small>{value}</small>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        </details>
 
         <details className={styles.hexnovasSourceDigest}>
           <summary>
