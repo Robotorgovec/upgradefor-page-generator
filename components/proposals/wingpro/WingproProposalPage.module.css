@@ -8596,7 +8596,7 @@
   min-width: 0;
   display: grid;
   grid-column: 2;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.44fr);
+  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(150px, 0.42fr));
   gap: 6px;
   align-content: start;
 }

@@ -2820,6 +2820,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <button type="button" onClick={copyHexnovasDecisionEmail}>
               Скопировать письмо
             </button>
+            <button type="button" onClick={copyHexnovasDecisionPublicLink}>
+              Скопировать ссылку
+            </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
           <div className={styles.hexnovasDecisionHandoffStrip} aria-label="Куда ведет выбранное решение">
