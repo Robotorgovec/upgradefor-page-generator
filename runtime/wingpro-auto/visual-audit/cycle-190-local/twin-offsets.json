@@ -1,0 +1,77 @@
+[
+  {
+    "label": "1440",
+    "viewport": {
+      "width": 1440,
+      "height": 1100,
+      "label": "1440"
+    },
+    "state": {
+      "canvas": {
+        "height": 384,
+        "width": 610,
+        "x": 238,
+        "y": 1616
+      },
+      "locked": false,
+      "pageHeight": 13435,
+      "stage": {
+        "height": 532,
+        "width": 650,
+        "x": 218,
+        "y": 1554
+      },
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405212-final-offset-1440#layer-equipment"
+    }
+  },
+  {
+    "label": "375",
+    "viewport": {
+      "width": 375,
+      "height": 900,
+      "label": "375"
+    },
+    "state": {
+      "canvas": {
+        "height": 230,
+        "width": 311,
+        "x": 32,
+        "y": 2265
+      },
+      "locked": false,
+      "pageHeight": 17142,
+      "stage": {
+        "height": 338,
+        "width": 327,
+        "x": 24,
+        "y": 2217
+      },
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405212-final-offset-375#layer-equipment"
+    }
+  },
+  {
+    "label": "320",
+    "viewport": {
+      "width": 320,
+      "height": 900,
+      "label": "320"
+    },
+    "state": {
+      "canvas": {
+        "height": 184,
+        "width": 262,
+        "x": 29,
+        "y": 2119
+      },
+      "locked": false,
+      "pageHeight": 17537,
+      "stage": {
+        "height": 292,
+        "width": 278,
+        "x": 21,
+        "y": 2071
+      },
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405212-final-offset-320#layer-equipment"
+    }
+  }
+]

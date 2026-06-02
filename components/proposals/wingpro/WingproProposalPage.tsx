@@ -2171,6 +2171,28 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       detail: handoverPack.name,
     },
   ] as const;
+  const heroTrustSignals = [
+    {
+      label: "selected route",
+      value: `${activeHexnovasVariant.shortName} / ${activeHexnovasVariant.quantity} шт.`,
+      detail: `${activeHexnovasVariant.material}; ${activeHexnovasVariant.pressureDropKpaHot.toFixed(1)} / ${activeHexnovasVariant.pressureDropKpaCold.toFixed(1)} kPa`,
+    },
+    {
+      label: "release proof",
+      value: hexnovasNextEvidenceAction.title,
+      detail: `owner: ${hexnovasNextEvidenceAction.owner}`,
+    },
+    {
+      label: "source data-room",
+      value: `${hexnovasPublicEvidenceCount} evidence assets`,
+      detail: "source PDFs, supplier certificates, pump datasheets and drawings",
+    },
+    {
+      label: "decision boundary",
+      value: "WinGPro owner approval visible",
+      detail: "UPGRADE structures evidence; profile parties confirm decisions",
+    },
+  ] as const;
   const cockpitAddonOpportunities = [
     "3D product visualization package",
     "supplier/product card expansion",
@@ -2691,6 +2713,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h1 id="proposal-title">Цифровой контур поставки пластинчатых теплообменников</h1>
           <p className={styles.lead}>От выбора поставщика до handover-пакета: данные, документы, риски, сроки, логистика, монтажные вводные и цифровая товарная линия в одном управляемом процессе.</p>
           <p className={styles.sublead}>Это рабочая система quality gates: выбранный вариант, статусы участников, evidence, сроки подготовки и повторное использование товарных данных остаются в одном техническом контуре.</p>
+          <div className={styles.heroTrustStrip} aria-label="Above the fold trust signals">
+            {heroTrustSignals.map((item) => (
+              <article key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <small>{item.detail}</small>
+              </article>
+            ))}
+          </div>
           <div className={styles.heroActions}>
             <a className={styles.primaryAction} href="#digital-twin">Открыть 3D Digital Twin</a>
             <a className={styles.secondaryAction} href="#hexnovas-decision-board">Выбрать вариант</a>
@@ -2732,7 +2763,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <div>
                 <span>decision now</span>
                 <strong>{recommendedHexnovasVariant.shortName}: route ready</strong>
-                <small>письмо на {HEXNOVAS_DECISION_EMAIL}</small>
+                <small>готовый черновик письма</small>
               </div>
               <a href="#hexnovas-decision-board">Decision Board</a>
               <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>

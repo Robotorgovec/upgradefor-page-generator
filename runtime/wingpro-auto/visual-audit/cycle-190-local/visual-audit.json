@@ -1,0 +1,640 @@
+{
+  "ts": 1780405690,
+  "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690",
+  "warnings": [
+    "fullPage 1440 is very tall (13435px); capturing viewport slices and stitching one full-page PNG.",
+    "fullPage 1280 is very tall (13974px); capturing viewport slices and stitching one full-page PNG.",
+    "fullPage 768 is very tall (17473px); capturing viewport slices and stitching one full-page PNG.",
+    "fullPage 375 is very tall (17140px); capturing viewport slices and stitching one full-page PNG.",
+    "fullPage 320 is very tall (17536px); capturing viewport slices and stitching one full-page PNG."
+  ],
+  "fullPage": {
+    "320": {
+      "mode": "stitchedFullPage",
+      "files": [
+        "fullpage-320.png"
+      ],
+      "sourceSlices": [
+        "slice-320-001.png",
+        "slice-320-002.png",
+        "slice-320-003.png",
+        "slice-320-004.png",
+        "slice-320-005.png",
+        "slice-320-006.png",
+        "slice-320-007.png",
+        "slice-320-008.png",
+        "slice-320-009.png",
+        "slice-320-010.png",
+        "slice-320-011.png",
+        "slice-320-012.png",
+        "slice-320-013.png",
+        "slice-320-014.png",
+        "slice-320-015.png",
+        "slice-320-016.png",
+        "slice-320-017.png",
+        "slice-320-018.png",
+        "slice-320-019.png",
+        "slice-320-020.png"
+      ],
+      "height": 17536
+    },
+    "375": {
+      "mode": "stitchedFullPage",
+      "files": [
+        "fullpage-375.png"
+      ],
+      "sourceSlices": [
+        "slice-375-001.png",
+        "slice-375-002.png",
+        "slice-375-003.png",
+        "slice-375-004.png",
+        "slice-375-005.png",
+        "slice-375-006.png",
+        "slice-375-007.png",
+        "slice-375-008.png",
+        "slice-375-009.png",
+        "slice-375-010.png",
+        "slice-375-011.png",
+        "slice-375-012.png",
+        "slice-375-013.png",
+        "slice-375-014.png",
+        "slice-375-015.png",
+        "slice-375-016.png",
+        "slice-375-017.png",
+        "slice-375-018.png",
+        "slice-375-019.png",
+        "slice-375-020.png"
+      ],
+      "height": 17140
+    },
+    "768": {
+      "mode": "stitchedFullPage",
+      "files": [
+        "fullpage-768.png"
+      ],
+      "sourceSlices": [
+        "slice-768-001.png",
+        "slice-768-002.png",
+        "slice-768-003.png",
+        "slice-768-004.png",
+        "slice-768-005.png",
+        "slice-768-006.png",
+        "slice-768-007.png",
+        "slice-768-008.png",
+        "slice-768-009.png",
+        "slice-768-010.png",
+        "slice-768-011.png",
+        "slice-768-012.png",
+        "slice-768-013.png",
+        "slice-768-014.png",
+        "slice-768-015.png",
+        "slice-768-016.png",
+        "slice-768-017.png",
+        "slice-768-018.png"
+      ],
+      "height": 17473
+    },
+    "1280": {
+      "mode": "stitchedFullPage",
+      "files": [
+        "fullpage-1280.png"
+      ],
+      "sourceSlices": [
+        "slice-1280-001.png",
+        "slice-1280-002.png",
+        "slice-1280-003.png",
+        "slice-1280-004.png",
+        "slice-1280-005.png",
+        "slice-1280-006.png",
+        "slice-1280-007.png",
+        "slice-1280-008.png",
+        "slice-1280-009.png",
+        "slice-1280-010.png",
+        "slice-1280-011.png",
+        "slice-1280-012.png",
+        "slice-1280-013.png",
+        "slice-1280-014.png",
+        "slice-1280-015.png"
+      ],
+      "height": 13974
+    },
+    "1440": {
+      "mode": "stitchedFullPage",
+      "files": [
+        "fullpage-1440.png"
+      ],
+      "sourceSlices": [
+        "slice-1440-001.png",
+        "slice-1440-002.png",
+        "slice-1440-003.png",
+        "slice-1440-004.png",
+        "slice-1440-005.png",
+        "slice-1440-006.png",
+        "slice-1440-007.png",
+        "slice-1440-008.png",
+        "slice-1440-009.png",
+        "slice-1440-010.png",
+        "slice-1440-011.png",
+        "slice-1440-012.png",
+        "slice-1440-013.png"
+      ],
+      "height": 13435
+    }
+  },
+  "proposalRoot": {
+    "375": "proposal-root-full-375.png",
+    "1440": "proposal-root-full-1440.png"
+  },
+  "sections": {
+    "hero": "section-hero.png",
+    "executive-command": "section-executive-command.png",
+    "cockpit-summary": "section-cockpit-summary.png",
+    "digital-twin": "section-digital-twin.png",
+    "project-control": "section-project-control.png",
+    "supplier-lab": null,
+    "offer-board": null,
+    "contract-simulator": null,
+    "delivery-timeline": null,
+    "work-plan-builder": null,
+    "field-execution-board": null,
+    "photo-evidence-wall": null,
+    "implementation-status-dashboard": null,
+    "control-room": "section-control-room.png",
+    "route-map": "section-route-map.png",
+    "document-vault": "section-document-vault.png",
+    "source-documents": "section-source-documents.png",
+    "hexnovas-decision-board": "section-hexnovas-decision-board.png",
+    "risk-radar": "section-risk-radar.png",
+    "handover-room": "section-handover-room.png",
+    "acceptance": null,
+    "board-pack": null
+  },
+  "interactions": {
+    "mode-executive": "interaction-mode-executive.png",
+    "mode-supplier": "interaction-mode-supplier.png",
+    "mode-contract": "interaction-mode-contract.png",
+    "mode-delivery": "interaction-mode-delivery.png",
+    "mode-workplan": "interaction-mode-workplan.png",
+    "mode-handover": "interaction-mode-handover.png",
+    "twin-equipment": "interaction-twin-equipment.png",
+    "twin-delivery": "interaction-twin-delivery.png",
+    "twin-sales": "interaction-twin-sales.png",
+    "contract-balanced": "interaction-contract-balanced.png",
+    "contract-evidence-first": "interaction-contract-evidence-first.png",
+    "vault-missing": "interaction-vault-missing.png",
+    "source-documents-disclosures": "interaction-source-documents-disclosures.png",
+    "source-documents-data-room": "interaction-source-documents-data-room.png",
+    "hexnovas-recommended": "interaction-hexnovas-recommended.png",
+    "hexnovas-economy-304": "interaction-hexnovas-economy-304.png",
+    "hexnovas-risk-bh150b": "interaction-hexnovas-risk-bh150b.png",
+    "risk-quality": "interaction-risk-quality.png",
+    "commercial-terms-open": "interaction-commercial-terms-open.png",
+    "commercial-terms-close": "interaction-commercial-terms-close.png",
+    "presentation-open": "interaction-presentation-open.png",
+    "presentation-closed": "interaction-presentation-closed.png"
+  },
+  "metricsByWidth": {
+    "320": {
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690&unlocked=320#layer-equipment",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "totalHeight": 17536,
+      "h1": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "noHorizontalScroll": true,
+      "bodyScrollWidth": 320,
+      "buttonCount": 130,
+      "cardCount": 345,
+      "tableLikeBlocks": 49,
+      "sectionCount": 25,
+      "topSections": [
+        {
+          "section": "hero",
+          "height": 1496,
+          "viewportRatio": 1.66
+        },
+        {
+          "section": "handover-room",
+          "height": 1418,
+          "viewportRatio": 1.58
+        },
+        {
+          "section": "digital-twin",
+          "height": 1394,
+          "viewportRatio": 1.55
+        },
+        {
+          "section": "source-documents",
+          "height": 1387,
+          "viewportRatio": 1.54
+        },
+        {
+          "section": "executive-command",
+          "height": 1258,
+          "viewportRatio": 1.4
+        },
+        {
+          "section": "hexnovas-decision-board",
+          "height": 1208,
+          "viewportRatio": 1.34
+        },
+        {
+          "section": "document-vault",
+          "height": 1200,
+          "viewportRatio": 1.33
+        },
+        {
+          "section": "filmstrip",
+          "height": 1005,
+          "viewportRatio": 1.12
+        },
+        {
+          "section": "control-room",
+          "height": 952,
+          "viewportRatio": 1.06
+        },
+        {
+          "section": "value-os",
+          "height": 947,
+          "viewportRatio": 1.05
+        }
+      ],
+      "overloadedSections": [
+        {
+          "section": "hero",
+          "height": 1496,
+          "viewportRatio": 1.66
+        },
+        {
+          "section": "handover-room",
+          "height": 1418,
+          "viewportRatio": 1.58
+        },
+        {
+          "section": "digital-twin",
+          "height": 1394,
+          "viewportRatio": 1.55
+        },
+        {
+          "section": "source-documents",
+          "height": 1387,
+          "viewportRatio": 1.54
+        }
+      ],
+      "scrollContainers": [],
+      "ancestorScrollContainers": [],
+      "unexpectedScrollContainers": [],
+      "firstImg": {
+        "currentSrc": "http://127.0.0.1:3105/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    },
+    "375": {
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690&unlocked=375#layer-equipment",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "totalHeight": 17140,
+      "h1": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "noHorizontalScroll": true,
+      "bodyScrollWidth": 375,
+      "buttonCount": 130,
+      "cardCount": 345,
+      "tableLikeBlocks": 49,
+      "sectionCount": 25,
+      "topSections": [
+        {
+          "section": "hero",
+          "height": 1642,
+          "viewportRatio": 1.82
+        },
+        {
+          "section": "handover-room",
+          "height": 1388,
+          "viewportRatio": 1.54
+        },
+        {
+          "section": "digital-twin",
+          "height": 1371,
+          "viewportRatio": 1.52
+        },
+        {
+          "section": "source-documents",
+          "height": 1339,
+          "viewportRatio": 1.49
+        },
+        {
+          "section": "executive-command",
+          "height": 1221,
+          "viewportRatio": 1.36
+        },
+        {
+          "section": "document-vault",
+          "height": 1161,
+          "viewportRatio": 1.29
+        },
+        {
+          "section": "hexnovas-decision-board",
+          "height": 1153,
+          "viewportRatio": 1.28
+        },
+        {
+          "section": "filmstrip",
+          "height": 973,
+          "viewportRatio": 1.08
+        },
+        {
+          "section": "control-room",
+          "height": 960,
+          "viewportRatio": 1.07
+        },
+        {
+          "section": "risk-radar",
+          "height": 896,
+          "viewportRatio": 1
+        }
+      ],
+      "overloadedSections": [
+        {
+          "section": "hero",
+          "height": 1642,
+          "viewportRatio": 1.82
+        },
+        {
+          "section": "handover-room",
+          "height": 1388,
+          "viewportRatio": 1.54
+        },
+        {
+          "section": "digital-twin",
+          "height": 1371,
+          "viewportRatio": 1.52
+        }
+      ],
+      "scrollContainers": [],
+      "ancestorScrollContainers": [],
+      "unexpectedScrollContainers": [],
+      "firstImg": {
+        "currentSrc": "http://127.0.0.1:3105/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    },
+    "768": {
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690&unlocked=768#layer-equipment",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "totalHeight": 17473,
+      "h1": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "noHorizontalScroll": true,
+      "bodyScrollWidth": 753,
+      "buttonCount": 130,
+      "cardCount": 345,
+      "tableLikeBlocks": 49,
+      "sectionCount": 25,
+      "topSections": [
+        {
+          "section": "hero",
+          "height": 1686,
+          "viewportRatio": 1.69
+        },
+        {
+          "section": "digital-twin",
+          "height": 1555,
+          "viewportRatio": 1.56
+        },
+        {
+          "section": "source-documents",
+          "height": 1403,
+          "viewportRatio": 1.4
+        },
+        {
+          "section": "document-vault",
+          "height": 1365,
+          "viewportRatio": 1.37
+        },
+        {
+          "section": "control-room",
+          "height": 1339,
+          "viewportRatio": 1.34
+        },
+        {
+          "section": "handover-room",
+          "height": 1293,
+          "viewportRatio": 1.29
+        },
+        {
+          "section": "executive-command",
+          "height": 1238,
+          "viewportRatio": 1.24
+        },
+        {
+          "section": "hexnovas-decision-board",
+          "height": 1104,
+          "viewportRatio": 1.1
+        },
+        {
+          "section": "value-os",
+          "height": 970,
+          "viewportRatio": 0.97
+        },
+        {
+          "section": "project-control",
+          "height": 954,
+          "viewportRatio": 0.95
+        }
+      ],
+      "overloadedSections": [
+        {
+          "section": "hero",
+          "height": 1686,
+          "viewportRatio": 1.69
+        },
+        {
+          "section": "digital-twin",
+          "height": 1555,
+          "viewportRatio": 1.56
+        }
+      ],
+      "scrollContainers": [],
+      "ancestorScrollContainers": [],
+      "unexpectedScrollContainers": [],
+      "firstImg": {
+        "currentSrc": "http://127.0.0.1:3105/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    },
+    "1280": {
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690&unlocked=1280#layer-equipment",
+      "viewport": {
+        "width": 1280,
+        "height": 950
+      },
+      "totalHeight": 13974,
+      "h1": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "noHorizontalScroll": true,
+      "bodyScrollWidth": 1265,
+      "buttonCount": 130,
+      "cardCount": 345,
+      "tableLikeBlocks": 49,
+      "sectionCount": 25,
+      "topSections": [
+        {
+          "section": "digital-twin",
+          "height": 1401,
+          "viewportRatio": 1.47
+        },
+        {
+          "section": "hero",
+          "height": 1139,
+          "viewportRatio": 1.2
+        },
+        {
+          "section": "hexnovas-decision-board",
+          "height": 1064,
+          "viewportRatio": 1.12
+        },
+        {
+          "section": "document-vault",
+          "height": 1040,
+          "viewportRatio": 1.09
+        },
+        {
+          "section": "source-documents",
+          "height": 1009,
+          "viewportRatio": 1.06
+        },
+        {
+          "section": "executive-command",
+          "height": 974,
+          "viewportRatio": 1.03
+        },
+        {
+          "section": "control-room",
+          "height": 952,
+          "viewportRatio": 1
+        },
+        {
+          "section": "handover-room",
+          "height": 887,
+          "viewportRatio": 0.93
+        },
+        {
+          "section": "risk-radar",
+          "height": 834,
+          "viewportRatio": 0.88
+        },
+        {
+          "section": "project-control",
+          "height": 806,
+          "viewportRatio": 0.85
+        }
+      ],
+      "overloadedSections": [],
+      "scrollContainers": [],
+      "ancestorScrollContainers": [],
+      "unexpectedScrollContainers": [],
+      "firstImg": {
+        "currentSrc": "http://127.0.0.1:3105/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    },
+    "1440": {
+      "url": "http://127.0.0.1:3105/cp/2605281047-wingpro?cb=1780405690&unlocked=1440#layer-equipment",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "totalHeight": 13435,
+      "h1": 1,
+      "viewportMeta": true,
+      "robots": "noindex, nofollow",
+      "noHorizontalScroll": true,
+      "bodyScrollWidth": 1425,
+      "buttonCount": 130,
+      "cardCount": 345,
+      "tableLikeBlocks": 49,
+      "sectionCount": 25,
+      "topSections": [
+        {
+          "section": "digital-twin",
+          "height": 1279,
+          "viewportRatio": 1.16
+        },
+        {
+          "section": "hero",
+          "height": 1052,
+          "viewportRatio": 0.96
+        },
+        {
+          "section": "hexnovas-decision-board",
+          "height": 1046,
+          "viewportRatio": 0.95
+        },
+        {
+          "section": "source-documents",
+          "height": 981,
+          "viewportRatio": 0.89
+        },
+        {
+          "section": "document-vault",
+          "height": 968,
+          "viewportRatio": 0.88
+        },
+        {
+          "section": "control-room",
+          "height": 931,
+          "viewportRatio": 0.85
+        },
+        {
+          "section": "executive-command",
+          "height": 900,
+          "viewportRatio": 0.82
+        },
+        {
+          "section": "handover-room",
+          "height": 830,
+          "viewportRatio": 0.75
+        },
+        {
+          "section": "risk-radar",
+          "height": 802,
+          "viewportRatio": 0.73
+        },
+        {
+          "section": "project-control",
+          "height": 798,
+          "viewportRatio": 0.73
+        }
+      ],
+      "overloadedSections": [],
+      "scrollContainers": [],
+      "ancestorScrollContainers": [],
+      "unexpectedScrollContainers": [],
+      "firstImg": {
+        "currentSrc": "http://127.0.0.1:3105/assets/logo/logo-black-only.png",
+        "naturalWidth": 2000,
+        "complete": true
+      }
+    }
+  },
+  "scrollInScrollFindings": [],
+  "uxRecommendations": [
+    "Visual QA is clean; continue with targeted UX polish instead of adding long sections."
+  ]
+}

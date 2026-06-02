@@ -1,0 +1,38 @@
+[
+  {
+    "label": "1440",
+    "crop": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/visual-audit/cycle-190-local/twin-crop-1440.png",
+    "dimensions": {
+      "width": 650,
+      "height": 532
+    },
+    "nonWhiteRatio": 0.3293,
+    "darkRatio": 0.161,
+    "coloredRatio": 0.1152,
+    "pass": true
+  },
+  {
+    "label": "375",
+    "crop": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/visual-audit/cycle-190-local/twin-crop-375.png",
+    "dimensions": {
+      "width": 327,
+      "height": 338
+    },
+    "nonWhiteRatio": 0.3764,
+    "darkRatio": 0.2017,
+    "coloredRatio": 0.1589,
+    "pass": true
+  },
+  {
+    "label": "320",
+    "crop": "/Users/m1/UPGRADE/upgradefor-page-generator/runtime/wingpro-auto/visual-audit/cycle-190-local/twin-crop-320.png",
+    "dimensions": {
+      "width": 278,
+      "height": 292
+    },
+    "nonWhiteRatio": 0.3116,
+    "darkRatio": 0.185,
+    "coloredRatio": 0.1497,
+    "pass": true
+  }
+]

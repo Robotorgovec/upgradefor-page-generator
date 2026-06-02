@@ -1,25 +1,25 @@
-# CONTRACT-WINGPRO-2605281047-R070 / local cycle 1 self-review
+# CONTRACT-WINGPRO-2605281047-R079 / local cycle 190 self-review
 
 1. What improved in this cycle?
-   - Reduced the remaining page-specific scroll-trap risk in the Digital Twin presentation overlay by bounding the fixed overlay with `100dvh`, clipping desktop overflow, and containing overscroll in the secondary surface.
+The first viewport now has a compact trust strip that shows the selected equipment route, release proof, source data-room evidence count and owner decision boundary before the user scrolls.
 
-2. How does this help the customer decide?
-   - The presentation mode now behaves more like a controlled product surface instead of a panel that can leak scroll into the page, which keeps the proposal feeling like a cockpit rather than a long document with nested scroll zones.
+2. How does this help WinGPro decide?
+WinGPro can see the TH150B / 316L route, the next evidence request and the approval owner path immediately, then choose whether to open the 3D Digital Twin, Decision Board or Source Data Room.
 
 3. Is it clearer what WinGPro receives?
-   - Content was not expanded in this cycle; the improvement protects the delivery of the existing Digital Twin / presentation experience.
+Yes. The hero now ties the cockpit to evidence assets, release gates, source documents, decision boundary and the reusable Digital Product Asset without moving commercial terms into the main flow.
 
 4. Is it more interactive?
-   - The interaction model is steadier: the overlay remains a deliberate secondary surface, while the default page flow keeps a single vertical page scroll.
+The same primary actions remain available above the fold, but their surrounding proof is stronger. The Digital Twin, Decision Board and Source Docs links remain direct actions.
 
 5. Did UPGRADE responsibility expand?
-   - No. This was CSS/QA only and did not change commercial or liability copy.
+No. The new copy states that UPGRADE structures evidence and that profile parties confirm decisions. Commercial terms remain collapsed near the end.
 
 6. Were forbidden files changed?
-   - No forbidden files were edited by this cycle. The only page change is `components/proposals/wingpro/WingproProposalPage.module.css`, plus runtime QA artifacts.
+No. Page-source changes are limited to components/proposals/wingpro/**. Runtime reports/screenshots remain inside runtime/wingpro-auto/**.
 
 7. Did mobile/responsive/accessibility regress?
-   - Local browser QA passed no horizontal scroll at 1440 / 1280 / 768 / 375 / 320. Copy live-region smoke passed on the final copy package. Typecheck remains blocked by an unrelated out-of-scope HeatX file.
+No. Typecheck and build passed. Visual QA reports no horizontal scroll and 0 scroll-in-scroll findings at 1440 / 1280 / 768 / 375 / 320. Digital Twin pixel checks passed at desktop and mobile widths.
 
-8. Next most useful micro-goal?
-   - MODE=INTERACTIVE: add or tighten the near-top Cockpit Summary so the page presents the selected supplier/contract/delivery/work-plan/evidence state before the longer detail modules.
+8. Next useful micro-goal?
+Continue local-only compression or clarification of the next tallest technical section while preserving the Digital Twin and keeping commercial terms isolated.
