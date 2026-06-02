@@ -3033,15 +3033,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
-          <div className={styles.hexnovasDecisionSendRail} aria-label="Как решение попадает на почту">
-            {hexnovasDecisionSendSteps.map(([step, title, detail]) => (
-              <article key={title}>
-                <span>{step}</span>
-                <strong>{title}</strong>
-                <small>{detail}</small>
-              </article>
-            ))}
-          </div>
           <div className={styles.hexnovasDecisionSiteLink} aria-label="Опубликованная ссылка на Decision Board">
             <span>опубликовано на сайте</span>
             <a href={hexnovasDecisionPublicUrl}>
@@ -3056,6 +3047,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <small>{hexnovasDecisionReceiptSteps.length} шага / {hexnovasDecisionHandoffCards.length} handoff signals</small>
             </summary>
             <div className={styles.hexnovasDecisionRouteBody}>
+              <div className={styles.hexnovasDecisionSendRail} aria-label="Как решение попадает на почту">
+                {hexnovasDecisionSendSteps.map(([step, title, detail]) => (
+                  <article key={title}>
+                    <span>{step}</span>
+                    <strong>{title}</strong>
+                    <small>{detail}</small>
+                  </article>
+                ))}
+              </div>
               <div className={styles.hexnovasDecisionFlow} aria-label="Что происходит после выбора варианта">
                 {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
                   <article key={`quick-flow-${title}`}>
@@ -3091,30 +3091,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <p>Если почтовый клиент не открылся автоматически, используйте “Скопировать письмо” и отправьте текст вручную на {HEXNOVAS_DECISION_EMAIL}.</p>
           </details>
         </div>
-
-        <details className={styles.hexnovasDecisionReceiptDisclosure}>
-          <summary>
-            <span>decision receipt</span>
-            <strong>Что произойдет после выбора</strong>
-            <small>Email / copy fallback → PI / drawing / evidence route</small>
-          </summary>
-          <aside className={styles.hexnovasDecisionReceipt} aria-label="Decision receipt after variant selection">
-            <div>
-              <span>decision receipt</span>
-              <strong>Что произойдет после выбора</strong>
-              <p>Кнопка открывает готовое письмо. Отправитель проверяет текст и отправляет его со своей почты; после этого UPGRADE связывает решение с PI, GA drawing, evidence request и risk register.</p>
-            </div>
-            <ol>
-              {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
-                <li key={title}>
-                  <span>{step}</span>
-                  <strong>{title}</strong>
-                  <small>{value}</small>
-                </li>
-              ))}
-            </ol>
-          </aside>
-        </details>
 
         <details className={styles.hexnovasSourceDigest}>
           <summary>

@@ -9371,6 +9371,10 @@
   gap: 6px;
 }
 
+.hexnovasDecisionRouteBody .hexnovasDecisionSendRail {
+  grid-column: auto;
+}
+
 .hexnovasDecisionFlow {
   min-width: 0;
   display: grid;
