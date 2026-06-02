@@ -1914,6 +1914,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["Исходная база", "не утверждение UPGRADE", "передается профильным участникам"],
   ] as const;
   const purchasedPumpDocs = sourceDocuments.filter((doc) => doc.procurementStatus);
+  const primarySourceDocuments = sourceDocuments.filter((doc) => !doc.procurementStatus);
   const pumpEvidenceStatusSummary = [
     [
       String(purchasedPumpEvidenceRequests.filter((item) => item.status === "ready").length),
@@ -3692,7 +3693,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         <details className={styles.pumpEvidenceDisclosure}>
           <summary>
             <span>Purchased pump evidence</span>
-            <strong>Pedrollo 2+2: паспорта готовы, серийники и контур требуют подтверждения</strong>
+            <strong>Pedrollo 2+2: 2 PDF паспорта внутри, серийники и контур требуют подтверждения</strong>
             <div className={styles.pumpEvidenceSummaryStats} aria-label="Pump evidence readiness status">
               {pumpEvidenceStatusSummary.map(([value, label, note]) => (
                 <small key={label}>
@@ -3761,8 +3762,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </details>
 
-        <div className={styles.sourceDocsGrid}>
-          {sourceDocuments.map((doc) => (
+        <div className={styles.sourceDocsGrid} aria-label="Проектные PDF исходной базы">
+          {primarySourceDocuments.map((doc) => (
             <article key={doc.id} className={styles.sourceDocCard}>
               <div className={styles.sourceDocTopline}>
                 <span>PDF</span>
