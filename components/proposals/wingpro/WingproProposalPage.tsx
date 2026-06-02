@@ -1480,7 +1480,7 @@ function formatUsd(value: number) {
 function formatPumpEvidenceStatus(value: "ready" | "requested" | "missing") {
   if (value === "ready") return "готово";
   if (value === "requested") return "запросить";
-  return "нет файла";
+  return "нужен документ";
 }
 
 function pressureDropTone(value: number) {
@@ -1900,6 +1900,23 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["Исходная база", "не утверждение UPGRADE", "передается профильным участникам"],
   ] as const;
   const purchasedPumpDocs = sourceDocuments.filter((doc) => doc.procurementStatus);
+  const pumpEvidenceStatusSummary = [
+    [
+      String(purchasedPumpEvidenceRequests.filter((item) => item.status === "ready").length),
+      "ready evidence",
+      "паспорта уже в data-room",
+    ],
+    [
+      String(purchasedPumpEvidenceRequests.filter((item) => item.status === "requested").length),
+      "owner requests",
+      "серийники, контур и сервисная зона",
+    ],
+    [
+      String(purchasedPumpEvidenceRequests.filter((item) => item.status === "missing").length),
+      "document gap",
+      "накладная / счет / складской факт",
+    ],
+  ] as const;
   const hexnovasArchiveFileCount = hexnovasArchiveGroups.reduce((sum, item) => sum + item.files, 0);
   const hexnovasPublicEvidenceCount = sourceDocuments.length + hexnovasDocumentSignals.filter((item) => Boolean(item.href)).length;
   const hexnovasPrivateArchiveCount = hexnovasArchiveGroups.reduce((sum, item) => sum + Math.max(item.files - item.publicEvidence, 0), 0);
@@ -3553,6 +3570,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <span className={styles.eyebrow}>Purchased pump evidence</span>
             <h3>Закупленные насосы Pedrollo в data-room</h3>
             <p>По паспортам заведены два насосных типа: F100/200C и F80/160C. Для операционного контроля принято 2 шт. каждого типа; финальная привязка к контурам, серийные номера и накладные должны быть подтверждены WinGPro technical owner и монтажной стороной.</p>
+            <div className={styles.pumpEvidenceStatusRail} aria-label="Pump evidence readiness status">
+              {pumpEvidenceStatusSummary.map(([value, label, note]) => (
+                <span key={label}>
+                  <strong>{value}</strong>
+                  <small>{label}</small>
+                  <em>{note}</em>
+                </span>
+              ))}
+            </div>
           </div>
           <div className={styles.pumpAssignmentGrid}>
             {purchasedPumpAssignments.map((item) => (
@@ -3568,7 +3594,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <div className={styles.pumpEvidenceDocLinks}>
             {purchasedPumpDocs.map((doc) => (
               <a key={doc.id} href={doc.href} target="_blank" rel="noreferrer">
-                {doc.equipmentModel}: открыть паспорт
+                <span>PDF ready</span>
+                <strong>{doc.equipmentModel}</strong>
+                <small>Открыть паспорт</small>
               </a>
             ))}
           </div>
