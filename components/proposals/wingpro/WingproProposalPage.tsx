@@ -5280,14 +5280,33 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3>{handoverPack.name}</h3>
               <p>{handoverPack.acceptance}. {getHandoverOwnerCue(handoverPack)}</p>
             </div>
-            <dl>
-              <div><dt>release gates</dt><dd>{handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate}</dd></div>
-              <div><dt>vault evidence</dt><dd>{uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence}</dd></div>
-              <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
-              <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
-              <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
-              <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
-            </dl>
+            <div className={styles.handoverControlSnapshot} aria-label="Selected handover packet snapshot">
+              <article>
+                <span>Release</span>
+                <strong>{handoverGateLinks[0]?.[0] ?? handoverPack.gate}</strong>
+                <small>{uniqueList(handoverVaultLinks.map((item) => item[1])).slice(0, 2).join(", ") || handoverPack.evidence}</small>
+              </article>
+              <article>
+                <span>Output</span>
+                <strong>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</strong>
+                <small>{handoverPack.reusable}</small>
+              </article>
+            </div>
+            <details className={styles.handoverControlDisclosure}>
+              <summary>
+                <span>handover evidence map</span>
+                <strong>Открыть gate / vault / risk / route матрицу</strong>
+                <small>6 связей выбранного пакета</small>
+              </summary>
+              <dl>
+                <div><dt>release gates</dt><dd>{handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate}</dd></div>
+                <div><dt>vault evidence</dt><dd>{uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence}</dd></div>
+                <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
+                <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
+                <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
+                <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
+              </dl>
+            </details>
             <div className={styles.handoverQuickActions} aria-label="Быстрые переходы по выбранному handover pack">
               <button type="button" onClick={focusHandoverReleaseGate}>
                 <span>Gate</span>

@@ -11570,6 +11570,114 @@
   line-height: 1.34;
 }
 
+.handoverControlSnapshot {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  overflow: visible;
+}
+
+.handoverControlSnapshot article {
+  min-width: 0;
+  min-height: 72px;
+  border: 1px solid var(--proposal-border);
+  border-radius: 8px;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.78);
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+
+.handoverControlSnapshot span,
+.handoverControlDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.handoverControlSnapshot strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 13.5px;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.handoverControlSnapshot small {
+  color: var(--proposal-text-soft);
+  display: -webkit-box;
+  max-height: 2.6em;
+  overflow: hidden;
+  font-size: 11.5px;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.handoverControlDisclosure {
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  overflow: visible;
+}
+
+.handoverControlDisclosure summary {
+  min-height: 44px;
+  padding: 8px 40px 8px 10px;
+  color: var(--proposal-text);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(110px, 0.28fr) minmax(0, 1fr) minmax(120px, 0.3fr) 28px;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+}
+
+.handoverControlDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.handoverControlDisclosure summary::after {
+  content: "+";
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 50%;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  grid-column: 4;
+}
+
+.handoverControlDisclosure[open] summary::after {
+  content: "-";
+}
+
+.handoverControlDisclosure summary strong {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.16;
+}
+
+.handoverControlDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.handoverControlDisclosure dl {
+  padding: 0 10px 10px;
+}
+
 .handoverQuickActions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -16199,6 +16307,39 @@
 
   .handoverControlSurface dl div {
     padding: 8px;
+  }
+
+  .handoverControlSnapshot article {
+    min-height: 58px;
+    padding: 8px;
+  }
+
+  .handoverControlSnapshot strong {
+    font-size: 12.5px;
+    line-height: 1.12;
+  }
+
+  .handoverControlSnapshot small {
+    display: none;
+  }
+
+  .handoverControlDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 32px;
+    gap: 5px;
+    padding: 8px 10px;
+  }
+
+  .handoverControlDisclosure summary span,
+  .handoverControlDisclosure summary strong,
+  .handoverControlDisclosure summary small {
+    grid-column: 1;
+  }
+
+  .handoverControlDisclosure summary::after {
+    width: 30px;
+    height: 30px;
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
 
   .handoverControlSurface dt {
