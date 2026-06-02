@@ -11436,6 +11436,66 @@
   line-height: 1.34;
 }
 
+.handoverQuickActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  overflow: visible;
+}
+
+.handoverExecutiveGrid .handoverQuickActions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.handoverQuickActions button {
+  min-width: 0;
+  min-height: 58px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--proposal-text);
+  background:
+    linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 42%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  text-align: left;
+}
+
+.handoverQuickActions button:hover {
+  border-color: var(--proposal-brand-border-strong);
+  transform: translateY(-1px);
+}
+
+.handoverQuickActions button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--proposal-brand) 74%, #ffffff);
+  outline-offset: 2px;
+}
+
+.handoverQuickActions span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.handoverQuickActions strong {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.handoverQuickActions small {
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
 .handoverCommandStrip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -12646,6 +12706,7 @@
   .riskResponseSurface,
   .gateControlSurface,
   .handoverControlSurface,
+  .handoverQuickActions,
   .handoverCommandStrip,
   .fieldCommandSurface,
   .evidenceWallSurface,

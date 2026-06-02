@@ -2323,6 +2323,55 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     if (nextRisk) setActiveRisk(nextRisk.id);
   }
 
+  function scrollToSection(sectionId: string, block: ScrollLogicalPosition = "start") {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block });
+    window.history.replaceState(null, "", `#${sectionId}`);
+  }
+
+  function focusHandoverReleaseGate() {
+    const nextGate = handoverGateLinks[0];
+    if (nextGate) {
+      const nextIndex = gates.findIndex((item) => item[0] === nextGate[0]);
+      if (nextIndex >= 0) setActiveGate(nextIndex);
+    }
+    scrollToSection("release-gates");
+  }
+
+  function focusHandoverVaultEvidence() {
+    const nextDoc = handoverVaultLinks[0];
+    if (nextDoc) {
+      setVaultCategory(nextDoc[0]);
+      setVaultGate(nextDoc[3]);
+      setVaultOwner(nextDoc[4]);
+      setVaultStatus(nextDoc[5]);
+      setVaultImpact(nextDoc[6]);
+      setVaultMode("vault");
+    }
+    setVaultFilterOpen(true);
+    setVaultCardsOpen(true);
+    scrollToSection("vault");
+  }
+
+  function focusHandoverRiskResponse() {
+    const nextRisk = handoverRiskLinks[0];
+    if (nextRisk) {
+      setActiveRisk(nextRisk.id);
+      setRiskImpact(nextRisk.impact);
+    }
+    setRiskDetailsOpen(true);
+    setRiskResponseOpen(true);
+    scrollToSection("risk-radar");
+  }
+
+  function focusHandoverRoutePoint() {
+    const nextRoute = handoverRouteLinks[0];
+    if (nextRoute) setActiveRoute(nextRoute.title);
+    scrollToSection("route-map");
+  }
+
   function selectScene(id: SceneId) {
     const next = scenes.find((item) => item.id === id);
     setActiveScene(id);
@@ -4692,7 +4741,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
         </details>
       </section>
 
-      <section className={sectionClass(styles.routeMap, "routeMap")} data-section="route-map" aria-labelledby="route-title">
+      <section className={sectionClass(styles.routeMap, "routeMap")} id="route-map" data-section="route-map" aria-labelledby="route-title">
         <div className={styles.sectionHeader}>
           <p className={styles.eyebrow}>Route Map</p>
           <h2 id="route-title">Маршрут поставки как управляемый data-flow</h2>
@@ -5247,6 +5296,28 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
               <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
             </dl>
+            <div className={styles.handoverQuickActions} aria-label="Быстрые переходы по выбранному handover pack">
+              <button type="button" onClick={focusHandoverReleaseGate}>
+                <span>Gate</span>
+                <strong>Открыть release gate</strong>
+                <small>{handoverGateLinks[0]?.[0] ?? handoverPack.gate}</small>
+              </button>
+              <button type="button" onClick={focusHandoverVaultEvidence}>
+                <span>Vault</span>
+                <strong>Показать evidence</strong>
+                <small>{handoverVaultLinks.length || 0} linked docs</small>
+              </button>
+              <button type="button" onClick={focusHandoverRiskResponse}>
+                <span>Risk</span>
+                <strong>Открыть response</strong>
+                <small>{handoverRiskLinks[0]?.impact ?? "closeout"}</small>
+              </button>
+              <button type="button" onClick={focusHandoverRoutePoint}>
+                <span>Route</span>
+                <strong>Показать handoff</strong>
+                <small>{handoverRouteLinks[0]?.title ?? "data-flow"}</small>
+              </button>
+            </div>
           </aside>
         </div>
         <details className={styles.handoverCommandDisclosure}>
