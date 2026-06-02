@@ -3600,17 +3600,26 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </a>
             ))}
           </div>
-          <div className={styles.pumpEvidenceRequestGrid} aria-label="Что запросить по закупленным насосам">
-            {purchasedPumpEvidenceRequests.map((item) => (
-              <article key={item.title} data-status={item.status}>
-                <span>{formatPumpEvidenceStatus(item.status)}</span>
-                <strong>{item.title}</strong>
-                <p>{item.action}</p>
-                <small>{item.owner}</small>
-                <em>{item.why}</em>
-              </article>
-            ))}
-          </div>
+          <details className={styles.pumpEvidenceRequestsDisclosure}>
+            <summary>
+              <span>pump evidence requests</span>
+              <strong>Что еще запросить по закупленным насосам</strong>
+              <small>
+                {purchasedPumpEvidenceRequests.filter((item) => item.status !== "ready").length} open / {purchasedPumpEvidenceRequests.length} total
+              </small>
+            </summary>
+            <div className={styles.pumpEvidenceRequestGrid} aria-label="Что запросить по закупленным насосам">
+              {purchasedPumpEvidenceRequests.map((item) => (
+                <article key={item.title} data-status={item.status}>
+                  <span>{formatPumpEvidenceStatus(item.status)}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.action}</p>
+                  <small>{item.owner}</small>
+                  <em>{item.why}</em>
+                </article>
+              ))}
+            </div>
+          </details>
         </div>
 
         <div className={styles.sourceDocsGrid}>

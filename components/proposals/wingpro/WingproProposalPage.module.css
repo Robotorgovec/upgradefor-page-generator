@@ -8348,12 +8348,88 @@
   background: var(--proposal-brand-soft);
 }
 
-.pumpEvidenceRequestGrid {
+.pumpEvidenceRequestsDisclosure {
   grid-column: 1 / -1;
+  min-width: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  overflow: visible;
+}
+
+.pumpEvidenceRequestsDisclosure summary {
+  min-height: 44px;
+  padding: 8px 42px 8px 10px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.26fr) minmax(0, 1fr) minmax(110px, auto);
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  list-style: none;
+}
+
+.pumpEvidenceRequestsDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.pumpEvidenceRequestsDisclosure summary::after {
+  content: "+";
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.pumpEvidenceRequestsDisclosure[open] summary::after {
+  content: "−";
+}
+
+.pumpEvidenceRequestsDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.pumpEvidenceRequestsDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.pumpEvidenceRequestsDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.pumpEvidenceRequestsDisclosure[open] .pumpEvidenceRequestGrid {
+  margin-top: 0;
+}
+
+.pumpEvidenceRequestGrid {
   min-width: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+  padding: 0 10px 10px;
   overflow: visible;
 }
 
@@ -17371,6 +17447,14 @@
     grid-template-columns: 1fr;
   }
 
+  .pumpEvidenceRequestsDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) minmax(100px, auto);
+  }
+
+  .pumpEvidenceRequestsDisclosure summary span {
+    grid-column: 1 / -1;
+  }
+
   .pumpEvidenceDocLinks {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -17384,6 +17468,20 @@
   .pumpEvidencePanel {
     gap: 6px;
     padding: 8px;
+  }
+
+  .pumpEvidenceRequestsDisclosure summary {
+    padding: 8px 40px 8px 9px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .pumpEvidenceRequestsDisclosure summary strong {
+    font-size: 13px;
+  }
+
+  .pumpEvidenceRequestsDisclosure summary small {
+    text-align: left;
   }
 
   .pumpAssignmentGrid,
