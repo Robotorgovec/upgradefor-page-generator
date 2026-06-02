@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
@@ -10,9 +10,17 @@ type WeddingHairstylesSliderRailProps = {
   items: ResolvedWeddingHairstyleRecord[];
 };
 
+type VisibleRange = {
+  start: number;
+  end: number;
+  total: number;
+};
+
 const INITIAL_CHUNK_SIZE = 12;
 const CHUNK_SIZE = 12;
-const PRIORITY_CARD_COUNT = 4;
+const EAGER_CARD_COUNT = INITIAL_CHUNK_SIZE;
+const HIGH_PRIORITY_CARD_COUNT = 4;
+const VISIBILITY_SYNC_INTERVAL_MS = 250;
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -34,9 +42,16 @@ function getScrollStep(viewport: HTMLDivElement) {
 
 export default function WeddingHairstylesSliderRail({ items }: WeddingHairstylesSliderRailProps) {
   const viewportId = useId();
+  const railTitleId = useId();
+  const railDescriptionId = useId();
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [renderedCount, setRenderedCount] = useState(() => Math.min(INITIAL_CHUNK_SIZE, items.length));
+  const [visibleRange, setVisibleRange] = useState<VisibleRange>(() => ({
+    start: items.length > 0 ? 1 : 0,
+    end: Math.min(INITIAL_CHUNK_SIZE, items.length),
+    total: items.length,
+  }));
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(items.length > INITIAL_CHUNK_SIZE);
 
@@ -57,10 +72,37 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
     const hasHorizontalNext = viewport.scrollLeft + viewport.clientWidth < viewport.scrollWidth - 8;
     setCanScrollPrev(viewport.scrollLeft > 8);
     setCanScrollNext(hasHorizontalNext || hasMore);
-  }, [hasMore]);
+
+    const slides = Array.from(viewport.querySelectorAll<HTMLElement>("[data-card-slide='true']"));
+    const viewportRect = viewport.getBoundingClientRect();
+    const visibleIndexes = slides
+      .map((slide, index) => ({ index, rect: slide.getBoundingClientRect() }))
+      .filter(({ rect }) => rect.right > viewportRect.left + 8 && rect.left < viewportRect.right - 8)
+      .map(({ index }) => index);
+
+    const nextRange = {
+      start: visibleIndexes.length > 0 ? visibleIndexes[0] + 1 : items.length > 0 ? 1 : 0,
+      end: visibleIndexes.length > 0 ? visibleIndexes[visibleIndexes.length - 1] + 1 : Math.min(renderedCount, items.length),
+      total: items.length,
+    };
+
+    setVisibleRange((currentRange) =>
+      currentRange.start === nextRange.start &&
+      currentRange.end === nextRange.end &&
+      currentRange.total === nextRange.total
+        ? currentRange
+        : nextRange,
+    );
+  }, [hasMore, items.length, renderedCount]);
 
   useEffect(() => {
-    setRenderedCount(Math.min(INITIAL_CHUNK_SIZE, items.length));
+    const initialCount = Math.min(INITIAL_CHUNK_SIZE, items.length);
+    setRenderedCount(initialCount);
+    setVisibleRange({
+      start: items.length > 0 ? 1 : 0,
+      end: initialCount,
+      total: items.length,
+    });
   }, [items.length]);
 
   useEffect(() => {
@@ -79,10 +121,12 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
     resizeObserver.observe(viewport);
 
     Array.from(viewport.children).forEach((child) => resizeObserver.observe(child));
+    const visibilitySyncInterval = window.setInterval(refreshControls, VISIBILITY_SYNC_INTERVAL_MS);
 
     return () => {
       viewport.removeEventListener("scroll", handleScroll);
       resizeObserver.disconnect();
+      window.clearInterval(visibilitySyncInterval);
     };
   }, [renderedCount, refreshControls]);
 
@@ -151,38 +195,60 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
   );
 
   return (
-    <div className={styles.railShell}>
+    <section
+      className={styles.railShell}
+      role="region"
+      aria-roledescription="carousel"
+      aria-labelledby={railTitleId}
+      aria-describedby={railDescriptionId}
+    >
       <div className={styles.railHeader}>
         <div>
-          <h3>Стили в выдаче</h3>
-          <p>Листайте карточки, чтобы сравнить форму, эффект и сразу перейти к мастерам под выбранное направление.</p>
+          <h3 id={railTitleId}>Приоритетные карточки</h3>
+          <p id={railDescriptionId}>
+            Листайте карточки, чтобы сравнить форму, эффект и сразу перейти к мастерам под выбранное направление.
+          </p>
         </div>
 
         <div className={styles.railMeta}>
-          <span className={styles.railProgress}>
-            {renderedItems.length} / {items.length} в выдаче
+          <span
+            className={styles.railProgress}
+            role="status"
+            aria-label={
+              visibleRange.total > 0
+                ? `Видно карточки ${visibleRange.start}-${visibleRange.end} из ${visibleRange.total}`
+                : "Карточек пока нет"
+            }
+          >
+            {visibleRange.total > 0
+              ? `Видно ${visibleRange.start}-${visibleRange.end} из ${visibleRange.total}`
+              : "Карточек пока нет"}
           </span>
 
           <div className={styles.railControls}>
             <button
               type="button"
               className={styles.railButton}
-              aria-label="Прокрутить карточки назад"
+              aria-label={`Прокрутить карточки назад. Сейчас видно ${visibleRange.start}-${visibleRange.end} из ${visibleRange.total}`}
               aria-controls={viewportId}
               disabled={!canScrollPrev}
               onClick={() => scrollByDirection(-1)}
             >
-              {"<"}
+              <span className={styles.railButtonIcon} aria-hidden="true">
+                &lsaquo;
+              </span>
             </button>
             <button
               type="button"
               className={styles.railButton}
-              aria-label="Прокрутить карточки вперед"
+              aria-label={`Прокрутить карточки вперед. Сейчас видно ${visibleRange.start}-${visibleRange.end} из ${visibleRange.total}`}
               aria-controls={viewportId}
               disabled={!canScrollNext}
               onClick={() => scrollByDirection(1)}
             >
-              {">"}
+              <span className={styles.railButtonIcon} aria-hidden="true">
+                &rsaquo;
+              </span>
             </button>
           </div>
         </div>
@@ -193,7 +259,8 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
         ref={viewportRef}
         className={styles.viewport}
         tabIndex={0}
-        aria-label="Top 100 wedding hairstyles slider"
+        aria-labelledby={railTitleId}
+        aria-describedby={railDescriptionId}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft") {
             event.preventDefault();
@@ -208,13 +275,17 @@ export default function WeddingHairstylesSliderRail({ items }: WeddingHairstyles
       >
         <div className={styles.track}>
           {renderedItems.map((item, index) => (
-            <div key={item.slug} className={styles.slide} data-card-slide="true">
-              <WeddingHairstyleCard hairstyle={item} priority={index < PRIORITY_CARD_COUNT} />
+            <div key={item.slug} className={styles.slide} data-card-slide="true" data-slot="slide">
+              <WeddingHairstyleCard
+                hairstyle={item}
+                eager={index < EAGER_CARD_COUNT}
+                priority={index < HIGH_PRIORITY_CARD_COUNT}
+              />
             </div>
           ))}
           {hasMore ? <div ref={sentinelRef} className={styles.sentinel} aria-hidden="true" /> : null}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

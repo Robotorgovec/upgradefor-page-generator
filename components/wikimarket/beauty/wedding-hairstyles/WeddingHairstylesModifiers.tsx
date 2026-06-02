@@ -1,4 +1,4 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesModifiersProps = {
@@ -13,11 +13,12 @@ export default function WeddingHairstylesModifiers({
   const getModifier = (modifierId: string) => {
     return library.items.find((modifier) => modifier.id === modifierId);
   };
+  const sectionTitleId = `${section.id}-title`;
 
   return (
-    <section id={section.id} className={styles.section}>
+    <section id={section.id} className={styles.section} aria-labelledby={sectionTitleId}>
       <div className={styles.sectionHeader}>
-        <h2>{section.title}</h2>
+        <h2 id={sectionTitleId}>{section.title}</h2>
         <p>{section.subtitle}</p>
       </div>
 
@@ -25,8 +26,8 @@ export default function WeddingHairstylesModifiers({
 
       <div className={styles.modifierGroupGrid}>
         {library.groups.map((group) => (
-          <article key={group.id} className={styles.modifierGroupCard}>
-            <h3>{group.title}</h3>
+          <article key={group.id} className={styles.modifierGroupCard} aria-labelledby={`${group.id}-title`}>
+            <h3 id={`${group.id}-title`}>{group.title}</h3>
             <p>{group.description}</p>
 
             <ul className={styles.modifierList}>

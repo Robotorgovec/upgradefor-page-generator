@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -6,8 +6,10 @@ import type { RecommendationCard, WeddingHairstylesPageData } from "./data";
 import WeddingHairstylesGuidedSelector from "./WeddingHairstylesGuidedSelector";
 import WeddingHairstylesPerformerGrid from "./WeddingHairstylesPerformerGrid";
 import WeddingHairstylesTop100Section from "./WeddingHairstylesTop100Section";
+import { getWeddingHairstyleDisplayTitle } from "./weddingHairstylesDisplayText";
 import {
   getWeddingHairstyleByFilterKey,
+  getWeddingHairstyleBySlug,
   type ResolvedWeddingHairstyleRecord,
   type WeddingHairstyleCategory,
 } from "./weddingHairstylesTop100Data";
@@ -16,6 +18,8 @@ type SelectedMap = Record<string, string>;
 
 type AppliedFilter = {
   id: string;
+  categoryId: string;
+  optionId: string;
   category: string;
   label: string;
 };
@@ -71,7 +75,15 @@ function resolveInitialHairstyleKey(value?: string | null) {
     return null;
   }
 
-  return getWeddingHairstyleByFilterKey(value)?.mastersFilterKey ?? null;
+  const directMatch = getWeddingHairstyleByFilterKey(value) ?? getWeddingHairstyleBySlug(value);
+
+  if (directMatch) {
+    return directMatch.mastersFilterKey;
+  }
+
+  const presetHintKey = RECOMMENDATION_HINTS[value]?.exactKeys[0];
+
+  return presetHintKey ? (getWeddingHairstyleByFilterKey(presetHintKey)?.mastersFilterKey ?? presetHintKey) : null;
 }
 
 function buildEmptySelection(categories: WeddingHairstylesPageData["selector"]["categories"]): SelectedMap {
@@ -101,6 +113,8 @@ function buildAppliedFilters(
     return [
       {
         id: `${category.id}-${selectedOption.id}`,
+        categoryId: category.id,
+        optionId: selectedOption.id,
         category: category.title,
         label: selectedOption.label,
       },
@@ -151,7 +165,18 @@ function rankTop100Items(
   const liveItems = items.filter((item) => item.hasLiveImage);
 
   if (!hasActiveSelection) {
-    return liveItems;
+    if (!preferredTopTypeKey) {
+      return liveItems;
+    }
+
+    const preferredIndex = liveItems.findIndex((item) => item.mastersFilterKey === preferredTopTypeKey);
+
+    if (preferredIndex <= 0) {
+      return liveItems;
+    }
+
+    const preferredItem = liveItems[preferredIndex];
+    return [preferredItem, ...liveItems.slice(0, preferredIndex), ...liveItems.slice(preferredIndex + 1)];
   }
 
   const positiveRecommendations = rankedRecommendations.filter((entry) => entry.score > 0).slice(0, 3);
@@ -209,6 +234,7 @@ export default function WeddingHairstylesSelectionExperience({
   const [preferredTopTypeKey, setPreferredTopTypeKey] = useState<string | null>(() =>
     resolveInitialHairstyleKey(initialHairstyleKey),
   );
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
   const initialContextHairstyleKey = useMemo(
@@ -256,7 +282,7 @@ export default function WeddingHairstylesSelectionExperience({
   );
 
   const contextualHairstyleKey = useMemo(() => {
-    if (preferredTopTypeKey && (hasActiveSelection || !hasUserInteracted)) {
+    if (preferredTopTypeKey) {
       return preferredTopTypeKey;
     }
 
@@ -279,29 +305,73 @@ export default function WeddingHairstylesSelectionExperience({
   const handleClear = () => {
     setHasUserInteracted(true);
     setPreferredTopTypeKey(null);
+    setActivePresetId(null);
     setSelected(buildEmptySelection(selector.categories));
   };
 
   const handleToggleOption = (categoryId: string, optionId: string) => {
     setHasUserInteracted(true);
     setPreferredTopTypeKey(null);
+    setActivePresetId(null);
     setSelected((current) => ({
       ...current,
       [categoryId]: current[categoryId] === optionId ? "" : optionId,
     }));
   };
 
+  const handleRemoveFilter = (categoryId: string) => {
+    setHasUserInteracted(true);
+    setPreferredTopTypeKey(null);
+    setActivePresetId(null);
+    setSelected((current) => ({
+      ...current,
+      [categoryId]: "",
+    }));
+  };
+
   const handleApplyPreset = (preset: RecommendationCard) => {
     setHasUserInteracted(true);
     setPreferredTopTypeKey(resolvePresetTopTypeKey(preset));
+    setActivePresetId(preset.id);
     setSelected(buildSelectionFromPreset(selector.categories, preset));
+  };
+
+  const handleOpenMasters = (hairstyleKey?: string) => {
+    const normalizedHairstyleKey = resolveInitialHairstyleKey(hairstyleKey);
+
+    if (normalizedHairstyleKey) {
+      setPreferredTopTypeKey(normalizedHairstyleKey);
+    }
+
+    const target = document.getElementById("wedding-hairstyle-masters");
+    const focusTarget = document.getElementById("performers");
+
+    if (typeof window !== "undefined") {
+      const nextUrl = new URL(window.location.href);
+
+      if (normalizedHairstyleKey) {
+        nextUrl.searchParams.set("hairstyle", normalizedHairstyleKey);
+      }
+
+      nextUrl.hash = "wedding-hairstyle-masters";
+      window.history.replaceState(null, "", nextUrl);
+
+      window.requestAnimationFrame(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        target?.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
+        focusTarget?.focus({ preventScroll: true });
+      });
+    }
   };
 
   const bridgeTitle = contextualHairstyle
     ? "Показать мастеров под выбранные стили"
     : "Сравнить мастеров по стилю";
   const bridgeText = contextualHairstyle
-    ? `Ниже уже показаны мастера, которые чаще работают с направлениями вроде ${contextualHairstyle.title}. Уточните дату, формат сборов и аксессуары в одном коротком брифе.`
+    ? `Ниже уже показаны мастера, которые чаще работают с направлениями вроде ${getWeddingHairstyleDisplayTitle(contextualHairstyle)}. Уточните дату, формат сборов и аксессуары в одном коротком брифе.`
     : "После просмотра карточек можно сразу перейти к мастерам и сравнить, кто работает под ваш формат сборов и тайминг дня.";
 
   return (
@@ -312,23 +382,26 @@ export default function WeddingHairstylesSelectionExperience({
         appliedFilters={appliedFilters}
         recommendations={previewRecommendations}
         presets={recommendations}
+        activePresetId={activePresetId}
         onToggleOption={handleToggleOption}
+        onRemoveFilter={handleRemoveFilter}
         onApplyPreset={handleApplyPreset}
         onClear={handleClear}
       />
 
       <WeddingHairstylesTop100Section
         items={rankedTop100Items}
+        allItems={top100Items}
         totalCount={top100Items.filter((item) => item.hasLiveImage).length}
         appliedFilters={appliedFilters}
+        onRemoveFilter={handleRemoveFilter}
         onClearFilters={handleClear}
+        onOpenMasters={handleOpenMasters}
         bridgeTitle={bridgeTitle}
         bridgeText={bridgeText}
-        bridgeHref="#wedding-hairstyle-masters"
       />
 
       <WeddingHairstylesPerformerGrid section={performersSection} hairstyleKey={contextualHairstyleKey} />
     </>
   );
 }
-

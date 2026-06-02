@@ -6,7 +6,6 @@ import WeddingHairstylesScenarios from "./WeddingHairstylesScenarios";
 import WeddingHairstylesSelectionExperience from "./WeddingHairstylesSelectionExperience";
 import WeddingHairstylesTaxonomyGroups from "./WeddingHairstylesTaxonomyGroups";
 import WeddingHairstylesToc from "./WeddingHairstylesToc";
-import WeddingHairstylesTypeCatalog from "./WeddingHairstylesTypeCatalog";
 import styles from "./WeddingHairstylesPage.module.css";
 import { weddingHairstylesPageData } from "./data";
 import { getResolvedWeddingHairstylesTop100Registry } from "./WeddingHairstylesTop100Assets.server";
@@ -18,11 +17,11 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "��������� ��������",
-    serviceType: "������ ��������� �������� � �����������",
+    name: "Свадебные прически",
+    serviceType: "Подбор свадебной прически и исполнителя",
     category: "BeautyService",
     description:
-      "������ ����� ��������� ��������, ��������� ������������ � ���������� ������ ����� WikiMarket.",
+      "Подбор стиля свадебной прически, сравнение демо-шаблонов исполнителей и подготовка брифа через WikiMarket.",
     provider: {
       "@type": "Organization",
       name: "WikiMarket",
@@ -35,7 +34,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
   const performerListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "����������� ��������� ��������",
+    name: "Демо-шаблоны сравнения исполнителей свадебных причесок",
     itemListElement: data.performersSection.performers.map((performer, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -49,7 +48,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(performerListJsonLd) }} />
 
-      <nav className={styles.breadcrumbs} aria-label="������� ������">
+      <nav className={styles.breadcrumbs} aria-label="Хлебные крошки">
         <ol>
           {data.breadcrumbs.map((crumb, index) => {
             const isLast = index === data.breadcrumbs.length - 1;
@@ -65,6 +64,43 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesHero hero={data.hero} />
 
+      <section className={styles.trustBridge} aria-labelledby="trust-bridge-title">
+        <div className={styles.trustBridgeHeader}>
+          <p className={styles.trustBridgeEyebrow}>{data.trustBridge.eyebrow}</p>
+          <h2 id="trust-bridge-title">{data.trustBridge.title}</h2>
+          <p>{data.trustBridge.subtitle}</p>
+        </div>
+
+        <div className={styles.trustBridgeGrid}>
+          {data.trustBridge.proofCards.map((card) => (
+            <article key={card.label} className={styles.trustProofCard}>
+              <div className={styles.trustProofValue}>
+                <strong>{card.value}</strong>
+                <span>{card.label}</span>
+              </div>
+              <p>{card.text}</p>
+            </article>
+          ))}
+
+          <aside className={styles.trustBridgePanel} aria-labelledby="trust-bridge-handoff-title">
+            <h3 id="trust-bridge-handoff-title">{data.trustBridge.handoffTitle}</h3>
+            <ol>
+              {data.trustBridge.handoffItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ol>
+            <div className={styles.trustBridgeActions}>
+              <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.trustBridge.primaryCta.href}>
+                {data.trustBridge.primaryCta.label}
+              </a>
+              <a className={`${styles.btn} ${styles.btnSecondary}`} href={data.trustBridge.secondaryCta.href}>
+                {data.trustBridge.secondaryCta.label}
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
       <WeddingHairstylesSelectionExperience
         selector={data.selector}
         recommendations={[...data.popularStyles]}
@@ -73,9 +109,9 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         initialHairstyleKey={initialHairstyleKey}
       />
 
-      <section id="summary" className={styles.section}>
+      <section id="summary" className={styles.section} aria-labelledby="summary-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.quickAnswer.title}</h2>
+          <h2 id="summary-title">{data.quickAnswer.title}</h2>
         </div>
         <ul className={styles.quickAnswerList}>
           {data.quickAnswer.bullets.map((item) => (
@@ -88,11 +124,7 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesTaxonomyGroups
         section={data.taxonomyOverviewSection}
-        groups={data.taxonomyGroups}
-      />
-
-      <WeddingHairstylesTypeCatalog
-        section={data.taxonomyCatalogSection}
+        catalogSection={data.taxonomyCatalogSection}
         groups={data.taxonomyGroups}
         modifiers={data.modifierLibrary.items}
       />
@@ -101,15 +133,15 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
 
       <WeddingHairstylesScenarios section={data.scenariosSection} items={data.scenarios} />
 
-      <section id="master-checklist" className={styles.section}>
+      <section id="master-checklist" className={styles.section} aria-labelledby="master-checklist-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.chooseMasterChecklist.title}</h2>
+          <h2 id="master-checklist-title">{data.chooseMasterChecklist.title}</h2>
           <p>{data.chooseMasterChecklist.subtitle}</p>
         </div>
 
         <div className={styles.checklistGrid}>
-          <article className={styles.checklistCard}>
-            <h3>��� ������� �������</h3>
+          <article className={styles.checklistCard} aria-labelledby="master-check-card-title">
+            <h3 id="master-check-card-title">Что проверить у мастера</h3>
             <ul>
               {data.chooseMasterChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -117,8 +149,8 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
             </ul>
           </article>
 
-          <article className={styles.checklistCard}>
-            <h3>{data.bookingQuestions.title}</h3>
+          <article className={styles.checklistCard} aria-labelledby="booking-questions-card-title">
+            <h3 id="booking-questions-card-title">{data.bookingQuestions.title}</h3>
             <ul>
               {data.bookingQuestions.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -126,8 +158,8 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
             </ul>
           </article>
 
-          <article className={styles.checklistCard}>
-            <h3>{data.photoChecklist.title}</h3>
+          <article className={styles.checklistCard} aria-labelledby="photo-checklist-card-title">
+            <h3 id="photo-checklist-card-title">{data.photoChecklist.title}</h3>
             <ul>
               {data.photoChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -135,8 +167,8 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
             </ul>
           </article>
 
-          <article className={styles.checklistCard}>
-            <h3>{data.trialChecklist.title}</h3>
+          <article className={styles.checklistCard} aria-labelledby="trial-checklist-card-title">
+            <h3 id="trial-checklist-card-title">{data.trialChecklist.title}</h3>
             <ul>
               {data.trialChecklist.items.map((item) => (
                 <li key={item}>{item}</li>
@@ -146,16 +178,20 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         </div>
       </section>
 
-      <section id="pricing" className={styles.section}>
+      <section id="pricing" className={styles.section} aria-labelledby="pricing-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.pricingSection.title}</h2>
+          <h2 id="pricing-title">{data.pricingSection.title}</h2>
           <p>{data.pricingSection.subtitle}</p>
         </div>
 
         <div className={styles.pricingGrid}>
-          {data.pricingSection.columns.map((column) => (
-            <article key={column.title} className={styles.pricingCard}>
-              <h3>{column.title}</h3>
+          {data.pricingSection.columns.map((column, index) => (
+            <article
+              key={column.title}
+              className={styles.pricingCard}
+              aria-labelledby={`pricing-card-${index + 1}-title`}
+            >
+              <h3 id={`pricing-card-${index + 1}-title`}>{column.title}</h3>
               <ul>
                 {column.items.map((item) => (
                   <li key={item}>{item}</li>
@@ -172,9 +208,9 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         </ul>
       </section>
 
-      <section id="process" className={styles.section}>
+      <section id="process" className={styles.section} aria-labelledby="process-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.processSection.title}</h2>
+          <h2 id="process-title">{data.processSection.title}</h2>
           <p>{data.processSection.subtitle}</p>
         </div>
 
@@ -188,9 +224,9 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         </ol>
       </section>
 
-      <section id="prep" className={styles.section}>
+      <section id="prep" className={styles.section} aria-labelledby="prep-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.prepChecklist.title}</h2>
+          <h2 id="prep-title">{data.prepChecklist.title}</h2>
           <p>{data.prepChecklist.subtitle}</p>
         </div>
 
@@ -209,21 +245,26 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
         text={data.finalCta.text}
         buttonLabel={data.finalCta.buttonLabel}
         href={data.finalCta.href}
+        buttonAriaLabel="Оставить заявку на подбор свадебной прически"
       />
 
-      <section id="related-pages" className={styles.section}>
+      <section id="related-pages" className={styles.section} aria-labelledby="related-pages-title">
         <div className={styles.sectionHeader}>
-          <h2>{data.relatedPagesSection.title}</h2>
+          <h2 id="related-pages-title">{data.relatedPagesSection.title}</h2>
           <p>{data.relatedPagesSection.subtitle}</p>
         </div>
 
         <div className={styles.relatedGrid}>
-          {data.relatedPages.map((page) => (
-            <article key={page.href} className={styles.relatedCard}>
-              <h3>{page.title}</h3>
+          {data.relatedPages.map((page, index) => (
+            <article
+              key={page.href}
+              className={styles.relatedCard}
+              aria-labelledby={`related-page-${index + 1}-title`}
+            >
+              <h3 id={`related-page-${index + 1}-title`}>{page.title}</h3>
               <p>{page.note}</p>
               <a className={styles.inlineLink} href={page.href}>
-                ������� �������
+                {page.ctaLabel}
               </a>
             </article>
           ))}
@@ -243,8 +284,12 @@ export default function WeddingHairstylesPage({ initialHairstyleKey }: { initial
       />
 
       <div className={styles.stickyMobileCta}>
-        <a className={`${styles.btn} ${styles.btnPrimary}`} href={data.finalCta.href} aria-label="�������� ������">
-          �������� ������
+        <a
+          className={`${styles.btn} ${styles.btnPrimary}`}
+          href={data.finalCta.href}
+          aria-label="Оставить заявку на подбор свадебной прически"
+        >
+          Оставить заявку
         </a>
       </div>
     </main>

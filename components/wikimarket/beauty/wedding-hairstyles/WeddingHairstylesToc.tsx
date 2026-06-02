@@ -1,4 +1,4 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesTocProps = {

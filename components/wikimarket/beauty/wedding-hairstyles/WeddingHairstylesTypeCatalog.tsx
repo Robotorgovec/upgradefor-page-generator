@@ -1,10 +1,19 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesTypeCatalogProps = {
   section: WeddingHairstylesPageData["taxonomyCatalogSection"];
   groups: WeddingHairstylesPageData["taxonomyGroups"];
   modifiers: WeddingHairstylesPageData["modifierLibrary"]["items"];
+};
+
+const GROUP_BADGES: Record<string, string> = {
+  buns: "Пучки",
+  updos: "Собранные формы",
+  "half-up-half-down": "Полусобранные",
+  "waves-curls": "Волны и локоны",
+  ponytails: "Хвосты",
+  braids: "Плетения",
 };
 
 export default function WeddingHairstylesTypeCatalog({
@@ -28,7 +37,7 @@ export default function WeddingHairstylesTypeCatalog({
           <section key={group.id} id={group.anchorId} className={styles.catalogGroupSection}>
             <header className={styles.catalogGroupHeader}>
               <div className={styles.catalogGroupTitleWrap}>
-                <p className={styles.catalogGroupSlug}>{group.slug}</p>
+                <p className={styles.catalogGroupSlug}>{GROUP_BADGES[group.id] ?? group.title}</p>
                 <h3>{group.title}</h3>
               </div>
               <a className={styles.inlineLink} href={`#${section.id}`}>

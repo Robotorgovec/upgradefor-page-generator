@@ -1,4 +1,4 @@
-﻿import styles from "./WeddingHairstylesPage.module.css";
+import styles from "./WeddingHairstylesPage.module.css";
 import type { WeddingHairstylesPageData } from "./data";
 
 type WeddingHairstylesScenariosProps = {
@@ -10,17 +10,19 @@ export default function WeddingHairstylesScenarios({
   section,
   items,
 }: WeddingHairstylesScenariosProps) {
+  const sectionTitleId = "personal-scenarios-title";
+
   return (
-    <section id="personal-scenarios" className={styles.section}>
+    <section id="personal-scenarios" className={styles.section} aria-labelledby={sectionTitleId}>
       <div className={styles.sectionHeader}>
-        <h2>{section.title}</h2>
+        <h2 id={sectionTitleId}>{section.title}</h2>
         <p>{section.subtitle}</p>
       </div>
 
       <div className={styles.scenarioGrid}>
         {items.map((item) => (
-          <article key={item.id} className={styles.scenarioCard}>
-            <h3>{item.title}</h3>
+          <article key={item.id} className={styles.scenarioCard} aria-labelledby={`${item.id}-scenario-title`}>
+            <h3 id={`${item.id}-scenario-title`}>{item.title}</h3>
             <p>{item.note}</p>
             <a className={styles.inlineLink} href={item.ctaHref}>
               {item.ctaLabel}
