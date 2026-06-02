@@ -2740,7 +2740,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <div>
                 <p className={styles.eyebrow}>Интерфейс подключения</p>
                 <h3>Патрубки и режимы: что подтверждать</h3>
-                <p>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
               </div>
               <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
                 {twinInterfaceRows.map((item) => (
@@ -2751,7 +2750,9 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <summary>
                   <span>Открыть карту передачи</span>
                   <strong>вводные, действие и owner по патрубкам</strong>
+                  <small>Не заменяет проектные решения; передается профильным участникам для проверки.</small>
                 </summary>
+                <p className={styles.twinInterfaceDisclosureNote}>Это техническая карта входных данных для поставщика, профильного специалиста и монтажной стороны. Она не заменяет проектные решения и утвержденные чертежи.</p>
                 <dl>
                   {twinInterfaceRows.map((item) => (
                     <div key={item.label}>
@@ -3350,8 +3351,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h3 id="cockpit-summary-title">Что получает WinGPro сейчас</h3>
             </div>
             <p>Один верхний слой показывает маршрут решения, ближайший blocker, release gate и evidence handoff. Детальные карточки ниже открывают рабочие слои страницы.</p>
-            <button className={styles.cockpitSummaryCopyButton} type="button" onClick={copyCockpitSummary}>
-              Скопировать summary
+            <button
+              className={styles.cockpitSummaryCopyButton}
+              type="button"
+              onClick={copyCockpitSummary}
+              aria-label="Скопировать технический summary cockpit"
+            >
+              Тех. summary
             </button>
           </div>
           <div className={styles.cockpitKpiRail} aria-label="Cockpit operating KPIs">
@@ -3366,26 +3372,33 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               </article>
             ))}
           </div>
-          <div className={styles.cockpitSummaryModeHeader}>
-            <span>рабочие слои</span>
-            <p>Выберите, что открыть дальше: supplier, contract, delivery, Work Plan, evidence или handover.</p>
-          </div>
-          <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
-            {cockpitSummaryCards.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                data-active={activePresentationMode === item.mode}
-                aria-pressed={activePresentationMode === item.mode}
-                onClick={() => setActivePresentationMode(item.mode)}
-              >
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-                <small>{item.status}</small>
-                <em>{item.detail}</em>
-              </button>
-            ))}
-          </div>
+          <details className={styles.cockpitLayersDisclosure}>
+            <summary>
+              <span>рабочие слои cockpit</span>
+              <strong>Открыть supplier / contract / delivery / Work Plan / evidence / handover</strong>
+              <small>{cockpitSummaryCards.length} слоев, active: {activePresentation.label}</small>
+            </summary>
+            <div className={styles.cockpitSummaryModeHeader}>
+              <span>что открыть дальше</span>
+              <p>Карточки ниже переключают фокус верхнего Executive Command и ведут к рабочим секциям страницы.</p>
+            </div>
+            <div className={styles.cockpitSummaryGrid} aria-label="Selected project state">
+              {cockpitSummaryCards.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  data-active={activePresentationMode === item.mode}
+                  aria-pressed={activePresentationMode === item.mode}
+                  onClick={() => setActivePresentationMode(item.mode)}
+                >
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <small>{item.status}</small>
+                  <em>{item.detail}</em>
+                </button>
+              ))}
+            </div>
+          </details>
           <div className={styles.cockpitDecisionActionBar} aria-label="Быстрое подтверждение выбранного варианта теплообменника">
             <div>
               <span>decision now</span>

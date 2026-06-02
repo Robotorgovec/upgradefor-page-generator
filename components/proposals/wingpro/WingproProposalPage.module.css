@@ -510,8 +510,8 @@
   min-width: 0;
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border-strong);
-  border-radius: 999px;
-  padding: 9px 16px;
+  border-radius: 8px;
+  padding: 9px 14px;
   color: var(--proposal-brand-contrast);
   background:
     linear-gradient(180deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 58%, #ffffff)),
@@ -611,6 +611,88 @@
   font-size: 10.5px;
   font-style: normal;
   line-height: 1.22;
+}
+
+.cockpitLayersDisclosure {
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 82%, var(--proposal-border));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  overflow: visible;
+}
+
+.cockpitLayersDisclosure summary {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: minmax(145px, 0.24fr) minmax(0, 1fr) minmax(180px, auto) 30px;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.cockpitLayersDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.cockpitLayersDisclosure summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.cockpitLayersDisclosure[open] summary::after {
+  content: "-";
+}
+
+.cockpitLayersDisclosure summary span,
+.cockpitLayersDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.cockpitLayersDisclosure summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 13.5px;
+  line-height: 1.2;
+}
+
+.cockpitLayersDisclosure summary small {
+  justify-self: end;
+  text-align: right;
+  text-transform: none;
+}
+
+.cockpitLayersDisclosure:focus-within {
+  box-shadow: 0 0 0 2px var(--proposal-focus);
+}
+
+.cockpitLayersDisclosure[open] {
+  background:
+    linear-gradient(135deg, #ffffff, color-mix(in srgb, var(--proposal-brand-soft) 38%, #ffffff)),
+    #ffffff;
+}
+
+.cockpitLayersDisclosure[open] .cockpitSummaryModeHeader {
+  margin: 0 10px;
+}
+
+.cockpitLayersDisclosure[open] .cockpitSummaryGrid {
+  margin: 8px 10px 10px;
 }
 
 .cockpitSummaryModeHeader {
@@ -3129,6 +3211,19 @@
   color: var(--proposal-text);
   font-size: 12px;
   line-height: 1.25;
+}
+
+.twinInterfaceDisclosure summary small,
+.twinInterfaceDisclosureNote {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 11px;
+  font-weight: 760;
+  line-height: 1.28;
+}
+
+.twinInterfaceDisclosureNote {
+  padding: 0 10px 8px;
 }
 
 .twinInterfaceDisclosure dl {
@@ -13762,6 +13857,24 @@
     align-items: start;
   }
 
+  .cockpitLayersDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 30px;
+    gap: 5px 8px;
+  }
+
+  .cockpitLayersDisclosure summary span,
+  .cockpitLayersDisclosure summary strong,
+  .cockpitLayersDisclosure summary small {
+    grid-column: 1;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .cockpitLayersDisclosure summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+
   .cockpitSummaryCopyButton {
     min-width: 0;
     padding: 8px 12px;
@@ -13974,6 +14087,27 @@
   .cockpitSummaryHeader {
     grid-template-columns: 1fr;
     gap: 7px;
+  }
+
+  .cockpitLayersDisclosure summary {
+    min-height: 54px;
+    padding: 8px;
+  }
+
+  .cockpitLayersDisclosure summary strong {
+    display: -webkit-box;
+    max-height: 2.35em;
+    overflow: hidden;
+    font-size: 10.5px;
+    line-height: 1.18;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .cockpitLayersDisclosure summary span,
+  .cockpitLayersDisclosure summary small {
+    font-size: 8.8px;
+    line-height: 1.1;
   }
 
   .cockpitSummaryCopyButton {
