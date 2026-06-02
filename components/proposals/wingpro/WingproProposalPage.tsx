@@ -1836,6 +1836,28 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     ["5. Handover evidence", handoverPack.paymentLink],
     ["6. Reusable asset", handoverPack.reusable],
   ] as const;
+  const handoverOutcomeCards = [
+    {
+      label: "что передается",
+      value: handoverPack.name,
+      detail: handoverPack.inside,
+    },
+    {
+      label: "кто проверяет",
+      value: handoverPack.recipient,
+      detail: getHandoverOwnerCue(handoverPack),
+    },
+    {
+      label: "что остается видимым",
+      value: uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register",
+      detail: "открытые вопросы остаются в closeout register до решения профильных участников",
+    },
+    {
+      label: "что можно переиспользовать",
+      value: handoverPack.format,
+      detail: handoverPack.reusable,
+    },
+  ] as const;
   const categories = Array.from(new Set(vaultDocs.map((doc) => doc[0])));
   const owners = Array.from(new Set(vaultDocs.map((doc) => doc[4])));
   const gatesList = Array.from(new Set(vaultDocs.map((doc) => doc[3])));
@@ -5028,6 +5050,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <span><strong>Gate 6</strong><small>deliverables review</small></span>
           <span><strong>Gate 7</strong><small>reuse asset</small></span>
           <span><strong>data-room</strong><small>technical closeout</small></span>
+        </div>
+        <div className={styles.handoverOutcomeStrip} aria-label="Что получает WinGPro на выходе handover">
+          {handoverOutcomeCards.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.detail}</p>
+            </article>
+          ))}
         </div>
         <aside className={styles.handoverControlSurface} aria-live="polite" aria-label="Selected handover pack control packet">
           <div className={styles.handoverControlLead}>
