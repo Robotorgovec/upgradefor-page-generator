@@ -2309,6 +2309,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     setRiskImpact(nextImpact);
     if (nextImpact === "all") {
       setRiskDetailsOpen(false);
+      setRiskResponseOpen(false);
       return;
     }
     setRiskDetailsOpen(true);
