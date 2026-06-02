@@ -577,15 +577,22 @@ const acceptanceGuardrails = [
   ["Decision owner remains WinGPro", "format, technical risk acceptance and next project movement are confirmed by WinGPro", "UPGRADE structures evidence, options and handoff materials"],
 ] as const;
 
+const commercialBasisRows = [
+  ["Equipment-only база", "Процент считается от стоимости заказа оборудования: выбранные теплообменники, насосные позиции и supplier equipment package.", "Логистика, брокер, пошлины, НДС, доставка, монтаж, ПНР и технадзор не входят в базу расчета."],
+  ["Рыночный ориентир", "В закупочном sourcing/procurement coordination рыночная комиссия или маржа часто выше 10%.", "В этом КП UPGRADE фиксирует открытые 10% как service fee за понятный набор deliverables."],
+  ["Почему это проверяемо", "Каждый процент связан с видимым результатом: supplier shortlist, decision board, evidence requests, PI/GA updates, risk register и handover pack.", "Заказчик видит, за что платит, без скрытой логистической наценки."],
+] as const;
+
 const commercialFeeRows = [
-  ["5%", "Поиск и short-list поставщика", "поиск канала, первичная валидация поставщика, supplier profile, запросы по модели / материалу / pressure class", "считается от стоимости заказа оборудования без логистики и внешних расходов"],
-  ["5%", "Переговоры, цена, техвопросы и договор", "ведение переговоров, сравнение вариантов, вопросы по PI / чертежам / материалу, договорные вводные и release readiness", "считается от той же equipment-only базы"],
-  ["10%", "Итого service fee UPGRADE", "прозрачная ставка за IT/data и закупочно-координационное сопровождение, а не скрытая логистическая комиссия", "рыночный ориентир для sourcing/procurement coordination обычно выше 10%; здесь фиксируется 10%"],
+  ["5%", "Поиск и short-list поставщика", "поиск канала, первичная валидация поставщика, supplier profile, запросы по модели / материалу / pressure class", "equipment-only база: без логистики, брокера, пошлин, НДС, доставки и иных внешних расходов"],
+  ["5%", "Переговоры, цена, техвопросы и договор", "ведение переговоров по цене, сравнение вариантов, вопросы по PI / чертежам / материалу, договорные вводные и release readiness", "та же equipment-only база; логистику исполняют и оценивают профильные стороны"],
+  ["10%", "Итого service fee UPGRADE", "прозрачная ставка за IT/data и закупочно-координационное сопровождение, а не скрытая логистическая комиссия", "рыночный ориентир часто выше 10%; здесь зафиксированы открытые 10% за наши услуги"],
 ] as const;
 
 const commercialProofRows = [
-  ["Supplier evidence", "Hexnovas / альтернативы / документы поставщика", "видно, что работа не сводится к контакту: проверяются модель, материал, pressure drop, PI и evidence"],
-  ["Decision board", "TH150B / 316L, TH150B / 304, BH150B / 316L", "варианты разделены по техническому риску, цене, документам и необходимости owner approval"],
+  ["Supplier evidence", "Hexnovas / альтернативы / документы поставщика", "работа не сводится к контакту: проверяются модель, материал, pressure drop, PI, GA drawing и evidence readiness"],
+  ["Decision board", "TH150B / 316L, TH150B / 304, BH150B / 316L", "варианты разделены по техническому риску, цене поставщика, документам и необходимости owner approval"],
+  ["Negotiation log", "цена, модель, материал, pressure drop, PI / договор", "5% negotiation layer покрывает вопросы цены, технических вводных и договорной подготовки до решения WinGPro"],
   ["Data-room", "Source Docs, паспорта насосов, проектные PDF, supplier pack", "заказчик получает структурированную доказательную базу, а не пересланные файлы"],
   ["Risk / handover", "Risk Radar, release gates, handover packs", "оплата привязана к переданным deliverables и открытым вопросам, а не к действиям перевозчика, брокера или монтажной стороны"],
 ] as const;
@@ -1294,7 +1301,7 @@ const copyTexts: Record<CopyVariant, string> = {
   deliverables:
     "Deliverables: mission card, Digital Twin preview, Document Vault, Risk Radar, Release gates board, Route Map, Control Room status, Handover Room packs, digital supplier card, digital product card, copy-ready executive summary.",
   payment:
-    "Коммерческое решение: UPGRADE service fee = 10% от стоимости заказа оборудования без логистики, брокера, пошлин, НДС, доставки, монтажа, ПНР и иных внешних расходов. 5% — поиск и short-list поставщика; 5% — переговоры, обсуждение цены, технических вопросов, PI/документов и договорных вводных. Для текущего КП это оформлено как 3 000 000 ₸ без НДС за единый комплекс сопровождения. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
+    "Коммерческое решение: UPGRADE service fee = 10% от стоимости заказа оборудования без логистики, брокера, пошлин, НДС, доставки, монтажа, ПНР и иных внешних расходов. 5% — поиск и short-list поставщика; 5% — переговоры по цене, обсуждение технических вопросов, PI/документов и договорных вводных. Рыночный ориентир для sourcing/procurement coordination часто выше 10%, но в этом КП UPGRADE фиксирует открытые 10% за наши услуги. Для текущего КП это оформлено как 3 000 000 ₸ без НДС за единый комплекс сопровождения. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
   next:
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
   addons:
@@ -5194,6 +5201,22 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <p>Коммерческие условия не меняют технические границы роли UPGRADE: UPGRADE оказывает IT/data и закупочно-координационное сопровождение, не является поставщиком, проектировщиком, монтажной организацией, брокером, перевозчиком или технадзором.</p>
               <p className={styles.commercialStatus} aria-live="polite">{commercialStatus}</p>
             </div>
+            <div className={styles.commercialBasisBoard} aria-label="Service fee basis">
+              <div>
+                <p className={styles.eyebrow}>service fee basis</p>
+                <h3>5% supplier search + 5% переговоры = 10% UPGRADE services</h3>
+                <p>База расчета отделена от логистики и внешних расходов: UPGRADE не исполняет перевозку, брокерские процедуры, таможенные платежи, монтажные работы или ПНР.</p>
+              </div>
+              <div className={styles.commercialBasisGrid}>
+                {commercialBasisRows.map(([title, detail, boundary]) => (
+                  <section key={title}>
+                    <strong>{title}</strong>
+                    <p>{detail}</p>
+                    <small>{boundary}</small>
+                  </section>
+                ))}
+              </div>
+            </div>
           <div className={styles.acceptanceGrid}>
             <article className={styles.decisionCard}>
               <strong>3 000 000 ₸ без НДС</strong>
@@ -5211,7 +5234,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </article>
             <article className={styles.commercialFeeBasis}>
               <h3>из чего складываются 10%</h3>
-              <p>UPGRADE показывает ставку открыто: это не логистическая комиссия и не стоимость оборудования. Логистика, брокер, доставка и таможенные платежи не включаются в базу, потому что UPGRADE не является перевозчиком, брокером или таможенным представителем.</p>
+              <p>UPGRADE показывает ставку открыто: это не логистическая комиссия, не стоимость оборудования и не скрытая маржа в перевозке. Логистика, брокер, доставка и таможенные платежи не включаются в базу, потому что их исполняют и оценивают профильные стороны.</p>
               <div className={styles.commercialFeeGrid} aria-label="Commercial fee calculation">
                 {commercialFeeRows.map(([percent, title, detail, basis]) => (
                   <section key={title}>
