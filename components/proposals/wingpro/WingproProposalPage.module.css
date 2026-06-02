@@ -8833,6 +8833,7 @@
 .hexnovasDecisionActionPanel,
 .hexnovasDecisionQuickPick button,
 .hexnovasDecisionOwnerDisclosure,
+.hexnovasDecisionRouteDisclosure,
 .hexnovasDecisionEmailPacket,
 .hexnovasDecisionReceiptDisclosure,
 .hexnovasDecisionReceipt,
@@ -8975,10 +8976,82 @@
   text-transform: uppercase;
 }
 
+.hexnovasDecisionRouteDisclosure {
+  min-width: 0;
+  grid-column: 2;
+  padding: 7px 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 20%, #ffffff)),
+    #ffffff;
+}
+
+.hexnovasDecisionRouteDisclosure summary {
+  min-height: 44px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(118px, 0.18fr) minmax(0, 1fr) minmax(160px, auto) 28px;
+  gap: 6px;
+  align-items: center;
+}
+
+.hexnovasDecisionRouteDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.hexnovasDecisionRouteDisclosure summary::after {
+  content: "+";
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--proposal-brand-border-strong);
+  border-radius: 999px;
+  color: var(--proposal-brand);
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.hexnovasDecisionRouteDisclosure[open] summary::after {
+  content: "-";
+}
+
+.hexnovasDecisionRouteDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionRouteDisclosure summary strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 13.5px;
+  line-height: 1.18;
+}
+
+.hexnovasDecisionRouteDisclosure summary small {
+  color: var(--proposal-text-muted);
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.hexnovasDecisionRouteBody {
+  margin-top: 7px;
+  display: grid;
+  gap: 6px;
+}
+
 .hexnovasDecisionFlow {
   min-width: 0;
   display: grid;
-  grid-column: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
@@ -9082,6 +9155,7 @@
 }
 
 .hexnovasDecisionOwnerDisclosure summary span,
+.hexnovasDecisionRouteDisclosure summary span,
 .hexnovasDecisionOwnerDisclosure summary small {
   color: var(--proposal-text-muted);
   font-size: 10px;
@@ -16608,6 +16682,7 @@
   .hexnovasDecisionActionPanel,
   .hexnovasDecisionFlow,
   .hexnovasDecisionOwnerDisclosure summary,
+  .hexnovasDecisionRouteDisclosure summary,
   .hexnovasDecisionEmailPacket summary,
   .hexnovasDecisionReceipt,
   .hexnovasDecisionReceiptDisclosure summary,
@@ -16688,13 +16763,21 @@
     grid-template-columns: minmax(0, 1fr) 28px;
   }
 
+  .hexnovasDecisionRouteDisclosure summary {
+    grid-template-columns: minmax(0, 1fr) 28px;
+  }
+
   .hexnovasDecisionOwnerDisclosure summary span,
   .hexnovasDecisionOwnerDisclosure summary strong,
-  .hexnovasDecisionOwnerDisclosure summary small {
+  .hexnovasDecisionOwnerDisclosure summary small,
+  .hexnovasDecisionRouteDisclosure summary span,
+  .hexnovasDecisionRouteDisclosure summary strong,
+  .hexnovasDecisionRouteDisclosure summary small {
     grid-column: 1;
   }
 
-  .hexnovasDecisionOwnerDisclosure summary::after {
+  .hexnovasDecisionOwnerDisclosure summary::after,
+  .hexnovasDecisionRouteDisclosure summary::after {
     grid-column: 2;
     grid-row: 1 / span 3;
   }
@@ -16752,6 +16835,7 @@
   .hexnovasDecisionActionPanel,
   .hexnovasDecisionReceipt,
   .hexnovasDecisionOwnerDisclosure,
+  .hexnovasDecisionRouteDisclosure,
   .hexnovasDecisionQuickPick button,
   .hexnovasPackageIndex,
   .hexnovasPackageIndexStats article,
@@ -16815,6 +16899,7 @@
   .hexnovasRiskControls summary,
   .hexnovasComparisonDisclosure summary,
   .hexnovasDecisionOwnerDisclosure summary,
+  .hexnovasDecisionRouteDisclosure summary,
   .hexnovasDecisionReceiptDisclosure summary,
   .hexnovasPackageRulesDisclosure summary,
   .hexnovasDecisionEmailPacket summary,
@@ -16831,6 +16916,7 @@
   .hexnovasRiskControls summary small,
   .hexnovasComparisonDisclosure summary small,
   .hexnovasDecisionOwnerDisclosure summary small,
+  .hexnovasDecisionRouteDisclosure summary small,
   .hexnovasDecisionReceiptDisclosure summary small,
   .hexnovasPackageRulesDisclosure summary small,
   .hexnovasDecisionEmailPacket summary small,
@@ -16869,6 +16955,7 @@
   .hexnovasDecisionQuickPick,
   .hexnovasDecisionFlow,
   .hexnovasDecisionOwnerDisclosure,
+  .hexnovasDecisionRouteDisclosure,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
   .hexnovasDecisionHandoffStrip,

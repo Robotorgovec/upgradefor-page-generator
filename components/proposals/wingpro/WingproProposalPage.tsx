@@ -2881,15 +2881,6 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               );
             })}
           </div>
-          <div className={styles.hexnovasDecisionFlow} aria-label="Что происходит после выбора варианта">
-            {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
-              <article key={`quick-flow-${title}`}>
-                <span>{step}</span>
-                <strong>{title}</strong>
-                <small>{value}</small>
-              </article>
-            ))}
-          </div>
           <details className={styles.hexnovasDecisionOwnerDisclosure}>
             <summary>
               <span>owner / comment</span>
@@ -2931,15 +2922,33 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
-          <div className={styles.hexnovasDecisionHandoffStrip} aria-label="Куда ведет выбранное решение">
-            {hexnovasDecisionHandoffCards.map(([label, value, detail]) => (
-              <article key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-                <small>{detail}</small>
-              </article>
-            ))}
-          </div>
+          <details className={styles.hexnovasDecisionRouteDisclosure}>
+            <summary>
+              <span>after decision</span>
+              <strong>Email → PI / drawing / evidence route</strong>
+              <small>{hexnovasDecisionReceiptSteps.length} шага / {hexnovasDecisionHandoffCards.length} handoff signals</small>
+            </summary>
+            <div className={styles.hexnovasDecisionRouteBody}>
+              <div className={styles.hexnovasDecisionFlow} aria-label="Что происходит после выбора варианта">
+                {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
+                  <article key={`quick-flow-${title}`}>
+                    <span>{step}</span>
+                    <strong>{title}</strong>
+                    <small>{value}</small>
+                  </article>
+                ))}
+              </div>
+              <div className={styles.hexnovasDecisionHandoffStrip} aria-label="Куда ведет выбранное решение">
+                {hexnovasDecisionHandoffCards.map(([label, value, detail]) => (
+                  <article key={label}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
+                    <small>{detail}</small>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </details>
           <details className={styles.hexnovasDecisionEmailPacket}>
             <summary>
               <span>email packet</span>
