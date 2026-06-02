@@ -2830,9 +2830,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   <span>{item.statusLabel}</span>
                   <strong>{item.shortName}</strong>
                   <small>{item.material} / {item.pressureDropKpaHot.toFixed(1)}-{item.pressureDropKpaCold.toFixed(1)} kPa</small>
+                  {isActive ? <em>выбран сейчас</em> : null}
                 </button>
               );
             })}
+          </div>
+          <div className={styles.hexnovasDecisionFlow} aria-label="Что происходит после выбора варианта">
+            {hexnovasDecisionReceiptSteps.map(([step, title, value]) => (
+              <article key={`quick-flow-${title}`}>
+                <span>{step}</span>
+                <strong>{title}</strong>
+                <small>{value}</small>
+              </article>
+            ))}
           </div>
           <details className={styles.hexnovasDecisionOwnerDisclosure}>
             <summary>

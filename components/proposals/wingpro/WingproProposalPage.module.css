@@ -8818,6 +8818,77 @@
   line-height: 1.15;
 }
 
+.hexnovasDecisionQuickPick em {
+  width: fit-content;
+  border: 1px solid color-mix(in srgb, #17a36b 42%, var(--proposal-brand-border));
+  border-radius: 999px;
+  padding: 3px 7px;
+  color: #08784c;
+  background: rgba(236, 253, 245, 0.86);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionFlow {
+  min-width: 0;
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasDecisionFlow article {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 78%, transparent);
+  border-radius: 8px;
+  padding: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--proposal-brand-soft) 22%, #ffffff)),
+    #ffffff;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 7px;
+  align-content: start;
+}
+
+.hexnovasDecisionFlow span {
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--proposal-brand-active);
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexnovasDecisionFlow strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 12.5px;
+  line-height: 1.16;
+}
+
+.hexnovasDecisionFlow small {
+  grid-column: 1 / -1;
+  color: var(--proposal-text-soft);
+  display: -webkit-box;
+  max-height: 2.36em;
+  overflow: hidden;
+  font-size: 10.5px;
+  font-weight: 850;
+  line-height: 1.18;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .hexnovasDecisionOwnerFields {
   min-width: 0;
   display: grid;
@@ -16194,6 +16265,7 @@
 @media (max-width: 700px) {
   .hexnovasHeader,
   .hexnovasDecisionActionPanel,
+  .hexnovasDecisionFlow,
   .hexnovasDecisionOwnerDisclosure summary,
   .hexnovasDecisionEmailPacket summary,
   .hexnovasDecisionReceipt,
@@ -16454,6 +16526,7 @@
 
   .hexnovasDecisionActionIntro,
   .hexnovasDecisionQuickPick,
+  .hexnovasDecisionFlow,
   .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
@@ -16537,6 +16610,33 @@
 
   .hexnovasDecisionQuickPick {
     gap: 5px;
+  }
+
+  .hexnovasDecisionFlow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .hexnovasDecisionFlow article {
+    min-height: 54px;
+    padding: 6px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hexnovasDecisionFlow span {
+    min-width: 22px;
+    min-height: 22px;
+  }
+
+  .hexnovasDecisionFlow strong {
+    font-size: 11px;
+    line-height: 1.12;
+  }
+
+  .hexnovasDecisionFlow small {
+    display: none;
   }
 
   .hexnovasDecisionActionIntro p,
