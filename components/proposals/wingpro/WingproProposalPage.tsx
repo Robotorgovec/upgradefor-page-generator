@@ -1977,6 +1977,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     `public_decision_link: ${hexnovasDecisionPublicUrl}`,
   ].join("\n");
   const hexnovasDecisionMailto = `mailto:${HEXNOVAS_DECISION_EMAIL}?subject=${encodeURIComponent(hexnovasDecisionEmailSubject)}&body=${encodeURIComponent(hexnovasDecisionEmailText)}`;
+  const hexnovasDecisionSendSteps = [
+    ["01", "Черновик письма", `mailto открывает письмо на ${HEXNOVAS_DECISION_EMAIL}`],
+    ["02", "Owner review", "WinGPro проверяет выбор, комментарий и отправляет письмо со своей почты"],
+    ["03", "Copy fallback", "если почтовый клиент не открылся, скопируйте письмо и ссылку вручную"],
+  ] as const;
   const hexnovasEvidenceBridgeStats = [
     ["ready evidence", String(hexnovasDocumentSignals.filter((item) => item.status === "ready").length), "можно положить в vault"],
     ["update required", String(hexnovasDocumentSignals.filter((item) => item.status === "update-required").length), "PI / drawing должны совпасть с выбранной моделью"],
@@ -2427,8 +2432,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   }
 
   function markHexnovasDecisionEmailOpen() {
-    setHexnovasDecisionStatus(`Открываем письмо на ${HEXNOVAS_DECISION_EMAIL} по выбранному варианту ${activeHexnovasVariant.shortName}`);
-    setCopyStatus(`Письмо на ${HEXNOVAS_DECISION_EMAIL} готовится`);
+    setHexnovasDecisionStatus(`Открыт черновик письма на ${HEXNOVAS_DECISION_EMAIL}; отправку подтверждает WinGPro decision owner`);
+    setCopyStatus(`Черновик письма на ${HEXNOVAS_DECISION_EMAIL} готовится`);
   }
 
   function unlockWingproProposal(event: ReactFormEvent<HTMLFormElement>) {
@@ -2978,6 +2983,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               Скопировать ссылку
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
+          </div>
+          <div className={styles.hexnovasDecisionSendRail} aria-label="Как решение попадает на почту">
+            {hexnovasDecisionSendSteps.map(([step, title, detail]) => (
+              <article key={title}>
+                <span>{step}</span>
+                <strong>{title}</strong>
+                <small>{detail}</small>
+              </article>
+            ))}
           </div>
           <div className={styles.hexnovasDecisionSiteLink} aria-label="Опубликованная ссылка на Decision Board">
             <span>опубликовано на сайте</span>

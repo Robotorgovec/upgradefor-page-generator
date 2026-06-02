@@ -9126,6 +9126,57 @@
   text-align: right;
 }
 
+.hexnovasDecisionSendRail {
+  min-width: 0;
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasDecisionSendRail article {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 82%, transparent);
+  border-radius: 8px;
+  padding: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 16%, #ffffff)),
+    #ffffff;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 7px;
+  align-content: start;
+}
+
+.hexnovasDecisionSendRail span {
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--proposal-brand-active);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexnovasDecisionSendRail strong {
+  min-width: 0;
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.hexnovasDecisionSendRail small {
+  grid-column: 1 / -1;
+  color: var(--proposal-text-soft);
+  font-size: 10.5px;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
 .hexnovasDecisionRouteDisclosure summary {
   min-height: 44px;
   cursor: pointer;
@@ -17014,6 +17065,7 @@
   .hexnovasPackageIndexStats,
   .hexnovasPackageRules,
   .hexnovasDecisionHandoffStrip,
+  .hexnovasDecisionSendRail,
   .hexnovasDecisionReceipt ol,
   .hexnovasArchiveBreakdown > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -17271,6 +17323,7 @@
   .hexnovasDecisionSiteLink,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
+  .hexnovasDecisionSendRail,
   .hexnovasDecisionHandoffStrip,
   .hexnovasDecisionEmailPacket {
     grid-column: 1 / -1;
@@ -17284,6 +17337,10 @@
 
   .hexnovasDecisionSiteLink small {
     text-align: left;
+  }
+
+  .hexnovasDecisionSendRail {
+    grid-template-columns: 1fr;
   }
 
   .hexnovasDecisionOwnerFields {
