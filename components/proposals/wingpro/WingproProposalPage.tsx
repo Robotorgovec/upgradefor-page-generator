@@ -1791,6 +1791,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [controlBoardsOpen, setControlBoardsOpen] = useState(false);
   const [vaultFilterOpen, setVaultFilterOpen] = useState(false);
   const [vaultCardsOpen, setVaultCardsOpen] = useState(false);
+  const [riskResponseOpen, setRiskResponseOpen] = useState(false);
+  const [riskDetailsOpen, setRiskDetailsOpen] = useState(false);
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
   const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
   const [hexnovasDecisionOwner, setHexnovasDecisionOwner] = useState("");
@@ -2305,7 +2307,12 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
 
   function selectRiskImpact(nextImpact: RiskImpact | "all") {
     setRiskImpact(nextImpact);
-    if (nextImpact === "all") return;
+    if (nextImpact === "all") {
+      setRiskDetailsOpen(false);
+      return;
+    }
+    setRiskDetailsOpen(true);
+    setRiskResponseOpen(true);
     const nextRisk = risks.find((item) => item.impact === nextImpact);
     if (nextRisk) setActiveRisk(nextRisk.id);
   }
@@ -5001,7 +5008,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>Route handoff</dt><dd>{risk.routeHandoff}</dd></div>
             <div><dt>Decision owner</dt><dd>{risk.decision}</dd></div>
           </dl>
-          <details className={styles.riskResponseDisclosure}>
+          <details
+            className={styles.riskResponseDisclosure}
+            open={riskResponseOpen}
+            onToggle={(event) => setRiskResponseOpen(event.currentTarget.open)}
+          >
             <summary>
               <span>Response sequence</span>
               <strong>Открыть actions и linked vault cards</strong>
@@ -5034,7 +5045,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </details>
         </aside>
-        <details className={styles.riskDetailsDisclosure}>
+        <details
+          className={styles.riskDetailsDisclosure}
+          open={riskDetailsOpen}
+          onToggle={(event) => setRiskDetailsOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>Risk radar detail</span>
             <strong>Открыть impact matrix и response pack</strong>
@@ -5044,7 +5059,10 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div className={styles.radarPlane} aria-label="Risk impact matrix">
               <span>Quality impact</span><span>Time impact</span><span>Financial exposure</span><span>Dependency risk</span>
               {risks.map((item) => (
-                <button key={item.id} type="button" hidden={riskImpact !== "all" && item.impact !== riskImpact} style={{ left: `${item.x}%`, top: `${item.y}%` }} data-severity={item.severity} aria-pressed={activeRisk === item.id} onClick={() => setActiveRisk(item.id)}>
+                <button key={item.id} type="button" hidden={riskImpact !== "all" && item.impact !== riskImpact} style={{ left: `${item.x}%`, top: `${item.y}%` }} data-severity={item.severity} aria-pressed={activeRisk === item.id} onClick={() => {
+                  setActiveRisk(item.id);
+                  setRiskResponseOpen(true);
+                }}>
                   {item.title}
                 </button>
               ))}
