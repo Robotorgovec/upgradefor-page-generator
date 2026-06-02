@@ -3713,62 +3713,77 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </div>
         </div>
 
-        <div className={styles.pumpEvidencePanel} aria-label="Закупленные насосы Pedrollo">
-          <div className={styles.pumpEvidenceIntro}>
-            <span className={styles.eyebrow}>Purchased pump evidence</span>
-            <h3>Закупленные насосы Pedrollo в data-room</h3>
-            <p>По паспортам заведены два насосных типа: F100/200C и F80/160C. Для операционного контроля принято 2 шт. каждого типа; финальная привязка к контурам, серийные номера и накладные должны быть подтверждены WinGPro technical owner и монтажной стороной.</p>
-            <div className={styles.pumpEvidenceStatusRail} aria-label="Pump evidence readiness status">
+        <details className={styles.pumpEvidenceDisclosure}>
+          <summary>
+            <span>Purchased pump evidence</span>
+            <strong>Pedrollo 2+2: паспорта готовы, серийники и контур требуют подтверждения</strong>
+            <div className={styles.pumpEvidenceSummaryStats} aria-label="Pump evidence readiness status">
               {pumpEvidenceStatusSummary.map(([value, label, note]) => (
-                <span key={label}>
-                  <strong>{value}</strong>
-                  <small>{label}</small>
+                <small key={label}>
+                  <b>{value}</b>
+                  {label}
                   <em>{note}</em>
-                </span>
+                </small>
               ))}
             </div>
-          </div>
-          <div className={styles.pumpAssignmentGrid}>
-            {purchasedPumpAssignments.map((item) => (
-              <article key={item.model}>
-                <span>{item.quantity}</span>
-                <strong>{item.model}</strong>
-                <p>{item.role}</p>
-                <small>{item.hydraulicLogic}</small>
-                <em>{item.confirmation}</em>
-              </article>
-            ))}
-          </div>
-          <div className={styles.pumpEvidenceDocLinks}>
-            {purchasedPumpDocs.map((doc) => (
-              <a key={doc.id} href={doc.href} target="_blank" rel="noreferrer">
-                <span>PDF ready</span>
-                <strong>{doc.equipmentModel}</strong>
-                <small>Открыть паспорт</small>
-              </a>
-            ))}
-          </div>
-          <details className={styles.pumpEvidenceRequestsDisclosure}>
-            <summary>
-              <span>pump evidence requests</span>
-              <strong>Что еще запросить по закупленным насосам</strong>
-              <small>
-                {purchasedPumpEvidenceRequests.filter((item) => item.status !== "ready").length} open / {purchasedPumpEvidenceRequests.length} total
-              </small>
-            </summary>
-            <div className={styles.pumpEvidenceRequestGrid} aria-label="Что запросить по закупленным насосам">
-              {purchasedPumpEvidenceRequests.map((item) => (
-                <article key={item.title} data-status={item.status}>
-                  <span>{formatPumpEvidenceStatus(item.status)}</span>
-                  <strong>{item.title}</strong>
-                  <p>{item.action}</p>
-                  <small>{item.owner}</small>
-                  <em>{item.why}</em>
+          </summary>
+          <div className={styles.pumpEvidencePanel} aria-label="Закупленные насосы Pedrollo">
+            <div className={styles.pumpEvidenceIntro}>
+              <span className={styles.eyebrow}>Pump data-room detail</span>
+              <h3>Закупленные насосы Pedrollo в data-room</h3>
+              <p>По паспортам заведены два насосных типа: F100/200C и F80/160C. Для операционного контроля принято 2 шт. каждого типа; финальная привязка к контурам, серийные номера и накладные должны быть подтверждены WinGPro technical owner и монтажной стороной.</p>
+              <div className={styles.pumpEvidenceStatusRail} aria-label="Pump evidence readiness status detail">
+                {pumpEvidenceStatusSummary.map(([value, label, note]) => (
+                  <span key={label}>
+                    <strong>{value}</strong>
+                    <small>{label}</small>
+                    <em>{note}</em>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className={styles.pumpAssignmentGrid}>
+              {purchasedPumpAssignments.map((item) => (
+                <article key={item.model}>
+                  <span>{item.quantity}</span>
+                  <strong>{item.model}</strong>
+                  <p>{item.role}</p>
+                  <small>{item.hydraulicLogic}</small>
+                  <em>{item.confirmation}</em>
                 </article>
               ))}
             </div>
-          </details>
-        </div>
+            <div className={styles.pumpEvidenceDocLinks}>
+              {purchasedPumpDocs.map((doc) => (
+                <a key={doc.id} href={doc.href} target="_blank" rel="noreferrer">
+                  <span>PDF ready</span>
+                  <strong>{doc.equipmentModel}</strong>
+                  <small>Открыть паспорт</small>
+                </a>
+              ))}
+            </div>
+            <details className={styles.pumpEvidenceRequestsDisclosure}>
+              <summary>
+                <span>pump evidence requests</span>
+                <strong>Что еще запросить по закупленным насосам</strong>
+                <small>
+                  {purchasedPumpEvidenceRequests.filter((item) => item.status !== "ready").length} open / {purchasedPumpEvidenceRequests.length} total
+                </small>
+              </summary>
+              <div className={styles.pumpEvidenceRequestGrid} aria-label="Что запросить по закупленным насосам">
+                {purchasedPumpEvidenceRequests.map((item) => (
+                  <article key={item.title} data-status={item.status}>
+                    <span>{formatPumpEvidenceStatus(item.status)}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.action}</p>
+                    <small>{item.owner}</small>
+                    <em>{item.why}</em>
+                  </article>
+                ))}
+              </div>
+            </details>
+          </div>
+        </details>
 
         <div className={styles.sourceDocsGrid}>
           {sourceDocuments.map((doc) => (
