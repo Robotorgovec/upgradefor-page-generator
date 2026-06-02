@@ -53,10 +53,12 @@ function resolveLiveImageSource(record: { slug: string; assetFilename: string })
     }
   }
 
+  // Vercel serverless functions do not expose every public asset through fs.
+  // The approved mapping is the production source of truth; fs is only a local audit aid.
   return {
-    hasLiveImage: false,
-    liveImageSrc: null,
-    liveImageExtension: null,
+    hasLiveImage: true,
+    liveImageSrc: `${PUBLIC_ASSET_BASE}/${record.assetFilename}`,
+    liveImageExtension: path.extname(record.assetFilename),
   };
 }
 
