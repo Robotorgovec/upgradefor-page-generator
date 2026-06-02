@@ -5052,36 +5052,40 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <h2 id="handover-title">Что получает каждая сторона</h2>
           <p>Closeout строится как deliverables package: каждый handover pack связан с release gate, evidence, владельцем и практической ценностью. Сверка результата идет по переданным deliverables, а не по действиям производителя, перевозчика, брокера, монтажной организации или иных третьих лиц.</p>
         </div>
-        <div className={styles.handoverMetrics} aria-label="Closeout readiness summary">
-          <span><strong>6</strong><small>handover packs</small></span>
-          <span><strong>Gate 6</strong><small>deliverables review</small></span>
-          <span><strong>Gate 7</strong><small>reuse asset</small></span>
-          <span><strong>data-room</strong><small>technical closeout</small></span>
-        </div>
-        <div className={styles.handoverOutcomeStrip} aria-label="Что получает WinGPro на выходе handover">
-          {handoverOutcomeCards.map((item) => (
-            <article key={item.label}>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <p>{item.detail}</p>
-            </article>
-          ))}
-        </div>
-        <aside className={styles.handoverControlSurface} aria-live="polite" aria-label="Selected handover pack control packet">
-          <div className={styles.handoverControlLead}>
-            <p className={styles.eyebrow}>Selected handover packet</p>
-            <h3>{handoverPack.name}</h3>
-            <p>{handoverPack.acceptance}. {getHandoverOwnerCue(handoverPack)}</p>
+        <div className={styles.handoverExecutiveGrid}>
+          <div className={styles.handoverCompactStack}>
+            <div className={styles.handoverMetrics} aria-label="Closeout readiness summary">
+              <span><strong>6</strong><small>handover packs</small></span>
+              <span><strong>Gate 6</strong><small>deliverables review</small></span>
+              <span><strong>Gate 7</strong><small>reuse asset</small></span>
+              <span><strong>data-room</strong><small>technical closeout</small></span>
+            </div>
+            <div className={styles.handoverOutcomeStrip} aria-label="Что получает WinGPro на выходе handover">
+              {handoverOutcomeCards.map((item) => (
+                <article key={item.label}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <p>{item.detail}</p>
+                </article>
+              ))}
+            </div>
           </div>
-          <dl>
-            <div><dt>release gates</dt><dd>{handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate}</dd></div>
-            <div><dt>vault evidence</dt><dd>{uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence}</dd></div>
-            <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
-            <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
-            <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
-            <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
-          </dl>
-        </aside>
+          <aside className={styles.handoverControlSurface} aria-live="polite" aria-label="Selected handover pack control packet">
+            <div className={styles.handoverControlLead}>
+              <p className={styles.eyebrow}>Selected handover packet</p>
+              <h3>{handoverPack.name}</h3>
+              <p>{handoverPack.acceptance}. {getHandoverOwnerCue(handoverPack)}</p>
+            </div>
+            <dl>
+              <div><dt>release gates</dt><dd>{handoverGateLinks.map((item) => item[0]).join(", ") || handoverPack.gate}</dd></div>
+              <div><dt>vault evidence</dt><dd>{uniqueList(handoverVaultLinks.map((item) => item[1])).join(", ") || handoverPack.evidence}</dd></div>
+              <div><dt>risk responses</dt><dd>{uniqueList(handoverRiskLinks.map((item) => item.title)).join(", ") || "open issues register"}</dd></div>
+              <div><dt>route / data-flow</dt><dd>{uniqueList(handoverRouteLinks.map((item) => item.title)).join(", ") || "Handover Room"}</dd></div>
+              <div><dt>output artifact</dt><dd>{uniqueList(handoverGateLinks.map((item) => item[6])).join(", ") || handoverPack.format}</dd></div>
+              <div><dt>handover logic</dt><dd>Сверка результата привязана к переданным evidence-pack, а не к физическим работам или результатам третьих лиц.</dd></div>
+            </dl>
+          </aside>
+        </div>
         <details className={styles.handoverCommandDisclosure}>
           <summary>
             <span>Command sequence</span>

@@ -10837,6 +10837,21 @@
   background: #ffffff;
 }
 
+.handoverExecutiveGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(390px, 0.96fr);
+  gap: 10px;
+  align-items: start;
+  overflow: visible;
+}
+
+.handoverCompactStack {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
 .handoverMetrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -10858,6 +10873,12 @@
   color: var(--proposal-text);
   font-size: 22px;
   line-height: 1.05;
+}
+
+.handoverExecutiveGrid .handoverMetrics strong {
+  font-size: 20px;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .handoverMetrics small,
@@ -10940,8 +10961,19 @@
   align-items: start;
 }
 
+.handoverExecutiveGrid .handoverControlSurface {
+  height: 100%;
+  grid-template-columns: 1fr;
+  align-content: start;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
 .handoverControlLead {
   grid-row: span 2;
+}
+
+.handoverExecutiveGrid .handoverControlLead {
+  grid-row: auto;
 }
 
 .handoverControlLead {
@@ -10970,6 +11002,10 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
+}
+
+.handoverExecutiveGrid .handoverControlSurface dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .handoverControlSurface dl div {
@@ -11896,6 +11932,14 @@
   .statusLine,
   .gatePipeline {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .handoverExecutiveGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .handoverExecutiveGrid .handoverControlSurface {
+    height: auto;
   }
 
   .candidateGrid,
