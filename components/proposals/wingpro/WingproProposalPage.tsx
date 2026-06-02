@@ -1787,6 +1787,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [commercialOpen, setCommercialOpen] = useState(false);
   const [commercialStatus, setCommercialStatus] = useState("Коммерческий контур раскрыт отдельно от технического экрана");
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
+  const [projectControlDetailsOpen, setProjectControlDetailsOpen] = useState(false);
+  const [controlBoardsOpen, setControlBoardsOpen] = useState(false);
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
   const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
   const [hexnovasDecisionOwner, setHexnovasDecisionOwner] = useState("");
@@ -2198,6 +2200,37 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
       document.getElementById(decodeURIComponent(currentHash.slice(1)))?.scrollIntoView({ block: "start" });
     });
   }, [accessStatus]);
+
+  useEffect(() => {
+    const boardAnchorIds = new Set([
+      ...projectControlScale.map((item) => item.anchor),
+      "photo-evidence-wall",
+      "implementation-status-dashboard",
+    ]);
+
+    const revealProjectControlTarget = () => {
+      const hash = decodeURIComponent(window.location.hash.slice(1));
+      if (!hash) return;
+
+      if (hash.startsWith("control-step-")) {
+        setProjectControlDetailsOpen(true);
+      }
+
+      if (boardAnchorIds.has(hash)) {
+        setControlBoardsOpen(true);
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            document.getElementById(hash)?.scrollIntoView({ block: "start" });
+          });
+        });
+      }
+    };
+
+    revealProjectControlTarget();
+    window.addEventListener("hashchange", revealProjectControlTarget);
+
+    return () => window.removeEventListener("hashchange", revealProjectControlTarget);
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -3889,7 +3922,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </dl>
         </aside>
 
-        <details className={styles.projectControlDetailsDisclosure}>
+        <details
+          className={styles.projectControlDetailsDisclosure}
+          open={projectControlDetailsOpen}
+          onToggle={(event) => setProjectControlDetailsOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>Control path detail</span>
             <strong>Открыть project modules, readiness snapshot и handoff spine</strong>
@@ -3951,7 +3988,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           </nav>
         </details>
 
-        <details className={styles.controlBoardsDisclosure}>
+        <details
+          className={styles.controlBoardsDisclosure}
+          open={controlBoardsOpen}
+          onToggle={(event) => setControlBoardsOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>Операционные доски проекта</span>
             <strong>Открыть Supplier / Contract / Delivery / Work Plan / Evidence boards</strong>
@@ -4533,7 +4574,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </div>
           </article>
 
-          <article className={styles.statusDashboard} data-section="implementation-status-dashboard">
+          <article className={styles.statusDashboard} id="implementation-status-dashboard" data-section="implementation-status-dashboard">
             <div className={styles.boardHeader}>
               <p className={styles.eyebrow}>Implementation Status Dashboard</p>
               <h3>Готовность проекта по ключевым контурам</h3>
