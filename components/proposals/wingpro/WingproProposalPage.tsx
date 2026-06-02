@@ -1789,6 +1789,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
   const [sourceDownloadStatus, setSourceDownloadStatus] = useState("");
   const [projectControlDetailsOpen, setProjectControlDetailsOpen] = useState(false);
   const [controlBoardsOpen, setControlBoardsOpen] = useState(false);
+  const [vaultFilterOpen, setVaultFilterOpen] = useState(false);
+  const [vaultCardsOpen, setVaultCardsOpen] = useState(false);
   const [activeHexnovasVariantId, setActiveHexnovasVariantId] = useState<HexnovasVariantId>(HEXNOVAS_RECOMMENDED_VARIANT_ID);
   const [hexnovasDecisionStatus, setHexnovasDecisionStatus] = useState("Ожидает выбора и отправки решения");
   const [hexnovasDecisionOwner, setHexnovasDecisionOwner] = useState("");
@@ -2286,6 +2288,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     setVaultGate("all");
     setVaultImpact("all");
     setVaultMode("vault");
+    setVaultFilterOpen(false);
+    setVaultCardsOpen(false);
   }
 
   function showVaultOpenItems() {
@@ -2295,6 +2299,8 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
     setVaultGate("all");
     setVaultImpact("all");
     setVaultMode("missing");
+    setVaultFilterOpen(true);
+    setVaultCardsOpen(true);
   }
 
   function selectRiskImpact(nextImpact: RiskImpact | "all") {
@@ -4896,7 +4902,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             ))}
           </div>
         </details>
-        <details className={styles.vaultFilterDisclosure}>
+        <details
+          className={styles.vaultFilterDisclosure}
+          open={vaultFilterOpen}
+          onToggle={(event) => setVaultFilterOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>Filter controls</span>
             <strong>Открыть filters и режимы Vault</strong>
@@ -4913,7 +4923,11 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             {(["vault", "timeline", "owner", "missing"] as VaultMode[]).map((mode) => <button key={mode} type="button" aria-pressed={vaultMode === mode} onClick={() => setVaultMode(mode)}>{mode}</button>)}
           </div>
         </details>
-        <details className={styles.vaultCardsDisclosure}>
+        <details
+          className={styles.vaultCardsDisclosure}
+          open={vaultCardsOpen}
+          onToggle={(event) => setVaultCardsOpen(event.currentTarget.open)}
+        >
           <summary>
             <span>Document card detail</span>
             <strong>{visibleDocs.length} visible cards / {visibleOpenDocs.length} open evidence items</strong>
