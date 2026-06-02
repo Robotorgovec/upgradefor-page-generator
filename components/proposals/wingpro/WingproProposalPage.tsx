@@ -2979,6 +2979,13 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             </button>
             <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
           </div>
+          <div className={styles.hexnovasDecisionSiteLink} aria-label="Опубликованная ссылка на Decision Board">
+            <span>опубликовано на сайте</span>
+            <a href={hexnovasDecisionPublicUrl}>
+              {hexnovasDecisionPublicUrl.replace("https://", "")}
+            </a>
+            <small>Пароль доступа: 1111 / выбранный вариант: {activeHexnovasVariant.shortName}</small>
+          </div>
           <details className={styles.hexnovasDecisionRouteDisclosure}>
             <summary>
               <span>after decision</span>

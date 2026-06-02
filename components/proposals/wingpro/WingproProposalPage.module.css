@@ -9080,6 +9080,52 @@
     #ffffff;
 }
 
+.hexnovasDecisionSiteLink {
+  min-width: 0;
+  grid-column: 2;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 86%, transparent);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 18%, #ffffff)),
+    #ffffff;
+  display: grid;
+  grid-template-columns: minmax(118px, auto) minmax(0, 1fr) minmax(160px, 0.34fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.hexnovasDecisionSiteLink span {
+  color: var(--proposal-text-muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionSiteLink a {
+  min-width: 0;
+  color: var(--proposal-brand-contrast);
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.hexnovasDecisionSiteLink a:hover {
+  color: var(--proposal-brand);
+}
+
+.hexnovasDecisionSiteLink small {
+  color: var(--proposal-text-soft);
+  font-size: 10.5px;
+  font-weight: 850;
+  line-height: 1.2;
+  text-align: right;
+}
+
 .hexnovasDecisionRouteDisclosure summary {
   min-height: 44px;
   cursor: pointer;
@@ -17101,6 +17147,7 @@
   .hexnovasDecisionReceipt,
   .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionRouteDisclosure,
+  .hexnovasDecisionSiteLink,
   .hexnovasDecisionQuickPick button,
   .hexnovasPackageIndex,
   .hexnovasPackageIndexStats article,
@@ -17221,12 +17268,22 @@
   .hexnovasDecisionFlow,
   .hexnovasDecisionOwnerDisclosure,
   .hexnovasDecisionRouteDisclosure,
+  .hexnovasDecisionSiteLink,
   .hexnovasDecisionOwnerFields,
   .hexnovasDecisionMailActions,
   .hexnovasDecisionHandoffStrip,
   .hexnovasDecisionEmailPacket {
     grid-column: 1 / -1;
     grid-row: auto;
+  }
+
+  .hexnovasDecisionSiteLink {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .hexnovasDecisionSiteLink small {
+    text-align: left;
   }
 
   .hexnovasDecisionOwnerFields {
