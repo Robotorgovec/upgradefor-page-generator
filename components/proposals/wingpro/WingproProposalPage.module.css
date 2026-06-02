@@ -11705,6 +11705,132 @@
   font-size: 11px;
 }
 
+.commercialEvidenceDesk {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.34fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  overflow: visible;
+}
+
+.commercialRateCard,
+.commercialEvidenceGrid section {
+  min-width: 0;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), color-mix(in srgb, var(--proposal-brand-soft) 46%, #ffffff)),
+    #ffffff;
+  box-shadow: var(--proposal-shadow-sm);
+}
+
+.commercialRateCard {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+}
+
+.commercialRateCard h3,
+.commercialRateCard p {
+  margin: 0;
+}
+
+.commercialRateCard h3 {
+  color: var(--proposal-text);
+  font-size: 22px;
+  line-height: 1.12;
+}
+
+.commercialRateCard > p {
+  color: var(--proposal-text-soft);
+  line-height: 1.5;
+}
+
+.commercialRateCard dl {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.commercialRateCard dl div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border: 1px solid color-mix(in srgb, var(--proposal-brand-border) 76%, var(--proposal-border));
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.commercialRateCard dt {
+  color: var(--proposal-brand-contrast);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.commercialRateCard dd {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  font-size: 12.5px;
+  font-weight: 820;
+  line-height: 1.36;
+}
+
+.commercialEvidenceGrid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.commercialEvidenceGrid section {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  padding: 12px;
+}
+
+.commercialEvidenceGrid span {
+  justify-self: start;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  padding: 5px 8px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.commercialEvidenceGrid strong {
+  color: var(--proposal-text);
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.commercialEvidenceGrid p,
+.commercialEvidenceGrid small {
+  margin: 0;
+  color: var(--proposal-text-soft);
+  line-height: 1.38;
+}
+
+.commercialEvidenceGrid p {
+  font-size: 13px;
+  font-weight: 830;
+}
+
+.commercialEvidenceGrid small {
+  color: var(--proposal-text-muted);
+  font-size: 11.5px;
+}
+
 .acceptanceGrid {
   display: grid;
   grid-template-columns: minmax(310px, 0.42fr) minmax(0, 1fr);
@@ -12341,6 +12467,7 @@
 		  .commercialToggle,
 		  .commercialIntro,
 		  .commercialBasisBoard,
+		  .commercialEvidenceDesk,
 		  .projectSourcesHeader,
   .projectSourcesBoundary,
   .projectSourceGroupHeader,
@@ -12357,6 +12484,10 @@
   }
 
   .commercialBasisGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .commercialEvidenceGrid {
     grid-template-columns: 1fr;
   }
 
