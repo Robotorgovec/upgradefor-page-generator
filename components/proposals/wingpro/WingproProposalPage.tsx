@@ -48,7 +48,7 @@ const twinLayers = [
   {
     id: "equipment",
     title: "Оборудование",
-    data: ["модель BB150B-307H", "количество 2 шт.", "подтверждение материала", "pressure class", "логика подключения", "габариты/вес pending/confirmed"],
+    data: ["рекомендуемый маршрут TH150B / 316L", "количество 2 шт.", "материал AISI 316L", "pressure drop 24.0 / 29.9 kPa", "BH150B PI/drawing update required", "габариты/вес pending/confirmed"],
     value: "товарная позиция получает единый технический профиль вместо фрагментов переписки",
     risk: "снижение вероятности ошибки по модели, материалу, давлению или комплектности",
     deliverable: "карточка оборудования",
@@ -324,7 +324,7 @@ const supplierCandidates = [
     nextEvidence: "material + pressure confirmation, then PI/release terms delta-list",
     handoffValue: "WinGPro получает shortlist rationale и список вопросов, которые надо закрыть до следующего release step",
     criteria: [
-      ["technical fit", "BB150B-307H / 2 units", "86"],
+      ["technical fit", "TH150B-381H / 2 units baseline", "86"],
       ["document readiness", "PI + specification draft", "72"],
       ["release risk", "bank/material evidence requested", "68"],
       ["delivery readiness", "packing data pending", "58"],
@@ -389,7 +389,7 @@ const supplierCandidates = [
 
 const supplierRequestQueue = [
   ["Identity", "supplier profile, manufacturer/trader role, contact map", "before shortlist"],
-  ["Technical", "material, pressure class, model BB150B-307H, drawing request", "before release"],
+  ["Technical", "material, pressure class, TH150B-381H route, BH150B drawing update request", "before release"],
   ["Release input", "PI, Incoterms, delivery terms, contract delta-list", "inside contract decision board"],
   ["Evidence", "photo/video/nameplate, packing list, weight/dimensions", "before shipment"],
 ] as const;
@@ -579,7 +579,7 @@ const acceptanceGuardrails = [
 
 const commercialBasisRows = [
   ["Equipment-only база", "Процент считается от стоимости заказа оборудования: выбранные теплообменники, насосные позиции и supplier equipment package.", "Логистика, брокер, пошлины, НДС, доставка, монтаж, ПНР и технадзор не входят в базу расчета."],
-  ["Рыночный ориентир", "Для sourcing, supplier search и procurement coordination типовая комиссия или скрытая маржа часто выше 10%.", "В этом КП UPGRADE фиксирует открытые 10% как service fee за понятный набор deliverables."],
+  ["Рыночный ориентир", "Для sourcing, supplier search и procurement coordination рыночная комиссия или скрытая маржа обычно выше 10%.", "В этом КП UPGRADE фиксирует открытые 10% как service fee за понятный набор deliverables."],
   ["Прозрачная ставка", "UPGRADE не прячет комиссию в логистике, пересчете доставки или внешних платежах.", "Заказчик видит прямую ставку за поиск, переговоры, технические вопросы, документы и decision package."],
   ["Почему это проверяемо", "Каждый процент связан с видимым результатом: supplier shortlist, decision board, evidence requests, PI/GA updates, risk register и handover pack.", "Заказчик видит, за что платит, без скрытой логистической наценки."],
 ] as const;
@@ -963,7 +963,7 @@ const routePoints = [
     title: "Factory China",
     status: "collecting",
     data: "factory contact, model, evidence request",
-    documents: "supplier profile, BB150B-307H confirmation, source request",
+    documents: "supplier profile, TH150B update request, BH150B archive evidence",
     owner: "supplier",
     action: "создать source request",
     risk: "неясный источник данных",
@@ -1309,7 +1309,7 @@ const copyTexts: Record<CopyVariant, string> = {
   deliverables:
     "Deliverables: mission card, Digital Twin preview, Document Vault, Risk Radar, Release gates board, Route Map, Control Room status, Handover Room packs, digital supplier card, digital product card, copy-ready executive summary.",
   payment:
-    "Коммерческое решение: UPGRADE service fee = 10% от стоимости заказа оборудования, без логистики, брокера, пошлин, НДС, доставки, монтажа, ПНР и иных внешних расходов. 5% — поиск поставщика, short-list, supplier profile и первичная evidence-проверка; 5% — переговоры по цене, обсуждение технических вопросов, PI/GA/documents и договорных вводных. Рыночный ориентир для sourcing/procurement coordination часто выше 10%, но в этом КП UPGRADE фиксирует открытые 10% за наши услуги и не прячет комиссию в логистике. Для текущего КП это оформлено как 3 000 000 ₸ без НДС за единый комплекс сопровождения. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
+    "Коммерческое решение: UPGRADE service fee = 10% от стоимости заказа оборудования, без логистики, брокера, пошлин, НДС, доставки, монтажа, ПНР и иных внешних расходов. 5% — поиск поставщика, short-list, supplier profile и первичная evidence-проверка; 5% — переговоры по цене, обсуждение технических вопросов, PI/GA/documents и договорных вводных. Рыночный ориентир для sourcing/procurement coordination обычно выше 10%, но в этом КП UPGRADE фиксирует открытые 10% только за наши услуги и не прячет комиссию в логистике. Для текущего КП это оформлено как 3 000 000 ₸ без НДС за единый комплекс сопровождения. Приемка результата привязана к deliverables: data-room index, risk register, release gate board, handover packs, digital supplier/product card.",
   next:
     "После согласования КП стороны оформляют договор оказания услуг, где фиксируются единый комплекс работ, стоимость, порядок оплаты, deliverables, границы ответственности и порядок передачи результатов.",
   addons:
@@ -2588,7 +2588,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <p className={styles.eyebrow}>WinGPro × UPGRADE</p>
           <h1 id="proposal-title">Цифровой контур поставки пластинчатых теплообменников</h1>
           <p className={styles.lead}>От выбора поставщика до handover-пакета: данные, документы, риски, сроки, логистика, монтажные вводные и цифровая товарная линия в одном управляемом процессе.</p>
-          <p className={styles.sublead}>Это не комиссия за контакт поставщика. Это рабочая система управления качеством закупки, сроками подготовки, статусами участников и повторным использованием товарных данных.</p>
+          <p className={styles.sublead}>Это рабочая система quality gates: выбранный вариант, статусы участников, evidence, сроки подготовки и повторное использование товарных данных остаются в одном техническом контуре.</p>
           <div className={styles.heroActions}>
             <a className={styles.primaryAction} href="#digital-twin">Открыть 3D Digital Twin</a>
             <a className={styles.secondaryAction} href="#hexnovas-decision-board">Выбрать вариант</a>
@@ -2619,14 +2619,15 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
           <strong>Technical cockpit + data-room</strong>
           <p>Основной экран показывает техническое состояние закупки: выбранный маршрут, предложения поставщиков, экономию, evidence, сроки, риски и handover.</p>
           <dl>
-            <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
+            <div><dt>выбранный маршрут</dt><dd>{activeHexnovasVariant.shortName} / 2 шт.</dd></div>
             <div><dt>маршрут</dt><dd>China → Kazakhstan</dd></div>
+            <div><dt>next gate</dt><dd>обновить PI + GA drawing под {recommendedHexnovasVariant.shortName}</dd></div>
             <div><dt>экономия</dt><dd>дельта предложений + снижение риска повторных запросов</dd></div>
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
             <span>decision now</span>
-            <p>{recommendedHexnovasVariant.shortName}: выберите вариант и откройте готовое письмо на {HEXNOVAS_DECISION_EMAIL}. {hexnovasNextEvidenceAction.title}.</p>
+            <p>{recommendedHexnovasVariant.shortName}: выберите вариант и откройте готовое письмо на {HEXNOVAS_DECISION_EMAIL}. Исходный BH150B-контур остается evidence до обновления PI/GA.</p>
             <div className={styles.missionCardFooterActions}>
               <a href="#hexnovas-decision-board">Открыть Decision Board</a>
               <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>
@@ -2797,7 +2798,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
               <h2>Conceptual twin для решения WinGPro</h2>
             </div>
             <dl aria-label="Current Digital Twin presentation state">
-              <div><dt>объект</dt><dd>2 × BB150B-307H</dd></div>
+              <div><dt>маршрут</dt><dd>{activeHexnovasVariant.shortName} / 2 шт.</dd></div>
               <div><dt>слой</dt><dd>{layer.title}</dd></div>
               <div><dt>готовность</dt><dd>{layer.readiness}</dd></div>
               <div><dt>gate</dt><dd>{layer.gate}</dd></div>
@@ -5296,7 +5297,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 <dl>
                   <div><dt>5%</dt><dd>поиск поставщика, shortlist, supplier profile, evidence request</dd></div>
                   <div><dt>5%</dt><dd>переговоры по цене, технические вопросы, PI / GA / договорные вводные</dd></div>
-                  <div><dt>market</dt><dd>рыночный ориентир по sourcing/procurement coordination часто выше 10%; здесь ставка раскрыта и ограничена 10%</dd></div>
+                  <div><dt>market</dt><dd>рыночный ориентир по sourcing/procurement coordination обычно выше 10%; здесь ставка раскрыта, ограничена 10% и относится только к услугам UPGRADE</dd></div>
                 </dl>
               </article>
               <div className={styles.commercialEvidenceGrid}>
