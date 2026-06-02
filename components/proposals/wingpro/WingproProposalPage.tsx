@@ -3042,20 +3042,29 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>
               Открыть письмо на info@upgradefor.com
             </a>
-            <button type="button" onClick={copyHexnovasDecisionEmail}>
-              Скопировать письмо
-            </button>
-            <button type="button" onClick={copyHexnovasDecisionPublicLink}>
-              Скопировать ссылку
-            </button>
-            <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
-          </div>
-          <div className={styles.hexnovasDecisionSiteLink} aria-label="Опубликованная ссылка на Decision Board">
-            <span>опубликовано на сайте</span>
-            <a href={hexnovasDecisionPublicUrl}>
-              {hexnovasDecisionPublicUrl.replace("https://", "")}
-            </a>
-            <small>Пароль доступа: 1111 / выбранный вариант: {activeHexnovasVariant.shortName}</small>
+            <details className={styles.hexnovasDecisionCopyDisclosure}>
+              <summary>
+                <span>copy / public link</span>
+                <strong>Скопировать письмо или ссылку</strong>
+                <small>site link + password 1111</small>
+              </summary>
+              <div className={styles.hexnovasDecisionCopyPanel}>
+                <button type="button" onClick={copyHexnovasDecisionEmail}>
+                  Скопировать письмо
+                </button>
+                <button type="button" onClick={copyHexnovasDecisionPublicLink}>
+                  Скопировать ссылку
+                </button>
+                <div className={styles.hexnovasDecisionSiteLink} aria-label="Опубликованная ссылка на Decision Board">
+                  <span>опубликовано на сайте</span>
+                  <a href={hexnovasDecisionPublicUrl}>
+                    {hexnovasDecisionPublicUrl.replace("https://", "")}
+                  </a>
+                  <small>Пароль доступа: 1111 / выбранный вариант: {activeHexnovasVariant.shortName}</small>
+                </div>
+                <small role="status" aria-live="polite">{hexnovasDecisionStatus}</small>
+              </div>
+            </details>
           </div>
           <details className={styles.hexnovasDecisionRouteDisclosure}>
             <summary>

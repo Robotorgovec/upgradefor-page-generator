@@ -9743,13 +9743,14 @@
   min-width: 0;
   display: grid;
   grid-column: 2;
-  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(150px, 0.42fr));
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.64fr);
   gap: 6px;
   align-content: start;
 }
 
-.hexnovasDecisionMailActions a,
-.hexnovasDecisionMailActions button {
+.hexnovasDecisionMailActions > a,
+.hexnovasDecisionMailActions button,
+.hexnovasDecisionCopyDisclosure summary {
   min-height: 44px;
   border: 1px solid var(--proposal-brand-border-strong);
   border-radius: 8px;
@@ -9767,9 +9768,98 @@
   justify-content: center;
 }
 
-.hexnovasDecisionMailActions a {
+.hexnovasDecisionMailActions > a {
   color: #ffffff;
   background: linear-gradient(135deg, var(--proposal-brand), var(--proposal-brand-active));
+}
+
+.hexnovasDecisionCopyDisclosure {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.hexnovasDecisionCopyDisclosure summary {
+  color: var(--proposal-text);
+  background: #ffffff;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px;
+  gap: 2px 8px;
+  justify-content: stretch;
+  list-style: none;
+  text-align: left;
+}
+
+.hexnovasDecisionCopyDisclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.hexnovasDecisionCopyDisclosure summary::after {
+  content: "+";
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
+
+.hexnovasDecisionCopyDisclosure[open] summary::after {
+  content: "-";
+}
+
+.hexnovasDecisionCopyDisclosure summary span,
+.hexnovasDecisionCopyDisclosure summary strong,
+.hexnovasDecisionCopyDisclosure summary small {
+  min-width: 0;
+  grid-column: 1;
+}
+
+.hexnovasDecisionCopyDisclosure summary span {
+  color: var(--proposal-text-muted);
+  font-size: 9.5px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hexnovasDecisionCopyDisclosure summary strong {
+  color: var(--proposal-text);
+  font-size: 12px;
+  line-height: 1.12;
+}
+
+.hexnovasDecisionCopyDisclosure summary small {
+  color: var(--proposal-text-soft);
+  font-size: 10px;
+  font-weight: 760;
+  line-height: 1.12;
+}
+
+.hexnovasDecisionCopyPanel {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hexnovasDecisionCopyPanel .hexnovasDecisionSiteLink {
+  grid-column: 1 / -1;
+}
+
+.hexnovasDecisionCopyPanel > small {
+  grid-column: 1 / -1;
 }
 
 .hexnovasDecisionMailActions small {
@@ -10100,6 +10190,65 @@
 .hexnovasSelectedDisclosure .hexnovasSelectedPanel,
 .hexnovasVariantDisclosure .hexnovasVariantGrid {
   margin-top: 8px;
+}
+
+.hexnovasDecisionOwnerDisclosure,
+.hexnovasDecisionRouteDisclosure,
+.hexnovasDecisionEmailPacket,
+.hexnovasSourceDigest,
+.hexnovasSelectedDisclosure,
+.hexnovasVariantDisclosure,
+.hexnovasComparisonDisclosure,
+.hexnovasTimeline,
+.hexnovasRiskControls,
+.hexnovasEvidenceBridgeDisclosure,
+.hexnovasDocumentSignals {
+  padding: 6px 8px;
+}
+
+.hexnovasDecisionOwnerDisclosure summary,
+.hexnovasDecisionRouteDisclosure summary,
+.hexnovasDecisionEmailPacket summary,
+.hexnovasSourceDigest summary,
+.hexnovasSelectedDisclosure summary,
+.hexnovasVariantDisclosure summary,
+.hexnovasComparisonDisclosure summary,
+.hexnovasTimeline summary,
+.hexnovasRiskControls summary,
+.hexnovasEvidenceBridgeDisclosure summary,
+.hexnovasDocumentSignals summary {
+  min-height: 44px;
+  gap: 6px;
+}
+
+.hexnovasSourceDigest:not([open]) summary strong,
+.hexnovasSelectedDisclosure:not([open]) summary strong,
+.hexnovasVariantDisclosure:not([open]) summary strong,
+.hexnovasComparisonDisclosure:not([open]) summary strong,
+.hexnovasTimeline:not([open]) summary strong,
+.hexnovasRiskControls:not([open]) summary strong,
+.hexnovasEvidenceBridgeDisclosure:not([open]) summary strong,
+.hexnovasDocumentSignals:not([open]) summary strong {
+  display: -webkit-box;
+  max-height: 1.28em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.hexnovasSourceDigest:not([open]) summary small,
+.hexnovasSelectedDisclosure:not([open]) summary small,
+.hexnovasVariantDisclosure:not([open]) summary small,
+.hexnovasComparisonDisclosure:not([open]) summary small,
+.hexnovasTimeline:not([open]) summary small,
+.hexnovasRiskControls:not([open]) summary small,
+.hexnovasEvidenceBridgeDisclosure:not([open]) summary small,
+.hexnovasDocumentSignals:not([open]) summary small {
+  display: -webkit-box;
+  max-height: 1.2em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .hexnovasSummaryRail {
@@ -17917,11 +18066,23 @@
     gap: 5px;
   }
 
-  .hexnovasDecisionMailActions a,
+  .hexnovasDecisionMailActions > a,
   .hexnovasDecisionMailActions button {
     padding: 8px 6px;
     font-size: 11px;
     line-height: 1.1;
+  }
+
+  .hexnovasDecisionCopyDisclosure summary {
+    padding: 8px 32px 8px 8px;
+  }
+
+  .hexnovasDecisionCopyDisclosure summary small {
+    display: none;
+  }
+
+  .hexnovasDecisionCopyPanel {
+    grid-template-columns: 1fr;
   }
 
   .hexnovasDecisionMailActions small {
