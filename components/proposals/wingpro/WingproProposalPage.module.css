@@ -3065,6 +3065,46 @@
   gap: 7px;
 }
 
+.twinInterfaceMap > summary {
+  min-height: 44px;
+  padding-right: 34px;
+  cursor: pointer;
+  display: grid;
+  gap: 7px;
+  position: relative;
+  list-style: none;
+}
+
+.twinInterfaceMap > summary::-webkit-details-marker {
+  display: none;
+}
+
+.twinInterfaceMap > summary::after {
+  content: "+";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--proposal-brand-border);
+  border-radius: 999px;
+  color: var(--proposal-brand-contrast);
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.twinInterfaceMap[open] > summary::after {
+  content: "-";
+}
+
+.twinInterfaceMap[open] > summary {
+  margin-bottom: 7px;
+}
+
 .twinInterfaceMap h3 {
   margin: 0;
   color: var(--proposal-text);

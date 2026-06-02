@@ -2839,16 +2839,19 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                 </details>
               </section>
             ))}
-            <div className={styles.twinInterfaceMap} aria-label="Hydraulic interface handoff map">
-              <div>
-                <p className={styles.eyebrow}>Интерфейс подключения</p>
-                <h3>Патрубки и режимы: что подтверждать</h3>
-              </div>
-              <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
-                {twinInterfaceRows.map((item) => (
-                  <span key={item.label}>{item.label}</span>
-                ))}
-              </div>
+            <details className={styles.twinInterfaceMap}>
+              <summary aria-label="Открыть hydraulic interface handoff map">
+                <div>
+                  <p className={styles.eyebrow}>Интерфейс подключения</p>
+                  <h3>Патрубки и режимы: что подтверждать</h3>
+                </div>
+                <div className={styles.twinInterfaceChips} aria-label="Key hydraulic inputs">
+                  {twinInterfaceRows.map((item) => (
+                    <span key={item.label}>{item.label}</span>
+                  ))}
+                </div>
+                <small>Открыть вводные, действие и owner по патрубкам</small>
+              </summary>
               <details className={styles.twinInterfaceDisclosure}>
                 <summary>
                   <span>Открыть карту передачи</span>
@@ -2869,7 +2872,7 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
                   ))}
                 </dl>
               </details>
-            </div>
+            </details>
             <div className={styles.twinControls}>
               <button type="button" onClick={() => setPresentationMode(true)}>Режим показа</button>
               <button
