@@ -2728,18 +2728,31 @@ export default function WingproProposalPage({ proposalPath }: { proposalPath: st
             <div><dt>outcome</dt><dd>data-room + risk register + delivery control + digital product asset</dd></div>
           </dl>
           <div className={styles.missionCardFooter}>
-            <span>decision now</span>
-            <p>{recommendedHexnovasVariant.shortName}: выберите вариант и откройте готовое письмо на {HEXNOVAS_DECISION_EMAIL}. Исходный BH150B-контур остается evidence до обновления PI/GA.</p>
-            <div className={styles.missionCardFooterActions}>
-              <a href="#hexnovas-decision-board">Открыть Decision Board</a>
+            <div className={styles.missionDecisionCompact}>
+              <div>
+                <span>decision now</span>
+                <strong>{recommendedHexnovasVariant.shortName}: route ready</strong>
+                <small>письмо на {HEXNOVAS_DECISION_EMAIL}</small>
+              </div>
+              <a href="#hexnovas-decision-board">Decision Board</a>
               <a href={hexnovasDecisionMailto} onClick={markHexnovasDecisionEmailOpen}>Открыть письмо</a>
-              <button type="button" onClick={copyHexnovasDecisionEmail}>Скопировать письмо</button>
-              <button type="button" onClick={copyHexnovasDecisionPublicLink}>Скопировать ссылку</button>
             </div>
-            <a className={styles.missionCardPublicLink} href={hexnovasDecisionPublicUrl}>
-              Публичная ссылка на Decision Board: {activeHexnovasVariant.shortName}
-            </a>
-            <small role="status" aria-live="polite">{copyStatus}</small>
+            <details className={styles.missionDecisionDisclosure}>
+              <summary>
+                <span>copy / public link</span>
+                <strong>Скопировать письмо или ссылку</strong>
+                <small>BH150B-контур остается evidence до обновления PI/GA.</small>
+              </summary>
+              <p>{recommendedHexnovasVariant.shortName}: выберите вариант и откройте готовое письмо на {HEXNOVAS_DECISION_EMAIL}. Исходный BH150B-контур остается evidence до обновления PI/GA.</p>
+              <div className={styles.missionCardFooterActions}>
+                <button type="button" onClick={copyHexnovasDecisionEmail}>Скопировать письмо</button>
+                <button type="button" onClick={copyHexnovasDecisionPublicLink}>Скопировать ссылку</button>
+              </div>
+              <a className={styles.missionCardPublicLink} href={hexnovasDecisionPublicUrl}>
+                Публичная ссылка на Decision Board: {activeHexnovasVariant.shortName}
+              </a>
+              <small role="status" aria-live="polite">{copyStatus}</small>
+            </details>
           </div>
         </aside>
       </section>
