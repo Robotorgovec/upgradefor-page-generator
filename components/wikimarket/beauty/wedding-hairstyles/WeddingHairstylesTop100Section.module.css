@@ -440,6 +440,7 @@
 .imageWrap {
   margin: 0;
   aspect-ratio: 4 / 5;
+  min-height: 220px;
   background: linear-gradient(180deg, rgba(250, 239, 225, 0.9) 0%, rgba(245, 247, 250, 0.96) 100%);
   overflow: hidden;
 }
@@ -641,6 +642,7 @@
   position: relative;
   margin: 0;
   aspect-ratio: 4 / 5;
+  min-height: 220px;
   background: linear-gradient(180deg, rgba(250, 239, 225, 0.9) 0%, rgba(245, 247, 250, 0.96) 100%);
   overflow: hidden;
 }
@@ -980,6 +982,11 @@
 
   .imageWrap {
     aspect-ratio: 1 / 1;
+    min-height: 210px;
+  }
+
+  .indexCardImageSlot {
+    min-height: 210px;
   }
 
   .cardBody {
